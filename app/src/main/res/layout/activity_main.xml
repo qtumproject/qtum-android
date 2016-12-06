@@ -40,7 +40,7 @@
         android:layout_marginBottom="16dp" />
 
     <TextView
-        android:text="@string/create_the_first_one_ir_restore_n_the_previous_wallet_key"
+        android:text="@string/create_the_first_one_or_restore_n_the_previous_wallet_key"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_create_new"

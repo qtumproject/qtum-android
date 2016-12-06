@@ -87,7 +87,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:background="@drawable/button_background_green"
-            android:id="@+id/button"
+            android:id="@+id/button_create_wallet"
             android:textSize="@dimen/button_text"
             android:layout_above="@+id/button_import_wallet_activity_create"
             android:layout_alignParentLeft="true"
