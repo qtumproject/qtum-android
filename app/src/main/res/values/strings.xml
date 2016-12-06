@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">BitcoinWallet</string>
+    <string name="create_new">Create New</string>
+    <string name="import_wallet">Import wallet</string>
+    <string name="create_the_first_one_ir_restore_n_the_previous_wallet_key">Create the first one ir restore \n the previous wallet key.</string>
+    <string name="you_don_t_have_a_wallet_yet">You don\'t have a wallet, yet.</string>
+
+    <string name="title_activity_create_wallet">Create Wallet</string>
+    <string name="create_wallet">Create Wallet</string>
+    <string name="wallet_name">Wallet Name</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat Password</string>
+
+</resources>
