@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.max_v.bitcoinwallet.MyWalletActivity"
+    tools:context="com.example.max_v.bitcoinwallet.Activities.MyWalletActivity"
     tools:showIn="@layout/activity_my_wallet">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:text="TestText"/>
+        android:text="@string/activity"/>
 
 </android.support.v4.widget.NestedScrollView>

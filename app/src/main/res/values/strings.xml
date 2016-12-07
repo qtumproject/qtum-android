@@ -15,5 +15,15 @@
     <string name="action_settings">Settings</string>
     <string name="my_wallet">My wallet</string>
     <string name="public_key">Public Key</string>
+    <string name="btc">BTC</string>
+    <string name="recieve">Recieve</string>
+    <string name="send">Send</string>
+    <string name="activity">Activity</string>
+    <string name="receiver_s_address">Receiver\'s Address</string>
+    <string name="amount">Amount</string>
+    <string name="pin">PIN</string>
+    <string name="available_balance">"Available Balance: "</string>
+    <string name="total_balance">"Total Balance: "</string>
+    <string name="copy_wallet_address">Copy Wallet Address</string>
 
 </resources>
