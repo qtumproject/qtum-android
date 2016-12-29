@@ -1,9 +1,12 @@
 <resources>
-    <string name="app_name">BitcoinWallet</string>
+    <string name="app_name">QTUM</string>
+
     <string name="create_new">Create New</string>
     <string name="import_wallet">Import wallet</string>
     <string name="create_the_first_one_or_restore_n_the_previous_wallet_key">Create the first one or restore \n the previous wallet key.</string>
     <string name="you_don_t_have_a_wallet_yet">You don\'t have a wallet, yet.</string>
+
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
     <string name="title_activity_create_wallet">Create Wallet</string>
     <string name="create_wallet">Create Wallet</string>
@@ -25,5 +28,4 @@
     <string name="available_balance">"Available Balance: "</string>
     <string name="total_balance">"Total Balance: "</string>
     <string name="copy_wallet_address">Copy Wallet Address</string>
-
 </resources>
