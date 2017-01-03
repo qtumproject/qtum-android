@@ -93,4 +93,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     protected void bindView() {
         ButterKnife.bind(this);
     }
+
+    @Override
+    public Context getContext() {
+        return getBaseContext();
+    }
 }

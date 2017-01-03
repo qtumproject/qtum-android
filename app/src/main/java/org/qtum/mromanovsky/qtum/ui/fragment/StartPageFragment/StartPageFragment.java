@@ -1,12 +1,14 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -42,7 +44,7 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
                         .commit();
                 break;
             case R.id.button_import_wallet:
-                //TODO : stub
+                mStartPageFragmentPresenter.onClick();
                 break;
         }
     }
@@ -75,4 +77,9 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
         super.onViewCreated(view, savedInstanceState);
     }
 
+
+    /*@Override
+    public Context getContext() {
+        return super.getContext();
+    }*/
 }

@@ -65,4 +65,5 @@ public class CreateWalletFragment extends BaseFragment implements CreateWalletFr
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(LAYOUT,container,false);
     }
+
 }

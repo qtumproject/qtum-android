@@ -1,5 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment;
 
 
-public interface StartPageFragmentView {
+import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentView;
+
+public interface StartPageFragmentView extends BaseFragmentView{
 }

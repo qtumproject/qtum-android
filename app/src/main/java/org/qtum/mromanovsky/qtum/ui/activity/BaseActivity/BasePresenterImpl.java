@@ -74,4 +74,5 @@ public abstract class BasePresenterImpl implements BasePresenter {
     public BaseContextView getView() {
         return null;
     }
+
 }

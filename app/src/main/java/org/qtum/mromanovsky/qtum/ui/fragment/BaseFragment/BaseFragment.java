@@ -40,11 +40,6 @@ public abstract class BaseFragment extends Fragment implements BaseContextView{
 
 
     @Override
-    public Context getContext() {
-        return null;
-    }
-
-    @Override
     public void finish() {
 
     }
@@ -71,5 +66,10 @@ public abstract class BaseFragment extends Fragment implements BaseContextView{
 
     protected void bindView(View view) {
         ButterKnife.bind(this,view);
+    }
+
+    @Override
+    public Context getContext() {
+        return getActivity().getBaseContext();
     }
 }

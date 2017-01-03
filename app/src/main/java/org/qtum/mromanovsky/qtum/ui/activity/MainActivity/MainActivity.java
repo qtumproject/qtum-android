@@ -1,5 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.activity.MainActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
