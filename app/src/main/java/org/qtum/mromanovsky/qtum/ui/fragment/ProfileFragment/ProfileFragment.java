@@ -1,5 +1,4 @@
-package org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment;
-
+package org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,36 +10,34 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
-public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView{
 
-    ReceiveFragmentPresenterImpl mReceiveFragmentPresenter;
+public class ProfileFragment extends BaseFragment implements ProfileFragmentView {
 
-    public static final int  LAYOUT = R.layout.fragment_receive;
-    public static final String TAG = "SendFragment";
+    public static final int  LAYOUT = R.layout.fragment_profile;
 
-    public static ReceiveFragment newInstance(){
-        ReceiveFragment receiveFragment = new ReceiveFragment();
-        return  receiveFragment;
+    ProfileFragmentPresenterImpl mProfileFragmentPresenter;
+
+    public static ProfileFragment newInstance(){
+        ProfileFragment profileFragment = new ProfileFragment();
+        return profileFragment;
     }
 
     @Override
     protected void createPresenter() {
-        mReceiveFragmentPresenter = new ReceiveFragmentPresenterImpl(this);
+        mProfileFragmentPresenter = new ProfileFragmentPresenterImpl(this);
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
-        return mReceiveFragmentPresenter;
+    protected ProfileFragmentPresenterImpl getPresenter() {
+        return mProfileFragmentPresenter;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(LAYOUT,container,false);
+        return inflater.inflate(LAYOUT, container, false);
     }
 
     @Override
@@ -51,9 +48,8 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
         if (null != toolbar) {
             activity.setSupportActionBar(toolbar);
             ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setTitle(R.string.recieve);
+            actionBar.setTitle(R.string.profile);
             //actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        ((MainActivity) getActivity()).hideBottomNavigationView();
     }
 }

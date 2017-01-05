@@ -1,0 +1,124 @@
+package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
+import org.qtum.mromanovsky.qtum.R;
+import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
+import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+
+
+public class PinFragment extends BaseFragment implements PinFragmentView {
+
+    public static final int  LAYOUT = R.layout.fragment_pin;
+
+    PinFragmentPresenterImpl mPinFragmentPresenter;
+    final static String IS_CREATING = "is_creating";
+    boolean mIsCreating;
+
+    @BindView(R.id.bt_confirm)
+    Button mButtonConfirm;
+    @BindView(R.id.bt_cancel)
+    Button mButtonCancel;
+    @BindView(R.id.et_wallet_pin)
+    TextInputEditText mTextInputEditTextWalletPin;
+    @BindView(R.id.til_wallet_pin)
+    TextInputLayout mTextInputLayoutWalletPin;
+
+
+    @OnClick({R.id.bt_confirm,R.id.bt_cancel})
+    public void onClick(View view){
+        switch (view.getId()) {
+            case R.id.bt_confirm:
+                getPresenter().confirm(mTextInputEditTextWalletPin.getText().toString(), mIsCreating);
+
+                break;
+            case R.id.bt_cancel:
+                //TODO : stub
+                break;
+        }
+    }
+
+    public static PinFragment newInstance(boolean isCreating){
+        PinFragment pinFragment = new PinFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(IS_CREATING, isCreating);
+        pinFragment.setArguments(args);
+        return pinFragment;
+    }
+
+    @Override
+    protected void createPresenter() {
+        mPinFragmentPresenter = new PinFragmentPresenterImpl(this);
+    }
+
+    @Override
+    protected PinFragmentPresenterImpl getPresenter() {
+        return mPinFragmentPresenter;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(LAYOUT,container,false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mIsCreating = getArguments().getBoolean(IS_CREATING);
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        final Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        if (null != toolbar) {
+            activity.setSupportActionBar(toolbar);
+            ActionBar actionBar = activity.getSupportActionBar();
+            if(mIsCreating) {
+                actionBar.setTitle(R.string.create_pin);
+            } else {
+                actionBar.setTitle(R.string.enter_pin);
+            }
+            //actionBar.setDisplayHomeAsUpEnabled(true);
+//            mTextInputEditTextWalletPin.setOnKeyListener(new View.OnKeyListener() {
+//                @Override
+//                public boolean onKey(View view, int i, KeyEvent keyEvent) {
+//                    if (i == KeyEvent.KEYCODE_ENTER) {
+//                        mTextInputLayoutWalletPin.clearFocus();
+//                        mTextInputLayoutWalletPin.setErrorEnabled(false);
+//                        return true;
+//                    }
+//                    return false;
+//                }
+//            });
+        }
+    }
+
+    @Override
+    public void confirm() {
+        WalletFragment walletFragment = WalletFragment.newInstance();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, walletFragment, walletFragment.getClass().getCanonicalName())
+                .commit();
+    }
+
+    @Override
+    public void confirmError() {
+        mTextInputEditTextWalletPin.setText("");
+        mTextInputLayoutWalletPin.setErrorEnabled(true);
+        mTextInputLayoutWalletPin.setError("Invalid PIN");
+    }
+}

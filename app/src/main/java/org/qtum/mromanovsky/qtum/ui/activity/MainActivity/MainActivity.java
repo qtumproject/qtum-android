@@ -1,13 +1,21 @@
 package org.qtum.mromanovsky.qtum.ui.activity.MainActivity;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.view.MenuItem;
+import android.view.View;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseActivity;
-import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BasePresenterImpl;
-import org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment.StartPageFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment.NewsFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment.ProfileFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.SendFragment.SendFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
+
+import butterknife.BindView;
 
 
 public class MainActivity extends BaseActivity implements MainActivityView{
@@ -15,13 +23,16 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     private static final int LAYOUT = R.layout.activity_main;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
 
+    @BindView(R.id.navigation_view)
+    BottomNavigationView mBottomNavigationView;
+
     @Override
     protected void createPresenter() {
         mMainActivityPresenterImpl = new MainActivityPresenterImpl(this);
     }
 
     @Override
-    protected BasePresenterImpl getPresenter() {
+    protected MainActivityPresenterImpl getPresenter() {
         return mMainActivityPresenterImpl;
     }
 
@@ -29,12 +40,49 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
+        getPresenter().openStartFragment();
+    }
 
-        StartPageFragment startPageFragment = StartPageFragment.newInstance();
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment = null;
+                switch (item.getItemId()) {
+                    case R.id.item_wallet:
+                        fragment = WalletFragment.newInstance();
+                        break;
+                    case R.id.item_profile:
+                        fragment = ProfileFragment.newInstance();
+                        break;
+                    case R.id.item_news:
+                        fragment = NewsFragment.newInstance();
+                        break;
+                    case R.id.item_send:
+                        fragment = SendFragment.newInstance();
+                        break;
+                    default:
+                        return false;
+                }
+                getPresenter().openFragment(fragment);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public void openFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.activity_main,startPageFragment,startPageFragment.getClass().getCanonicalName())
+                .replace(R.id.fragment_container,fragment,fragment.getClass().getCanonicalName())
                 .commit();
     }
 
+    public void showBottomNavigationView(){
+        mBottomNavigationView.setVisibility(View.VISIBLE);
+    }
+
+    public void hideBottomNavigationView(){mBottomNavigationView.setVisibility(View.GONE);}
 }

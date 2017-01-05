@@ -33,6 +33,7 @@ dependencies {
 
     compile 'com.android.support:support-v4:25.1.0'
     compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 
     compile 'org.bitcoinj:bitcoinj-core:0.14.3'
     compile 'com.android.support:multidex:1.0.1'

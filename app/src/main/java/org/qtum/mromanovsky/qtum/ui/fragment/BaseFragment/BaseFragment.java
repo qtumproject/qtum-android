@@ -1,5 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +13,7 @@ import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseContextView;
 import butterknife.ButterKnife;
 
 
-public abstract class BaseFragment extends Fragment implements BaseContextView{
+public abstract class BaseFragment extends Fragment implements BaseFragmentView{
 
     protected abstract void createPresenter();
 
@@ -38,6 +39,17 @@ public abstract class BaseFragment extends Fragment implements BaseContextView{
         bindView(view);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPresenter().onStart(getActivity());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getPresenter().onStop(getActivity());
+    }
 
     @Override
     public void finish() {
@@ -68,8 +80,4 @@ public abstract class BaseFragment extends Fragment implements BaseContextView{
         ButterKnife.bind(this,view);
     }
 
-    @Override
-    public Context getContext() {
-        return getActivity().getBaseContext();
-    }
 }

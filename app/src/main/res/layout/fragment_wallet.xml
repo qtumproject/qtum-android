@@ -34,6 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
+                    android:id="@+id/tv_balance"
                     android:text="23.000.000.097"
                     android:textSize="30sp"/>
 
@@ -42,46 +43,63 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textColor="@android:color/white"
-                    android:text="@string/btc"/>
+                    android:text="@string/qtum"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_gravity="center|right"
                 android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp">
-
-                <TextView
+                android:clickable="true"
+                android:id="@+id/receive"
+                android:layout_marginRight="16dp"
+                android:orientation="horizontal">
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/public_key"
-                    android:alpha="40"/>
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="213j123123j12nd31k2j31djk23123cswq"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/public_key"
+                        android:alpha="40"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:id="@+id/tv_public_key"
+                        android:text="213j123123j12nd31k2j31djk23123cswq"/>
+                </LinearLayout>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:paddingLeft="6dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/receive"/>
             </LinearLayout>
 
 
+
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_my_wallet"
+                android:id="@+id/toolbar"
+                android:layout_marginBottom="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+                <Button
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:padding="16dp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/qr_code"
+                    android:id="@+id/bt_qr_code"/>
+            </android.support.v7.widget.Toolbar>
 
-            <Button
-                android:text="Button"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_margin="16dp"
-                android:layout_gravity="right"
-                android:background="@drawable/qr_code"
-                android:id="@+id/button2"/>
+
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -90,7 +108,6 @@
     <android.support.v4.widget.NestedScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -103,6 +120,7 @@
 
     </android.support.v4.widget.NestedScrollView>
 
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -112,50 +130,18 @@
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@drawable/share_icon"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/lite_grey"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom">
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/swipe_refresh"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:gravity="center">
-            <Button
-                android:layout_width="58dp"
-                android:layout_height="42dp"
-                android:id="@+id/recieve_button_my_wallet"
-                android:background="@drawable/ic_recieve"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/recieve"/>
-        </LinearLayout>
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@android:id/list"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:gravity="center">
-            <Button
-                android:layout_width="58dp"
-                android:layout_height="42dp"
-                android:id="@+id/send_button_my_wallet"
-                android:background="@drawable/ic_send"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/send"/>
-        </LinearLayout>
-
-
-    </LinearLayout>
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 
 </android.support.design.widget.CoordinatorLayout>

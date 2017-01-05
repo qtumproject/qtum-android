@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:background="@drawable/background"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
                                                  android:fitsSystemWindows="true">
@@ -17,17 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            android:background="@color/colorPrimary">
-            <Button
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_margin="16dp"
-                android:id="@+id/button3"
-                android:background="@drawable/share_icon"
-                android:layout_gravity="right"/>
-        </android.support.v7.widget.Toolbar>
-
-
+            android:background="@color/colorPrimary"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -40,46 +30,50 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/text_input_password"
-            android:layout_marginBottom="16dp"
-            android:layout_below="@+id/text_input_wallet_name">
+            android:textColorHint="@color/white_alpha"
+            android:id="@+id/text_input_wallet_name"
+            android:padding="64dp">
 
             <android.support.design.widget.TextInputEditText
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/amount"/>
+                android:inputType="textPersonName"
+                android:textSize="32sp"
+                android:textColor="@color/white_alpha"
+                android:id="@+id/et_wallet_name"
+                android:hint="@string/enter_name"/>
         </android.support.design.widget.TextInputLayout>
 
+
+
         <Button
-            android:text="@string/copy_wallet_address"
-            android:layout_width="match_parent"
+            android:text="@string/confirm"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/bt_cancel"
+            android:layout_alignLeft="@+id/bt_cancel"
+            android:layout_alignStart="@+id/bt_cancel"
+            android:textColor="@android:color/white"
+            android:background="@drawable/transparency_button_background"
+            android:id="@+id/bt_confirm"
             android:textAllCaps="false"
-            android:textColor="@color/grey"
-            android:background="@drawable/button_background_grey"
-            android:id="@+id/button_create_wallet"
             android:textSize="@dimen/button_text"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:text="@string/cancel"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="16dp"/>
+            android:textColor="@android:color/white"
+            android:background="@drawable/transparency_button_background"
+            android:id="@+id/bt_cancel"
+            android:textSize="@dimen/button_text"
+            android:textAllCaps="false"
+            android:layout_marginBottom="16dp" />
 
-        <ImageView
-            android:layout_width="224dp"
-            android:layout_height="224dp"
-            app:srcCompat="@drawable/qr_code_black"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/imageView"/>
-
-        <TextView
-            android:text="qwe1823n3331n1123n5cmasd5523412 \n fwdwer23422fff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:id="@+id/textView3"
-            android:layout_below="@+id/imageView"
-            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

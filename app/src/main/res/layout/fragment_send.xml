@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_send"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay"
@@ -21,8 +21,8 @@
             <Button
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:layout_margin="16dp"
-                android:id="@+id/button3"
+                android:padding="16dp"
+                android:id="@+id/bt_qr_code"
                 android:background="@drawable/qr_code"
                 android:layout_gravity="right"/>
         </android.support.v7.widget.Toolbar>
@@ -83,7 +83,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:background="@drawable/button_background_green"
-            android:id="@+id/button_create_wallet"
+            android:id="@+id/bt_send"
             android:textSize="@dimen/button_text"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"

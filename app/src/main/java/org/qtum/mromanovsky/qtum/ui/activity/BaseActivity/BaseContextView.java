@@ -1,5 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.activity.BaseActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -18,4 +19,5 @@ public interface BaseContextView {
     void hideKeyBoard(View v);
 
     Context getContext();
+
 }
