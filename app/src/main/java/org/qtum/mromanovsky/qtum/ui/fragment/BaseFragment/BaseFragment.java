@@ -1,13 +1,16 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import org.qtum.mromanovsky.qtum.R;
 
@@ -20,6 +23,8 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView{
     protected abstract void createPresenter();
     protected abstract BaseFragmentPresenterImpl getPresenter();
     protected abstract int getLayout();
+
+    public static final String BACK_STACK_ROOT_TAG = "root_fragment";
 
     private Unbinder mUnbinder;
     private int LAYOUT;
@@ -66,6 +71,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView{
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        getPresenter().onDestroyView();
         unBindView();
     }
 
@@ -86,7 +92,17 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView{
 
     @Override
     public void hideKeyBoard() {
+        Activity activity = getActivity();
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            hideKeyBoard(activity, view);
+        }
+    }
 
+    public void hideKeyBoard(Activity activity, View view) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
 
     @Override
@@ -96,11 +112,23 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView{
 
     @Override
     public void openFragment(Fragment fragment) {
+        getFragmentManager().popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container,fragment,fragment.getClass().getCanonicalName())
                 .commit();
     }
+
+    @Override
+    public void openFragmentAndAddToBackStack(Fragment fragment) {
+        getFragmentManager().popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,fragment,fragment.getClass().getCanonicalName())
+                .addToBackStack(BACK_STACK_ROOT_TAG)
+                .commit();
+    }
+
 
     @Override
     public Activity getFragmentActivity() {

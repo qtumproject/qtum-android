@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -98,5 +99,24 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     public Context getContext() {
         return getBaseContext();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //    @Override
+//    public void onBackPressed() {
+//
+//            if(getSupportFragmentManager().getBackStackEntryCount()==0){
+//                finishAffinity();
+//            }else{
+//                super.onBackPressed();
+//            }
+//
+//    }
 
 }

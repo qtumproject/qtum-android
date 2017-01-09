@@ -2,12 +2,11 @@ package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -23,6 +22,7 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     @BindView(R.id.tv_received_time) TextView mTextViewReceivedTime;
     @BindView(R.id.tv_from) TextView mTextViewFrom;
     @BindView(R.id.tv_to) TextView mTextViewTo;
+    @BindView(R.id.app_bar) AppBarLayout mAppBarLayout;
 
     public static final int LAYOUT = R.layout.fragment_transaction;
     final static String POSITION = "position";
@@ -53,9 +53,9 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getPresenter().openTransaction(getArguments().getInt(POSITION));
+    public void onResume() {
+        super.onResume();
+        getPresenter().openTransactionView(getArguments().getInt(POSITION));
     }
 
     @Override
@@ -76,5 +76,12 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
         mTextViewReceivedTime.setText(receivedTime);
         mTextViewFrom.setText(from);
         mTextViewTo.setText(to);
+        if(value>0){
+            mAppBarLayout.setBackgroundResource(R.drawable.background_sent);
+            getFragmentActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.green));
+        }else{
+            mAppBarLayout.setBackgroundResource(R.drawable.background_received);
+            getFragmentActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.pink_lite));
+        }
     }
 }

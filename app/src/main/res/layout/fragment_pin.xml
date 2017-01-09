@@ -40,7 +40,9 @@
             android:layout_height="wrap_content"
             android:textColorHint="@color/white_alpha230"
             android:id="@+id/til_wallet_pin"
-            android:padding="64dp">
+            android:layout_marginTop="64dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp">
 
             <android.support.design.widget.TextInputEditText
                 android:gravity="center"
@@ -53,7 +55,6 @@
                 android:id="@+id/et_wallet_pin"
                 android:hint="@string/pin"/>
         </android.support.design.widget.TextInputLayout>
-
 
 
         <Button
@@ -82,6 +83,62 @@
             android:textSize="@dimen/button_text"
             android:textAllCaps="false"
             android:layout_marginBottom="16dp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/white_alpha230"
+            android:id="@+id/til_wallet_new_pin"
+            android:visibility="gone"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"
+            android:layout_below="@+id/til_wallet_pin"
+            android:layout_centerHorizontal="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:textSize="32sp"
+                android:textColor="@color/white_alpha230"
+                android:id="@+id/et_wallet_new_pin"
+                android:hint="@string/new_pin"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/white_alpha230"
+            android:id="@+id/til_wallet_new_pin_repeat"
+            android:visibility="gone"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"
+            android:layout_below="@+id/til_wallet_new_pin"
+            android:layout_centerHorizontal="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:textSize="32sp"
+                android:textColor="@color/white_alpha230"
+                android:id="@+id/et_wallet_new_pin_repeat"
+                android:hint="Repeat PIN"/>
+        </android.support.design.widget.TextInputLayout>
+
+
     </RelativeLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:scaleType="fitXY"
+        android:clickable="false"
+        android:src="@drawable/graph"
+        android:layout_gravity="bottom"/>
 
 </android.support.design.widget.CoordinatorLayout>

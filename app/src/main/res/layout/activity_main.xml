@@ -11,6 +11,7 @@
         android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:fitsSystemWindows="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/navigation_view"
         app:layout_constraintLeft_toLeftOf="parent"

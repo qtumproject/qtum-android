@@ -4,6 +4,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.CreateWalletNameFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,7 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
     @BindView(R.id.bt_confirm) Button mButtonConfirm;
     @BindView(R.id.bt_cancel) Button mButtonCancel;
     @BindView(R.id.et_wallet_name) TextInputEditText mTextInputEditTextWalletName;
+    @BindView(R.id.til_wallet_name) TextInputLayout mTextInputLayoutWalletName;
     @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @OnClick({R.id.bt_confirm,R.id.bt_cancel})
@@ -72,5 +74,12 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
             ActionBar actionBar = activity.getSupportActionBar();
             actionBar.setDisplayShowTitleEnabled(false);
         }
+    }
+
+    @Override
+    public void incorrectName(String errorText) {
+        mTextInputEditTextWalletName.setText("");
+        mTextInputLayoutWalletName.setErrorEnabled(true);
+        mTextInputLayoutWalletName.setError(errorText);
     }
 }

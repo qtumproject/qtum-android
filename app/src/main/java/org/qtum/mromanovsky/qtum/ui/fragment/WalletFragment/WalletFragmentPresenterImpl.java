@@ -82,19 +82,25 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     @Override
     public void onClickReceive() {
         Fragment fragment = ReceiveFragment.newInstance();
-        getView().openFragment(fragment);
+        getView().openFragmentAndAddToBackStack(fragment);
     }
 
     @Override
     public void openTransactionFragment(int position) {
         Fragment fragment = TransactionFragment.newInstance(position);
-        getView().openFragment(fragment);
+        getView().openFragmentAndAddToBackStack(fragment);
     }
 
     @Override
-    public void initializeViews() {
-        super.initializeViews();
+    public void onResume(Context context) {
+        super.onResume(context);
         getView().updateRecyclerView(getInteractor().getTransactionList());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getView().setAdapterNull();
     }
 
     //    public void onFabClick(){

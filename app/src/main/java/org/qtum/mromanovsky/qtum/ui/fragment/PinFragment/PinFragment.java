@@ -1,22 +1,16 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
-import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 import butterknife.BindView;
@@ -28,31 +22,45 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     public static final int  LAYOUT = R.layout.fragment_pin;
 
     PinFragmentPresenterImpl mPinFragmentPresenter;
-    final static String IS_CREATING = "is_creating";
-    boolean mIsCreating;
+
+    public final static String CREATING = "creating";
+    public final static String AUTHENTICATION = "authentication";
+    public final static String CHANGING = "changing";
+
+    final static String ACTION = "action";
+    private String mAction;
 
     @BindView(R.id.bt_confirm) Button mButtonConfirm;
     @BindView(R.id.bt_cancel) Button mButtonCancel;
     @BindView(R.id.et_wallet_pin) TextInputEditText mTextInputEditTextWalletPin;
     @BindView(R.id.til_wallet_pin) TextInputLayout mTextInputLayoutWalletPin;
+    @BindView(R.id.et_wallet_new_pin) TextInputEditText mTextInputEditTextWalletNewPin;
+    @BindView(R.id.til_wallet_new_pin) TextInputLayout mTextInputLayoutWalletNewPin;
+    @BindView(R.id.et_wallet_new_pin_repeat) TextInputEditText mTextInputEditTextWalletNewPinRepeat;
+    @BindView(R.id.til_wallet_new_pin_repeat) TextInputLayout mTextInputLayoutWalletNewPinRepeat;
     @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.tv_toolbar_title) TextView mTextViewToolBarTitle;
 
     @OnClick({R.id.bt_confirm,R.id.bt_cancel})
     public void onClick(View view){
         switch (view.getId()) {
             case R.id.bt_confirm:
-                getPresenter().confirm(mTextInputEditTextWalletPin.getText().toString(), mIsCreating);
+                String[] passwords = new String[3];
+                passwords[0] = mTextInputEditTextWalletPin.getText().toString();
+                passwords[1] = mTextInputEditTextWalletNewPin.getText().toString();
+                passwords[2] = mTextInputEditTextWalletNewPinRepeat.getText().toString();
+                getPresenter().confirm(passwords, mAction);
                 break;
             case R.id.bt_cancel:
-                getPresenter().cancel();
+                getPresenter().cancel(mAction);
                 break;
         }
     }
 
-    public static PinFragment newInstance(boolean isCreating){
+    public static PinFragment newInstance(String action){
         PinFragment pinFragment = new PinFragment();
         Bundle args = new Bundle();
-        args.putBoolean(IS_CREATING, isCreating);
+        args.putString(ACTION, action);
         pinFragment.setArguments(args);
         return pinFragment;
     }
@@ -72,14 +80,6 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         return LAYOUT;
     }
 
-    @Override
-    public void confirm() {
-        WalletFragment walletFragment = WalletFragment.newInstance();
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, walletFragment, walletFragment.getClass().getCanonicalName())
-                .commit();
-    }
 
     @Override
     public void confirmError(String errorText) {
@@ -89,19 +89,46 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     }
 
     @Override
+    public void confirmChangePinError(String errorTextNewPin, String errorTextRepeatPin) {
+        mTextInputEditTextWalletNewPin.setText("");
+        mTextInputLayoutWalletNewPin.setErrorEnabled(true);
+        mTextInputLayoutWalletNewPin.setError(errorTextNewPin);
+
+        mTextInputEditTextWalletNewPinRepeat.setText("");
+        mTextInputLayoutWalletNewPinRepeat.setErrorEnabled(true);
+        mTextInputLayoutWalletNewPinRepeat.setError(errorTextRepeatPin);
+
+    }
+
+    @Override
+    public void clearErrors() {
+        mTextInputLayoutWalletPin.setErrorEnabled(false);
+        mTextInputLayoutWalletNewPin.setErrorEnabled(false);
+        mTextInputLayoutWalletNewPinRepeat.setErrorEnabled(false);
+    }
+
+    @Override
     public void initializeViews() {
-        mIsCreating = getArguments().getBoolean(IS_CREATING);
+        mAction = getArguments().getString(ACTION);
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (null != mToolbar) {
             activity.setSupportActionBar(mToolbar);
             ActionBar actionBar = activity.getSupportActionBar();
             actionBar.setDisplayShowTitleEnabled(false);
-            if(mIsCreating) {
-                actionBar.setTitle(R.string.create_pin);
-            } else {
-                actionBar.setTitle(R.string.enter_pin);
+            switch (mAction){
+                case CREATING:
+                    mTextViewToolBarTitle.setText(R.string.create_pin);
+                    break;
+                case AUTHENTICATION:
+                    mTextViewToolBarTitle.setText(R.string.enter_pin);
+                    break;
+                case CHANGING:
+                    actionBar.setDisplayHomeAsUpEnabled(true);
+                    mTextViewToolBarTitle.setText(R.string.change_pin);
+                    mTextInputLayoutWalletNewPin.setVisibility(View.VISIBLE);
+                    mTextInputLayoutWalletNewPinRepeat.setVisibility(View.VISIBLE);
+                    break;
             }
-            //actionBar.setDisplayHomeAsUpEnabled(true);
 
 //            mTextInputEditTextWalletPin.setOnKeyListener(new View.OnKeyListener() {
 //                @Override

@@ -55,6 +55,5 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        ((MainActivity) getActivity()).hideBottomNavigationView();
     }
 }

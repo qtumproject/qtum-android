@@ -89,6 +89,12 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
     @Override
+    public void setAdapterNull() {
+        mTransactionAdapter = null;
+    }
+
+
+    @Override
     public void initializeViews() {
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (null != mToolbar) {

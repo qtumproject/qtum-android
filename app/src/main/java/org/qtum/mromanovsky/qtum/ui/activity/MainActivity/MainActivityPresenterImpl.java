@@ -39,7 +39,7 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
             fragment = StartPageFragment.newInstance();
             getView().openFragment(fragment);
         } else {
-            fragment = PinFragment.newInstance(false);
+            fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION);
             getView().openFragment(fragment);
         }
     }

@@ -37,16 +37,19 @@
     <string name="create_pin">Create PIN</string>
     <string name="enter_pin">Enter PIN</string>
     <string name="incorrect_password">Incorrect password</string>
-    <string name="invalid_pin">Invalid PIN</string>
+    <string name="pin_is_not_long_enough">PIN is not long enough</string>
     <string name="received">Received</string>
     <string name="sent">Sent</string>
-    <string name="receivded_time">Receivded Time</string>
+    <string name="received_time">Received Time</string>
     <string name="transaction">Transaction</string>
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="import_button">Import</string>
     <string name="language">Language</string>
-    <string name="change_pin">Change Pin</string>
+    <string name="change_pin">Change PIN</string>
     <string name="wallet_back_up">Wallet Back Up</string>
     <string name="about">About</string>
+    <string name="empty_name">Empty Name</string>
+    <string name="new_pin">New PIN</string>
+    <string name="incorrect_repeated_pin">Incorrect repeated PIN</string>
 </resources>

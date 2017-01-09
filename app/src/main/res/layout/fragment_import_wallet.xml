@@ -75,4 +75,12 @@
 
     </RelativeLayout>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:scaleType="fitXY"
+        android:clickable="false"
+        android:src="@drawable/graph"
+        android:layout_gravity="bottom"/>
+
 </android.support.design.widget.CoordinatorLayout>

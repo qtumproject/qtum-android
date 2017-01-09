@@ -12,14 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
+        android:background="@drawable/background"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/graph"
             android:fitsSystemWindows="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:scaleType="fitXY"
+                android:clickable="false"
+                android:src="@drawable/graph"
+                android:layout_gravity="bottom"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,7 +74,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/receivded_time"
+                        android:text="@string/received_time"
                         android:alpha="40"/>
 
                     <TextView

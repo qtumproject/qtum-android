@@ -5,11 +5,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseActivity;
+import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment.NewsFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendFragment.SendFragment;
@@ -48,6 +51,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     @Override
     public void openFragment(Fragment fragment) {
+        getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container,fragment,fragment.getClass().getCanonicalName())

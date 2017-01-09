@@ -1,15 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
+    def appName="QTUM"
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
+
     defaultConfig {
         applicationId "org.qtum.mromanovsky.qtum"
         minSdkVersion 17
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled  true
     }
     buildTypes {
         release {
@@ -17,10 +21,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    defaultConfig {
-        vectorDrawables.useSupportLibrary = true
-        multiDexEnabled  true
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def apk = output.outputFile;
+            def newName = appName+  "-${versionName}(${versionCode})-${variant.buildType.name}.apk";
+            output.outputFile = new File(apk.parentFile, newName);
+        }
     }
+
 }
 
 dependencies {

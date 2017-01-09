@@ -24,7 +24,7 @@ public class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl 
     }
 
     @Override
-    public void openTransaction(int position) {
+    public void openTransactionView(int position) {
         Transaction transaction = getInteractor().getTransaction(position);
         getView().setUpTransactionData(transaction.getValue(),transaction.getDate(),
                 transaction.getFrom(),transaction.getTo());
