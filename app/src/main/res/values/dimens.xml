@@ -9,4 +9,5 @@
     <dimen name="app_bar_height">240dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="button_text">18sp</dimen>
+    <dimen name="toolbar_text_size">24sp</dimen>
 </resources>

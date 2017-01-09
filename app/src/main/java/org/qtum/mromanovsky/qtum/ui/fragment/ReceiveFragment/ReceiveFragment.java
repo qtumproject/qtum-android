@@ -15,12 +15,16 @@ import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
+import butterknife.BindView;
+
 public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView{
 
     ReceiveFragmentPresenterImpl mReceiveFragmentPresenter;
 
     public static final int  LAYOUT = R.layout.fragment_receive;
     public static final String TAG = "SendFragment";
+
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     public static ReceiveFragment newInstance(){
         ReceiveFragment receiveFragment = new ReceiveFragment();
@@ -37,22 +41,19 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
         return mReceiveFragmentPresenter;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(LAYOUT,container,false);
+    protected int getLayout() {
+        return LAYOUT;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void initializeViews() {
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        final Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        if (null != toolbar) {
-            activity.setSupportActionBar(toolbar);
+        if (null != mToolbar) {
+            activity.setSupportActionBar(mToolbar);
             ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setTitle(R.string.recieve);
-            //actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
         ((MainActivity) getActivity()).hideBottomNavigationView();
     }

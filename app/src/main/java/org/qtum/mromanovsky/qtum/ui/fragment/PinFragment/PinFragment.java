@@ -7,6 +7,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,25 +31,20 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     final static String IS_CREATING = "is_creating";
     boolean mIsCreating;
 
-    @BindView(R.id.bt_confirm)
-    Button mButtonConfirm;
-    @BindView(R.id.bt_cancel)
-    Button mButtonCancel;
-    @BindView(R.id.et_wallet_pin)
-    TextInputEditText mTextInputEditTextWalletPin;
-    @BindView(R.id.til_wallet_pin)
-    TextInputLayout mTextInputLayoutWalletPin;
-
+    @BindView(R.id.bt_confirm) Button mButtonConfirm;
+    @BindView(R.id.bt_cancel) Button mButtonCancel;
+    @BindView(R.id.et_wallet_pin) TextInputEditText mTextInputEditTextWalletPin;
+    @BindView(R.id.til_wallet_pin) TextInputLayout mTextInputLayoutWalletPin;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @OnClick({R.id.bt_confirm,R.id.bt_cancel})
     public void onClick(View view){
         switch (view.getId()) {
             case R.id.bt_confirm:
                 getPresenter().confirm(mTextInputEditTextWalletPin.getText().toString(), mIsCreating);
-
                 break;
             case R.id.bt_cancel:
-                //TODO : stub
+                getPresenter().cancel();
                 break;
         }
     }
@@ -71,39 +67,9 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         return mPinFragmentPresenter;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(LAYOUT,container,false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mIsCreating = getArguments().getBoolean(IS_CREATING);
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        final Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        if (null != toolbar) {
-            activity.setSupportActionBar(toolbar);
-            ActionBar actionBar = activity.getSupportActionBar();
-            if(mIsCreating) {
-                actionBar.setTitle(R.string.create_pin);
-            } else {
-                actionBar.setTitle(R.string.enter_pin);
-            }
-            //actionBar.setDisplayHomeAsUpEnabled(true);
-//            mTextInputEditTextWalletPin.setOnKeyListener(new View.OnKeyListener() {
-//                @Override
-//                public boolean onKey(View view, int i, KeyEvent keyEvent) {
-//                    if (i == KeyEvent.KEYCODE_ENTER) {
-//                        mTextInputLayoutWalletPin.clearFocus();
-//                        mTextInputLayoutWalletPin.setErrorEnabled(false);
-//                        return true;
-//                    }
-//                    return false;
-//                }
-//            });
-        }
+    protected int getLayout() {
+        return LAYOUT;
     }
 
     @Override
@@ -116,9 +82,40 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     }
 
     @Override
-    public void confirmError() {
+    public void confirmError(String errorText) {
         mTextInputEditTextWalletPin.setText("");
         mTextInputLayoutWalletPin.setErrorEnabled(true);
-        mTextInputLayoutWalletPin.setError("Invalid PIN");
+        mTextInputLayoutWalletPin.setError(errorText);
+    }
+
+    @Override
+    public void initializeViews() {
+        mIsCreating = getArguments().getBoolean(IS_CREATING);
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (null != mToolbar) {
+            activity.setSupportActionBar(mToolbar);
+            ActionBar actionBar = activity.getSupportActionBar();
+            actionBar.setDisplayShowTitleEnabled(false);
+            if(mIsCreating) {
+                actionBar.setTitle(R.string.create_pin);
+            } else {
+                actionBar.setTitle(R.string.enter_pin);
+            }
+            //actionBar.setDisplayHomeAsUpEnabled(true);
+
+//            mTextInputEditTextWalletPin.setOnKeyListener(new View.OnKeyListener() {
+//                @Override
+//                public boolean onKey(View view, int i, KeyEvent keyEvent) {
+//                    if (i == KeyEvent.KEYCODE_ENTER) {
+//                        mTextInputLayoutWalletPin.clearFocus();
+//                        mTextInputEditTextWalletPin.clearFocus();
+//                        hideKeyBoard(mTextInputEditTextWalletPin);
+//                        Log.d("MyLog", "onKey");
+//                        return true;
+//                    }
+//                    return false;
+//                }
+//            });
+        }
     }
 }

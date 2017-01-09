@@ -3,7 +3,11 @@
     <color name="colorPrimary">#3e3ec4</color>
     <color name="colorPrimaryDark">#3e3ec4</color>
     <color name="colorAccent">#36b9c8</color>
+    <color name="pink">#f95e86</color>
     <color name="grey">#4e5d6f</color>
-    <color name="lite_grey">#e6e6e6</color>
-    <color name="white_alpha">#eaffffff</color>
+    <color name="grey_lite">#f8f8f8</color>
+    <color name="grey_from_to">#838d9a</color>
+    <color name="grey_data">#d6dae2</color>
+    <color name="white_alpha230">#e6ffffff</color>
+    <color name="white_alpha120">#78ffffff</color>
 </resources>

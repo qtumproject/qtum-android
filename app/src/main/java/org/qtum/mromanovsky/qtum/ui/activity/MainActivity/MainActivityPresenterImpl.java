@@ -1,20 +1,21 @@
 package org.qtum.mromanovsky.qtum.ui.activity.MainActivity;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BasePresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment.StartPageFragment;
-import org.qtum.mromanovsky.qtum.utils.QtumSharedPreference;
 
 
 public class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivityPresenter{
 
-    MainActivityView mMainActivityView;
-    Fragment mFragment;
+    private MainActivityView mMainActivityView;
+    private MainActivityInteractorImpl mMainActivityInteractor;
 
     public MainActivityPresenterImpl(MainActivityView mainActivityView){
         mMainActivityView = mainActivityView;
+        mMainActivityInteractor = new MainActivityInteractorImpl();
     }
 
     @Override
@@ -22,14 +23,24 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
         return mMainActivityView;
     }
 
+    private MainActivityInteractorImpl getInteractor() {
+        return mMainActivityInteractor;
+    }
+
     @Override
-    public void openStartFragment() {
-        if(QtumSharedPreference.getInstance().getWalletName(getView().getContext()).isEmpty()){
-            mFragment = StartPageFragment.newInstance();
-            getView().openFragment(mFragment);
+    public void onCreate(Context context) {
+        super.onCreate(context);
+        openStartFragment();
+    }
+
+    private void openStartFragment() {
+        Fragment fragment;
+        if(getInteractor().getWalletPassword(getView().getContext())==0){
+            fragment = StartPageFragment.newInstance();
+            getView().openFragment(fragment);
         } else {
-            mFragment = PinFragment.newInstance(false);
-            getView().openFragment(mFragment);
+            fragment = PinFragment.newInstance(false);
+            getView().openFragment(fragment);
         }
     }
 

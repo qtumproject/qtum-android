@@ -14,7 +14,6 @@ public class QtumSharedPreference {
     private static final String QTUM_WALLET_NAME = "qtum_wallet_name";
     private static final String QTUM_WALLET_PASSWORD = "qtum_wallet_password";
 
-
     private QtumSharedPreference(){
 
     }
@@ -23,7 +22,6 @@ public class QtumSharedPreference {
         if (sInstance == null){
             sInstance = new QtumSharedPreference();
         }
-
         return sInstance;
     }
 

@@ -23,8 +23,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     private static final int LAYOUT = R.layout.activity_main;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
 
-    @BindView(R.id.navigation_view)
-    BottomNavigationView mBottomNavigationView;
+    @BindView(R.id.navigation_view) BottomNavigationView mBottomNavigationView;
 
     @Override
     protected void createPresenter() {
@@ -40,16 +39,33 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
-        getPresenter().openStartFragment();
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+    }
+
+    @Override
+    public void openFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,fragment,fragment.getClass().getCanonicalName())
+                .commit();
+    }
+
+    public void showBottomNavigationView(){
+        mBottomNavigationView.setVisibility(View.VISIBLE);
+    }
+
+    public void hideBottomNavigationView(){mBottomNavigationView.setVisibility(View.GONE);}
+
+    @Override
+    public void initializeViews() {
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment = null;
+                Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.item_wallet:
                         fragment = WalletFragment.newInstance();
@@ -71,18 +87,4 @@ public class MainActivity extends BaseActivity implements MainActivityView{
             }
         });
     }
-
-    @Override
-    public void openFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container,fragment,fragment.getClass().getCanonicalName())
-                .commit();
-    }
-
-    public void showBottomNavigationView(){
-        mBottomNavigationView.setVisibility(View.VISIBLE);
-    }
-
-    public void hideBottomNavigationView(){mBottomNavigationView.setVisibility(View.GONE);}
 }

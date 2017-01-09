@@ -2,7 +2,7 @@
     <string name="app_name">QTUM</string>
 
     <string name="create_new">Create New</string>
-    <string name="import_wallet">Import wallet</string>
+    <string name="import_wallet">Import Wallet</string>
     <string name="create_the_first_one_or_restore_n_the_previous_wallet_key">Create the first one or restore \n the previous wallet key.</string>
     <string name="you_don_t_have_a_wallet_yet">You don\'t have a wallet, yet.</string>
 
@@ -36,4 +36,17 @@
     <string name="news">News</string>
     <string name="create_pin">Create PIN</string>
     <string name="enter_pin">Enter PIN</string>
+    <string name="incorrect_password">Incorrect password</string>
+    <string name="invalid_pin">Invalid PIN</string>
+    <string name="received">Received</string>
+    <string name="sent">Sent</string>
+    <string name="receivded_time">Receivded Time</string>
+    <string name="transaction">Transaction</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="import_button">Import</string>
+    <string name="language">Language</string>
+    <string name="change_pin">Change Pin</string>
+    <string name="wallet_back_up">Wallet Back Up</string>
+    <string name="about">About</string>
 </resources>

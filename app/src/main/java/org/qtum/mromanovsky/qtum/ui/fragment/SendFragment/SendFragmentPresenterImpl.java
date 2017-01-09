@@ -1,7 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SendFragment;
 
-
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+
 
 public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SendFragmentPresenter{
 
@@ -9,5 +9,10 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
 
     public SendFragmentPresenterImpl(SendFragmentView sendFragmentView){
         mSendFragmentView = sendFragmentView;
+    }
+
+    @Override
+    public SendFragmentView getView() {
+        return mSendFragmentView;
     }
 }

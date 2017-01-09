@@ -7,6 +7,10 @@ import android.support.v4.app.Fragment;
 import org.bitcoinj.kits.WalletAppKit;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionFragment;
+import org.qtum.mromanovsky.qtum.utils.Transaction;
+
+import java.util.List;
 
 public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
 
@@ -14,13 +18,12 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 //    UpdateService mUpdateService;
     WalletAppKit mWalletAppKit;
 
-
-
+    WalletFragmentInteractorImpl mWalletFragmentInteractor;
     private WalletFragmentView mWalletFragmentView;
 
     public WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView){
         mWalletFragmentView = walletFragmentView;
-
+        mWalletFragmentInteractor = new WalletFragmentInteractorImpl();
     }
 
 //    ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -72,13 +75,29 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         return mWalletFragmentView;
     }
 
+    public WalletFragmentInteractorImpl getInteractor() {
+        return mWalletFragmentInteractor;
+    }
+
     @Override
     public void onClickReceive() {
         Fragment fragment = ReceiveFragment.newInstance();
         getView().openFragment(fragment);
     }
 
-//    public void onFabClick(){
+    @Override
+    public void openTransactionFragment(int position) {
+        Fragment fragment = TransactionFragment.newInstance(position);
+        getView().openFragment(fragment);
+    }
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        getView().updateRecyclerView(getInteractor().getTransactionList());
+    }
+
+    //    public void onFabClick(){
 //        Log.d(WalletFragment.TAG,mWalletAppKit.wallet().getBalance().toFriendlyString() + " " + mWalletAppKit.wallet().getTotalReceived().toFriendlyString());
 //        Log.d(WalletFragment.TAG,mWalletAppKit.wallet().getBalance(Wallet.BalanceType.ESTIMATED).toFriendlyString());
 //        Log.d(WalletFragment.TAG,"CurrentReceiveAddress: " + mWalletAppKit.wallet().currentReceiveAddress());

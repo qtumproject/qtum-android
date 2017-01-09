@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 android:background="@drawable/background"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/app_bar_layout"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:background="@color/colorPrimary">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="@dimen/toolbar_text_size"
+                android:textColor="@android:color/white"
+                android:text="@string/wallet_name"/>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_horizontal_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/white_alpha230"
+            android:id="@+id/text_input_wallet_name"
+            android:padding="64dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textSize="32sp"
+                android:textColor="@color/white_alpha230"
+                android:id="@+id/et_wallet_name"
+                android:hint="@string/enter_name"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <Button
+            android:text="@string/confirm"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bt_cancel"
+            android:layout_alignLeft="@+id/bt_cancel"
+            android:layout_alignStart="@+id/bt_cancel"
+            android:textColor="@android:color/white"
+            android:background="@drawable/background_button_transparency"
+            android:id="@+id/bt_confirm"
+            android:textAllCaps="false"
+            android:textSize="@dimen/button_text"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:text="@string/cancel"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:background="@drawable/background_button_transparency"
+            android:id="@+id/bt_cancel"
+            android:textSize="@dimen/button_text"
+            android:textAllCaps="false"
+            android:layout_marginBottom="16dp" />
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -18,6 +18,13 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             android:background="@color/colorPrimary">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="@dimen/toolbar_text_size"
+                android:textColor="@android:color/white"
+                android:text="@string/news"/>
         </android.support.v7.widget.Toolbar>
 
 

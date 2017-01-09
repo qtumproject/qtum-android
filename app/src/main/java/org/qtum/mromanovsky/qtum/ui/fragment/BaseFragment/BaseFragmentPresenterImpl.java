@@ -1,7 +1,5 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment;
 
-import android.content.Context;
-
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BasePresenterImpl;
 
 

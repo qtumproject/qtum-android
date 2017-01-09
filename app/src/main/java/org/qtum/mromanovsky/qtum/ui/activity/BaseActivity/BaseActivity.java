@@ -98,4 +98,5 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     public Context getContext() {
         return getBaseContext();
     }
+
 }

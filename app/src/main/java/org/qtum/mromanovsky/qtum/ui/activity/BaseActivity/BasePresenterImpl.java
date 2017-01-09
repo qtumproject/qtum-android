@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-/**
- * Created by max-v on 12/29/2016.
- */
 
 public abstract class BasePresenterImpl implements BasePresenter {
 
@@ -42,7 +39,7 @@ public abstract class BasePresenterImpl implements BasePresenter {
 
     @Override
     public void initializeViews() {
-
+        getView().initializeViews();
     }
 
     @Override

@@ -11,7 +11,7 @@ import android.widget.Button;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import org.qtum.mromanovsky.qtum.ui.fragment.WalletNameFragment.WalletNameFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.CreateWalletNameFragment.CreateWalletNameFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -25,27 +25,20 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     private StartPageFragmentPresenterImpl mStartPageFragmentPresenter;
 
 
-    @BindView(R.id.bt_create_new)
-    Button mButtonCreateNew;
-
-    @BindView(R.id.bt_import_wallet)
-    Button mButtonImportWallet;
+    @BindView(R.id.bt_create_new) Button mButtonCreateNew;
+    @BindView(R.id.bt_import_wallet) Button mButtonImportWallet;
 
     @OnClick({R.id.bt_import_wallet,R.id.bt_create_new})
     public void OnClick(View view){
         switch (view.getId()) {
             case R.id.bt_create_new:
-                WalletNameFragment walletNameFragment = WalletNameFragment.newInstance();
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, walletNameFragment, walletNameFragment.getClass().getCanonicalName())
-                        .commit();
+                getPresenter().createNewWallet();
                 break;
             case R.id.bt_import_wallet:
+                getPresenter().importWallet();
                 break;
         }
     }
-
 
     public static StartPageFragment newInstance(){
         StartPageFragment startPageFragment = new StartPageFragment();
@@ -55,23 +48,20 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     @Override
     protected void createPresenter() {
         mStartPageFragmentPresenter = new StartPageFragmentPresenterImpl(this);
-
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected StartPageFragmentPresenterImpl getPresenter() {
         return mStartPageFragmentPresenter;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(LAYOUT,container,false);
+    protected int getLayout() {
+        return LAYOUT;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
+    public void initializeViews() {
 
+    }
 }

@@ -4,6 +4,7 @@
                                                  xmlns:tools="http://schemas.android.com/tools"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
+                                                 android:background="@color/grey_lite"
                                                  android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -18,18 +19,133 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             android:background="@color/colorPrimary">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="@dimen/toolbar_text_size"
+                android:textColor="@android:color/white"
+                android:text="@string/profile"/>
         </android.support.v7.widget.Toolbar>
 
 
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:background="@drawable/background_item_profile"
+            android:padding="16dp">
 
-    </RelativeLayout>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_language"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="@string/language"/>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_arrow"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:background="@drawable/background_item_profile"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_pin"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="@string/change_pin"/>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_arrow"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/grey_lite"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:background="@drawable/background_item_profile"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_backup"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="@string/wallet_back_up"/>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_arrow"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:background="@drawable/background_item_profile"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_about"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:text="@string/about"/>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_arrow"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

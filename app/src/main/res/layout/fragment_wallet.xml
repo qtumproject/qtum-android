@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/grey_lite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -18,7 +19,7 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/background"
+            android:background="@drawable/graph"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -27,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_gravity="center|top"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <TextView
@@ -49,8 +50,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|right"
-                android:layout_marginTop="16dp"
+                android:layout_gravity="left|bottom"
+                android:layout_margin="16dp"
                 android:clickable="true"
                 android:id="@+id/receive"
                 android:layout_marginRight="16dp"
@@ -81,8 +82,6 @@
                     android:src="@drawable/receive"/>
             </LinearLayout>
 
-
-
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_marginBottom="24dp"
@@ -90,35 +89,48 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/my_wallet"
+                    android:gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/toolbar_text_size"/>
                 <Button
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:padding="16dp"
+                    android:layout_margin="8dp"
                     android:layout_gravity="right"
                     android:background="@drawable/qr_code"
                     android:id="@+id/bt_qr_code"/>
             </android.support.v7.widget.Toolbar>
 
-
-
-
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <TextView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/activity"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
+        android:id="@+id/swipe_refresh"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:text="@string/activity"/>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recycler_view">
 
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
     <android.support.design.widget.FloatingActionButton
@@ -129,19 +141,5 @@
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@drawable/share_icon"/>
-
-    <!--<android.support.v4.widget.SwipeRefreshLayout-->
-        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:id="@+id/swipe_refresh"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
-
-        <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@android:id/list"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent" />-->
-
-    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 
 </android.support.design.widget.CoordinatorLayout>
