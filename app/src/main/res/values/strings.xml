@@ -52,4 +52,8 @@
     <string name="empty_name">Empty Name</string>
     <string name="new_pin">New PIN</string>
     <string name="incorrect_repeated_pin">Incorrect repeated PIN</string>
+    <string name="your_brain_code">Your Brain-CODE</string>
+    <string name="copy_brain_code">Copy Brain-CODE</string>
+    <string name="copy_brain_code_n_to_use_it_in_another_app">Copy Brain-CODE \n to Use it in Another App</string>
+    <string name="choose_another_address">Choose Another Address</string>
 </resources>

@@ -1,73 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/fragment_start_page"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/background_main"
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:background="@drawable/background">
-
+                android:paddingTop="@dimen/activity_vertical_margin">
 
     <Button
-        android:text="@string/create_new"
+        android:id="@+id/bt_create_new"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bt_import_wallet"
         android:layout_alignLeft="@+id/bt_import_wallet"
         android:layout_alignStart="@+id/bt_import_wallet"
-        android:textColor="@android:color/white"
-        android:background="@drawable/background_button_transparency"
-        android:id="@+id/bt_create_new"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_bt_alpha"
+        android:text="@string/create_new"
         android:textAllCaps="false"
-        android:textSize="@dimen/button_text"
-        android:layout_marginBottom="16dp"/>
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/button_text"/>
 
     <Button
-        android:text="@string/import_wallet"
+        android:id="@+id/bt_import_wallet"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:background="@drawable/background_button_transparency"
-        android:id="@+id/bt_import_wallet"
-        android:textSize="@dimen/button_text"
+        android:background="@drawable/background_bt_alpha"
+        android:text="@string/import_wallet"
         android:textAllCaps="false"
-        android:layout_marginBottom="16dp" />
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/button_text"/>
 
     <TextView
-        android:text="@string/create_the_first_one_or_restore_n_the_previous_wallet_key"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@android:color/white"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
-        android:id="@+id/textView"
-        android:textSize="22sp"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/create_the_first_one_or_restore_n_the_previous_wallet_key"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"/>
 
     <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="224dp"
         android:layout_height="224dp"
-        android:scaleType="centerInside"
-        app:srcCompat="@drawable/logo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/imageView2"/>
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/logo"/>
 
     <TextView
-        android:text="@string/you_don_t_have_a_wallet_yet"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:id="@+id/textView2"
-        android:textSize="26sp"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        android:text="@string/you_don_t_have_a_wallet_yet"
+        android:textColor="@android:color/white"
+        android:textSize="26sp"/>
 
 </RelativeLayout>

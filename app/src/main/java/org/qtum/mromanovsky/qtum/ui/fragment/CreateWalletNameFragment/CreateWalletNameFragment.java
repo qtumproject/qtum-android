@@ -1,41 +1,37 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.CreateWalletNameFragment;
 
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public class CreateWalletNameFragment extends BaseFragment implements CreateWalletNameFragmentView {
 
-    public static final int  LAYOUT = R.layout.fragment_create_wallet_name;
+    public static final int LAYOUT = R.layout.fragment_create_wallet_name;
     public static final String TAG = "CreateWalletNameFragment";
 
     CreateWalletNameFragmentPresenterImpl mCreateWalletFragmentPresenter;
 
-    @BindView(R.id.bt_confirm) Button mButtonConfirm;
-    @BindView(R.id.bt_cancel) Button mButtonCancel;
-    @BindView(R.id.et_wallet_name) TextInputEditText mTextInputEditTextWalletName;
-    @BindView(R.id.til_wallet_name) TextInputLayout mTextInputLayoutWalletName;
-    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.bt_confirm)
+    Button mButtonConfirm;
+    @BindView(R.id.bt_cancel)
+    Button mButtonCancel;
+    @BindView(R.id.et_wallet_name)
+    TextInputEditText mTextInputEditTextWalletName;
+    @BindView(R.id.til_wallet_name)
+    TextInputLayout mTextInputLayoutWalletName;
 
-    @OnClick({R.id.bt_confirm,R.id.bt_cancel})
-    public void onClick(View view){
+    @OnClick({R.id.bt_confirm, R.id.bt_cancel})
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_confirm:
                 getPresenter().confirm(mTextInputEditTextWalletName.getText().toString());
@@ -46,7 +42,7 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
         }
     }
 
-    public static CreateWalletNameFragment newInstance(){
+    public static CreateWalletNameFragment newInstance() {
         CreateWalletNameFragment createWalletNameFragment = new CreateWalletNameFragment();
         return createWalletNameFragment;
     }
@@ -68,12 +64,13 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
 
     @Override
     public void initializeViews() {
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (null != mToolbar) {
-            activity.setSupportActionBar(mToolbar);
-            ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setDisplayShowTitleEnabled(false);
-        }
+
+    }
+
+    @Override
+    public void setSoftMode() {
+        super.setSoftMode();
+        getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Override

@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseContextView;
 
 
-public interface BaseFragmentView extends BaseContextView{
+public interface BaseFragmentView extends BaseContextView {
     void openFragment(Fragment fragment);
+
     void openFragmentAndAddToBackStack(Fragment fragment);
+
     Activity getFragmentActivity();
 }

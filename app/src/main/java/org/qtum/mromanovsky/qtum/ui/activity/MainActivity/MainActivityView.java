@@ -6,6 +6,6 @@ import android.support.v4.app.Fragment;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseContextView;
 
 
-public interface MainActivityView extends BaseContextView{
+public interface MainActivityView extends BaseContextView {
     void openFragment(Fragment fragment);
 }

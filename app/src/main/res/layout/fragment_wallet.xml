@@ -2,18 +2,17 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/grey_lite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey_lite"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
+        android:background="@drawable/background_main"
         android:fitsSystemWindows="true"
-        android:background="@drawable/background"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -27,43 +26,45 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="80dp"
-                android:scaleType="fitXY"
+                android:layout_gravity="bottom"
                 android:clickable="false"
-                android:src="@drawable/graph"
-                android:layout_gravity="bottom"/>
+                android:scaleType="fitXY"
+                android:src="@drawable/graph"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:id="@+id/tv_balance"
                     android:text="23.000.000.097"
+                    android:textColor="@android:color/white"
                     android:textSize="30sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textColor="@android:color/white"
-                    android:text="@string/qtum"/>
+                    android:text="@string/qtum"
+                    android:textColor="@android:color/white"/>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_receive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|bottom"
-                android:layout_margin="16dp"
-                android:clickable="true"
-                android:id="@+id/receive"
                 android:layout_marginRight="16dp"
-                android:orientation="horizontal">
+                android:background="@drawable/background_pressed_alpha_white"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,46 +73,51 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/public_key"
-                        android:alpha="40"/>
+                        android:alpha="40"
+                        android:text="@string/public_key"/>
 
                     <TextView
+                        android:id="@+id/tv_public_key"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:id="@+id/tv_public_key"
-                        android:text="213j123123j12nd31k2j31djk23123cswq"/>
+                        android:text="213j123123j12nd31k2j31djk23123cswq"
+                        android:textColor="@android:color/white"/>
                 </LinearLayout>
+
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:paddingLeft="6dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/receive"/>
+                    android:paddingLeft="6dp"
+                    android:src="@drawable/ic_receive"/>
             </LinearLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                android:layout_marginBottom="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:layout_marginBottom="24dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/my_wallet"
-                    android:gravity="center"
                     android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="@string/my_wallet"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/toolbar_text_size"/>
-                <Button
+
+                <ImageButton
+                    android:id="@+id/bt_qr_code"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_margin="8dp"
                     android:layout_gravity="right"
-                    android:background="@drawable/qr_code"
-                    android:id="@+id/bt_qr_code"/>
+                    android:layout_margin="8dp"
+                    android:background="@drawable/background_pressed_alpha_white"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_qr_code"/>
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -125,16 +131,16 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginTop="48dp"
-        android:id="@+id/swipe_refresh"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/recycler_view">
+            android:layout_height="match_parent">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -148,6 +154,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/share_icon"/>
+        app:srcCompat="@drawable/ic_share"/>
 
 </android.support.design.widget.CoordinatorLayout>

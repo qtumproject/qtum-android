@@ -11,6 +11,8 @@ public interface BaseContextView {
 
     void startActivityForResult(Intent intent, int requestCode);
 
+    void setSoftMode();
+
     void hideKeyBoard();
 
     void hideKeyBoard(View v);

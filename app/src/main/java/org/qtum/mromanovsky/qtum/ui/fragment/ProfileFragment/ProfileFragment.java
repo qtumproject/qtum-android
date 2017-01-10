@@ -1,13 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -19,22 +12,28 @@ import butterknife.OnClick;
 
 public class ProfileFragment extends BaseFragment implements ProfileFragmentView {
 
-    public static final int  LAYOUT = R.layout.fragment_profile;
+    public static final int LAYOUT = R.layout.fragment_profile;
 
     ProfileFragmentPresenterImpl mProfileFragmentPresenter;
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.ll_change_pin) LinearLayout mLinearLayoutChangePin;
+    @BindView(R.id.ll_change_pin)
+    LinearLayout mLinearLayoutChangePin;
+    @BindView(R.id.ll_wallet_back_up)
+    LinearLayout mLinearLayoutWalletBackUp;
 
-    @OnClick({R.id.ll_change_pin})
-    public void onClick(View view){
-        switch (view.getId()){
+    @OnClick({R.id.ll_change_pin, R.id.ll_wallet_back_up})
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.ll_change_pin:
                 getPresenter().changePin();
+                break;
+            case R.id.ll_wallet_back_up:
+                getPresenter().walletBackUp();
+                break;
         }
     }
 
-    public static ProfileFragment newInstance(){
+    public static ProfileFragment newInstance() {
         ProfileFragment profileFragment = new ProfileFragment();
         return profileFragment;
     }
@@ -56,11 +55,6 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
 
     @Override
     public void initializeViews() {
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (null != mToolbar) {
-            activity.setSupportActionBar(mToolbar);
-            ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setDisplayShowTitleEnabled(false);
-        }
+
     }
 }

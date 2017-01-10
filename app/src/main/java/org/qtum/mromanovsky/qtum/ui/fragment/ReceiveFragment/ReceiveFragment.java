@@ -1,34 +1,33 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment;
 
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.graphics.Bitmap;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.Log;
+import android.view.WindowManager;
+import android.widget.ImageView;
 
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 import butterknife.BindView;
 
-public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView{
+public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView {
 
     ReceiveFragmentPresenterImpl mReceiveFragmentPresenter;
 
-    public static final int  LAYOUT = R.layout.fragment_receive;
-    public static final String TAG = "SendFragment";
+    public static final int LAYOUT = R.layout.fragment_receive;
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.iv_qr_code)
+    ImageView mImageViewQrCode;
 
-    public static ReceiveFragment newInstance(){
+    public static ReceiveFragment newInstance() {
         ReceiveFragment receiveFragment = new ReceiveFragment();
-        return  receiveFragment;
+        return receiveFragment;
     }
 
     @Override
@@ -37,7 +36,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected ReceiveFragmentPresenterImpl getPresenter() {
         return mReceiveFragmentPresenter;
     }
 
@@ -55,5 +54,17 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        getPresenter().generateQrCode();
+    }
+
+    @Override
+    public void setSoftMode() {
+        super.setSoftMode();
+        getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
+    @Override
+    public void setQrCode(Bitmap bitmap) {
+        mImageViewQrCode.setImageBitmap(bitmap);
     }
 }

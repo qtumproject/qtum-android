@@ -1,8 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment;
 
-import android.content.Context;
-
-import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
+import org.qtum.mromanovsky.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
 
@@ -11,7 +9,7 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
 
     ProfileFragmentView mProfileFragmentView;
 
-    public ProfileFragmentPresenterImpl(ProfileFragmentView profileFragmentView){
+    public ProfileFragmentPresenterImpl(ProfileFragmentView profileFragmentView) {
         mProfileFragmentView = profileFragmentView;
     }
 
@@ -24,6 +22,12 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     public void changePin() {
         PinFragment pinFragment = PinFragment.newInstance(PinFragment.CHANGING);
         getView().openFragmentAndAddToBackStack(pinFragment);
+    }
+
+    @Override
+    public void walletBackUp() {
+        BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance();
+        getView().openFragmentAndAddToBackStack(backUpWalletFragment);
     }
 
 }

@@ -8,12 +8,12 @@ import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 
 
-public class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivityPresenter{
+public class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivityPresenter {
 
     private MainActivityView mMainActivityView;
     private MainActivityInteractorImpl mMainActivityInteractor;
 
-    public MainActivityPresenterImpl(MainActivityView mainActivityView){
+    public MainActivityPresenterImpl(MainActivityView mainActivityView) {
         mMainActivityView = mainActivityView;
         mMainActivityInteractor = new MainActivityInteractorImpl();
     }
@@ -35,7 +35,7 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
 
     private void openStartFragment() {
         Fragment fragment;
-        if(getInteractor().getWalletPassword(getView().getContext())==0){
+        if (getInteractor().getWalletPassword(getView().getContext()) == 0) {
             fragment = StartPageFragment.newInstance();
             getView().openFragment(fragment);
         } else {

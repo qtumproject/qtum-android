@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 xmlns:tools="http://schemas.android.com/tools"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
                                                  android:background="@color/grey_lite"
+                                                 android:clickable="true"
                                                  android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/app_bar_layout"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="@dimen/toolbar_text_size"
+                android:text="@string/profile"
                 android:textColor="@android:color/white"
-                android:text="@string/profile"/>
+                android:textSize="@dimen/toolbar_text_size"/>
         </android.support.v7.widget.Toolbar>
 
 
@@ -40,22 +41,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="52dp"
+            android:background="@drawable/background_white_with_grey_pressed"
             android:clickable="true"
             android:gravity="center"
             android:orientation="horizontal"
-            android:background="@drawable/background_item_profile"
             android:padding="16dp">
 
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_language"/>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:text="@string/language"/>
+
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
@@ -64,26 +67,28 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_change_pin"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="16dp"
-            android:gravity="center"
+            android:background="@drawable/background_white_with_grey_pressed"
             android:clickable="true"
-            android:id="@+id/ll_change_pin"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:background="@drawable/background_item_profile"
             android:padding="16dp">
 
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_pin"/>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:text="@string/change_pin"/>
+
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
@@ -98,24 +103,27 @@
 
 
         <LinearLayout
+            android:id="@+id/ll_wallet_back_up"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:orientation="horizontal"
+            android:background="@drawable/background_white_with_grey_pressed"
             android:clickable="true"
             android:gravity="center"
-            android:background="@drawable/background_item_profile"
+            android:orientation="horizontal"
             android:padding="16dp">
 
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_backup"/>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:text="@string/wallet_back_up"/>
+
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
@@ -127,22 +135,24 @@
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="16dp"
-            android:gravity="center"
+            android:background="@drawable/background_white_with_grey_pressed"
             android:clickable="true"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:background="@drawable/background_item_profile"
             android:padding="16dp">
 
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_about"/>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:text="@string/about"/>
+
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"

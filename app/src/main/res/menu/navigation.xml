@@ -2,21 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/item_wallet"
-        android:icon="@drawable/wallet"
+        android:icon="@drawable/ic_wallet"
         android:title="@string/wallet" />
 
     <item
         android:id="@+id/item_profile"
-        android:icon="@drawable/profile"
+        android:icon="@drawable/ic_profile"
         android:title="@string/profile" />
 
     <item
         android:id="@+id/item_news"
-        android:icon="@drawable/news"
+        android:icon="@drawable/ic_news"
         android:title="@string/news" />
 
     <item
         android:id="@+id/item_send"
-        android:icon="@drawable/send"
+        android:icon="@drawable/ic_send"
         android:title="@string/send" />
 </menu>

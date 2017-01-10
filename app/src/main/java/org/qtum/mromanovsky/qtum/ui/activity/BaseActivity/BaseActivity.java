@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import butterknife.ButterKnife;
@@ -102,21 +103,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    //    @Override
-//    public void onBackPressed() {
-//
-//            if(getSupportFragmentManager().getBackStackEntryCount()==0){
-//                finishAffinity();
-//            }else{
-//                super.onBackPressed();
-//            }
-//
-//    }
-
+    @Override
+    public void setSoftMode() {
+    }
 }

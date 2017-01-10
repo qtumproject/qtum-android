@@ -2,14 +2,14 @@ package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 
 import android.content.Context;
 
-import org.qtum.mromanovsky.qtum.utils.QtumSharedPreference;
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
 
 public class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
     private Context mContext;
 
-    public PinFragmentInteractorImpl(Context context){
+    public PinFragmentInteractorImpl(Context context) {
         mContext = context;
     }
 
@@ -20,6 +20,6 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
     @Override
     public void savePassword(int password) {
-        QtumSharedPreference.getInstance().saveWalletPassword(mContext,password);
+        QtumSharedPreference.getInstance().saveWalletPassword(mContext, password);
     }
 }

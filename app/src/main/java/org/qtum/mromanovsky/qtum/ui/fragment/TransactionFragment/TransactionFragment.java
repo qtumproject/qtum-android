@@ -1,12 +1,10 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -17,22 +15,28 @@ import butterknife.BindView;
 
 public class TransactionFragment extends BaseFragment implements TransactionFragmentView {
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.tv_value) TextView mTextViewValue;
-    @BindView(R.id.tv_received_time) TextView mTextViewReceivedTime;
-    @BindView(R.id.tv_from) TextView mTextViewFrom;
-    @BindView(R.id.tv_to) TextView mTextViewTo;
-    @BindView(R.id.app_bar) AppBarLayout mAppBarLayout;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.tv_value)
+    TextView mTextViewValue;
+    @BindView(R.id.tv_received_time)
+    TextView mTextViewReceivedTime;
+    @BindView(R.id.tv_from)
+    TextView mTextViewFrom;
+    @BindView(R.id.tv_to)
+    TextView mTextViewTo;
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBarLayout;
 
     public static final int LAYOUT = R.layout.fragment_transaction;
     final static String POSITION = "position";
 
     TransactionFragmentPresenterImpl mTransactionFragmentPresenter;
 
-    public static TransactionFragment newInstance(int position){
+    public static TransactionFragment newInstance(int position) {
         TransactionFragment transactionFragment = new TransactionFragment();
         Bundle args = new Bundle();
-        args.putInt(POSITION,position);
+        args.putInt(POSITION, position);
         transactionFragment.setArguments(args);
         return transactionFragment;
     }
@@ -76,11 +80,11 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
         mTextViewReceivedTime.setText(receivedTime);
         mTextViewFrom.setText(from);
         mTextViewTo.setText(to);
-        if(value>0){
-            mAppBarLayout.setBackgroundResource(R.drawable.background_sent);
+        if (value > 0) {
+            mAppBarLayout.setBackgroundResource(R.drawable.background_tb_sent);
             getFragmentActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.green));
-        }else{
-            mAppBarLayout.setBackgroundResource(R.drawable.background_received);
+        } else {
+            mAppBarLayout.setBackgroundResource(R.drawable.background_tb_received);
             getFragmentActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.pink_lite));
         }
     }

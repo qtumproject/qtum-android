@@ -2,7 +2,7 @@ package org.qtum.mromanovsky.qtum.ui.activity.MainActivity;
 
 import android.content.Context;
 
-import org.qtum.mromanovsky.qtum.utils.QtumSharedPreference;
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
 
 public class MainActivityInteractorImpl implements MainActivityInteractor {

@@ -1,5 +1,7 @@
-package org.qtum.mromanovsky.qtum.utils;
+package org.qtum.mromanovsky.qtum.datastorage;
 
+
+import org.qtum.mromanovsky.qtum.model.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +11,12 @@ public class Transactions {
 
     private List<Transaction> mTransactionList;
 
-    private Transactions(){
+    private Transactions() {
         mTransactionList = new ArrayList<>();
     }
 
-    public static Transactions getInstance(){
-        if(sTransactions == null){
+    public static Transactions getInstance() {
+        if (sTransactions == null) {
             sTransactions = new Transactions();
         }
         return sTransactions;

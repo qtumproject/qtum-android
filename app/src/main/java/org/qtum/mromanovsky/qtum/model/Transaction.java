@@ -1,4 +1,4 @@
-package org.qtum.mromanovsky.qtum.utils;
+package org.qtum.mromanovsky.qtum.model;
 
 
 public class Transaction {
@@ -8,7 +8,7 @@ public class Transaction {
     private String mFrom;
     private String mTo;
 
-    public Transaction(String ID, String date, double value, String from, String to){
+    public Transaction(String ID, String date, double value, String from, String to) {
         mID = ID;
         mDate = date;
         mValue = value;

@@ -4,34 +4,39 @@
                                                  xmlns:tools="http://schemas.android.com/tools"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
+                                                 android:background="@android:color/white"
                                                  android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/app_bar_layout"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="24sp"
+                android:text="@string/send"
                 android:textColor="@android:color/white"
-                android:text="@string/send"/>
-            <Button
+                android:textSize="24sp"/>
+
+            <ImageButton
+                android:id="@+id/bt_qr_code"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
+                android:layout_gravity="right"
                 android:layout_margin="8dp"
-                android:id="@+id/bt_qr_code"
-                android:background="@drawable/qr_code"
-                android:layout_gravity="right"/>
+                android:background="@drawable/background_pressed_alpha_white"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_qr_code"/>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
@@ -40,61 +45,67 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/activity_horizontal_margin"
+        android:theme="@style/InputText"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_wallet_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/text_input_wallet_name"
             android:layout_marginBottom="16dp">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/receiver_s_address"/>
+                android:hint="@string/receiver_s_address"
+                android:inputType="textPersonName"
+                android:textColor="@color/grey"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/text_input_password"
-            android:layout_marginBottom="16dp"
-            android:layout_below="@+id/text_input_wallet_name">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_input_wallet_name"
+            android:layout_marginBottom="16dp">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/amount"/>
+                android:hint="@string/amount"
+                android:inputType="numberDecimal"
+                android:textColor="@color/grey"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_repeat_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/text_input_repeat_password"
-            app:passwordToggleEnabled="true"
-            android:layout_below="@+id/text_input_password">
+            android:layout_below="@+id/text_input_password"
+            app:passwordToggleEnabled="true">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="@string/pin" />
+                android:layout_height="match_parent"
+                android:hint="@string/pin"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:textColor="@color/grey"/>
         </android.support.design.widget.TextInputLayout>
-
 
 
         <Button
-            android:text="@string/send"
+            android:id="@+id/bt_send"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:background="@drawable/background_button_green"
-            android:id="@+id/bt_send"
-            android:textSize="@dimen/button_text"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="16dp"/>
+            android:layout_margin="16dp"
+            android:background="@drawable/background_bt_green"
+            android:text="@string/send"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/button_text"/>
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

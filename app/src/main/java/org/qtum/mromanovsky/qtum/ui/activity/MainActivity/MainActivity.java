@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -21,12 +20,13 @@ import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 import butterknife.BindView;
 
 
-public class MainActivity extends BaseActivity implements MainActivityView{
+public class MainActivity extends BaseActivity implements MainActivityView {
 
     private static final int LAYOUT = R.layout.activity_main;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
 
-    @BindView(R.id.navigation_view) BottomNavigationView mBottomNavigationView;
+    @BindView(R.id.bottom_navigation_view)
+    BottomNavigationView mBottomNavigationView;
 
     @Override
     protected void createPresenter() {
@@ -54,15 +54,17 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container,fragment,fragment.getClass().getCanonicalName())
+                .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
                 .commit();
     }
 
-    public void showBottomNavigationView(){
+    public void showBottomNavigationView() {
         mBottomNavigationView.setVisibility(View.VISIBLE);
     }
 
-    public void hideBottomNavigationView(){mBottomNavigationView.setVisibility(View.GONE);}
+    public void hideBottomNavigationView() {
+        mBottomNavigationView.setVisibility(View.GONE);
+    }
 
     @Override
     public void initializeViews() {

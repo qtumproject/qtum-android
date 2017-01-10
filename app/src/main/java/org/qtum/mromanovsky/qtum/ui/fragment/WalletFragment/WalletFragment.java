@@ -1,16 +1,11 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.R;
+import org.qtum.mromanovsky.qtum.model.Transaction;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
-import org.qtum.mromanovsky.qtum.utils.Transaction;
 
 import java.util.List;
 
@@ -32,33 +27,40 @@ import butterknife.OnClick;
 
 public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
-    public static final int  LAYOUT = R.layout.fragment_wallet;
+    public static final int LAYOUT = R.layout.fragment_wallet;
     public static final String TAG = "WalletFragment";
 
     WalletFragmentPresenterImpl mWalletFragmentPresenter;
     TransactionAdapter mTransactionAdapter;
 
-    @BindView(R.id.tv_public_key) TextView mTextViewPublicKey;
-    @BindView(R.id.tv_balance) TextView mTextViewBalance;
-    @BindView(R.id.fab) FloatingActionButton mFloatingActionButton;
-    @BindView(R.id.receive) LinearLayout mReceive;
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
-    @BindView(R.id.swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.tv_public_key)
+    TextView mTvPublicKey;
+    @BindView(R.id.tv_balance)
+    TextView mTvBalance;
+    @BindView(R.id.fab)
+    FloatingActionButton mFloatingActionButton;
+    @BindView(R.id.ll_receive)
+    LinearLayout mLinearLayoutReceive;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBarLayout;
 
 
-    @OnClick({R.id.fab,R.id.receive})
-    public void onClick(View view){
+    @OnClick({R.id.fab, R.id.ll_receive})
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
 //                mWalletFragmentPresenter.onFabClick();
                 break;
-            case R.id.receive:
+            case R.id.ll_receive:
                 getPresenter().onClickReceive();
         }
     }
 
-    public static WalletFragment newInstance(){
+    public static WalletFragment newInstance() {
         WalletFragment walletFragment = new WalletFragment();
         return walletFragment;
     }
@@ -80,7 +82,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void updateRecyclerView(List<Transaction> list) {
-        if(mTransactionAdapter == null){
+        if (mTransactionAdapter == null) {
             mTransactionAdapter = new TransactionAdapter(list);
             mRecyclerView.setAdapter(mTransactionAdapter);
         } else {
@@ -96,12 +98,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void initializeViews() {
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (null != mToolbar) {
-            activity.setSupportActionBar(mToolbar);
-            ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setDisplayShowTitleEnabled(false);
-        }
+
         ((MainActivity) getActivity()).showBottomNavigationView();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -111,7 +108,18 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             @Override
             public void onRefresh() {
                 mSwipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(getContext(),"Refresh",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Refresh", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset == 0) {
+                    mSwipeRefreshLayout.setEnabled(true);
+                } else {
+                    mSwipeRefreshLayout.setEnabled(false);
+                }
             }
         });
     }
@@ -121,7 +129,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 //        getView().post(new Runnable() {
 //            @Override
 //            public void run() {
-//                mTextViewPublicKey.setText(publicKey);
+//                mTvPublicKey.setText(publicKey);
 //        }
 //        });
 //    }
@@ -131,16 +139,16 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 //        getView().post(new Runnable() {
 //            @Override
 //            public void run() {
-//                mTextViewBalance.setText(balance);
+//                mTvBalance.setText(balance);
 //            }
 //        });
 //    }
-    public class TransactionAdapter  extends RecyclerView.Adapter<TransactionHolder>{
+    public class TransactionAdapter extends RecyclerView.Adapter<TransactionHolder> {
 
         private List<Transaction> mTransactionList;
         Transaction transaction;
 
-        public TransactionAdapter(List<Transaction> list){
+        public TransactionAdapter(List<Transaction> list) {
             mTransactionList = list;
         }
 
@@ -163,12 +171,16 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         }
     }
 
-    public class TransactionHolder extends RecyclerView.ViewHolder{
+    public class TransactionHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_value) TextView mTextViewValue;
-        @BindView(R.id.tv_date) TextView mTextViewDate;
-        @BindView(R.id.tv_id) TextView mTextViewID;
-        @BindView(R.id.tv_operation_type) TextView mTextViewOperationType;
+        @BindView(R.id.tv_value)
+        TextView mTextViewValue;
+        @BindView(R.id.tv_date)
+        TextView mTextViewDate;
+        @BindView(R.id.tv_id)
+        TextView mTextViewID;
+        @BindView(R.id.tv_operation_type)
+        TextView mTextViewOperationType;
         @BindView(R.id.iv_icon)
         ImageView mImageViewIcon;
 
@@ -181,20 +193,20 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                     getPresenter().openTransactionFragment(getAdapterPosition());
                 }
             });
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
 
-        public void bindTransactionData(Transaction transaction){
+        public void bindTransactionData(Transaction transaction) {
             mTextViewDate.setText(transaction.getDate());
             mTextViewID.setText(transaction.getID());
 
-            if(transaction.getValue()>0){
+            if (transaction.getValue() > 0) {
                 mTextViewOperationType.setText(R.string.received);
-                mImageViewIcon.setImageResource(R.drawable.received_transaction);
+                mImageViewIcon.setImageResource(R.drawable.ic_received_transaction);
                 mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.colorAccent));
-            }else {
+            } else {
                 mTextViewOperationType.setText(R.string.sent);
-                mImageViewIcon.setImageResource(R.drawable.sent_transaction);
+                mImageViewIcon.setImageResource(R.drawable.ic_sent_transaction);
                 mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.pink));
             }
             mTextViewValue.setText(transaction.getValue() + " QTUM");

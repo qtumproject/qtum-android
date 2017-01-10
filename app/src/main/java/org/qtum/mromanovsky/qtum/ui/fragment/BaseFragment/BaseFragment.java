@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +17,26 @@ import android.view.inputmethod.InputMethodManager;
 
 import org.qtum.mromanovsky.qtum.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public abstract class BaseFragment extends Fragment implements BaseFragmentView{
+public abstract class BaseFragment extends Fragment implements BaseFragmentView {
 
     protected abstract void createPresenter();
+
     protected abstract BaseFragmentPresenterImpl getPresenter();
+
     protected abstract int getLayout();
 
     public static final String BACK_STACK_ROOT_TAG = "root_fragment";
 
     private Unbinder mUnbinder;
-    private int LAYOUT;
+
+    @Nullable
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     public void onResume() {
@@ -48,12 +57,13 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView{
         getPresenter().onViewCreated();
         bindView(view);
         getPresenter().initializeViews();
+        getPresenter().getView().setSoftMode();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(getLayout(),container,false);
+        return inflater.inflate(getLayout(), container, false);
     }
 
     @Override
@@ -115,7 +125,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView{
         getFragmentManager().popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container,fragment,fragment.getClass().getCanonicalName())
+                .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
                 .commit();
     }
 
@@ -124,11 +134,20 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView{
         getFragmentManager().popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container,fragment,fragment.getClass().getCanonicalName())
+                .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
                 .addToBackStack(BACK_STACK_ROOT_TAG)
                 .commit();
     }
 
+    @Override
+    public void initializeViews() {
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (null != mToolbar) {
+            activity.setSupportActionBar(mToolbar);
+            ActionBar actionBar = activity.getSupportActionBar();
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+    }
 
     @Override
     public Activity getFragmentActivity() {
@@ -136,10 +155,15 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView{
     }
 
     protected void bindView(View view) {
-        mUnbinder = ButterKnife.bind(this,view);
+        mUnbinder = ButterKnife.bind(this, view);
     }
 
-    protected void unBindView(){
+    protected void unBindView() {
         mUnbinder.unbind();
+    }
+
+    @Override
+    public void setSoftMode() {
+
     }
 }

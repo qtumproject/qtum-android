@@ -1,14 +1,11 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 
 
-import android.content.ClipData;
 import android.content.Context;
-import android.content.Intent;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import org.qtum.mromanovsky.qtum.ui.fragment.ImportWalletFragment.ImportWalletFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
 
@@ -17,16 +14,16 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
     private PinFragmentView mPinFragmentView;
     private PinFragmentInteractorImpl mPinFragmentInteractor;
 
-    public PinFragmentPresenterImpl(PinFragmentView pinFragmentView){
+    public PinFragmentPresenterImpl(PinFragmentView pinFragmentView) {
         mPinFragmentView = pinFragmentView;
         mPinFragmentInteractor = new PinFragmentInteractorImpl(getView().getContext());
     }
 
     @Override
     public void confirm(String[] password, String action) {
-        switch (action){
-            case PinFragment.CREATING:{
-                if(password[0].length()<4) {
+        switch (action) {
+            case PinFragment.CREATING: {
+                if (password[0].length() < 4) {
                     getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
                 } else {
                     int intPassword = Integer.parseInt(password[0]);
@@ -37,8 +34,8 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                 }
                 break;
             }
-            case PinFragment.AUTHENTICATION:{
-                if(password[0].length()<4) {
+            case PinFragment.AUTHENTICATION: {
+                if (password[0].length() < 4) {
                     getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
                 } else {
                     int intPassword = Integer.parseInt(password[0]);
@@ -52,20 +49,20 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                 }
                 break;
             }
-            case PinFragment.CHANGING:{
+            case PinFragment.CHANGING: {
                 getView().clearErrors();
-                if(password[0].length()<4) {
+                if (password[0].length() < 4) {
                     getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
                 } else {
                     int intPassword = Integer.parseInt(password[0]);
                     if (intPassword == getInteractor().getPassword()) {
-                        if(password[1].length()<4) {
+                        if (password[1].length() < 4) {
                             getView().confirmChangePinError(getView().getContext().getString(R.string.pin_is_not_long_enough), "");
-                        }else {
+                        } else {
                             int intPasswordNew = Integer.parseInt(password[1]);
                             int intPasswordNewRepeat;
-                            if(password[2].length()<4){
-                                intPasswordNewRepeat=0;
+                            if (password[2].length() < 4) {
+                                intPasswordNewRepeat = 0;
                             } else {
                                 intPasswordNewRepeat = Integer.parseInt(password[2]);
                             }
@@ -88,15 +85,15 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
 
     @Override
     public void cancel(String action) {
-        switch (action){
-            case PinFragment.CREATING:{
+        switch (action) {
+            case PinFragment.CREATING: {
 
             }
-            case PinFragment.AUTHENTICATION:{
+            case PinFragment.AUTHENTICATION: {
                 getView().finish();
                 break;
             }
-            case PinFragment.CHANGING:{
+            case PinFragment.CHANGING: {
                 getView().getFragmentActivity().onBackPressed();
                 break;
             }

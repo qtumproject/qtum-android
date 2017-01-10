@@ -4,24 +4,20 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
-import org.bitcoinj.kits.WalletAppKit;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionFragment;
-import org.qtum.mromanovsky.qtum.utils.Transaction;
-
-import java.util.List;
 
 public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
 
 //    Intent mIntent;
 //    UpdateService mUpdateService;
-    WalletAppKit mWalletAppKit;
+//    WalletAppKit mWalletAppKit;
 
     WalletFragmentInteractorImpl mWalletFragmentInteractor;
     private WalletFragmentView mWalletFragmentView;
 
-    public WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView){
+    public WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView) {
         mWalletFragmentView = walletFragmentView;
         mWalletFragmentInteractor = new WalletFragmentInteractorImpl();
     }
@@ -65,8 +61,8 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 //    UpdateData mUpdateData = new UpdateData() {
 //        @Override
 //        public void updateDate() {
-//            getView().updatePublicKey(mWalletAppKit.wallet().currentReceiveAddress().toString());
-//            getView().updateBalance(mWalletAppKit.wallet().getBalance().toFriendlyString());
+//            getView().updatePublicKey(mWalletAppKit.ic_wallet().currentReceiveAddress().toString());
+//            getView().updateBalance(mWalletAppKit.ic_wallet().getBalance().toFriendlyString());
 //        }
 //    };
 
@@ -104,8 +100,8 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     }
 
     //    public void onFabClick(){
-//        Log.d(WalletFragment.TAG,mWalletAppKit.wallet().getBalance().toFriendlyString() + " " + mWalletAppKit.wallet().getTotalReceived().toFriendlyString());
-//        Log.d(WalletFragment.TAG,mWalletAppKit.wallet().getBalance(Wallet.BalanceType.ESTIMATED).toFriendlyString());
-//        Log.d(WalletFragment.TAG,"CurrentReceiveAddress: " + mWalletAppKit.wallet().currentReceiveAddress());
+//        Log.d(WalletFragment.TAG,mWalletAppKit.ic_wallet().getBalance().toFriendlyString() + " " + mWalletAppKit.ic_wallet().getTotalReceived().toFriendlyString());
+//        Log.d(WalletFragment.TAG,mWalletAppKit.ic_wallet().getBalance(Wallet.BalanceType.ESTIMATED).toFriendlyString());
+//        Log.d(WalletFragment.TAG,"CurrentReceiveAddress: " + mWalletAppKit.ic_wallet().currentReceiveAddress());
 //    }
 }

@@ -6,7 +6,9 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -19,7 +21,7 @@ import butterknife.OnClick;
 
 public class PinFragment extends BaseFragment implements PinFragmentView {
 
-    public static final int  LAYOUT = R.layout.fragment_pin;
+    public static final int LAYOUT = R.layout.fragment_pin;
 
     PinFragmentPresenterImpl mPinFragmentPresenter;
 
@@ -30,19 +32,29 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     final static String ACTION = "action";
     private String mAction;
 
-    @BindView(R.id.bt_confirm) Button mButtonConfirm;
-    @BindView(R.id.bt_cancel) Button mButtonCancel;
-    @BindView(R.id.et_wallet_pin) TextInputEditText mTextInputEditTextWalletPin;
-    @BindView(R.id.til_wallet_pin) TextInputLayout mTextInputLayoutWalletPin;
-    @BindView(R.id.et_wallet_new_pin) TextInputEditText mTextInputEditTextWalletNewPin;
-    @BindView(R.id.til_wallet_new_pin) TextInputLayout mTextInputLayoutWalletNewPin;
-    @BindView(R.id.et_wallet_new_pin_repeat) TextInputEditText mTextInputEditTextWalletNewPinRepeat;
-    @BindView(R.id.til_wallet_new_pin_repeat) TextInputLayout mTextInputLayoutWalletNewPinRepeat;
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.tv_toolbar_title) TextView mTextViewToolBarTitle;
+    @BindView(R.id.bt_confirm)
+    Button mButtonConfirm;
+    @BindView(R.id.bt_cancel)
+    Button mButtonCancel;
+    @BindView(R.id.et_wallet_pin)
+    TextInputEditText mTextInputEditTextWalletPin;
+    @BindView(R.id.til_wallet_pin)
+    TextInputLayout mTextInputLayoutWalletPin;
+    @BindView(R.id.et_wallet_new_pin)
+    TextInputEditText mTextInputEditTextWalletNewPin;
+    @BindView(R.id.til_wallet_new_pin)
+    TextInputLayout mTextInputLayoutWalletNewPin;
+    @BindView(R.id.et_wallet_new_pin_repeat)
+    TextInputEditText mTextInputEditTextWalletNewPinRepeat;
+    @BindView(R.id.til_wallet_new_pin_repeat)
+    TextInputLayout mTextInputLayoutWalletNewPinRepeat;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.tv_toolbar_title)
+    TextView mTextViewToolBarTitle;
 
-    @OnClick({R.id.bt_confirm,R.id.bt_cancel})
-    public void onClick(View view){
+    @OnClick({R.id.bt_confirm, R.id.bt_cancel})
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_confirm:
                 String[] passwords = new String[3];
@@ -57,7 +69,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         }
     }
 
-    public static PinFragment newInstance(String action){
+    public static PinFragment newInstance(String action) {
         PinFragment pinFragment = new PinFragment();
         Bundle args = new Bundle();
         args.putString(ACTION, action);
@@ -98,6 +110,8 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         mTextInputLayoutWalletNewPinRepeat.setErrorEnabled(true);
         mTextInputLayoutWalletNewPinRepeat.setError(errorTextRepeatPin);
 
+        mTextInputLayoutWalletNewPin.requestFocus();
+
     }
 
     @Override
@@ -108,6 +122,12 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     }
 
     @Override
+    public void setSoftMode() {
+        super.setSoftMode();
+        getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+    }
+
+    @Override
     public void initializeViews() {
         mAction = getArguments().getString(ACTION);
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -115,7 +135,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
             activity.setSupportActionBar(mToolbar);
             ActionBar actionBar = activity.getSupportActionBar();
             actionBar.setDisplayShowTitleEnabled(false);
-            switch (mAction){
+            switch (mAction) {
                 case CREATING:
                     mTextViewToolBarTitle.setText(R.string.create_pin);
                     break;
