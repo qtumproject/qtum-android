@@ -5,4 +5,5 @@ public interface PinFragmentInteractor {
     int getPassword();
 
     void savePassword(int password);
+    void generateAndSavePubKey();
 }

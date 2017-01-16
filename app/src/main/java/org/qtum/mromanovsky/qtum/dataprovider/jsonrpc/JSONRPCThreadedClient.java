@@ -753,4 +753,32 @@ public abstract class JSONRPCThreadedClient {
         };
         thread.start();
     }
+
+    public void getHistory(String identifier, JSONRPCThreadedClient.OnJSONArrayResultListener jsonArrayResultListener) {
+        Object[] params = new Object[4];
+        params[0] = identifier;
+        params[1] = 10000000;
+        params[2] = 0;
+        params[3] = true;
+        String method = "listtransactions";
+        this.call(method, jsonArrayResultListener, params);
+    }
+
+    public void sendToAddress(String key, int count, JSONRPCThreadedClient.OnJSONArrayResultListener jsonArrayResultListener){
+        Object[] params = new Object[2];
+        params[0] = key;
+        params[1] = count;
+        String method = "sendtoaddress";
+        this.call(method, jsonArrayResultListener, params);
+    }
+
+    public void registerKey(String key, String identifier,JSONRPCThreadedClient.OnJSONArrayResultListener jsonArrayResultListener){
+        Object[] params = new Object[4];
+        params[0] = key;
+        params[1] = identifier;
+        params[2] = false;
+        params[3] = false;
+        String method = "importaddress";
+        this.call(method, jsonArrayResultListener, params);
+    }
 }

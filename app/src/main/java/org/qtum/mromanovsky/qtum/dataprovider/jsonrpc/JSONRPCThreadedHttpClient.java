@@ -18,7 +18,11 @@ import java.net.URL;
 
 public class JSONRPCThreadedHttpClient extends JSONRPCThreadedClient {
 
-    private String mBaseUrl;
+    private String mBaseUrl = "http://139.162.118.57:22822/";
+
+    public JSONRPCThreadedHttpClient(){
+
+    }
 
     public JSONRPCThreadedHttpClient(String url) {
         mBaseUrl = url;
@@ -49,7 +53,6 @@ public class JSONRPCThreadedHttpClient extends JSONRPCThreadedClient {
             writer.close();
 
             int responseCode = urlConnection.getResponseCode();
-
 
             InputStream inputStream = urlConnection.getInputStream();
 

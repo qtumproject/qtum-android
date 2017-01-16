@@ -10,6 +10,7 @@ public interface WalletFragmentView extends BaseFragmentView {
     //    void updatePublicKey(String publicKey);
     //    void updateBalance(String balance);
     void updateRecyclerView(List<Transaction> list);
-
     void setAdapterNull();
+    void updateBalance(double balance);
+    void initializeDynamicDataViews(String pubKey);
 }

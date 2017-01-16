@@ -4,9 +4,17 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.JSONRPCThreadedClient;
+import org.qtum.mromanovsky.qtum.model.History;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionFragment;
+
+import java.util.List;
 
 public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
 
@@ -19,7 +27,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 
     public WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView) {
         mWalletFragmentView = walletFragmentView;
-        mWalletFragmentInteractor = new WalletFragmentInteractorImpl();
+        mWalletFragmentInteractor = new WalletFragmentInteractorImpl(getView().getContext());
     }
 
 //    ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -58,6 +66,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 
     }
 
+
 //    UpdateData mUpdateData = new UpdateData() {
 //        @Override
 //        public void updateDate() {
@@ -82,9 +91,22 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     }
 
     @Override
+    public void onRefresh() {
+        refreshData();
+    }
+
+
+    @Override
     public void openTransactionFragment(int position) {
         Fragment fragment = TransactionFragment.newInstance(position);
         getView().openFragmentAndAddToBackStack(fragment);
+    }
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        String pubKey = getInteractor().getPubKey();
+        getView().initializeDynamicDataViews(pubKey);
     }
 
     @Override
@@ -97,6 +119,36 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     public void onDestroyView() {
         super.onDestroyView();
         getView().setAdapterNull();
+    }
+
+    private void refreshData(){
+        getInteractor().getBalance(new JSONRPCThreadedClient.OnJSONArrayResultListener() {
+            @Override
+            public void manageResult(JSONArray result) {
+
+            }
+
+            @Override
+            public void manageResult(Object result) {
+                Gson gson = new Gson();
+                double balance = 0;
+                List<History> historyList = gson.fromJson(result.toString(),new TypeToken<List<History>>(){}.getType());
+                for(History history : historyList){
+                    balance += history.getAmount();
+                }
+                getView().updateBalance(balance);
+            }
+
+            @Override
+            public void sendErrorMessageNull() {
+
+            }
+
+            @Override
+            public void sendError(Exception content) {
+
+            }
+        });
     }
 
     //    public void onFabClick(){

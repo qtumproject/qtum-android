@@ -95,6 +95,17 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         mTransactionAdapter = null;
     }
 
+    @Override
+    public void updateBalance(double balance) {
+        mTvBalance.setText(String.valueOf(balance));
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void initializeDynamicDataViews(String pubKey) {
+        mTvPublicKey.setText(pubKey);
+    }
+
 
     @Override
     public void initializeViews() {
@@ -107,8 +118,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mSwipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(getContext(), "Refresh", Toast.LENGTH_SHORT).show();
+                //mSwipeRefreshLayout.setRefreshing(false);
+                getPresenter().onRefresh();
             }
         });
 

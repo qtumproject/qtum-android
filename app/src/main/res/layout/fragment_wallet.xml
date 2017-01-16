@@ -42,7 +42,7 @@
                     android:id="@+id/tv_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="23.000.000.097"
+                    android:text="0.0"
                     android:textColor="@android:color/white"
                     android:textSize="30sp"/>
 
@@ -80,7 +80,6 @@
                         android:id="@+id/tv_public_key"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="213j123123j12nd31k2j31djk23123cswq"
                         android:textColor="@android:color/white"/>
                 </LinearLayout>
 

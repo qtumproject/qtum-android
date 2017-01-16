@@ -29,6 +29,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                     int intPassword = Integer.parseInt(password[0]);
                     WalletFragment walletFragment = WalletFragment.newInstance();
                     getInteractor().savePassword(intPassword);
+                    getInteractor().generateAndSavePubKey();
                     getView().openFragment(walletFragment);
                     getView().hideKeyBoard();
                 }
