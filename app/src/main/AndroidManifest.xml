@@ -23,7 +23,7 @@
         </activity>
 
         <service
-            android:name=".utils.UpdateService"/>
+            android:name=".dataprovider.UpdateService"/>
 
     </application>
 

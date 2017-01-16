@@ -1,4 +1,4 @@
-package org.qtum.mromanovsky.qtum.utils;
+package org.qtum.mromanovsky.qtum.dataprovider;
 
 /**
  * Created by max-v on 1/4/2017.
