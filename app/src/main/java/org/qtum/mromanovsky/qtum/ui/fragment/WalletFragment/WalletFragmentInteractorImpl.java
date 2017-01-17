@@ -17,9 +17,11 @@ import rx.schedulers.Schedulers;
 public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     Context mContext;
+    QtumJSONRPCClientImpl mQtumJSONRPCClient;
 
     public WalletFragmentInteractorImpl(Context context){
         mContext = context;
+        mQtumJSONRPCClient = new QtumJSONRPCClientImpl();
     }
 
     @Override
@@ -28,9 +30,9 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     }
 
     @Override
-    public void getData(final GetDataCallBack callBack) {
-        QtumJSONRPCClientImpl qtumJSONRPCClient = new QtumJSONRPCClientImpl();
-        qtumJSONRPCClient.getHistory("testIdentifier1000")
+    public void getData(String identifier, final GetDataCallBack callBack) {
+
+        mQtumJSONRPCClient.getHistory(identifier)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<TransactionQTUM>>() {

@@ -4,9 +4,15 @@ package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 import android.content.Context;
 
 import org.qtum.mromanovsky.qtum.R;
+import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClientImpl;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragmentInteractorImpl;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinFragmentPresenter {
@@ -26,12 +32,16 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                 if (password[0].length() < 4) {
                     getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
                 } else {
-                    int intPassword = Integer.parseInt(password[0]);
-                    WalletFragment walletFragment = WalletFragment.newInstance();
-                    getInteractor().savePassword(intPassword);
-                    getInteractor().generateAndSavePubKey();
-                    getView().openFragment(walletFragment);
-                    getView().hideKeyBoard();
+                    final int intPassword = Integer.parseInt(password[0]);
+                    final WalletFragment walletFragment = WalletFragment.newInstance();
+                    getInteractor().registerKey("stub!", "some random3", new PinFragmentInteractorImpl.RegisterKeyCallBack() {
+                        @Override
+                        public void onSuccess(String[] keyAndIdentifier) {
+                            getInteractor().savePassword(intPassword);
+                            getView().openFragment(walletFragment);
+                            getView().hideKeyBoard();
+                        }
+                    });
                 }
                 break;
             }
@@ -100,6 +110,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
             }
         }
     }
+
 
     @Override
     public void onResume(Context context) {

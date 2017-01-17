@@ -1,6 +1,8 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -96,7 +98,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
     @Override
-    public void setUpBalance(double balance) {
+    public void updateBalance(double balance) {
         mTvBalance.setText(String.valueOf(balance));
     }
 
@@ -110,7 +112,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     public void updatePubKey(String pubKey) {
         mTvPublicKey.setText(pubKey);
     }
-
 
     @Override
     public void initializeViews() {

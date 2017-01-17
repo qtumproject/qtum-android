@@ -47,6 +47,12 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     }
 
     @Override
+    public void onViewCreated() {
+        super.onViewCreated();
+        loadAndUpdateData();
+    }
+
+    @Override
     public void onStart(Context context) {
         super.onStart(context);
 //        mIntent = new Intent(context,UpdateService.class);
@@ -67,7 +73,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 //        @Override
 //        public void updateDate() {
 //            getView().updatePublicKey(mWalletAppKit.ic_wallet().currentReceiveAddress().toString());
-//            getView().updateData(mWalletAppKit.ic_wallet().getData().toFriendlyString());
+//            getView().loadAndUpdateData(mWalletAppKit.ic_wallet().getData().toFriendlyString());
 //        }
 //    };
 
@@ -88,7 +94,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 
     @Override
     public void onRefresh() {
-        updateData();
+        loadAndUpdateData();
     }
 
 
@@ -101,7 +107,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     @Override
     public void initializeViews() {
         super.initializeViews();
-        updateData();
+        updateData(TransactionQTUMList.getInstance().getTransactionQTUMList());
     }
 
     @Override
@@ -116,21 +122,29 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         getView().setAdapterNull();
     }
 
-    private void updateData(){
-        getInteractor().getData(new WalletFragmentInteractorImpl.GetDataCallBack() {
+    private void loadAndUpdateData(){
+        getInteractor().getData("some random3",new WalletFragmentInteractorImpl.GetDataCallBack() {
             @Override
             public void onSuccess(List<TransactionQTUM> transactionQTUMList) {
-                double balance = 0;
-                for(TransactionQTUM transactionQTUM: transactionQTUMList){
-                    balance+=transactionQTUM.getAmount();
-                }
-                getView().updateData(balance);
                 TransactionQTUMList.getInstance().setTransactionQTUMList(transactionQTUMList);
-                getView().updateRecyclerView(TransactionQTUMList.getInstance().getTransactionQTUMList());
-                String pubKey = getInteractor().getPubKey();
-                getView().updatePubKey(pubKey);
+                updateData(transactionQTUMList);
             }
         });
+    }
+
+    private void updateData(List<TransactionQTUM> transactionQTUMList){
+        double balance = 0;
+        for(TransactionQTUM transactionQTUM: transactionQTUMList){
+            balance+=transactionQTUM.getAmount();
+        }
+        getView().updateData(balance);
+        getView().updateRecyclerView(TransactionQTUMList.getInstance().getTransactionQTUMList());
+        updatePubKey();
+    }
+
+    private void updatePubKey(){
+        String pubKey = getInteractor().getPubKey();
+        getView().updatePubKey(pubKey);
     }
 
     //    public void onFabClick(){

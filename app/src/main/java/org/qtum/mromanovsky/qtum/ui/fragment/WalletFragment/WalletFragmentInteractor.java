@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface WalletFragmentInteractor {
     List<TransactionQTUM> getTransactionList();
-    void getData(WalletFragmentInteractorImpl.GetDataCallBack callBack);
+    void getData(String identifier, WalletFragmentInteractorImpl.GetDataCallBack callBack);
     String getPubKey();
 }

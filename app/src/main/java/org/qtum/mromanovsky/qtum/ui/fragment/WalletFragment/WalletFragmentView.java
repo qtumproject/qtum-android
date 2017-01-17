@@ -11,7 +11,7 @@ public interface WalletFragmentView extends BaseFragmentView {
     //    void updateData(String balance);
     void updateRecyclerView(List<TransactionQTUM> list);
     void setAdapterNull();
-    void setUpBalance(double balance);
+    void updateBalance(double balance);
     void updateData(double balance);
     void updatePubKey(String pubKey);
 }

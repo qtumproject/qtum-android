@@ -9,4 +9,5 @@ import rx.Observable;
 
 public interface QtumJSONRPCClient {
     Observable<List<TransactionQTUM>> getHistory(String identifier);
+    Observable<String[]> registerKey(String key, String identifier);
 }

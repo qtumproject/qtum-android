@@ -54,10 +54,10 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getPresenter().onViewCreated();
         bindView(view);
         getPresenter().initializeViews();
         getPresenter().getView().setSoftMode();
+        getPresenter().onViewCreated();
     }
 
     @Nullable
