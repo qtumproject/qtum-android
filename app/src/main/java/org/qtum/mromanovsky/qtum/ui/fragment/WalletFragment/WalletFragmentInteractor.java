@@ -1,13 +1,12 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
-import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.JSONRPCThreadedClient;
-import org.qtum.mromanovsky.qtum.model.Transaction;
+import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 
 import java.util.List;
 
 public interface WalletFragmentInteractor {
-    List<Transaction> getTransactionList();
-    void getBalance(JSONRPCThreadedClient.OnJSONArrayResultListener jsonArrayResultListener);
+    List<TransactionQTUM> getTransactionList();
+    void getData(WalletFragmentInteractorImpl.GetDataCallBack callBack);
     String getPubKey();
 }

@@ -1,8 +1,14 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment;
 
 
-import org.qtum.mromanovsky.qtum.model.Transaction;
+import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl implements TransactionFragmentPresenter {
 
@@ -25,8 +31,16 @@ public class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl 
 
     @Override
     public void openTransactionView(int position) {
-        Transaction transaction = getInteractor().getTransaction(position);
-        getView().setUpTransactionData(transaction.getValue(), transaction.getDate(),
-                transaction.getFrom(), transaction.getTo());
+        //// TODO: stub
+        TransactionQTUM transactionQTUM = getInteractor().getTransaction(position);
+
+        Date date = new Date(transactionQTUM.getTime()*1000L);
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        String time = new SimpleDateFormat("HH:mm:ss").format(date);
+        String dateString = calendar.getDisplayName(Calendar.MONTH,Calendar.LONG, Locale.US) + ", " + calendar.get(Calendar.DATE) + " " + time;
+
+        getView().setUpTransactionData(transactionQTUM.getAmount(), dateString,
+                "stub", transactionQTUM.getAddress());
     }
 }

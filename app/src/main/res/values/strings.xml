@@ -41,7 +41,7 @@
     <string name="received">Received</string>
     <string name="sent">Sent</string>
     <string name="received_time">Received Time</string>
-    <string name="transaction">Transaction</string>
+    <string name="transactionQTUM">Transaction</string>
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="import_button">Import</string>

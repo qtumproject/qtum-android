@@ -12,14 +12,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.model.Transaction;
+import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,13 +85,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
     @Override
-    public void updateRecyclerView(List<Transaction> list) {
-        if (mTransactionAdapter == null) {
-            mTransactionAdapter = new TransactionAdapter(list);
-            mRecyclerView.setAdapter(mTransactionAdapter);
-        } else {
-            mTransactionAdapter.notifyDataSetChanged();
-        }
+    public void updateRecyclerView(List<TransactionQTUM> list) {
+        mTransactionAdapter = new TransactionAdapter(list);
+        mRecyclerView.setAdapter(mTransactionAdapter);
     }
 
     @Override
@@ -96,13 +96,18 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
     @Override
-    public void updateBalance(double balance) {
+    public void setUpBalance(double balance) {
+        mTvBalance.setText(String.valueOf(balance));
+    }
+
+    @Override
+    public void updateData(double balance) {
         mTvBalance.setText(String.valueOf(balance));
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
-    public void initializeDynamicDataViews(String pubKey) {
+    public void updatePubKey(String pubKey) {
         mTvPublicKey.setText(pubKey);
     }
 
@@ -146,7 +151,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 //    }
 //
 //    @Override
-//    public void updateBalance(final String balance) {
+//    public void updateData(final String balance) {
 //        getView().post(new Runnable() {
 //            @Override
 //            public void run() {
@@ -156,10 +161,10 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 //    }
     public class TransactionAdapter extends RecyclerView.Adapter<TransactionHolder> {
 
-        private List<Transaction> mTransactionList;
-        Transaction transaction;
+        private List<TransactionQTUM> mTransactionList;
+        TransactionQTUM mTransaction;
 
-        public TransactionAdapter(List<Transaction> list) {
+        public TransactionAdapter(List<TransactionQTUM> list) {
             mTransactionList = list;
         }
 
@@ -172,8 +177,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
         @Override
         public void onBindViewHolder(TransactionHolder holder, int position) {
-            transaction = mTransactionList.get(position);
-            holder.bindTransactionData(transaction);
+            mTransaction = mTransactionList.get(position);
+            holder.bindTransactionData(mTransaction);
         }
 
         @Override
@@ -195,6 +200,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         @BindView(R.id.iv_icon)
         ImageView mImageViewIcon;
 
+        Date date = new Date();
+        long currentTime = date.getTime()/1000L;
 
         public TransactionHolder(View itemView) {
             super(itemView);
@@ -207,11 +214,32 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindTransactionData(Transaction transaction) {
-            mTextViewDate.setText(transaction.getDate());
-            mTextViewID.setText(transaction.getID());
+        public void bindTransactionData(TransactionQTUM transaction) {
+            //mTextViewDate.setText(history.getDate());
+            mTextViewID.setText(transaction.getAddress());
 
-            if (transaction.getValue() > 0) {
+            long transactionTime = transaction.getTime();
+            long delay = currentTime - transactionTime;
+            String dateString="";
+            //// TODO: 3600
+            if(delay<3600){
+                dateString = delay/60 + " min ago";
+            } else {
+                date.setHours(0);
+                date.setMinutes(0);
+                date.setSeconds(0);
+                Date dateTransaction = new Date(transactionTime*1000L);
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(dateTransaction);
+                if((transactionTime - date.getTime()/1000L)>0){
+                    dateString = calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
+                } else {
+                    dateString = calendar.getDisplayName(Calendar.MONTH,Calendar.SHORT, Locale.US) + ", " + calendar.get(Calendar.DATE);
+                }
+            }
+            mTextViewDate.setText(dateString);
+
+            if (transaction.getAmount() > 0) {
                 mTextViewOperationType.setText(R.string.received);
                 mImageViewIcon.setImageResource(R.drawable.ic_received_transaction);
                 mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.colorAccent));
@@ -220,7 +248,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                 mImageViewIcon.setImageResource(R.drawable.ic_sent_transaction);
                 mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.pink));
             }
-            mTextViewValue.setText(transaction.getValue() + " QTUM");
+            mTextViewValue.setText(transaction.getAmount() + " QTUM");
         }
 
     }

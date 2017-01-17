@@ -4,12 +4,8 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONArray;
-import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.JSONRPCThreadedClient;
-import org.qtum.mromanovsky.qtum.model.History;
+import org.qtum.mromanovsky.qtum.datastorage.TransactionQTUMList;
+import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionFragment;
@@ -71,7 +67,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 //        @Override
 //        public void updateDate() {
 //            getView().updatePublicKey(mWalletAppKit.ic_wallet().currentReceiveAddress().toString());
-//            getView().updateBalance(mWalletAppKit.ic_wallet().getBalance().toFriendlyString());
+//            getView().updateData(mWalletAppKit.ic_wallet().getData().toFriendlyString());
 //        }
 //    };
 
@@ -92,7 +88,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 
     @Override
     public void onRefresh() {
-        refreshData();
+        updateData();
     }
 
 
@@ -105,8 +101,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     @Override
     public void initializeViews() {
         super.initializeViews();
-        String pubKey = getInteractor().getPubKey();
-        getView().initializeDynamicDataViews(pubKey);
+        updateData();
     }
 
     @Override
@@ -121,39 +116,26 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         getView().setAdapterNull();
     }
 
-    private void refreshData(){
-        getInteractor().getBalance(new JSONRPCThreadedClient.OnJSONArrayResultListener() {
+    private void updateData(){
+        getInteractor().getData(new WalletFragmentInteractorImpl.GetDataCallBack() {
             @Override
-            public void manageResult(JSONArray result) {
-
-            }
-
-            @Override
-            public void manageResult(Object result) {
-                Gson gson = new Gson();
+            public void onSuccess(List<TransactionQTUM> transactionQTUMList) {
                 double balance = 0;
-                List<History> historyList = gson.fromJson(result.toString(),new TypeToken<List<History>>(){}.getType());
-                for(History history : historyList){
-                    balance += history.getAmount();
+                for(TransactionQTUM transactionQTUM: transactionQTUMList){
+                    balance+=transactionQTUM.getAmount();
                 }
-                getView().updateBalance(balance);
-            }
-
-            @Override
-            public void sendErrorMessageNull() {
-
-            }
-
-            @Override
-            public void sendError(Exception content) {
-
+                getView().updateData(balance);
+                TransactionQTUMList.getInstance().setTransactionQTUMList(transactionQTUMList);
+                getView().updateRecyclerView(TransactionQTUMList.getInstance().getTransactionQTUMList());
+                String pubKey = getInteractor().getPubKey();
+                getView().updatePubKey(pubKey);
             }
         });
     }
 
     //    public void onFabClick(){
-//        Log.d(WalletFragment.TAG,mWalletAppKit.ic_wallet().getBalance().toFriendlyString() + " " + mWalletAppKit.ic_wallet().getTotalReceived().toFriendlyString());
-//        Log.d(WalletFragment.TAG,mWalletAppKit.ic_wallet().getBalance(Wallet.BalanceType.ESTIMATED).toFriendlyString());
+//        Log.d(WalletFragment.TAG,mWalletAppKit.ic_wallet().getData().toFriendlyString() + " " + mWalletAppKit.ic_wallet().getTotalReceived().toFriendlyString());
+//        Log.d(WalletFragment.TAG,mWalletAppKit.ic_wallet().getData(Wallet.BalanceType.ESTIMATED).toFriendlyString());
 //        Log.d(WalletFragment.TAG,"CurrentReceiveAddress: " + mWalletAppKit.ic_wallet().currentReceiveAddress());
 //    }
 }

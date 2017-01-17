@@ -1,16 +1,17 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
-import org.qtum.mromanovsky.qtum.model.Transaction;
+import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 import java.util.List;
 
 public interface WalletFragmentView extends BaseFragmentView {
     //    void updatePublicKey(String publicKey);
-    //    void updateBalance(String balance);
-    void updateRecyclerView(List<Transaction> list);
+    //    void updateData(String balance);
+    void updateRecyclerView(List<TransactionQTUM> list);
     void setAdapterNull();
-    void updateBalance(double balance);
-    void initializeDynamicDataViews(String pubKey);
+    void setUpBalance(double balance);
+    void updateData(double balance);
+    void updatePubKey(String pubKey);
 }

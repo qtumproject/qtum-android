@@ -3,22 +3,19 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONArray;
-import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.JSONRPCThreadedClient;
-import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.JSONRPCThreadedHttpClient;
+import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClientImpl;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
-import org.qtum.mromanovsky.qtum.datastorage.Transactions;
-import org.qtum.mromanovsky.qtum.model.History;
-import org.qtum.mromanovsky.qtum.model.Transaction;
+import org.qtum.mromanovsky.qtum.datastorage.TransactionQTUMList;
+import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 
 import java.util.List;
 
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
-    double mBalance = 0;
     Context mContext;
 
     public WalletFragmentInteractorImpl(Context context){
@@ -26,18 +23,36 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     }
 
     @Override
-    public List<Transaction> getTransactionList() {
-        List<Transaction> transactionList = Transactions.getInstance().getTransactionList();
-        transactionList.add(new Transaction("5odqs25oxasmewqo4129d", "Sep 23", 7.450, "231dcasdawe123123lcasd", "231dcasdawe123123lcasd"));
-        transactionList.add(new Transaction("4129d5odqs25oxasmewqo", "Nov 03", -7.450, "231dcasdawe123123lcasd", "231dcasdawe123123lcasd"));
-        transactionList.add(new Transaction("oxasmew5odqs25qo4129d", "Dec 16", 0.930, "231dcasdawe123123lcasd", "231dcasdawe123123lcasd"));
-        return transactionList;
+    public List<TransactionQTUM> getTransactionList() {
+        return TransactionQTUMList.getInstance().getTransactionQTUMList();
     }
 
     @Override
-    public void getBalance(JSONRPCThreadedClient.OnJSONArrayResultListener jsonArrayResultListener) {
-        JSONRPCThreadedHttpClient jsonrpcThreadedHttpClient = new JSONRPCThreadedHttpClient();
-        jsonrpcThreadedHttpClient.getHistory("testIdentifier1000", jsonArrayResultListener);
+    public void getData(final GetDataCallBack callBack) {
+        QtumJSONRPCClientImpl qtumJSONRPCClient = new QtumJSONRPCClientImpl();
+        qtumJSONRPCClient.getHistory("testIdentifier1000")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<TransactionQTUM>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<TransactionQTUM> transactionQTUMList) {
+                        callBack.onSuccess(transactionQTUMList);
+                    }
+                });
+    }
+
+    public interface GetDataCallBack {
+        void onSuccess(List<TransactionQTUM> transactionQTUMList);
     }
 
     @Override

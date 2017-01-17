@@ -1,8 +1,8 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment;
 
 
-import org.qtum.mromanovsky.qtum.model.Transaction;
+import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 
 public interface TransactionFragmentInteractor {
-    Transaction getTransaction(int position);
+    TransactionQTUM getTransaction(int position);
 }

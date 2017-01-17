@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
                 android:layout_marginTop="16dp"
-                android:text="@string/transaction"
+                android:text="@string/transactionQTUM"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/toolbar_text_size"/>
 

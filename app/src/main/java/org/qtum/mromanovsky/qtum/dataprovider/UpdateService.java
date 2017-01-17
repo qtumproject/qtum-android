@@ -44,7 +44,7 @@ public class UpdateService extends Service {
 //
 //    WalletCoinsReceivedEventListener walletCoinsReceivedEventListener = new WalletCoinsReceivedEventListener() {
 //        @Override
-//        public void onCoinsReceived(Wallet ic_wallet, Transaction tx, Coin prevBalance, Coin newBalance) {
+//        public void onCoinsReceived(Wallet ic_wallet, TransactionQTUM tx, Coin prevBalance, Coin newBalance) {
 //            Log.d(TAG,"onCoinsReceived");
 //            Log.d(TAG,"Wallet: " + ic_wallet.toString());
 //            Log.d(TAG,"Hash tx: " + tx.getHash().toString());
@@ -60,7 +60,7 @@ public class UpdateService extends Service {
 //        public void onWalletChanged(Wallet ic_wallet) {
 //            //when transaction confirmation call this
 //            //Log.d(TAG,"Wallet: " + ic_wallet.currentReceiveAddress());
-//            //Log.d(TAG,"WalletChangeEventListener: " + ic_wallet.getBalance().toFriendlyString());
+//            //Log.d(TAG,"WalletChangeEventListener: " + ic_wallet.getData().toFriendlyString());
 //        }
 //    };
 //
