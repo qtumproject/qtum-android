@@ -2,12 +2,11 @@ package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 
 import android.content.Context;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.params.MainNetParams;
+import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClient;
 import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClientImpl;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
-import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragmentInteractorImpl;
+import org.qtum.mromanovsky.qtum.utils.QtumCryptoGenerator;
+import org.qtum.mromanovsky.qtum.utils.QtumCryptoGeneratorImpl;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -17,11 +16,13 @@ import rx.schedulers.Schedulers;
 public class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
     private Context mContext;
-    private QtumJSONRPCClientImpl mQtumJSONRPCClient;
+    private QtumJSONRPCClient mQtumJSONRPCClient;
+    private QtumCryptoGenerator mQtumCryptoGenerator;
 
     public PinFragmentInteractorImpl(Context context) {
         mContext = context;
         mQtumJSONRPCClient = new QtumJSONRPCClientImpl();
+        mQtumCryptoGenerator = new QtumCryptoGeneratorImpl();
     }
 
     @Override
@@ -34,10 +35,10 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
         QtumSharedPreference.getInstance().saveWalletPassword(mContext, password);
     }
 
-
     @Override
-    public void registerKey(String key, String identifier, final RegisterKeyCallBack callBack) {
-        mQtumJSONRPCClient.registerKey(key, identifier)
+    public void generateRegisterKeyAndID(final generateRegisterKeyAndIdentifierCallBack callBack) {
+        mQtumJSONRPCClient
+                .generateRegisterKeyAndIdentifier()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<String[]>() {
@@ -54,12 +55,15 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
                     @Override
                     public void onNext(String[] strings) {
                         QtumSharedPreference.getInstance().savePubKey(mContext, strings[0]);
+                        QtumSharedPreference.getInstance().saveIdentifier(mContext,strings[1]);
                         callBack.onSuccess(strings);
                     }
                 });
     }
 
-    public interface RegisterKeyCallBack{
+
+    public interface generateRegisterKeyAndIdentifierCallBack {
         void onSuccess(String[] keyAndIdentifier);
     }
+
 }

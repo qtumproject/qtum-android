@@ -1,8 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,7 +18,6 @@ import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -59,7 +56,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
-//                mWalletFragmentPresenter.onFabClick();
+                mWalletFragmentPresenter.sharePubKey();
                 break;
             case R.id.ll_receive:
                 getPresenter().onClickReceive();
@@ -124,7 +121,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //mSwipeRefreshLayout.setRefreshing(false);
                 getPresenter().onRefresh();
             }
         });
@@ -141,25 +137,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         });
     }
 
-    //    @Override
-//    public void updatePublicKey(final String publicKey) {
-//        getView().post(new Runnable() {
-//            @Override
-//            public void run() {
-//                mTvPublicKey.setText(publicKey);
-//        }
-//        });
-//    }
-//
-//    @Override
-//    public void updateData(final String balance) {
-//        getView().post(new Runnable() {
-//            @Override
-//            public void run() {
-//                mTvBalance.setText(balance);
-//            }
-//        });
-//    }
     public class TransactionAdapter extends RecyclerView.Adapter<TransactionHolder> {
 
         private List<TransactionQTUM> mTransactionList;
@@ -216,13 +193,11 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         }
 
         public void bindTransactionData(TransactionQTUM transaction) {
-            //mTextViewDate.setText(history.getDate());
             mTextViewID.setText(transaction.getAddress());
 
             long transactionTime = transaction.getTime();
             long delay = currentTime - transactionTime;
-            String dateString="";
-            //// TODO: 3600
+            String dateString;
             if(delay<3600){
                 dateString = delay/60 + " min ago";
             } else {
@@ -251,6 +226,5 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             }
             mTextViewValue.setText(transaction.getAmount() + " QTUM");
         }
-
     }
 }

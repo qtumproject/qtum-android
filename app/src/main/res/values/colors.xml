@@ -14,4 +14,5 @@
     <color name="grey_background_brain_code">#f7f7f7</color>
     <color name="white_alpha230">#e6ffffff</color>
     <color name="white_alpha120">#78ffffff</color>
+    <color name="alpha">#00ffffff</color>
 </resources>

@@ -8,6 +8,6 @@ import java.util.List;
 import rx.Observable;
 
 public interface QtumJSONRPCClient {
-    Observable<List<TransactionQTUM>> getHistory(String identifier);
-    Observable<String[]> registerKey(String key, String identifier);
+    Observable<List<TransactionQTUM>> getTransactions(String identifier);
+    Observable<String[]> generateRegisterKeyAndIdentifier();
 }

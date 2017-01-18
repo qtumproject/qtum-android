@@ -83,8 +83,10 @@ public abstract class JSONRPCThreadedClient {
         for (int i = 0; i < params.length; i++) {
             if (params[i].getClass().isArray()) {
                 jsonParams.put(getJSONArray((Object[]) params[i]));
+            }else {
+                jsonParams.put(params[i]);
             }
-            jsonParams.put(params[i]);
+
         }
 
         JSONObject jsonRequest = new JSONObject();

@@ -8,6 +8,10 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 
@@ -25,15 +29,25 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
     @Override
-    public void generateQrCode() {
+    public void generateQrCode(String s) {
+        JSONObject json = new JSONObject();
         try {
-            getView().setQrCode(TextToImageEncode("romanovsky"));
-        } catch (WriterException e) {
+            json.put("amount",s);
+            json.put("publicAddress", QtumSharedPreference.getInstance().getPubKey(getView().getContext()));
+            getView().setQrCode(TextToImageEncode(json.toString()));
+        } catch (JSONException | WriterException e) {
             e.printStackTrace();
         }
+
     }
 
-    Bitmap TextToImageEncode(String Value) throws WriterException {
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        getView().setAddressInTV(QtumSharedPreference.getInstance().getPubKey(getView().getContext()));
+    }
+
+    private Bitmap TextToImageEncode(String Value) throws WriterException {
         int QRcodeWidth = 500;
         BitMatrix bitMatrix;
         try {

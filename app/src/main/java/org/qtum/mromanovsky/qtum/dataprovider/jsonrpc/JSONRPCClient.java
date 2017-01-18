@@ -31,8 +31,9 @@ public abstract class JSONRPCClient {
 		{
 			if(params[i].getClass().isArray()){
 				jsonParams.put(getJSONArray((Object[])params[i]));
+			} else{
+				jsonParams.put(params[i]);
 			}
-			jsonParams.put(params[i]);
 		}
 
 		JSONObject jsonRequest = new JSONObject();

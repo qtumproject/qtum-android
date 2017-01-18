@@ -11,6 +11,7 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -40,7 +41,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="56dp"
             android:background="@drawable/background_white_with_grey_pressed"
             android:clickable="true"
             android:gravity="center"
@@ -56,6 +57,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:textSize="18sp"
                 android:layout_weight="1"
                 android:text="@string/language"/>
 
@@ -69,7 +71,7 @@
         <LinearLayout
             android:id="@+id/ll_change_pin"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="56dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/background_white_with_grey_pressed"
             android:clickable="true"
@@ -86,6 +88,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:textSize="18sp"
                 android:layout_weight="1"
                 android:text="@string/change_pin"/>
 
@@ -105,7 +108,7 @@
         <LinearLayout
             android:id="@+id/ll_wallet_back_up"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="56dp"
             android:background="@drawable/background_white_with_grey_pressed"
             android:clickable="true"
             android:gravity="center"
@@ -121,6 +124,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:textSize="18sp"
                 android:layout_weight="1"
                 android:text="@string/wallet_back_up"/>
 
@@ -133,7 +137,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="56dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/background_white_with_grey_pressed"
             android:clickable="true"
@@ -150,6 +154,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:textSize="18sp"
                 android:layout_weight="1"
                 android:text="@string/about"/>
 

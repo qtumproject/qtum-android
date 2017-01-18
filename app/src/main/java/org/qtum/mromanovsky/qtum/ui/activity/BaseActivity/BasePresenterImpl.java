@@ -42,6 +42,7 @@ public abstract class BasePresenterImpl implements BasePresenter {
         getView().initializeViews();
     }
 
+
     @Override
     public void onRestoreInstanceState(Bundle savedState) {
 

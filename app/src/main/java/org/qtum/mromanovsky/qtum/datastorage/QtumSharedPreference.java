@@ -11,10 +11,9 @@ public class QtumSharedPreference {
     private static final String QTUM_WALLET_NAME = "qtum_wallet_name";
     private static final String QTUM_WALLET_PASSWORD = "qtum_wallet_password";
     private static final String QTUM_PUB_KEY = "qtum_pub_key";
+    private static final String QTUM_KEY_IDENTIFIER = "qtum_key_identifier";
 
-    private QtumSharedPreference() {
-
-    }
+    private QtumSharedPreference() { }
 
     public static QtumSharedPreference getInstance() {
         if (sInstance == null) {
@@ -22,7 +21,6 @@ public class QtumSharedPreference {
         }
         return sInstance;
     }
-
 
     public void saveWalletName(Context context, String name) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
@@ -55,5 +53,16 @@ public class QtumSharedPreference {
 
     public String getPubKey(Context context) {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_PUB_KEY, "");
+    }
+
+    public String getIdentifier(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_KEY_IDENTIFIER, "");
+    }
+
+    public void saveIdentifier(Context context, String identifier) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putString(QTUM_KEY_IDENTIFIER, identifier);
+        mEditor.apply();
     }
 }

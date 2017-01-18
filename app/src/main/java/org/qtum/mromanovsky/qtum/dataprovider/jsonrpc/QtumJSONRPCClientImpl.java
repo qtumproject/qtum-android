@@ -8,6 +8,8 @@ import org.bitcoinj.core.ECKey;
 import org.bitcoinj.params.MainNetParams;
 import org.json.JSONArray;
 import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
+import org.qtum.mromanovsky.qtum.utils.QtumCryptoGenerator;
+import org.qtum.mromanovsky.qtum.utils.QtumCryptoGeneratorImpl;
 
 import java.util.List;
 
@@ -17,9 +19,10 @@ import rx.Subscriber;
 
 public class QtumJSONRPCClientImpl extends JSONRPCHttpClient implements  QtumJSONRPCClient{
 
-    QtumJSONRPCClientImpl mQtumJSONRPCClient = this;
+    private QtumJSONRPCClientImpl mQtumJSONRPCClient = this;
+
     @Override
-    public Observable<List<TransactionQTUM>> getHistory(final String identifier) {
+    public Observable<List<TransactionQTUM>> getTransactions(final String identifier) {
         return Observable.create(new Observable.OnSubscribe<List<TransactionQTUM>>() {
             @Override
             public void call(Subscriber<? super List<TransactionQTUM>> subscriber) {
@@ -43,23 +46,23 @@ public class QtumJSONRPCClientImpl extends JSONRPCHttpClient implements  QtumJSO
     }
 
     @Override
-    public Observable<String[]> registerKey(final String key, final String identifier) {
+    public Observable<String[]> generateRegisterKeyAndIdentifier() {
         return  Observable.create(new Observable.OnSubscribe<String[]>() {
             @Override
             public void call(Subscriber<? super String[]> subscriber) {
-                ECKey ecKey = new ECKey();
-                Address address = ecKey.toAddress(MainNetParams.get());
+                QtumCryptoGenerator qtumCryptoGenerator = new QtumCryptoGeneratorImpl();
                 final Object[] params = new Object[4];
-                params[0] = address.toString();
-                params[1] = identifier;
+                params[0] = qtumCryptoGenerator.generateECKey();
+                params[1] = "random001";
                 params[2] = false;
                 params[3] = false;
                 final String method = "importaddress";
                 try {
+
                     mQtumJSONRPCClient.call(method,params);
                     String[] array = new String[2];
-                    array[0]=address.toString();
-                    array[1]=identifier;
+                    array[0] = String.valueOf(params[0]);
+                    array[1] = String.valueOf(params[1]);
                     subscriber.onNext(array);
                 } catch (JSONRPCException e) {
                     e.printStackTrace();

@@ -2,12 +2,16 @@ package org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment;
 
 
 import android.graphics.Bitmap;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -24,6 +28,10 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     Toolbar mToolbar;
     @BindView(R.id.iv_qr_code)
     ImageView mImageViewQrCode;
+    @BindView(R.id.et_amount)
+    TextInputEditText mTextInputEditTextAmount;
+    @BindView(R.id.tv_address)
+    TextView mTextViewAddress;
 
     public static ReceiveFragment newInstance() {
         ReceiveFragment receiveFragment = new ReceiveFragment();
@@ -54,7 +62,18 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        getPresenter().generateQrCode();
+
+        mTextInputEditTextAmount.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_ENTER) {
+                    getPresenter().generateQrCode(mTextInputEditTextAmount.getText().toString());
+                    return false;
+                }
+                return false;
+            }
+        });
+        getPresenter().generateQrCode(mTextInputEditTextAmount.getText().toString());
     }
 
     @Override
@@ -67,4 +86,10 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     public void setQrCode(Bitmap bitmap) {
         mImageViewQrCode.setImageBitmap(bitmap);
     }
+
+    @Override
+    public void setAddressInTV(String s) {
+        mTextViewAddress.setText(s);
+    }
+
 }

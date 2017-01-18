@@ -7,8 +7,6 @@ import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 import java.util.List;
 
 public interface WalletFragmentView extends BaseFragmentView {
-    //    void updatePublicKey(String publicKey);
-    //    void updateData(String balance);
     void updateRecyclerView(List<TransactionQTUM> list);
     void setAdapterNull();
     void updateBalance(double balance);

@@ -2,6 +2,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import org.qtum.mromanovsky.qtum.datastorage.TransactionQTUMList;
@@ -73,7 +74,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 //        @Override
 //        public void updateDate() {
 //            getView().updatePublicKey(mWalletAppKit.ic_wallet().currentReceiveAddress().toString());
-//            getView().loadAndUpdateData(mWalletAppKit.ic_wallet().getData().toFriendlyString());
+//            getView().loadAndUpdateData(mWalletAppKit.ic_wallet().getTransaction().toFriendlyString());
 //        }
 //    };
 
@@ -97,6 +98,13 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         loadAndUpdateData();
     }
 
+    @Override
+    public void sharePubKey() {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "My QTUM address: " + getInteractor().getPubKey());
+        emailIntent.setType("text/plain");
+        getView().getFragmentActivity().startActivity(emailIntent);
+    }
 
     @Override
     public void openTransactionFragment(int position) {
@@ -123,7 +131,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     }
 
     private void loadAndUpdateData(){
-        getInteractor().getData("some random3",new WalletFragmentInteractorImpl.GetDataCallBack() {
+        getInteractor().getTransaction(new WalletFragmentInteractorImpl.GetDataCallBack() {
             @Override
             public void onSuccess(List<TransactionQTUM> transactionQTUMList) {
                 TransactionQTUMList.getInstance().setTransactionQTUMList(transactionQTUMList);
@@ -146,10 +154,4 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         String pubKey = getInteractor().getPubKey();
         getView().updatePubKey(pubKey);
     }
-
-    //    public void onFabClick(){
-//        Log.d(WalletFragment.TAG,mWalletAppKit.ic_wallet().getData().toFriendlyString() + " " + mWalletAppKit.ic_wallet().getTotalReceived().toFriendlyString());
-//        Log.d(WalletFragment.TAG,mWalletAppKit.ic_wallet().getData(Wallet.BalanceType.ESTIMATED).toFriendlyString());
-//        Log.d(WalletFragment.TAG,"CurrentReceiveAddress: " + mWalletAppKit.ic_wallet().currentReceiveAddress());
-//    }
 }

@@ -30,9 +30,9 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     }
 
     @Override
-    public void getData(String identifier, final GetDataCallBack callBack) {
+    public void getTransaction(final GetDataCallBack callBack) {
 
-        mQtumJSONRPCClient.getHistory(identifier)
+        mQtumJSONRPCClient.getTransactions(QtumSharedPreference.getInstance().getIdentifier(mContext))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<TransactionQTUM>>() {

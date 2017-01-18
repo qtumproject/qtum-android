@@ -4,15 +4,9 @@ package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 import android.content.Context;
 
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClientImpl;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragmentInteractorImpl;
-
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinFragmentPresenter {
@@ -34,7 +28,8 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                 } else {
                     final int intPassword = Integer.parseInt(password[0]);
                     final WalletFragment walletFragment = WalletFragment.newInstance();
-                    getInteractor().registerKey("stub!", "some random3", new PinFragmentInteractorImpl.RegisterKeyCallBack() {
+
+                    getInteractor().generateRegisterKeyAndID(new PinFragmentInteractorImpl.generateRegisterKeyAndIdentifierCallBack() {
                         @Override
                         public void onSuccess(String[] keyAndIdentifier) {
                             getInteractor().savePassword(intPassword);
@@ -42,6 +37,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                             getView().hideKeyBoard();
                         }
                     });
+
                 }
                 break;
             }
