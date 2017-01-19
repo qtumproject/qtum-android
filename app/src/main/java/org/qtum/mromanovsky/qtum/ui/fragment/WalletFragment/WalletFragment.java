@@ -111,6 +111,11 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
     @Override
+    public void startRefreshAnimation() {
+        mSwipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
     public void initializeViews() {
 
         ((MainActivity) getActivity()).showBottomNavigationView();

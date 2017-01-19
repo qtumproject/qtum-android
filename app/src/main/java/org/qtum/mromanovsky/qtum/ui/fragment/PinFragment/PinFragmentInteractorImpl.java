@@ -5,8 +5,6 @@ import android.content.Context;
 import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClient;
 import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClientImpl;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
-import org.qtum.mromanovsky.qtum.utils.QtumCryptoGenerator;
-import org.qtum.mromanovsky.qtum.utils.QtumCryptoGeneratorImpl;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -17,12 +15,10 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
     private Context mContext;
     private QtumJSONRPCClient mQtumJSONRPCClient;
-    private QtumCryptoGenerator mQtumCryptoGenerator;
 
     public PinFragmentInteractorImpl(Context context) {
         mContext = context;
         mQtumJSONRPCClient = new QtumJSONRPCClientImpl();
-        mQtumCryptoGenerator = new QtumCryptoGeneratorImpl();
     }
 
     @Override

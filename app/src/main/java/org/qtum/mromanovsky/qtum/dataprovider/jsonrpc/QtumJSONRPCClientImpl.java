@@ -3,13 +3,10 @@ package org.qtum.mromanovsky.qtum.dataprovider.jsonrpc;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.params.MainNetParams;
 import org.json.JSONArray;
+import org.qtum.mromanovsky.qtum.btc.BTCUtils;
+import org.qtum.mromanovsky.qtum.btc.KeyPair;
 import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
-import org.qtum.mromanovsky.qtum.utils.QtumCryptoGenerator;
-import org.qtum.mromanovsky.qtum.utils.QtumCryptoGeneratorImpl;
 
 import java.util.List;
 
@@ -40,7 +37,6 @@ public class QtumJSONRPCClientImpl extends JSONRPCHttpClient implements  QtumJSO
                 } catch (JSONRPCException e) {
                     e.printStackTrace();
                 }
-
             }
         });
     }
@@ -50,15 +46,15 @@ public class QtumJSONRPCClientImpl extends JSONRPCHttpClient implements  QtumJSO
         return  Observable.create(new Observable.OnSubscribe<String[]>() {
             @Override
             public void call(Subscriber<? super String[]> subscriber) {
-                QtumCryptoGenerator qtumCryptoGenerator = new QtumCryptoGeneratorImpl();
+                KeyPair keyPair = BTCUtils.generateWifKey(true);
+
                 final Object[] params = new Object[4];
-                params[0] = qtumCryptoGenerator.generateECKey();
+                params[0] = keyPair.address;
                 params[1] = "random001";
                 params[2] = false;
                 params[3] = false;
                 final String method = "importaddress";
                 try {
-
                     mQtumJSONRPCClient.call(method,params);
                     String[] array = new String[2];
                     array[0] = String.valueOf(params[0]);

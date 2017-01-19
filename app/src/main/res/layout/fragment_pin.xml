@@ -132,6 +132,17 @@
                 android:textSize="32sp"/>
         </android.support.design.widget.TextInputLayout>
 
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="24dp"
+            android:visibility="gone"
+            android:background="@drawable/background_progress_bar"
+            android:id="@+id/progress_bar"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
 
     </RelativeLayout>
 

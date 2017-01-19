@@ -7,6 +7,6 @@ public interface PinFragmentView extends BaseFragmentView {
     void confirmError(String errorText);
 
     void confirmChangePinError(String errorTextNewPin, String errorTextRepeatPin);
-
+    void setProgressBar();
     void clearErrors();
 }

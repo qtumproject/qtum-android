@@ -28,7 +28,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                 } else {
                     final int intPassword = Integer.parseInt(password[0]);
                     final WalletFragment walletFragment = WalletFragment.newInstance();
-
+                    getView().setProgressBar();
                     getInteractor().generateRegisterKeyAndID(new PinFragmentInteractorImpl.generateRegisterKeyAndIdentifierCallBack() {
                         @Override
                         public void onSuccess(String[] keyAndIdentifier) {

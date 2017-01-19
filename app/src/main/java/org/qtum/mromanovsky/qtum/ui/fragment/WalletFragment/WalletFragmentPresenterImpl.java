@@ -131,6 +131,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     }
 
     private void loadAndUpdateData(){
+        getView().startRefreshAnimation();
         getInteractor().getTransaction(new WalletFragmentInteractorImpl.GetDataCallBack() {
             @Override
             public void onSuccess(List<TransactionQTUM> transactionQTUMList) {

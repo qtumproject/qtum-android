@@ -2,6 +2,7 @@ package org.qtum.mromanovsky.qtum.model;
 
 
 public class TransactionQTUM {
+
     String category;
     Double amount;
     String address;

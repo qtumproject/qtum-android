@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -52,6 +53,8 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     Toolbar mToolbar;
     @BindView(R.id.tv_toolbar_title)
     TextView mTextViewToolBarTitle;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
 
     @OnClick({R.id.bt_confirm, R.id.bt_cancel})
     public void onClick(View view) {
@@ -112,6 +115,11 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
 
         mTextInputLayoutWalletNewPin.requestFocus();
 
+    }
+
+    @Override
+    public void setProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
