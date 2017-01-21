@@ -1,22 +1,29 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
+import android.content.Intent;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.zxing.Result;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -27,14 +34,16 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class WalletFragment extends BaseFragment implements WalletFragmentView {
+public class WalletFragment extends BaseFragment implements WalletFragmentView{
 
     public static final int LAYOUT = R.layout.fragment_wallet;
     public static final String TAG = "WalletFragment";
 
     WalletFragmentPresenterImpl mWalletFragmentPresenter;
     TransactionAdapter mTransactionAdapter;
+    ZXingScannerView mZXingScannerView;
 
     @BindView(R.id.tv_public_key)
     TextView mTvPublicKey;
@@ -50,9 +59,14 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
+    @BindView(R.id.iv_bottom_wave)
+    ImageView mImageViewBottomWave;
+    @BindView(R.id.iv_top_wave)
+    ImageView mImageViewTopWave;
+    @BindView(R.id.bt_qr_code)
+    ImageButton mButtonQrCode;
 
-
-    @OnClick({R.id.fab, R.id.ll_receive})
+    @OnClick({R.id.fab, R.id.ll_receive,R.id.bt_qr_code})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
@@ -60,6 +74,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                 break;
             case R.id.ll_receive:
                 getPresenter().onClickReceive();
+                break;
+            case R.id.bt_qr_code:
+                getPresenter().onClickQrCode();
         }
     }
 
@@ -133,13 +150,22 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (verticalOffset == 0) {
-                    mSwipeRefreshLayout.setEnabled(true);
-                } else {
-                    mSwipeRefreshLayout.setEnabled(false);
+                if (!mSwipeRefreshLayout.isRefreshing()) {
+                    if (verticalOffset == 0) {
+                        mSwipeRefreshLayout.setEnabled(true);
+                    } else {
+                        mSwipeRefreshLayout.setEnabled(false);
+                    }
                 }
             }
         });
+
+        final AnimatedVectorDrawable drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom);
+        mImageViewBottomWave.setImageDrawable(drawableBottom);
+        drawableBottom.start();
+        final AnimatedVectorDrawable drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top);
+        mImageViewTopWave.setImageDrawable(drawableTop);
+        drawableTop.start();
     }
 
     public class TransactionAdapter extends RecyclerView.Adapter<TransactionHolder> {
@@ -169,6 +195,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             return mTransactionList.size();
         }
     }
+
 
     public class TransactionHolder extends RecyclerView.ViewHolder {
 

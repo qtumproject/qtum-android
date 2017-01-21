@@ -1,10 +1,12 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment;
 
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -27,6 +29,10 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     TextView mTextViewTo;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
+    @BindView(R.id.iv_bottom_wave)
+    ImageView mImageViewBottomWave;
+    @BindView(R.id.iv_top_wave)
+    ImageView mImageViewTopWave;
 
     public static final int LAYOUT = R.layout.fragment_transaction;
     final static String POSITION = "position";
@@ -71,6 +77,12 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        final AnimatedVectorDrawable drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom);
+        mImageViewBottomWave.setImageDrawable(drawableBottom);
+        drawableBottom.start();
+        final AnimatedVectorDrawable drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top);
+        mImageViewTopWave.setImageDrawable(drawableTop);
+        drawableTop.start();
     }
 
 

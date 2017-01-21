@@ -1,15 +1,16 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -55,6 +56,10 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     TextView mTextViewToolBarTitle;
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
+    @BindView(R.id.iv_bottom_wave)
+    ImageView mImageViewBottomWave;
+    @BindView(R.id.iv_top_wave)
+    ImageView mImageViewTopWave;
 
     @OnClick({R.id.bt_confirm, R.id.bt_cancel})
     public void onClick(View view) {
@@ -157,6 +162,13 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
                     mTextInputLayoutWalletNewPinRepeat.setVisibility(View.VISIBLE);
                     break;
             }
+
+            final AnimatedVectorDrawable drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom);
+            mImageViewBottomWave.setImageDrawable(drawableBottom);
+            drawableBottom.start();
+            final AnimatedVectorDrawable drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top);
+            mImageViewTopWave.setImageDrawable(drawableTop);
+            drawableTop.start();
 
 //            mTextInputEditTextWalletPin.setOnKeyListener(new View.OnKeyListener() {
 //                @Override

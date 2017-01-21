@@ -79,11 +79,19 @@
     </RelativeLayout>
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_gravity="bottom"
+        android:id="@+id/iv_bottom_wave"
         android:clickable="false"
-        android:scaleType="fitXY"
-        android:src="@drawable/graph"/>
+        android:scaleType="fitXY"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_gravity="bottom"
+        android:id="@+id/iv_top_wave"
+        android:clickable="false"
+        android:scaleType="fitXY"/>
 
 </android.support.design.widget.CoordinatorLayout>

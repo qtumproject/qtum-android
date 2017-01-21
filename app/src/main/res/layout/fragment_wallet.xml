@@ -25,12 +25,20 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
                 android:layout_gravity="bottom"
+                android:id="@+id/iv_bottom_wave"
                 android:clickable="false"
-                android:scaleType="fitXY"
-                android:src="@drawable/graph"/>
+                android:scaleType="fitXY"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_gravity="bottom"
+                android:id="@+id/iv_top_wave"
+                android:clickable="false"
+                android:scaleType="fitXY"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

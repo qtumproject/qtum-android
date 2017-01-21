@@ -1,11 +1,15 @@
 package org.qtum.mromanovsky.qtum.ui.activity.MainActivity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -24,6 +28,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
     private static final int LAYOUT = R.layout.activity_main;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
+    private static final int REQUEST_CAMERA=0;
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
@@ -42,6 +47,17 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
+
+        loadPermissions(Manifest.permission.CAMERA ,REQUEST_CAMERA);
+
+    }
+
+    private void loadPermissions(String perm,int requestCode) {
+        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
+                ActivityCompat.requestPermissions(this, new String[]{perm},requestCode);
+            }
+        }
     }
 
     @Override
@@ -60,6 +76,10 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
     public void showBottomNavigationView() {
         mBottomNavigationView.setVisibility(View.VISIBLE);
+    }
+
+    public BottomNavigationView getBottomNavigationView(){
+        return mBottomNavigationView;
     }
 
     public void hideBottomNavigationView() {

@@ -1,12 +1,14 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.CreateWalletNameFragment;
 
 
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -29,6 +31,10 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
     TextInputEditText mTextInputEditTextWalletName;
     @BindView(R.id.til_wallet_name)
     TextInputLayout mTextInputLayoutWalletName;
+    @BindView(R.id.iv_bottom_wave)
+    ImageView mImageViewBottomWave;
+    @BindView(R.id.iv_top_wave)
+    ImageView mImageViewTopWave;
 
     @OnClick({R.id.bt_confirm, R.id.bt_cancel})
     public void onClick(View view) {
@@ -64,7 +70,12 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
 
     @Override
     public void initializeViews() {
-
+        final AnimatedVectorDrawable drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom);
+        mImageViewBottomWave.setImageDrawable(drawableBottom);
+        drawableBottom.start();
+        final AnimatedVectorDrawable drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top);
+        mImageViewTopWave.setImageDrawable(drawableTop);
+        drawableTop.start();
     }
 
     @Override
