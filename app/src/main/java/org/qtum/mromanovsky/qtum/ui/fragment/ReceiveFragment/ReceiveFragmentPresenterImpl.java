@@ -10,7 +10,6 @@ import com.google.zxing.common.BitMatrix;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
@@ -33,7 +32,7 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
         JSONObject json = new JSONObject();
         try {
             json.put("amount",s);
-            json.put("publicAddress", QtumSharedPreference.getInstance().getPubKey(getView().getContext()));
+            json.put("publicAddress", QtumSharedPreference.getInstance().getAddress(getView().getContext()));
             getView().setQrCode(TextToImageEncode(json.toString()));
         } catch (JSONException | WriterException e) {
             e.printStackTrace();
@@ -44,7 +43,7 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     @Override
     public void initializeViews() {
         super.initializeViews();
-        getView().setAddressInTV(QtumSharedPreference.getInstance().getPubKey(getView().getContext()));
+        getView().setAddressInTV(QtumSharedPreference.getInstance().getAddress(getView().getContext()));
     }
 
     private Bitmap TextToImageEncode(String Value) throws WriterException {

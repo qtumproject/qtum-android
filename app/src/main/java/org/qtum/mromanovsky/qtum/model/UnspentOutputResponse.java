@@ -1,6 +1,6 @@
 package org.qtum.mromanovsky.qtum.model;
 
-public class UnspentOutput {
+public class UnspentOutputResponse {
 
     private String txid;
     private int vout;

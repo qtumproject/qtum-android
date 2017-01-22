@@ -23,6 +23,16 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerView.ResultHandler{
 
     public static final String BACK_STACK_ROOT_TAG = "root_fragment";
+    public static final String IS_PARENT_SEND_FRAGMENT = "is_parent_send_fragment";
+    public boolean mIsParentSendFragment;
+
+    public static QrCodeRecognitionFragment newInstance(boolean isParentSendFragment){
+        QrCodeRecognitionFragment qrCodeRecognitionFragment = new QrCodeRecognitionFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(IS_PARENT_SEND_FRAGMENT, isParentSendFragment);
+        qrCodeRecognitionFragment.setArguments(args);
+        return qrCodeRecognitionFragment;
+    }
 
     ZXingScannerView mZXingScannerView;
     @Nullable
@@ -30,7 +40,7 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mZXingScannerView = new ZXingScannerView(getContext());
         mZXingScannerView.setResultHandler(this);
-
+        mIsParentSendFragment = getArguments().getBoolean(IS_PARENT_SEND_FRAGMENT);
         return mZXingScannerView;
     }
 
@@ -53,7 +63,12 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
             JSONObject jsonObject = new JSONObject(result.getText());
             SendFragment fragment = SendFragment.newInstance(jsonObject.getString("publicAddress"),jsonObject.getDouble("amount"));
             FragmentManager fm = getFragmentManager();
-            Fragment fragmentParent = fm.findFragmentByTag(WalletFragment.class.getCanonicalName());
+            Fragment fragmentParent;
+            if(mIsParentSendFragment){
+                fragmentParent = fm.findFragmentByTag(SendFragment.class.getCanonicalName());
+            }else {
+                fragmentParent = fm.findFragmentByTag(WalletFragment.class.getCanonicalName());
+            }
             fm.popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fm
                     .beginTransaction()

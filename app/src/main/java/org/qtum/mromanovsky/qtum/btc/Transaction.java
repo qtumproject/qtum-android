@@ -88,9 +88,8 @@ public final class Transaction {
             }
             baos.writeInt32(lockTime);
 
-//            Date date = new Date();
-//            baos.writeInt32((int)date.getTime());
-//            int i = 0;
+            Date date = new Date();
+            baos.writeInt32((int)date.getTime());
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -59,6 +59,6 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     @Override
     public String getPubKey() {
-        return QtumSharedPreference.getInstance().getPubKey(mContext);
+        return QtumSharedPreference.getInstance().getAddress(mContext);
     }
 }

@@ -96,7 +96,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 
     @Override
     public void onClickQrCode() {
-        QrCodeRecognitionFragment qrCodeRecognitionFragment = new QrCodeRecognitionFragment();
+        QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance(false);
         getView().openFragmentAndAddToBackStack(qrCodeRecognitionFragment);
     }
 

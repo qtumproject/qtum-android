@@ -53,7 +53,7 @@ public class JSONRPCHttpClient extends JSONRPCClient
 
 			writer.close();
 
-			int responseCode = urlConnection.getResponseCode();
+//			int responseCode = urlConnection.getResponseCode();
 
 			InputStream inputStream = urlConnection.getInputStream();
 

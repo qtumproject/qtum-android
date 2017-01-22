@@ -50,7 +50,7 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
                     @Override
                     public void onNext(String[] strings) {
-                        QtumSharedPreference.getInstance().savePubKey(mContext, strings[0]);
+                        QtumSharedPreference.getInstance().saveAddress(mContext, strings[0]);
                         QtumSharedPreference.getInstance().saveIdentifier(mContext,strings[1]);
                         callBack.onSuccess(strings);
                     }
