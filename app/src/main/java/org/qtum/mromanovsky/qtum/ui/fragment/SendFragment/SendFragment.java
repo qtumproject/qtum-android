@@ -3,6 +3,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.SendFragment;
 
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -10,6 +11,8 @@ import android.widget.ImageButton;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -79,6 +82,7 @@ public class SendFragment extends BaseFragment implements SendFragmentView {
     protected int getLayout() {
         return LAYOUT;
     }
+
 
     @Override
     public void initializeViews() {

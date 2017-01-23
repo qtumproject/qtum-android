@@ -31,6 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
         super.onPostCreate(savedInstanceState);
         bindView();
         getPresenter().initializeViews();
+        getPresenter().onPostCreate(this);
     }
 
     @Override

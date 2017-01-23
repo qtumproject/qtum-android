@@ -20,6 +20,8 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
 
     public static final int LAYOUT = R.layout.fragment_create_wallet_name;
     public static final String TAG = "CreateWalletNameFragment";
+    AnimatedVectorDrawable drawableBottom;
+    AnimatedVectorDrawable drawableTop;
 
     CreateWalletNameFragmentPresenterImpl mCreateWalletFragmentPresenter;
 
@@ -70,10 +72,10 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
 
     @Override
     public void initializeViews() {
-        final AnimatedVectorDrawable drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom);
+        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
         mImageViewBottomWave.setImageDrawable(drawableBottom);
         drawableBottom.start();
-        final AnimatedVectorDrawable drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top);
+        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
         mImageViewTopWave.setImageDrawable(drawableTop);
         drawableTop.start();
     }
@@ -89,5 +91,19 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
         mTextInputEditTextWalletName.setText("");
         mTextInputLayoutWalletName.setErrorEnabled(true);
         mTextInputLayoutWalletName.setError(errorText);
+    }
+
+    @Override
+    public void startAnimation() {
+        super.startAnimation();
+        drawableBottom.start();
+        drawableTop.start();
+    }
+
+    @Override
+    public void stopAnimation() {
+        super.stopAnimation();
+        drawableBottom.stop();
+        drawableTop.stop();
     }
 }

@@ -86,64 +86,6 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/button_text"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_wallet_new_pin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/til_wallet_pin"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="64dp"
-            android:layout_marginRight="64dp"
-            android:textColorHint="@color/white_alpha230"
-            android:visibility="gone">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_wallet_new_pin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:hint="@string/new_pin"
-                android:inputType="numberPassword"
-                android:maxLength="4"
-                android:textColor="@color/white_alpha230"
-                android:textSize="32sp"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_wallet_new_pin_repeat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/til_wallet_new_pin"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="64dp"
-            android:layout_marginRight="64dp"
-            android:textColorHint="@color/white_alpha230"
-            android:visibility="gone">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_wallet_new_pin_repeat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:hint="Repeat PIN"
-                android:inputType="numberPassword"
-                android:maxLength="4"
-                android:textColor="@color/white_alpha230"
-                android:textSize="32sp"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <ProgressBar
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:visibility="gone"
-            android:background="@drawable/background_progress_bar"
-            android:id="@+id/progress_bar"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
-
-
     </RelativeLayout>
 
     <ImageView
@@ -151,6 +93,7 @@
         android:layout_height="80dp"
         android:layout_gravity="bottom"
         android:id="@+id/iv_bottom_wave"
+        android:src="@drawable/wave_bottom"
         android:clickable="false"
         android:scaleType="fitXY"/>
 

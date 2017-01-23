@@ -1,11 +1,15 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment;
 
 
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 
 import org.qtum.mromanovsky.qtum.R;
+import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -58,6 +62,6 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
 
     @Override
     public void initializeViews() {
-
+        ((MainActivity) getActivity()).hideBottomNavigationView();
     }
 }

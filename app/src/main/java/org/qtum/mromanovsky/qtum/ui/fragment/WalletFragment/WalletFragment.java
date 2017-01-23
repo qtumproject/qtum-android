@@ -44,6 +44,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
     WalletFragmentPresenterImpl mWalletFragmentPresenter;
     TransactionAdapter mTransactionAdapter;
     ZXingScannerView mZXingScannerView;
+    AnimatedVectorDrawable drawableBottom;
+    AnimatedVectorDrawable drawableTop;
 
     @BindView(R.id.tv_public_key)
     TextView mTvPublicKey;
@@ -160,12 +162,26 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
             }
         });
 
-        final AnimatedVectorDrawable drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom);
+        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
         mImageViewBottomWave.setImageDrawable(drawableBottom);
         drawableBottom.start();
-        final AnimatedVectorDrawable drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top);
+        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
         mImageViewTopWave.setImageDrawable(drawableTop);
         drawableTop.start();
+    }
+
+    @Override
+    public void startAnimation() {
+        super.startAnimation();
+        drawableBottom.start();
+        drawableTop.start();
+    }
+
+    @Override
+    public void stopAnimation() {
+        super.stopAnimation();
+        drawableBottom.stop();
+        drawableTop.stop();
     }
 
     public class TransactionAdapter extends RecyclerView.Adapter<TransactionHolder> {

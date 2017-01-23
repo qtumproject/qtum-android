@@ -28,8 +28,8 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
     }
 
     @Override
-    public void onCreate(Context context) {
-        super.onCreate(context);
+    public void onPostCreate(Context contex) {
+        super.onPostCreate(contex);
         openStartFragment();
     }
 

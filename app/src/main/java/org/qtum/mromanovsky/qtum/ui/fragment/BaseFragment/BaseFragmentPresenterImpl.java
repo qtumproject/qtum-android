@@ -17,6 +17,13 @@ public class BaseFragmentPresenterImpl extends BasePresenterImpl implements Base
     public void onResume(Context context) {
         super.onResume(context);
         getView().getFragmentActivity().getWindow().setStatusBarColor(((BaseFragmentView) getView()).getFragmentActivity().getResources().getColor(R.color.colorPrimaryDark));
+        getView().startAnimation();
+    }
+
+    @Override
+    public void onPause(Context context) {
+        super.onPause(context);
+        getView().stopAnimation();
     }
 
     @Override

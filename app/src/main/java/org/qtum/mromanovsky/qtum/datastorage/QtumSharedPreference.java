@@ -66,4 +66,11 @@ public class QtumSharedPreference {
         mEditor.putString(QTUM_KEY_IDENTIFIER, identifier);
         mEditor.apply();
     }
+
+    public void clear(Context context){
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.clear();
+        mEditor.apply();
+    }
 }

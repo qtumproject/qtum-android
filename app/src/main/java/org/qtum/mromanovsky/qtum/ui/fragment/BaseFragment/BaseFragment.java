@@ -45,6 +45,12 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        getPresenter().onPause(getActivity());
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createPresenter();
@@ -129,6 +135,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
                 .commit();
     }
 
+
     @Override
     public void openFragmentAndAddToBackStack(Fragment fragment) {
         getFragmentManager().popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -164,6 +171,16 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void setSoftMode() {
+
+    }
+
+    @Override
+    public void startAnimation() {
+
+    }
+
+    @Override
+    public void stopAnimation() {
 
     }
 }

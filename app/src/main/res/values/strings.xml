@@ -56,4 +56,5 @@
     <string name="copy_brain_code">Copy Brain-CODE</string>
     <string name="copy_brain_code_n_to_use_it_in_another_app">Copy Brain-CODE \n to Use it in Another App</string>
     <string name="choose_another_address">Choose Another Address</string>
+    <string name="log_out">Log Out</string>
 </resources>

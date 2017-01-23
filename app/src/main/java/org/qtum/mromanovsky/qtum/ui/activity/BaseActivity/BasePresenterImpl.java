@@ -18,6 +18,11 @@ public abstract class BasePresenterImpl implements BasePresenter {
     }
 
     @Override
+    public void onPostCreate(Context contex) {
+
+    }
+
+    @Override
     public void onResume(Context context) {
 
     }

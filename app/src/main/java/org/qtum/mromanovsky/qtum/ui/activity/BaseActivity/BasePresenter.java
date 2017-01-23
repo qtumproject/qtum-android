@@ -19,6 +19,8 @@ public interface BasePresenter {
 
     void onDestroy(Context context);
 
+    void onPostCreate(Context contex);
+
     void initializeViews();
 
     void onRestoreInstanceState(Bundle savedState);

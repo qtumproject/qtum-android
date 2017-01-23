@@ -17,6 +17,9 @@ import butterknife.BindView;
 
 public class TransactionFragment extends BaseFragment implements TransactionFragmentView {
 
+    AnimatedVectorDrawable drawableBottom;
+    AnimatedVectorDrawable drawableTop;
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.tv_value)
@@ -77,10 +80,10 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        final AnimatedVectorDrawable drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom);
+        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
         mImageViewBottomWave.setImageDrawable(drawableBottom);
         drawableBottom.start();
-        final AnimatedVectorDrawable drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top);
+        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
         mImageViewTopWave.setImageDrawable(drawableTop);
         drawableTop.start();
     }
@@ -99,5 +102,19 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
             mAppBarLayout.setBackgroundResource(R.drawable.background_tb_received);
             getFragmentActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.pink_lite));
         }
+    }
+
+    @Override
+    public void startAnimation() {
+        super.startAnimation();
+        drawableBottom.start();
+        drawableTop.start();
+    }
+
+    @Override
+    public void stopAnimation() {
+        super.stopAnimation();
+        drawableBottom.stop();
+        drawableTop.stop();
     }
 }

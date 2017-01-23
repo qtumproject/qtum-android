@@ -43,8 +43,8 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
 
                     @Override
                     public void onNext(ArrayList<UnspentOutputInfo> unspentOutputInfos) {
-                        Transaction transaction = BTCUtils.createTransaction(unspentOutputInfos,address,,amount,1,,);
-                        callBack.onSuccess(transaction);
+                        //Transaction transaction = BTCUtils.createTransaction(unspentOutputInfos,address,,amount,1,,);
+                        //callBack.onSuccess(transaction);
                     }
                 });
     }

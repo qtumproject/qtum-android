@@ -14,6 +14,8 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
     public static final int LAYOUT = R.layout.fragment_import_wallet;
 
     ImportWalletFragmentPresenterImpl mImportWalletFragmentPresenter;
+    AnimatedVectorDrawable drawableBottom;
+    AnimatedVectorDrawable drawableTop;
 
     @BindView(R.id.iv_bottom_wave)
     ImageView mImageViewBottomWave;
@@ -42,11 +44,25 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
 
     @Override
     public void initializeViews() {
-        final AnimatedVectorDrawable drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom);
+        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
         mImageViewBottomWave.setImageDrawable(drawableBottom);
         drawableBottom.start();
-        final AnimatedVectorDrawable drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top);
+        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
         mImageViewTopWave.setImageDrawable(drawableTop);
         drawableTop.start();
+    }
+
+    @Override
+    public void startAnimation() {
+        super.startAnimation();
+        drawableBottom.start();
+        drawableTop.start();
+    }
+
+    @Override
+    public void stopAnimation() {
+        super.stopAnimation();
+        drawableBottom.stop();
+        drawableTop.stop();
     }
 }

@@ -1,5 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -26,10 +30,23 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     public static final int LAYOUT = R.layout.fragment_pin;
 
     PinFragmentPresenterImpl mPinFragmentPresenter;
+    ProgressDialog mProgressDialog;
+    AnimatedVectorDrawable drawableBottom;
+    AnimatedVectorDrawable drawableTop;
 
     public final static String CREATING = "creating";
     public final static String AUTHENTICATION = "authentication";
     public final static String CHANGING = "changing";
+
+    public final static String ENTER_PIN = "enter pin";
+    public final static String ENTER_NEW_PIN = "enter new pin";
+    public final static String REPEAT_PIN = "repeat pin";
+    public final static String ENTER_OLD_PIN = "enter old pin";
+
+    public final static String[] CREATING_STATE = new String[]{ENTER_NEW_PIN,REPEAT_PIN};
+    public final static String[] AUTHENTICATION_STATE = new String[]{ENTER_PIN};
+    public final static String[] CHANGING_STATE = new String[]{ENTER_OLD_PIN,ENTER_NEW_PIN,REPEAT_PIN};
+    public static int currentState = 0;
 
     final static String ACTION = "action";
     private String mAction;
@@ -42,20 +59,10 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     TextInputEditText mTextInputEditTextWalletPin;
     @BindView(R.id.til_wallet_pin)
     TextInputLayout mTextInputLayoutWalletPin;
-    @BindView(R.id.et_wallet_new_pin)
-    TextInputEditText mTextInputEditTextWalletNewPin;
-    @BindView(R.id.til_wallet_new_pin)
-    TextInputLayout mTextInputLayoutWalletNewPin;
-    @BindView(R.id.et_wallet_new_pin_repeat)
-    TextInputEditText mTextInputEditTextWalletNewPinRepeat;
-    @BindView(R.id.til_wallet_new_pin_repeat)
-    TextInputLayout mTextInputLayoutWalletNewPinRepeat;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.tv_toolbar_title)
     TextView mTextViewToolBarTitle;
-    @BindView(R.id.progress_bar)
-    ProgressBar mProgressBar;
     @BindView(R.id.iv_bottom_wave)
     ImageView mImageViewBottomWave;
     @BindView(R.id.iv_top_wave)
@@ -65,11 +72,8 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_confirm:
-                String[] passwords = new String[3];
-                passwords[0] = mTextInputEditTextWalletPin.getText().toString();
-                passwords[1] = mTextInputEditTextWalletNewPin.getText().toString();
-                passwords[2] = mTextInputEditTextWalletNewPinRepeat.getText().toString();
-                getPresenter().confirm(passwords, mAction);
+                String pin = mTextInputEditTextWalletPin.getText().toString();
+                getPresenter().confirm(pin,mAction);
                 break;
             case R.id.bt_cancel:
                 getPresenter().cancel(mAction);
@@ -108,30 +112,39 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         mTextInputLayoutWalletPin.setError(errorText);
     }
 
+
     @Override
-    public void confirmChangePinError(String errorTextNewPin, String errorTextRepeatPin) {
-        mTextInputEditTextWalletNewPin.setText("");
-        mTextInputLayoutWalletNewPin.setErrorEnabled(true);
-        mTextInputLayoutWalletNewPin.setError(errorTextNewPin);
-
-        mTextInputEditTextWalletNewPinRepeat.setText("");
-        mTextInputLayoutWalletNewPinRepeat.setErrorEnabled(true);
-        mTextInputLayoutWalletNewPinRepeat.setError(errorTextRepeatPin);
-
-        mTextInputLayoutWalletNewPin.requestFocus();
-
+    public void setDialogProgressBar() {
+        mProgressDialog =  new ProgressDialog(getActivity());
+        mProgressDialog.setMessage("Key generation");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
     }
 
     @Override
-    public void setProgressBar() {
-        mProgressBar.setVisibility(View.VISIBLE);
+    public void dismissDialogProgressBar() {
+        mProgressDialog.dismiss();
     }
 
     @Override
-    public void clearErrors() {
+    public void updateState() {
+        mTextInputEditTextWalletPin.setText("");
+        switch (mAction) {
+            case CREATING:
+                mTextInputLayoutWalletPin.setHint(CREATING_STATE[currentState]);
+                break;
+            case AUTHENTICATION:
+                mTextInputLayoutWalletPin.setHint(AUTHENTICATION_STATE[currentState]);
+                break;
+            case CHANGING:
+                mTextInputLayoutWalletPin.setHint(CHANGING_STATE[currentState]);
+                break;
+        }
+    }
+
+    @Override
+    public void clearError() {
         mTextInputLayoutWalletPin.setErrorEnabled(false);
-        mTextInputLayoutWalletNewPin.setErrorEnabled(false);
-        mTextInputLayoutWalletNewPinRepeat.setErrorEnabled(false);
     }
 
     @Override
@@ -158,18 +171,13 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
                 case CHANGING:
                     actionBar.setDisplayHomeAsUpEnabled(true);
                     mTextViewToolBarTitle.setText(R.string.change_pin);
-                    mTextInputLayoutWalletNewPin.setVisibility(View.VISIBLE);
-                    mTextInputLayoutWalletNewPinRepeat.setVisibility(View.VISIBLE);
                     break;
             }
 
-            final AnimatedVectorDrawable drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom);
+            drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
             mImageViewBottomWave.setImageDrawable(drawableBottom);
-            drawableBottom.start();
-            final AnimatedVectorDrawable drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top);
+            drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
             mImageViewTopWave.setImageDrawable(drawableTop);
-            drawableTop.start();
-
 //            mTextInputEditTextWalletPin.setOnKeyListener(new View.OnKeyListener() {
 //                @Override
 //                public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -185,4 +193,19 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
 //            });
         }
     }
+
+    @Override
+    public void startAnimation() {
+        super.startAnimation();
+        drawableBottom.start();
+        drawableTop.start();
+    }
+
+    @Override
+    public void stopAnimation() {
+        super.stopAnimation();
+        drawableBottom.stop();
+        drawableTop.stop();
+    }
+
 }

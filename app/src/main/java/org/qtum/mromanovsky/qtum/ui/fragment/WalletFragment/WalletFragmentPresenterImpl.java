@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import org.qtum.mromanovsky.qtum.datastorage.TransactionQTUMList;
 import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import org.qtum.mromanovsky.qtum.ui.fragment.QrCodeRecognitionFragment.QrCodeRecognitionDialogFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionFragment;
@@ -98,6 +99,8 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     public void onClickQrCode() {
         QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance(false);
         getView().openFragmentAndAddToBackStack(qrCodeRecognitionFragment);
+//        QrCodeRecognitionDialogFragment qrCodeRecognitionDialogFragment = new QrCodeRecognitionDialogFragment();
+//        qrCodeRecognitionDialogFragment.show(getView().getFragmentActivity().getFragmentManager(),"qr_code_recognition");
     }
 
     @Override

@@ -57,15 +57,15 @@ public class QtumJSONRPCClientImpl extends JSONRPCHttpClient implements  QtumJSO
                 params[2] = false;
                 params[3] = false;
                 final String method = "importaddress";
-                try {
-                    mQtumJSONRPCClient.call(method,params);
+                //try {
+                    //mQtumJSONRPCClient.call(method,params);
                     String[] array = new String[2];
                     array[0] = String.valueOf(params[0]);
                     array[1] = String.valueOf(params[1]);
                     subscriber.onNext(array);
-                } catch (JSONRPCException e) {
-                    e.printStackTrace();
-                }
+//                } catch (JSONRPCException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
     }

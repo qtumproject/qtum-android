@@ -13,6 +13,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
 
     private PinFragmentView mPinFragmentView;
     private PinFragmentInteractorImpl mPinFragmentInteractor;
+    private int pinForRepeat;
 
     public PinFragmentPresenterImpl(PinFragmentView pinFragmentView) {
         mPinFragmentView = pinFragmentView;
@@ -20,36 +21,49 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
     }
 
     @Override
-    public void confirm(String[] password, String action) {
+    public void confirm(String pin, String action) {
         switch (action) {
             case PinFragment.CREATING: {
-                if (password[0].length() < 4) {
+                if (pin.length() < 4) {
                     getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
                 } else {
-                    final int intPassword = Integer.parseInt(password[0]);
-                    final WalletFragment walletFragment = WalletFragment.newInstance();
-                    getView().setProgressBar();
-                    getInteractor().generateRegisterKeyAndID(new PinFragmentInteractorImpl.generateRegisterKeyAndIdentifierCallBack() {
-                        @Override
-                        public void onSuccess(String[] keyAndIdentifier) {
-                            getInteractor().savePassword(intPassword);
-                            getView().openFragment(walletFragment);
-                            getView().hideKeyBoard();
-                        }
-                    });
-
+                    switch (PinFragment.currentState){
+                        case 0:
+                            pinForRepeat = Integer.parseInt(pin);
+                            PinFragment.currentState=1;
+                            getView().clearError();
+                            getView().updateState();
+                            break;
+                        case 1:
+                            if(Integer.parseInt(pin) == pinForRepeat) {
+                                getView().clearError();
+                                final WalletFragment walletFragment = WalletFragment.newInstance();
+                                getView().setDialogProgressBar();
+                                getInteractor().generateRegisterKeyAndID(new PinFragmentInteractorImpl.generateRegisterKeyAndIdentifierCallBack() {
+                                    @Override
+                                    public void onSuccess(String[] keyAndIdentifier) {
+                                        getInteractor().savePassword(pinForRepeat);
+                                        getView().openFragment(walletFragment);
+                                        getView().dismissDialogProgressBar();
+                                    }
+                                });
+                            } else {
+                                getView().confirmError(getView().getContext().getString(R.string.incorrect_repeated_pin));
+                            }
+                            break;
+                    }
                 }
                 break;
             }
             case PinFragment.AUTHENTICATION: {
-                if (password[0].length() < 4) {
+                if (pin.length() < 4) {
                     getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
                 } else {
-                    int intPassword = Integer.parseInt(password[0]);
+                    int intPassword = Integer.parseInt(pin);
                     if (intPassword == getInteractor().getPassword()) {
+                        getView().clearError();
                         WalletFragment walletFragment = WalletFragment.newInstance();
                         getView().openFragment(walletFragment);
-                        getView().hideKeyBoard();
                     } else {
                         getView().confirmError(getView().getContext().getString(R.string.incorrect_password));
                     }
@@ -57,38 +71,42 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                 break;
             }
             case PinFragment.CHANGING: {
-                getView().clearErrors();
-                if (password[0].length() < 4) {
+
+                if (pin.length() < 4) {
                     getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
                 } else {
-                    int intPassword = Integer.parseInt(password[0]);
-                    if (intPassword == getInteractor().getPassword()) {
-                        if (password[1].length() < 4) {
-                            getView().confirmChangePinError(getView().getContext().getString(R.string.pin_is_not_long_enough), "");
-                        } else {
-                            int intPasswordNew = Integer.parseInt(password[1]);
-                            int intPasswordNewRepeat;
-                            if (password[2].length() < 4) {
-                                intPasswordNewRepeat = 0;
+                    switch (PinFragment.currentState){
+                        case 0:
+                            int intPassword = Integer.parseInt(pin);
+                            if (intPassword == getInteractor().getPassword()){
+                                PinFragment.currentState=1;
+                                getView().clearError();
+                                getView().updateState();
                             } else {
-                                intPasswordNewRepeat = Integer.parseInt(password[2]);
+                                getView().confirmError(getView().getContext().getString(R.string.incorrect_password));
                             }
-                            if (intPasswordNew == intPasswordNewRepeat) {
-                                getInteractor().savePassword(intPasswordNew);
-                                getView().hideKeyBoard();
+                            break;
+                        case 1:
+                            pinForRepeat = Integer.parseInt(pin);
+                            PinFragment.currentState=2;
+                            getView().clearError();
+                            getView().updateState();
+                            break;
+                        case 2:
+                            if(Integer.parseInt(pin) == pinForRepeat) {
+                                getView().clearError();
                                 getView().getFragmentActivity().onBackPressed();
                             } else {
-                                getView().confirmChangePinError("", getView().getContext().getResources().getString(R.string.incorrect_repeated_pin));
+                                getView().confirmError(getView().getContext().getString(R.string.incorrect_repeated_pin));
                             }
-                        }
-                    } else {
-                        getView().confirmError(getView().getContext().getString(R.string.incorrect_password));
+                            break;
                     }
                 }
                 break;
             }
         }
     }
+
 
     @Override
     public void cancel(String action) {
@@ -107,10 +125,18 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
         }
     }
 
+    @Override
+    public void onPause(Context context) {
+        super.onPause(context);
+        getView().hideKeyBoard();
+        pinForRepeat = 0;
+        PinFragment.currentState = 0;
+    }
 
     @Override
     public void onResume(Context context) {
         super.onResume(context);
+        getView().updateState();
         ((MainActivity) getView().getFragmentActivity()).hideBottomNavigationView();
     }
 
