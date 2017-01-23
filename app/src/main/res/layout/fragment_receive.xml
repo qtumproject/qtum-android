@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_qr_code"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"/>
 
         <Button

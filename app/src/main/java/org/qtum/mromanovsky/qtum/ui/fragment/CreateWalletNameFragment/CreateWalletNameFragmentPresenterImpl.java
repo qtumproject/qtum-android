@@ -1,5 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.CreateWalletNameFragment;
 
+import android.content.Context;
+
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -28,11 +30,17 @@ public class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenter
 
     @Override
     public void cancel() {
-        getView().finish();
+        getView().getFragmentActivity().onBackPressed();
     }
 
     @Override
     public CreateWalletNameFragmentView getView() {
         return mCreateWalletNameFragmentView;
+    }
+
+    @Override
+    public void onPause(Context context) {
+        super.onPause(context);
+        getView().hideKeyBoard();
     }
 }

@@ -22,6 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:visibility="gone"
+        app:elevation="0dp"
         android:background="@color/grey_lite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
