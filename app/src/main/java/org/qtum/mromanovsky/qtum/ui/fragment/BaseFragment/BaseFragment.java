@@ -141,6 +141,17 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         getFragmentManager().popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                .addToBackStack(BACK_STACK_ROOT_TAG)
+                .commit();
+    }
+
+    @Override
+    public void openFragmentWithOutPopBackStack(Fragment fragment) {
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
                 .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
                 .addToBackStack(BACK_STACK_ROOT_TAG)
                 .commit();

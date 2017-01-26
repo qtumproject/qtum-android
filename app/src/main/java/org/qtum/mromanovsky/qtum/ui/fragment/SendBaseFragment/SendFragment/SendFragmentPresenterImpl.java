@@ -1,8 +1,8 @@
-package org.qtum.mromanovsky.qtum.ui.fragment.SendFragment;
+package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendFragment;
 
 import org.qtum.mromanovsky.qtum.btc.Transaction;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import org.qtum.mromanovsky.qtum.ui.fragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
 
 
 public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SendFragmentPresenter {
@@ -20,11 +20,6 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         return mSendFragmentView;
     }
 
-    @Override
-    public void onClickQrCode() {
-        QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance(true);
-        getView().openFragmentAndAddToBackStack(qrCodeRecognitionFragment);
-    }
 
     public SendFragmentInteractorImpl getInteractor() {
         return mSendFragmentInteractor;

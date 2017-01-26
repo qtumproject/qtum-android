@@ -1,6 +1,5 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
@@ -13,13 +12,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -49,7 +45,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     public static int currentState = 0;
 
     final static String ACTION = "action";
-    private String mAction;
+    public static String sAction;
 
     @BindView(R.id.bt_confirm)
     Button mButtonConfirm;
@@ -73,10 +69,10 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         switch (view.getId()) {
             case R.id.bt_confirm:
                 String pin = mTextInputEditTextWalletPin.getText().toString();
-                getPresenter().confirm(pin,mAction);
+                getPresenter().confirm(pin);
                 break;
             case R.id.bt_cancel:
-                getPresenter().cancel(mAction);
+                getPresenter().cancel();
                 break;
         }
     }
@@ -112,7 +108,6 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         mTextInputLayoutWalletPin.setError(errorText);
     }
 
-
     @Override
     public void setDialogProgressBar() {
         mProgressDialog =  new ProgressDialog(getActivity());
@@ -129,7 +124,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     @Override
     public void updateState() {
         mTextInputEditTextWalletPin.setText("");
-        switch (mAction) {
+        switch (sAction) {
             case CREATING:
                 mTextInputLayoutWalletPin.setHint(CREATING_STATE[currentState]);
                 break;
@@ -155,13 +150,13 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
 
     @Override
     public void initializeViews() {
-        mAction = getArguments().getString(ACTION);
+        sAction = getArguments().getString(ACTION);
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (null != mToolbar) {
             activity.setSupportActionBar(mToolbar);
             ActionBar actionBar = activity.getSupportActionBar();
             actionBar.setDisplayShowTitleEnabled(false);
-            switch (mAction) {
+            switch (sAction) {
                 case CREATING:
                     mTextViewToolBarTitle.setText(R.string.create_pin);
                     break;

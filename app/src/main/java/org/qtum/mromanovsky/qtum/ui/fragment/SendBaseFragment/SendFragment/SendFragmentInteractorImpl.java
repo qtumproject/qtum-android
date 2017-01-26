@@ -1,4 +1,4 @@
-package org.qtum.mromanovsky.qtum.ui.fragment.SendFragment;
+package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendFragment;
 
 import android.content.Context;
 
@@ -8,7 +8,6 @@ import org.qtum.mromanovsky.qtum.btc.UnspentOutputInfo;
 import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClientImpl;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import rx.Subscriber;

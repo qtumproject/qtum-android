@@ -1,4 +1,4 @@
-package org.qtum.mromanovsky.qtum.ui.fragment.SendFragment;
+package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendFragment;
 
 
 import org.qtum.mromanovsky.qtum.btc.Transaction;

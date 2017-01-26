@@ -18,7 +18,8 @@ import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment.NewsFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment.ProfileFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.SendFragment.SendFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendFragment.SendFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
 import butterknife.BindView;
@@ -103,7 +104,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                         fragment = NewsFragment.newInstance();
                         break;
                     case R.id.item_send:
-                        fragment = SendFragment.newInstance();
+                        fragment = SendBaseFragment.newInstance(false);
                         break;
                     default:
                         return false;

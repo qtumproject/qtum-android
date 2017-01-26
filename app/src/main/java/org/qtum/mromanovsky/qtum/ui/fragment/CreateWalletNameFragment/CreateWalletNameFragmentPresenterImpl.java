@@ -23,8 +23,8 @@ public class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenter
         } else {
             QtumSharedPreference.getInstance().saveWalletName(getView().getContext(), name);
             PinFragment pinFragment = PinFragment.newInstance(PinFragment.CREATING);
-            getView().hideKeyBoard();
-            getView().openFragment(pinFragment);
+            getView().clearError();
+            getView().openFragmentWithOutPopBackStack(pinFragment);
         }
     }
 

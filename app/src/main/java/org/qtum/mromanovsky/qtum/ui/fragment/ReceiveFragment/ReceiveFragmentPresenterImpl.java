@@ -1,7 +1,10 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.DisplayMetrics;
+import android.view.Display;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -46,8 +49,19 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
         getView().setAddressInTV(QtumSharedPreference.getInstance().getAddress(getView().getContext()));
     }
 
+    @Override
+    public void onPause(Context context) {
+        super.onPause(context);
+        getView().hideKeyBoard();
+    }
+
     private Bitmap TextToImageEncode(String Value) throws WriterException {
-        int QRcodeWidth = 500;
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        Display display = getView().getFragmentActivity().getWindowManager().getDefaultDisplay();
+        display.getMetrics(displayMetrics);
+        int QRcodeWidth = displayMetrics.heightPixels/3;
+
         BitMatrix bitMatrix;
         try {
             bitMatrix = new MultiFormatWriter().encode(
@@ -77,7 +91,7 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
         }
         Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
 
-        bitmap.setPixels(pixels, 0, 500, 0, 0, bitMatrixWidth, bitMatrixHeight);
+        bitmap.setPixels(pixels, 0, QRcodeWidth, 0, 0, bitMatrixWidth, bitMatrixHeight);
         return bitmap;
     }
 }

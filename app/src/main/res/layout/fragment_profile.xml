@@ -135,6 +135,11 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/grey_lite"/>
+
         <LinearLayout
             android:id="@+id/ll_log_out"
             android:layout_width="match_parent"

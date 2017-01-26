@@ -1,4 +1,4 @@
-package org.qtum.mromanovsky.qtum.ui.fragment.SendFragment;
+package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendFragment;
 
 
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 
 import java.util.List;
 
@@ -24,8 +25,6 @@ public class SendFragment extends BaseFragment implements SendFragmentView {
     public static final String ADDRESS = "address_qr_code";
     public static final String AMOUNT = "amount_qr_code";
 
-    private boolean mIsQrCode = false;
-
     SendFragmentPresenterImpl mSendFragmentPresenter;
 
     @BindView(R.id.et_receivers_address)
@@ -34,23 +33,19 @@ public class SendFragment extends BaseFragment implements SendFragmentView {
     TextInputEditText mTextInputEditTextAmount;
     @BindView(R.id.et_pin)
     TextInputEditText mTextInputEditTextPin;
-    @BindView(R.id.bt_qr_code)
-    ImageButton mButtonQrCode;
     @BindView(R.id.bt_send)
     Button mButtonSend;
 
-    @OnClick({R.id.bt_qr_code,R.id.bt_send})
+    @OnClick({R.id.bt_send})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.bt_qr_code:
-                getPresenter().onClickQrCode();
-                break;
             case R.id.bt_send:
                 String[] sendInfo = new String[3];
                 sendInfo[0] = mTextInputEditTextAddress.getText().toString();
                 sendInfo[1] = mTextInputEditTextAmount.getText().toString();
                 sendInfo[2] = mTextInputEditTextPin.getText().toString();
                 getPresenter().send(sendInfo);
+                break;
         }
     }
 
@@ -96,5 +91,16 @@ public class SendFragment extends BaseFragment implements SendFragmentView {
     public void setSoftMode() {
         super.setSoftMode();
         getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((SendBaseFragment) getTargetFragment()).sendToolBar();
+    }
+
+    public void onResponse(String publicAddress, double amount){
+        mTextInputEditTextAddress.setText(publicAddress);
+        mTextInputEditTextAmount.setText(String.valueOf(amount));
     }
 }

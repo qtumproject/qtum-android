@@ -1,14 +1,12 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
-import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +15,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.zxing.Result;
-
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -34,7 +29,6 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class WalletFragment extends BaseFragment implements WalletFragmentView{
 
@@ -43,7 +37,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
 
     WalletFragmentPresenterImpl mWalletFragmentPresenter;
     TransactionAdapter mTransactionAdapter;
-    ZXingScannerView mZXingScannerView;
     AnimatedVectorDrawable drawableBottom;
     AnimatedVectorDrawable drawableTop;
 
@@ -164,10 +157,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
 
         drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
         mImageViewBottomWave.setImageDrawable(drawableBottom);
-        drawableBottom.start();
         drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
         mImageViewTopWave.setImageDrawable(drawableTop);
-        drawableTop.start();
     }
 
     @Override
@@ -183,6 +174,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
         drawableBottom.stop();
         drawableTop.stop();
     }
+
 
     public class TransactionAdapter extends RecyclerView.Adapter<TransactionHolder> {
 

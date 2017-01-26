@@ -60,10 +60,8 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
     public void initializeViews() {
         drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
         mImageViewBottomWave.setImageDrawable(drawableBottom);
-        drawableBottom.start();
         drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
         mImageViewTopWave.setImageDrawable(drawableTop);
-        drawableTop.start();
     }
 
     @Override

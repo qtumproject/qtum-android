@@ -21,8 +21,8 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
     }
 
     @Override
-    public void confirm(String pin, String action) {
-        switch (action) {
+    public void confirm(String pin) {
+        switch (PinFragment.sAction) {
             case PinFragment.CREATING: {
                 if (pin.length() < 4) {
                     getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
@@ -109,14 +109,15 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
 
 
     @Override
-    public void cancel(String action) {
-        switch (action) {
-            case PinFragment.CREATING: {
+    public void cancel() {
+        switch (PinFragment.sAction) {
 
-            }
             case PinFragment.AUTHENTICATION: {
                 getView().finish();
                 break;
+            }
+            case PinFragment.CREATING: {
+
             }
             case PinFragment.CHANGING: {
                 getView().getFragmentActivity().onBackPressed();
@@ -143,7 +144,9 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ((MainActivity) getView().getFragmentActivity()).showBottomNavigationView();
+        if(PinFragment.sAction==PinFragment.CHANGING) {
+            ((MainActivity) getView().getFragmentActivity()).showBottomNavigationView();
+        }
     }
 
     @Override

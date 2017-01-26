@@ -4,6 +4,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.CreateWalletNameFragment;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -74,10 +75,8 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
     public void initializeViews() {
         drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
         mImageViewBottomWave.setImageDrawable(drawableBottom);
-        drawableBottom.start();
         drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
         mImageViewTopWave.setImageDrawable(drawableTop);
-        drawableTop.start();
     }
 
     @Override
@@ -91,6 +90,11 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
         mTextInputEditTextWalletName.setText("");
         mTextInputLayoutWalletName.setErrorEnabled(true);
         mTextInputLayoutWalletName.setError(errorText);
+    }
+
+    @Override
+    public void clearError() {
+        mTextInputLayoutWalletName.setErrorEnabled(false);
     }
 
     @Override
