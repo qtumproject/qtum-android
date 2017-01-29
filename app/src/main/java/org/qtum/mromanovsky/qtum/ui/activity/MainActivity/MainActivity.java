@@ -19,7 +19,6 @@ import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment.NewsFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendFragment.SendFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
 import butterknife.BindView;

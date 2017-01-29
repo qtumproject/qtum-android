@@ -43,10 +43,10 @@
         android:textSize="@dimen/button_text"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_start_page_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/tv_start_page_you_dont_have"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:gravity="center"
@@ -64,7 +64,7 @@
         app:srcCompat="@drawable/logo"/>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_start_page_you_dont_have"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

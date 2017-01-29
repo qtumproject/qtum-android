@@ -1,15 +1,15 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment;
 
 
-import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -27,6 +27,8 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     Button mButtonCreateNew;
     @BindView(R.id.bt_import_wallet)
     Button mButtonImportWallet;
+    @BindView(R.id.tv_start_page_you_dont_have)
+    TextView mTextViewYouDontHave;
 
     @OnClick({R.id.bt_import_wallet, R.id.bt_create_new})
     public void OnClick(View view) {
@@ -50,6 +52,7 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
         mStartPageFragmentPresenter = new StartPageFragmentPresenterImpl(this);
     }
 
+
     @Override
     protected StartPageFragmentPresenterImpl getPresenter() {
         return mStartPageFragmentPresenter;
@@ -63,5 +66,7 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     @Override
     public void initializeViews() {
         ((MainActivity) getActivity()).hideBottomNavigationView();
+        Animation animation = AnimationUtils.loadAnimation(getContext(),R.anim.move);
+        mTextViewYouDontHave.startAnimation(animation);
     }
 }

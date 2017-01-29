@@ -1,13 +1,10 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment;
 
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;

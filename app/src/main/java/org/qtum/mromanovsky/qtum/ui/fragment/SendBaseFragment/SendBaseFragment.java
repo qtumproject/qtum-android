@@ -2,13 +2,17 @@ package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -23,6 +27,16 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     private final int code_response = 200;
     private static final String IS_QR_CODE_RECOGNITION = "is_qr_code_recognition";
     private ActionBar mActionBar;
+    @BindView(R.id.et_receivers_address)
+    TextInputEditText mTextInputEditTextAddress;
+    @BindView(R.id.et_amount)
+    TextInputEditText mTextInputEditTextAmount;
+    @BindView(R.id.et_pin)
+    TextInputEditText mTextInputEditTextPin;
+    @BindView(R.id.til_pin)
+    TextInputLayout mTextInputLayoutPin;
+    @BindView(R.id.bt_send)
+    Button mButtonSend;
 
     SendBaseFragmentPresenterImpl sendBaseFragmentPresenter;
 
@@ -31,11 +45,20 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @OnClick({R.id.bt_qr_code})
+    @OnClick({R.id.bt_qr_code,R.id.bt_send})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_qr_code:
                 getPresenter().onClickQrCode();
+                break;
+        }
+        switch (view.getId()) {
+            case R.id.bt_send:
+                String[] sendInfo = new String[3];
+                sendInfo[0] = mTextInputEditTextAddress.getText().toString();
+                sendInfo[1] = mTextInputEditTextAmount.getText().toString();
+                sendInfo[2] = mTextInputEditTextPin.getText().toString();
+                getPresenter().send(sendInfo);
                 break;
         }
     }
@@ -81,15 +104,6 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     }
 
     @Override
-    public void openInnerFragment(Fragment fragment) {
-        fragment.setTargetFragment(this,code_response);
-        getChildFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container_send_base,fragment,fragment.getClass().getCanonicalName())
-                .commit();
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -114,7 +128,40 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         }
     }
 
+    @Override
+    public void updateData(String publicAddress, double amount) {
+        mTextInputEditTextAddress.setText(publicAddress);
+        mTextInputEditTextAmount.setText(String.valueOf(amount));
+    }
+
+    @Override
+    public void errorRecognition() {
+
+    }
+
+    @Override
+    public void confirmError(String errorText) {
+        mTextInputEditTextPin.setText("");
+        mTextInputLayoutPin.setErrorEnabled(true);
+        mTextInputLayoutPin.setError(errorText);
+    }
+
+    @Override
+    public void clearError() {
+        mTextInputLayoutPin.setErrorEnabled(false);
+    }
+
     public void onResponse(String pubAddress, Double amount){
         getPresenter().onResponse(pubAddress,amount);
+    }
+
+    public void onResponseError(){
+        Toast.makeText(getContext(),"Invalid QR Code", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setSoftMode() {
+        super.setSoftMode();
+        getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 }

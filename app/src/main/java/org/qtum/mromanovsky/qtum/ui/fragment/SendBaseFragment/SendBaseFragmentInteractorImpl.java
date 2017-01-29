@@ -1,4 +1,4 @@
-package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendFragment;
+package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment;
 
 import android.content.Context;
 
@@ -15,12 +15,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-public class SendFragmentInteractorImpl implements SendFragmentInteractor {
+public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
     private Context mContext;
     QtumJSONRPCClientImpl mQtumJSONRPCClient = new QtumJSONRPCClientImpl();
 
-    public SendFragmentInteractorImpl(Context context){
+    public SendBaseFragmentInteractorImpl(Context context){
         mContext = context;
     }
 
@@ -78,5 +78,10 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
 
     public interface SendTxCallBack {
         void onSuccess();
+    }
+
+    @Override
+    public int getPassword() {
+        return QtumSharedPreference.getInstance().getWalletPassword(mContext);
     }
 }

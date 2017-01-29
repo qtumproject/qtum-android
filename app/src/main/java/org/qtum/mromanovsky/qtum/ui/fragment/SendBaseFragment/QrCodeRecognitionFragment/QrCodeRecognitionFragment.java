@@ -3,7 +3,6 @@ package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.QrCodeRecognition
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +11,12 @@ import com.google.zxing.Result;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendFragment.SendFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
 public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerView.ResultHandler{
-
 
     public static QrCodeRecognitionFragment newInstance(){
         QrCodeRecognitionFragment qrCodeRecognitionFragment = new QrCodeRecognitionFragment();
@@ -62,6 +56,9 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
             getFragmentManager().popBackStack();
             ((SendBaseFragment) getTargetFragment()).sendToolBar();
         } catch (JSONException e) {
+            ((SendBaseFragment) getTargetFragment()).onResponseError();
+            getFragmentManager().beginTransaction().remove(this).commit();
+            getFragmentManager().popBackStack();
             e.printStackTrace();
         }
     }

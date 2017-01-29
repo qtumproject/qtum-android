@@ -19,7 +19,7 @@
     <string name="my_wallet">My wallet</string>
     <string name="public_key">Public Key</string>
     <string name="qtum">QTUM</string>
-    <string name="recieve">Recieve</string>
+    <string name="receive">Receive</string>
     <string name="send">Send</string>
     <string name="activity">Activity</string>
     <string name="receiver_s_address">Receiver\'s Address</string>
@@ -36,7 +36,7 @@
     <string name="news">News</string>
     <string name="create_pin">Create PIN</string>
     <string name="enter_pin">Enter PIN</string>
-    <string name="incorrect_password">Incorrect password</string>
+    <string name="incorrect_pin">Incorrect PIN</string>
     <string name="pin_is_not_long_enough">PIN is not long enough</string>
     <string name="received">Received</string>
     <string name="sent">Sent</string>

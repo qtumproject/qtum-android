@@ -10,8 +10,7 @@ public class QtumSharedPreference {
     private static final String QTUM_DATA_STORAGE = "qtum_data_storage";
     private static final String QTUM_WALLET_NAME = "qtum_wallet_name";
     private static final String QTUM_WALLET_PASSWORD = "qtum_wallet_password";
-    //TODO refactor qtum_pub_key
-    private static final String QTUM_ADDRESS = "qtum_pub_key";
+    private static final String QTUM_ADDRESS = "qtum_address";
     private static final String QTUM_KEY_IDENTIFIER = "qtum_key_identifier";
 
     private QtumSharedPreference() { }

@@ -43,12 +43,77 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
+    <RelativeLayout
+        android:id="@+id/fragment_container_send_base"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_container_send_base"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:padding="@dimen/activity_horizontal_margin"
+        android:theme="@style/InputText">
 
-    </FrameLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_receivers_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_receivers_address"
+                android:hint="@string/receiver_s_address"
+                android:inputType="textPersonName"
+                android:textColor="@color/grey"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/til_receivers_address"
+            android:layout_marginBottom="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_amount"
+                android:hint="@string/amount"
+                android:inputType="numberDecimal"
+                android:textColor="@color/grey"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_pin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/til_amount"
+            app:passwordToggleEnabled="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/et_pin"
+                android:hint="@string/pin"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                android:textColor="@color/grey"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/bt_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:stateListAnimator="@null"
+            android:background="@drawable/background_bt_green"
+            android:text="@string/send"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/button_text"/>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

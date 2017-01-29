@@ -65,7 +65,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                         WalletFragment walletFragment = WalletFragment.newInstance();
                         getView().openFragment(walletFragment);
                     } else {
-                        getView().confirmError(getView().getContext().getString(R.string.incorrect_password));
+                        getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
                     }
                 }
                 break;
@@ -83,7 +83,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                                 getView().clearError();
                                 getView().updateState();
                             } else {
-                                getView().confirmError(getView().getContext().getString(R.string.incorrect_password));
+                                getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
                             }
                             break;
                         case 1:
