@@ -19,7 +19,7 @@ import java.net.URL;
 public class JSONRPCHttpClient extends JSONRPCClient
 {
 
-	private String mBaseUrl = "http://139.162.118.57:22822/";
+	private String mBaseUrl = "http://139.162.119.184:22822/";
 
 	public JSONRPCHttpClient(){
 

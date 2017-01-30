@@ -93,7 +93,6 @@
         android:layout_height="80dp"
         android:layout_gravity="bottom"
         android:id="@+id/iv_bottom_wave"
-        android:src="@drawable/wave_bottom"
         android:clickable="false"
         android:scaleType="fitXY"/>
 

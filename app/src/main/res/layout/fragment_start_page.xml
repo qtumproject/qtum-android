@@ -5,73 +5,100 @@
     android:fitsSystemWindows="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<RelativeLayout
 
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+    <RelativeLayout
 
-                android:background="@drawable/background_main"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
 
-    <Button
-        android:id="@+id/bt_create_new"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bt_import_wallet"
-        android:layout_alignLeft="@+id/bt_import_wallet"
-        android:layout_alignStart="@+id/bt_import_wallet"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/background_bt_alpha"
-        android:text="@string/create_new"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/button_text"/>
+                    android:background="@drawable/background_main"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin">
 
-    <Button
-        android:id="@+id/bt_import_wallet"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/background_bt_alpha"
-        android:text="@string/import_wallet"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/button_text"/>
+        <Button
+            android:id="@+id/bt_create_new"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bt_import_wallet"
+            android:layout_alignLeft="@+id/bt_import_wallet"
+            android:layout_alignStart="@+id/bt_import_wallet"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/background_bt_alpha"
+            android:text="@string/create_new"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/button_text"/>
 
-    <TextView
-        android:id="@+id/tv_start_page_create"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_start_page_you_dont_have"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="@string/create_the_first_one_or_restore_n_the_previous_wallet_key"
-        android:textColor="@android:color/white"
-        android:textSize="22sp"/>
+        <Button
+            android:id="@+id/bt_import_wallet"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/background_bt_alpha"
+            android:text="@string/import_wallet"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/button_text"/>
+
+        <TextView
+            android:id="@+id/tv_start_page_create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_start_page_you_dont_have"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/create_the_first_one_or_restore_n_the_previous_wallet_key"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"/>
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="192dp"
+            android:layout_height="192dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_below="@+id/iv_logo"
+            android:layout_marginTop="16dp"
+            android:id="@+id/iv_logo_txt"
+            android:src="@drawable/logo_txt"/>
+
+        <TextView
+            android:id="@+id/tv_start_page_you_dont_have"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/you_don_t_have_a_wallet_yet"
+            android:textColor="@android:color/white"
+            android:textSize="26sp"/>
+
+    </RelativeLayout>
 
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="224dp"
-        android:layout_height="224dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:scaleType="centerInside"
-        app:srcCompat="@drawable/logo"/>
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom"
+        android:id="@+id/iv_bottom_wave"
+        android:clickable="false"
+        android:scaleType="fitXY"/>
 
-    <TextView
-        android:id="@+id/tv_start_page_you_dont_have"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/you_don_t_have_a_wallet_yet"
-        android:textColor="@android:color/white"
-        android:textSize="26sp"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_gravity="bottom"
+        android:id="@+id/iv_top_wave"
+        android:clickable="false"
+        android:scaleType="fitXY"/>
 
-</RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
