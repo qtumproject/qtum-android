@@ -3,6 +3,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 
 import android.content.Context;
 
+import org.bitcoinj.wallet.Wallet;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -38,8 +39,8 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                             if(Integer.parseInt(pin) == pinForRepeat) {
                                 getView().clearError();
                                 final WalletFragment walletFragment = WalletFragment.newInstance();
-                                getView().setDialogProgressBar();
-                                getInteractor().generateRegisterKeyAndID(new PinFragmentInteractorImpl.generateRegisterKeyAndIdentifierCallBack() {
+                                getView().setDialogProgressBar("Key generation");
+                                getInteractor().generateRegisterKeyAndID(getView().getContext(), new PinFragmentInteractorImpl.GenerateRegisterKeyAndIdentifierCallBack() {
                                     @Override
                                     public void onSuccess(String[] keyAndIdentifier) {
                                         getInteractor().savePassword(pinForRepeat);
@@ -62,8 +63,15 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                     int intPassword = Integer.parseInt(pin);
                     if (intPassword == getInteractor().getPassword()) {
                         getView().clearError();
-                        WalletFragment walletFragment = WalletFragment.newInstance();
-                        getView().openFragment(walletFragment);
+                        final WalletFragment walletFragment = WalletFragment.newInstance();
+                        getView().setDialogProgressBar("Loading key");
+                        getInteractor().getWalletFromFile(new PinFragmentInteractorImpl.GetWalletFromFileCallBack() {
+                            @Override
+                            public void onSuccess(Wallet wallet) {
+                                getView().openFragment(walletFragment);
+                                getView().dismissDialogProgressBar();
+                            }
+                        });
                     } else {
                         getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
                     }

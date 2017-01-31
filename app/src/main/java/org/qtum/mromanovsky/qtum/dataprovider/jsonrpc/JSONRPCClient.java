@@ -42,6 +42,7 @@ public abstract class JSONRPCClient {
 			jsonRequest.put("id", UUID.randomUUID().hashCode());
 			jsonRequest.put("method", method);
 			jsonRequest.put("params", jsonParams);
+			jsonRequest.put("jsonrpc", "2.0");
 		}
 		catch (JSONException e1)
 		{

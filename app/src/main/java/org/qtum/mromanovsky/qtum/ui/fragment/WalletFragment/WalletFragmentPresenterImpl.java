@@ -9,7 +9,6 @@ import org.qtum.mromanovsky.qtum.datastorage.TransactionQTUMList;
 import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionFragment;
@@ -114,7 +113,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     @Override
     public void sharePubKey() {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "My QTUM address: " + getInteractor().getPubKey());
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "My QTUM address: " + getInteractor().getAddress());
         emailIntent.setType("text/plain");
         getView().getFragmentActivity().startActivity(emailIntent);
     }
@@ -165,7 +164,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     }
 
     private void updatePubKey(){
-        String pubKey = getInteractor().getPubKey();
+        String pubKey = getInteractor().getAddress();
         getView().updatePubKey(pubKey);
     }
 }

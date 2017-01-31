@@ -13,7 +13,7 @@ android {
         versionName "0.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-//        multiDexEnabled  true
+        multiDexEnabled  true
     }
     buildTypes {
         release {
@@ -42,8 +42,8 @@ dependencies {
     compile 'com.android.support:support-v4:25.1.0'
     compile 'com.android.support:design:25.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
-//    compile 'org.bitcoinj:bitcoinj-core:0.14.3'
-//    compile 'com.android.support:multidex:1.0.1'
+    compile 'org.bitcoinj:bitcoinj-core:0.14.3'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.zxing:core:3.2.1'
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
@@ -52,6 +52,4 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.madgag.spongycastle:pkix:1.54.0.0'
-    compile 'com.madgag.spongycastle:pg:1.54.0.0'
 }

@@ -10,7 +10,7 @@ public class QtumSharedPreference {
     private static final String QTUM_DATA_STORAGE = "qtum_data_storage";
     private static final String QTUM_WALLET_NAME = "qtum_wallet_name";
     private static final String QTUM_WALLET_PASSWORD = "qtum_wallet_password";
-    private static final String QTUM_ADDRESS = "qtum_address";
+    private static final String QTUM_IS_KEY_GENERATED = "qtum_is_key_generated";
     private static final String QTUM_KEY_IDENTIFIER = "qtum_key_identifier";
 
     private QtumSharedPreference() { }
@@ -44,15 +44,15 @@ public class QtumSharedPreference {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getInt(QTUM_WALLET_PASSWORD, 0);
     }
 
-    public void saveAddress(Context context, String address) {
+    public void setKeyGeneratedInstance(Context context, boolean isKeyGenerated) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putString(QTUM_ADDRESS, address);
+        mEditor.putBoolean(QTUM_IS_KEY_GENERATED, isKeyGenerated);
         mEditor.apply();
     }
 
-    public String getAddress(Context context) {
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_ADDRESS, "");
+    public boolean getKeyGeneratedInstance(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getBoolean(QTUM_IS_KEY_GENERATED, false);
     }
 
     public String getIdentifier(Context context) {

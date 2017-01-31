@@ -1,13 +1,17 @@
 package org.qtum.mromanovsky.qtum.dataprovider.jsonrpc;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.bitcoinj.core.ECKey;
 import org.json.JSONArray;
 import org.qtum.mromanovsky.qtum.btc.BTCUtils;
 import org.qtum.mromanovsky.qtum.btc.KeyPair;
 import org.qtum.mromanovsky.qtum.btc.Transaction;
 import org.qtum.mromanovsky.qtum.btc.UnspentOutputInfo;
+import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
 import org.qtum.mromanovsky.qtum.model.UnspentOutputResponse;
 
@@ -46,39 +50,43 @@ public class QtumJSONRPCClientImpl extends JSONRPCHttpClient implements  QtumJSO
     }
 
     @Override
-    public Observable<String[]> generateRegisterKeyAndIdentifier() {
+    public Observable<String[]> generateRegisterKeyAndIdentifier(final Context context) {
         return  Observable.create(new Observable.OnSubscribe<String[]>() {
             @Override
             public void call(Subscriber<? super String[]> subscriber) {
-                KeyPair keyPair = BTCUtils.generateWifKey(true);
+                KeyStorage.getInstance(context).getWallet();
                 final Object[] params = new Object[4];
-                params[0] = keyPair.address;
-                params[1] = "random001";
+                params[0] = KeyStorage.getInstance(context).getWallet().currentReceiveAddress().toString();
+                params[1] = KeyStorage.getInstance(context).getWallet().currentReceiveAddress().toString();;
                 params[2] = false;
                 params[3] = false;
                 final String method = "importaddress";
-                //try {
-                    //mQtumJSONRPCClient.call(method,params);
+                try {
+                    mQtumJSONRPCClient.call(method,params);
                     String[] array = new String[2];
                     array[0] = String.valueOf(params[0]);
                     array[1] = String.valueOf(params[1]);
                     subscriber.onNext(array);
-//                } catch (JSONRPCException e) {
-//                    e.printStackTrace();
-//                }
+                } catch (JSONRPCException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
     @Override
-    public Observable<ArrayList<UnspentOutputInfo>> getUnspentOutputInfo(final String address) {
-        return Observable.create(new Observable.OnSubscribe<ArrayList<UnspentOutputInfo>>() {
+    public Observable<List<UnspentOutputResponse>> getUnspentOutputInfo(final String address) {
+        return Observable.create(new Observable.OnSubscribe<List<UnspentOutputResponse>>() {
             @Override
-            public void call(Subscriber<? super ArrayList<UnspentOutputInfo>> subscriber) {
+            public void call(Subscriber<? super List<UnspentOutputResponse>> subscriber) {
                 Object[] params = new Object[3];
                 params[0] = 0;
                 params[1] = 20000;
-                params[2] = address;
+
+                String[] strings = new String[1];
+                strings[0] = address;
+
+                params[2] = strings;
                 String method = "listunspent";
 
                 Gson gson = new Gson();
@@ -86,16 +94,7 @@ public class QtumJSONRPCClientImpl extends JSONRPCHttpClient implements  QtumJSO
                 try {
                     jsonArray = callJSONArray(method,params);
                     List<UnspentOutputResponse> unspentOutputResponseList = gson.fromJson(jsonArray.toString(),new TypeToken<List<UnspentOutputResponse>>(){}.getType());
-                    ArrayList<UnspentOutputInfo> unspentOutputs = new ArrayList<>();
-                    for(UnspentOutputResponse unspentOutputResponse : unspentOutputResponseList) {
-                        byte[] txHash = BTCUtils.reverse(BTCUtils.fromHex(unspentOutputResponse.getTxid()));
-                        Transaction.Script script = new Transaction.Script(BTCUtils.fromHex(unspentOutputResponse.getScriptPubKey()));
-                        double value = unspentOutputResponse.getAmount();
-                        long confirmations = unspentOutputResponse.getConfirmations();
-                        int outputIndex = unspentOutputResponse.getVout();
-                        unspentOutputs.add(new UnspentOutputInfo(txHash, script, value, outputIndex, confirmations));
-                    }
-                    subscriber.onNext(unspentOutputs);
+                    subscriber.onNext(unspentOutputResponseList);
                 } catch (JSONRPCException e) {
                     e.printStackTrace();
                 }
@@ -105,12 +104,12 @@ public class QtumJSONRPCClientImpl extends JSONRPCHttpClient implements  QtumJSO
     }
 
     @Override
-    public Observable<Boolean> sendTx(final String txHash) {
+    public Observable<Boolean> sendTx(final String txHex) {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
                 Object[] params = new Object[2];
-                params[0] = txHash;
+                params[0] = txHex;
                 params[1] = true;
                 String method = "sendrawtransaction";
                 try {
@@ -118,6 +117,7 @@ public class QtumJSONRPCClientImpl extends JSONRPCHttpClient implements  QtumJSO
                     subscriber.onNext(true);
                 } catch (JSONRPCException e) {
                     e.printStackTrace();
+                    subscriber.onError(e);
                 }
             }
         });

@@ -26,7 +26,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     public static final int LAYOUT = R.layout.fragment_pin;
 
     PinFragmentPresenterImpl mPinFragmentPresenter;
-    ProgressDialog mProgressDialog;
+
     AnimatedVectorDrawable drawableBottom;
     AnimatedVectorDrawable drawableTop;
 
@@ -108,18 +108,9 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         mTextInputLayoutWalletPin.setError(errorText);
     }
 
-    @Override
-    public void setDialogProgressBar() {
-        mProgressDialog =  new ProgressDialog(getActivity());
-        mProgressDialog.setMessage("Key generation");
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
-    }
 
-    @Override
-    public void dismissDialogProgressBar() {
-        mProgressDialog.dismiss();
-    }
+
+
 
     @Override
     public void updateState() {

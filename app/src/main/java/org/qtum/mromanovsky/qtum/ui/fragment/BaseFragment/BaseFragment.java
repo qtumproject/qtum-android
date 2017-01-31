@@ -1,6 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     public static final String BACK_STACK_ROOT_TAG = "root_fragment";
 
     private Unbinder mUnbinder;
+    ProgressDialog mProgressDialog;
 
     @Nullable
     @BindView(R.id.toolbar)
@@ -42,6 +44,19 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     public void onResume() {
         super.onResume();
         getPresenter().onResume(getActivity());
+    }
+
+    @Override
+    public void setDialogProgressBar(String message) {
+        mProgressDialog =  new ProgressDialog(getActivity());
+        mProgressDialog.setMessage(message);
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+    }
+
+    @Override
+    public void dismissDialogProgressBar() {
+        mProgressDialog.dismiss();
     }
 
     @Override

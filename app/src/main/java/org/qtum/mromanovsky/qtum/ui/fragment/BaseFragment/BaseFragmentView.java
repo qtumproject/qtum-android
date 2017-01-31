@@ -14,4 +14,6 @@ public interface BaseFragmentView extends BaseContextView {
     Activity getFragmentActivity();
     void startAnimation();
     void stopAnimation();
+    void setDialogProgressBar(String message);
+    void dismissDialogProgressBar();
 }

@@ -4,6 +4,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 import android.content.Context;
 
 import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClientImpl;
+import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.datastorage.TransactionQTUMList;
 import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
@@ -58,7 +59,7 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     }
 
     @Override
-    public String getPubKey() {
-        return QtumSharedPreference.getInstance().getAddress(mContext);
+    public String getAddress() {
+        return KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString();
     }
 }
