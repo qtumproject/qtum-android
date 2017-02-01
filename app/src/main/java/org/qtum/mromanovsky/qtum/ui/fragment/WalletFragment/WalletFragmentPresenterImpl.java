@@ -5,9 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
-import org.qtum.mromanovsky.qtum.datastorage.TransactionQTUMList;
-import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
-import org.qtum.mromanovsky.qtum.model.UnspentOutputResponse;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
+import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
@@ -79,7 +78,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 //        @Override
 //        public void updateDate() {
 //            getView().updatePublicKey(mWalletAppKit.ic_wallet().currentReceiveAddress().toString());
-//            getView().loadAndUpdateData(mWalletAppKit.ic_wallet().getTransaction().toFriendlyString());
+//            getView().loadAndUpdateData(mWalletAppKit.ic_wallet().getHistoryList().toFriendlyString());
 //        }
 //    };
 
@@ -103,8 +102,6 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true);
         getView().openFragment(sendBaseFragment);
         ((MainActivity)getView().getFragmentActivity()).getBottomNavigationView().getMenu().getItem(3).setChecked(true);
-//        QrCodeRecognitionDialogFragment qrCodeRecognitionDialogFragment = new QrCodeRecognitionDialogFragment();
-//        qrCodeRecognitionDialogFragment.show(getView().getFragmentActivity().getFragmentManager(),"qr_code_recognition");
     }
 
     @Override
@@ -130,13 +127,13 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     @Override
     public void initializeViews() {
         super.initializeViews();
-        updateData(TransactionQTUMList.getInstance().getTransactionQTUMList());
+        updateData();
     }
 
     @Override
     public void onResume(Context context) {
         super.onResume(context);
-        getView().updateRecyclerView(getInteractor().getTransactionList());
+        getView().updateRecyclerView(getInteractor().getHistoryList());
     }
 
     @Override
@@ -147,30 +144,26 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 
     private void loadAndUpdateData(){
         getView().startRefreshAnimation();
-        getInteractor().getTransaction(new WalletFragmentInteractorImpl.GetDataCallBack() {
+        getInteractor().getHistoryList(new WalletFragmentInteractorImpl.GetHistoryListCallBack() {
             @Override
-            public void onSuccess(List<TransactionQTUM> transactionQTUMList) {
-                TransactionQTUMList.getInstance().setTransactionQTUMList(transactionQTUMList);
-                updateData(transactionQTUMList);
+            public void onSuccess(List<History> historyList) {
+                getInteractor().setHistoryList(historyList);
+                updateData();
             }
         });
     }
 
     private void loadAndUpdateBalance(){
-        getInteractor().getUnspentOutputList(new WalletFragmentInteractorImpl.GetUnspentListCallBack() {
+        getInteractor().getBalance(new WalletFragmentInteractorImpl.GetBalanceCallBack() {
             @Override
-            public void onSuccess(List<UnspentOutputResponse> unspentOutputResponseList) {
-                double balance = 0;
-                for(UnspentOutputResponse unspentOutputResponse : unspentOutputResponseList){
-                    balance+=unspentOutputResponse.getAmount();
-                }
+            public void onSuccess(double balance) {
                 getView().updateBalance(balance);
             }
         });
     }
 
-    private void updateData(List<TransactionQTUM> transactionQTUMList){
-        getView().updateRecyclerView(TransactionQTUMList.getInstance().getTransactionQTUMList());
+    private void updateData(){
+        getView().updateRecyclerView(getInteractor().getHistoryList());
         String pubKey = getInteractor().getAddress();
         getView().updatePubKey(pubKey);
         getView().updateData();

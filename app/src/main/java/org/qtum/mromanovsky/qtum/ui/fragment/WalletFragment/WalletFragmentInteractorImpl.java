@@ -3,12 +3,12 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 import android.content.Context;
 
-import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClientImpl;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
-import org.qtum.mromanovsky.qtum.datastorage.TransactionQTUMList;
-import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
-import org.qtum.mromanovsky.qtum.model.UnspentOutputResponse;
+import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 
 import java.util.List;
 
@@ -19,25 +19,28 @@ import rx.schedulers.Schedulers;
 public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     Context mContext;
-    QtumJSONRPCClientImpl mQtumJSONRPCClient;
 
     public WalletFragmentInteractorImpl(Context context){
         mContext = context;
-        mQtumJSONRPCClient = new QtumJSONRPCClientImpl();
     }
 
     @Override
-    public List<TransactionQTUM> getTransactionList() {
-        return TransactionQTUMList.getInstance().getTransactionQTUMList();
+    public List<History> getHistoryList() {
+        return HistoryList.getInstance().getHistoryList();
     }
 
     @Override
-    public void getTransaction(final GetDataCallBack callBack) {
+    public void setHistoryList(List<History> historyList) {
+        HistoryList.getInstance().setHistoryList(historyList);
+    }
 
-        mQtumJSONRPCClient.getTransactions(QtumSharedPreference.getInstance().getIdentifier(mContext))
+    @Override
+    public void getHistoryList(final GetHistoryListCallBack callBack) {
+
+        QtumService.newInstance().getHistoryList(QtumSharedPreference.getInstance().getIdentifier(mContext),10,0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<TransactionQTUM>>() {
+                .subscribe(new Subscriber<List<History>>() {
                     @Override
                     public void onCompleted() {
 
@@ -49,18 +52,18 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                     }
 
                     @Override
-                    public void onNext(List<TransactionQTUM> transactionQTUMList) {
-                        callBack.onSuccess(transactionQTUMList);
+                    public void onNext(List<History> historyList) {
+                        callBack.onSuccess(historyList);
                     }
                 });
     }
 
     @Override
-    public void getUnspentOutputList(final GetUnspentListCallBack callBack) {
-        mQtumJSONRPCClient.getUnspentOutputInfo(KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString())
+    public void getBalance(final GetBalanceCallBack callBack) {
+        QtumService.newInstance().getUnspentOutputs(KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<UnspentOutputResponse>>() {
+                .subscribe(new Subscriber<List<UnspentOutput>>() {
                     @Override
                     public void onCompleted() {
 
@@ -72,18 +75,22 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                     }
 
                     @Override
-                    public void onNext(List<UnspentOutputResponse> unspentOutputResponses) {
-                        callBack.onSuccess(unspentOutputResponses);
+                    public void onNext(List<UnspentOutput> unspentOutputs) {
+                        double balance = 0;
+                        for(UnspentOutput unspentOutput : unspentOutputs){
+                            balance+=unspentOutput.getAmount();
+                        }
+                        callBack.onSuccess(balance);
                     }
                 });
     }
 
-    public interface GetDataCallBack {
-        void onSuccess(List<TransactionQTUM> transactionQTUMList);
+    public interface GetHistoryListCallBack {
+        void onSuccess(List<History> historyList);
     }
 
-    public interface GetUnspentListCallBack{
-        void onSuccess(List<UnspentOutputResponse> unspentOutputResponseList);
+    public interface GetBalanceCallBack {
+        void onSuccess(double balance);
     }
 
     @Override

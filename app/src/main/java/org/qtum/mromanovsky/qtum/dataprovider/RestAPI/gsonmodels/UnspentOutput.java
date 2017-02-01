@@ -4,7 +4,7 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class OutputUnspent {
+public class UnspentOutput {
 
     @SerializedName("amount")
     @Expose

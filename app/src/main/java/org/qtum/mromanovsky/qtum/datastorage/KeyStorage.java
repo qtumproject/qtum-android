@@ -68,10 +68,10 @@ public class KeyStorage {
            });
     }
 
-    public Wallet getWallet() {
-        boolean isCreated = QtumSharedPreference.getInstance().getKeyGeneratedInstance(mContext);
-        if(!isCreated) {
-            {
+    public Observable<Wallet> createWallet(){
+        return Observable.create(new Observable.OnSubscribe<Wallet>() {
+            @Override
+            public void call(Subscriber<? super Wallet> subscriber) {
                 sWallet = new Wallet(CurrentNetParams.getNetParams());
                 try {
                     sWallet.saveToFile(mFile);
@@ -79,7 +79,10 @@ public class KeyStorage {
                     e.printStackTrace();
                 }
             }
-        }
+        });
+    }
+
+    public Wallet getWallet() {
         return sWallet;
     }
 

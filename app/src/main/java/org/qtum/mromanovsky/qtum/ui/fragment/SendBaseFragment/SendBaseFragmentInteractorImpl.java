@@ -1,7 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.AddressFormatException;
@@ -11,18 +10,15 @@ import org.bitcoinj.core.Sha256Hash;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionConfidence;
 import org.bitcoinj.core.TransactionOutPoint;
-import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.script.Script;
 import org.qtum.mromanovsky.qtum.btc.BTCUtils;
-import org.qtum.mromanovsky.qtum.btc.UnspentOutputInfo;
-import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClientImpl;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
-import org.qtum.mromanovsky.qtum.model.UnspentOutputResponse;
 import org.qtum.mromanovsky.qtum.utils.CurrentNetParams;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -36,18 +32,17 @@ import rx.schedulers.Schedulers;
 public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
     private Context mContext;
-    QtumJSONRPCClientImpl mQtumJSONRPCClient = new QtumJSONRPCClientImpl();
 
     public SendBaseFragmentInteractorImpl(Context context){
         mContext = context;
     }
 
     @Override
-    public void getUnspentOutputList(final GetUnspentListCallBack callBack) {
-        mQtumJSONRPCClient.getUnspentOutputInfo(KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString())
+    public void getUnspentOutputs(final GetUnspentListCallBack callBack) {
+        QtumService.newInstance().getUnspentOutputs(KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<UnspentOutputResponse>>() {
+                .subscribe(new Subscriber<List<UnspentOutput>>() {
                     @Override
                     public void onCompleted() {
 
@@ -59,17 +54,17 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                     }
 
                     @Override
-                    public void onNext(List<UnspentOutputResponse> unspentOutputResponses) {
-                        callBack.onSuccess(unspentOutputResponses);
+                    public void onNext(List<UnspentOutput> unspentOutputs) {
+                        callBack.onSuccess(unspentOutputs);
                     }
                 });
     }
 
     @Override
     public void createTx(final String address, final String amount, final CreateTxCallBack callBack) {
-        getUnspentOutputList(new GetUnspentListCallBack() {
+        getUnspentOutputs(new GetUnspentListCallBack() {
             @Override
-            public void onSuccess(List<UnspentOutputResponse> unspentOutputResponseList) {
+            public void onSuccess(List<UnspentOutput> unspentOutputs) {
                 //org.bitcoinj.core.Context context = new org.bitcoinj.core.Context(CurrentNetParams.getNetParams());
                 Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
                 Address addressToSend=null;
@@ -83,24 +78,24 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                 long amountLong =(long) amountDouble * 100000000;
 
 
-                Collections.sort(unspentOutputResponseList, new Comparator<UnspentOutputResponse>() {
+                Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
                     @Override
-                    public int compare(UnspentOutputResponse unspentOutputResponse, UnspentOutputResponse t1) {
-                        return unspentOutputResponse.getAmount() > t1.getAmount() ? 1 : (unspentOutputResponse.getAmount() < t1.getAmount() ) ? -1 : 0;
+                    public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {
+                        return unspentOutput.getAmount() > t1.getAmount() ? 1 : (unspentOutput.getAmount() < t1.getAmount() ) ? -1 : 0;
                     }
                 });
 
                 double amountFromOutput = 0;
                 double balance = 0;
                 transaction.addOutput(Coin.valueOf(amountLong),addressToSend);
-                for(UnspentOutputResponse unspentOutputResponse : unspentOutputResponseList){
-                    balance += unspentOutputResponse.getAmount();
+                for(UnspentOutput unspentOutput : unspentOutputs){
+                    balance += unspentOutput.getAmount();
                     if(amountFromOutput<amountDouble){
-                        Sha256Hash sha256Hash = new Sha256Hash((BTCUtils.fromHex(unspentOutputResponse.getTxid())));
-                        TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutputResponse.getVout(), sha256Hash);
-                        Script script = new Script(BTCUtils.fromHex(unspentOutputResponse.getScriptPubKey()));
+                        Sha256Hash sha256Hash = new Sha256Hash((BTCUtils.fromHex(unspentOutput.getTxHash())));
+                        TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
+                        Script script = new Script(BTCUtils.fromHex(unspentOutput.getTxoutScriptPubKey()));
                         transaction.addSignedInput(outPoint, script, ecKey, Transaction.SigHash.ALL, true);
-                        amountFromOutput += unspentOutputResponse.getAmount();
+                        amountFromOutput += unspentOutput.getAmount();
                     }
                 }
                 if(amountFromOutput<amountDouble){
@@ -140,39 +135,39 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
 
     @Override
     public void sendTx(String address, String amount, final SendTxCallBack callBack) {
-        createTx(address, amount, new CreateTxCallBack() {
-            @Override
-            public void onSuccess(String txHex) {
-                mQtumJSONRPCClient.sendTx(txHex)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<Boolean>() {
-                            @Override
-                            public void onCompleted() {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                callBack.onError("Sending Error");
-                            }
-
-                            @Override
-                            public void onNext(Boolean aBoolean) {
-                                callBack.onSuccess();
-                            }
-                        });
-            }
-
-            @Override
-            public void onError(String error) {
-                callBack.onError(error);
-            }
-        });
+//        createTx(address, amount, new CreateTxCallBack() {
+//            @Override
+//            public void onSuccess(String txHex) {
+//                mQtumJSONRPCClient.sendTx(txHex)
+//                        .subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(new Subscriber<Boolean>() {
+//                            @Override
+//                            public void onCompleted() {
+//
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//                                callBack.onError("Sending Error");
+//                            }
+//
+//                            @Override
+//                            public void onNext(Boolean aBoolean) {
+//                                callBack.onSuccess();
+//                            }
+//                        });
+//            }
+//
+//            @Override
+//            public void onError(String error) {
+//                callBack.onError(error);
+//            }
+//        });
     }
 
     public interface GetUnspentListCallBack{
-        void onSuccess(List<UnspentOutputResponse> unspentOutputResponseList);
+        void onSuccess(List<UnspentOutput> unspentOutputs);
     }
 
     public interface CreateTxCallBack {

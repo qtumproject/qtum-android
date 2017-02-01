@@ -1,12 +1,12 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment;
 
 
-import org.qtum.mromanovsky.qtum.datastorage.TransactionQTUMList;
-import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
+import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 
 public class TransactionFragmentInteractorImpl implements TransactionFragmentInteractor {
     @Override
-    public TransactionQTUM getTransaction(int position) {
-        return TransactionQTUMList.getInstance().getTransactionQTUMList().get(position);
+    public History getHistory(int position) {
+        return HistoryList.getInstance().getHistoryList().get(position);
     }
 }

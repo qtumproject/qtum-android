@@ -10,7 +10,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
-        versionName "0.0.3"
+        versionName "0.0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled  true
@@ -49,7 +49,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.google.zxing:android-core:3.3.0'
     compile 'me.dm7.barcodescanner:zxing:1.8.4'
-    compile 'com.google.code.gson:gson:2.4'
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:1.2.1'
 

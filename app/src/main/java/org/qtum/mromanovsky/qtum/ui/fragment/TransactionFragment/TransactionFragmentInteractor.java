@@ -1,8 +1,8 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment;
 
 
-import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 
 public interface TransactionFragmentInteractor {
-    TransactionQTUM getTransaction(int position);
+    History getHistory(int position);
 }

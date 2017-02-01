@@ -90,7 +90,7 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
 
     @Override
-    public void setUpTransactionData(Double value, String receivedTime, String from, String to) {
+    public void setUpTransactionData(Long value, String receivedTime, String from, String to) {
         mTextViewValue.setText(value.toString());
         mTextViewReceivedTime.setText(receivedTime);
         mTextViewFrom.setText(from);

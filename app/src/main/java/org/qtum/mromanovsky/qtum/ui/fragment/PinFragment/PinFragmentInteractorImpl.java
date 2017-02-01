@@ -3,8 +3,6 @@ package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 import android.content.Context;
 
 import org.bitcoinj.wallet.Wallet;
-import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClient;
-import org.qtum.mromanovsky.qtum.dataprovider.jsonrpc.QtumJSONRPCClientImpl;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
@@ -16,11 +14,9 @@ import rx.schedulers.Schedulers;
 public class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
     private Context mContext;
-    private QtumJSONRPCClient mQtumJSONRPCClient;
 
     public PinFragmentInteractorImpl(Context context) {
         mContext = context;
-        mQtumJSONRPCClient = new QtumJSONRPCClientImpl();
     }
 
     @Override
@@ -34,9 +30,9 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
     }
 
     @Override
-    public void getWalletFromFile(final GetWalletFromFileCallBack callBack) {
-        KeyStorage.getInstance(mContext).
-                loadWalletFromFile()
+    public void loadWalletFromFile(final LoadWalletFromFileCallBack callBack) {
+        KeyStorage.getInstance(mContext)
+                .loadWalletFromFile()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Wallet>() {
@@ -52,18 +48,18 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
                     @Override
                     public void onNext(Wallet wallet) {
-                        callBack.onSuccess(wallet);
+                        callBack.onSuccess();
                     }
                 });
     }
 
     @Override
-    public void generateRegisterKeyAndID(Context context, final GenerateRegisterKeyAndIdentifierCallBack callBack) {
-        mQtumJSONRPCClient
-                .generateRegisterKeyAndIdentifier(context)
+    public void createWallet(Context context, final CreateWalletCallBack callBack) {
+        KeyStorage.getInstance(mContext)
+                .createWallet()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String[]>() {
+                .subscribe(new Subscriber<Wallet>() {
                     @Override
                     public void onCompleted() {
 
@@ -75,21 +71,20 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
                     }
 
                     @Override
-                    public void onNext(String[] strings) {
+                    public void onNext(Wallet wallet) {
                         QtumSharedPreference.getInstance().setKeyGeneratedInstance(mContext, true);
-                        QtumSharedPreference.getInstance().saveIdentifier(mContext,strings[1]);
-                        callBack.onSuccess(strings);
+                        callBack.onSuccess();
                     }
                 });
     }
 
 
-    public interface GenerateRegisterKeyAndIdentifierCallBack {
-        void onSuccess(String[] keyAndIdentifier);
+    public interface CreateWalletCallBack {
+        void onSuccess();
     }
 
-    public interface GetWalletFromFileCallBack {
-        void onSuccess(Wallet wallet);
+    public interface LoadWalletFromFileCallBack {
+        void onSuccess();
     }
 
 }

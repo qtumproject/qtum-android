@@ -60,7 +60,7 @@ public class UpdateService extends Service {
 //        public void onWalletChanged(Wallet ic_wallet) {
 //            //when transaction confirmation call this
 //            //Log.d(TAG,"Wallet: " + ic_wallet.currentReceiveAddress());
-//            //Log.d(TAG,"WalletChangeEventListener: " + ic_wallet.getTransaction().toFriendlyString());
+//            //Log.d(TAG,"WalletChangeEventListener: " + ic_wallet.getHistoryList().toFriendlyString());
 //        }
 //    };
 //

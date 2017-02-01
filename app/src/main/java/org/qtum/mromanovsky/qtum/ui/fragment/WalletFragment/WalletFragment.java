@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
@@ -99,8 +99,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
     }
 
     @Override
-    public void updateRecyclerView(List<TransactionQTUM> list) {
-        mTransactionAdapter = new TransactionAdapter(list);
+    public void updateRecyclerView(List<History> historyList) {
+        mTransactionAdapter = new TransactionAdapter(historyList);
         mRecyclerView.setAdapter(mTransactionAdapter);
     }
 
@@ -186,11 +186,11 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
 
     public class TransactionAdapter extends RecyclerView.Adapter<TransactionHolder> {
 
-        private List<TransactionQTUM> mTransactionList;
-        TransactionQTUM mTransaction;
+        private List<History> mHistoryList;
+        History mHistory;
 
-        public TransactionAdapter(List<TransactionQTUM> list) {
-            mTransactionList = list;
+        public TransactionAdapter(List<History> historyList) {
+            mHistoryList = historyList;
         }
 
         @Override
@@ -202,13 +202,13 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
 
         @Override
         public void onBindViewHolder(TransactionHolder holder, int position) {
-            mTransaction = mTransactionList.get(position);
-            holder.bindTransactionData(mTransaction);
+            mHistory = mHistoryList.get(position);
+            holder.bindTransactionData(mHistory);
         }
 
         @Override
         public int getItemCount() {
-            return mTransactionList.size();
+            return mHistoryList.size();
         }
     }
 
@@ -240,10 +240,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindTransactionData(TransactionQTUM transaction) {
-            mTextViewID.setText(transaction.getAddress());
+        public void bindTransactionData(History history) {
 
-            long transactionTime = transaction.getTime();
+            long transactionTime = history.getBlockTime();
             long delay = currentTime - transactionTime;
             String dateString;
             if(delay<3600){
@@ -263,16 +262,18 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
             }
             mTextViewDate.setText(dateString);
 
-            if (transaction.getAmount() > 0) {
+            if (history.getAmount() > 0) {
                 mTextViewOperationType.setText(R.string.received);
+                mTextViewID.setText(history.getToAddress());
                 mImageViewIcon.setImageResource(R.drawable.ic_received_transaction);
                 mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.colorAccent));
             } else {
                 mTextViewOperationType.setText(R.string.sent);
+                mTextViewID.setText(history.getFromAddress());
                 mImageViewIcon.setImageResource(R.drawable.ic_sent_transaction);
                 mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.pink));
             }
-            mTextViewValue.setText(transaction.getAmount() + " QTUM");
+            mTextViewValue.setText(history.getAmount() + " QTUM");
         }
     }
 }

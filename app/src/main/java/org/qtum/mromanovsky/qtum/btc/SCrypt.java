@@ -1,4 +1,4 @@
-package org.qtum.mromanovsky.qtum.btc.generators;
+package org.qtum.mromanovsky.qtum.btc;
 
 
 import org.spongycastle.crypto.PBEParametersGenerator;

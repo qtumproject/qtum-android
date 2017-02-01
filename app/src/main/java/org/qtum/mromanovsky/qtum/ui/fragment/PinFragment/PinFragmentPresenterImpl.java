@@ -40,9 +40,9 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                                 getView().clearError();
                                 final WalletFragment walletFragment = WalletFragment.newInstance();
                                 getView().setProgressDialog("Key generation");
-                                getInteractor().generateRegisterKeyAndID(getView().getContext(), new PinFragmentInteractorImpl.GenerateRegisterKeyAndIdentifierCallBack() {
+                                getInteractor().createWallet(getView().getContext(), new PinFragmentInteractorImpl.CreateWalletCallBack() {
                                     @Override
-                                    public void onSuccess(String[] keyAndIdentifier) {
+                                    public void onSuccess() {
                                         getInteractor().savePassword(pinForRepeat);
                                         getView().openFragment(walletFragment);
                                         getView().dismissProgressDialog();
@@ -65,9 +65,9 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                         getView().clearError();
                         final WalletFragment walletFragment = WalletFragment.newInstance();
                         getView().setProgressDialog("Loading key");
-                        getInteractor().getWalletFromFile(new PinFragmentInteractorImpl.GetWalletFromFileCallBack() {
+                        getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
                             @Override
-                            public void onSuccess(Wallet wallet) {
+                            public void onSuccess() {
                                 getView().openFragment(walletFragment);
                                 getView().dismissProgressDialog();
                             }
