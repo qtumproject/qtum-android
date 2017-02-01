@@ -157,6 +157,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     }
 
     public void onResponseError(){
+        //TODO : change notification type
         Toast.makeText(getContext(),"Invalid QR Code", Toast.LENGTH_SHORT).show();
     }
 

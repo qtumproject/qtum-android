@@ -39,13 +39,13 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                             if(Integer.parseInt(pin) == pinForRepeat) {
                                 getView().clearError();
                                 final WalletFragment walletFragment = WalletFragment.newInstance();
-                                getView().setDialogProgressBar("Key generation");
+                                getView().setProgressDialog("Key generation");
                                 getInteractor().generateRegisterKeyAndID(getView().getContext(), new PinFragmentInteractorImpl.GenerateRegisterKeyAndIdentifierCallBack() {
                                     @Override
                                     public void onSuccess(String[] keyAndIdentifier) {
                                         getInteractor().savePassword(pinForRepeat);
                                         getView().openFragment(walletFragment);
-                                        getView().dismissDialogProgressBar();
+                                        getView().dismissProgressDialog();
                                     }
                                 });
                             } else {
@@ -64,12 +64,12 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                     if (intPassword == getInteractor().getPassword()) {
                         getView().clearError();
                         final WalletFragment walletFragment = WalletFragment.newInstance();
-                        getView().setDialogProgressBar("Loading key");
+                        getView().setProgressDialog("Loading key");
                         getInteractor().getWalletFromFile(new PinFragmentInteractorImpl.GetWalletFromFileCallBack() {
                             @Override
                             public void onSuccess(Wallet wallet) {
                                 getView().openFragment(walletFragment);
-                                getView().dismissDialogProgressBar();
+                                getView().dismissProgressDialog();
                             }
                         });
                     } else {

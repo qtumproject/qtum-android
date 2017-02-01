@@ -8,6 +8,7 @@ import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.datastorage.TransactionQTUMList;
 import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
+import org.qtum.mromanovsky.qtum.model.UnspentOutputResponse;
 
 import java.util.List;
 
@@ -54,8 +55,35 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                 });
     }
 
+    @Override
+    public void getUnspentOutputList(final GetUnspentListCallBack callBack) {
+        mQtumJSONRPCClient.getUnspentOutputInfo(KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<UnspentOutputResponse>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<UnspentOutputResponse> unspentOutputResponses) {
+                        callBack.onSuccess(unspentOutputResponses);
+                    }
+                });
+    }
+
     public interface GetDataCallBack {
         void onSuccess(List<TransactionQTUM> transactionQTUMList);
+    }
+
+    public interface GetUnspentListCallBack{
+        void onSuccess(List<UnspentOutputResponse> unspentOutputResponseList);
     }
 
     @Override

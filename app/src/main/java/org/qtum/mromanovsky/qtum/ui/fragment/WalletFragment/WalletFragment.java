@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -60,6 +61,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
     ImageView mImageViewTopWave;
     @BindView(R.id.bt_qr_code)
     ImageButton mButtonQrCode;
+    @BindView(R.id.progress_bar_balance)
+    ProgressBar mProgressBarDialog;
 
     @OnClick({R.id.fab, R.id.ll_receive,R.id.bt_qr_code})
     public void onClick(View view) {
@@ -109,11 +112,13 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
     @Override
     public void updateBalance(double balance) {
         mTvBalance.setText(String.valueOf(balance));
+
+        mTvBalance.setVisibility(View.VISIBLE);
+        mProgressBarDialog.setVisibility(View.GONE);
     }
 
     @Override
-    public void updateData(double balance) {
-        mTvBalance.setText(String.valueOf(balance));
+    public void updateData() {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -125,6 +130,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
     @Override
     public void startRefreshAnimation() {
         mSwipeRefreshLayout.setRefreshing(true);
+
+        mTvBalance.setVisibility(View.GONE);
+        mProgressBarDialog.setVisibility(View.VISIBLE);
     }
 
     @Override

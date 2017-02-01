@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView {
 
@@ -31,6 +33,17 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     TextInputEditText mTextInputEditTextAmount;
     @BindView(R.id.tv_address)
     TextView mTextViewAddress;
+    @BindView(R.id.bt_copy_wallet_address)
+    Button mButtonCopyWalletAddress;
+
+    @OnClick({R.id.bt_copy_wallet_address})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_copy_wallet_address:
+                getPresenter().onClickCopyWalletAddress();
+                break;
+        }
+    }
 
     public static ReceiveFragment newInstance() {
         ReceiveFragment receiveFragment = new ReceiveFragment();

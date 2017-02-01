@@ -8,7 +8,7 @@ import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 public class MainActivityInteractorImpl implements MainActivityInteractor {
 
     @Override
-    public int getWalletPassword(Context context) {
-        return QtumSharedPreference.getInstance().getWalletPassword(context);
+    public boolean getKeyGeneratedInstance(Context context) {
+        return QtumSharedPreference.getInstance().getKeyGeneratedInstance(context);
     }
 }

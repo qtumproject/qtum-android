@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 
 import org.qtum.mromanovsky.qtum.datastorage.TransactionQTUMList;
 import org.qtum.mromanovsky.qtum.model.TransactionQTUM;
+import org.qtum.mromanovsky.qtum.model.UnspentOutputResponse;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
@@ -54,6 +55,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     public void onViewCreated() {
         super.onViewCreated();
         loadAndUpdateData();
+        loadAndUpdateBalance();
     }
 
     @Override
@@ -108,6 +110,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     @Override
     public void onRefresh() {
         loadAndUpdateData();
+        loadAndUpdateBalance();
     }
 
     @Override
@@ -153,18 +156,24 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         });
     }
 
-    private void updateData(List<TransactionQTUM> transactionQTUMList){
-        double balance = 0;
-        for(TransactionQTUM transactionQTUM: transactionQTUMList){
-            balance+=transactionQTUM.getAmount();
-        }
-        getView().updateData(balance);
-        getView().updateRecyclerView(TransactionQTUMList.getInstance().getTransactionQTUMList());
-        updatePubKey();
+    private void loadAndUpdateBalance(){
+        getInteractor().getUnspentOutputList(new WalletFragmentInteractorImpl.GetUnspentListCallBack() {
+            @Override
+            public void onSuccess(List<UnspentOutputResponse> unspentOutputResponseList) {
+                double balance = 0;
+                for(UnspentOutputResponse unspentOutputResponse : unspentOutputResponseList){
+                    balance+=unspentOutputResponse.getAmount();
+                }
+                getView().updateBalance(balance);
+            }
+        });
     }
 
-    private void updatePubKey(){
+    private void updateData(List<TransactionQTUM> transactionQTUMList){
+        getView().updateRecyclerView(TransactionQTUMList.getInstance().getTransactionQTUMList());
         String pubKey = getInteractor().getAddress();
         getView().updatePubKey(pubKey);
+        getView().updateData();
     }
+
 }

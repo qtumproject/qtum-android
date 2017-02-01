@@ -23,6 +23,8 @@ import org.qtum.mromanovsky.qtum.utils.CurrentNetParams;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -74,19 +76,43 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                 try {
                     addressToSend = Address.fromBase58(CurrentNetParams.getNetParams(), address);
                 }catch (AddressFormatException a){
-                    callBack.onError();
+                    callBack.onError("Incorrect Address");
                 }
                 ECKey ecKey = KeyStorage.getInstance(mContext).getWallet().currentReceiveKey();
                 double amountDouble = Double.parseDouble(amount);
                 long amountLong =(long) amountDouble * 100000000;
+
+
+                Collections.sort(unspentOutputResponseList, new Comparator<UnspentOutputResponse>() {
+                    @Override
+                    public int compare(UnspentOutputResponse unspentOutputResponse, UnspentOutputResponse t1) {
+                        return unspentOutputResponse.getAmount() > t1.getAmount() ? 1 : (unspentOutputResponse.getAmount() < t1.getAmount() ) ? -1 : 0;
+                    }
+                });
+
+                double amountFromOutput = 0;
+                double balance = 0;
                 transaction.addOutput(Coin.valueOf(amountLong),addressToSend);
-                transaction.addOutput(Coin.valueOf(100000000),ecKey.toAddress(CurrentNetParams.getNetParams()));
                 for(UnspentOutputResponse unspentOutputResponse : unspentOutputResponseList){
-                    Sha256Hash sha256Hash = new Sha256Hash((BTCUtils.fromHex(unspentOutputResponse.getTxid())));
-                    TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutputResponse.getVout(), sha256Hash);
-                    Script script = new Script(BTCUtils.fromHex(unspentOutputResponse.getScriptPubKey()));
-                    transaction.addSignedInput(outPoint, script, ecKey, Transaction.SigHash.ALL, true);
+                    balance += unspentOutputResponse.getAmount();
+                    if(amountFromOutput<amountDouble){
+                        Sha256Hash sha256Hash = new Sha256Hash((BTCUtils.fromHex(unspentOutputResponse.getTxid())));
+                        TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutputResponse.getVout(), sha256Hash);
+                        Script script = new Script(BTCUtils.fromHex(unspentOutputResponse.getScriptPubKey()));
+                        transaction.addSignedInput(outPoint, script, ecKey, Transaction.SigHash.ALL, true);
+                        amountFromOutput += unspentOutputResponse.getAmount();
+                    }
                 }
+                if(amountFromOutput<amountDouble){
+                    //TODO: throw exception
+                    callBack.onError("not enough money");
+                    return;
+                }
+                double deliveryDouble = balance - amountDouble;
+                long deliveryLong = (long) deliveryDouble*100000000;
+
+                transaction.addOutput(Coin.valueOf(deliveryLong),ecKey.toAddress(CurrentNetParams.getNetParams()));
+
                 transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
                 transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
 
@@ -139,8 +165,8 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
             }
 
             @Override
-            public void onError() {
-                callBack.onError("Incorrect Address");
+            public void onError(String error) {
+                callBack.onError(error);
             }
         });
     }
@@ -151,7 +177,7 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
 
     public interface CreateTxCallBack {
         void onSuccess(String txHex);
-        void onError();
+        void onError(String error);
     }
 
     public interface SendTxCallBack {

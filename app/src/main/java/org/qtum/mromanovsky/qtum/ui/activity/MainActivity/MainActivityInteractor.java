@@ -4,5 +4,5 @@ import android.content.Context;
 
 
 public interface MainActivityInteractor {
-    int getWalletPassword(Context context);
+    boolean getKeyGeneratedInstance(Context context) ;
 }

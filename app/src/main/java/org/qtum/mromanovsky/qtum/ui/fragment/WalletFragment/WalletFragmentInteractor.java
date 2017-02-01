@@ -9,4 +9,5 @@ public interface WalletFragmentInteractor {
     List<TransactionQTUM> getTransactionList();
     void getTransaction(WalletFragmentInteractorImpl.GetDataCallBack callBack);
     String getAddress();
+    void getUnspentOutputList(WalletFragmentInteractorImpl.GetUnspentListCallBack callBack);
 }

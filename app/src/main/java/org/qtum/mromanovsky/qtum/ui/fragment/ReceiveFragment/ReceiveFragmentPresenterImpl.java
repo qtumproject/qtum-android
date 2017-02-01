@@ -1,10 +1,13 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -13,17 +16,19 @@ import com.google.zxing.common.BitMatrix;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
-import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 
 public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ReceiveFragmentPresenter {
 
     private ReceiveFragmentView mReceiveFragmentView;
+    private ReceiveFragmentInteractorImpl mReceiveFragmentInteractor;
 
     public ReceiveFragmentPresenterImpl(ReceiveFragmentView receiveFragmentView) {
         mReceiveFragmentView = receiveFragmentView;
+        mReceiveFragmentInteractor = new ReceiveFragmentInteractorImpl(getView().getContext());
     }
 
     @Override
@@ -31,23 +36,35 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
         return mReceiveFragmentView;
     }
 
+    public ReceiveFragmentInteractorImpl getInteractor() {
+        return mReceiveFragmentInteractor;
+    }
+
     @Override
     public void generateQrCode(String s) {
         JSONObject json = new JSONObject();
         try {
             json.put("amount",s);
-            json.put("publicAddress", KeyStorage.getInstance(getView().getContext()).getWallet().currentReceiveAddress().toString());
+            json.put("publicAddress", getInteractor().getCurrentReceiveAddress());
             getView().setQrCode(TextToImageEncode(json.toString()));
         } catch (JSONException | WriterException e) {
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void onClickCopyWalletAddress() {
+        ClipboardManager clipboard = (ClipboardManager) getView().getFragmentActivity().getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("label", getInteractor().getCurrentReceiveAddress());
+        clipboard.setPrimaryClip(clip);
+        //TODO : change notification type
+        Toast.makeText(getView().getContext(),"Coped",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void initializeViews() {
         super.initializeViews();
-        getView().setAddressInTV(KeyStorage.getInstance(getView().getContext()).getWallet().currentReceiveAddress().toString());
+        getView().setAddressInTV(getInteractor().getCurrentReceiveAddress());
     }
 
     @Override

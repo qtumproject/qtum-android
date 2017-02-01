@@ -53,8 +53,10 @@ public class JSONRPCHttpClient extends JSONRPCClient
 
 			writer.close();
 
+			//TODO: delete
 			int responseCode = urlConnection.getResponseCode();
 			int i = 0;
+
 			InputStream inputStream = urlConnection.getInputStream();
 
 			StringBuffer buffer = new StringBuffer();
@@ -72,7 +74,10 @@ public class JSONRPCHttpClient extends JSONRPCClient
 			String response = buffer.toString();
 
 			JSONObject jsonResponse = new JSONObject(response);
+			
+			//TODO: delete
 			int i2 = 0;
+
 			return jsonResponse;
 		}
 		catch (IOException e)

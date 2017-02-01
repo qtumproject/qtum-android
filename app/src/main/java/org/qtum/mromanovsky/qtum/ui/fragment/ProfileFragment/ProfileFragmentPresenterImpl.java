@@ -36,7 +36,8 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     public void logOut() {
         getInteractor().clearSharedPreference();
         StartPageFragment startPageFragment = StartPageFragment.newInstance();
-        getView().openFragment(startPageFragment);
+        ((MainActivity)getView().getFragmentActivity()).openFragment(startPageFragment,null);
+        //getView().openFragment(startPageFragment);
     }
 
     @Override

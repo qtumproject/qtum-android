@@ -1,6 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment;
 
 import android.app.Activity;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -35,6 +37,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     private Unbinder mUnbinder;
     ProgressDialog mProgressDialog;
+    AlertDialog mAlertDialog;
 
     @Nullable
     @BindView(R.id.toolbar)
@@ -47,7 +50,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
-    public void setDialogProgressBar(String message) {
+    public void setProgressDialog(String message) {
         mProgressDialog =  new ProgressDialog(getActivity());
         mProgressDialog.setMessage(message);
         mProgressDialog.setCanceledOnTouchOutside(false);
@@ -55,8 +58,23 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
-    public void dismissDialogProgressBar() {
+    public void dismissProgressDialog() {
         mProgressDialog.dismiss();
+    }
+
+    @Override
+    public void setAlertDialog(String message) {
+        mAlertDialog = new AlertDialog
+                .Builder(getContext())
+                .create();
+        mAlertDialog.setMessage(message);
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        mAlertDialog.show();
+    }
+
+    @Override
+    public void dismissAlertDialog() {
+        mAlertDialog.dismiss();
     }
 
     @Override

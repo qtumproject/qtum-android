@@ -1,10 +1,8 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment;
 
 import android.os.Handler;
-import android.util.Log;
 
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.btc.Transaction;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
 
@@ -67,21 +65,21 @@ public class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl imp
             }
         }
         getView().clearError();
-        getView().setDialogProgressBar("Sending");
+        getView().setProgressDialog("Sending");
         getInteractor().sendTx(sendInfo[0], sendInfo[1], new SendBaseFragmentInteractorImpl.SendTxCallBack() {
             @Override
             public void onSuccess() {
-                getView().dismissDialogProgressBar();
+                getView().dismissProgressDialog();
             }
 
             @Override
             public void onError(String error) {
-                getView().dismissDialogProgressBar();
-                getView().setDialogProgressBar(error);
+                getView().dismissProgressDialog();
+                getView().setAlertDialog(error);
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        getView().dismissDialogProgressBar();
+                        getView().dismissAlertDialog();
                     }
                 }, 2000);
             }

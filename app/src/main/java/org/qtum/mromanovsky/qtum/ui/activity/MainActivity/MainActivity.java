@@ -21,6 +21,8 @@ import org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
+import java.util.List;
+
 import butterknife.BindView;
 
 
@@ -29,7 +31,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     private static final int LAYOUT = R.layout.activity_main;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
     private static final int REQUEST_CAMERA=0;
-
+    Fragment fragment;
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
 
@@ -66,12 +68,20 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     }
 
     @Override
-    public void openFragment(Fragment fragment) {
+    public void openFragment(Fragment fragment,Fragment fragment2) {
         getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
-                .commit();
+        if(fragment2 != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                    .remove(fragment2)
+                    .commit();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                    .commit();
+        }
         FragmentManager fm = getSupportFragmentManager();
         if(fm.getFragments()!=null) {
             for (Fragment frag : fm.getFragments()) {
@@ -103,7 +113,8 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment;
+
+                Fragment currentFragment = fragment;
                 switch (item.getItemId()) {
                     case R.id.item_wallet:
                         fragment = WalletFragment.newInstance();
@@ -120,7 +131,8 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                     default:
                         return false;
                 }
-                getPresenter().openFragment(fragment);
+
+                getPresenter().openFragment(fragment,currentFragment);
                 return true;
             }
         });

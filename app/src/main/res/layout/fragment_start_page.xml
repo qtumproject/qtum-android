@@ -16,15 +16,16 @@
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
                     android:paddingTop="@dimen/activity_vertical_margin">
-
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/rl_button_container"
+            android:layout_centerHorizontal="true">
         <Button
             android:id="@+id/bt_create_new"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/bt_import_wallet"
-            android:layout_alignLeft="@+id/bt_import_wallet"
-            android:layout_alignStart="@+id/bt_import_wallet"
-            android:layout_marginBottom="16dp"
             android:background="@drawable/background_bt_alpha"
             android:text="@string/create_new"
             android:textAllCaps="false"
@@ -34,14 +35,15 @@
         <Button
             android:id="@+id/bt_import_wallet"
             android:layout_width="180dp"
+            android:layout_marginTop="16dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/bt_create_new"
             android:background="@drawable/background_bt_alpha"
             android:text="@string/import_wallet"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/button_text"/>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_start_page_create"

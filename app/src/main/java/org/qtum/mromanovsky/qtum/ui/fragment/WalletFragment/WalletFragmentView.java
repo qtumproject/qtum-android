@@ -10,7 +10,7 @@ public interface WalletFragmentView extends BaseFragmentView {
     void updateRecyclerView(List<TransactionQTUM> list);
     void setAdapterNull();
     void updateBalance(double balance);
-    void updateData(double balance);
+    void updateData();
     void updatePubKey(String pubKey);
     void startRefreshAnimation();
 }

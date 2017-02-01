@@ -7,6 +7,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -45,6 +46,8 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     ImageView mImageViewLogo;
     @BindView(R.id.iv_logo_txt)
     ImageView mImageViewLogoTxt;
+    @BindView(R.id.rl_button_container)
+    RelativeLayout mRelativeLayoutButtonContainer;
 
     @OnClick({R.id.bt_import_wallet, R.id.bt_create_new})
     public void OnClick(View view) {
@@ -85,6 +88,7 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
 
         mTextViewYouDontHave.setVisibility(View.INVISIBLE);
         mTextViewStartPageCreate.setVisibility(View.INVISIBLE);
+        mRelativeLayoutButtonContainer.setVisibility(View.INVISIBLE);
 
         mAnimState = 9;
 
@@ -127,7 +131,12 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
                         break;
                     case 11:
                         mTextViewStartPageCreate.setVisibility(View.VISIBLE);
+
+                        mAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.button_move);
+                        mRelativeLayoutButtonContainer.startAnimation(mAnimation);
                         break;
+                    case 12:
+                        mRelativeLayoutButtonContainer.setVisibility(View.VISIBLE);
                 }
                 mAnimation.setAnimationListener(this);
                 mAnimState++;
