@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import org.bitcoinj.core.Address;
+import org.bitcoinj.core.AddressFormatException;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.Sha256Hash;
@@ -67,9 +68,14 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
         getUnspentOutputList(new GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutputResponse> unspentOutputResponseList) {
-                org.bitcoinj.core.Context context = new org.bitcoinj.core.Context(CurrentNetParams.getNetParams());
+                //org.bitcoinj.core.Context context = new org.bitcoinj.core.Context(CurrentNetParams.getNetParams());
                 Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
-                Address addressToSend = Address.fromBase58(CurrentNetParams.getNetParams(), address);
+                Address addressToSend=null;
+                try {
+                    addressToSend = Address.fromBase58(CurrentNetParams.getNetParams(), address);
+                }catch (AddressFormatException a){
+                    callBack.onError();
+                }
                 ECKey ecKey = KeyStorage.getInstance(mContext).getWallet().currentReceiveKey();
                 double amountDouble = Double.parseDouble(amount);
                 long amountLong =(long) amountDouble * 100000000;
@@ -87,7 +93,6 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                 byte[] bytes = transaction.unsafeBitcoinSerialize();
 
                 String transactionHex = BTCUtils.toHex(bytes);
-                Log.d("hello","hello");
                 Date date = new Date();
                 long l =  date.getTime()/1000;
                 int i3 = (int) l;
@@ -123,7 +128,7 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
 
                             @Override
                             public void onError(Throwable e) {
-                                callBack.onError();
+                                callBack.onError("Sending Error");
                             }
 
                             @Override
@@ -131,6 +136,11 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                                 callBack.onSuccess();
                             }
                         });
+            }
+
+            @Override
+            public void onError() {
+                callBack.onError("Incorrect Address");
             }
         });
     }
@@ -141,11 +151,12 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
 
     public interface CreateTxCallBack {
         void onSuccess(String txHex);
+        void onError();
     }
 
     public interface SendTxCallBack {
         void onSuccess();
-        void onError();
+        void onError(String error);
     }
 
     @Override

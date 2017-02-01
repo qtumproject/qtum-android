@@ -75,6 +75,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     public void onResume() {
         super.onResume();
         getPresenter().isQrCodeRecognition(getArguments().getBoolean(IS_QR_CODE_RECOGNITION));
+        getArguments().putBoolean(IS_QR_CODE_RECOGNITION,false);
     }
 
     @Override

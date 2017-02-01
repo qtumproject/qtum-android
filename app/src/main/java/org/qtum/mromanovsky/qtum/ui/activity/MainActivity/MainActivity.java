@@ -72,6 +72,18 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
                 .commit();
+        FragmentManager fm = getSupportFragmentManager();
+        if(fm.getFragments()!=null) {
+            for (Fragment frag : fm.getFragments()) {
+                if (frag != null && frag.isVisible()) {
+                    FragmentManager childFm = frag.getChildFragmentManager();
+                    if (childFm.getBackStackEntryCount() > 0) {
+                        childFm.popBackStack();
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     public void showBottomNavigationView() {

@@ -57,7 +57,7 @@ public class QtumJSONRPCClientImpl extends JSONRPCHttpClient implements  QtumJSO
                 KeyStorage.getInstance(context).getWallet();
                 final Object[] params = new Object[4];
                 params[0] = KeyStorage.getInstance(context).getWallet().currentReceiveAddress().toString();
-                params[1] = KeyStorage.getInstance(context).getWallet().currentReceiveAddress().toString();;
+                params[1] = params[0];
                 params[2] = false;
                 params[3] = false;
                 final String method = "importaddress";

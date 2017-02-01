@@ -3,6 +3,8 @@ package org.qtum.mromanovsky.qtum.datastorage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.io.File;
+
 
 public class QtumSharedPreference {
     private static QtumSharedPreference sInstance = null;
@@ -71,5 +73,7 @@ public class QtumSharedPreference {
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
         mEditor.clear();
         mEditor.apply();
+        File file = new File(context.getFilesDir().getPath().toString() + "/key_storage");
+        file.delete();
     }
 }

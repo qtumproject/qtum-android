@@ -75,15 +75,15 @@ public class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl imp
             }
 
             @Override
-            public void onError() {
+            public void onError(String error) {
                 getView().dismissDialogProgressBar();
-                getView().setDialogProgressBar("Error");
+                getView().setDialogProgressBar(error);
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
                         getView().dismissDialogProgressBar();
                     }
-                }, 3000);
+                }, 2000);
             }
         });
     }

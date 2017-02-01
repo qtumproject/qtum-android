@@ -20,6 +20,7 @@ public class KeyStorage {
     private static KeyStorage sKeyStorage;
     private static Wallet sWallet = null;
     private File mFile;
+    private Context mContext;
 
     public static KeyStorage getInstance(Context context){
         if(sKeyStorage == null){
@@ -29,17 +30,8 @@ public class KeyStorage {
     }
 
     private KeyStorage(Context context){
-        mFile = new File(context.getFilesDir().getPath().toString() + "/key_storage");
-        boolean isCreated = QtumSharedPreference.getInstance().getKeyGeneratedInstance(context);
-        if(!isCreated) {
-            sWallet = new Wallet(CurrentNetParams.getNetParams());
-            try {
-                sWallet.saveToFile(mFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        int i = 0;
+        mContext = context;
+        mFile = new File(mContext.getFilesDir().getPath().toString() + "/key_storage");
     }
 
     public Observable<Wallet> loadWalletFromFile(){
@@ -77,6 +69,17 @@ public class KeyStorage {
     }
 
     public Wallet getWallet() {
+        boolean isCreated = QtumSharedPreference.getInstance().getKeyGeneratedInstance(mContext);
+        if(!isCreated) {
+            {
+                sWallet = new Wallet(CurrentNetParams.getNetParams());
+                try {
+                    sWallet.saveToFile(mFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return sWallet;
     }
 
