@@ -4,6 +4,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
@@ -149,6 +150,12 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
             public void onSuccess(List<History> historyList) {
                 getInteractor().setHistoryList(historyList);
                 updateData();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().stopRefreshRecyclerAnimation();
+                Toast.makeText(getView().getContext(),e.toString(),Toast.LENGTH_SHORT).show();
             }
         });
     }

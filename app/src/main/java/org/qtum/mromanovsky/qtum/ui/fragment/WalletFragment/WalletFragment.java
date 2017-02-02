@@ -136,6 +136,11 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
     }
 
     @Override
+    public void stopRefreshRecyclerAnimation() {
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
     public void initializeViews() {
 
         ((MainActivity) getActivity()).showBottomNavigationView();
@@ -265,12 +270,12 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
             if (history.getAmount() > 0) {
                 mTextViewOperationType.setText(R.string.received);
                 mTextViewID.setText(history.getToAddress());
-                mImageViewIcon.setImageResource(R.drawable.ic_received_transaction);
+                mImageViewIcon.setImageResource(R.drawable.ic_received);
                 mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.colorAccent));
             } else {
                 mTextViewOperationType.setText(R.string.sent);
                 mTextViewID.setText(history.getFromAddress());
-                mImageViewIcon.setImageResource(R.drawable.ic_sent_transaction);
+                mImageViewIcon.setImageResource(R.drawable.ic_sent);
                 mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.pink));
             }
             mTextViewValue.setText(history.getAmount() + " QTUM");

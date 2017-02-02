@@ -48,7 +48,7 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        callBack.onError(e);
                     }
 
                     @Override
@@ -87,6 +87,7 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     public interface GetHistoryListCallBack {
         void onSuccess(List<History> historyList);
+        void onError(Throwable e);
     }
 
     public interface GetBalanceCallBack {

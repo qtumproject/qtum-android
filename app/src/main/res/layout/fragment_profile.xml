@@ -64,7 +64,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_arrow"/>
+                android:src="@drawable/ic_rightarrow"/>
 
         </LinearLayout>
 
@@ -82,7 +82,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_pin"/>
+                android:src="@drawable/ic_changepin"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -95,7 +95,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_arrow"/>
+                android:src="@drawable/ic_rightarrow"/>
 
         </LinearLayout>
 
@@ -131,7 +131,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_arrow"/>
+                android:src="@drawable/ic_rightarrow"/>
 
         </LinearLayout>
 
@@ -166,7 +166,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_arrow"/>
+                android:src="@drawable/ic_rightarrow"/>
 
         </LinearLayout>
 
@@ -196,7 +196,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_arrow"/>
+                android:src="@drawable/ic_rightarrow"/>
 
         </LinearLayout>
 

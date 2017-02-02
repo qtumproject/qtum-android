@@ -36,7 +36,7 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/background_pressed_alpha_white"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_back_up"/>
+                android:src="@drawable/ic_share2"/>
         </android.support.v7.widget.Toolbar>
 
 

@@ -155,7 +155,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
                     mTextViewToolBarTitle.setText(R.string.enter_pin);
                     break;
                 case CHANGING:
-                    actionBar.setDisplayHomeAsUpEnabled(true);
+                    //actionBar.setDisplayHomeAsUpEnabled(true);
                     mTextViewToolBarTitle.setText(R.string.change_pin);
                     break;
             }

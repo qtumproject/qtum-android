@@ -13,4 +13,5 @@ public interface WalletFragmentView extends BaseFragmentView {
     void updateData();
     void updatePubKey(String pubKey);
     void startRefreshAnimation();
+    void stopRefreshRecyclerAnimation();
 }

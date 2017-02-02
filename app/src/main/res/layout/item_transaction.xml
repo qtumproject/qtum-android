@@ -35,7 +35,7 @@
                 android:layout_weight="0.08"
                 android:gravity="start"
                 android:scaleType="fitStart"
-                android:src="@drawable/ic_sent_transaction"/>
+                android:src="@drawable/ic_sent"/>
 
             <TextView
                 android:id="@+id/tv_operation_type"

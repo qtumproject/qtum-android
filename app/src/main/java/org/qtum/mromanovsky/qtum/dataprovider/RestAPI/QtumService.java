@@ -58,10 +58,14 @@ public class QtumService {
             @Override
             public void call(Subscriber<? super List<History>> subscriber) {
                 Call<List<History>> request;
-                request = mServiceApi.getHistoryList("1HQSVAgFkMwwQ8xuhgQPQ8jFxKBk9kHWD5",2,0);
+                request = mServiceApi.getHistoryList("1HQSVAgFkMwwQ8xuhgQPQ8jFxKBk9kHWD5",20,0);
                 try {
                     Response<List<History>> response = request.execute();
-                    subscriber.onNext(response.body());
+                    if(response.errorBody() != null){
+                        subscriber.onError(new Throwable(response.errorBody().toString()));
+                    }else {
+                        subscriber.onNext(response.body());
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

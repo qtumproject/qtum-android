@@ -75,6 +75,7 @@ public class KeyStorage {
                 sWallet = new Wallet(CurrentNetParams.getNetParams());
                 try {
                     sWallet.saveToFile(mFile);
+                    subscriber.onNext(sWallet);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

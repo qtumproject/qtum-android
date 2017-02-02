@@ -72,6 +72,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
             activity.setSupportActionBar(mToolbar);
             ActionBar actionBar = activity.getSupportActionBar();
             actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 

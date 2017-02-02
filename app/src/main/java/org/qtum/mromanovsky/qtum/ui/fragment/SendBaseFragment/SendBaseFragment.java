@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -37,6 +38,8 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     TextInputLayout mTextInputLayoutPin;
     @BindView(R.id.bt_send)
     Button mButtonSend;
+    @BindView(R.id.tv_toolbar_send)
+    TextView mTextViewToolBar;
 
     SendBaseFragmentPresenterImpl sendBaseFragmentPresenter;
 
@@ -118,12 +121,15 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @Override
     public void qrCodeRecognitionToolBar() {
         mButtonQrCode.setVisibility(View.GONE);
+        mTextViewToolBar.setText(R.string.qr_code);
         mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
     }
 
     @Override
     public void sendToolBar() {
         if(mButtonQrCode!=null) {
+            mTextViewToolBar.setText(R.string.send);
             mButtonQrCode.setVisibility(View.VISIBLE);
             mActionBar.setDisplayHomeAsUpEnabled(false);
         }
