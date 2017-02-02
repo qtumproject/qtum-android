@@ -13,6 +13,7 @@ import org.bitcoinj.core.TransactionOutPoint;
 import org.bitcoinj.script.Script;
 import org.qtum.mromanovsky.qtum.btc.BTCUtils;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
@@ -32,6 +33,7 @@ import rx.schedulers.Schedulers;
 public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
     private Context mContext;
+
 
     public SendBaseFragmentInteractorImpl(Context context){
         mContext = context;
@@ -74,9 +76,9 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                     callBack.onError("Incorrect Address");
                 }
                 ECKey ecKey = KeyStorage.getInstance(mContext).getWallet().currentReceiveKey();
-                double amountDouble = Double.parseDouble(amount);
-                long amountLong =(long) amountDouble * 100000000;
-
+                long amountLong = Long.parseLong(amount);
+                Long fee = 10000000000L;
+                amountLong+=fee;
 
                 Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
                     @Override
@@ -85,28 +87,38 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                     }
                 });
 
-                double amountFromOutput = 0;
-                double balance = 0;
+                Long amountFromOutput = (long)0;
+                Long overFlow = (long)0;
                 transaction.addOutput(Coin.valueOf(amountLong),addressToSend);
+
                 for(UnspentOutput unspentOutput : unspentOutputs){
-                    balance += unspentOutput.getAmount();
-                    if(amountFromOutput<amountDouble){
-                        Sha256Hash sha256Hash = new Sha256Hash((BTCUtils.fromHex(unspentOutput.getTxHash())));
-                        TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
-                        Script script = new Script(BTCUtils.fromHex(unspentOutput.getTxoutScriptPubKey()));
-                        transaction.addSignedInput(outPoint, script, ecKey, Transaction.SigHash.ALL, true);
-                        amountFromOutput += unspentOutput.getAmount();
+                    overFlow += unspentOutput.getAmount();
+                    if(overFlow>=amountLong){
+                        break;
                     }
                 }
-                if(amountFromOutput<amountDouble){
+                Long delivery = overFlow - amountLong;
+                if(delivery!=0L) {
+                    transaction.addOutput(Coin.valueOf((delivery-fee)), ecKey.toAddress(CurrentNetParams.getNetParams()));
+                    int i = 0;
+                }
+
+                for(UnspentOutput unspentOutput : unspentOutputs){
+                    Sha256Hash sha256Hash = new Sha256Hash((BTCUtils.fromHex(unspentOutput.getTxHash())));
+                    TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
+                    Script script = new Script(BTCUtils.fromHex(unspentOutput.getTxoutScriptPubKey()));
+                    transaction.addSignedInput(outPoint, script, ecKey, Transaction.SigHash.ALL, true);
+                    amountFromOutput += unspentOutput.getAmount();
+                    if(amountFromOutput>amountLong){
+                        break;
+                    }
+                }
+                if(amountFromOutput<amountLong){
                     //TODO: throw exception
                     callBack.onError("not enough money");
                     return;
                 }
-                double deliveryDouble = balance - amountDouble;
-                long deliveryLong = (long) deliveryDouble*100000000;
 
-                transaction.addOutput(Coin.valueOf(deliveryLong),ecKey.toAddress(CurrentNetParams.getNetParams()));
 
                 transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
                 transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
@@ -135,35 +147,35 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
 
     @Override
     public void sendTx(String address, String amount, final SendTxCallBack callBack) {
-//        createTx(address, amount, new CreateTxCallBack() {
-//            @Override
-//            public void onSuccess(String txHex) {
-//                mQtumJSONRPCClient.sendTx(txHex)
-//                        .subscribeOn(Schedulers.io())
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(new Subscriber<Boolean>() {
-//                            @Override
-//                            public void onCompleted() {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                                callBack.onError("Sending Error");
-//                            }
-//
-//                            @Override
-//                            public void onNext(Boolean aBoolean) {
-//                                callBack.onSuccess();
-//                            }
-//                        });
-//            }
-//
-//            @Override
-//            public void onError(String error) {
-//                callBack.onError(error);
-//            }
-//        });
+        createTx(address, amount, new CreateTxCallBack() {
+            @Override
+            public void onSuccess(String txHex) {
+                QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(txHex, 1))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<Void>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Void aVoid) {
+                                callBack.onSuccess();
+                            }
+                        });
+            }
+
+            @Override
+            public void onError(String error) {
+                callBack.onError(error);
+            }
+        });
     }
 
     public interface GetUnspentListCallBack{

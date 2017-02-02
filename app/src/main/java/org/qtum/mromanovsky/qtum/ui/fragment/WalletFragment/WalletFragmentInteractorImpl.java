@@ -37,7 +37,7 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     @Override
     public void getHistoryList(final GetHistoryListCallBack callBack) {
 
-        QtumService.newInstance().getHistoryList(QtumSharedPreference.getInstance().getIdentifier(mContext),10,0)
+        QtumService.newInstance().getHistoryList(KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString(),20,0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<History>>() {

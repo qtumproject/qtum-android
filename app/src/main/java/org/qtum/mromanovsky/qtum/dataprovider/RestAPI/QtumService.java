@@ -3,6 +3,7 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ import rx.Subscriber;
 public class QtumService {
 
     private static QtumService sQtumService;
-    public static final String BASE_URL = "http://139.162.119.184/";
+    public static final String BASE_URL = "http://139.162.178.174/";
     QtumRestService mServiceApi;
 
     public static QtumService newInstance(){
@@ -42,10 +43,14 @@ public class QtumService {
             @Override
             public void call(Subscriber<? super List<UnspentOutput>> subscriber) {
                 Call<List<UnspentOutput>> request;
-                request = mServiceApi.getOutputsUnspent("1HQSVAgFkMwwQ8xuhgQPQ8jFxKBk9kHWD5");
+                request = mServiceApi.getOutputsUnspent(address);
                 try {
                     Response<List<UnspentOutput>> response = request.execute();
-                    subscriber.onNext(response.body());
+                    if(response.errorBody() != null){
+                        subscriber.onError(new Throwable(response.errorBody().toString()));
+                    }else {
+                        subscriber.onNext(response.body());
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -53,12 +58,12 @@ public class QtumService {
         });
     }
 
-    public Observable<List<History>> getHistoryList(final String address, int limit, int offset) {
+    public Observable<List<History>> getHistoryList(final String address, final int limit, final int offset) {
         return Observable.create(new Observable.OnSubscribe<List<History>>() {
             @Override
             public void call(Subscriber<? super List<History>> subscriber) {
                 Call<List<History>> request;
-                request = mServiceApi.getHistoryList("1HQSVAgFkMwwQ8xuhgQPQ8jFxKBk9kHWD5",20,0);
+                request = mServiceApi.getHistoryList(address,limit,offset);
                 try {
                     Response<List<History>> response = request.execute();
                     if(response.errorBody() != null){
@@ -98,6 +103,26 @@ public class QtumService {
                 try {
                     Response<BlockChainInfo> response = request.execute();
                     subscriber.onNext(response.body());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public Observable<Void> sendRawTransaction(final SendRawTransactionRequest sendRawTransactionRequest) {
+        return Observable.create(new Observable.OnSubscribe<Void>() {
+            @Override
+            public void call(Subscriber<? super Void> subscriber) {
+                Call<Void> request;
+                request = mServiceApi.sendRawTransaction(sendRawTransactionRequest);
+                try {
+                    Response<Void> response = request.execute();
+                    if(response.errorBody() != null){
+                        subscriber.onError(new Throwable(response.errorBody().toString()));
+                    }else {
+                        subscriber.onNext(response.body());
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
