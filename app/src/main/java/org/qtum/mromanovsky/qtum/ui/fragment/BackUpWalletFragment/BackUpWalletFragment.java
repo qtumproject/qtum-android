@@ -46,6 +46,7 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
             ActionBar actionBar = activity.getSupportActionBar();
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
         }
     }
 }

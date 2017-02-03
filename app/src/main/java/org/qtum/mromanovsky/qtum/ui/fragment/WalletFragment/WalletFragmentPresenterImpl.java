@@ -140,6 +140,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        getInteractor().unSubscribe();
         getView().setAdapterNull();
     }
 
@@ -173,7 +174,6 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         getView().updateRecyclerView(getInteractor().getHistoryList());
         String pubKey = getInteractor().getAddress();
         getView().updatePubKey(pubKey);
-        getView().updateData();
     }
 
 }

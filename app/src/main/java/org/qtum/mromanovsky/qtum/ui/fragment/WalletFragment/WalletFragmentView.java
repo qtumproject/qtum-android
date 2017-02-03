@@ -10,7 +10,6 @@ public interface WalletFragmentView extends BaseFragmentView {
     void updateRecyclerView(List<History> historyList);
     void setAdapterNull();
     void updateBalance(double balance);
-    void updateData();
     void updatePubKey(String pubKey);
     void startRefreshAnimation();
     void stopRefreshRecyclerAnimation();

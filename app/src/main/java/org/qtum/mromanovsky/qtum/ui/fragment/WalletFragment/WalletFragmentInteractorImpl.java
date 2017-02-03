@@ -13,12 +13,15 @@ import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 import java.util.List;
 
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     Context mContext;
+    Subscription mSubscriptionHistoryList = null;
+    Subscription mSubscriptionBalance = null;
 
     public WalletFragmentInteractorImpl(Context context){
         mContext = context;
@@ -37,7 +40,7 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     @Override
     public void getHistoryList(final GetHistoryListCallBack callBack) {
 
-        QtumService.newInstance().getHistoryList(KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString(),20,0)
+        mSubscriptionHistoryList = QtumService.newInstance().getHistoryList(KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString(),20,0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<History>>() {
@@ -60,7 +63,7 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     @Override
     public void getBalance(final GetBalanceCallBack callBack) {
-        QtumService.newInstance().getUnspentOutputs(KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString())
+        mSubscriptionBalance = QtumService.newInstance().getUnspentOutputs(KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<UnspentOutput>>() {
@@ -83,6 +86,15 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                         callBack.onSuccess(balance);
                     }
                 });
+    }
+
+    public void unSubscribe(){
+        if(mSubscriptionHistoryList != null){
+            mSubscriptionHistoryList.unsubscribe();
+        }
+        if(mSubscriptionBalance != null){
+            mSubscriptionBalance.unsubscribe();
+        }
     }
 
     public interface GetHistoryListCallBack {

@@ -102,6 +102,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
     public void updateRecyclerView(List<History> historyList) {
         mTransactionAdapter = new TransactionAdapter(historyList);
         mRecyclerView.setAdapter(mTransactionAdapter);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -115,11 +116,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
 
         mTvBalance.setVisibility(View.VISIBLE);
         mProgressBarDialog.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void updateData() {
-        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

@@ -83,7 +83,7 @@ public class QtumService {
             @Override
             public void call(Subscriber<? super List<News>> subscriber) {
                 Call<List<News>> request;
-                request = mServiceApi.getNews("en");
+                request = mServiceApi.getNews(lang);
                 try {
                     Response<List<News>> response = request.execute();
                     subscriber.onNext(response.body());
@@ -129,7 +129,5 @@ public class QtumService {
             }
         });
     }
-
-    //TODO: sendRawTransaction
 
 }

@@ -28,7 +28,7 @@ public interface QtumRestService {
 
     @GET("/blockchain/info")
     Call<BlockChainInfo> getBlockChainInfo();
-//     TODO: response
+
     @POST("/send-raw-transaction")
     Call<Void> sendRawTransaction(@Body SendRawTransactionRequest sendRawTransactionRequest);
 }
