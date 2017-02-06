@@ -27,6 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
+                android:layout_marginRight="8dp"
                 android:id="@+id/tv_title"
                 android:text="Reaching 10 Million Wallets and Beyond"/>
 

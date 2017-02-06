@@ -40,6 +40,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                                 getView().clearError();
                                 final WalletFragment walletFragment = WalletFragment.newInstance();
                                 getView().setProgressDialog("Key generation");
+                                getView().hideKeyBoard();
                                 getInteractor().createWallet(getView().getContext(), new PinFragmentInteractorImpl.CreateWalletCallBack() {
                                     @Override
                                     public void onSuccess() {
@@ -56,6 +57,33 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                 }
                 break;
             }
+            case PinFragment.IMPORTING: {
+                if (pin.length() < 4) {
+                    getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
+                } else {
+                    switch (PinFragment.currentState){
+                        case 0:
+                            pinForRepeat = Integer.parseInt(pin);
+                            PinFragment.currentState=1;
+                            getView().clearError();
+                            getView().updateState();
+                            break;
+                        case 1:
+                            if(Integer.parseInt(pin) == pinForRepeat) {
+                                getView().clearError();
+                                final WalletFragment walletFragment = WalletFragment.newInstance();
+                                getView().hideKeyBoard();
+                                getInteractor().savePassword(pinForRepeat);
+                                getView().openFragment(walletFragment);
+                            } else {
+                                getView().confirmError(getView().getContext().getString(R.string.incorrect_repeated_pin));
+                            }
+                            break;
+                    }
+                }
+                break;
+            }
+
             case PinFragment.AUTHENTICATION: {
                 if (pin.length() < 4) {
                     getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
@@ -65,6 +93,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                         getView().clearError();
                         final WalletFragment walletFragment = WalletFragment.newInstance();
                         getView().setProgressDialog("Loading key");
+                        getView().hideKeyBoard();
                         getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
                             @Override
                             public void onSuccess() {
@@ -103,6 +132,8 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                         case 2:
                             if(Integer.parseInt(pin) == pinForRepeat) {
                                 getView().clearError();
+                                getView().hideKeyBoard();
+                                getInteractor().savePassword(Integer.parseInt(pin));
                                 getView().getFragmentActivity().onBackPressed();
                             } else {
                                 getView().confirmError(getView().getContext().getString(R.string.incorrect_repeated_pin));
@@ -137,7 +168,6 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
     @Override
     public void onPause(Context context) {
         super.onPause(context);
-        getView().hideKeyBoard();
         pinForRepeat = 0;
         PinFragment.currentState = 0;
     }
@@ -152,7 +182,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(PinFragment.sAction==PinFragment.CHANGING) {
+        if(PinFragment.sAction.equals(PinFragment.CHANGING)) {
             ((MainActivity) getView().getFragmentActivity()).showBottomNavigationView();
         }
     }

@@ -14,6 +14,7 @@ public class QtumSharedPreference {
     private static final String QTUM_WALLET_PASSWORD = "qtum_wallet_password";
     private static final String QTUM_IS_KEY_GENERATED = "qtum_is_key_generated";
     private static final String QTUM_KEY_IDENTIFIER = "qtum_key_identifier";
+    private static final String QTUM_SEED = "qtum_seed";
 
     private QtumSharedPreference() { }
 
@@ -65,6 +66,17 @@ public class QtumSharedPreference {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
         mEditor.putString(QTUM_KEY_IDENTIFIER, identifier);
+        mEditor.apply();
+    }
+
+    public String getSeed(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_SEED, "");
+    }
+
+    public void saveSeed(Context context, String seed) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putString(QTUM_SEED, seed);
         mEditor.apply();
     }
 

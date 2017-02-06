@@ -3,6 +3,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.ImportWalletFragment;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -26,12 +27,19 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
     ImageView mImageViewTopWave;
     @BindView(R.id.bt_cancel)
     Button mButtonCancel;
+    @BindView(R.id.bt_import)
+    Button mButtonImport;
+    @BindView(R.id.et_your_brain_code)
+    EditText mEditTextYourBrainCode;
 
-    @OnClick({R.id.bt_cancel})
+    @OnClick({R.id.bt_cancel,R.id.bt_import})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_cancel:
                 getPresenter().cancel();
+                break;
+            case R.id.bt_import:
+                getPresenter().onImportClick(mEditTextYourBrainCode.getText().toString());
                 break;
         }
     }

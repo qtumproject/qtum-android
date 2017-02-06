@@ -31,7 +31,7 @@ public class StartPageFragmentPresenterImpl extends BaseFragmentPresenterImpl im
 
     @Override
     public void createNewWallet() {
-        CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance();
+        CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(true);
         getView().openFragmentAndAddToBackStack(createWalletNameFragment);
     }
 

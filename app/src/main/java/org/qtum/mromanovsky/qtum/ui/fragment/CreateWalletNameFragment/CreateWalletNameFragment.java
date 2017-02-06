@@ -1,13 +1,16 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.CreateWalletNameFragment;
 
 
+import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -21,6 +24,8 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
 
     public static final int LAYOUT = R.layout.fragment_create_wallet_name;
     public static final String TAG = "CreateWalletNameFragment";
+    public static final String IS_CREATE_NEW = "is_create_new";
+    public static boolean mIsCreateNew;
     AnimatedVectorDrawable drawableBottom;
     AnimatedVectorDrawable drawableTop;
 
@@ -51,9 +56,18 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
         }
     }
 
-    public static CreateWalletNameFragment newInstance() {
+    public static CreateWalletNameFragment newInstance(boolean isCreateNew) {
         CreateWalletNameFragment createWalletNameFragment = new CreateWalletNameFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(IS_CREATE_NEW, isCreateNew);
+        createWalletNameFragment.setArguments(args);
         return createWalletNameFragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mIsCreateNew = getArguments().getBoolean(IS_CREATE_NEW);
     }
 
     @Override
@@ -77,6 +91,11 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
         mImageViewBottomWave.setImageDrawable(drawableBottom);
         drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
         mImageViewTopWave.setImageDrawable(drawableTop);
+
+        mTextInputLayoutWalletName.setFocusableInTouchMode(true);
+        mTextInputLayoutWalletName.requestFocus();
+        mTextInputEditTextWalletName.setFocusable(true);
+        mTextInputEditTextWalletName.requestFocus();
     }
 
     @Override

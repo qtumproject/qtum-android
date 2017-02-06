@@ -33,6 +33,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     public final static String CREATING = "creating";
     public final static String AUTHENTICATION = "authentication";
     public final static String CHANGING = "changing";
+    public final static String IMPORTING = "importing";
 
     public final static String ENTER_PIN = "enter pin";
     public final static String ENTER_NEW_PIN = "enter new pin";
@@ -116,6 +117,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     public void updateState() {
         mTextInputEditTextWalletPin.setText("");
         switch (sAction) {
+            case IMPORTING:
             case CREATING:
                 mTextInputLayoutWalletPin.setHint(CREATING_STATE[currentState]);
                 break;
@@ -148,6 +150,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
             ActionBar actionBar = activity.getSupportActionBar();
             actionBar.setDisplayShowTitleEnabled(false);
             switch (sAction) {
+                case IMPORTING:
                 case CREATING:
                     mTextViewToolBarTitle.setText(R.string.create_pin);
                     break;

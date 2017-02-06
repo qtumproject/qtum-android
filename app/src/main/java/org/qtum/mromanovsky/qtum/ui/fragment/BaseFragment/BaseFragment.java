@@ -125,6 +125,11 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
+    public void showSoftInput() {
+        ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+    }
+
+    @Override
     public void finish() {
         getActivity().finishAffinity();
     }

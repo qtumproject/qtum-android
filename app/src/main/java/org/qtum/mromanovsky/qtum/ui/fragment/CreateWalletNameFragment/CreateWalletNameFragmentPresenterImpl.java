@@ -11,9 +11,15 @@ import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
 public class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl implements CreateWalletNameFragmentPresenter {
 
     private CreateWalletNameFragmentView mCreateWalletNameFragmentView;
+    private CreateWalletNameFragmentInteractorImpl mCreateWalletNameFragmentInteractor;
 
     public CreateWalletNameFragmentPresenterImpl(CreateWalletNameFragmentView createWalletNameFragmentView) {
         mCreateWalletNameFragmentView = createWalletNameFragmentView;
+        mCreateWalletNameFragmentInteractor = new CreateWalletNameFragmentInteractorImpl(getView().getContext());
+    }
+
+    public CreateWalletNameFragmentInteractorImpl getInteractor() {
+        return mCreateWalletNameFragmentInteractor;
     }
 
     @Override
@@ -21,9 +27,15 @@ public class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenter
         if (name.isEmpty()) {
             getView().incorrectName(getView().getContext().getString(R.string.empty_name));
         } else {
-            QtumSharedPreference.getInstance().saveWalletName(getView().getContext(), name);
-            PinFragment pinFragment = PinFragment.newInstance(PinFragment.CREATING);
+            getInteractor().saveWalletName(name);
             getView().clearError();
+            PinFragment pinFragment;
+            if(CreateWalletNameFragment.mIsCreateNew) {
+                pinFragment = PinFragment.newInstance(PinFragment.CREATING);
+            } else {
+                pinFragment = PinFragment.newInstance(PinFragment.IMPORTING);
+
+            }
             getView().openFragmentWithOutPopBackStack(pinFragment);
         }
     }

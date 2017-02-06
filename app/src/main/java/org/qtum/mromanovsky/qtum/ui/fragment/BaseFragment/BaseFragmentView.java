@@ -18,4 +18,5 @@ public interface BaseFragmentView extends BaseContextView {
     void dismissProgressDialog();
     void setAlertDialog(String message);
     void dismissAlertDialog();
+    void showSoftInput();
 }

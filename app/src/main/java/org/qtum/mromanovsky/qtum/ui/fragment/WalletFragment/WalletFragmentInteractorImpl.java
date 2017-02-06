@@ -108,6 +108,7 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     @Override
     public String getAddress() {
+        //return KeyStorage.getInstance(mContext).getWallet().freshReceiveAddress().toString();
         return KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString();
     }
 }

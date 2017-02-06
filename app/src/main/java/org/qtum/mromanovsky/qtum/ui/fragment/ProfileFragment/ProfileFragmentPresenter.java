@@ -5,4 +5,5 @@ public interface ProfileFragmentPresenter {
     void changePin();
     void logOut();
     void walletBackUp();
+    void onLogOutYesClick();
 }

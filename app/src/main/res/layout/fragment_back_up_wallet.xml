@@ -56,7 +56,7 @@
             android:textColor="@android:color/white"
             android:background="@drawable/background_bt_green"
             android:stateListAnimator="@null"
-            android:id="@+id/bt_send"
+            android:id="@+id/bt_copy_brain_code"
             android:textSize="@dimen/button_text"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"

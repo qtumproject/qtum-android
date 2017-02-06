@@ -44,6 +44,7 @@
             android:layout_height="128dp"
             android:background="@drawable/background_et_import_wallet"
             android:gravity="top"
+            android:id="@+id/et_your_brain_code"
             android:hint="@string/your_brain_code"
             android:padding="6dp"
             android:textColor="@color/white_alpha230"

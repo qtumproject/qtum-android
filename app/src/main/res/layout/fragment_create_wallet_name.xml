@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:textColorHint="@color/white_alpha230"
             android:id="@+id/til_wallet_name"
+            android:focusable="true"
             android:layout_marginTop="48dp"
             android:layout_marginLeft="64dp"
             android:layout_marginRight="64dp">
@@ -50,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
+                android:focusable="true"
                 android:textSize="32sp"
                 android:textColor="@color/white_alpha230"
                 android:id="@+id/et_wallet_name"

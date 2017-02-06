@@ -10,7 +10,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class ProfileFragment extends BaseFragment implements ProfileFragmentView {
+public class ProfileFragment extends BaseFragment implements ProfileFragmentView, LogOutDialogFragment.OnYesClickListener {
 
     public static final int LAYOUT = R.layout.fragment_profile;
 
@@ -61,5 +61,17 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     @Override
     public void initializeViews() {
 
+    }
+
+    @Override
+    public void startDialogFragmentForResult() {
+        LogOutDialogFragment logOutDialogFragment = new LogOutDialogFragment();
+        logOutDialogFragment.setTargetFragment(this,200);
+        logOutDialogFragment.show(getFragmentManager(),LogOutDialogFragment.class.getCanonicalName());
+    }
+
+    @Override
+    public void onClick() {
+        getPresenter().onLogOutYesClick();
     }
 }

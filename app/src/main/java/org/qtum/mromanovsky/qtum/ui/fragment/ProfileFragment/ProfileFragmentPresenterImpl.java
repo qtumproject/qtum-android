@@ -34,16 +34,22 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
 
     @Override
     public void logOut() {
-        getInteractor().clearSharedPreference();
-        StartPageFragment startPageFragment = StartPageFragment.newInstance();
-        ((MainActivity)getView().getFragmentActivity()).openFragment(startPageFragment,null);
-        //getView().openFragment(startPageFragment);
+        getView().startDialogFragmentForResult();
     }
+
+
 
     @Override
     public void walletBackUp() {
         BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance();
         getView().openFragmentAndAddToBackStack(backUpWalletFragment);
+    }
+
+    @Override
+    public void onLogOutYesClick() {
+        getInteractor().clearSharedPreference();
+        StartPageFragment startPageFragment = StartPageFragment.newInstance();
+        ((MainActivity)getView().getFragmentActivity()).openFragment(startPageFragment,null);
     }
 
 }
