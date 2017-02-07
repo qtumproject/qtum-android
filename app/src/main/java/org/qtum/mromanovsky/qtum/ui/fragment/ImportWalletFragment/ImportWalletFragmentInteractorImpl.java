@@ -4,14 +4,12 @@ import android.content.Context;
 
 import org.bitcoinj.wallet.Wallet;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by max-v on 2/6/2017.
- */
 
 public class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentInteractor {
 
@@ -40,6 +38,7 @@ public class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentI
 
                     @Override
                     public void onNext(Wallet wallet) {
+                        QtumSharedPreference.getInstance().setKeyGeneratedInstance(mContext, true);
                         callBack.onSuccess();
                     }
                 });

@@ -149,7 +149,6 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         getInteractor().getHistoryList(new WalletFragmentInteractorImpl.GetHistoryListCallBack() {
             @Override
             public void onSuccess(List<History> historyList) {
-                getInteractor().setHistoryList(historyList);
                 updateData();
             }
 

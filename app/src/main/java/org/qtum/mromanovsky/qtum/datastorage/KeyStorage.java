@@ -3,7 +3,11 @@ package org.qtum.mromanovsky.qtum.datastorage;
 
 import android.content.Context;
 
+import org.bitcoinj.core.Address;
+import org.bitcoinj.core.ECKey;
+import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.wallet.DeterministicSeed;
+import org.bitcoinj.wallet.KeyChain;
 import org.bitcoinj.wallet.UnreadableWalletException;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.WalletExtension;
@@ -133,6 +137,8 @@ public class KeyStorage {
     }
 
     public Wallet getWallet() {
+        //List<DeterministicKey> list = sWallet.freshKeys(KeyChain.KeyPurpose.AUTHENTICATION,100);
+        //Address address = list.get(0).toAddress(CurrentNetParams.getNetParams());
         return sWallet;
     }
 

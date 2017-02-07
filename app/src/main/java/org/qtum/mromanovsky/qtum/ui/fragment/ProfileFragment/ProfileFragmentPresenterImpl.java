@@ -41,7 +41,7 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
 
     @Override
     public void walletBackUp() {
-        BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance();
+        BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(false);
         getView().openFragmentAndAddToBackStack(backUpWalletFragment);
     }
 

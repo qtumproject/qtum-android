@@ -1,6 +1,8 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment;
 
 
+import android.content.Context;
+
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
@@ -51,5 +53,11 @@ public class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                 getView().updateNews(newsList);
             }
         });
+    }
+
+    @Override
+    public void onResume(Context context) {
+        super.onResume(context);
+        getView().updateNews(getInteractor().getNewsList());
     }
 }

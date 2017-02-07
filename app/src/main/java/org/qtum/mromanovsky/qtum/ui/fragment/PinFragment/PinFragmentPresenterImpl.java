@@ -6,6 +6,7 @@ import android.content.Context;
 import org.bitcoinj.wallet.Wallet;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
+import org.qtum.mromanovsky.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
@@ -38,14 +39,14 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                         case 1:
                             if(Integer.parseInt(pin) == pinForRepeat) {
                                 getView().clearError();
-                                final WalletFragment walletFragment = WalletFragment.newInstance();
+                                final BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(true);
                                 getView().setProgressDialog("Key generation");
                                 getView().hideKeyBoard();
                                 getInteractor().createWallet(getView().getContext(), new PinFragmentInteractorImpl.CreateWalletCallBack() {
                                     @Override
                                     public void onSuccess() {
                                         getInteractor().savePassword(pinForRepeat);
-                                        getView().openFragment(walletFragment);
+                                        getView().openFragment(backUpWalletFragment);
                                         getView().dismissProgressDialog();
                                     }
                                 });

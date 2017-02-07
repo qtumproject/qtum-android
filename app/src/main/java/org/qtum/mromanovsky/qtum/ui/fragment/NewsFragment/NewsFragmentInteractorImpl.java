@@ -1,7 +1,10 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
+import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
+import org.qtum.mromanovsky.qtum.datastorage.NewsList;
 
 import java.util.List;
 
@@ -36,9 +39,16 @@ public class NewsFragmentInteractorImpl implements NewsFragmentInteractor{
                     @Override
                     public void onNext(List<News> newsList) {
                         callBack.onSuccess(newsList);
+                        NewsList.getInstance().setNewsList(newsList);
                     }
                 });
     }
+
+    @Override
+    public List<News> getNewsList() {
+        return NewsList.getInstance().getNewsList();
+    }
+
 
     public interface GetNewsListCallBack{
         void onSuccess(List<News> newsList);

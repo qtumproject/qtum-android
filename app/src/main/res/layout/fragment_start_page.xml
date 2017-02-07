@@ -24,7 +24,7 @@
             android:layout_centerHorizontal="true">
         <Button
             android:id="@+id/bt_create_new"
-            android:layout_width="180dp"
+            android:layout_width="202dp"
             android:layout_height="wrap_content"
             android:background="@drawable/background_bt_alpha"
             android:text="@string/create_new"
@@ -34,7 +34,7 @@
 
         <Button
             android:id="@+id/bt_import_wallet"
-            android:layout_width="180dp"
+            android:layout_width="202dp"
             android:layout_marginTop="16dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/bt_create_new"
@@ -55,12 +55,12 @@
             android:gravity="center"
             android:text="@string/create_the_first_one_or_restore_n_the_previous_wallet_key"
             android:textColor="@android:color/white"
-            android:textSize="22sp"/>
+            android:textSize="18sp"/>
 
         <ImageView
             android:id="@+id/iv_logo"
-            android:layout_width="192dp"
-            android:layout_height="192dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:src="@drawable/logo"/>
@@ -83,7 +83,7 @@
             android:layout_centerVertical="true"
             android:text="@string/you_don_t_have_a_wallet_yet"
             android:textColor="@android:color/white"
-            android:textSize="26sp"/>
+            android:textSize="22sp"/>
 
     </RelativeLayout>
 

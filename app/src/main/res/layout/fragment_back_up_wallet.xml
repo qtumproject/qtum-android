@@ -25,6 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:id="@+id/tv_toolbar_title"
                 android:textSize="24sp"
                 android:textColor="@android:color/white"
                 android:text="@string/wallet_back_up"/>
@@ -47,25 +48,11 @@
         android:padding="@dimen/activity_horizontal_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-        <Button
-            android:text="@string/copy_brain_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:background="@drawable/background_bt_green"
-            android:stateListAnimator="@null"
-            android:id="@+id/bt_copy_brain_code"
-            android:textSize="@dimen/button_text"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="16dp"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/button_text"
+            android:textColor="@color/grey"
             android:gravity="center"
             android:text="@string/copy_brain_code_n_to_use_it_in_another_app"
             android:layout_alignParentTop="true"
@@ -78,11 +65,69 @@
             android:padding="16dp"
             android:textSize="@dimen/button_text"
             android:layout_marginTop="20dp"
+            android:textColor="@color/grey"
             android:background="@drawable/background_tv_brain_code"
             android:text="Your deputy nithing occasional objection ally aesthetic swing mad have stay objective consumption"
             android:id="@+id/tv_brain_code"
             android:layout_below="@+id/textView4"
             android:layout_centerHorizontal="true"/>
+
+        <Button
+            android:text="@string/copy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:background="@drawable/background_bt_green"
+            android:stateListAnimator="@null"
+            android:id="@+id/bt_copy"
+            android:textSize="@dimen/button_text"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/bt_continue"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+        <Button
+            android:text="@string/copy_brain_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:background="@drawable/background_bt_green"
+            android:stateListAnimator="@null"
+            android:id="@+id/bt_copy_brain_code"
+            android:textSize="@dimen/button_text"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+        <Button
+            android:id="@+id/bt_continue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:stateListAnimator="@null"
+            android:background="@drawable/background_bt_grey"
+            android:text="@string/_continue"
+            android:textAllCaps="false"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/button_text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/grey50"
+            android:gravity="center"
+            android:layout_margin="16dp"
+            android:id="@+id/tv_you_can_skip"/>
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

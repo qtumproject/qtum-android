@@ -57,6 +57,7 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                     @Override
                     public void onNext(List<History> historyList) {
                         callBack.onSuccess(historyList);
+                        setHistoryList(historyList);
                     }
                 });
     }

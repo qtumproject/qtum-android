@@ -2,6 +2,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.ImportWalletFragment;
 
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -84,5 +85,11 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
         super.stopAnimation();
         drawableBottom.stop();
         drawableTop.stop();
+    }
+
+    @Override
+    public void setSoftMode() {
+        super.setSoftMode();
+        getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 }

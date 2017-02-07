@@ -47,8 +47,8 @@
             android:id="@+id/et_your_brain_code"
             android:hint="@string/your_brain_code"
             android:padding="6dp"
-            android:textColor="@color/white_alpha230"
-            android:textColorHint="@color/white_alpha120"/>
+            android:textColor="@color/white_alpha80"
+            android:textColorHint="@color/white_alpha50"/>
 
         <Button
             android:id="@+id/bt_import"

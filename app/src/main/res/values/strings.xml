@@ -58,4 +58,7 @@
     <string name="choose_another_address">Choose Another Address</string>
     <string name="log_out">Log Out</string>
     <string name="qr_code">QR Code</string>
+    <string name="_continue">Continue</string>
+    <string name="you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want">You can skip this step and export your brain-code at any time you want.</string>
+    <string name="copy">Copy</string>
 </resources>

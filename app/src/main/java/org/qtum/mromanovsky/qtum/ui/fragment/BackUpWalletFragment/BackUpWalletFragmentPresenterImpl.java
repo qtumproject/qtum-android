@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -41,5 +42,11 @@ public class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl
         clipboard.setPrimaryClip(clip);
         //TODO : change notification type
         Toast.makeText(getView().getContext(),"Coped",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onContinueClick() {
+        final WalletFragment walletFragment = WalletFragment.newInstance();
+        getView().openFragment(walletFragment);
     }
 }

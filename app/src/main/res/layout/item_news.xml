@@ -29,13 +29,14 @@
                 android:textSize="18sp"
                 android:layout_marginRight="8dp"
                 android:id="@+id/tv_title"
+                android:textColor="@color/black"
                 android:text="Reaching 10 Million Wallets and Beyond"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_date"
-                android:textColor="@color/grey_input_text"
+                android:textColor="@color/grey50"
                 android:text="November 22, 2016"/>
 
         </LinearLayout>

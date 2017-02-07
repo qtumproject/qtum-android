@@ -81,7 +81,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:alpha="40"
+                    android:textColor="@color/white_alpha50"
                     android:text="@string/received_time"/>
 
                 <TextView
@@ -116,12 +116,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/from"
-            android:textColor="@color/grey_from_to"/>
+            android:textColor="@color/grey70"/>
 
         <TextView
             android:id="@+id/tv_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/grey"
             android:text="asdaseqwe123dasdas2222123"/>
 
         <TextView
@@ -129,12 +130,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/to"
-            android:textColor="@color/grey_from_to"/>
+            android:textColor="@color/grey70"/>
 
         <TextView
             android:id="@+id/tv_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/grey"
             android:text="asdaseqwe123dasdas2222123"/>
     </LinearLayout>
 

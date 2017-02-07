@@ -56,6 +56,18 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
     @Override
     public void initializeViews() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager manager = ((LinearLayoutManager)recyclerView.getLayoutManager());
+                if(!mSwipeRefreshLayout.isRefreshing())
+                    if (manager.findFirstCompletelyVisibleItemPosition() == 0)
+                        mSwipeRefreshLayout.setEnabled(true);
+                    else
+                        mSwipeRefreshLayout.setEnabled(false);
+            }
+        });
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -109,7 +121,37 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
         }
     }
 
-    public class NewsAdapter extends RecyclerView.Adapter<NewsHolder>{
+    public class NewsHeaderHolder extends RecyclerView.ViewHolder{
+
+        @BindView(R.id.iv_news_header)
+        ImageView mImageViewImage;
+        @BindView(R.id.tv_date_news_header)
+        TextView mTextViewDate;
+        @BindView(R.id.tv_title_news_header)
+        TextView mTextViewTitle;
+        @BindView(R.id.tv_short_text_news_header)
+        TextView mTextViewShortText;
+
+        public NewsHeaderHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
+
+        public void bindNewsHeader(News news){
+            mTextViewTitle.setText(news.getTitle());
+            mTextViewDate.setText(news.getDate());
+            mTextViewShortText.setText(news.getShort());
+            if(news.getImage()!=null) {
+                Picasso
+                        .with(getActivity())
+                        .load(news.getImage())
+                        .error(R.drawable.ic_launcher)
+                        .into(mImageViewImage);
+            }
+        }
+    }
+
+    public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         private List<News> mNewsList;
         News mNews;
@@ -118,17 +160,39 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
             mNewsList = newsList;
         }
 
+        private static final int TYPE_HEADER = 0;
+        private static final int TYPE_ITEM = 1;
+
         @Override
-        public NewsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.item_news, parent, false);
-            return new NewsHolder(view);
+        public int getItemViewType(int position) {
+            if(position == 0){
+                return TYPE_HEADER;
+            }
+            return TYPE_ITEM;
         }
 
         @Override
-        public void onBindViewHolder(NewsHolder holder, int position) {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if(viewType == TYPE_ITEM) {
+                LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+                View view = layoutInflater.inflate(R.layout.item_news, parent, false);
+                return new NewsHolder(view);
+            } else if(viewType == TYPE_HEADER){
+                LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+                View view = layoutInflater.inflate(R.layout.item_header_news, parent, false);
+                return new NewsHeaderHolder(view);
+            }
+            throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             mNews = mNewsList.get(position);
-            holder.bindNews(mNews);
+            if(holder instanceof NewsHolder) {
+                ((NewsHolder) holder).bindNews(mNews);
+            } else if(holder instanceof NewsHeaderHolder){
+                ((NewsHeaderHolder) holder).bindNewsHeader(mNews);
+            }
         }
 
         @Override

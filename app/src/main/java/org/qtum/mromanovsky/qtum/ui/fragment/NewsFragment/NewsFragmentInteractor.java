@@ -1,9 +1,11 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment;
 
-/**
- * Created by Romanovsky on 03.02.2017.
- */
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
+
+import java.util.List;
+
 
 public interface NewsFragmentInteractor {
     void getNewsList(NewsFragmentInteractorImpl.GetNewsListCallBack callBack);
+    List<News> getNewsList();
 }
