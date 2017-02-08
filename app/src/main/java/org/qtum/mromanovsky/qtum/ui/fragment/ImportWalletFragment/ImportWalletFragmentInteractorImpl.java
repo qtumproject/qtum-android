@@ -38,7 +38,6 @@ public class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentI
 
                     @Override
                     public void onNext(Wallet wallet) {
-                        QtumSharedPreference.getInstance().setKeyGeneratedInstance(mContext, true);
                         callBack.onSuccess();
                     }
                 });

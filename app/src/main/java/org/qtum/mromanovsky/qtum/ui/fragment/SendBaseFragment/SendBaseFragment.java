@@ -24,7 +24,7 @@ import butterknife.OnClick;
 
 public class SendBaseFragment extends BaseFragment implements SendBaseFragmentView {
 
-    public static final int LAYOUT = R.layout.fragment_send_base;
+    public final int LAYOUT = R.layout.fragment_send_base;
     private final int code_response = 200;
     private static final String IS_QR_CODE_RECOGNITION = "is_qr_code_recognition";
     private ActionBar mActionBar;

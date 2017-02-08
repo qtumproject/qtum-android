@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 
 public class NewsFragment extends BaseFragment implements NewsFragmentView {
 
-    public static final int LAYOUT = R.layout.fragment_news;
+    public final int LAYOUT = R.layout.fragment_news;
 
     NewsFragmentPresenterImpl mNewsFragmentPresenter;
     NewsAdapter mNewsAdapter;

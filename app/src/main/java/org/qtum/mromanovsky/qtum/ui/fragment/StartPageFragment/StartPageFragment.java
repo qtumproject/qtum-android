@@ -20,7 +20,7 @@ import butterknife.OnClick;
 
 public class StartPageFragment extends BaseFragment implements StartPageFragmentView {
 
-    public static final int LAYOUT = R.layout.fragment_start_page;
+    public final int LAYOUT = R.layout.fragment_start_page;
     public static final String TAG = "StartPageFragment";
     private int mAnimState;
     private Animation mAnimation;

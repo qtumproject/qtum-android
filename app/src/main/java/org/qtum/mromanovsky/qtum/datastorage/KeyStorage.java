@@ -3,8 +3,6 @@ package org.qtum.mromanovsky.qtum.datastorage;
 
 import android.content.Context;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.ECKey;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.wallet.DeterministicSeed;
 import org.bitcoinj.wallet.KeyChain;
@@ -27,6 +25,8 @@ public class KeyStorage {
 
     private static KeyStorage sKeyStorage;
     private static Wallet sWallet = null;
+    private static int sCurrentKeyPosition = 0;
+    private static List<DeterministicKey> sDeterministicKeyList;
     private File mFile;
     private Context mContext;
 
@@ -71,6 +71,7 @@ public class KeyStorage {
                    } catch (UnreadableWalletException e) {
                        e.printStackTrace();
                    }
+                   getKeyList();
                    subscriber.onNext(sWallet);
                }
            });
@@ -98,9 +99,9 @@ public class KeyStorage {
                     e.printStackTrace();
                 }
                 sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(),seed);
-                //sWallet = new Wallet(CurrentNetParams.getNetParams());
                 try {
                     sWallet.saveToFile(mFile);
+                    getKeyList();
                     subscriber.onNext(sWallet);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -124,9 +125,9 @@ public class KeyStorage {
                     e.printStackTrace();
                 }
                 sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(),seed);
-                //sWallet = new Wallet(CurrentNetParams.getNetParams());
                 try {
                     sWallet.saveToFile(mFile);
+                    getKeyList();
                     subscriber.onNext(sWallet);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -136,10 +137,26 @@ public class KeyStorage {
         });
     }
 
-    public Wallet getWallet() {
-        //List<DeterministicKey> list = sWallet.freshKeys(KeyChain.KeyPurpose.AUTHENTICATION,100);
-        //Address address = list.get(0).toAddress(CurrentNetParams.getNetParams());
-        return sWallet;
+    public List<DeterministicKey> getKeyList(){
+        if(sDeterministicKeyList == null){
+            sDeterministicKeyList = sWallet.freshKeys(KeyChain.KeyPurpose.AUTHENTICATION,100);
+        }
+        return sDeterministicKeyList;
     }
 
+    public String getCurrentAddress(){
+        return getKeyList().get(sCurrentKeyPosition).toAddress(CurrentNetParams.getNetParams()).toString();
+    }
+
+    public DeterministicKey getCurrentKey(){
+        return getKeyList().get(sCurrentKeyPosition);
+    }
+
+    public static void setCurrentKeyPosition(int currentKeyPosition) {
+        sCurrentKeyPosition = currentKeyPosition;
+    }
+
+    public static int getCurrentKeyPosition() {
+        return sCurrentKeyPosition;
+    }
 }

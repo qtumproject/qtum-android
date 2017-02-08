@@ -15,6 +15,6 @@ public class ReceiveFragmentInteractorImpl implements ReceiveFragmentInteractor{
 
     @Override
     public String getCurrentReceiveAddress() {
-        return KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString();
+        return KeyStorage.getInstance(mContext).getCurrentAddress();
     }
 }

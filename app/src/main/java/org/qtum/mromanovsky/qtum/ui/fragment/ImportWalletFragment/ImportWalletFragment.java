@@ -16,7 +16,7 @@ import butterknife.OnClick;
 
 public class ImportWalletFragment extends BaseFragment implements ImportWalletFragmentView {
 
-    public static final int LAYOUT = R.layout.fragment_import_wallet;
+    public final int LAYOUT = R.layout.fragment_import_wallet;
 
     ImportWalletFragmentPresenterImpl mImportWalletFragmentPresenter;
     AnimatedVectorDrawable drawableBottom;

@@ -41,7 +41,7 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
 
     @Override
     public void getUnspentOutputs(final GetUnspentListCallBack callBack) {
-        QtumService.newInstance().getUnspentOutputs(KeyStorage.getInstance(mContext).getWallet().currentReceiveAddress().toString())
+        QtumService.newInstance().getUnspentOutputs(KeyStorage.getInstance(mContext).getCurrentAddress())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<UnspentOutput>>() {
@@ -75,7 +75,7 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                 }catch (AddressFormatException a){
                     callBack.onError("Incorrect Address");
                 }
-                ECKey ecKey = KeyStorage.getInstance(mContext).getWallet().currentReceiveKey();
+                ECKey ecKey = KeyStorage.getInstance(mContext).getCurrentKey();
                 long amountLong = Long.parseLong(amount);
                 Long fee = 10000000000L;
                 amountLong+=fee;

@@ -22,7 +22,7 @@ import butterknife.OnClick;
 
 public class CreateWalletNameFragment extends BaseFragment implements CreateWalletNameFragmentView {
 
-    public static final int LAYOUT = R.layout.fragment_create_wallet_name;
+    public final int LAYOUT = R.layout.fragment_create_wallet_name;
     public static final String TAG = "CreateWalletNameFragment";
     public static final String IS_CREATE_NEW = "is_create_new";
     public static boolean mIsCreateNew;

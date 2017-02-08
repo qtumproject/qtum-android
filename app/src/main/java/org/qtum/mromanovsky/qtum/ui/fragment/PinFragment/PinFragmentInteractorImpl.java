@@ -29,6 +29,8 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
         QtumSharedPreference.getInstance().saveWalletPassword(mContext, password);
     }
 
+
+
     @Override
     public void loadWalletFromFile(final LoadWalletFromFileCallBack callBack) {
         KeyStorage.getInstance(mContext)
@@ -72,10 +74,15 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
                     @Override
                     public void onNext(Wallet wallet) {
-                        QtumSharedPreference.getInstance().setKeyGeneratedInstance(mContext, true);
+                        setKeyGeneratedInstance(true);
                         callBack.onSuccess();
                     }
                 });
+    }
+
+    @Override
+    public void setKeyGeneratedInstance(boolean isKeyGenerated) {
+        QtumSharedPreference.getInstance().setKeyGeneratedInstance(mContext, isKeyGenerated);
     }
 
 

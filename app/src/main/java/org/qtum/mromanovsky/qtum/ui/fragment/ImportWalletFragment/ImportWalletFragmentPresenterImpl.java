@@ -38,7 +38,7 @@ public class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl
             @Override
             public void onSuccess() {
                 CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(false);
-                getView().openFragmentWithOutPopBackStack(createWalletNameFragment);
+                getView().openFragment(createWalletNameFragment);
                 getView().dismissProgressDialog();
             }
         });

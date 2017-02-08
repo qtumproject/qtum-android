@@ -75,6 +75,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                                 final WalletFragment walletFragment = WalletFragment.newInstance();
                                 getView().hideKeyBoard();
                                 getInteractor().savePassword(pinForRepeat);
+                                getInteractor().setKeyGeneratedInstance(true);
                                 getView().openFragment(walletFragment);
                             } else {
                                 getView().confirmError(getView().getContext().getString(R.string.incorrect_repeated_pin));

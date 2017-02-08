@@ -37,7 +37,7 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     @BindView(R.id.iv_top_wave)
     ImageView mImageViewTopWave;
 
-    public static final int LAYOUT = R.layout.fragment_transaction;
+    public final int LAYOUT = R.layout.fragment_transaction;
     final static String POSITION = "position";
 
     TransactionFragmentPresenterImpl mTransactionFragmentPresenter;

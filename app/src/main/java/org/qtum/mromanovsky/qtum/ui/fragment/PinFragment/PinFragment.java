@@ -1,6 +1,5 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 
-import android.app.ProgressDialog;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -23,7 +22,7 @@ import butterknife.OnClick;
 
 public class PinFragment extends BaseFragment implements PinFragmentView {
 
-    public static final int LAYOUT = R.layout.fragment_pin;
+    public final int LAYOUT = R.layout.fragment_pin;
 
     PinFragmentPresenterImpl mPinFragmentPresenter;
 

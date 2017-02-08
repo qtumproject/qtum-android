@@ -10,6 +10,7 @@
     <color name="grey70">#b24e5d6f</color>
     <color name="grey50">#7a4e5d6f</color>
     <color name="grey20">#334e5d6f</color>
+    <color name="grey_devider">#c9c9c9</color>
     <color name="black">#1a1b1e</color>
     <color name="grey_lite">#f8f8f8</color>
     <color name="grey_data">#d6dae2</color>

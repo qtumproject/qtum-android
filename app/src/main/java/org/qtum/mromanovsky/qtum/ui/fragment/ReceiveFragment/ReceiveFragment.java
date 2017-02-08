@@ -23,7 +23,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
     ReceiveFragmentPresenterImpl mReceiveFragmentPresenter;
 
-    public static final int LAYOUT = R.layout.fragment_receive;
+    public final int LAYOUT = R.layout.fragment_receive;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -35,12 +35,17 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     TextView mTextViewAddress;
     @BindView(R.id.bt_copy_wallet_address)
     Button mButtonCopyWalletAddress;
+    @BindView(R.id.bt_choose_another_address)
+    Button mButtonChooseAnotherAddress;
 
-    @OnClick({R.id.bt_copy_wallet_address})
+    @OnClick({R.id.bt_copy_wallet_address,R.id.bt_choose_another_address})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_copy_wallet_address:
                 getPresenter().onClickCopyWalletAddress();
+                break;
+            case R.id.bt_choose_another_address:
+                getPresenter().onClickChooseAnotherAddress();
                 break;
         }
     }

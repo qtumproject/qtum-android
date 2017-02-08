@@ -16,6 +16,7 @@ import com.google.zxing.common.BitMatrix;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.qtum.mromanovsky.qtum.ui.fragment.AddressesFragment.AddressesFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
@@ -59,6 +60,12 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
         clipboard.setPrimaryClip(clip);
         //TODO : change notification type
         Toast.makeText(getView().getContext(),"Coped",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClickChooseAnotherAddress() {
+        AddressesFragment addressesFragment = AddressesFragment.newInstance();
+        getView().openFragmentWithOutPopBackStack(addressesFragment);
     }
 
     @Override

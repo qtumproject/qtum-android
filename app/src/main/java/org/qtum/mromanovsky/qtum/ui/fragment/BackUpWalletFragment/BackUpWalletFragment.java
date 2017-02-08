@@ -17,7 +17,7 @@ import butterknife.OnClick;
 
 public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFragmentView {
 
-    public static final int LAYOUT = R.layout.fragment_back_up_wallet;
+    public final int LAYOUT = R.layout.fragment_back_up_wallet;
     BackUpWalletFragmentPresenterImpl mBackUpWalletFragmentPresenter;
 
     public static final String IS_WALLET_CREATING = "is_wallet_creating";

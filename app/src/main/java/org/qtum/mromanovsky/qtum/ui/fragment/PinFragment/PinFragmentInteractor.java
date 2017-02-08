@@ -8,4 +8,5 @@ public interface PinFragmentInteractor {
     void savePassword(int password);
     void loadWalletFromFile(PinFragmentInteractorImpl.LoadWalletFromFileCallBack callBack);
     void createWallet(Context context, PinFragmentInteractorImpl.CreateWalletCallBack callBack);
+    void setKeyGeneratedInstance(boolean isKeyGenerated);
 }

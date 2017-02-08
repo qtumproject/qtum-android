@@ -33,7 +33,7 @@ import butterknife.OnClick;
 
 public class WalletFragment extends BaseFragment implements WalletFragmentView{
 
-    public static final int LAYOUT = R.layout.fragment_wallet;
+    public final int LAYOUT = R.layout.fragment_wallet;
     public static final String TAG = "WalletFragment";
 
     WalletFragmentPresenterImpl mWalletFragmentPresenter;
