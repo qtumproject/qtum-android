@@ -3,6 +3,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 import android.content.Context;
 
+import org.qtum.mromanovsky.qtum.btc.BTCUtils;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
@@ -19,9 +20,9 @@ import rx.schedulers.Schedulers;
 
 public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
-    Context mContext;
-    Subscription mSubscriptionHistoryList = null;
-    Subscription mSubscriptionBalance = null;
+    private Context mContext;
+    private Subscription mSubscriptionHistoryList = null;
+    private Subscription mSubscriptionBalance = null;
 
     public WalletFragmentInteractorImpl(Context context){
         mContext = context;
@@ -40,7 +41,8 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     @Override
     public void getHistoryList(final GetHistoryListCallBack callBack) {
 
-        mSubscriptionHistoryList = QtumService.newInstance().getHistoryList(KeyStorage.getInstance(mContext).getCurrentAddress(),20,0)
+        mSubscriptionHistoryList = QtumService.newInstance()
+                .getHistoryList(KeyStorage.getInstance().getCurrentAddress(),20,0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<History>>() {
@@ -64,7 +66,9 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     @Override
     public void getBalance(final GetBalanceCallBack callBack) {
-        mSubscriptionBalance = QtumService.newInstance().getUnspentOutputs(KeyStorage.getInstance(mContext).getCurrentAddress())
+        mSubscriptionBalance = QtumService.newInstance()
+                //.getUnspentOutputs(KeyStorage.getInstance().getCurrentAddress())
+                .getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<UnspentOutput>>() {
@@ -109,6 +113,6 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     @Override
     public String getAddress() {
-        return KeyStorage.getInstance(mContext).getCurrentAddress();
+        return KeyStorage.getInstance().getCurrentAddress();
     }
 }

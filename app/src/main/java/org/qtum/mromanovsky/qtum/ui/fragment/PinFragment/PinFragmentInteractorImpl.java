@@ -33,8 +33,8 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
     @Override
     public void loadWalletFromFile(final LoadWalletFromFileCallBack callBack) {
-        KeyStorage.getInstance(mContext)
-                .loadWalletFromFile()
+        KeyStorage.getInstance()
+                .loadWalletFromFile(mContext)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Wallet>() {
@@ -57,8 +57,8 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
     @Override
     public void createWallet(Context context, final CreateWalletCallBack callBack) {
-        KeyStorage.getInstance(mContext)
-                .createWallet()
+        KeyStorage.getInstance()
+                .createWallet(mContext)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Wallet>() {

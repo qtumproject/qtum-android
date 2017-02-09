@@ -51,12 +51,12 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_language"/>
+                app:srcCompat="@drawable/ic_language"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:textSize="18sp"
                 android:textColor="@color/black"
                 android:layout_weight="1"
@@ -65,7 +65,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_rightarrow"/>
+                app:srcCompat="@drawable/ic_rightarrow"/>
 
         </LinearLayout>
 
@@ -83,12 +83,12 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_changepin"/>
+                app:srcCompat="@drawable/ic_changepin"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:layout_weight="1"
@@ -97,7 +97,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_rightarrow"/>
+                app:srcCompat="@drawable/ic_rightarrow"/>
 
         </LinearLayout>
 
@@ -120,12 +120,12 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_backup"/>
+                app:srcCompat="@drawable/ic_backup"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:textSize="18sp"
                 android:textColor="@color/black"
                 android:layout_weight="1"
@@ -134,7 +134,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_rightarrow"/>
+                app:srcCompat="@drawable/ic_rightarrow"/>
 
         </LinearLayout>
 
@@ -156,12 +156,12 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_logout"/>
+                app:srcCompat="@drawable/ic_logout"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:layout_weight="1"
@@ -170,7 +170,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_rightarrow"/>
+                app:srcCompat="@drawable/ic_rightarrow"/>
 
         </LinearLayout>
 
@@ -187,12 +187,12 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_about"/>
+                app:srcCompat="@drawable/ic_about"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:textSize="18sp"
                 android:textColor="@color/black"
                 android:layout_weight="1"
@@ -201,7 +201,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_rightarrow"/>
+                app:srcCompat="@drawable/ic_rightarrow"/>
 
         </LinearLayout>
 

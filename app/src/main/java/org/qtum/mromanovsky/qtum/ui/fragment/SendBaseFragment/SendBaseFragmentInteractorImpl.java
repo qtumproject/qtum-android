@@ -34,14 +34,13 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
 
     private Context mContext;
 
-
     public SendBaseFragmentInteractorImpl(Context context){
         mContext = context;
     }
 
     @Override
     public void getUnspentOutputs(final GetUnspentListCallBack callBack) {
-        QtumService.newInstance().getUnspentOutputs(KeyStorage.getInstance(mContext).getCurrentAddress())
+        QtumService.newInstance().getUnspentOutputs(KeyStorage.getInstance().getCurrentAddress())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<UnspentOutput>>() {
@@ -67,7 +66,6 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
         getUnspentOutputs(new GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
-                //org.bitcoinj.core.Context context = new org.bitcoinj.core.Context(CurrentNetParams.getNetParams());
                 Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
                 Address addressToSend=null;
                 try {
@@ -75,7 +73,7 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                 }catch (AddressFormatException a){
                     callBack.onError("Incorrect Address");
                 }
-                ECKey ecKey = KeyStorage.getInstance(mContext).getCurrentKey();
+                ECKey ecKey = KeyStorage.getInstance().getCurrentKey();
                 long amountLong = Long.parseLong(amount);
                 Long fee = 10000000000L;
                 amountLong+=fee;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@drawable/background_white_with_grey_pressed"
@@ -35,7 +36,7 @@
                 android:layout_weight="0.08"
                 android:gravity="start"
                 android:scaleType="fitStart"
-                android:src="@drawable/ic_sent"/>
+                app:srcCompat="@drawable/ic_sent"/>
 
             <TextView
                 android:id="@+id/tv_operation_type"

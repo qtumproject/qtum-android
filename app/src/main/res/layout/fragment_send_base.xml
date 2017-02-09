@@ -39,7 +39,7 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/background_pressed_alpha_white"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_qrcode"/>
+                app:srcCompat="@drawable/ic_qrcode"/>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

@@ -3,12 +3,14 @@ package org.qtum.mromanovsky.qtum.datastorage;
 
 import android.content.Context;
 
+import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.wallet.DeterministicSeed;
 import org.bitcoinj.wallet.KeyChain;
 import org.bitcoinj.wallet.UnreadableWalletException;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.WalletExtension;
+import org.qtum.mromanovsky.qtum.btc.BTCUtils;
 import org.qtum.mromanovsky.qtum.utils.CurrentNetParams;
 import org.qtum.mromanovsky.qtum.utils.DictionaryWords;
 
@@ -28,22 +30,21 @@ public class KeyStorage {
     private static int sCurrentKeyPosition = 0;
     private static List<DeterministicKey> sDeterministicKeyList;
     private File mFile;
-    private Context mContext;
 
-    public static KeyStorage getInstance(Context context){
+    public static KeyStorage getInstance(){
         if(sKeyStorage == null){
-            sKeyStorage = new KeyStorage(context);
+            sKeyStorage = new KeyStorage();
         }
         return sKeyStorage;
     }
 
-    private KeyStorage(Context context){
-        mContext = context;
-        mFile = new File(mContext.getFilesDir().getPath().toString() + "/key_storage");
+    private KeyStorage(){
+
     }
 
-    public Observable<Wallet> loadWalletFromFile(){
-           return Observable.create(new Observable.OnSubscribe<Wallet>() {
+    public Observable<Wallet> loadWalletFromFile(Context context){
+        mFile = new File(context.getFilesDir().getPath().toString() + "/key_storage");
+        return Observable.create(new Observable.OnSubscribe<Wallet>() {
                @Override
                public void call(Subscriber<? super Wallet> subscriber) {
                    try {
@@ -77,7 +78,8 @@ public class KeyStorage {
            });
     }
 
-    public Observable<Wallet> createWallet(){
+    public Observable<Wallet> createWallet(final Context context){
+        mFile = new File(context.getFilesDir().getPath().toString() + "/key_storage");
         return Observable.create(new Observable.OnSubscribe<Wallet>() {
             @Override
             public void call(Subscriber<? super Wallet> subscriber) {
@@ -106,12 +108,13 @@ public class KeyStorage {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                QtumSharedPreference.getInstance().saveSeed(mContext,seedString);
+                QtumSharedPreference.getInstance().saveSeed(context,seedString);
             }
         });
     }
 
-    public Observable<Wallet> importWallet(final String seedString){
+    public Observable<Wallet> importWallet(final String seedString, final Context context){
+        mFile = new File(context.getFilesDir().getPath().toString() + "/key_storage");
         return Observable.create(new Observable.OnSubscribe<Wallet>() {
             @Override
             public void call(Subscriber<? super Wallet> subscriber) {
@@ -132,7 +135,7 @@ public class KeyStorage {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                QtumSharedPreference.getInstance().saveSeed(mContext,seedString);
+                QtumSharedPreference.getInstance().saveSeed(context,seedString);
             }
         });
     }
@@ -146,6 +149,14 @@ public class KeyStorage {
 
     public String getCurrentAddress(){
         return getKeyList().get(sCurrentKeyPosition).toAddress(CurrentNetParams.getNetParams()).toString();
+    }
+
+    public List<String> getAddresses(){
+        List<String> list = new ArrayList<>();
+        for(DeterministicKey deterministicKey : getKeyList()){
+            list.add(deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString());
+        }
+        return list;
     }
 
     public DeterministicKey getCurrentKey(){

@@ -21,8 +21,8 @@ public class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentI
 
     @Override
     public void importWallet(String seed, final ImportWalletCallBack callBack) {
-        KeyStorage.getInstance(mContext)
-                .importWallet(seed)
+        KeyStorage.getInstance()
+                .importWallet(seed,mContext)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Wallet>() {

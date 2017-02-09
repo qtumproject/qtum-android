@@ -104,7 +104,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:paddingLeft="6dp"
-                    android:src="@drawable/ic_createnew"/>
+                    app:srcCompat="@drawable/ic_createnew"/>
             </LinearLayout>
 
             <android.support.v7.widget.Toolbar
@@ -132,7 +132,7 @@
                     android:layout_margin="8dp"
                     android:background="@drawable/background_pressed_alpha_white"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_qrcode"/>
+                    app:srcCompat="@drawable/ic_qrcode"/>
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
