@@ -1,6 +1,8 @@
 package org.qtum.mromanovsky.qtum.datastorage;
 
 
+import com.google.common.collect.Lists;
+
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 
 import java.util.ArrayList;
@@ -27,6 +29,6 @@ public class HistoryList {
     }
 
     public void setHistoryList(List<History> historyList) {
-        mHistoryList = historyList;
+        mHistoryList = Lists.reverse(historyList);
     }
 }

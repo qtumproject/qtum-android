@@ -35,4 +35,7 @@ public interface QtumRestService {
 
     @GET("/outputs/unspent")
     Call<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses(@Query("addresses[]") List<String> addresses);
+
+    @GET("/history/{limit}/{offset}")
+    Call<List<History>> getHistoryListForSeveralAddresses(@Path("limit") int limit, @Path("offset") int offset, @Query("addresses[]") List<String> addresses);
 }

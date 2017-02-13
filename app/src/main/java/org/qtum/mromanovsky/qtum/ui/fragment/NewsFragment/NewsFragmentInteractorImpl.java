@@ -38,8 +38,8 @@ public class NewsFragmentInteractorImpl implements NewsFragmentInteractor{
 
                     @Override
                     public void onNext(List<News> newsList) {
-                        callBack.onSuccess(newsList);
                         NewsList.getInstance().setNewsList(newsList);
+                        callBack.onSuccess(newsList);
                     }
                 });
     }

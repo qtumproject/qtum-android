@@ -3,6 +3,8 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 import android.content.Context;
 
+import org.bitcoinj.core.Address;
+import org.bitcoinj.core.Utils;
 import org.qtum.mromanovsky.qtum.btc.BTCUtils;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
@@ -10,6 +12,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
+import org.qtum.mromanovsky.qtum.utils.CurrentNetParams;
 
 import java.util.List;
 
@@ -42,7 +45,8 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     public void getHistoryList(final GetHistoryListCallBack callBack) {
 
         mSubscriptionHistoryList = QtumService.newInstance()
-                .getHistoryList(KeyStorage.getInstance().getCurrentAddress(),20,0)
+                //.getHistoryList(KeyStorage.getInstance().getCurrentAddress(),20,0)
+                .getHistoryListForSeveralAddresses(KeyStorage.getInstance().getAddresses(), 20,0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<History>>() {
@@ -58,8 +62,8 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
                     @Override
                     public void onNext(List<History> historyList) {
-                        callBack.onSuccess(historyList);
                         setHistoryList(historyList);
+                        callBack.onSuccess(historyList);
                     }
                 });
     }
@@ -87,6 +91,8 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                         double balance = 0;
                         for(UnspentOutput unspentOutput : unspentOutputs){
                             balance+=unspentOutput.getAmount();
+                            //TODO: create
+                            Address address = new Address(CurrentNetParams.getNetParams(),Utils.parseAsHexOrBase58(unspentOutput.getPubkeyHash()));
                         }
                         callBack.onSuccess(balance);
                     }

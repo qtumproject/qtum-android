@@ -78,6 +78,26 @@ public class QtumService {
         });
     }
 
+    public Observable<List<History>> getHistoryListForSeveralAddresses(final List<String> addresses, final int limit, final int offset) {
+        return Observable.create(new Observable.OnSubscribe<List<History>>() {
+            @Override
+            public void call(Subscriber<? super List<History>> subscriber) {
+                Call<List<History>> request;
+                request = mServiceApi.getHistoryListForSeveralAddresses(limit,offset,addresses);
+                try {
+                    Response<List<History>> response = request.execute();
+                    if(response.errorBody() != null){
+                        subscriber.onError(new Throwable(response.errorBody().toString()));
+                    }else {
+                        subscriber.onNext(response.body());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     public Observable<List<History>> getHistoryList(final String address, final int limit, final int offset) {
         return Observable.create(new Observable.OnSubscribe<List<History>>() {
             @Override

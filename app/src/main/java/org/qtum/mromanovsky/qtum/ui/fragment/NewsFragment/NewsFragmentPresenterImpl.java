@@ -41,6 +41,12 @@ public class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     }
 
     @Override
+    public void initializeViews() {
+        super.initializeViews();
+        updateNews();
+    }
+
+    @Override
     public void onRefresh() {
         loadAndUpdateNews();
     }
@@ -50,14 +56,18 @@ public class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         getInteractor().getNewsList(new NewsFragmentInteractorImpl.GetNewsListCallBack() {
             @Override
             public void onSuccess(List<News> newsList) {
-                getView().updateNews(newsList);
+                updateNews();
             }
         });
+    }
+
+    private void updateNews(){
+        getView().updateNews(getInteractor().getNewsList());
     }
 
     @Override
     public void onResume(Context context) {
         super.onResume(context);
-        getView().updateNews(getInteractor().getNewsList());
+        //getView().updateNews(getInteractor().getNewsList());
     }
 }

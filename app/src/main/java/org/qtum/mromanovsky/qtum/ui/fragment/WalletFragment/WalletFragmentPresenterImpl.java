@@ -134,7 +134,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     @Override
     public void onResume(Context context) {
         super.onResume(context);
-        getView().updateRecyclerView(getInteractor().getHistoryList());
+        //getView().updateRecyclerView(getInteractor().getHistoryList());
     }
 
     @Override
