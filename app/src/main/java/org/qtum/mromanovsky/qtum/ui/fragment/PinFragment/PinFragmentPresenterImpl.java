@@ -48,6 +48,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                                         getInteractor().savePassword(pinForRepeat);
                                         getView().openFragment(backUpWalletFragment);
                                         getView().dismissProgressDialog();
+                                        PinFragmentInteractorImpl.isDataLoaded = false;
                                     }
                                 });
                             } else {
@@ -101,6 +102,7 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
                             public void onSuccess() {
                                 getView().openFragment(walletFragment);
                                 getView().dismissProgressDialog();
+                                PinFragmentInteractorImpl.isDataLoaded = false;
                             }
                         });
                     } else {
@@ -179,6 +181,25 @@ public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implemen
         super.onResume(context);
         getView().updateState();
         ((MainActivity) getView().getFragmentActivity()).hideBottomNavigationView();
+        if(PinFragmentInteractorImpl.isDataLoaded) {
+            switch (PinFragment.sAction) {
+                case PinFragment.CREATING: {
+                    BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(true);
+                    getInteractor().savePassword(pinForRepeat);
+                    getView().openFragment(backUpWalletFragment);
+                    getView().dismissProgressDialog();
+                    break;
+                }
+                case PinFragment.AUTHENTICATION: {
+                    WalletFragment walletFragment = WalletFragment.newInstance();
+                    getView().openFragment(walletFragment);
+                    getView().dismissProgressDialog();
+                    break;
+                }
+            }
+            PinFragmentInteractorImpl.isDataLoaded = false;
+        }
+
     }
 
     @Override

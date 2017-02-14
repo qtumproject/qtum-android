@@ -40,8 +40,20 @@ public class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl
                 CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(false);
                 getView().openFragment(createWalletNameFragment);
                 getView().dismissProgressDialog();
+                ImportWalletFragmentInteractorImpl.isDataLoaded = false;
             }
         });
+    }
+
+    @Override
+    public void onResume(Context context) {
+        super.onResume(context);
+        if(ImportWalletFragmentInteractorImpl.isDataLoaded){
+            CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(false);
+            getView().openFragment(createWalletNameFragment);
+            getView().dismissProgressDialog();
+            ImportWalletFragmentInteractorImpl.isDataLoaded = false;
+        }
     }
 
     @Override

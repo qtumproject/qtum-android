@@ -132,12 +132,6 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     }
 
     @Override
-    public void onResume(Context context) {
-        super.onResume(context);
-        //getView().updateRecyclerView(getInteractor().getHistoryList());
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         getInteractor().unSubscribe();
@@ -174,5 +168,4 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         String pubKey = getInteractor().getAddress();
         getView().updatePubKey(pubKey);
     }
-
 }

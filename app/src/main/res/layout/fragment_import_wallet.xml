@@ -52,7 +52,7 @@
 
         <Button
             android:id="@+id/bt_import"
-            android:layout_width="180dp"
+            android:layout_width="202dp"
             android:layout_height="wrap_content"
             android:layout_above="@+id/bt_cancel"
             android:layout_alignLeft="@+id/bt_cancel"
@@ -66,11 +66,11 @@
 
         <Button
             android:id="@+id/bt_cancel"
-            android:layout_width="180dp"
+            android:layout_width="202dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-
+            android:layout_marginBottom="16dp"
             android:background="@drawable/background_bt_alpha"
             android:text="@string/cancel"
             android:textAllCaps="false"

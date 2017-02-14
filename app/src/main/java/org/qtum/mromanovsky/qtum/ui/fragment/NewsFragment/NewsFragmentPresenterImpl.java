@@ -65,9 +65,4 @@ public class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         getView().updateNews(getInteractor().getNewsList());
     }
 
-    @Override
-    public void onResume(Context context) {
-        super.onResume(context);
-        //getView().updateNews(getInteractor().getNewsList());
-    }
 }

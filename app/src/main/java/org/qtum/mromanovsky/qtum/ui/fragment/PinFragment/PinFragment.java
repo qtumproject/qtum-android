@@ -108,10 +108,6 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         mTextInputLayoutWalletPin.setError(errorText);
     }
 
-
-
-
-
     @Override
     public void updateState() {
         mTextInputEditTextWalletPin.setText("");

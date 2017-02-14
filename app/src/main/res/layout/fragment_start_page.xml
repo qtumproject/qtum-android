@@ -36,6 +36,7 @@
             android:id="@+id/bt_import_wallet"
             android:layout_width="202dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/bt_create_new"
             android:background="@drawable/background_bt_alpha"

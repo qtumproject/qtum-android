@@ -62,7 +62,7 @@
 
         <Button
             android:text="@string/confirm"
-            android:layout_width="180dp"
+            android:layout_width="202dp"
             android:layout_height="wrap_content"
             android:layout_above="@+id/bt_cancel"
             android:layout_alignLeft="@+id/bt_cancel"
@@ -76,7 +76,7 @@
 
         <Button
             android:text="@string/cancel"
-            android:layout_width="180dp"
+            android:layout_width="202dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
@@ -85,7 +85,7 @@
             android:id="@+id/bt_cancel"
             android:textSize="@dimen/button_text"
             android:textAllCaps="false"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="32dp" />
 
     </RelativeLayout>
 

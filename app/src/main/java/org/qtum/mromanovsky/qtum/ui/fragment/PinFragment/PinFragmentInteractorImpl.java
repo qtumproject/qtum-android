@@ -14,6 +14,7 @@ import rx.schedulers.Schedulers;
 public class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
     private Context mContext;
+    public static boolean isDataLoaded = false;
 
     public PinFragmentInteractorImpl(Context context) {
         mContext = context;
@@ -50,6 +51,7 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
                     @Override
                     public void onNext(Wallet wallet) {
+                        isDataLoaded = true;
                         callBack.onSuccess();
                     }
                 });
@@ -75,6 +77,7 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
                     @Override
                     public void onNext(Wallet wallet) {
                         setKeyGeneratedInstance(true);
+                        isDataLoaded = true;
                         callBack.onSuccess();
                     }
                 });

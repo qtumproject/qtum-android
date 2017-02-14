@@ -14,6 +14,7 @@ import rx.schedulers.Schedulers;
 public class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentInteractor {
 
     Context mContext;
+    public static boolean isDataLoaded = false;
 
     public ImportWalletFragmentInteractorImpl(Context context){
         mContext = context;
@@ -38,6 +39,7 @@ public class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentI
 
                     @Override
                     public void onNext(Wallet wallet) {
+                        isDataLoaded = true;
                         callBack.onSuccess();
                     }
                 });
