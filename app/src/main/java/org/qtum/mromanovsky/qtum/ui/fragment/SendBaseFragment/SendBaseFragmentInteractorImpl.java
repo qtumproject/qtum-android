@@ -10,6 +10,7 @@ import org.bitcoinj.core.Sha256Hash;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionConfidence;
 import org.bitcoinj.core.TransactionOutPoint;
+import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
 import org.qtum.mromanovsky.qtum.btc.BTCUtils;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
@@ -102,11 +103,17 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                 }
 
                 for(UnspentOutput unspentOutput : unspentOutputs){
-                    Sha256Hash sha256Hash = new Sha256Hash((BTCUtils.fromHex(unspentOutput.getTxHash())));
-                    TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
-                    Script script = new Script(BTCUtils.fromHex(unspentOutput.getTxoutScriptPubKey()));
-                    transaction.addSignedInput(outPoint, script, ecKey, Transaction.SigHash.ALL, true);
-                    amountFromOutput += unspentOutput.getAmount();
+                    for(DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()){
+                        if(BTCUtils.toHex(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())){
+                            Sha256Hash sha256Hash = new Sha256Hash((BTCUtils.fromHex(unspentOutput.getTxHash())));
+                            TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
+
+                            Script script = new Script(BTCUtils.fromHex(unspentOutput.getTxoutScriptPubKey()));
+                            transaction.addSignedInput(outPoint, script, ecKey, Transaction.SigHash.ALL, true);
+                            amountFromOutput += unspentOutput.getAmount();
+                            break;
+                        }
+                    }
                     if(amountFromOutput>amountLong){
                         break;
                     }

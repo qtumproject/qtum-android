@@ -155,8 +155,6 @@ public class KeyStorage {
         List<String> list = new ArrayList<>();
         for(DeterministicKey deterministicKey : getKeyList()){
             list.add(deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString());
-            //TODO: create
-            String str = BTCUtils.toHex(deterministicKey.getPubKeyHash());
         }
         return list;
     }
