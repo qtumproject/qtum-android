@@ -12,6 +12,8 @@ import android.widget.TextView;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 
 
@@ -91,8 +93,11 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
 
     @Override
-    public void setUpTransactionData(Long value, String receivedTime, String from, String to) {
-        mTextViewValue.setText(value.toString());
+    public void setUpTransactionData(double value, String receivedTime, String from, String to) {
+
+        DecimalFormat df = new DecimalFormat("0");
+        df.setMaximumFractionDigits(8);
+        mTextViewValue.setText(df.format(value));
         mTextViewReceivedTime.setText(receivedTime);
         mTextViewFrom.setText(from);
         mTextViewTo.setText(to);

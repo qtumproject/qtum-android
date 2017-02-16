@@ -41,7 +41,7 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
 
     @Override
     public void getUnspentOutputs(final GetUnspentListCallBack callBack) {
-        QtumService.newInstance().getUnspentOutputs(KeyStorage.getInstance().getCurrentAddress())
+        QtumService.newInstance().getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<UnspentOutput>>() {
@@ -63,7 +63,7 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
     }
 
     @Override
-    public void createTx(final String address, final String amount, final CreateTxCallBack callBack) {
+    public void createTx(final String address, final String amountString, final CreateTxCallBack callBack) {
         getUnspentOutputs(new GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
@@ -75,9 +75,9 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                     callBack.onError("Incorrect Address");
                 }
                 ECKey ecKey = KeyStorage.getInstance().getCurrentKey();
-                long amountLong = Long.parseLong(amount);
-                Long fee = 10000000000L;
-                amountLong+=fee;
+                long amount = Long.parseLong(amountString)*(long)(1/(QtumSharedPreference.getInstance().getExchangeRates(mContext)));
+                long fee = 100000L;
+
 
                 Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
                     @Override
@@ -86,20 +86,26 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                     }
                 });
 
-                Long amountFromOutput = (long)0;
-                Long overFlow = (long)0;
-                transaction.addOutput(Coin.valueOf(amountLong),addressToSend);
+                long amountFromOutput = (long)0;
+                long overFlow = (long)0;
+                transaction.addOutput(Coin.valueOf(amount),addressToSend);
+
+                amount+=fee;
 
                 for(UnspentOutput unspentOutput : unspentOutputs){
                     overFlow += unspentOutput.getAmount();
-                    if(overFlow>=amountLong){
+                    if(overFlow>=amount){
                         break;
                     }
                 }
-                Long delivery = overFlow - amountLong;
+                if(overFlow<amount){
+                    //TODO: throw exception
+                    callBack.onError("Not enough money");
+                    return;
+                }
+                long delivery = overFlow - amount;
                 if(delivery!=0L) {
-                    transaction.addOutput(Coin.valueOf((delivery-fee)), ecKey.toAddress(CurrentNetParams.getNetParams()));
-                    int i = 0;
+                    transaction.addOutput(Coin.valueOf((delivery)), ecKey.toAddress(CurrentNetParams.getNetParams()));
                 }
 
                 for(UnspentOutput unspentOutput : unspentOutputs){
@@ -109,21 +115,15 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                             TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
 
                             Script script = new Script(BTCUtils.fromHex(unspentOutput.getTxoutScriptPubKey()));
-                            transaction.addSignedInput(outPoint, script, ecKey, Transaction.SigHash.ALL, true);
+                            transaction.addSignedInput(outPoint, script, deterministicKey, Transaction.SigHash.ALL, true);
                             amountFromOutput += unspentOutput.getAmount();
                             break;
                         }
                     }
-                    if(amountFromOutput>amountLong){
+                    if(amountFromOutput>=amount){
                         break;
                     }
                 }
-                if(amountFromOutput<amountLong){
-                    //TODO: throw exception
-                    callBack.onError("not enough money");
-                    return;
-                }
-
 
                 transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
                 transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
@@ -139,10 +139,10 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                 byte tmp2 = bytesData[2];
                 byte tmp3 = bytesData[1];
                 byte tmp4 = bytesData[0];
-                bytesData[0] = tmp4;
-                bytesData[1] = tmp3;
-                bytesData[2] = tmp2;
-                bytesData[3] = tmp1;
+                bytesData[0] = tmp1;
+                bytesData[1] = tmp2;
+                bytesData[2] = tmp3;
+                bytesData[3] = tmp4;
 
                 transactionHex+=BTCUtils.toHex(bytesData);
                 callBack.onSuccess(transactionHex);

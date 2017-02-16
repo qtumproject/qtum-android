@@ -21,8 +21,6 @@ import org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
-import java.util.List;
-
 import butterknife.BindView;
 
 

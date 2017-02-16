@@ -18,9 +18,11 @@ import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -265,16 +267,19 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
 
             if (history.getAmount() > 0) {
                 mTextViewOperationType.setText(R.string.received);
-                mTextViewID.setText(history.getToAddress());
+                mTextViewID.setText(history.getFromAddress());
                 mImageViewIcon.setImageResource(R.drawable.ic_received);
                 mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.colorAccent));
             } else {
                 mTextViewOperationType.setText(R.string.sent);
-                mTextViewID.setText(history.getFromAddress());
+                mTextViewID.setText(history.getToAddress());
                 mImageViewIcon.setImageResource(R.drawable.ic_sent);
                 mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.pink));
             }
-            mTextViewValue.setText(history.getAmount() + " QTUM");
+            //mTextViewValue.setText(String.format("%.8f", history.getAmount()*(QtumSharedPreference.getInstance().getExchangeRates(getContext()))) + " QTUM");
+            DecimalFormat df = new DecimalFormat("0");
+            df.setMaximumFractionDigits(8);
+            mTextViewValue.setText(df.format(history.getAmount()*(QtumSharedPreference.getInstance().getExchangeRates(getContext()))) + " QTUM");
         }
     }
 }

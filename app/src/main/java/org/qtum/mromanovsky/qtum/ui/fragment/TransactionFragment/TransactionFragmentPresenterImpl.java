@@ -2,8 +2,10 @@ package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment;
 
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,8 +41,7 @@ public class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl 
         calendar.setTime(date);
         String time = new SimpleDateFormat("HH:mm:ss").format(date);
         String dateString = calendar.getDisplayName(Calendar.MONTH,Calendar.LONG, Locale.US) + ", " + calendar.get(Calendar.DATE) + " " + time;
-
-        getView().setUpTransactionData(history.getAmount(), dateString,
+        getView().setUpTransactionData(history.getAmount()*(QtumSharedPreference.getInstance().getExchangeRates(getView().getContext())), dateString,
                 history.getFromAddress(), history.getToAddress());
     }
 }

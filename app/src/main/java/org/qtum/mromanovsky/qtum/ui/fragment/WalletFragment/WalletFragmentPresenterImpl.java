@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
@@ -158,7 +159,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         getInteractor().getBalance(new WalletFragmentInteractorImpl.GetBalanceCallBack() {
             @Override
             public void onSuccess(double balance) {
-                getView().updateBalance(balance);
+                getView().updateBalance(balance * (QtumSharedPreference.getInstance().getExchangeRates(getView().getContext())));
             }
         });
     }

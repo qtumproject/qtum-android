@@ -9,12 +9,13 @@ import java.io.File;
 public class QtumSharedPreference {
     private static QtumSharedPreference sInstance = null;
 
-    private static final String QTUM_DATA_STORAGE = "qtum_data_storage";
-    private static final String QTUM_WALLET_NAME = "qtum_wallet_name";
-    private static final String QTUM_WALLET_PASSWORD = "qtum_wallet_password";
-    private static final String QTUM_IS_KEY_GENERATED = "qtum_is_key_generated";
-    private static final String QTUM_KEY_IDENTIFIER = "qtum_key_identifier";
-    private static final String QTUM_SEED = "qtum_seed";
+    private final String QTUM_DATA_STORAGE = "qtum_data_storage";
+    private final String QTUM_WALLET_NAME = "qtum_wallet_name";
+    private final String QTUM_WALLET_PASSWORD = "qtum_wallet_password";
+    private final String QTUM_IS_KEY_GENERATED = "qtum_is_key_generated";
+    private final String QTUM_KEY_IDENTIFIER = "qtum_key_identifier";
+    private final String QTUM_SEED = "qtum_seed";
+    private final String QTUM_EXCHANGE_RATES = "qtum_exchange_rates";
 
     private QtumSharedPreference() { }
 
@@ -45,6 +46,17 @@ public class QtumSharedPreference {
 
     public int getWalletPassword(Context context) {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getInt(QTUM_WALLET_PASSWORD, 0);
+    }
+
+    public void saveExchangeRates(Context context, double exchangeRates) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putString(QTUM_EXCHANGE_RATES, String.valueOf(exchangeRates));
+        mEditor.apply();
+    }
+
+    public double getExchangeRates(Context context) {
+        return Double.parseDouble(context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_EXCHANGE_RATES, "0.00000001"));
     }
 
     public void setKeyGeneratedInstance(Context context, boolean isKeyGenerated) {

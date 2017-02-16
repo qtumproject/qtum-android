@@ -70,14 +70,19 @@ public class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl imp
             @Override
             public void onSuccess() {
                 getView().dismissProgressDialog();
+                getView().setAlertDialog("Sent");
+                (new Handler()).postDelayed(new Runnable() {
+                    public void run() {
+                        getView().dismissAlertDialog();
+                    }
+                }, 2000);
             }
 
             @Override
             public void onError(String error) {
                 getView().dismissProgressDialog();
                 getView().setAlertDialog(error);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+                (new Handler()).postDelayed(new Runnable() {
                     public void run() {
                         getView().dismissAlertDialog();
                     }
