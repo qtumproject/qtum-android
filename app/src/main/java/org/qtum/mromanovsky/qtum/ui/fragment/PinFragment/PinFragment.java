@@ -158,10 +158,10 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
                     break;
             }
 
-            drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
-            mImageViewBottomWave.setImageDrawable(drawableBottom);
-            drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
-            mImageViewTopWave.setImageDrawable(drawableTop);
+//            drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
+//            mImageViewBottomWave.setImageDrawable(drawableBottom);
+//            drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
+//            mImageViewTopWave.setImageDrawable(drawableTop);
 //            mTextInputEditTextWalletPin.setOnKeyListener(new View.OnKeyListener() {
 //                @Override
 //                public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -181,15 +181,15 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     @Override
     public void startAnimation() {
         super.startAnimation();
-        drawableBottom.start();
-        drawableTop.start();
+        //drawableBottom.start();
+        //drawableTop.start();
     }
 
     @Override
     public void stopAnimation() {
         super.stopAnimation();
-        drawableBottom.stop();
-        drawableTop.stop();
+//        drawableBottom.stop();
+//        drawableTop.stop();
     }
 
 }

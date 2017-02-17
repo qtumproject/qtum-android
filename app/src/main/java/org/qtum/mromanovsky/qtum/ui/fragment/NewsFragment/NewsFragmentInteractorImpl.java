@@ -16,13 +16,15 @@ import rx.schedulers.Schedulers;
 
 public class NewsFragmentInteractorImpl implements NewsFragmentInteractor{
 
+    private Subscription mSubscriptionNewsList = null;
+
     public NewsFragmentInteractorImpl(){
 
     }
 
     @Override
     public void getNewsList(final GetNewsListCallBack callBack){
-        QtumService.newInstance().getNews("en")
+        mSubscriptionNewsList = QtumService.newInstance().getNews("en")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<News>>() {
@@ -47,6 +49,10 @@ public class NewsFragmentInteractorImpl implements NewsFragmentInteractor{
     @Override
     public List<News> getNewsList() {
         return NewsList.getInstance().getNewsList();
+    }
+
+    public void unSubscribe(){
+        mSubscriptionNewsList.unsubscribe();
     }
 
 

@@ -1,9 +1,12 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -102,8 +105,10 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
 
     @Override
     public void updateRecyclerView(List<History> historyList) {
+
         mTransactionAdapter = new TransactionAdapter(historyList);
         mRecyclerView.setAdapter(mTransactionAdapter);
+
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -166,24 +171,27 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
             }
         });
 
-        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
-        mImageViewBottomWave.setImageDrawable(drawableBottom);
-        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
-        mImageViewTopWave.setImageDrawable(drawableTop);
+        //drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom);
+        Drawable drawable = ContextCompat.getDrawable(getContext(),R.drawable.animatable_bottom);
+        mImageViewBottomWave.setImageDrawable(drawable);
+        ((Animatable) drawable).start();
+        //mImageViewBottomWave.setImageDrawable(drawableBottom);
+        //drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
+        //mImageViewTopWave.setImageDrawable(drawableTop);
     }
 
     @Override
     public void startAnimation() {
         super.startAnimation();
-        drawableBottom.start();
-        drawableTop.start();
+        //drawableBottom.start();
+        //drawableTop.start();
     }
 
     @Override
     public void stopAnimation() {
         super.stopAnimation();
-        drawableBottom.stop();
-        drawableTop.stop();
+        //drawableBottom.stop();
+        //drawableTop.stop();
     }
 
 

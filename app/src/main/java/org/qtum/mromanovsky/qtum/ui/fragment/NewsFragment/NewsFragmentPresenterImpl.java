@@ -28,6 +28,7 @@ public class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        getInteractor().unSubscribe();
         getView().setAdapterNull();
     }
 

@@ -3,16 +3,13 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 import android.content.Context;
 
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Utils;
-import org.qtum.mromanovsky.qtum.btc.BTCUtils;
+import com.google.common.collect.Lists;
+
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
-import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
-import org.qtum.mromanovsky.qtum.utils.CurrentNetParams;
 
 import java.util.List;
 
@@ -45,7 +42,6 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     public void getHistoryList(final GetHistoryListCallBack callBack) {
 
         mSubscriptionHistoryList = QtumService.newInstance()
-                //.getHistoryList(KeyStorage.getInstance().getCurrentAddress(),20,0)
                 .getHistoryListForSeveralAddresses(KeyStorage.getInstance().getAddresses(), 100,0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -62,16 +58,22 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
                     @Override
                     public void onNext(List<History> historyList) {
+                        if(getHistoryList().size()!=0){
+                            if(getHistoryList().size()==historyList.size()){
+                                callBack.onSuccessWithoutChange();
+                                return;
+                            }
+                        }
                         setHistoryList(historyList);
-                        callBack.onSuccess(historyList);
+                        callBack.onSuccess();
                     }
                 });
+
     }
 
     @Override
     public void getBalance(final GetBalanceCallBack callBack) {
         mSubscriptionBalance = QtumService.newInstance()
-                //.getUnspentOutputs(KeyStorage.getInstance().getCurrentAddress())
                 .getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -91,12 +93,11 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                         double balance = 0;
                         for(UnspentOutput unspentOutput : unspentOutputs){
                             balance+=unspentOutput.getAmount();
-                            //TODO: create
-                            Address address = new Address(CurrentNetParams.getNetParams(),Utils.parseAsHexOrBase58(unspentOutput.getPubkeyHash()));
                         }
                         callBack.onSuccess(balance);
                     }
                 });
+
     }
 
     public void unSubscribe(){
@@ -109,7 +110,8 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     }
 
     public interface GetHistoryListCallBack {
-        void onSuccess(List<History> historyList);
+        void onSuccess();
+        void onSuccessWithoutChange();
         void onError(Throwable e);
     }
 

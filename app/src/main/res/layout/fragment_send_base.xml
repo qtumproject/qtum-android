@@ -44,9 +44,13 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/fragment_container_send_base"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/activity_horizontal_margin"
@@ -119,5 +123,5 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/button_text"/>
     </RelativeLayout>
-
+    </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

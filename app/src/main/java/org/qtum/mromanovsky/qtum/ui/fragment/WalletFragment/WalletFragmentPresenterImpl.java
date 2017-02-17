@@ -57,6 +57,9 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         super.onViewCreated();
         loadAndUpdateData();
         loadAndUpdateBalance();
+
+        String pubKey = getInteractor().getAddress();
+        getView().updatePubKey(pubKey);
     }
 
     @Override
@@ -143,8 +146,13 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         getView().startRefreshAnimation();
         getInteractor().getHistoryList(new WalletFragmentInteractorImpl.GetHistoryListCallBack() {
             @Override
-            public void onSuccess(List<History> historyList) {
+            public void onSuccess() {
                 updateData();
+            }
+
+            @Override
+            public void onSuccessWithoutChange() {
+                getView().stopRefreshRecyclerAnimation();
             }
 
             @Override
@@ -166,7 +174,5 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 
     private void updateData(){
         getView().updateRecyclerView(getInteractor().getHistoryList());
-        String pubKey = getInteractor().getAddress();
-        getView().updatePubKey(pubKey);
     }
 }
