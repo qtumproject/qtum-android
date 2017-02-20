@@ -87,10 +87,10 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
 
     @Override
     public void initializeViews() {
-        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
-        mImageViewBottomWave.setImageDrawable(drawableBottom);
-        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
-        mImageViewTopWave.setImageDrawable(drawableTop);
+//        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
+//        mImageViewBottomWave.setImageDrawable(drawableBottom);
+//        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
+//        mImageViewTopWave.setImageDrawable(drawableTop);
 
         mTextInputLayoutWalletName.setFocusableInTouchMode(true);
         mTextInputLayoutWalletName.requestFocus();
@@ -119,14 +119,14 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
     @Override
     public void startAnimation() {
         super.startAnimation();
-        drawableBottom.start();
-        drawableTop.start();
+//        drawableBottom.start();
+//        drawableTop.start();
     }
 
     @Override
     public void stopAnimation() {
         super.stopAnimation();
-        drawableBottom.stop();
-        drawableTop.stop();
+//        drawableBottom.stop();
+//        drawableTop.stop();
     }
 }

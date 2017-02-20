@@ -29,6 +29,6 @@ public class HistoryList {
     }
 
     public void setHistoryList(List<History> historyList) {
-        mHistoryList = Lists.reverse(historyList);
+        mHistoryList = historyList;
     }
 }

@@ -64,7 +64,7 @@
             android:layout_height="160dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/logo"/>
+            app:srcCompat="@drawable/logo"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
             android:layout_below="@+id/iv_logo"
             android:layout_marginTop="16dp"
             android:id="@+id/iv_logo_txt"
-            android:src="@drawable/logo_txt"/>
+            app:srcCompat="@drawable/logo_txt"/>
 
         <TextView
             android:id="@+id/tv_start_page_you_dont_have"

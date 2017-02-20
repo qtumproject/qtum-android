@@ -172,9 +172,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
         });
 
         //drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom);
-        Drawable drawable = ContextCompat.getDrawable(getContext(),R.drawable.animatable_bottom);
-        mImageViewBottomWave.setImageDrawable(drawable);
-        ((Animatable) drawable).start();
         //mImageViewBottomWave.setImageDrawable(drawableBottom);
         //drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
         //mImageViewTopWave.setImageDrawable(drawableTop);
@@ -284,7 +281,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
                 mImageViewIcon.setImageResource(R.drawable.ic_sent);
                 mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.pink));
             }
-            //mTextViewValue.setText(String.format("%.8f", history.getAmount()*(QtumSharedPreference.getInstance().getExchangeRates(getContext()))) + " QTUM");
             DecimalFormat df = new DecimalFormat("0");
             df.setMaximumFractionDigits(8);
             mTextViewValue.setText(df.format(history.getAmount()*(QtumSharedPreference.getInstance().getExchangeRates(getContext()))) + " QTUM");

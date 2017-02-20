@@ -1,7 +1,11 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment;
 
 
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -92,12 +96,17 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
 
         mAnimState = 9;
 
-        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
-        mImageViewBottomWave.setImageDrawable(drawableBottom);
-        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
-        mImageViewTopWave.setImageDrawable(drawableTop);
-        drawableBottom.start();
-        drawableTop.start();
+//        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
+//        mImageViewBottomWave.setImageDrawable(drawableBottom);
+//        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
+//        mImageViewTopWave.setImageDrawable(drawableTop);
+//        drawableBottom.start();
+//        drawableTop.start();
+
+
+        //Drawable drawable = ContextCompat.getDrawable(getContext(),R.drawable.animatable_bottom);
+        //mImageViewBottomWave.setImageDrawable(drawable);
+        //drawable.start();
 
         mAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.logo_txt);
         mImageViewLogoTxt.startAnimation(mAnimation);
@@ -125,8 +134,8 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
 
                         mImageViewTopWave.setVisibility(View.INVISIBLE);
                         mImageViewBottomWave.setVisibility(View.INVISIBLE);
-                        drawableBottom.stop();
-                        drawableTop.stop();
+//                        drawableBottom.stop();
+//                        drawableTop.stop();
 
                         break;
                     case 11:

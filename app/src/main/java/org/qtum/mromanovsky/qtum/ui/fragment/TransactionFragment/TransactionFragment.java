@@ -1,6 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment;
 
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
@@ -83,12 +84,12 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
         }
-        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
-        mImageViewBottomWave.setImageDrawable(drawableBottom);
-        drawableBottom.start();
-        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
-        mImageViewTopWave.setImageDrawable(drawableTop);
-        drawableTop.start();
+//        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
+//        mImageViewBottomWave.setImageDrawable(drawableBottom);
+//        drawableBottom.start();
+//        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
+//        mImageViewTopWave.setImageDrawable(drawableTop);
+//        drawableTop.start();
     }
 
 
@@ -103,24 +104,28 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
         mTextViewTo.setText(to);
         if (value > 0) {
             mAppBarLayout.setBackgroundResource(R.drawable.background_tb_sent);
-            getFragmentActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.green));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getFragmentActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.green));
+            }
         } else {
             mAppBarLayout.setBackgroundResource(R.drawable.background_tb_received);
-            getFragmentActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.pink_lite));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getFragmentActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.pink_lite));
+            }
         }
     }
 
     @Override
     public void startAnimation() {
         super.startAnimation();
-        drawableBottom.start();
-        drawableTop.start();
+//        drawableBottom.start();
+//        drawableTop.start();
     }
 
     @Override
     public void stopAnimation() {
         super.stopAnimation();
-        drawableBottom.stop();
-        drawableTop.stop();
+//        drawableBottom.stop();
+//        drawableTop.stop();
     }
 }
