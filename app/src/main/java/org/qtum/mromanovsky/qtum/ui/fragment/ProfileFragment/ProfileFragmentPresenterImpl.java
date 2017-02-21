@@ -7,7 +7,7 @@ import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 
 
-public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ProfileFragmentPresenter {
+class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ProfileFragmentPresenter {
 
     private ProfileFragmentView mProfileFragmentView;
     private ProfileFragmentInteractorImpl mProfileFragmentInteractor;

@@ -7,12 +7,12 @@ import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterI
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
 
 
-public class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SendBaseFragmentPresenter {
+class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SendBaseFragmentPresenter {
 
     private SendBaseFragmentView mSendBaseFragmentView;
     private SendBaseFragmentInteractorImpl mSendBaseFragmentInteractor;
 
-    public SendBaseFragmentPresenterImpl(SendBaseFragmentView sendBaseFragmentView){
+    SendBaseFragmentPresenterImpl(SendBaseFragmentView sendBaseFragmentView){
         mSendBaseFragmentView = sendBaseFragmentView;
         mSendBaseFragmentInteractor = new SendBaseFragmentInteractorImpl(getView().getContext());
     }

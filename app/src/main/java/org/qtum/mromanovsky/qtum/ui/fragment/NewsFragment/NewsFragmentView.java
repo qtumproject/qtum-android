@@ -6,7 +6,7 @@ import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 import java.util.List;
 
-public interface NewsFragmentView extends BaseFragmentView {
+interface NewsFragmentView extends BaseFragmentView {
     void updateNews(List<News> newsList);
     void startRefreshAnimation();
     void setAdapterNull();

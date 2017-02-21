@@ -1,9 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
-import android.graphics.drawable.Animatable;
-import android.graphics.drawable.AnimatedVectorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -36,15 +33,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class WalletFragment extends BaseFragment implements WalletFragmentView{
+public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     public final int LAYOUT = R.layout.fragment_wallet;
-    public static final String TAG = "WalletFragment";
 
     WalletFragmentPresenterImpl mWalletFragmentPresenter;
     TransactionAdapter mTransactionAdapter;
-    AnimatedVectorDrawable drawableBottom;
-    AnimatedVectorDrawable drawableTop;
 
     @BindView(R.id.tv_public_key)
     TextView mTvPublicKey;
@@ -60,16 +54,12 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
-    @BindView(R.id.iv_bottom_wave)
-    ImageView mImageViewBottomWave;
-    @BindView(R.id.iv_top_wave)
-    ImageView mImageViewTopWave;
     @BindView(R.id.bt_qr_code)
     ImageButton mButtonQrCode;
     @BindView(R.id.progress_bar_balance)
     ProgressBar mProgressBarDialog;
 
-    @OnClick({R.id.fab, R.id.ll_receive,R.id.bt_qr_code})
+    @OnClick({R.id.fab, R.id.ll_receive, R.id.bt_qr_code})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
@@ -150,7 +140,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(),R.color.colorAccent));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -171,33 +161,14 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
             }
         });
 
-        //drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom);
-        //mImageViewBottomWave.setImageDrawable(drawableBottom);
-        //drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
-        //mImageViewTopWave.setImageDrawable(drawableTop);
     }
-
-    @Override
-    public void startAnimation() {
-        super.startAnimation();
-        //drawableBottom.start();
-        //drawableTop.start();
-    }
-
-    @Override
-    public void stopAnimation() {
-        super.stopAnimation();
-        //drawableBottom.stop();
-        //drawableTop.stop();
-    }
-
 
     public class TransactionAdapter extends RecyclerView.Adapter<TransactionHolder> {
 
         private List<History> mHistoryList;
         History mHistory;
 
-        public TransactionAdapter(List<History> historyList) {
+        TransactionAdapter(List<History> historyList) {
             mHistoryList = historyList;
         }
 
@@ -235,9 +206,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
         ImageView mImageViewIcon;
 
         Date date = new Date();
-        long currentTime = date.getTime()/1000L;
+        long currentTime = date.getTime() / 1000L;
 
-        public TransactionHolder(View itemView) {
+        TransactionHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -248,24 +219,28 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindTransactionData(History history) {
+        void bindTransactionData(History history) {
 
             long transactionTime = history.getBlockTime();
             long delay = currentTime - transactionTime;
             String dateString;
-            if(delay<3600){
-                dateString = delay/60 + " min ago";
+            if (delay < 3600) {
+                dateString = delay / 60 + " min ago";
             } else {
-                date.setHours(0);
-                date.setMinutes(0);
-                date.setSeconds(0);
-                Date dateTransaction = new Date(transactionTime*1000L);
+
+                Calendar calendarNow = Calendar.getInstance();
+                calendarNow.set( Calendar.HOUR_OF_DAY, 0);
+                calendarNow.set(Calendar.MINUTE, 0);
+                calendarNow.set(Calendar.SECOND, 0);
+                date = calendarNow.getTime();
+
+                Date dateTransaction = new Date(transactionTime * 1000L);
                 Calendar calendar = new GregorianCalendar();
                 calendar.setTime(dateTransaction);
-                if((transactionTime - date.getTime()/1000L)>0){
+                if ((transactionTime - date.getTime() / 1000L) > 0) {
                     dateString = calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
                 } else {
-                    dateString = calendar.getDisplayName(Calendar.MONTH,Calendar.SHORT, Locale.US) + ", " + calendar.get(Calendar.DATE);
+                    dateString = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + ", " + calendar.get(Calendar.DATE);
                 }
             }
             mTextViewDate.setText(dateString);
@@ -274,16 +249,16 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView{
                 mTextViewOperationType.setText(R.string.received);
                 mTextViewID.setText(history.getFromAddress());
                 mImageViewIcon.setImageResource(R.drawable.ic_received);
-                mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.colorAccent));
+                mTextViewOperationType.setTextColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
             } else {
                 mTextViewOperationType.setText(R.string.sent);
                 mTextViewID.setText(history.getToAddress());
                 mImageViewIcon.setImageResource(R.drawable.ic_sent);
-                mTextViewOperationType.setTextColor(mTextViewOperationType.getResources().getColor(R.color.pink));
+                mTextViewOperationType.setTextColor(ContextCompat.getColor(getContext(), R.color.pink));
             }
             DecimalFormat df = new DecimalFormat("0");
             df.setMaximumFractionDigits(8);
-            mTextViewValue.setText(df.format(history.getAmount()*(QtumSharedPreference.getInstance().getExchangeRates(getContext()))) + " QTUM");
+            mTextViewValue.setText(df.format(history.getAmount() * (QtumSharedPreference.getInstance().getExchangeRates(getContext()))) + " QTUM");
         }
     }
 }

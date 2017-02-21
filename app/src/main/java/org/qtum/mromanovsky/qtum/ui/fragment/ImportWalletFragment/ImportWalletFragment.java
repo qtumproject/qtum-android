@@ -1,11 +1,9 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.ImportWalletFragment;
 
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -19,13 +17,7 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
     public final int LAYOUT = R.layout.fragment_import_wallet;
 
     ImportWalletFragmentPresenterImpl mImportWalletFragmentPresenter;
-    AnimatedVectorDrawable drawableBottom;
-    AnimatedVectorDrawable drawableTop;
 
-    @BindView(R.id.iv_bottom_wave)
-    ImageView mImageViewBottomWave;
-    @BindView(R.id.iv_top_wave)
-    ImageView mImageViewTopWave;
     @BindView(R.id.bt_cancel)
     Button mButtonCancel;
     @BindView(R.id.bt_import)
@@ -67,24 +59,7 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
 
     @Override
     public void initializeViews() {
-        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
-        mImageViewBottomWave.setImageDrawable(drawableBottom);
-        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
-        mImageViewTopWave.setImageDrawable(drawableTop);
-    }
 
-    @Override
-    public void startAnimation() {
-        super.startAnimation();
-        drawableBottom.start();
-        drawableTop.start();
-    }
-
-    @Override
-    public void stopAnimation() {
-        super.stopAnimation();
-        drawableBottom.stop();
-        drawableTop.stop();
     }
 
     @Override

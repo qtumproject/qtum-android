@@ -3,8 +3,6 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 import android.content.Context;
 
-import com.google.common.collect.Lists;
-
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
@@ -18,13 +16,13 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
+class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     private Context mContext;
     private Subscription mSubscriptionHistoryList = null;
     private Subscription mSubscriptionBalance = null;
 
-    public WalletFragmentInteractorImpl(Context context){
+    WalletFragmentInteractorImpl(Context context){
         mContext = context;
     }
 
@@ -100,7 +98,7 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     }
 
-    public void unSubscribe(){
+    void unSubscribe(){
         if(mSubscriptionHistoryList != null){
             mSubscriptionHistoryList.unsubscribe();
         }
@@ -109,13 +107,13 @@ public class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
         }
     }
 
-    public interface GetHistoryListCallBack {
+    interface GetHistoryListCallBack {
         void onSuccess();
         void onSuccessWithoutChange();
         void onError(Throwable e);
     }
 
-    public interface GetBalanceCallBack {
+    interface GetBalanceCallBack {
         void onSuccess(double balance);
     }
 

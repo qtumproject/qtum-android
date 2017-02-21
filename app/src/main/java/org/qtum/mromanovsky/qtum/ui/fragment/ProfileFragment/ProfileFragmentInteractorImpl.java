@@ -5,12 +5,12 @@ import android.content.Context;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
 
-public class ProfileFragmentInteractorImpl implements ProfileFragmentInteractor {
+class ProfileFragmentInteractorImpl implements ProfileFragmentInteractor {
 
-    Context mContext;
+    private Context mContext;
 
-    public ProfileFragmentInteractorImpl(Context context){
-        mContext = context;;
+    ProfileFragmentInteractorImpl(Context context){
+        mContext = context;
     }
 
     @Override

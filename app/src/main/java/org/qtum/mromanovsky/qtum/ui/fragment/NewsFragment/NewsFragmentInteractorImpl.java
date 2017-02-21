@@ -14,11 +14,11 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-public class NewsFragmentInteractorImpl implements NewsFragmentInteractor{
+class NewsFragmentInteractorImpl implements NewsFragmentInteractor{
 
     private Subscription mSubscriptionNewsList = null;
 
-    public NewsFragmentInteractorImpl(){
+    NewsFragmentInteractorImpl(){
 
     }
 
@@ -51,12 +51,12 @@ public class NewsFragmentInteractorImpl implements NewsFragmentInteractor{
         return NewsList.getInstance().getNewsList();
     }
 
-    public void unSubscribe(){
+    void unSubscribe(){
         mSubscriptionNewsList.unsubscribe();
     }
 
 
-    public interface GetNewsListCallBack{
+    interface GetNewsListCallBack{
         void onSuccess(List<News> newsList);
     }
 }

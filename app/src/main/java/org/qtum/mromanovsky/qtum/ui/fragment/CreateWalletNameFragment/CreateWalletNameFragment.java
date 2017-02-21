@@ -1,18 +1,12 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.CreateWalletNameFragment;
 
 
-import android.content.Context;
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -23,11 +17,8 @@ import butterknife.OnClick;
 public class CreateWalletNameFragment extends BaseFragment implements CreateWalletNameFragmentView {
 
     public final int LAYOUT = R.layout.fragment_create_wallet_name;
-    public static final String TAG = "CreateWalletNameFragment";
     public static final String IS_CREATE_NEW = "is_create_new";
     public static boolean mIsCreateNew;
-    AnimatedVectorDrawable drawableBottom;
-    AnimatedVectorDrawable drawableTop;
 
     CreateWalletNameFragmentPresenterImpl mCreateWalletFragmentPresenter;
 
@@ -39,10 +30,6 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
     TextInputEditText mTextInputEditTextWalletName;
     @BindView(R.id.til_wallet_name)
     TextInputLayout mTextInputLayoutWalletName;
-    @BindView(R.id.iv_bottom_wave)
-    ImageView mImageViewBottomWave;
-    @BindView(R.id.iv_top_wave)
-    ImageView mImageViewTopWave;
 
     @OnClick({R.id.bt_confirm, R.id.bt_cancel})
     public void onClick(View view) {
@@ -87,11 +74,6 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
 
     @Override
     public void initializeViews() {
-//        drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
-//        mImageViewBottomWave.setImageDrawable(drawableBottom);
-//        drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
-//        mImageViewTopWave.setImageDrawable(drawableTop);
-
         mTextInputLayoutWalletName.setFocusableInTouchMode(true);
         mTextInputLayoutWalletName.requestFocus();
         mTextInputEditTextWalletName.setFocusable(true);
@@ -116,17 +98,4 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
         mTextInputLayoutWalletName.setErrorEnabled(false);
     }
 
-    @Override
-    public void startAnimation() {
-        super.startAnimation();
-//        drawableBottom.start();
-//        drawableTop.start();
-    }
-
-    @Override
-    public void stopAnimation() {
-        super.stopAnimation();
-//        drawableBottom.stop();
-//        drawableTop.stop();
-    }
 }

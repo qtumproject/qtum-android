@@ -5,7 +5,7 @@ import android.content.Context;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
 
-public class MainActivityInteractorImpl implements MainActivityInteractor {
+class MainActivityInteractorImpl implements MainActivityInteractor {
 
     @Override
     public boolean getKeyGeneratedInstance(Context context) {

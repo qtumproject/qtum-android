@@ -10,12 +10,12 @@ import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
-public class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements BackUpWalletFragmentPresenter {
+class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements BackUpWalletFragmentPresenter {
 
     private BackUpWalletFragmentView mBackUpWalletFragmentView;
     private BackUpWalletInteractorImpl mBackUpWalletInteractor;
 
-    public BackUpWalletFragmentPresenterImpl(BackUpWalletFragmentView backUpWalletFragmentView) {
+    BackUpWalletFragmentPresenterImpl(BackUpWalletFragmentView backUpWalletFragmentView) {
         mBackUpWalletFragmentView = backUpWalletFragmentView;
         mBackUpWalletInteractor = new BackUpWalletInteractorImpl(getView().getContext());
     }

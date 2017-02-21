@@ -2,6 +2,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BasePresenterImpl;
@@ -18,15 +19,13 @@ public class BaseFragmentPresenterImpl extends BasePresenterImpl implements Base
     public void onResume(Context context) {
         super.onResume(context);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getView().getFragmentActivity().getWindow().setStatusBarColor(getView().getFragmentActivity().getResources().getColor(R.color.colorPrimaryDark));
+            getView().getFragmentActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getView().getContext(),R.color.colorPrimaryDark));
         }
-        getView().startAnimation();
     }
 
     @Override
     public void onPause(Context context) {
         super.onPause(context);
-        getView().stopAnimation();
     }
 
     @Override

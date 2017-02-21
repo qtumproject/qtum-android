@@ -22,12 +22,12 @@ import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterI
 import static android.content.Context.CLIPBOARD_SERVICE;
 
 
-public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ReceiveFragmentPresenter {
+class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ReceiveFragmentPresenter {
 
     private ReceiveFragmentView mReceiveFragmentView;
     private ReceiveFragmentInteractorImpl mReceiveFragmentInteractor;
 
-    public ReceiveFragmentPresenterImpl(ReceiveFragmentView receiveFragmentView) {
+    ReceiveFragmentPresenterImpl(ReceiveFragmentView receiveFragmentView) {
         mReceiveFragmentView = receiveFragmentView;
         mReceiveFragmentInteractor = new ReceiveFragmentInteractorImpl(getView().getContext());
     }
@@ -85,14 +85,14 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
         DisplayMetrics displayMetrics = new DisplayMetrics();
         Display display = getView().getFragmentActivity().getWindowManager().getDefaultDisplay();
         display.getMetrics(displayMetrics);
-        int QRcodeWidth = displayMetrics.heightPixels/3;
+        int QRCodeWidth = displayMetrics.heightPixels/3;
 
         BitMatrix bitMatrix;
         try {
             bitMatrix = new MultiFormatWriter().encode(
                     Value,
-                    BarcodeFormat.DATA_MATRIX.QR_CODE,
-                    QRcodeWidth, QRcodeWidth, null
+                    BarcodeFormat.QR_CODE,
+                    QRCodeWidth, QRCodeWidth, null
             );
 
         } catch (IllegalArgumentException Illegalargumentexception) {
@@ -116,7 +116,7 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
         }
         Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
 
-        bitmap.setPixels(pixels, 0, QRcodeWidth, 0, 0, bitMatrixWidth, bitMatrixHeight);
+        bitmap.setPixels(pixels, 0, QRCodeWidth, 0, 0, bitMatrixWidth, bitMatrixHeight);
         return bitmap;
     }
 }

@@ -1,7 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 
 
-public interface PinFragmentPresenter {
+interface PinFragmentPresenter {
     void confirm(String password);
     void cancel();
 }

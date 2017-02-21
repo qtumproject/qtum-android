@@ -85,7 +85,7 @@ public class QtumSharedPreference {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_SEED, "");
     }
 
-    public void saveSeed(Context context, String seed) {
+    void saveSeed(Context context, String seed) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
         mEditor.putString(QTUM_SEED, seed);
@@ -97,7 +97,7 @@ public class QtumSharedPreference {
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
         mEditor.clear();
         mEditor.apply();
-        File file = new File(context.getFilesDir().getPath().toString() + "/key_storage");
+        File file = new File(context.getFilesDir().getPath() + "/key_storage");
         file.delete();
     }
 }

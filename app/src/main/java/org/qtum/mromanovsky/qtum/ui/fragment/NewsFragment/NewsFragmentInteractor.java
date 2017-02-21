@@ -5,7 +5,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
 import java.util.List;
 
 
-public interface NewsFragmentInteractor {
+interface NewsFragmentInteractor {
     void getNewsList(NewsFragmentInteractorImpl.GetNewsListCallBack callBack);
     List<News> getNewsList();
 }

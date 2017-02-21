@@ -88,20 +88,18 @@
 
     </RelativeLayout>
 
-    <ImageView
+    <org.qtum.mromanovsky.qtum.ui.customview.WaveTop
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_gravity="bottom"
-        android:id="@+id/iv_bottom_wave"
-        android:clickable="false"
-        android:scaleType="fitXY"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_gravity="bottom"
+        android:layout_height="150dp"
         android:id="@+id/iv_top_wave"
         android:clickable="false"
-        android:scaleType="fitXY"/>
+        android:layout_gravity="bottom"/>
+
+    <org.qtum.mromanovsky.qtum.ui.customview.WaveBottom
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:clickable="false"
+        android:id="@+id/iv_bottom_wave"
+        android:layout_gravity="bottom"/>
 
 </android.support.design.widget.CoordinatorLayout>

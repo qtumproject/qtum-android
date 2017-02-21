@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 
-public interface SendBaseFragmentView extends BaseFragmentView{
+interface SendBaseFragmentView extends BaseFragmentView{
     void openInnerFragmentForResult(Fragment fragment);
     void qrCodeRecognitionToolBar();
     void sendToolBar();

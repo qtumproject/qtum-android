@@ -6,12 +6,12 @@ import android.content.Context;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 
-public class AddressesFragmentPresenterImpl extends BaseFragmentPresenterImpl implements AddressesFragmentPresenter{
+class AddressesFragmentPresenterImpl extends BaseFragmentPresenterImpl implements AddressesFragmentPresenter{
 
-    AddressesFragmentView mAddressesFragmentView;
-    AddressesFragmentInteractorImpl mAddressesFragmentInteractor;
+    private AddressesFragmentView mAddressesFragmentView;
+    private AddressesFragmentInteractorImpl mAddressesFragmentInteractor;
 
-    public AddressesFragmentPresenterImpl(AddressesFragmentView addressesFragmentView){
+    AddressesFragmentPresenterImpl(AddressesFragmentView addressesFragmentView){
         mAddressesFragmentView = addressesFragmentView;
         mAddressesFragmentInteractor = new AddressesFragmentInteractorImpl(getView().getContext());
     }

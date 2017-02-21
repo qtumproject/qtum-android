@@ -19,4 +19,7 @@
     <color name="white_alpha80">#ccffffff</color>
     <color name="white_alpha50">#7affffff</color>
     <color name="alpha">#00ffffff</color>
+
+    <color name="wave_background">#24ffffff</color>
+    <color name="wave_stroke">#4058c0dd</color>
 </resources>

@@ -12,8 +12,6 @@ public interface BaseFragmentView extends BaseContextView {
     void openFragmentAndAddToBackStack(Fragment fragment);
     void openFragmentWithOutPopBackStack(Fragment fragment);
     Activity getFragmentActivity();
-    void startAnimation();
-    void stopAnimation();
     void setProgressDialog(String message);
     void dismissProgressDialog();
     void setAlertDialog(String message);

@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
-import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -15,18 +13,17 @@ import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionFragment;
 
-import java.util.List;
 
-public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
+class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
 
 //    Intent mIntent;
 //    UpdateService mUpdateService;
 //    WalletAppKit mWalletAppKit;
 
-    WalletFragmentInteractorImpl mWalletFragmentInteractor;
+    private WalletFragmentInteractorImpl mWalletFragmentInteractor;
     private WalletFragmentView mWalletFragmentView;
 
-    public WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView) {
+    WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView) {
         mWalletFragmentView = walletFragmentView;
         mWalletFragmentInteractor = new WalletFragmentInteractorImpl(getView().getContext());
     }

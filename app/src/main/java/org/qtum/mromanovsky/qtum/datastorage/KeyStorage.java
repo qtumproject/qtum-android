@@ -3,14 +3,12 @@ package org.qtum.mromanovsky.qtum.datastorage;
 
 import android.content.Context;
 
-import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.wallet.DeterministicSeed;
 import org.bitcoinj.wallet.KeyChain;
 import org.bitcoinj.wallet.UnreadableWalletException;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.WalletExtension;
-import org.qtum.mromanovsky.qtum.btc.BTCUtils;
 import org.qtum.mromanovsky.qtum.utils.CurrentNetParams;
 import org.qtum.mromanovsky.qtum.utils.DictionaryWords;
 
@@ -43,7 +41,7 @@ public class KeyStorage {
     }
 
     public Observable<Wallet> loadWalletFromFile(Context context){
-        mFile = new File(context.getFilesDir().getPath().toString() + "/key_storage");
+        mFile = new File(context.getFilesDir().getPath() + "/key_storage");
         return Observable.create(new Observable.OnSubscribe<Wallet>() {
                @Override
                public void call(Subscriber<? super Wallet> subscriber) {
@@ -79,7 +77,7 @@ public class KeyStorage {
     }
 
     public Observable<Wallet> createWallet(final Context context){
-        mFile = new File(context.getFilesDir().getPath().toString() + "/key_storage");
+        mFile = new File(context.getFilesDir().getPath() + "/key_storage");
         return Observable.create(new Observable.OnSubscribe<Wallet>() {
             @Override
             public void call(Subscriber<? super Wallet> subscriber) {
@@ -100,7 +98,9 @@ public class KeyStorage {
                 } catch (UnreadableWalletException e) {
                     e.printStackTrace();
                 }
-                sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(),seed);
+                if (seed != null) {
+                    sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(),seed);
+                }
                 try {
                     sWallet.saveToFile(mFile);
                     getKeyList();
@@ -114,7 +114,7 @@ public class KeyStorage {
     }
 
     public Observable<Wallet> importWallet(final String seedString, final Context context){
-        mFile = new File(context.getFilesDir().getPath().toString() + "/key_storage");
+        mFile = new File(context.getFilesDir().getPath() + "/key_storage");
         return Observable.create(new Observable.OnSubscribe<Wallet>() {
             @Override
             public void call(Subscriber<? super Wallet> subscriber) {
@@ -127,7 +127,9 @@ public class KeyStorage {
                 } catch (UnreadableWalletException e) {
                     e.printStackTrace();
                 }
-                sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(),seed);
+                if (seed != null) {
+                    sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(),seed);
+                }
                 try {
                     sWallet.saveToFile(mFile);
                     getKeyList();

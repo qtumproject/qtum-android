@@ -3,17 +3,16 @@ package org.qtum.mromanovsky.qtum.ui.fragment.CreateWalletNameFragment;
 import android.content.Context;
 
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
 
 
-public class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl implements CreateWalletNameFragmentPresenter {
+class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl implements CreateWalletNameFragmentPresenter {
 
     private CreateWalletNameFragmentView mCreateWalletNameFragmentView;
     private CreateWalletNameFragmentInteractorImpl mCreateWalletNameFragmentInteractor;
 
-    public CreateWalletNameFragmentPresenterImpl(CreateWalletNameFragmentView createWalletNameFragmentView) {
+    CreateWalletNameFragmentPresenterImpl(CreateWalletNameFragmentView createWalletNameFragmentView) {
         mCreateWalletNameFragmentView = createWalletNameFragmentView;
         mCreateWalletNameFragmentInteractor = new CreateWalletNameFragmentInteractorImpl(getView().getContext());
     }

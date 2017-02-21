@@ -8,11 +8,11 @@ import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 
 import java.util.List;
 
-public class AddressesFragmentInteractorImpl implements AddressesFragmentInteractor{
+class AddressesFragmentInteractorImpl implements AddressesFragmentInteractor{
 
-    Context mContext;
+    private Context mContext;
 
-    public AddressesFragmentInteractorImpl(Context context){
+    AddressesFragmentInteractorImpl(Context context){
         mContext = context;
     }
 

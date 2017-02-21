@@ -6,12 +6,12 @@ import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterI
 import org.qtum.mromanovsky.qtum.ui.fragment.CreateWalletNameFragment.CreateWalletNameFragment;
 
 
-public class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ImportWalletFragmentPresenter {
+class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ImportWalletFragmentPresenter {
 
-    ImportWalletFragmentView mImportWalletFragmentView;
-    ImportWalletFragmentInteractorImpl mImportWalletFragmentInteractor;
+    private ImportWalletFragmentView mImportWalletFragmentView;
+    private ImportWalletFragmentInteractorImpl mImportWalletFragmentInteractor;
 
-    public ImportWalletFragmentPresenterImpl(ImportWalletFragmentView importWalletFragmentView) {
+    ImportWalletFragmentPresenterImpl(ImportWalletFragmentView importWalletFragmentView) {
         mImportWalletFragmentView = importWalletFragmentView;
         mImportWalletFragmentInteractor = new ImportWalletFragmentInteractorImpl(getView().getContext());
     }

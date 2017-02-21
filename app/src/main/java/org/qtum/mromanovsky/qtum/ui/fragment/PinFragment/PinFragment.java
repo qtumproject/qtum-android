@@ -1,6 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 
-import android.graphics.drawable.AnimatedVectorDrawable;
+
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -25,9 +24,6 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     public final int LAYOUT = R.layout.fragment_pin;
 
     PinFragmentPresenterImpl mPinFragmentPresenter;
-
-    AnimatedVectorDrawable drawableBottom;
-    AnimatedVectorDrawable drawableTop;
 
     public final static String CREATING = "creating";
     public final static String AUTHENTICATION = "authentication";
@@ -59,10 +55,6 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     Toolbar mToolbar;
     @BindView(R.id.tv_toolbar_title)
     TextView mTextViewToolBarTitle;
-    @BindView(R.id.iv_bottom_wave)
-    ImageView mImageViewBottomWave;
-    @BindView(R.id.iv_top_wave)
-    ImageView mImageViewTopWave;
 
     @OnClick({R.id.bt_confirm, R.id.bt_cancel})
     public void onClick(View view) {
@@ -143,7 +135,9 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         if (null != mToolbar) {
             activity.setSupportActionBar(mToolbar);
             ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setDisplayShowTitleEnabled(false);
+            if (actionBar != null) {
+                actionBar.setDisplayShowTitleEnabled(false);
+            }
             switch (sAction) {
                 case IMPORTING:
                 case CREATING:
@@ -158,10 +152,6 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
                     break;
             }
 
-//            drawableBottom = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_bottom,getActivity().getTheme());
-//            mImageViewBottomWave.setImageDrawable(drawableBottom);
-//            drawableTop = (AnimatedVectorDrawable) getResources().getDrawable(R.drawable.animatable_top,getActivity().getTheme());
-//            mImageViewTopWave.setImageDrawable(drawableTop);
 //            mTextInputEditTextWalletPin.setOnKeyListener(new View.OnKeyListener() {
 //                @Override
 //                public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -178,18 +168,6 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         }
     }
 
-    @Override
-    public void startAnimation() {
-        super.startAnimation();
-        //drawableBottom.start();
-        //drawableTop.start();
-    }
 
-    @Override
-    public void stopAnimation() {
-        super.stopAnimation();
-//        drawableBottom.stop();
-//        drawableTop.stop();
-    }
 
 }

@@ -2,6 +2,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.AddressesFragment;
 
 
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -63,9 +64,12 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
         if (null != mToolbar) {
             activity.setSupportActionBar(mToolbar);
             ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            if (actionBar != null) {
+                actionBar.setDisplayShowTitleEnabled(false);
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+
         }
     }
 
@@ -89,7 +93,7 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
         @BindView(R.id.ll_address)
         LinearLayout mLinearLayoutAddress;
 
-        public AddressHolder(View itemView) {
+        AddressHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -103,10 +107,10 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
             ButterKnife.bind(this,itemView);
         }
 
-        public void bindAddress(String address, int position){
+        void bindAddress(String address, int position){
             if(position == KeyStorage.getCurrentKeyPosition()){
                 mImageViewCheckIndicator.setVisibility(View.VISIBLE);
-                mLinearLayoutAddress.setBackgroundColor(getResources().getColor(R.color.grey20));
+                mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.grey20));
             } else {
                 mImageViewCheckIndicator.setVisibility(View.GONE);
                 mLinearLayoutAddress.setBackgroundColor(Color.WHITE);
@@ -121,7 +125,7 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
         private String mAddress;
 
 
-        public AddressAdapter(List<DeterministicKey> deterministicKeys){
+        AddressAdapter(List<DeterministicKey> deterministicKeys){
             mDeterministicKeys = deterministicKeys;
         }
 

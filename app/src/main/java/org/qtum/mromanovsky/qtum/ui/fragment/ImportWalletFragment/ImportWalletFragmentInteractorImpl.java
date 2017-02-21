@@ -4,19 +4,18 @@ import android.content.Context;
 
 import org.bitcoinj.wallet.Wallet;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
-import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-public class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentInteractor {
+class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentInteractor {
 
-    Context mContext;
-    public static boolean isDataLoaded = false;
+    private Context mContext;
+    static boolean isDataLoaded = false;
 
-    public ImportWalletFragmentInteractorImpl(Context context){
+    ImportWalletFragmentInteractorImpl(Context context){
         mContext = context;
     }
 
@@ -45,7 +44,7 @@ public class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentI
                 });
     }
 
-    public interface ImportWalletCallBack{
+    interface ImportWalletCallBack{
         void onSuccess();
     }
 }

@@ -11,12 +11,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-public class PinFragmentInteractorImpl implements PinFragmentInteractor {
+class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
     private Context mContext;
-    public static boolean isDataLoaded = false;
+    static boolean isDataLoaded = false;
 
-    public PinFragmentInteractorImpl(Context context) {
+    PinFragmentInteractorImpl(Context context) {
         mContext = context;
     }
 
@@ -89,11 +89,11 @@ public class PinFragmentInteractorImpl implements PinFragmentInteractor {
     }
 
 
-    public interface CreateWalletCallBack {
+    interface CreateWalletCallBack {
         void onSuccess();
     }
 
-    public interface LoadWalletFromFileCallBack {
+    interface LoadWalletFromFileCallBack {
         void onSuccess();
     }
 

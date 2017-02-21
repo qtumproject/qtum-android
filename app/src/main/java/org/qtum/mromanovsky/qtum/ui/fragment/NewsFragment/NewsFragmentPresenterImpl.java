@@ -1,19 +1,16 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment;
 
-
-import android.content.Context;
-
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 import java.util.List;
 
-public class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl implements NewsFragmentPresenter {
+class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl implements NewsFragmentPresenter {
 
-    NewsFragmentView mNewsFragmentView;
-    NewsFragmentInteractorImpl mNewsFragmentInteractor;
+    private NewsFragmentView mNewsFragmentView;
+    private NewsFragmentInteractorImpl mNewsFragmentInteractor;
 
-    public NewsFragmentPresenterImpl(NewsFragmentView newsFragmentView) {
+    NewsFragmentPresenterImpl(NewsFragmentView newsFragmentView) {
         mNewsFragmentView = newsFragmentView;
         mNewsFragmentInteractor = new NewsFragmentInteractorImpl();
     }

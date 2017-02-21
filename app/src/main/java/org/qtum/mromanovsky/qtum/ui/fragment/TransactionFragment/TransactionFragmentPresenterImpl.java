@@ -5,19 +5,18 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-public class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl implements TransactionFragmentPresenter {
+class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl implements TransactionFragmentPresenter {
 
     private TransactionFragmentView mTransactionFragmentView;
     private TransactionFragmentInteractorImpl mTransactionFragmentInteractor;
 
-    public TransactionFragmentPresenterImpl(TransactionFragmentView transactionFragmentView) {
+    TransactionFragmentPresenterImpl(TransactionFragmentView transactionFragmentView) {
         mTransactionFragmentView = transactionFragmentView;
         mTransactionFragmentInteractor = new TransactionFragmentInteractorImpl();
     }
@@ -33,9 +32,8 @@ public class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl 
 
     @Override
     public void openTransactionView(int position) {
-        //// TODO: stub
-        History history = getInteractor().getHistory(position);
 
+        History history = getInteractor().getHistory(position);
         Date date = new Date(history.getBlockTime()*1000L);
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);

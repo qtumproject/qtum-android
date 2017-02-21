@@ -25,7 +25,6 @@ import butterknife.OnClick;
 public class SendBaseFragment extends BaseFragment implements SendBaseFragmentView {
 
     public final int LAYOUT = R.layout.fragment_send_base;
-    private final int code_response = 200;
     private static final String IS_QR_CODE_RECOGNITION = "is_qr_code_recognition";
     private ActionBar mActionBar;
     @BindView(R.id.et_receivers_address)
@@ -98,7 +97,8 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
 
     @Override
     public void openInnerFragmentForResult(Fragment fragment) {
-        fragment.setTargetFragment(this,code_response);
+        int code_response = 200;
+        fragment.setTargetFragment(this, code_response);
         getChildFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
@@ -114,7 +114,9 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         if (null != mToolbar) {
             activity.setSupportActionBar(mToolbar);
             mActionBar = activity.getSupportActionBar();
-            mActionBar.setDisplayShowTitleEnabled(false);
+            if (mActionBar != null) {
+                mActionBar.setDisplayShowTitleEnabled(false);
+            }
         }
     }
 

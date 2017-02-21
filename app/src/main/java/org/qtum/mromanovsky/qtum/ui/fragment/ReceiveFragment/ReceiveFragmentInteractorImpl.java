@@ -5,11 +5,11 @@ import android.content.Context;
 
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 
-public class ReceiveFragmentInteractorImpl implements ReceiveFragmentInteractor{
+class ReceiveFragmentInteractorImpl implements ReceiveFragmentInteractor{
 
     private Context mContext;
 
-    public ReceiveFragmentInteractorImpl(Context context){
+    ReceiveFragmentInteractorImpl(Context context){
         mContext = context;
     }
 

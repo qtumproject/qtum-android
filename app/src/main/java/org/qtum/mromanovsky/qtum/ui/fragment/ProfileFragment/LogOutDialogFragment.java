@@ -14,7 +14,7 @@ public class LogOutDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog alertDialog = new AlertDialog
+        return new AlertDialog
                 .Builder(getActivity())
                 .setTitle("Are you sure?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -31,7 +31,6 @@ public class LogOutDialogFragment extends DialogFragment {
                     }
                 })
                 .create();
-        return alertDialog;
     }
 
     public interface OnYesClickListener{

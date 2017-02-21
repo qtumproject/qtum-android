@@ -76,9 +76,11 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
         if (null != mToolbar) {
             activity.setSupportActionBar(mToolbar);
             ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            if (actionBar != null) {
+                actionBar.setDisplayShowTitleEnabled(false);
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
         }
 
         mTextInputEditTextAmount.setOnKeyListener(new View.OnKeyListener() {

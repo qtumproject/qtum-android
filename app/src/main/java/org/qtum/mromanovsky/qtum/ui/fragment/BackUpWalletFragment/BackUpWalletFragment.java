@@ -98,9 +98,11 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
             if (null != mToolbar) {
                 activity.setSupportActionBar(mToolbar);
                 ActionBar actionBar = activity.getSupportActionBar();
-                actionBar.setDisplayShowTitleEnabled(false);
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
+                if (actionBar != null) {
+                    actionBar.setDisplayShowTitleEnabled(false);
+                    actionBar.setDisplayHomeAsUpEnabled(true);
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
+                }
             }
         }
     }

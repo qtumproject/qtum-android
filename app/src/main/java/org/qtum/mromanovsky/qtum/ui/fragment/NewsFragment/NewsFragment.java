@@ -1,5 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,7 +69,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
                         mSwipeRefreshLayout.setEnabled(false);
             }
         });
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(),R.color.colorAccent));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -103,12 +104,12 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
         @BindView(R.id.tv_date)
         TextView mTextViewDate;
 
-        public NewsHolder(View itemView) {
+        NewsHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
 
-        public void bindNews(News news){
+        void bindNews(News news){
             mTextViewTitle.setText(news.getTitle());
             mTextViewDate.setText(news.getDate());
             if(news.getImage()!=null) {
@@ -132,12 +133,12 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
         @BindView(R.id.tv_short_text_news_header)
         TextView mTextViewShortText;
 
-        public NewsHeaderHolder(View itemView) {
+        NewsHeaderHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
 
-        public void bindNewsHeader(News news){
+        void bindNewsHeader(News news){
             mTextViewTitle.setText(news.getTitle());
             mTextViewDate.setText(news.getDate());
             mTextViewShortText.setText(news.getShort());
@@ -156,7 +157,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
         private List<News> mNewsList;
         News mNews;
 
-        public NewsAdapter(List<News> newsList){
+        NewsAdapter(List<News> newsList){
             mNewsList = newsList;
         }
 

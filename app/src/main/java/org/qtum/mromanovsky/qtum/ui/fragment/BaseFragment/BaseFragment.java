@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -206,7 +205,9 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         if (null != mToolbar) {
             activity.setSupportActionBar(mToolbar);
             ActionBar actionBar = activity.getSupportActionBar();
-            actionBar.setDisplayShowTitleEnabled(false);
+            if (actionBar != null) {
+                actionBar.setDisplayShowTitleEnabled(false);
+            }
         }
     }
 
@@ -225,16 +226,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void setSoftMode() {
-
-    }
-
-    @Override
-    public void startAnimation() {
-
-    }
-
-    @Override
-    public void stopAnimation() {
 
     }
 }

@@ -1,7 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
-public interface WalletFragmentPresenter {
+interface WalletFragmentPresenter {
     void onClickReceive();
     void onClickQrCode();
     void onRefresh();

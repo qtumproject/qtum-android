@@ -1,6 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment;
 
 
-public interface ReceiveFragmentInteractor {
+interface ReceiveFragmentInteractor {
     String getCurrentReceiveAddress();
 }

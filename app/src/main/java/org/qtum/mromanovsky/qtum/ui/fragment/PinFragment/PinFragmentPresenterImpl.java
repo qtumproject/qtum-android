@@ -3,7 +3,6 @@ package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 
 import android.content.Context;
 
-import org.bitcoinj.wallet.Wallet;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
@@ -11,13 +10,13 @@ import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterI
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
 
-public class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinFragmentPresenter {
+class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinFragmentPresenter {
 
     private PinFragmentView mPinFragmentView;
     private PinFragmentInteractorImpl mPinFragmentInteractor;
     private int pinForRepeat;
 
-    public PinFragmentPresenterImpl(PinFragmentView pinFragmentView) {
+    PinFragmentPresenterImpl(PinFragmentView pinFragmentView) {
         mPinFragmentView = pinFragmentView;
         mPinFragmentInteractor = new PinFragmentInteractorImpl(getView().getContext());
     }

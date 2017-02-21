@@ -20,8 +20,8 @@ import rx.Subscriber;
 public class QtumService {
 
     private static QtumService sQtumService;
-    public static final String BASE_URL = "http://139.162.178.174/";
-    QtumRestService mServiceApi;
+    private static final String BASE_URL = "http://139.162.178.174/";
+    private QtumRestService mServiceApi;
 
     public static QtumService newInstance(){
         if(sQtumService == null){
@@ -169,5 +169,4 @@ public class QtumService {
             }
         });
     }
-
 }

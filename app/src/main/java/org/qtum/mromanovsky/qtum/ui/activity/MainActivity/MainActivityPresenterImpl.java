@@ -8,12 +8,12 @@ import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 
 
-public class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivityPresenter {
+class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivityPresenter {
 
     private MainActivityView mMainActivityView;
     private MainActivityInteractorImpl mMainActivityInteractor;
 
-    public MainActivityPresenterImpl(MainActivityView mainActivityView) {
+    MainActivityPresenterImpl(MainActivityView mainActivityView) {
         mMainActivityView = mainActivityView;
         mMainActivityInteractor = new MainActivityInteractorImpl();
     }

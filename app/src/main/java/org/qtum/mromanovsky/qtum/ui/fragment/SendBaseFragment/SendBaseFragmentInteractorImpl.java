@@ -10,15 +10,16 @@ import org.bitcoinj.core.Sha256Hash;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionConfidence;
 import org.bitcoinj.core.TransactionOutPoint;
+import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
-import org.qtum.mromanovsky.qtum.btc.BTCUtils;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.utils.CurrentNetParams;
+import org.spongycastle.util.encoders.Hex;
 
 import java.nio.ByteBuffer;
 import java.util.Collections;
@@ -31,11 +32,11 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
+class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
     private Context mContext;
 
-    public SendBaseFragmentInteractorImpl(Context context){
+    SendBaseFragmentInteractorImpl(Context context){
         mContext = context;
     }
 
@@ -75,7 +76,7 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                     callBack.onError("Incorrect Address");
                 }
                 ECKey ecKey = KeyStorage.getInstance().getCurrentKey();
-                long amount = Long.parseLong(amountString)*(long)(1/(QtumSharedPreference.getInstance().getExchangeRates(mContext)));
+                long amount = (long)(Double.parseDouble(amountString)/(QtumSharedPreference.getInstance().getExchangeRates(mContext)));
                 long fee = 100000L;
 
 
@@ -88,7 +89,9 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
 
                 long amountFromOutput = (long)0;
                 long overFlow = (long)0;
-                transaction.addOutput(Coin.valueOf(amount),addressToSend);
+                if (addressToSend != null) {
+                    transaction.addOutput(Coin.valueOf(amount),addressToSend);
+                }
 
                 amount+=fee;
 
@@ -110,11 +113,10 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
 
                 for(UnspentOutput unspentOutput : unspentOutputs){
                     for(DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()){
-                        if(BTCUtils.toHex(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())){
-                            Sha256Hash sha256Hash = new Sha256Hash((BTCUtils.fromHex(unspentOutput.getTxHash())));
+                        if(Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())){
+                            Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
                             TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
-
-                            Script script = new Script(BTCUtils.fromHex(unspentOutput.getTxoutScriptPubKey()));
+                            Script script = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
                             transaction.addSignedInput(outPoint, script, deterministicKey, Transaction.SigHash.ALL, true);
                             amountFromOutput += unspentOutput.getAmount();
                             break;
@@ -130,7 +132,8 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
 
                 byte[] bytes = transaction.unsafeBitcoinSerialize();
 
-                String transactionHex = BTCUtils.toHex(bytes);
+                String transactionHex = Hex.toHexString(bytes);
+
                 Date date = new Date();
                 long l =  date.getTime()/1000;
                 int i3 = (int) l;
@@ -144,7 +147,7 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
                 bytesData[2] = tmp3;
                 bytesData[3] = tmp4;
 
-                transactionHex+=BTCUtils.toHex(bytesData);
+                transactionHex+=Hex.toHexString(bytesData);
                 callBack.onSuccess(transactionHex);
             }
         });
@@ -183,16 +186,16 @@ public class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteracto
         });
     }
 
-    public interface GetUnspentListCallBack{
+    interface GetUnspentListCallBack{
         void onSuccess(List<UnspentOutput> unspentOutputs);
     }
 
-    public interface CreateTxCallBack {
+    interface CreateTxCallBack {
         void onSuccess(String txHex);
         void onError(String error);
     }
 
-    public interface SendTxCallBack {
+    interface SendTxCallBack {
         void onSuccess();
         void onError(String error);
     }

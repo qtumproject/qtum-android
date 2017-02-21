@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import butterknife.ButterKnife;
@@ -92,7 +91,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     }
 
     public boolean isFinishing(Activity activity) {
-        return activity == null || activity.isFinishing() || activity.isDestroyed();
+        return activity == null || activity.isFinishing();
     }
 
     protected void bindView() {

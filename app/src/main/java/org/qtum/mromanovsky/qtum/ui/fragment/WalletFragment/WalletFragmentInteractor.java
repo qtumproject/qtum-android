@@ -5,7 +5,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 
 import java.util.List;
 
-public interface WalletFragmentInteractor {
+interface WalletFragmentInteractor {
     List<History> getHistoryList();
     void setHistoryList(List<History> historyList);
     void getHistoryList(WalletFragmentInteractorImpl.GetHistoryListCallBack callBack);

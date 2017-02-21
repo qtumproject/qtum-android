@@ -21,21 +21,19 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
 
-            <ImageView
+            <org.qtum.mromanovsky.qtum.ui.customview.WaveTop
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_gravity="bottom"
-                android:id="@+id/iv_bottom_wave"
-                android:clickable="false"
-                android:scaleType="fitXY"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_gravity="bottom"
+                android:layout_height="150dp"
                 android:id="@+id/iv_top_wave"
                 android:clickable="false"
-                android:scaleType="fitXY"/>
+                android:layout_gravity="bottom"/>
+
+            <org.qtum.mromanovsky.qtum.ui.customview.WaveBottom
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:clickable="false"
+                android:id="@+id/iv_bottom_wave"
+                android:layout_gravity="bottom"/>
 
             <TextView
                 android:layout_width="wrap_content"
