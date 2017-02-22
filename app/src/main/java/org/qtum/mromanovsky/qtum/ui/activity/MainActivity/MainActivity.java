@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -27,6 +29,7 @@ import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
+import io.fabric.sdk.android.Fabric;
 
 
 public class MainActivity extends BaseActivity implements MainActivityView {
@@ -52,7 +55,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
-
+        Fabric.with(this, new Crashlytics());
         loadPermissions(Manifest.permission.CAMERA ,REQUEST_CAMERA);
 
     }

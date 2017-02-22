@@ -23,8 +23,11 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
+        </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="22036fc0a51e9c43e14fd7d906f36fe03afd5005"/>
         <service
             android:name=".dataprovider.UpdateService"/>
 
