@@ -43,9 +43,9 @@ public class WaveTop extends View {
 
         path.moveTo(0, canvasHeight);
         path.lineTo(0, 10*y);
-        path.cubicTo(2*x, -y+mult, 5*x, 22*y-mult, 6*x, 10*y);
-        path.cubicTo(8*x, mult, 11*x, 21*y-mult, 12*x, 10*y);
-        path.cubicTo(14*x, -y+mult, 18*x, 24*y-mult, 20*x, 10*y);
+        path.cubicTo(2*x, 21*y-mult, 6*x, -y+mult, 8*x, 10*y);
+        path.cubicTo(10*x, 21*y-mult, 14*x, -y+mult, 16*x, 10*y);
+        path.cubicTo(18*x, 21*y-mult, 22*x, -y+mult, 28*x, 10*y);
         path.lineTo(canvasWidth, canvasHeight);
 
 

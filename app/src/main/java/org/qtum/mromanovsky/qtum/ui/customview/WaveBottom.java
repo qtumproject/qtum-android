@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -44,9 +43,9 @@ public class WaveBottom extends View {
 
         path.moveTo(0, canvasHeight);
         path.lineTo(0, 10*y);
-        path.cubicTo(3*x, -y+mult, 6*x, 22*y-mult, 7*x, 10*y);
-        path.cubicTo(9*x, y+mult, 13*x, 21*y-mult, 14*x, 10*y);
-        path.cubicTo(15*x, -2*y+mult, 19*x, 24*y-mult, 20*x, 10*y);
+        path.cubicTo(2*x, 21*y-mult, 6*x, -y+mult, 8*x, 10*y);
+        path.cubicTo(10*x, 21*y-mult, 14*x, -y+mult, 16*x, 10*y);
+        path.cubicTo(18*x, 21*y-mult, 22*x, -y+mult, 28*x, 10*y);
         path.lineTo(canvasWidth, canvasHeight);
 
 

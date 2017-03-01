@@ -58,23 +58,25 @@
             android:textColor="@android:color/white"
             android:textSize="18sp"/>
 
-        <ImageView
-            android:id="@+id/iv_logo"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            app:srcCompat="@drawable/logo"/>
+            app:lottie_fileName="animbeta.json"
+            app:lottie_autoPlay="true"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_below="@+id/iv_logo"
+            android:layout_below="@+id/animation_view"
             android:layout_marginTop="16dp"
             android:id="@+id/iv_logo_txt"
             app:srcCompat="@drawable/logo_txt"/>
+
 
         <TextView
             android:id="@+id/tv_start_page_you_dont_have"

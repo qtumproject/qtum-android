@@ -1,6 +1,8 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment;
 
 
+import android.animation.Animator;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -8,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
@@ -40,12 +44,12 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     WaveBottom mViewBottomWave;
     @BindView(R.id.iv_top_wave)
     WaveTop mViewTopWave;
-    @BindView(R.id.iv_logo)
-    ImageView mImageViewLogo;
     @BindView(R.id.iv_logo_txt)
     ImageView mImageViewLogoTxt;
     @BindView(R.id.rl_button_container)
     RelativeLayout mRelativeLayoutButtonContainer;
+    @BindView(R.id.animation_view)
+    LottieAnimationView mLottieAnimationView;
 
     @OnClick({R.id.bt_import_wallet, R.id.bt_create_new})
     public void OnClick(View view) {
@@ -87,11 +91,33 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
         mTextViewYouDontHave.setVisibility(View.INVISIBLE);
         mTextViewStartPageCreate.setVisibility(View.INVISIBLE);
         mRelativeLayoutButtonContainer.setVisibility(View.INVISIBLE);
+        mImageViewLogoTxt.setVisibility(View.INVISIBLE);
 
-        mAnimState = 9;
+        mLottieAnimationView.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                mImageViewLogoTxt.startAnimation(mAnimation);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+
+        mAnimState = 0;
 
         mAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.logo_txt);
-        mImageViewLogoTxt.startAnimation(mAnimation);
 
         mAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -102,14 +128,15 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
             @Override
             public void onAnimationEnd(Animation animation) {
                 switch (mAnimState){
-                    case 9:
+                    case 0:
+                        mImageViewLogoTxt.setVisibility(View.VISIBLE);
                         mAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.alpha_for_text);
                         mTextViewYouDontHave.startAnimation(mAnimation);
                         mAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.alpha_for_wave);
                         mViewBottomWave.startAnimation(mAnimation);
                         mViewTopWave.startAnimation(mAnimation);
                         break;
-                    case 10:
+                    case 1:
                         mAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.alpha_for_text);
                         mTextViewYouDontHave.setVisibility(View.VISIBLE);
                         mTextViewStartPageCreate.startAnimation(mAnimation);
@@ -118,13 +145,13 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
                         mViewBottomWave.setVisibility(View.INVISIBLE);
 
                         break;
-                    case 11:
+                    case 2:
                         mTextViewStartPageCreate.setVisibility(View.VISIBLE);
 
                         mAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.button_move);
                         mRelativeLayoutButtonContainer.startAnimation(mAnimation);
                         break;
-                    case 12:
+                    case 3:
                         mRelativeLayoutButtonContainer.setVisibility(View.VISIBLE);
                 }
                 mAnimation.setAnimationListener(this);
