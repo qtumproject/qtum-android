@@ -40,7 +40,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     public void getHistoryList(final GetHistoryListCallBack callBack) {
 
         mSubscriptionHistoryList = QtumService.newInstance()
-                .getHistoryListForSeveralAddresses(KeyStorage.getInstance().getAddresses(), 100,0)
+                .getHistoryListForSeveralAddresses(KeyStorage.getInstance().getAddresses(), 500,0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<History>>() {

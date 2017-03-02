@@ -24,9 +24,9 @@ import rx.Subscriber;
 public class KeyStorage {
 
     private static KeyStorage sKeyStorage;
+    private static List<DeterministicKey> sDeterministicKeyList;
     private static Wallet sWallet = null;
     private static int sCurrentKeyPosition = 0;
-    private static List<DeterministicKey> sDeterministicKeyList;
     private File mFile;
 
     public static KeyStorage getInstance(){

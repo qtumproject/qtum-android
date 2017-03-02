@@ -55,7 +55,8 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
-        Fabric.with(this, new Crashlytics());
+        //TODO:uncoment
+        //Fabric.with(this, new Crashlytics());
         loadPermissions(Manifest.permission.CAMERA ,REQUEST_CAMERA);
 
     }

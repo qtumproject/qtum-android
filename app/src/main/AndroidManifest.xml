@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -28,8 +29,24 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="22036fc0a51e9c43e14fd7d906f36fe03afd5005"/>
+
         <service
-            android:name=".dataprovider.UpdateService"/>
+            android:name=".dataprovider.UpdateService"
+            android:enabled="true"
+            android:exported="true"/>
+
+        <receiver
+            android:name=".dataprovider.BootReceiver"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.REBOOT"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </receiver>
 
     </application>
 

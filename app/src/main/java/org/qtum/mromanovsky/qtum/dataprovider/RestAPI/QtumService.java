@@ -8,6 +8,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -96,6 +97,53 @@ public class QtumService {
                 }
             }
         });
+    }
+
+    public Observable<List<History>> getHistoryListForSeveralAddressesWithInterval(final List<String> addresses, final int limit, final int offset) {
+        return Observable.create(new Observable.OnSubscribe<List<History>>() {
+            @Override
+            public void call(Subscriber<? super List<History>> subscriber) {
+                while(true) {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Call<List<History>> request;
+                request = mServiceApi.getHistoryListForSeveralAddresses(limit,offset,addresses);
+
+                    try {
+
+                        Response<List<History>> response = request.execute();
+                        if (response.errorBody() != null) {
+                            subscriber.onError(new Throwable(response.errorBody().toString()));
+                        } else {
+                            subscriber.onNext(response.body());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+//        return Observable.create(new Observable.OnSubscribe<List<History>>() {
+//            @Override
+//            public void call(Subscriber<? super List<History>> subscriber) {
+//                Call<List<History>> request;
+//                request = mServiceApi.getHistoryListForSeveralAddresses(limit,offset,addresses);
+//                try {
+//                    Thread.sleep(5000);
+//                    Response<List<History>> response = request.execute();
+//                    if (response.errorBody() != null) {
+//                        subscriber.onError(new Throwable(response.errorBody().toString()));
+//                    } else {
+//                        subscriber.onNext(response.body());
+//                    }
+//                } catch (IOException | InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
     }
 
     public Observable<List<History>> getHistoryList(final String address, final int limit, final int offset) {

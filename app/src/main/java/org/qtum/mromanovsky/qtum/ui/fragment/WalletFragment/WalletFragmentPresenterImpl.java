@@ -1,11 +1,17 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
+import org.qtum.mromanovsky.qtum.dataprovider.UpdateData;
+import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -16,9 +22,8 @@ import org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionFrag
 
 class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
 
-//    Intent mIntent;
-//    UpdateService mUpdateService;
-//    WalletAppKit mWalletAppKit;
+    Intent mIntent;
+    UpdateService mUpdateService;
 
     private WalletFragmentInteractorImpl mWalletFragmentInteractor;
     private WalletFragmentView mWalletFragmentView;
@@ -28,20 +33,19 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         mWalletFragmentInteractor = new WalletFragmentInteractorImpl(getView().getContext());
     }
 
-//    ServiceConnection mServiceConnection = new ServiceConnection() {
-//        @Override
-//        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-//            Log.d(WalletFragment.TAG, "OnServiceConnected");
-//            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
-//            mUpdateService.registerListener(mUpdateData);
-//            mWalletAppKit = mUpdateService.getWalletAppKit();
-//        }
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName componentName) {
-//
-//        }
-//    };
+    //Service
+    ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            //mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
+            //mUpdateService.registerListener(mUpdateData);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
 
     @Override
     public void onCreate(Context context) {
@@ -62,27 +66,42 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onStart(Context context) {
         super.onStart(context);
-//        mIntent = new Intent(context,UpdateService.class);
-//        Log.d(WalletFragment.TAG, "OnStart");
-//        context.bindService(mIntent,mServiceConnection,Context.BIND_AUTO_CREATE);
+
+        //Service
+        if(!isMyServiceRunning(UpdateService.class)) {
+            mIntent = new Intent(context, UpdateService.class);
+            context.startService(mIntent);
+        }
+        //context.bindService(mIntent,mServiceConnection,Context.BIND_AUTO_CREATE);
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getView().getFragmentActivity().getSystemService(Context.ACTIVITY_SERVICE);
+
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public void onStop(Context context) {
         super.onStop(context);
-//        Log.d(WalletFragment.TAG, "OnStop");
-//        context.unbindService(mServiceConnection);
+
+        //Service
+        //context.unbindService(mServiceConnection);
 
     }
 
+    //Service
+    UpdateData mUpdateData = new UpdateData() {
+        @Override
+        public void updateDate() {
 
-//    UpdateData mUpdateData = new UpdateData() {
-//        @Override
-//        public void updateDate() {
-//            getView().updatePublicKey(mWalletAppKit.ic_wallet().currentReceiveAddress().toString());
-//            getView().loadAndUpdateData(mWalletAppKit.ic_wallet().getHistoryList().toFriendlyString());
-//        }
-//    };
+        }
+    };
 
     @Override
     public WalletFragmentView getView() {
