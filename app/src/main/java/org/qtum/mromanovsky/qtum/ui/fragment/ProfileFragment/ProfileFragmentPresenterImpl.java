@@ -1,5 +1,14 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
+import org.qtum.mromanovsky.qtum.dataprovider.UpdateData;
+import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
+import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -8,6 +17,9 @@ import org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment.StartPageFragment
 
 
 class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ProfileFragmentPresenter {
+
+    Intent mIntent;
+    UpdateService mUpdateService;
 
     private ProfileFragmentView mProfileFragmentView;
     private ProfileFragmentInteractorImpl mProfileFragmentInteractor;
@@ -47,9 +59,29 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     @Override
     public void onLogOutYesClick() {
+        mIntent = new Intent(getView().getContext(), UpdateService.class);
+        getView().getContext().bindService(mIntent,mServiceConnection,0);
+
         getInteractor().clearSharedPreference();
         StartPageFragment startPageFragment = StartPageFragment.newInstance();
+        KeyStorage.getInstance().clearAll();
         ((MainActivity)getView().getFragmentActivity()).openFragment(startPageFragment,null);
     }
+
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
+            mUpdateService.unsubscribe();
+            getView().getContext().unbindService(mServiceConnection);
+            mUpdateService.stopSelf();
+            //mUpdateService.registerListener(mUpdateData);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
 
 }

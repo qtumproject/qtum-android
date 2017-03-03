@@ -3,11 +3,11 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels;
 
 public class SendRawTransactionRequest {
 
-    private String mData;
-    private Integer mAllowHighFee;
+    private String data;
+    private Integer allowHighFee;
 
     public SendRawTransactionRequest(String data, Integer allowHighFee){
-        this.mData = data;
-        this.mAllowHighFee = allowHighFee;
+        this.data = data;
+        this.allowHighFee = allowHighFee;
     }
 }

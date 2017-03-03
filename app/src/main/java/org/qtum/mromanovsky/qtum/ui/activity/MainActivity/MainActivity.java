@@ -9,6 +9,7 @@ import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityManagerCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -57,6 +58,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         setContentView(LAYOUT);
         //TODO:uncoment
         //Fabric.with(this, new Crashlytics());
+        
         loadPermissions(Manifest.permission.CAMERA ,REQUEST_CAMERA);
 
     }

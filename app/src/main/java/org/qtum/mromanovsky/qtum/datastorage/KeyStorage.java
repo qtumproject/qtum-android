@@ -40,6 +40,11 @@ public class KeyStorage {
 
     }
 
+    public void clearAll(){
+        sDeterministicKeyList = null;
+        sCurrentKeyPosition = 0;
+    }
+
     public Observable<Wallet> loadWalletFromFile(Context context){
         mFile = new File(context.getFilesDir().getPath() + "/key_storage");
         return Observable.create(new Observable.OnSubscribe<Wallet>() {

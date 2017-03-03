@@ -2,12 +2,15 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
 import android.app.ActivityManager;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateData;
@@ -37,7 +40,17 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            //mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
+            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
+            if(mUpdateService.isMonitoring()){
+                mUpdateService.unsubscribe();
+            }
+            mUpdateService.registerListener(new UpdateData() {
+                @Override
+                public void updateDate() {
+                    mUpdateService.unsubscribe();
+                }
+            });
+            mUpdateService.sendDefaultNotification();
             //mUpdateService.registerListener(mUpdateData);
         }
 
@@ -68,10 +81,12 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         super.onStart(context);
 
         //Service
+        mIntent = new Intent(context, UpdateService.class);
         if(!isMyServiceRunning(UpdateService.class)) {
-            mIntent = new Intent(context, UpdateService.class);
             context.startService(mIntent);
         }
+
+
         //context.bindService(mIntent,mServiceConnection,Context.BIND_AUTO_CREATE);
     }
 
@@ -87,8 +102,22 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     }
 
     @Override
+    public void onResume(Context context) {
+        super.onResume(context);
+        context.bindService(mIntent,mServiceConnection,0);
+    }
+
+    @Override
+    public void onPause(Context context) {
+        super.onPause(context);
+        mUpdateService.startMonitoringHistory();
+    }
+
+    @Override
     public void onStop(Context context) {
         super.onStop(context);
+        context.unbindService(mServiceConnection);
+
 
         //Service
         //context.unbindService(mServiceConnection);

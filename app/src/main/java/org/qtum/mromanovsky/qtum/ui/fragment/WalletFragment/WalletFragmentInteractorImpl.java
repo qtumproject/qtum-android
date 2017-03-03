@@ -8,6 +8,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
 import java.util.List;
 
@@ -63,6 +64,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                             }
                         }
                         setHistoryList(historyList);
+                        QtumSharedPreference.getInstance().saveHistoryCount(mContext,historyList.size());
                         callBack.onSuccess();
                     }
                 });

@@ -4,40 +4,29 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.bitcoinj.wallet.Wallet;
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumRestService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
@@ -46,16 +35,21 @@ public class UpdateService extends Service {
     private final String TAG = "UpdateService";
     public static final int DEFAULT_NOTIFICATION_ID = 101;
     private NotificationManager notificationManager;
-
+    Subscription subscription;
+    boolean monitoringFlag = false;
     UpdateData mUpdateData = null;
-//
+    int currentCount;
+    Notification notification;
+    Uri uri;
+
+
     UpdateBinder mUpdateBinder = new UpdateBinder();
 
     @Override
     public void onCreate() {
         super.onCreate();
-
         notificationManager = (NotificationManager) this.getSystemService(this.NOTIFICATION_SERVICE);
+        uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     }
 
     @Override
@@ -68,49 +62,107 @@ public class UpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        sendNotification("Ticker","Title","Text");
 
+        loadWalletFromFile(new LoadWalletFromFileCallBack() {
+            @Override
+            public void onSuccess() {
+                startMonitoringHistory();
+            }
+        });
+
+        return START_REDELIVER_INTENT;
+    }
+
+    private void loadWalletFromFile(final LoadWalletFromFileCallBack callback) {
         KeyStorage.getInstance().loadWalletFromFile(getBaseContext())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Wallet>() {
-            @Override
-            public void onCompleted() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                    }
 
-            @Override
-            public void onError(Throwable e) {
+                    @Override
+                    public void onNext(Wallet wallet) {
+                        if(mUpdateData!=null) {
+                            mUpdateData.updateDate();
+                        }
+                        callback.onSuccess();
+                    }
+                });
+    }
 
-            }
-
-            @Override
-            public void onNext(Wallet wallet) {
-                QtumService.newInstance().getHistoryListForSeveralAddressesWithInterval( KeyStorage.getInstance().getAddresses(),200,0)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<List<History>>() {
+    public void startMonitoringHistory() {
+        monitoringFlag = true;
+        sendDefaultNotification();
+        currentCount = QtumSharedPreference.getInstance().getHistoryCount(getBaseContext());
+        subscription = Observable.interval(1000, 3000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Long>() {
+                    public void call(Long aLong) {
+                        QtumService.newInstance().getHistoryCount(KeyStorage.getInstance().getAddresses(), new QtumService.GetHistoryCountCallBack() {
                             @Override
-                            public void onCompleted() {
-
+                            public void onResponse(int count) {
+                                Log.d("hello", ""+count);
+                                if(count!=currentCount){
+                                    sendNotification("Ticker","New Transaction","Count: " + (count-currentCount));
+                                    subscription.unsubscribe();
+                                }
                             }
-
                             @Override
-                            public void onError(Throwable e) {
+                            public void onError() {
 
-                            }
-
-                            @Override
-                            public void onNext(List<History> list) {
-                                sendNotification("Ticker","Title"," "+list.size());
                             }
                         });
+                    }
+                });
+    }
 
-            }
-        });
+    public void unsubscribe(){
+        monitoringFlag = false;
+        subscription.unsubscribe();
+    }
 
+    //TODO: merge with sendNotification method
+    public void sendDefaultNotification(){
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.setAction(Intent.ACTION_MAIN);
+        notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        return START_REDELIVER_INTENT;
+        notificationIntent.putExtra("notification_action", true);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setContentIntent(contentIntent)
+                .setOngoing(true)   //Can't be swiped out
+                .setSmallIcon(R.drawable.ic_launcher)
+                //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))   // большая картинка
+                .setTicker("Default Ticker")
+                .setContentTitle("Default Title") //Заголовок
+                .setContentText("Default Text") // Текст уведомления
+                .setWhen(System.currentTimeMillis());
+
+        if (android.os.Build.VERSION.SDK_INT<=15) {
+            notification = builder.getNotification(); // API-15 and lower
+        }else{
+            notification = builder.build();
+        }
+
+        startForeground(DEFAULT_NOTIFICATION_ID, notification);
+    }
+
+    public boolean isMonitoring(){
+        return monitoringFlag;
+    }
+
+    public interface LoadWalletFromFileCallBack {
+        void onSuccess();
     }
 
     public void sendNotification(String Ticker,String Title,String Text) {
@@ -120,9 +172,11 @@ public class UpdateService extends Service {
         notificationIntent.setAction(Intent.ACTION_MAIN);
         notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
+        notificationIntent.putExtra("notification_action", true);
+
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentIntent(contentIntent)
@@ -134,8 +188,6 @@ public class UpdateService extends Service {
                 .setContentText(Text) // Текст уведомления
                 .setWhen(System.currentTimeMillis())
                 .setSound(uri);
-
-        Notification notification;
 
         if (android.os.Build.VERSION.SDK_INT<=15) {
             notification = builder.getNotification(); // API-15 and lower

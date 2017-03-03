@@ -4,14 +4,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-/**
- * Created by max-v on 3/1/2017.
- */
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
+
 
 public class BootReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent intentService = new Intent(context, UpdateService.class);
-        context.startService(intentService);
+        if(QtumSharedPreference.getInstance().getKeyGeneratedInstance(context)) {
+            Intent intentService = new Intent(context, UpdateService.class);
+            context.startService(intentService);
+        }
     }
 }
