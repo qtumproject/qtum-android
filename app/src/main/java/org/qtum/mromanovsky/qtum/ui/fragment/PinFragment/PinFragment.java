@@ -7,6 +7,10 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -43,8 +47,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     final static String ACTION = "action";
     public static String sAction;
 
-    @BindView(R.id.bt_confirm)
-    Button mButtonConfirm;
+
     @BindView(R.id.bt_cancel)
     Button mButtonCancel;
     @BindView(R.id.et_wallet_pin)
@@ -56,13 +59,9 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     @BindView(R.id.tv_toolbar_title)
     TextView mTextViewToolBarTitle;
 
-    @OnClick({R.id.bt_confirm, R.id.bt_cancel})
+    @OnClick({R.id.bt_cancel})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.bt_confirm:
-                String pin = mTextInputEditTextWalletPin.getText().toString();
-                getPresenter().confirm(pin);
-                break;
             case R.id.bt_cancel:
                 getPresenter().cancel();
                 break;
@@ -152,22 +151,25 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
                     break;
             }
 
-//            mTextInputEditTextWalletPin.setOnKeyListener(new View.OnKeyListener() {
-//                @Override
-//                public boolean onKey(View view, int i, KeyEvent keyEvent) {
-//                    if (i == KeyEvent.KEYCODE_ENTER) {
-//                        mTextInputLayoutWalletPin.clearFocus();
-//                        mTextInputEditTextWalletPin.clearFocus();
-//                        hideKeyBoard(mTextInputEditTextWalletPin);
-//                        Log.d("MyLog", "onKey");
-//                        return true;
-//                    }
-//                    return false;
-//                }
-//            });
+            mTextInputEditTextWalletPin.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    if(editable.toString().length()==4){
+                        getPresenter().confirm(editable.toString());
+                    }
+                }
+            });
+
         }
     }
-
-
-
 }

@@ -57,12 +57,13 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
                     @Override
                     public void onNext(List<History> historyList) {
-                        if(getHistoryList().size()!=0){
-                            if(getHistoryList().size()==historyList.size()){
-                                callBack.onSuccessWithoutChange();
-                                return;
-                            }
-                        }
+                        //TODO : edit
+//                        if(getHistoryList().size()!=0){
+//                            if(getHistoryList().size()==historyList.size()){
+//                                callBack.onSuccessWithoutChange();
+//                                return;
+//                            }
+//                        }
                         setHistoryList(historyList);
                         QtumSharedPreference.getInstance().saveHistoryCount(mContext,historyList.size());
                         callBack.onSuccess();

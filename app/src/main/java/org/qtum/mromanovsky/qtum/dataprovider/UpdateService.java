@@ -42,7 +42,6 @@ public class UpdateService extends Service {
     Notification notification;
     Uri uri;
 
-
     UpdateBinder mUpdateBinder = new UpdateBinder();
 
     @Override
@@ -98,7 +97,7 @@ public class UpdateService extends Service {
 
     public void startMonitoringHistory() {
         monitoringFlag = true;
-        sendDefaultNotification();
+        //sendDefaultNotification();
         currentCount = QtumSharedPreference.getInstance().getHistoryCount(getBaseContext());
         subscription = Observable.interval(1000, 3000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
@@ -175,8 +174,6 @@ public class UpdateService extends Service {
         notificationIntent.putExtra("notification_action", true);
 
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentIntent(contentIntent)

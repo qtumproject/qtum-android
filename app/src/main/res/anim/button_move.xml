@@ -7,10 +7,10 @@
     <translate
         android:fromYDelta="10%p"
         android:toYDelta="0%p"
-        android:duration="600" />
+        android:duration="400" />
 
     <alpha
         android:fromAlpha="0"
         android:toAlpha="1"
-        android:duration = "600"/>
+        android:duration = "400"/>
 </set>

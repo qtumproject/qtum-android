@@ -1,16 +1,12 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
-
 import android.app.ActivityManager;
-import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateData;
@@ -22,11 +18,10 @@ import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionFragment;
 
-
 class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
 
-    Intent mIntent;
-    UpdateService mUpdateService;
+    private Intent mIntent;
+    private UpdateService mUpdateService;
 
     private WalletFragmentInteractorImpl mWalletFragmentInteractor;
     private WalletFragmentView mWalletFragmentView;
@@ -37,7 +32,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     }
 
     //Service
-    ServiceConnection mServiceConnection = new ServiceConnection() {
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
@@ -51,7 +46,6 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
                 }
             });
             mUpdateService.sendDefaultNotification();
-            //mUpdateService.registerListener(mUpdateData);
         }
 
         @Override
@@ -85,9 +79,6 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         if(!isMyServiceRunning(UpdateService.class)) {
             context.startService(mIntent);
         }
-
-
-        //context.bindService(mIntent,mServiceConnection,Context.BIND_AUTO_CREATE);
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -110,27 +101,16 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onPause(Context context) {
         super.onPause(context);
-        mUpdateService.startMonitoringHistory();
+        if(mUpdateService!=null && !    mUpdateService.isMonitoring()) {
+            mUpdateService.startMonitoringHistory();
+        }
     }
 
     @Override
     public void onStop(Context context) {
         super.onStop(context);
         context.unbindService(mServiceConnection);
-
-
-        //Service
-        //context.unbindService(mServiceConnection);
-
     }
-
-    //Service
-    UpdateData mUpdateData = new UpdateData() {
-        @Override
-        public void updateDate() {
-
-        }
-    };
 
     @Override
     public WalletFragmentView getView() {
@@ -185,6 +165,11 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         super.onDestroyView();
         getInteractor().unSubscribe();
         getView().setAdapterNull();
+    }
+
+    @Override
+    public void onDestroy(Context context) {
+        super.onDestroy(context);
     }
 
     private void loadAndUpdateData(){

@@ -60,11 +60,11 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animation_view"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_width="190dp"
+            android:layout_height="190dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            app:lottie_fileName="animbeta.json"
+            app:lottie_fileName="logo_anim.json"
             app:lottie_autoPlay="true"/>
 
         <ImageView

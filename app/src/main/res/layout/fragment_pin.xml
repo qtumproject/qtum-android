@@ -59,21 +59,6 @@
                 android:textSize="32sp"/>
         </android.support.design.widget.TextInputLayout>
 
-
-        <Button
-            android:id="@+id/bt_confirm"
-            android:layout_width="202dp"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/bt_cancel"
-            android:layout_alignLeft="@+id/bt_cancel"
-            android:layout_alignStart="@+id/bt_cancel"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/background_bt_alpha"
-            android:text="@string/confirm"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/button_text"/>
-
         <Button
             android:id="@+id/bt_cancel"
             android:layout_width="202dp"
