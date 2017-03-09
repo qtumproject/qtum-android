@@ -38,7 +38,7 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
             @Override
             public void onSuccess() {
                 CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(false);
-                getView().openFragment(createWalletNameFragment);
+                getView().openRootFragment(createWalletNameFragment);
                 getView().dismissProgressDialog();
                 ImportWalletFragmentInteractorImpl.isDataLoaded = false;
             }
@@ -50,7 +50,7 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
         super.onResume(context);
         if(ImportWalletFragmentInteractorImpl.isDataLoaded){
             CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(false);
-            getView().openFragment(createWalletNameFragment);
+            getView().openRootFragment(createWalletNameFragment);
             getView().dismissProgressDialog();
             ImportWalletFragmentInteractorImpl.isDataLoaded = false;
         }

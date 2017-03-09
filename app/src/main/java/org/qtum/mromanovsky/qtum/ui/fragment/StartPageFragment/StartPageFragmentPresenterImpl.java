@@ -29,12 +29,12 @@ class StartPageFragmentPresenterImpl extends BaseFragmentPresenterImpl implement
     @Override
     public void createNewWallet() {
         CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(true);
-        getView().openFragmentAndAddToBackStack(createWalletNameFragment);
+        getView().openFragment(createWalletNameFragment);
     }
 
     @Override
     public void importWallet() {
         ImportWalletFragment importWalletFragment = ImportWalletFragment.newInstance();
-        getView().openFragmentAndAddToBackStack(importWalletFragment);
+        getView().openFragment(importWalletFragment);
     }
 }

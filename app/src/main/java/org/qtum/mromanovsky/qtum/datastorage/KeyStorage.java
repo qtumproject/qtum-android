@@ -2,7 +2,9 @@ package org.qtum.mromanovsky.qtum.datastorage;
 
 
 import android.content.Context;
+import android.util.Log;
 
+import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.wallet.DeterministicSeed;
 import org.bitcoinj.wallet.KeyChain;
@@ -11,6 +13,7 @@ import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.WalletExtension;
 import org.qtum.mromanovsky.qtum.utils.CurrentNetParams;
 import org.qtum.mromanovsky.qtum.utils.DictionaryWords;
+import org.spongycastle.util.encoders.Hex;
 
 import java.io.File;
 import java.io.IOException;
@@ -105,6 +108,7 @@ public class KeyStorage {
                 }
                 if (seed != null) {
                     sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(),seed);
+
                 }
                 try {
                     sWallet.saveToFile(mFile);
@@ -129,6 +133,8 @@ public class KeyStorage {
                 DeterministicSeed seed = null;
                 try {
                     seed = new DeterministicSeed(seedString, null, passphrase, creationtime);
+                    Log.d("test",Hex.toHexString(seed.getSeedBytes()));
+
                 } catch (UnreadableWalletException e) {
                     e.printStackTrace();
                 }
@@ -150,6 +156,7 @@ public class KeyStorage {
     public List<DeterministicKey> getKeyList(){
         if(sDeterministicKeyList == null){
             sDeterministicKeyList = sWallet.freshKeys(KeyChain.KeyPurpose.AUTHENTICATION,100);
+
         }
         return sDeterministicKeyList;
     }
@@ -162,6 +169,8 @@ public class KeyStorage {
         List<String> list = new ArrayList<>();
         for(DeterministicKey deterministicKey : getKeyList()){
             list.add(deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString());
+            //TODO: delete
+            //Log.d("", deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString());
         }
         return list;
     }

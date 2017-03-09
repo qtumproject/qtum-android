@@ -124,13 +124,14 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onClickReceive() {
         Fragment fragment = ReceiveFragment.newInstance();
-        getView().openFragmentAndAddToBackStack(fragment);
+        getView().openFragment(fragment);
     }
 
     @Override
     public void onClickQrCode() {
         SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true);
-        getView().openFragment(sendBaseFragment);
+        getView().openRootFragment(sendBaseFragment);
+        ((MainActivity)getView().getFragmentActivity()).setRootFragment(sendBaseFragment);
         ((MainActivity)getView().getFragmentActivity()).getBottomNavigationView().getMenu().getItem(3).setChecked(true);
     }
 
@@ -151,7 +152,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void openTransactionFragment(int position) {
         Fragment fragment = TransactionFragment.newInstance(position);
-        getView().openFragmentAndAddToBackStack(fragment);
+        getView().openFragment(fragment);
     }
 
     @Override

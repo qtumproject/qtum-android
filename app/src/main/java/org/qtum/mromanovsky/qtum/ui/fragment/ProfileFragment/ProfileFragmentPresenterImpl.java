@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
-import org.qtum.mromanovsky.qtum.dataprovider.UpdateData;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
@@ -41,7 +39,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void changePin() {
         PinFragment pinFragment = PinFragment.newInstance(PinFragment.CHANGING);
-        getView().openFragmentAndAddToBackStack(pinFragment);
+        getView().openFragment(pinFragment);
     }
 
     @Override
@@ -54,7 +52,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void walletBackUp() {
         BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(false);
-        getView().openFragmentAndAddToBackStack(backUpWalletFragment);
+        getView().openFragment(backUpWalletFragment);
     }
 
     @Override
@@ -65,7 +63,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         getInteractor().clearSharedPreference();
         StartPageFragment startPageFragment = StartPageFragment.newInstance();
         KeyStorage.getInstance().clearAll();
-        ((MainActivity)getView().getFragmentActivity()).openFragment(startPageFragment,null);
+        ((MainActivity)getView().getFragmentActivity()).openRootFragment(startPageFragment);
     }
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {

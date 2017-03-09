@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.widget.Toast;
 
+import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
@@ -47,6 +48,7 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     @Override
     public void onContinueClick() {
         final WalletFragment walletFragment = WalletFragment.newInstance();
-        getView().openFragment(walletFragment);
+        ((MainActivity)getView().getFragmentActivity()).setRootFragment(walletFragment);
+        getView().openRootFragment(walletFragment);
     }
 }

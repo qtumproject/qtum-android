@@ -83,9 +83,10 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     @Override
     public void setUpTransactionData(double value, String receivedTime, String from, String to) {
 
-        DecimalFormat df = new DecimalFormat("0");
-        df.setMaximumFractionDigits(8);
-        mTextViewValue.setText(df.format(value));
+//        DecimalFormat df = new DecimalFormat("0");
+//        df.setMaximumFractionDigits(8);
+//        mTextViewValue.setText(df.format(value));
+        mTextViewValue.setText(String.valueOf(value));
         mTextViewReceivedTime.setText(receivedTime);
         mTextViewFrom.setText(from);
         mTextViewTo.setText(to);

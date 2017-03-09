@@ -45,7 +45,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                                     @Override
                                     public void onSuccess() {
                                         getInteractor().savePassword(pinForRepeat);
-                                        getView().openFragment(backUpWalletFragment);
+                                        getView().openRootFragment(backUpWalletFragment);
                                         getView().dismissProgressDialog();
                                         PinFragmentInteractorImpl.isDataLoaded = false;
                                     }
@@ -76,7 +76,8 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                                 getView().hideKeyBoard();
                                 getInteractor().savePassword(pinForRepeat);
                                 getInteractor().setKeyGeneratedInstance(true);
-                                getView().openFragment(walletFragment);
+                                ((MainActivity)getView().getFragmentActivity()).setRootFragment(walletFragment);
+                                getView().openRootFragment(walletFragment);
                             } else {
                                 getView().confirmError(getView().getContext().getString(R.string.incorrect_repeated_pin));
                             }
@@ -99,7 +100,8 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                         getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
                             @Override
                             public void onSuccess() {
-                                getView().openFragment(walletFragment);
+                                ((MainActivity)getView().getFragmentActivity()).setRootFragment(walletFragment);
+                                getView().openRootFragment(walletFragment);
                                 getView().dismissProgressDialog();
                                 PinFragmentInteractorImpl.isDataLoaded = false;
                             }
@@ -185,13 +187,14 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                 case PinFragment.CREATING: {
                     BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(true);
                     getInteractor().savePassword(pinForRepeat);
-                    getView().openFragment(backUpWalletFragment);
+                    getView().openRootFragment(backUpWalletFragment);
                     getView().dismissProgressDialog();
                     break;
                 }
                 case PinFragment.AUTHENTICATION: {
                     WalletFragment walletFragment = WalletFragment.newInstance();
-                    getView().openFragment(walletFragment);
+                    ((MainActivity)getView().getFragmentActivity()).setRootFragment(walletFragment);
+                    getView().openRootFragment(walletFragment);
                     getView().dismissProgressDialog();
                     break;
                 }

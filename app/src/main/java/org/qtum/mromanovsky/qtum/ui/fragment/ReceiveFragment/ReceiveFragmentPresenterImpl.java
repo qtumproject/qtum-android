@@ -65,7 +65,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void onClickChooseAnotherAddress() {
         AddressesFragment addressesFragment = AddressesFragment.newInstance();
-        getView().openFragmentWithOutPopBackStack(addressesFragment);
+        getView().openFragment(addressesFragment);
     }
 
     @Override

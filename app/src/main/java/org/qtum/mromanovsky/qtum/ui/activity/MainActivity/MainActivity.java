@@ -1,6 +1,9 @@
 package org.qtum.mromanovsky.qtum.ui.activity.MainActivity;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,15 +12,12 @@ import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityManagerCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.crashlytics.android.Crashlytics;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseActivity;
@@ -30,7 +30,6 @@ import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
-import io.fabric.sdk.android.Fabric;
 
 
 public class MainActivity extends BaseActivity implements MainActivityView {
@@ -38,7 +37,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     private static final int LAYOUT = R.layout.activity_main;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
     private static final int REQUEST_CAMERA=0;
-    Fragment fragment;
+    private Fragment mRootFragment;
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
 
@@ -77,32 +76,13 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     }
 
     @Override
-    public void openFragment(Fragment fragment,Fragment fragment2) {
+    public void openRootFragment(Fragment fragment) {
         getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        if(fragment2 != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
-                    .remove(fragment2)
-                    .commit();
-        } else {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
-                    .commit();
-        }
-        FragmentManager fm = getSupportFragmentManager();
-        if(fm.getFragments()!=null) {
-            for (Fragment frag : fm.getFragments()) {
-                if (frag != null && frag.isVisible()) {
-                    FragmentManager childFm = frag.getChildFragmentManager();
-                    if (childFm.getBackStackEntryCount() > 0) {
-                        childFm.popBackStack();
-                        return;
-                    }
-                }
-            }
-        }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                .addToBackStack(BaseFragment.BACK_STACK_ROOT_TAG)
+                .commit();
     }
 
     public void showBottomNavigationView() {
@@ -144,27 +124,47 @@ public class MainActivity extends BaseActivity implements MainActivityView {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                Fragment currentFragment = fragment;
                 switch (item.getItemId()) {
                     case R.id.item_wallet:
-                        fragment = WalletFragment.newInstance();
+                        if(mRootFragment !=null && mRootFragment.getClass().getCanonicalName().equals(WalletFragment.class.getCanonicalName())){
+                            getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, 0);
+                            return true;
+                        }
+                        mRootFragment = WalletFragment.newInstance();
                         break;
                     case R.id.item_profile:
-                        fragment = ProfileFragment.newInstance();
+                        if(mRootFragment !=null && mRootFragment.getClass().getCanonicalName().equals(ProfileFragment.class.getCanonicalName())){
+                            getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, 0);
+                            return true;
+                        }
+                        mRootFragment = ProfileFragment.newInstance();
                         break;
                     case R.id.item_news:
-                        fragment = NewsFragment.newInstance();
+                        if(mRootFragment !=null && mRootFragment.getClass().getCanonicalName().equals(NewsFragment.class.getCanonicalName())){
+                            getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, 0);
+                            return true;
+                        }
+                        mRootFragment = NewsFragment.newInstance();
                         break;
                     case R.id.item_send:
-                        fragment = SendBaseFragment.newInstance(false);
+                        if(mRootFragment !=null && mRootFragment.getClass().getCanonicalName().equals(SendBaseFragment.class.getCanonicalName())){
+                            getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, 0);
+                            return true;
+                        }
+                        mRootFragment = SendBaseFragment.newInstance(false);
                         break;
                     default:
                         return false;
                 }
 
-                getPresenter().openFragment(fragment,currentFragment);
+                getPresenter().openFragment(mRootFragment);
                 return true;
             }
         });
+    }
+
+
+    public void setRootFragment(Fragment rootFragment) {
+        mRootFragment = rootFragment;
     }
 }

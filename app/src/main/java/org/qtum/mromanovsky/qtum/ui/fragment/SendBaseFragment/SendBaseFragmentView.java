@@ -6,7 +6,7 @@ import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 
 interface SendBaseFragmentView extends BaseFragmentView{
-    void openInnerFragmentForResult(Fragment fragment);
+    void openFragmentForResult(Fragment fragment);
     void qrCodeRecognitionToolBar();
     void sendToolBar();
     void updateData(String publicAddress, double amount);

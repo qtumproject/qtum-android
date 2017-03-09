@@ -25,7 +25,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     @Override
     public void onClickQrCode() {
         QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
-        getView().openInnerFragmentForResult(qrCodeRecognitionFragment);
+        getView().openFragmentForResult(qrCodeRecognitionFragment);
 
     }
 
@@ -38,7 +38,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
         if(isQrCodeRecognition){
             QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
-            getView().openInnerFragmentForResult(qrCodeRecognitionFragment);
+            getView().openFragmentForResult(qrCodeRecognitionFragment);
 
         }
     }

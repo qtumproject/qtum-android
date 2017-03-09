@@ -37,15 +37,15 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         Fragment fragment;
         if (getInteractor().getKeyGeneratedInstance(getView().getContext())) {
             fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION);
-            getView().openFragment(fragment,null);
+            getView().openRootFragment(fragment);
         } else {
             fragment = StartPageFragment.newInstance();
-            getView().openFragment(fragment,null);
+            getView().openRootFragment(fragment);
         }
     }
 
     @Override
-    public void openFragment(Fragment fragment,Fragment fragment2) {
-        getView().openFragment(fragment,fragment2);
+    public void openFragment(Fragment fragment) {
+        getView().openRootFragment(fragment);
     }
 }

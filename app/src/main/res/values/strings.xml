@@ -62,4 +62,25 @@
     <string name="you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want">You can skip this step and export your brain-code at any time you want.</string>
     <string name="copy">Copy</string>
     <string name="addresses">Addresses</string>
+    <string name="create_token">Create Token</string>
+    <string name="subscribe_tokens">Subscribe Tokens</string>
+    <string name="set_your_token_name">Set Your Token Name</string>
+    <string name="step_1_of_3">Step 1 of 3</string>
+    <string name="token_symbol">Token Symbol</string>
+    <string name="set_your_token_features">Set Your Token Features</string>
+    <string name="step_2_of_3">Step 2 of 3</string>
+    <string name="next">Next</string>
+    <string name="freezing_of_assets">Freezing of Assets</string>
+    <string name="automatic_selling_and_buing">Automatic Selling and Buing</string>
+    <string name="autorefill">Autorefill</string>
+    <string name="proof_of_work">Proof of Work</string>
+    <string name="set_your_token_parameters">Set Your Token Parameters</string>
+    <string name="step_3_of_3">Step 3 of 3</string>
+    <string name="initial_supply">Initial Supply</string>
+    <string name="decimal_units">Decimal Units</string>
+    <string name="back">Back</string>
+    <string name="finish">Finish</string>
+    <string name="token_name">Token Name</string>
+    <string name="minter_address">Minter Address</string>
+    <string name="fee">FEE</string>
 </resources>

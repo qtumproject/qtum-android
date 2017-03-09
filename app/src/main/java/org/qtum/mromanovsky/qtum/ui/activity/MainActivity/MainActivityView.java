@@ -7,5 +7,5 @@ import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseContextView;
 
 
 interface MainActivityView extends BaseContextView {
-    void openFragment(Fragment fragment,Fragment currentFragment);
+    void openRootFragment(Fragment fragment);
 }
