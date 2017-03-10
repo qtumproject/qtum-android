@@ -99,7 +99,12 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     public void openFragmentForResult(Fragment fragment) {
         int code_response = 200;
         fragment.setTargetFragment(this, code_response);
-        openFragment(fragment);
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                .add(R.id.fragment_container_send_base,fragment,fragment.getClass().getCanonicalName())
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

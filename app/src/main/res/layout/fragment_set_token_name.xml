@@ -48,7 +48,7 @@
             android:theme="@style/InputText">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_receivers_address"
+                android:id="@+id/til_token_name"
                 android:layout_width="match_parent"
                 android:layout_below="@+id/tv_step"
                 android:layout_height="wrap_content"
@@ -59,26 +59,26 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/et_receivers_address"
-                    android:hint="@string/receiver_s_address"
+                    android:id="@+id/et_token_name"
+                    android:hint="@string/token_name"
                     android:inputType="textPersonName"
                     android:textColor="@color/grey"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_amount"
+                android:id="@+id/til_token_symbol"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/grey50"
-                android:layout_below="@+id/til_receivers_address"
+                android:layout_below="@+id/til_token_name"
                 android:layout_marginBottom="16dp">
 
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/et_amount"
+                    android:id="@+id/et_token_symbol"
                     android:hint="@string/token_symbol"
-                    android:inputType="numberDecimal"
+                    android:inputType="textPersonName"
                     android:textColor="@color/grey"/>
             </android.support.design.widget.TextInputLayout>
 

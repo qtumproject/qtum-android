@@ -48,7 +48,7 @@
             android:theme="@style/InputText">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_receivers_address"
+                android:id="@+id/til_initial_supply"
                 android:layout_width="match_parent"
                 android:layout_below="@+id/tv_step"
                 android:layout_height="wrap_content"
@@ -59,24 +59,24 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/et_receivers_address"
+                    android:id="@+id/et_initial_supply"
                     android:hint="@string/initial_supply"
                     android:inputType="textPersonName"
                     android:textColor="@color/grey"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_amount"
+                android:id="@+id/til_decimal_units"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/grey50"
-                android:layout_below="@+id/til_receivers_address"
+                android:layout_below="@+id/til_initial_supply"
                 android:layout_marginBottom="16dp">
 
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/et_amount"
+                    android:id="@+id/et_decimal_units"
                     android:hint="@string/decimal_units"
                     android:inputType="numberDecimal"
                     android:textColor="@color/grey"/>
@@ -90,7 +90,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/bt_cancel"
+                    android:id="@+id/bt_back"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -106,7 +106,7 @@
                     android:layout_height="match_parent"/>
 
                 <Button
-                    android:id="@+id/bt_next"
+                    android:id="@+id/bt_finish"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

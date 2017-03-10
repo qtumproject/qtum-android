@@ -56,7 +56,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/bt_cancel"
+                    android:id="@+id/bt_back"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -72,7 +72,7 @@
                     android:layout_height="match_parent"/>
 
                 <Button
-                    android:id="@+id/bt_next"
+                    android:id="@+id/bt_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -93,7 +93,7 @@
                 android:layout_marginTop="16dp">
 
                 <LinearLayout
-                    android:layout_weight="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -103,7 +103,7 @@
                         android:textColor="@color/grey70"
                         android:text="@string/token_name"/>
                     <TextView
-                        android:text="Test Text"
+                        android:id="@+id/tv_token_name"
                         android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_marginTop="12dp"
@@ -123,7 +123,7 @@
                         android:textColor="@color/grey70"
                         android:text="@string/token_symbol"/>
                     <TextView
-                        android:text="Test Text"
+                        android:id="@+id/tv_token_symbol"
                         android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_marginTop="24dp"
@@ -143,7 +143,7 @@
                         android:textColor="@color/grey70"
                         android:text="@string/initial_supply"/>
                     <TextView
-                        android:text="Test Text"
+                        android:id="@+id/tv_initial_supply"
                         android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_marginTop="12dp"
@@ -163,7 +163,7 @@
                         android:textColor="@color/grey70"
                         android:text="@string/decimal_units"/>
                     <TextView
-                        android:text="Test Text"
+                        android:id="@+id/tv_decimal_units"
                         android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_marginTop="24dp"
@@ -183,7 +183,7 @@
                         android:textColor="@color/grey70"
                         android:text="@string/freezing_of_assets"/>
                     <TextView
-                        android:text="Test Text"
+                        android:id="@+id/tv_freezing_of_assets"
                         android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_marginTop="12dp"
@@ -201,9 +201,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/grey70"
-                        android:text="@string/automatic_selling_and_buing"/>
+                        android:text="@string/automatic_selling_and_buying"/>
                     <TextView
-                        android:text="Test Text"
+                        android:id="@+id/tv_automatic_selling_and_buying"
                         android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -212,7 +212,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_marginTop="12dp"
@@ -223,7 +223,7 @@
                         android:textColor="@color/grey70"
                         android:text="@string/autorefill"/>
                     <TextView
-                        android:text="Test Text"
+                        android:id="@+id/tv_autorefill"
                         android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -232,7 +232,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_marginTop="12dp"
@@ -243,7 +243,7 @@
                         android:textColor="@color/grey70"
                         android:text="@string/proof_of_work"/>
                     <TextView
-                        android:text="Test Text"
+                        android:id="@+id/tv_proof_of_work"
                         android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

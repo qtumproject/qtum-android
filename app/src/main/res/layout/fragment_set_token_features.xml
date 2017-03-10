@@ -56,7 +56,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/bt_cancel"
+                    android:id="@+id/bt_back"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -101,7 +101,7 @@
                 android:layout_marginTop="16dp">
 
                 <LinearLayout
-                    android:layout_weight="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -113,33 +113,35 @@
                     <Switch
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/switch1"
+                        android:id="@+id/switch_freezing_of_assets"
                         android:gravity="end"
                         android:layout_weight="1"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginTop="24dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:text="@string/automatic_selling_and_buing"/>
+                        android:text="@string/automatic_selling_and_buying"/>
                     <Switch
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/switch2"
+                        android:id="@+id/switch_automatic_selling_and_buying"
                         android:gravity="end"
                         android:layout_weight="1"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginTop="24dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
@@ -149,15 +151,16 @@
                     <Switch
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/switch3"
+                        android:id="@+id/switch_autorefill"
                         android:gravity="end"
                         android:layout_weight="1"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginTop="24dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
@@ -167,7 +170,7 @@
                     <Switch
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/switch4"
+                        android:id="@+id/switch_proof_of_work"
                         android:gravity="end"
                         android:layout_weight="1"/>
                 </LinearLayout>

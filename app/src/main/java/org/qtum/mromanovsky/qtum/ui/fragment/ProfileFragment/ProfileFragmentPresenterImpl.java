@@ -11,6 +11,7 @@ import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.SetTokenNameFragment.SetTokenNameFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 
 
@@ -64,6 +65,13 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         StartPageFragment startPageFragment = StartPageFragment.newInstance();
         KeyStorage.getInstance().clearAll();
         ((MainActivity)getView().getFragmentActivity()).openRootFragment(startPageFragment);
+        ((MainActivity)getView().getFragmentActivity()).getBottomNavigationView().getMenu().getItem(0).setChecked(true);
+    }
+
+    @Override
+    public void onCreateTokenClick() {
+        SetTokenNameFragment setTokenNameFragment = SetTokenNameFragment.newInstance();
+        getView().openFragment(setTokenNameFragment);
     }
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {

@@ -12,7 +12,7 @@ import butterknife.OnClick;
 
 public class ProfileFragment extends BaseFragment implements ProfileFragmentView, LogOutDialogFragment.OnYesClickListener {
 
-    public static final int LAYOUT = R.layout.fragment_profile;
+    public final int LAYOUT = R.layout.fragment_profile;
 
     ProfileFragmentPresenterImpl mProfileFragmentPresenter;
 
@@ -22,8 +22,10 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     LinearLayout mLinearLayoutWalletBackUp;
     @BindView(R.id.ll_log_out)
     LinearLayout mLinearLayoutLogOut;
+    @BindView(R.id.ll_create_token)
+    LinearLayout mLinearLayoutCreateToken;
 
-    @OnClick({R.id.ll_change_pin, R.id.ll_wallet_back_up,R.id.ll_log_out})
+    @OnClick({R.id.ll_change_pin, R.id.ll_wallet_back_up,R.id.ll_log_out, R.id.ll_create_token})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_change_pin:
@@ -34,6 +36,9 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
                 break;
             case R.id.ll_log_out:
                 getPresenter().logOut();
+                break;
+            case R.id.ll_create_token:
+                getPresenter().onCreateTokenClick();
                 break;
         }
     }

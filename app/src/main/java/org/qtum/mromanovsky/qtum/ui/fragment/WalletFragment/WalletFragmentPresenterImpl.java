@@ -31,7 +31,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         mWalletFragmentInteractor = new WalletFragmentInteractorImpl(getView().getContext());
     }
 
-    //Service
+
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -57,7 +57,6 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onCreate(Context context) {
         super.onCreate(context);
-        ((MainActivity)getView().getFragmentActivity()).getBottomNavigationView().getMenu().getItem(0).setChecked(true);
     }
 
     @Override
@@ -74,10 +73,10 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     public void onStart(Context context) {
         super.onStart(context);
 
-        //Service
+
         mIntent = new Intent(context, UpdateService.class);
         if(!isMyServiceRunning(UpdateService.class)) {
-            context.startService(mIntent);
+            //context.startService(mIntent);
         }
     }
 
@@ -95,21 +94,21 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onResume(Context context) {
         super.onResume(context);
-        context.bindService(mIntent,mServiceConnection,0);
+        //context.bindService(mIntent,mServiceConnection,0);
     }
 
     @Override
     public void onPause(Context context) {
         super.onPause(context);
         if(mUpdateService!=null && !    mUpdateService.isMonitoring()) {
-            mUpdateService.startMonitoringHistory();
+            //mUpdateService.startMonitoringHistory();
         }
     }
 
     @Override
     public void onStop(Context context) {
         super.onStop(context);
-        context.unbindService(mServiceConnection);
+        //context.unbindService(mServiceConnection);
     }
 
     @Override
@@ -123,8 +122,8 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     @Override
     public void onClickReceive() {
-        Fragment fragment = ReceiveFragment.newInstance();
-        getView().openFragment(fragment);
+        ReceiveFragment receiveFragment = ReceiveFragment.newInstance();
+        getView().openFragment(receiveFragment);
     }
 
     @Override
