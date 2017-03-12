@@ -27,9 +27,9 @@ import rx.Subscriber;
 public class KeyStorage {
 
     private static KeyStorage sKeyStorage;
-    private static List<DeterministicKey> sDeterministicKeyList;
-    private static Wallet sWallet = null;
-    private static int sCurrentKeyPosition = 0;
+    private List<DeterministicKey> sDeterministicKeyList;
+    private Wallet sWallet = null;
+    private int sCurrentKeyPosition = 0;
     private File mFile;
 
     public static KeyStorage getInstance(){
@@ -43,9 +43,8 @@ public class KeyStorage {
 
     }
 
-    public void clearAll(){
-        sDeterministicKeyList = null;
-        sCurrentKeyPosition = 0;
+    public void clearKeyStorage(){
+        sKeyStorage = null;
     }
 
     public Observable<Wallet> loadWalletFromFile(Context context){
@@ -179,11 +178,11 @@ public class KeyStorage {
         return getKeyList().get(sCurrentKeyPosition);
     }
 
-    public static void setCurrentKeyPosition(int currentKeyPosition) {
+    public void setCurrentKeyPosition(int currentKeyPosition) {
         sCurrentKeyPosition = currentKeyPosition;
     }
 
-    public static int getCurrentKeyPosition() {
+    public int getCurrentKeyPosition() {
         return sCurrentKeyPosition;
     }
 }

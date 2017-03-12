@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,8 +38,12 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     Button mButtonCopyWalletAddress;
     @BindView(R.id.bt_choose_another_address)
     Button mButtonChooseAnotherAddress;
+    @BindView(R.id.ibt_back)
+    ImageButton mImageButtonBack;
+    @BindView(R.id.tv_total_balance_number)
+    TextView mTextViewTotalBalanceNumber;
 
-    @OnClick({R.id.bt_copy_wallet_address,R.id.bt_choose_another_address})
+    @OnClick({R.id.bt_copy_wallet_address,R.id.bt_choose_another_address,R.id.ibt_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_copy_wallet_address:
@@ -46,6 +51,9 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
                 break;
             case R.id.bt_choose_another_address:
                 getPresenter().onClickChooseAnotherAddress();
+                break;
+            case R.id.ibt_back:
+                getActivity().onBackPressed();
                 break;
         }
     }
@@ -78,8 +86,6 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
             ActionBar actionBar = activity.getSupportActionBar();
             if (actionBar != null) {
                 actionBar.setDisplayShowTitleEnabled(false);
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
-                actionBar.setDisplayHomeAsUpEnabled(true);
             }
         }
 
@@ -110,6 +116,11 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     @Override
     public void setAddressInTV(String s) {
         mTextViewAddress.setText(s);
+    }
+
+    @Override
+    public void setBalance(double balance) {
+        mTextViewTotalBalanceNumber.setText(String.valueOf(balance)+" QTUM");
     }
 
 }

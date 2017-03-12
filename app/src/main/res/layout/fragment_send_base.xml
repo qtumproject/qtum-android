@@ -18,28 +18,67 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:layout_height="80dp"
+            app:layout_collapseMode="pin"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/tv_toolbar_send"
-                android:text="@string/send"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <ImageButton
-                android:id="@+id/bt_qr_code"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_gravity="right"
-                android:layout_margin="8dp"
-                android:background="@drawable/background_pressed_alpha_white"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_qrcode"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:id="@+id/tv_toolbar_send"
+                    android:text="@string/send"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/toolbar_text_size"/>
+
+                <ImageButton
+                    android:id="@+id/bt_qr_code"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_margin="9dp"
+                    android:background="@drawable/background_pressed_alpha_white"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/ic_qrcode"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:id="@+id/tv_total_balance"
+                    android:textColor="@android:color/white"
+                    android:text="@string/total_balance"
+                    android:layout_below="@id/tv_toolbar_send"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:layout_margin="8dp"
+                    android:id="@+id/tv_total_balance_number"
+                    android:layout_below="@id/tv_toolbar_send"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:id="@+id/ibt_back"
+                    app:srcCompat="@drawable/ic_back_indicator"
+                    android:layout_alignBottom="@+id/tv_toolbar_send"
+                    android:layout_alignLeft="@+id/tv_total_balance"
+                    android:layout_alignStart="@+id/tv_total_balance"/>
+
+            </RelativeLayout>
+
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

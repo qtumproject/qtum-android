@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/et_initial_supply"
                     android:hint="@string/initial_supply"
-                    android:inputType="textPersonName"
+                    android:inputType="numberDecimal"
                     android:textColor="@color/grey"/>
             </android.support.design.widget.TextInputLayout>
 

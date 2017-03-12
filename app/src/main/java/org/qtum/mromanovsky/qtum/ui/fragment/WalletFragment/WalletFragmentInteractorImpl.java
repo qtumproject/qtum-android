@@ -32,10 +32,6 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
         return HistoryList.getInstance().getHistoryList();
     }
 
-    @Override
-    public void setHistoryList(List<History> historyList) {
-        HistoryList.getInstance().setHistoryList(historyList);
-    }
 
     @Override
     public void getHistoryList(final GetHistoryListCallBack callBack) {
@@ -64,7 +60,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 //                                return;
 //                            }
 //                        }
-                        setHistoryList(historyList);
+                        HistoryList.getInstance().setHistoryList(historyList);
                         QtumSharedPreference.getInstance().saveHistoryCount(mContext,historyList.size());
                         callBack.onSuccess();
                     }
@@ -91,10 +87,11 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
-                        double balance = 0;
+                        long balance = 0;
                         for(UnspentOutput unspentOutput : unspentOutputs){
                             balance+=unspentOutput.getAmount();
                         }
+                        HistoryList.getInstance().setBalance(balance);
                         callBack.onSuccess(balance);
                     }
                 });
@@ -112,12 +109,11 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     interface GetHistoryListCallBack {
         void onSuccess();
-        void onSuccessWithoutChange();
         void onError(Throwable e);
     }
 
     interface GetBalanceCallBack {
-        void onSuccess(double balance);
+        void onSuccess(long balance);
     }
 
     @Override

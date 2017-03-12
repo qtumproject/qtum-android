@@ -3,7 +3,9 @@ package org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment;
 
 import android.content.Context;
 
+import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
 class ReceiveFragmentInteractorImpl implements ReceiveFragmentInteractor{
 
@@ -16,5 +18,10 @@ class ReceiveFragmentInteractorImpl implements ReceiveFragmentInteractor{
     @Override
     public String getCurrentReceiveAddress() {
         return KeyStorage.getInstance().getCurrentAddress();
+    }
+
+    @Override
+    public double getBalance() {
+        return HistoryList.getInstance().getBalance()* QtumSharedPreference.getInstance().getExchangeRates(mContext);
     }
 }

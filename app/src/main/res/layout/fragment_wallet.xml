@@ -108,32 +108,62 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="80dp"
                 android:layout_marginBottom="24dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:text="@string/my_wallet"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/toolbar_text_size"/>
+                    android:layout_height="match_parent">
 
-                <ImageButton
-                    android:id="@+id/bt_qr_code"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="right"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/background_pressed_alpha_white"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/ic_qrcode"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:id="@+id/tv_my_wallet"
+                        android:text="@string/my_wallet"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/toolbar_text_size"/>
+
+                    <ImageButton
+                        android:id="@+id/bt_qr_code"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_margin="9dp"
+                        android:background="@drawable/background_pressed_alpha_white"
+                        android:scaleType="centerInside"
+                        app:srcCompat="@drawable/ic_qrcode"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:id="@+id/tv_total_balance"
+                        android:textColor="@android:color/white"
+                        android:text="@string/total_balance"
+                        android:layout_below="@id/tv_my_wallet"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:layout_margin="8dp"
+                        android:id="@+id/tv_total_balance_number"
+                        android:layout_below="@id/tv_my_wallet"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+
+
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <TextView

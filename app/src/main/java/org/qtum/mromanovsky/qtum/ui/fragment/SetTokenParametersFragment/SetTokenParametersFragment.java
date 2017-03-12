@@ -35,8 +35,8 @@ public class SetTokenParametersFragment extends BaseFragment implements SetToken
                 getPresenter().onBackClick();
                 break;
             case R.id.bt_finish:
-                getPresenter().onFinishClick(Long.parseLong(mTextInputEditTextInitialSupply.getText().toString()),
-                        Long.parseLong(mTextInputEditTextDecimalUnits.getText().toString()));
+                getPresenter().onFinishClick(mTextInputEditTextInitialSupply.getText().toString(),
+                        mTextInputEditTextDecimalUnits.getText().toString());
                 break;
         }
     }
@@ -62,5 +62,17 @@ public class SetTokenParametersFragment extends BaseFragment implements SetToken
     @Override
     protected int getLayout() {
         return LAYOUT;
+    }
+
+    @Override
+    public void setError(String supplyError, String unitsError) {
+        mTextInputLayoutDecimalUnits.setError(unitsError);
+        mTextInputLayoutInitialSupply.setError(supplyError);
+    }
+
+    @Override
+    public void clearError() {
+        mTextInputLayoutDecimalUnits.setError("");
+        mTextInputLayoutInitialSupply.setError("");
     }
 }

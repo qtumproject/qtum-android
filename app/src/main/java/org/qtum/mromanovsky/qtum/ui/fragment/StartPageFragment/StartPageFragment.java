@@ -28,6 +28,7 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     public final int LAYOUT = R.layout.fragment_start_page;
     private int mAnimState;
     private Animation mAnimation;
+    private boolean mIsStarted = false;
 
     private StartPageFragmentPresenterImpl mStartPageFragmentPresenter;
 
@@ -87,6 +88,10 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     @Override
     public void initializeViews() {
         ((MainActivity) getActivity()).hideBottomNavigationView();
+
+        if(mIsStarted){
+            return;
+        }
 
         mTextViewYouDontHave.setVisibility(View.INVISIBLE);
         mTextViewStartPageCreate.setVisibility(View.INVISIBLE);
@@ -152,6 +157,7 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
                         mRelativeLayoutButtonContainer.startAnimation(mAnimation);
                         break;
                     case 3:
+                        mIsStarted = true;
                         mRelativeLayoutButtonContainer.setVisibility(View.VISIBLE);
                 }
                 mAnimation.setAnimationListener(this);

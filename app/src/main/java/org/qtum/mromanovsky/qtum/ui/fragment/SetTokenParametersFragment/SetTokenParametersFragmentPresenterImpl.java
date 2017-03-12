@@ -19,9 +19,25 @@ public class SetTokenParametersFragmentPresenterImpl extends BaseFragmentPresent
     }
 
     @Override
-    public void onFinishClick(long initialSupply, long decimalUnits) {
-        QtumToken.getQtumToken().setInitialSupply(initialSupply);
-        QtumToken.getQtumToken().setDecimalUnits(decimalUnits);
+    public void onFinishClick(String initialSupply, String decimalUnits) {
+        getView().clearError();
+
+        if (initialSupply.isEmpty() && decimalUnits.isEmpty()) {
+            getView().setError("Empty field", "Empty field");
+            return;
+        } else {
+            if (initialSupply.isEmpty()) {
+                getView().setError("Empty field", "");
+                return;
+            }
+            if(decimalUnits.isEmpty()){
+                getView().setError("","Empty field");
+                return;
+            }
+        }
+
+        QtumToken.getQtumToken().setInitialSupply(Long.parseLong(initialSupply));
+        QtumToken.getQtumToken().setDecimalUnits(Long.parseLong(decimalUnits));
         SetTokenConfirmFragment setTokenConfirmFragment = SetTokenConfirmFragment.newInstance();
         getView().openFragment(setTokenConfirmFragment);
     }

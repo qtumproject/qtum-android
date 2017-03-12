@@ -20,6 +20,23 @@ public class SetTokenNameFragmentPresenterImpl extends BaseFragmentPresenterImpl
 
     @Override
     public void onNextClick(String name, String symbol) {
+
+        getView().clearError();
+
+        if (name.isEmpty() && symbol.isEmpty()) {
+            getView().setError("Empty field", "Empty field");
+            return;
+        } else {
+            if (symbol.isEmpty()) {
+                getView().setError("", "Empty field");
+                return;
+            }
+            if(name.isEmpty()){
+                getView().setError("Empty field","");
+                return;
+            }
+        }
+
         QtumToken.getQtumToken().setTokenName(name);
         QtumToken.getQtumToken().setTokenSymbol(symbol);
         SetTokenFeaturesFragment setTokenFeaturesFragment = SetTokenFeaturesFragment.newInstance();

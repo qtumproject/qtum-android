@@ -72,6 +72,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     public void initializeViews() {
         super.initializeViews();
         getView().setAddressInTV(getInteractor().getCurrentReceiveAddress());
+        getView().setBalance(getInteractor().getBalance());
     }
 
     @Override

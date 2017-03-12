@@ -2,6 +2,9 @@ package org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment;
 
 import android.content.Context;
 
+import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
+import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
+import org.qtum.mromanovsky.qtum.datastorage.NewsList;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
 
@@ -14,7 +17,10 @@ class ProfileFragmentInteractorImpl implements ProfileFragmentInteractor {
     }
 
     @Override
-    public void clearSharedPreference() {
+    public void clearWallet() {
         QtumSharedPreference.getInstance().clear(mContext);
+        KeyStorage.getInstance().clearKeyStorage();
+        HistoryList.getInstance().clearHistoryList();
+        NewsList.getInstance().clearNewsList();
     }
 }

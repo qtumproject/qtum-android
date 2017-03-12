@@ -10,6 +10,7 @@ public class HistoryList {
     private static HistoryList sHistoryList;
 
     private List<History> mHistoryList;
+    private long mBalance = 0;
 
     private HistoryList() {
         mHistoryList = new ArrayList<>();
@@ -22,11 +23,23 @@ public class HistoryList {
         return sHistoryList;
     }
 
+    public void clearHistoryList(){
+        sHistoryList = null;
+    }
+
     public List<History> getHistoryList() {
         return mHistoryList;
     }
 
     public void setHistoryList(List<History> historyList) {
         mHistoryList = historyList;
+    }
+
+    public long getBalance() {
+        return mBalance;
+    }
+
+    public void setBalance(long balance) {
+        mBalance = balance;
     }
 }

@@ -98,8 +98,8 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int s = KeyStorage.getCurrentKeyPosition();
-                    KeyStorage.setCurrentKeyPosition(getAdapterPosition());
+                    int s = KeyStorage.getInstance().getCurrentKeyPosition();
+                    KeyStorage.getInstance().setCurrentKeyPosition(getAdapterPosition());
                     mAddressAdapter.notifyItemChanged(s);
                     mAddressAdapter.notifyItemChanged(getAdapterPosition());
                 }
@@ -108,7 +108,7 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
         }
 
         void bindAddress(String address, int position){
-            if(position == KeyStorage.getCurrentKeyPosition()){
+            if(position == KeyStorage.getInstance().getCurrentKeyPosition()){
                 mImageViewCheckIndicator.setVisibility(View.VISIBLE);
                 mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.grey20));
             } else {

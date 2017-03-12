@@ -2,5 +2,5 @@ package org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment;
 
 
 interface ProfileFragmentInteractor {
-    void clearSharedPreference();
+    void clearWallet();
 }

@@ -6,7 +6,6 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
-import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -59,11 +58,13 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void onLogOutYesClick() {
         mIntent = new Intent(getView().getContext(), UpdateService.class);
-        getView().getContext().bindService(mIntent,mServiceConnection,0);
 
-        getInteractor().clearSharedPreference();
+        //TODO : service
+        //getView().getContext().bindService(mIntent,mServiceConnection,0);
+
+        getInteractor().clearWallet();
+
         StartPageFragment startPageFragment = StartPageFragment.newInstance();
-        KeyStorage.getInstance().clearAll();
         ((MainActivity)getView().getFragmentActivity()).openRootFragment(startPageFragment);
         ((MainActivity)getView().getFragmentActivity()).getBottomNavigationView().getMenu().getItem(0).setChecked(true);
     }
@@ -81,7 +82,6 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
             mUpdateService.unsubscribe();
             getView().getContext().unbindService(mServiceConnection);
             mUpdateService.stopSelf();
-            //mUpdateService.registerListener(mUpdateData);
         }
 
         @Override

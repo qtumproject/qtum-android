@@ -181,11 +181,6 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
             }
 
             @Override
-            public void onSuccessWithoutChange() {
-                getView().stopRefreshRecyclerAnimation();
-            }
-
-            @Override
             public void onError(Throwable e) {
                 getView().stopRefreshRecyclerAnimation();
                 Toast.makeText(getView().getContext(),e.toString(),Toast.LENGTH_SHORT).show();
@@ -196,7 +191,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     private void loadAndUpdateBalance(){
         getInteractor().getBalance(new WalletFragmentInteractorImpl.GetBalanceCallBack() {
             @Override
-            public void onSuccess(double balance) {
+            public void onSuccess(long balance) {
                 getView().updateBalance(balance * (QtumSharedPreference.getInstance().getExchangeRates(getView().getContext())));
             }
         });

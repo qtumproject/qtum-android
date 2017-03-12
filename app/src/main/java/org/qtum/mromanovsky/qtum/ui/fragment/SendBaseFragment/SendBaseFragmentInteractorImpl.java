@@ -16,6 +16,7 @@ import org.bitcoinj.script.Script;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
+import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.utils.CurrentNetParams;
@@ -203,5 +204,10 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
     @Override
     public int getPassword() {
         return QtumSharedPreference.getInstance().getWalletPassword(mContext);
+    }
+
+    @Override
+    public double getBalance() {
+        return HistoryList.getInstance().getBalance()*QtumSharedPreference.getInstance().getExchangeRates(mContext);
     }
 }

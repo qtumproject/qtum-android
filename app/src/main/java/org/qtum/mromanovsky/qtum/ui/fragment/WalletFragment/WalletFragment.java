@@ -7,9 +7,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,8 +40,10 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     public final int LAYOUT = R.layout.fragment_wallet;
 
-    WalletFragmentPresenterImpl mWalletFragmentPresenter;
-    TransactionAdapter mTransactionAdapter;
+    private WalletFragmentPresenterImpl mWalletFragmentPresenter;
+    private TransactionAdapter mTransactionAdapter;
+    private Animation mAnimation;
+    private boolean mIsVisible = false;
 
     @BindView(R.id.tv_public_key)
     TextView mTvPublicKey;
@@ -58,6 +63,10 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     ImageButton mButtonQrCode;
     @BindView(R.id.progress_bar_balance)
     ProgressBar mProgressBarDialog;
+    @BindView(R.id.tv_total_balance)
+    TextView mTextViewTotalBalance;
+    @BindView(R.id.tv_total_balance_number)
+    TextView mTextViewTotalBalanceNumber;
 
     @OnClick({R.id.fab, R.id.ll_receive, R.id.bt_qr_code})
     public void onClick(View view) {
@@ -110,6 +119,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     @Override
     public void updateBalance(double balance) {
         mTvBalance.setText(String.valueOf(balance));
+        mTextViewTotalBalanceNumber.setText(String.valueOf(balance)+" QTUM");
 
         mTvBalance.setVisibility(View.VISIBLE);
         mProgressBarDialog.setVisibility(View.GONE);
@@ -148,6 +158,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             }
         });
 
+        mTextViewTotalBalance.setVisibility(View.INVISIBLE);
+        mTextViewTotalBalanceNumber.setVisibility(View.INVISIBLE);
+
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -158,6 +171,29 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                         mSwipeRefreshLayout.setEnabled(false);
                     }
                 }
+
+                if(verticalOffset==0){
+                    if(mIsVisible) {
+                        mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_hide);
+                        mTextViewTotalBalanceNumber.startAnimation(mAnimation);
+                        mTextViewTotalBalance.startAnimation(mAnimation);
+
+                        mTextViewTotalBalance.setVisibility(View.INVISIBLE);
+                        mTextViewTotalBalanceNumber.setVisibility(View.INVISIBLE);
+                        mIsVisible=false;
+                    }
+                } else if(Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+                    if(!mIsVisible) {
+                        mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_show);
+                        mTextViewTotalBalanceNumber.startAnimation(mAnimation);
+                        mTextViewTotalBalance.startAnimation(mAnimation);
+
+                        mTextViewTotalBalanceNumber.setVisibility(View.VISIBLE);
+                        mTextViewTotalBalance.setVisibility(View.VISIBLE);
+                        mIsVisible = true;
+                    }
+                }
+
             }
         });
 

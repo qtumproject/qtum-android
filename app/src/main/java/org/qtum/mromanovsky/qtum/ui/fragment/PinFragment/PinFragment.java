@@ -95,7 +95,6 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     @Override
     public void confirmError(String errorText) {
         mTextInputEditTextWalletPin.setText("");
-        mTextInputLayoutWalletPin.setErrorEnabled(true);
         mTextInputLayoutWalletPin.setError(errorText);
     }
 
@@ -118,7 +117,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
 
     @Override
     public void clearError() {
-        mTextInputLayoutWalletPin.setErrorEnabled(false);
+        mTextInputLayoutWalletPin.setError("");
     }
 
     @Override

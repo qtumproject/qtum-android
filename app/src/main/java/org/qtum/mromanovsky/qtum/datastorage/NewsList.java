@@ -18,6 +18,10 @@ public class NewsList {
         return sNewsList;
     }
 
+    public void clearNewsList(){
+        sNewsList = null;
+    }
+
     private NewsList(){
         mNewsList = new ArrayList<>();
     }

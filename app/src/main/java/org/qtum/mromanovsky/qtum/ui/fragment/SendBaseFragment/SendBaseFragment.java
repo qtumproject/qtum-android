@@ -37,8 +37,13 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     TextInputLayout mTextInputLayoutPin;
     @BindView(R.id.bt_send)
     Button mButtonSend;
+    @BindView(R.id.ibt_back)
+    ImageButton mImageButtonBack;
     @BindView(R.id.tv_toolbar_send)
     TextView mTextViewToolBar;
+
+    @BindView(R.id.tv_total_balance_number)
+    TextView mTextViewTotalBalanceNumber;
 
     SendBaseFragmentPresenterImpl sendBaseFragmentPresenter;
 
@@ -47,20 +52,21 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @OnClick({R.id.bt_qr_code,R.id.bt_send})
+    @OnClick({R.id.bt_qr_code,R.id.bt_send, R.id.ibt_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_qr_code:
                 getPresenter().onClickQrCode();
                 break;
-        }
-        switch (view.getId()) {
             case R.id.bt_send:
                 String[] sendInfo = new String[3];
                 sendInfo[0] = mTextInputEditTextAddress.getText().toString();
                 sendInfo[1] = mTextInputEditTextAmount.getText().toString();
                 sendInfo[2] = mTextInputEditTextPin.getText().toString();
                 getPresenter().send(sendInfo);
+                break;
+            case R.id.ibt_back:
+                getActivity().onBackPressed();
                 break;
         }
     }
@@ -124,7 +130,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     public void qrCodeRecognitionToolBar() {
         mButtonQrCode.setVisibility(View.GONE);
         mTextViewToolBar.setText(R.string.qr_code);
-        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mImageButtonBack.setVisibility(View.VISIBLE);
         mActionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
     }
 
@@ -133,8 +139,14 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         if(mButtonQrCode!=null) {
             mTextViewToolBar.setText(R.string.send);
             mButtonQrCode.setVisibility(View.VISIBLE);
-            mActionBar.setDisplayHomeAsUpEnabled(false);
+            mImageButtonBack.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        mImageButtonBack.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -158,6 +170,11 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @Override
     public void clearError() {
         mTextInputLayoutPin.setErrorEnabled(false);
+    }
+
+    @Override
+    public void setBalance(double balance) {
+        mTextViewTotalBalanceNumber.setText(String.valueOf(balance)+" QTUM");
     }
 
     public void onResponse(String pubAddress, Double amount){

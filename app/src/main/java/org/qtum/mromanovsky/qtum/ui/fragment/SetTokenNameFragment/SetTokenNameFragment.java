@@ -71,4 +71,16 @@ public class SetTokenNameFragment extends BaseFragment implements SetTokenNameFr
         super.setSoftMode();
         getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
+
+    @Override
+    public void setError(String nameError, String symbolError) {
+        mTextInputLayoutTokenName.setError(nameError);
+        mTextInputLayoutTokenSymbol.setError(symbolError);
+    }
+
+    @Override
+    public void clearError() {
+        mTextInputLayoutTokenName.setError("");
+        mTextInputLayoutTokenSymbol.setError("");
+    }
 }

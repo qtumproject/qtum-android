@@ -13,4 +13,5 @@ interface SendBaseFragmentView extends BaseFragmentView{
     void errorRecognition();
     void confirmError(String errorText);
     void clearError();
+    void setBalance(double balance);
 }

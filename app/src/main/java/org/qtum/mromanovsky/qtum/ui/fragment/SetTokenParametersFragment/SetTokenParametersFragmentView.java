@@ -4,4 +4,6 @@ import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 
 public interface SetTokenParametersFragmentView extends BaseFragmentView{
+    void setError(String supplyError, String unitsError);
+    void clearError();
 }
