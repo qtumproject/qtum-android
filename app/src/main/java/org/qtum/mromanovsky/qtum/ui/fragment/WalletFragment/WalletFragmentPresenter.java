@@ -7,4 +7,6 @@ interface WalletFragmentPresenter {
     void onRefresh();
     void sharePubKey();
     void openTransactionFragment(int position);
+    void onInitialInitialize();
+    void changePage();
 }

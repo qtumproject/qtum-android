@@ -70,10 +70,13 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:id="@+id/ibt_back"
+                    android:paddingTop="32dp"
+                    android:paddingBottom="32dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     app:srcCompat="@drawable/ic_back_indicator"
-                    android:layout_alignBottom="@+id/tv_toolbar_receive"
-                    android:layout_alignLeft="@+id/tv_total_balance"
-                    android:layout_alignStart="@+id/tv_total_balance"/>
+
+                    android:layout_alignBottom="@+id/tv_total_balance"/>
 
             </RelativeLayout>
 

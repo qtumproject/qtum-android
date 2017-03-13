@@ -4,19 +4,20 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -25,6 +26,7 @@ import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,43 +44,54 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     private WalletFragmentPresenterImpl mWalletFragmentPresenter;
     private TransactionAdapter mTransactionAdapter;
+
+    private WalletAppBarPagerAdapter mWalletAppBarPagerAdapter;
     private Animation mAnimation;
     private boolean mIsVisible = false;
+    private boolean mIsInitialInitialize = true;
 
-    @BindView(R.id.tv_public_key)
-    TextView mTvPublicKey;
-    @BindView(R.id.tv_balance)
-    TextView mTvBalance;
     @BindView(R.id.fab)
     FloatingActionButton mFloatingActionButton;
-    @BindView(R.id.ll_receive)
-    LinearLayout mLinearLayoutReceive;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
     @BindView(R.id.bt_qr_code)
     ImageButton mButtonQrCode;
-    @BindView(R.id.progress_bar_balance)
-    ProgressBar mProgressBarDialog;
     @BindView(R.id.tv_total_balance)
     TextView mTextViewTotalBalance;
     @BindView(R.id.tv_total_balance_number)
     TextView mTextViewTotalBalanceNumber;
+    @BindView(R.id.tv_wallet_name)
+    TextView mTextViewWalletName;
+    @BindView(R.id.ibtn_left)
+    ImageButton mImageButtonLeft;
+    @BindView(R.id.ibtn_right)
+    ImageButton mImageButtonRight;
 
-    @OnClick({R.id.fab, R.id.ll_receive, R.id.bt_qr_code})
+    @OnClick({R.id.fab, R.id.bt_qr_code,R.id.ibtn_left,R.id.ibtn_right})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
                 mWalletFragmentPresenter.sharePubKey();
                 break;
-            case R.id.ll_receive:
-                getPresenter().onClickReceive();
-                break;
             case R.id.bt_qr_code:
                 getPresenter().onClickQrCode();
+                break;
+            case R.id.ibtn_left:
+                if(mViewPager.getCurrentItem()>0) {
+                    mViewPager.setCurrentItem(mViewPager.getCurrentItem()-1);
+                }
+                break;
+            case R.id.ibtn_right:
+                if(mViewPager.getChildCount()>mViewPager.getCurrentItem()) {
+                    mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
+                }
+                break;
         }
     }
 
@@ -118,24 +131,19 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void updateBalance(double balance) {
-        mTvBalance.setText(String.valueOf(balance));
         mTextViewTotalBalanceNumber.setText(String.valueOf(balance)+" QTUM");
-
-        mTvBalance.setVisibility(View.VISIBLE);
-        mProgressBarDialog.setVisibility(View.GONE);
+        mWalletAppBarPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem()).updateBalance(balance);
     }
 
     @Override
     public void updatePubKey(String pubKey) {
-        mTvPublicKey.setText(pubKey);
+        mWalletAppBarPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem()).updatePubKey(pubKey);
     }
 
     @Override
     public void startRefreshAnimation() {
         mSwipeRefreshLayout.setRefreshing(true);
-
-        mTvBalance.setVisibility(View.GONE);
-        mProgressBarDialog.setVisibility(View.VISIBLE);
+        mWalletAppBarPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem()).startRefreshAnimation();
     }
 
     @Override
@@ -145,8 +153,62 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void initializeViews() {
-
         ((MainActivity) getActivity()).showBottomNavigationView();
+
+        mWalletAppBarPagerAdapter = new WalletAppBarPagerAdapter(getFragmentManager());
+        mViewPager.setAdapter(mWalletAppBarPagerAdapter);
+
+        try {
+            Field mScroller;
+            mScroller = ViewPager.class.getDeclaredField("mScroller");
+            mScroller.setAccessible(true);
+            Interpolator interpolator = new LinearInterpolator();
+            FixedSpeedScroller scroller = new FixedSpeedScroller(getContext(), interpolator,true);
+            scroller.setDuration(300);
+            mScroller.set(mViewPager, scroller);
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) { }
+
+        final Animation animationWallet =  AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_hide);
+        animationWallet.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mTextViewWalletName.setText("New wallet");
+                mTextViewWalletName.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_show));
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(mIsInitialInitialize){
+                    getPresenter().onInitialInitialize();
+                    mIsInitialInitialize = false;
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                getPresenter().changePage();
+                mIsInitialInitialize = true;
+                mTextViewWalletName.startAnimation(animationWallet);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -196,7 +258,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
             }
         });
-
     }
 
     public class TransactionAdapter extends RecyclerView.Adapter<TransactionHolder> {

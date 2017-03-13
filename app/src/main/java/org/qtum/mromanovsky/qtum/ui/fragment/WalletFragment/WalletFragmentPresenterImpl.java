@@ -55,21 +55,6 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     };
 
     @Override
-    public void onCreate(Context context) {
-        super.onCreate(context);
-    }
-
-    @Override
-    public void onViewCreated() {
-        super.onViewCreated();
-        loadAndUpdateData();
-        loadAndUpdateBalance();
-
-        String pubKey = getInteractor().getAddress();
-        getView().updatePubKey(pubKey);
-    }
-
-    @Override
     public void onStart(Context context) {
         super.onStart(context);
 
@@ -152,6 +137,20 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     public void openTransactionFragment(int position) {
         Fragment fragment = TransactionFragment.newInstance(position);
         getView().openFragment(fragment);
+    }
+
+    @Override
+    public void onInitialInitialize() {
+        String pubKey = getInteractor().getAddress();
+        getView().updatePubKey(pubKey);
+        loadAndUpdateData();
+        loadAndUpdateBalance();
+    }
+
+    @Override
+    public void changePage() {
+        getInteractor().unSubscribe();
+        getView().setAdapterNull();
     }
 
     @Override
