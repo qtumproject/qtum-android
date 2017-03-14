@@ -22,64 +22,71 @@
             app:layout_collapseMode="pin"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_ibtn_back"
+                        android:id="@+id/ibt_back"
+                        android:layout_gravity="center"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        app:srcCompat="@drawable/ic_back_indicator"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_toolbar_send"
+                        android:text="@string/send"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/toolbar_text_size"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"/>
+
+                    <ImageButton
+                        android:id="@+id/bt_qr_code"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_margin="9dp"
+                        android:background="@drawable/background_pressed_alpha_white"
+                        android:scaleType="centerInside"
+                        app:srcCompat="@drawable/ic_qrcode"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:id="@+id/tv_toolbar_send"
-                    android:text="@string/send"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/toolbar_text_size"/>
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_total_balance"
+                        android:textColor="@android:color/white"
+                        android:layout_weight="1"
+                        android:text="@string/total_balance"/>
 
-                <ImageButton
-                    android:id="@+id/bt_qr_code"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_margin="9dp"
-                    android:background="@drawable/background_pressed_alpha_white"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/ic_qrcode"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:layout_marginRight="12dp"
+                        android:id="@+id/tv_total_balance_number"/>
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:id="@+id/tv_total_balance"
-                    android:textColor="@android:color/white"
-                    android:text="@string/total_balance"
-                    android:layout_below="@id/tv_toolbar_send"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:layout_margin="8dp"
-                    android:id="@+id/tv_total_balance_number"
-                    android:layout_below="@id/tv_toolbar_send"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"/>
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:id="@+id/ibt_back"
-                    android:paddingTop="32dp"
-                    android:paddingBottom="32dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    app:srcCompat="@drawable/ic_back_indicator"
-
-                    android:layout_alignBottom="@+id/tv_total_balance"/>
-
-            </RelativeLayout>
+            </LinearLayout>
 
 
         </android.support.v7.widget.Toolbar>
@@ -113,6 +120,9 @@
                 android:inputType="textPersonName"
                 android:textColor="@color/grey"/>
         </android.support.design.widget.TextInputLayout>
+
+
+
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_amount"

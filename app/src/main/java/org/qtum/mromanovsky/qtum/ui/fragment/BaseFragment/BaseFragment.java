@@ -184,7 +184,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-                .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                .add(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
                 .addToBackStack(null)
                 .commit();
     }

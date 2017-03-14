@@ -71,50 +71,59 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_wallet_name"
+                            android:text="@string/my_wallet"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/toolbar_text_size"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"/>
+
+                        <ImageButton
+                            android:id="@+id/bt_qr_code"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="9dp"
+                            android:background="@drawable/background_pressed_alpha_white"
+                            android:scaleType="centerInside"
+                            app:srcCompat="@drawable/ic_qrcode"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:gravity="center"
-                        android:id="@+id/tv_wallet_name"
-                        android:text="@string/my_wallet"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/toolbar_text_size"/>
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_total_balance"
+                            android:textColor="@android:color/white"
+                            android:layout_weight="1"
+                            android:text="@string/total_balance"/>
 
-                    <ImageButton
-                        android:id="@+id/bt_qr_code"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_margin="9dp"
-                        android:background="@drawable/background_pressed_alpha_white"
-                        android:scaleType="centerInside"
-                        app:srcCompat="@drawable/ic_qrcode"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:layout_marginRight="12dp"
+                            android:id="@+id/tv_total_balance_number"/>
+                    </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:id="@+id/tv_total_balance"
-                        android:textColor="@android:color/white"
-                        android:text="@string/total_balance"
-                        android:layout_below="@id/tv_wallet_name"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:layout_margin="8dp"
-                        android:id="@+id/tv_total_balance_number"
-                        android:layout_below="@id/tv_wallet_name"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"/>
-                </RelativeLayout>
+                </LinearLayout>
 
             </android.support.v7.widget.Toolbar>
 

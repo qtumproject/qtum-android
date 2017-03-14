@@ -21,23 +21,45 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             android:background="@color/colorPrimary">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/tv_toolbar_title"
-                android:textSize="24sp"
-                android:textColor="@android:color/white"
-                android:text="@string/wallet_back_up"/>
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_margin="8dp"
-                android:id="@+id/bt_qr_code"
-                app:srcCompat="@drawable/ic_share2"
-                android:scaleType="centerInside"
-                android:background="@drawable/background_pressed_alpha_white"
-                android:layout_gravity="right"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_ibtn_back"
+                    android:id="@+id/ibt_back"
+                    android:paddingTop="10dp"
+                    android:layout_gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    app:srcCompat="@drawable/ic_back_indicator"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/tv_toolbar_title"
+                    android:textSize="24sp"
+                    android:textColor="@android:color/white"
+                    android:text="@string/wallet_back_up"/>
+
+                <ImageButton
+                    android:layout_width="36dp"
+                    android:layout_gravity="center"
+                    android:layout_height="36dp"
+                    android:layout_margin="8dp"
+                    android:id="@+id/bt_qr_code"
+                    app:srcCompat="@drawable/ic_share2"
+                    android:scaleType="centerInside"
+                    android:background="@drawable/background_pressed_alpha_white"/>
+            </LinearLayout>
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

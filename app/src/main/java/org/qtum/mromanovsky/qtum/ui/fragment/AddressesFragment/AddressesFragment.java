@@ -25,6 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class AddressesFragment extends BaseFragment implements AddressesFragmentView{
 
@@ -34,8 +35,15 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+
+    @OnClick({R.id.ibt_back})
+    public void onClick(View view){
+        switch (view.getId()) {
+            case R.id.ibt_back:
+                getActivity().onBackPressed();
+                break;
+        }
+    }
 
     public static AddressesFragment newInstance(){
         AddressesFragment addressesFragment = new AddressesFragment();
@@ -60,17 +68,6 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
     @Override
     public void initializeViews() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (null != mToolbar) {
-            activity.setSupportActionBar(mToolbar);
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setDisplayShowTitleEnabled(false);
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
-                actionBar.setDisplayHomeAsUpEnabled(true);
-            }
-
-        }
     }
 
     @Override

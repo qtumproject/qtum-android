@@ -1,7 +1,8 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarFragment;
 
+import android.support.v4.app.Fragment;
 
-import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 public interface WalletAppBarFragmentView{
+    void openFragment(Fragment fragment);
 }

@@ -79,20 +79,17 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
             jsonObject = new JSONObject(result.getText());
             ((SendBaseFragment) getTargetFragment()).onResponse(jsonObject.getString("publicAddress"),
                     jsonObject.getDouble("amount"));
-            getFragmentManager().beginTransaction().remove(this).commit();
-            getFragmentManager().popBackStack();
+            getActivity().onBackPressed();
         } catch (JSONException e) {
             try {
                 if (jsonObject != null) {
                     ((SendBaseFragment) getTargetFragment()).onResponse(jsonObject.getString("publicAddress"),
                             0.0);
                 }
-                getFragmentManager().beginTransaction().remove(this).commit();
-                getFragmentManager().popBackStack();
+                getActivity().onBackPressed();
             } catch (JSONException e1) {
                 ((SendBaseFragment) getTargetFragment()).onResponseError();
-                getFragmentManager().beginTransaction().remove(this).commit();
-                getFragmentManager().popBackStack();
+                getActivity().onBackPressed();
             }
         }
     }

@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -15,12 +16,11 @@ import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 import java.text.DecimalFormat;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 public class TransactionFragment extends BaseFragment implements TransactionFragmentView {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
     @BindView(R.id.tv_value)
     TextView mTextViewValue;
     @BindView(R.id.tv_received_time)
@@ -31,6 +31,15 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     TextView mTextViewTo;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
+
+    @OnClick({R.id.ibt_back})
+    public void onClick(View view){
+        switch (view.getId()) {
+            case R.id.ibt_back:
+                getActivity().onBackPressed();
+                break;
+        }
+    }
 
     public final int LAYOUT = R.layout.fragment_transaction;
     final static String POSITION = "position";
@@ -66,26 +75,10 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
         getPresenter().openTransactionView(getArguments().getInt(POSITION));
     }
 
-    @Override
-    public void initializeViews() {
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (null != mToolbar) {
-            activity.setSupportActionBar(mToolbar);
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setDisplayShowTitleEnabled(false);
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
-            }
-        }
-    }
 
     @Override
     public void setUpTransactionData(double value, String receivedTime, String from, String to) {
 
-//        DecimalFormat df = new DecimalFormat("0");
-//        df.setMaximumFractionDigits(8);
-//        mTextViewValue.setText(df.format(value));
         mTextViewValue.setText(String.valueOf(value));
         mTextViewReceivedTime.setText(receivedTime);
         mTextViewFrom.setText(from);

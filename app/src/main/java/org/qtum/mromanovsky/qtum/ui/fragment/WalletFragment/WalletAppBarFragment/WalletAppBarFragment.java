@@ -18,9 +18,10 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class WalletAppBarFragment extends Fragment {
+public class WalletAppBarFragment extends Fragment implements WalletAppBarFragmentView{
 
     private Unbinder mUnbinder;
+    private WalletAppBarFragmentPresenter mWalletAppBarFragmentPresenter;
 
     @BindView(R.id.tv_public_key)
     TextView mTvPublicKey;
@@ -37,7 +38,7 @@ public class WalletAppBarFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_receive:
-                //getPresenter().onClickReceive();
+                getPresenter().onReceiveClick();
                 break;
 
         }
@@ -46,6 +47,16 @@ public class WalletAppBarFragment extends Fragment {
     public static WalletAppBarFragment newInstance(){
         WalletAppBarFragment walletAppBarFragment = new WalletAppBarFragment();
         return walletAppBarFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mWalletAppBarFragmentPresenter = new WalletAppBarFragmentPresenter(this);
+    }
+
+    private WalletAppBarFragmentPresenter getPresenter(){
+        return mWalletAppBarFragmentPresenter;
     }
 
     @Nullable
@@ -83,4 +94,13 @@ public class WalletAppBarFragment extends Fragment {
         mProgressBarDialog.setVisibility(View.GONE);
     }
 
+    @Override
+    public void openFragment(Fragment fragment) {
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                .add(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                .addToBackStack(null)
+                .commit();
+    }
 }

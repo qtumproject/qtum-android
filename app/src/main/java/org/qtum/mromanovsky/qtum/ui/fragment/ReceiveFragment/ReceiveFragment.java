@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,8 +27,6 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
     public final int LAYOUT = R.layout.fragment_receive;
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
     @BindView(R.id.iv_qr_code)
     ImageView mImageViewQrCode;
     @BindView(R.id.et_amount)
@@ -80,25 +79,18 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
     @Override
     public void initializeViews() {
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (null != mToolbar) {
-            activity.setSupportActionBar(mToolbar);
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setDisplayShowTitleEnabled(false);
-            }
-        }
 
-        mTextInputEditTextAmount.setOnKeyListener(new View.OnKeyListener() {
+        mTextInputEditTextAmount.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (i == KeyEvent.KEYCODE_ENTER) {
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(i == EditorInfo.IME_ACTION_DONE) {
                     getPresenter().generateQrCode(mTextInputEditTextAmount.getText().toString());
                     return false;
                 }
                 return false;
             }
         });
+
         getPresenter().generateQrCode(mTextInputEditTextAmount.getText().toString());
     }
 

@@ -26,7 +26,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
 
     public final int LAYOUT = R.layout.fragment_send_base;
     private static final String IS_QR_CODE_RECOGNITION = "is_qr_code_recognition";
-    private ActionBar mActionBar;
+
     @BindView(R.id.et_receivers_address)
     TextInputEditText mTextInputEditTextAddress;
     @BindView(R.id.et_amount)
@@ -114,24 +114,10 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (null != mToolbar) {
-            activity.setSupportActionBar(mToolbar);
-            mActionBar = activity.getSupportActionBar();
-            if (mActionBar != null) {
-                mActionBar.setDisplayShowTitleEnabled(false);
-            }
-        }
-    }
-
-    @Override
     public void qrCodeRecognitionToolBar() {
         mButtonQrCode.setVisibility(View.GONE);
         mTextViewToolBar.setText(R.string.qr_code);
         mImageButtonBack.setVisibility(View.VISIBLE);
-        mActionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
     }
 
     @Override
@@ -139,14 +125,14 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         if(mButtonQrCode!=null) {
             mTextViewToolBar.setText(R.string.send);
             mButtonQrCode.setVisibility(View.VISIBLE);
-            mImageButtonBack.setVisibility(View.INVISIBLE);
+            mImageButtonBack.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void initializeViews() {
         super.initializeViews();
-        mImageButtonBack.setVisibility(View.INVISIBLE);
+        mImageButtonBack.setVisibility(View.GONE);
     }
 
     @Override

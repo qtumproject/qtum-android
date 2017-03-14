@@ -1,9 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.activity.MainActivity;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;

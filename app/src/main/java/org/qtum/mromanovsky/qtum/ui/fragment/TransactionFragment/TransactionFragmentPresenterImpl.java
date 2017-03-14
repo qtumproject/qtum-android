@@ -1,6 +1,10 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment;
 
 
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
+
+import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -28,6 +32,14 @@ class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
 
     public TransactionFragmentInteractorImpl getInteractor() {
         return mTransactionFragmentInteractor;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getView().getFragmentActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getView().getContext(), R.color.colorPrimaryDark));
+        }
     }
 
     @Override

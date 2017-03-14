@@ -22,8 +22,6 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
 
     public static final String IS_WALLET_CREATING = "is_wallet_creating";
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
     @BindView(R.id.tv_brain_code)
     TextView mTextViewBrainCode;
     @BindView(R.id.bt_copy)
@@ -37,7 +35,7 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
     @BindView(R.id.bt_copy_brain_code)
     Button mButtonCopyBrainCode;
 
-    @OnClick({R.id.bt_copy,R.id.bt_continue,R.id.bt_copy_brain_code})
+    @OnClick({R.id.bt_copy,R.id.bt_continue,R.id.bt_copy_brain_code,R.id.ibt_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_copy_brain_code:
@@ -46,6 +44,9 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
                 break;
             case R.id.bt_continue:
                 getPresenter().onContinueClick();
+                break;
+            case R.id.ibt_back:
+                getActivity().onBackPressed();
                 break;
         }
     }
@@ -94,16 +95,6 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
             mButtonContinue.setVisibility(View.GONE);
             mButtonCopy.setVisibility(View.GONE);
             mButtonCopyBrainCode.setVisibility(View.VISIBLE);
-            final AppCompatActivity activity = (AppCompatActivity) getActivity();
-            if (null != mToolbar) {
-                activity.setSupportActionBar(mToolbar);
-                ActionBar actionBar = activity.getSupportActionBar();
-                if (actionBar != null) {
-                    actionBar.setDisplayShowTitleEnabled(false);
-                    actionBar.setDisplayHomeAsUpEnabled(true);
-                    actionBar.setHomeAsUpIndicator(R.drawable.ic_back_indicator);
-                }
-            }
         }
     }
 

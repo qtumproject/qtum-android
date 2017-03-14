@@ -32,27 +32,27 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     }
 
 
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
-            if(mUpdateService.isMonitoring()){
-                mUpdateService.unsubscribe();
-            }
-            mUpdateService.registerListener(new UpdateData() {
-                @Override
-                public void updateDate() {
-                    mUpdateService.unsubscribe();
-                }
-            });
-            mUpdateService.sendDefaultNotification();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-
-        }
-    };
+//    private ServiceConnection mServiceConnection = new ServiceConnection() {
+//        @Override
+//        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+//            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
+//            if(mUpdateService.isMonitoring()){
+//                mUpdateService.unsubscribe();
+//            }
+//            mUpdateService.registerListener(new UpdateData() {
+//                @Override
+//                public void updateDate() {
+//                    mUpdateService.unsubscribe();
+//                }
+//            });
+//            mUpdateService.sendDefaultNotification();
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName componentName) {
+//
+//        }
+//    };
 
     @Override
     public void onStart(Context context) {
@@ -103,12 +103,6 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     public WalletFragmentInteractorImpl getInteractor() {
         return mWalletFragmentInteractor;
-    }
-
-    @Override
-    public void onClickReceive() {
-        ReceiveFragment receiveFragment = ReceiveFragment.newInstance();
-        getView().openFragment(receiveFragment);
     }
 
     @Override

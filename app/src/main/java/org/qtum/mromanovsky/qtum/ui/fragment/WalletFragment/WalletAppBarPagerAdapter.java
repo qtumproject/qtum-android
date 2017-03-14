@@ -1,13 +1,12 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
-import android.content.Context;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
-import android.view.animation.Interpolator;
-import android.widget.Scroller;
+
 
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarFragment.WalletAppBarFragment;
 
