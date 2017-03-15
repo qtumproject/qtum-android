@@ -2,6 +2,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.AddressesFragment;
 
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -45,9 +46,13 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
         }
     }
 
-    public static AddressesFragment newInstance(){
-        AddressesFragment addressesFragment = new AddressesFragment();
-        return  addressesFragment;
+    public static AddressesFragment newInstance() {
+        
+        Bundle args = new Bundle();
+        
+        AddressesFragment fragment = new AddressesFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -95,9 +100,9 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int s = KeyStorage.getInstance().getCurrentKeyPosition();
+                    int oldPosition = KeyStorage.getInstance().getCurrentKeyPosition();
                     KeyStorage.getInstance().setCurrentKeyPosition(getAdapterPosition());
-                    mAddressAdapter.notifyItemChanged(s);
+                    mAddressAdapter.notifyItemChanged(oldPosition);
                     mAddressAdapter.notifyItemChanged(getAdapterPosition());
                 }
             });

@@ -5,6 +5,7 @@ import android.os.Handler;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import org.qtum.mromanovsky.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
 
 
@@ -57,6 +58,12 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     @Override
     public void onResponseError() {
         getView().errorRecognition();
+    }
+
+    @Override
+    public void onCurrencyClick() {
+        CurrencyFragment currencyFragment = CurrencyFragment.newInstance(true);
+        getView().openFragment(currencyFragment);
     }
 
     @Override

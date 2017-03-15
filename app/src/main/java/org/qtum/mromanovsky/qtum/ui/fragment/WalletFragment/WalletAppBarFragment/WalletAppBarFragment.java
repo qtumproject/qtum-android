@@ -40,13 +40,16 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
             case R.id.ll_receive:
                 getPresenter().onReceiveClick();
                 break;
-
         }
     }
 
-    public static WalletAppBarFragment newInstance(){
-        WalletAppBarFragment walletAppBarFragment = new WalletAppBarFragment();
-        return walletAppBarFragment;
+    public static WalletAppBarFragment newInstance() {
+        
+        Bundle args = new Bundle();
+        
+        WalletAppBarFragment fragment = new WalletAppBarFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override

@@ -83,4 +83,7 @@
     <string name="token_name">Token Name</string>
     <string name="minter_address">Minter Address</string>
     <string name="fee">FEE</string>
+    <string name="currency">Currency</string>
+    <string name="search">Search</string>
+    <string name="chose_to_subscribe">Choose to subscribe</string>
 </resources>

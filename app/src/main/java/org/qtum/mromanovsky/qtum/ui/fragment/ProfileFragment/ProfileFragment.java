@@ -25,7 +25,7 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     @BindView(R.id.ll_create_token)
     LinearLayout mLinearLayoutCreateToken;
 
-    @OnClick({R.id.ll_change_pin, R.id.ll_wallet_back_up,R.id.ll_log_out, R.id.ll_create_token})
+    @OnClick({R.id.ll_change_pin, R.id.ll_wallet_back_up,R.id.ll_log_out, R.id.ll_create_token, R.id.ll_subscribe_tokens})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_change_pin:
@@ -39,6 +39,9 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
                 break;
             case R.id.ll_create_token:
                 getPresenter().onCreateTokenClick();
+                break;
+            case R.id.ll_subscribe_tokens:
+                getPresenter().onSubscribeTokensClick();
                 break;
         }
     }

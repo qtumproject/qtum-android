@@ -9,6 +9,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import org.qtum.mromanovsky.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SetTokenNameFragment.SetTokenNameFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment.StartPageFragment;
@@ -73,6 +74,12 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     public void onCreateTokenClick() {
         SetTokenNameFragment setTokenNameFragment = SetTokenNameFragment.newInstance();
         getView().openFragment(setTokenNameFragment);
+    }
+
+    @Override
+    public void onSubscribeTokensClick() {
+        CurrencyFragment currencyFragment = CurrencyFragment.newInstance(false);
+        getView().openFragment(currencyFragment);
     }
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {

@@ -7,4 +7,5 @@ interface ProfileFragmentPresenter {
     void walletBackUp();
     void onLogOutYesClick();
     void onCreateTokenClick();
+    void onSubscribeTokensClick();
 }

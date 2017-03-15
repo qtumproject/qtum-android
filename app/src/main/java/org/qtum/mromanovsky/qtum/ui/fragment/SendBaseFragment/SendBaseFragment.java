@@ -52,7 +52,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @OnClick({R.id.bt_qr_code,R.id.bt_send, R.id.ibt_back})
+    @OnClick({R.id.bt_qr_code,R.id.bt_send, R.id.ibt_back,R.id.ll_currency})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_qr_code:
@@ -67,6 +67,9 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
                 break;
             case R.id.ibt_back:
                 getActivity().onBackPressed();
+                break;
+            case R.id.ll_currency:
+                getPresenter().onCurrencyClick();
                 break;
         }
     }

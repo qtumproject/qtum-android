@@ -6,5 +6,6 @@ interface SendBaseFragmentPresenter {
     void isQrCodeRecognition(boolean isQrCodeRecognition);
     void onResponse(String publicAddress, double amount);
     void onResponseError();
+    void onCurrencyClick();
     void send(String[] sendInfo);
 }
