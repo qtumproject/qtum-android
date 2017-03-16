@@ -1,9 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
-import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 import org.qtum.mromanovsky.qtum.datastorage.NewsList;
 
 import java.util.List;
@@ -14,16 +12,16 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-class NewsFragmentInteractorImpl implements NewsFragmentInteractor{
+class NewsFragmentInteractorImpl implements NewsFragmentInteractor {
 
     private Subscription mSubscriptionNewsList = null;
 
-    NewsFragmentInteractorImpl(){
+    NewsFragmentInteractorImpl() {
 
     }
 
     @Override
-    public void getNewsList(final GetNewsListCallBack callBack){
+    public void getNewsList(final GetNewsListCallBack callBack) {
         mSubscriptionNewsList = QtumService.newInstance().getNews("en")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -51,12 +49,12 @@ class NewsFragmentInteractorImpl implements NewsFragmentInteractor{
         return NewsList.getInstance().getNewsList();
     }
 
-    void unSubscribe(){
+    void unSubscribe() {
         mSubscriptionNewsList.unsubscribe();
     }
 
 
-    interface GetNewsListCallBack{
+    interface GetNewsListCallBack {
         void onSuccess(List<News> newsList);
     }
 }

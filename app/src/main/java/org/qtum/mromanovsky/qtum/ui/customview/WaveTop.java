@@ -5,11 +5,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-
-import org.qtum.mromanovsky.qtum.R;
 
 public class WaveTop extends View {
     int counter = 1;
@@ -20,11 +17,11 @@ public class WaveTop extends View {
     Paint paintStroke = new Paint();
     int y;
     int x;
-    int canvasHeight=0;
-    int canvasWidth=0;
+    int canvasHeight = 0;
+    int canvasWidth = 0;
 
     public WaveTop(Context context, AttributeSet attrs) {
-        super(context,attrs);
+        super(context, attrs);
     }
 
     @Override

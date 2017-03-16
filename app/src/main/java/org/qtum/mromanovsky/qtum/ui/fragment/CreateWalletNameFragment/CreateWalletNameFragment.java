@@ -16,7 +16,6 @@ import butterknife.OnClick;
 
 public class CreateWalletNameFragment extends BaseFragment implements CreateWalletNameFragmentView {
 
-    public final int LAYOUT = R.layout.fragment_create_wallet_name;
     public static final String IS_CREATE_NEW = "is_create_new";
     public static boolean mIsCreateNew;
 
@@ -35,10 +34,10 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_confirm:
-                getPresenter().confirm(mTextInputEditTextWalletName.getText().toString());
+                getPresenter().onConfirmClick(mTextInputEditTextWalletName.getText().toString());
                 break;
             case R.id.bt_cancel:
-                getPresenter().cancel();
+                getPresenter().onCancelClick();
                 break;
         }
     }
@@ -69,7 +68,7 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_create_wallet_name;
     }
 
     @Override
@@ -87,7 +86,7 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
     }
 
     @Override
-    public void incorrectName(String errorText) {
+    public void setErrorText(String errorText) {
         mTextInputEditTextWalletName.setText("");
         mTextInputLayoutWalletName.setErrorEnabled(true);
         mTextInputLayoutWalletName.setError(errorText);

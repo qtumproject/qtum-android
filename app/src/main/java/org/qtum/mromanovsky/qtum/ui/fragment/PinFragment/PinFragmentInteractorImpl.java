@@ -30,8 +30,6 @@ class PinFragmentInteractorImpl implements PinFragmentInteractor {
         QtumSharedPreference.getInstance().saveWalletPassword(mContext, password);
     }
 
-
-
     @Override
     public void loadWalletFromFile(final LoadWalletFromFileCallBack callBack) {
         KeyStorage.getInstance()

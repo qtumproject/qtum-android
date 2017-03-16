@@ -1,6 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -24,6 +25,8 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.FixedSpeedScroller;
+import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.WalletAppBarPagerAdapter;
 
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
@@ -95,8 +98,12 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
     public static WalletFragment newInstance() {
-        WalletFragment walletFragment = new WalletFragment();
-        return walletFragment;
+
+        Bundle args = new Bundle();
+
+        WalletFragment fragment = new WalletFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -165,7 +172,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             FixedSpeedScroller scroller = new FixedSpeedScroller(getContext(), interpolator,true);
             scroller.setDuration(300);
             mScroller.set(mViewPager, scroller);
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) { }
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
         final Animation animationWallet =  AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_hide);
         animationWallet.setAnimationListener(new Animation.AnimationListener() {

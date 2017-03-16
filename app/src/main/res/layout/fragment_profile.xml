@@ -11,8 +11,8 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -56,10 +56,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:textSize="18sp"
-                android:textColor="@color/black"
                 android:layout_weight="1"
-                android:text="@string/language"/>
+                android:text="@string/language"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
 
             <ImageView
                 android:layout_width="16dp"
@@ -88,10 +88,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:textColor="@color/black"
-                android:textSize="18sp"
                 android:layout_weight="1"
-                android:text="@string/change_pin"/>
+                android:text="@string/change_pin"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
 
             <ImageView
                 android:layout_width="16dp"
@@ -125,10 +125,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:textSize="18sp"
-                android:textColor="@color/black"
                 android:layout_weight="1"
-                android:text="@string/wallet_back_up"/>
+                android:text="@string/wallet_back_up"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
 
             <ImageView
                 android:layout_width="16dp"
@@ -161,10 +161,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:textColor="@color/black"
-                android:textSize="18sp"
                 android:layout_weight="1"
-                android:text="@string/log_out"/>
+                android:text="@string/log_out"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
 
             <ImageView
                 android:layout_width="16dp"
@@ -193,10 +193,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:textSize="18sp"
-                android:textColor="@color/black"
                 android:layout_weight="1"
-                android:text="@string/create_token"/>
+                android:text="@string/create_token"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
 
             <ImageView
                 android:layout_width="16dp"
@@ -229,10 +229,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:textColor="@color/black"
-                android:textSize="18sp"
                 android:layout_weight="1"
-                android:text="@string/subscribe_tokens"/>
+                android:text="@string/subscribe_tokens"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
 
             <ImageView
                 android:layout_width="16dp"
@@ -260,10 +260,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:textSize="18sp"
-                android:textColor="@color/black"
                 android:layout_weight="1"
-                android:text="@string/about"/>
+                android:text="@string/about"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
 
             <ImageView
                 android:layout_width="16dp"

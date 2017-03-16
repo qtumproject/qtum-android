@@ -1,6 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenParametersFragment;
 
 
+import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
@@ -41,12 +42,15 @@ public class SetTokenParametersFragment extends BaseFragment implements SetToken
         }
     }
 
-    private final int LAYOUT = R.layout.fragment_set_token_parameters;
     private SetTokenParametersFragmentPresenterImpl mSetTokenParametersFragmentPresenter;
 
-    public static SetTokenParametersFragment newInstance(){
-        SetTokenParametersFragment setTokenParametersFragment = new SetTokenParametersFragment();
-        return setTokenParametersFragment;
+    public static SetTokenParametersFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        SetTokenParametersFragment fragment = new SetTokenParametersFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -61,7 +65,7 @@ public class SetTokenParametersFragment extends BaseFragment implements SetToken
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_set_token_parameters;
     }
 
     @Override
@@ -74,5 +78,11 @@ public class SetTokenParametersFragment extends BaseFragment implements SetToken
     public void clearError() {
         mTextInputLayoutDecimalUnits.setError("");
         mTextInputLayoutInitialSupply.setError("");
+    }
+
+    @Override
+    public void setData(String initialSupply, String decimalUnits) {
+        mTextInputEditTextInitialSupply.setText(initialSupply);
+        mTextInputEditTextDecimalUnits.setText(decimalUnits);
     }
 }

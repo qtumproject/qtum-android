@@ -59,9 +59,9 @@
             android:id="@+id/tv_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/grey70"
             android:layout_weight="1"
-            android:text="1mase88dascasd12312nfsa33"/>
+            android:text="1mase88dascasd12312nfsa33"
+            android:textColor="@color/grey70"/>
 
     </LinearLayout>
 

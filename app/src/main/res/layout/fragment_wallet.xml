@@ -11,10 +11,10 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
-        app:elevation="0dp"
         android:background="@drawable/background_main"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
@@ -25,42 +25,42 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <org.qtum.mromanovsky.qtum.ui.customview.WaveTop
+                android:id="@+id/iv_top_wave"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:id="@+id/iv_top_wave"
-                android:clickable="false"
-                android:layout_gravity="bottom"/>
+                android:layout_gravity="bottom"
+                android:clickable="false"/>
 
             <org.qtum.mromanovsky.qtum.ui.customview.WaveBottom
+                android:id="@+id/iv_bottom_wave"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
-                android:clickable="false"
-                android:id="@+id/iv_bottom_wave"
-                android:layout_gravity="bottom"/>
+                android:layout_gravity="bottom"
+                android:clickable="false"/>
 
             <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/view_pager"/>
+                android:layout_height="match_parent"/>
 
             <ImageButton
+                android:id="@+id/ibtn_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ibtn_left"
                 android:layout_gravity="center|left"
+                android:layout_marginLeft="8dp"
                 android:background="@drawable/background_pressed_alpha_white"
                 android:padding="8dp"
-                android:layout_marginLeft="8dp"
                 app:srcCompat="@drawable/ic_arrow_left"/>
 
             <ImageButton
+                android:id="@+id/ibtn_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ibtn_right"
                 android:layout_gravity="center|right"
+                android:layout_marginRight="8dp"
                 android:background="@drawable/background_pressed_alpha_white"
                 android:padding="8dp"
-                android:layout_marginRight="8dp"
                 app:srcCompat="@drawable/ic_arrow_right"/>
 
             <android.support.v7.widget.Toolbar
@@ -82,14 +82,14 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tv_wallet_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:id="@+id/tv_wallet_name"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
                             android:text="@string/my_wallet"
                             android:textColor="@android:color/white"
-                            android:textSize="@dimen/toolbar_text_size"
-                            android:layout_weight="1"
-                            android:layout_gravity="center"/>
+                            android:textSize="@dimen/toolbar_text_size"/>
 
                         <ImageButton
                             android:id="@+id/bt_qr_code"
@@ -107,20 +107,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/tv_total_balance"
-                            android:textColor="@android:color/white"
-                            android:layout_weight="1"
-                            android:text="@string/total_balance"/>
 
                         <TextView
+                            android:id="@+id/tv_total_balance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/total_balance"
+                            android:textColor="@android:color/white"/>
+
+                        <TextView
+                            android:id="@+id/tv_total_balance_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"
                             android:layout_marginRight="12dp"
-                            android:id="@+id/tv_total_balance_number"/>
+                            android:textColor="@android:color/white"/>
                     </LinearLayout>
 
                 </LinearLayout>

@@ -1,7 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenParametersFragment;
 
 
-public interface SetTokenParametersFragmentPresenter {
+interface SetTokenParametersFragmentPresenter {
     void onFinishClick(String initialSupply,String decimalUnits);
     void onBackClick();
 }

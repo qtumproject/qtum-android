@@ -4,7 +4,6 @@ package org.qtum.mromanovsky.qtum.datastorage;
 import android.content.Context;
 import android.util.Log;
 
-import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.wallet.DeterministicSeed;
 import org.bitcoinj.wallet.KeyChain;
@@ -32,58 +31,58 @@ public class KeyStorage {
     private int sCurrentKeyPosition = 0;
     private File mFile;
 
-    public static KeyStorage getInstance(){
-        if(sKeyStorage == null){
+    public static KeyStorage getInstance() {
+        if (sKeyStorage == null) {
             sKeyStorage = new KeyStorage();
         }
         return sKeyStorage;
     }
 
-    private KeyStorage(){
+    private KeyStorage() {
 
     }
 
-    public void clearKeyStorage(){
+    public void clearKeyStorage() {
         sKeyStorage = null;
     }
 
-    public Observable<Wallet> loadWalletFromFile(Context context){
+    public Observable<Wallet> loadWalletFromFile(Context context) {
         mFile = new File(context.getFilesDir().getPath() + "/key_storage");
         return Observable.create(new Observable.OnSubscribe<Wallet>() {
-               @Override
-               public void call(Subscriber<? super Wallet> subscriber) {
-                   try {
-                       sWallet = Wallet.loadFromFile(mFile, new WalletExtension() {
-                           @Override
-                           public String getWalletExtensionID() {
-                               return null;
-                           }
+            @Override
+            public void call(Subscriber<? super Wallet> subscriber) {
+                try {
+                    sWallet = Wallet.loadFromFile(mFile, new WalletExtension() {
+                        @Override
+                        public String getWalletExtensionID() {
+                            return null;
+                        }
 
-                           @Override
-                           public boolean isWalletExtensionMandatory() {
-                               return false;
-                           }
+                        @Override
+                        public boolean isWalletExtensionMandatory() {
+                            return false;
+                        }
 
-                           @Override
-                           public byte[] serializeWalletExtension() {
-                               return new byte[0];
-                           }
+                        @Override
+                        public byte[] serializeWalletExtension() {
+                            return new byte[0];
+                        }
 
-                           @Override
-                           public void deserializeWalletExtension(Wallet containingWallet, byte[] data) throws Exception {
+                        @Override
+                        public void deserializeWalletExtension(Wallet containingWallet, byte[] data) throws Exception {
 
-                           }
-                       });
-                   } catch (UnreadableWalletException e) {
-                       e.printStackTrace();
-                   }
-                   getKeyList();
-                   subscriber.onNext(sWallet);
-               }
-           });
+                        }
+                    });
+                } catch (UnreadableWalletException e) {
+                    e.printStackTrace();
+                }
+                getKeyList();
+                subscriber.onNext(sWallet);
+            }
+        });
     }
 
-    public Observable<Wallet> createWallet(final Context context){
+    public Observable<Wallet> createWallet(final Context context) {
         mFile = new File(context.getFilesDir().getPath() + "/key_storage");
         return Observable.create(new Observable.OnSubscribe<Wallet>() {
             @Override
@@ -91,7 +90,7 @@ public class KeyStorage {
 
                 String seedString = "";
                 List<String> seedList = new ArrayList<>();
-                for(int i=0;i<11;i++) {
+                for (int i = 0; i < 11; i++) {
                     seedString += DictionaryWords.getRandomWord() + " ";
                     seedList.add(DictionaryWords.getRandomWord());
                 }
@@ -106,7 +105,7 @@ public class KeyStorage {
                     e.printStackTrace();
                 }
                 if (seed != null) {
-                    sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(),seed);
+                    sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
 
                 }
                 try {
@@ -116,12 +115,12 @@ public class KeyStorage {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                QtumSharedPreference.getInstance().saveSeed(context,seedString);
+                QtumSharedPreference.getInstance().saveSeed(context, seedString);
             }
         });
     }
 
-    public Observable<Wallet> importWallet(final String seedString, final Context context){
+    public Observable<Wallet> importWallet(final String seedString, final Context context) {
         mFile = new File(context.getFilesDir().getPath() + "/key_storage");
         return Observable.create(new Observable.OnSubscribe<Wallet>() {
             @Override
@@ -132,13 +131,13 @@ public class KeyStorage {
                 DeterministicSeed seed = null;
                 try {
                     seed = new DeterministicSeed(seedString, null, passphrase, creationtime);
-                    Log.d("test",Hex.toHexString(seed.getSeedBytes()));
+                    Log.d("test", Hex.toHexString(seed.getSeedBytes()));
 
                 } catch (UnreadableWalletException e) {
                     e.printStackTrace();
                 }
                 if (seed != null) {
-                    sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(),seed);
+                    sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
                 }
                 try {
                     sWallet.saveToFile(mFile);
@@ -147,34 +146,32 @@ public class KeyStorage {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                QtumSharedPreference.getInstance().saveSeed(context,seedString);
+                QtumSharedPreference.getInstance().saveSeed(context, seedString);
             }
         });
     }
 
-    public List<DeterministicKey> getKeyList(){
-        if(sDeterministicKeyList == null){
-            sDeterministicKeyList = sWallet.freshKeys(KeyChain.KeyPurpose.AUTHENTICATION,100);
+    public List<DeterministicKey> getKeyList() {
+        if (sDeterministicKeyList == null) {
+            sDeterministicKeyList = sWallet.freshKeys(KeyChain.KeyPurpose.AUTHENTICATION, 100);
 
         }
         return sDeterministicKeyList;
     }
 
-    public String getCurrentAddress(){
+    public String getCurrentAddress() {
         return getKeyList().get(sCurrentKeyPosition).toAddress(CurrentNetParams.getNetParams()).toString();
     }
 
-    public List<String> getAddresses(){
+    public List<String> getAddresses() {
         List<String> list = new ArrayList<>();
-        for(DeterministicKey deterministicKey : getKeyList()){
+        for (DeterministicKey deterministicKey : getKeyList()) {
             list.add(deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString());
-            //TODO: delete
-            //Log.d("", deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString());
         }
         return list;
     }
 
-    public DeterministicKey getCurrentKey(){
+    public DeterministicKey getCurrentKey() {
         return getKeyList().get(sCurrentKeyPosition);
     }
 

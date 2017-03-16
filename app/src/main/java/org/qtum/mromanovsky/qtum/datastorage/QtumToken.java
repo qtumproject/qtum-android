@@ -12,14 +12,14 @@ public class QtumToken {
     private long mInitialSupply;
     private long mDecimalUnits;
 
-    public static QtumToken getQtumToken() {
-        if(sQtumToken==null){
+    public static QtumToken getInstance() {
+        if (sQtumToken == null) {
             sQtumToken = new QtumToken();
         }
         return sQtumToken;
     }
 
-    private QtumToken(){
+    private QtumToken() {
 
     }
 
@@ -85,5 +85,9 @@ public class QtumToken {
 
     public void setDecimalUnits(long decimalUnits) {
         mDecimalUnits = decimalUnits;
+    }
+
+    public void clearQtumToken(){
+        sQtumToken = null;
     }
 }

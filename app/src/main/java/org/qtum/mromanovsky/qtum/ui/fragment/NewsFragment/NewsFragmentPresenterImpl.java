@@ -49,7 +49,7 @@ class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl implements New
         loadAndUpdateNews();
     }
 
-    private void loadAndUpdateNews(){
+    private void loadAndUpdateNews() {
         getView().startRefreshAnimation();
         getInteractor().getNewsList(new NewsFragmentInteractorImpl.GetNewsListCallBack() {
             @Override
@@ -59,7 +59,7 @@ class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl implements New
         });
     }
 
-    private void updateNews(){
+    private void updateNews() {
         getView().updateNews(getInteractor().getNewsList());
     }
 

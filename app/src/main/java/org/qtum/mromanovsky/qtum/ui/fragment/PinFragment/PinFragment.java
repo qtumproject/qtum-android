@@ -4,13 +4,9 @@ package org.qtum.mromanovsky.qtum.ui.fragment.PinFragment;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -25,28 +21,14 @@ import butterknife.OnClick;
 
 public class PinFragment extends BaseFragment implements PinFragmentView {
 
-    public final int LAYOUT = R.layout.fragment_pin;
+    private PinFragmentPresenterImpl mPinFragmentPresenter;
 
-    PinFragmentPresenterImpl mPinFragmentPresenter;
+    final static String ACTION = "action";
 
     public final static String CREATING = "creating";
     public final static String AUTHENTICATION = "authentication";
     public final static String CHANGING = "changing";
     public final static String IMPORTING = "importing";
-
-    public final static String ENTER_PIN = "enter pin";
-    public final static String ENTER_NEW_PIN = "enter new pin";
-    public final static String REPEAT_PIN = "repeat pin";
-    public final static String ENTER_OLD_PIN = "enter old pin";
-
-    public final static String[] CREATING_STATE = new String[]{ENTER_NEW_PIN,REPEAT_PIN};
-    public final static String[] AUTHENTICATION_STATE = new String[]{ENTER_PIN};
-    public final static String[] CHANGING_STATE = new String[]{ENTER_OLD_PIN,ENTER_NEW_PIN,REPEAT_PIN};
-    public static int currentState = 0;
-
-    final static String ACTION = "action";
-    public static String sAction;
-
 
     @BindView(R.id.bt_cancel)
     Button mButtonCancel;
@@ -88,7 +70,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_pin;
     }
 
 
@@ -99,25 +81,19 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     }
 
     @Override
-    public void updateState() {
+    public void updateState(String state) {
         mTextInputEditTextWalletPin.setText("");
-        switch (sAction) {
-            case IMPORTING:
-            case CREATING:
-                mTextInputLayoutWalletPin.setHint(CREATING_STATE[currentState]);
-                break;
-            case AUTHENTICATION:
-                mTextInputLayoutWalletPin.setHint(AUTHENTICATION_STATE[currentState]);
-                break;
-            case CHANGING:
-                mTextInputLayoutWalletPin.setHint(CHANGING_STATE[currentState]);
-                break;
-        }
+        mTextInputLayoutWalletPin.setHint(state);
     }
 
     @Override
     public void clearError() {
         mTextInputLayoutWalletPin.setError("");
+    }
+
+    @Override
+    public void setToolBarTitle(int titleID) {
+        mTextViewToolBarTitle.setText(titleID);
     }
 
     @Override
@@ -128,47 +104,27 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
 
     @Override
     public void initializeViews() {
-        sAction = getArguments().getString(ACTION);
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (null != mToolbar) {
-            activity.setSupportActionBar(mToolbar);
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setDisplayShowTitleEnabled(false);
-            }
-            switch (sAction) {
-                case IMPORTING:
-                case CREATING:
-                    mTextViewToolBarTitle.setText(R.string.create_pin);
-                    break;
-                case AUTHENTICATION:
-                    mTextViewToolBarTitle.setText(R.string.enter_pin);
-                    break;
-                case CHANGING:
-                    //actionBar.setDisplayHomeAsUpEnabled(true);
-                    mTextViewToolBarTitle.setText(R.string.change_pin);
-                    break;
+        getPresenter().setAction(getArguments().getString(ACTION));
+
+        mTextInputEditTextWalletPin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
-            mTextInputEditTextWalletPin.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString().length() == 4) {
+                    getPresenter().confirm(editable.toString());
                 }
+            }
+        });
 
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    if(editable.toString().length()==4){
-                        getPresenter().confirm(editable.toString());
-                    }
-                }
-            });
-
-        }
     }
 }

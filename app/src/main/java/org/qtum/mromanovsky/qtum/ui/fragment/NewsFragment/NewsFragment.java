@@ -1,5 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment;
 
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,8 +25,6 @@ import butterknife.ButterKnife;
 
 public class NewsFragment extends BaseFragment implements NewsFragmentView {
 
-    public final int LAYOUT = R.layout.fragment_news;
-
     NewsFragmentPresenterImpl mNewsFragmentPresenter;
     NewsAdapter mNewsAdapter;
 
@@ -35,8 +34,12 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static NewsFragment newInstance() {
-        NewsFragment newsFragment = new NewsFragment();
-        return newsFragment;
+
+        Bundle args = new Bundle();
+
+        NewsFragment fragment = new NewsFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_news;
     }
 
     @Override
@@ -61,15 +64,15 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager manager = ((LinearLayoutManager)recyclerView.getLayoutManager());
-                if(!mSwipeRefreshLayout.isRefreshing())
+                LinearLayoutManager manager = ((LinearLayoutManager) recyclerView.getLayoutManager());
+                if (!mSwipeRefreshLayout.isRefreshing())
                     if (manager.findFirstCompletelyVisibleItemPosition() == 0)
                         mSwipeRefreshLayout.setEnabled(true);
                     else
                         mSwipeRefreshLayout.setEnabled(false);
             }
         });
-        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(),R.color.colorAccent));
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -86,7 +89,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
     }
 
     @Override
-    public void setAdapterNull(){
+    public void setAdapterNull() {
         mNewsAdapter = null;
     }
 
@@ -95,7 +98,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
         mSwipeRefreshLayout.setRefreshing(true);
     }
 
-    public class NewsHolder extends RecyclerView.ViewHolder{
+    public class NewsHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_image)
         ImageView mImageViewImage;
@@ -106,13 +109,13 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
 
         NewsHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
 
-        void bindNews(News news){
+        void bindNews(News news) {
             mTextViewTitle.setText(news.getTitle());
             mTextViewDate.setText(news.getDate());
-            if(news.getImage()!=null) {
+            if (news.getImage() != null) {
                 Picasso
                         .with(getActivity())
                         .load(news.getImage())
@@ -122,7 +125,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
         }
     }
 
-    public class NewsHeaderHolder extends RecyclerView.ViewHolder{
+    public class NewsHeaderHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_news_header)
         ImageView mImageViewImage;
@@ -135,14 +138,14 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
 
         NewsHeaderHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
 
-        void bindNewsHeader(News news){
+        void bindNewsHeader(News news) {
             mTextViewTitle.setText(news.getTitle());
             mTextViewDate.setText(news.getDate());
             mTextViewShortText.setText(news.getShort());
-            if(news.getImage()!=null) {
+            if (news.getImage() != null) {
                 Picasso
                         .with(getActivity())
                         .load(news.getImage())
@@ -152,12 +155,12 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
         }
     }
 
-    public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private List<News> mNewsList;
         News mNews;
 
-        NewsAdapter(List<News> newsList){
+        NewsAdapter(List<News> newsList) {
             mNewsList = newsList;
         }
 
@@ -166,7 +169,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
 
         @Override
         public int getItemViewType(int position) {
-            if(position == 0){
+            if (position == 0) {
                 return TYPE_HEADER;
             }
             return TYPE_ITEM;
@@ -174,11 +177,11 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if(viewType == TYPE_ITEM) {
+            if (viewType == TYPE_ITEM) {
                 LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
                 View view = layoutInflater.inflate(R.layout.item_news, parent, false);
                 return new NewsHolder(view);
-            } else if(viewType == TYPE_HEADER){
+            } else if (viewType == TYPE_HEADER) {
                 LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
                 View view = layoutInflater.inflate(R.layout.item_header_news, parent, false);
                 return new NewsHeaderHolder(view);
@@ -189,9 +192,9 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             mNews = mNewsList.get(position);
-            if(holder instanceof NewsHolder) {
+            if (holder instanceof NewsHolder) {
                 ((NewsHolder) holder).bindNews(mNews);
-            } else if(holder instanceof NewsHeaderHolder){
+            } else if (holder instanceof NewsHeaderHolder) {
                 ((NewsHeaderHolder) holder).bindNewsHeader(mNews);
             }
         }

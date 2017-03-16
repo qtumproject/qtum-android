@@ -3,7 +3,7 @@
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
-                                                 xmlns:custom="http://schemas.android.com/apk/res-auto"
+                                                 android:clickable="true"
                                                  android:background="@drawable/background_main"
                                                  android:fitsSystemWindows="true">
 
@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/alpha"
-        app:elevation="0dp"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -75,17 +75,17 @@
     </RelativeLayout>
 
     <org.qtum.mromanovsky.qtum.ui.customview.WaveTop
+        android:id="@+id/iv_top_wave"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:id="@+id/iv_top_wave"
-        android:clickable="false"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:clickable="false"/>
 
     <org.qtum.mromanovsky.qtum.ui.customview.WaveBottom
+        android:id="@+id/iv_bottom_wave"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:clickable="false"
-        android:id="@+id/iv_bottom_wave"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:clickable="false"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,5 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.ImportWalletFragment;
 
+import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -25,11 +26,11 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
     @BindView(R.id.et_your_brain_code)
     EditText mEditTextYourBrainCode;
 
-    @OnClick({R.id.bt_cancel,R.id.bt_import})
+    @OnClick({R.id.bt_cancel, R.id.bt_import})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_cancel:
-                getPresenter().cancel();
+                getPresenter().onCancelClick();
                 break;
             case R.id.bt_import:
                 getPresenter().onImportClick(mEditTextYourBrainCode.getText().toString());
@@ -38,8 +39,12 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
     }
 
     public static ImportWalletFragment newInstance() {
-        ImportWalletFragment importWalletFragment = new ImportWalletFragment();
-        return importWalletFragment;
+
+        Bundle args = new Bundle();
+
+        ImportWalletFragment fragment = new ImportWalletFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -57,10 +62,6 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
         return LAYOUT;
     }
 
-    @Override
-    public void initializeViews() {
-
-    }
 
     @Override
     public void setSoftMode() {

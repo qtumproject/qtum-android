@@ -1,5 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -12,8 +13,6 @@ import butterknife.OnClick;
 
 public class ProfileFragment extends BaseFragment implements ProfileFragmentView, LogOutDialogFragment.OnYesClickListener {
 
-    public final int LAYOUT = R.layout.fragment_profile;
-
     ProfileFragmentPresenterImpl mProfileFragmentPresenter;
 
     @BindView(R.id.ll_change_pin)
@@ -25,17 +24,17 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     @BindView(R.id.ll_create_token)
     LinearLayout mLinearLayoutCreateToken;
 
-    @OnClick({R.id.ll_change_pin, R.id.ll_wallet_back_up,R.id.ll_log_out, R.id.ll_create_token, R.id.ll_subscribe_tokens})
+    @OnClick({R.id.ll_change_pin, R.id.ll_wallet_back_up, R.id.ll_log_out, R.id.ll_create_token, R.id.ll_subscribe_tokens})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_change_pin:
-                getPresenter().changePin();
+                getPresenter().onChangePinClick();
                 break;
             case R.id.ll_wallet_back_up:
-                getPresenter().walletBackUp();
+                getPresenter().onWalletBackUpClick();
                 break;
             case R.id.ll_log_out:
-                getPresenter().logOut();
+                getPresenter().onLogOutClick();
                 break;
             case R.id.ll_create_token:
                 getPresenter().onCreateTokenClick();
@@ -47,8 +46,12 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     }
 
     public static ProfileFragment newInstance() {
-        ProfileFragment profileFragment = new ProfileFragment();
-        return profileFragment;
+
+        Bundle args = new Bundle();
+
+        ProfileFragment fragment = new ProfileFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -63,7 +66,7 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_profile;
     }
 
     @Override
@@ -74,8 +77,8 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     @Override
     public void startDialogFragmentForResult() {
         LogOutDialogFragment logOutDialogFragment = new LogOutDialogFragment();
-        logOutDialogFragment.setTargetFragment(this,200);
-        logOutDialogFragment.show(getFragmentManager(),LogOutDialogFragment.class.getCanonicalName());
+        logOutDialogFragment.setTargetFragment(this, 200);
+        logOutDialogFragment.show(getFragmentManager(), LogOutDialogFragment.class.getCanonicalName());
     }
 
     @Override

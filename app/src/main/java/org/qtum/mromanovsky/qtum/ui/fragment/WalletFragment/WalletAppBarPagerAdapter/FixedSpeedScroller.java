@@ -1,4 +1,4 @@
-package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
+package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter;
 
 import android.content.Context;
 import android.view.animation.Interpolator;
@@ -21,16 +21,13 @@ public class FixedSpeedScroller extends Scroller {
         super(context, interpolator, flywheel);
     }
 
-
     @Override
     public void startScroll(int startX, int startY, int dx, int dy, int duration) {
-        // Ignore received duration, use fixed one instead
         super.startScroll(startX, startY, dx, dy, mDuration);
     }
 
     @Override
     public void startScroll(int startX, int startY, int dx, int dy) {
-        // Ignore received duration, use fixed one instead
         super.startScroll(startX, startY, dx, dy, mDuration);
     }
 

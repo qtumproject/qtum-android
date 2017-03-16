@@ -11,18 +11,18 @@ public class NewsList {
 
     private List<News> mNewsList;
 
-    public static NewsList getInstance(){
-        if(sNewsList == null){
+    public static NewsList getInstance() {
+        if (sNewsList == null) {
             sNewsList = new NewsList();
         }
         return sNewsList;
     }
 
-    public void clearNewsList(){
+    public void clearNewsList() {
         sNewsList = null;
     }
 
-    private NewsList(){
+    private NewsList() {
         mNewsList = new ArrayList<>();
     }
 

@@ -15,6 +15,7 @@
     
     <style name="InputText" parent="Widget.Design.TextInputLayout">
         <item name="colorControlNormal">@color/grey_input_text</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
 </resources>

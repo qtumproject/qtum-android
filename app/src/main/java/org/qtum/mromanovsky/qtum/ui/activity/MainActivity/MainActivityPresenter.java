@@ -1,8 +1,11 @@
 package org.qtum.mromanovsky.qtum.ui.activity.MainActivity;
 
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.view.MenuItem;
 
 interface MainActivityPresenter {
-    void openFragment(Fragment fragment);
+    boolean onNavigationItemSelected(@NonNull MenuItem item);
+    void setRootFragment(Fragment fragment);
 }

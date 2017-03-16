@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/alpha"
-        app:elevation="0dp"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -40,11 +40,11 @@
 
 
         <EditText
+            android:id="@+id/et_your_brain_code"
             android:layout_width="match_parent"
             android:layout_height="128dp"
             android:background="@drawable/background_et_import_wallet"
             android:gravity="top"
-            android:id="@+id/et_your_brain_code"
             android:hint="@string/your_brain_code"
             android:padding="6dp"
             android:textColor="@color/white_alpha80"
@@ -80,17 +80,17 @@
     </RelativeLayout>
 
     <org.qtum.mromanovsky.qtum.ui.customview.WaveTop
+        android:id="@+id/iv_top_wave"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:id="@+id/iv_top_wave"
-        android:clickable="false"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:clickable="false"/>
 
     <org.qtum.mromanovsky.qtum.ui.customview.WaveBottom
+        android:id="@+id/iv_bottom_wave"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:clickable="false"
-        android:id="@+id/iv_bottom_wave"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:clickable="false"/>
 
 </android.support.design.widget.CoordinatorLayout>

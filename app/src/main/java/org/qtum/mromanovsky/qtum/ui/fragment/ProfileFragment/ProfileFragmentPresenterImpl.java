@@ -17,13 +17,13 @@ import org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment.StartPageFragment
 
 class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ProfileFragmentPresenter {
 
-    Intent mIntent;
-    UpdateService mUpdateService;
+    private Intent mIntent;
+    private UpdateService mUpdateService;
 
     private ProfileFragmentView mProfileFragmentView;
     private ProfileFragmentInteractorImpl mProfileFragmentInteractor;
 
-    public ProfileFragmentPresenterImpl(ProfileFragmentView profileFragmentView) {
+    ProfileFragmentPresenterImpl(ProfileFragmentView profileFragmentView) {
         mProfileFragmentView = profileFragmentView;
         mProfileFragmentInteractor = new ProfileFragmentInteractorImpl(getView().getContext());
     }
@@ -38,20 +38,20 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     }
 
     @Override
-    public void changePin() {
+    public void onChangePinClick() {
         PinFragment pinFragment = PinFragment.newInstance(PinFragment.CHANGING);
         getView().openFragment(pinFragment);
     }
 
     @Override
-    public void logOut() {
+    public void onLogOutClick() {
         getView().startDialogFragmentForResult();
     }
 
 
 
     @Override
-    public void walletBackUp() {
+    public void onWalletBackUpClick() {
         BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(false);
         getView().openFragment(backUpWalletFragment);
     }

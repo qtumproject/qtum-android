@@ -3,11 +3,11 @@ package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenConfirmFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 
-public class SetTokenConfirmFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SetTokenConfirmFragmentPresenter {
+class SetTokenConfirmFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SetTokenConfirmFragmentPresenter {
 
-    SetTokenConfirmFragmentView mSetTokenConfirmFragmentView;
+    private SetTokenConfirmFragmentView mSetTokenConfirmFragmentView;
 
-    public SetTokenConfirmFragmentPresenterImpl(SetTokenConfirmFragmentView setTokenConfirmFragmentView){
+    SetTokenConfirmFragmentPresenterImpl(SetTokenConfirmFragmentView setTokenConfirmFragmentView){
         mSetTokenConfirmFragmentView = setTokenConfirmFragmentView;
     }
 

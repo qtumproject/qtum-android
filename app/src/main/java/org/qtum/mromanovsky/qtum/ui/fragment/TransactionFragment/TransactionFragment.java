@@ -41,7 +41,6 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
         }
     }
 
-    public final int LAYOUT = R.layout.fragment_transaction;
     final static String POSITION = "position";
 
     TransactionFragmentPresenterImpl mTransactionFragmentPresenter;
@@ -66,7 +65,7 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_transaction;
     }
 
     @Override

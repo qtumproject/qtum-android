@@ -1,4 +1,4 @@
-package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
+package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter;
 
 
 import android.support.v4.app.Fragment;
@@ -7,13 +7,12 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarFragment.WalletAppBarFragment;
 
 
 public class WalletAppBarPagerAdapter extends FragmentStatePagerAdapter {
 
-    SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+    private SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
     public WalletAppBarPagerAdapter(FragmentManager fm) {
         super(fm);

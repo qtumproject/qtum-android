@@ -13,7 +13,7 @@ class AddressesFragmentPresenterImpl extends BaseFragmentPresenterImpl implement
 
     AddressesFragmentPresenterImpl(AddressesFragmentView addressesFragmentView){
         mAddressesFragmentView = addressesFragmentView;
-        mAddressesFragmentInteractor = new AddressesFragmentInteractorImpl(getView().getContext());
+        mAddressesFragmentInteractor = new AddressesFragmentInteractorImpl();
     }
 
     @Override

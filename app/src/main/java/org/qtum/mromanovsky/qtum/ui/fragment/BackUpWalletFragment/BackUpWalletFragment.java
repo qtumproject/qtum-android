@@ -2,9 +2,6 @@ package org.qtum.mromanovsky.qtum.ui.fragment.BackUpWalletFragment;
 
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,8 +14,7 @@ import butterknife.OnClick;
 
 public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFragmentView {
 
-    public final int LAYOUT = R.layout.fragment_back_up_wallet;
-    BackUpWalletFragmentPresenterImpl mBackUpWalletFragmentPresenter;
+    private BackUpWalletFragmentPresenterImpl mBackUpWalletFragmentPresenter;
 
     public static final String IS_WALLET_CREATING = "is_wallet_creating";
 
@@ -76,7 +72,7 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_back_up_wallet;
     }
 
     @Override

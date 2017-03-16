@@ -3,7 +3,6 @@ package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment;
 import android.os.Handler;
 
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
@@ -14,7 +13,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     private SendBaseFragmentView mSendBaseFragmentView;
     private SendBaseFragmentInteractorImpl mSendBaseFragmentInteractor;
 
-    SendBaseFragmentPresenterImpl(SendBaseFragmentView sendBaseFragmentView){
+    SendBaseFragmentPresenterImpl(SendBaseFragmentView sendBaseFragmentView) {
         mSendBaseFragmentView = sendBaseFragmentView;
         mSendBaseFragmentInteractor = new SendBaseFragmentInteractorImpl(getView().getContext());
     }
@@ -44,7 +43,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     @Override
     public void isQrCodeRecognition(boolean isQrCodeRecognition) {
 
-        if(isQrCodeRecognition){
+        if (isQrCodeRecognition) {
             QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
             getView().openFragmentForResult(qrCodeRecognitionFragment);
 
@@ -53,8 +52,9 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
     @Override
     public void onResponse(String publicAddress, double amount) {
-        getView().updateData(publicAddress,amount);
+        getView().updateData(publicAddress, amount);
     }
+
     @Override
     public void onResponseError() {
         getView().errorRecognition();
@@ -104,7 +104,6 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
             }
         });
     }
-
 
 
 }

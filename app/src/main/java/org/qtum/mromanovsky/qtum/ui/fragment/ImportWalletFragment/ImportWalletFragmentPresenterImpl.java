@@ -26,7 +26,7 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     }
 
     @Override
-    public void cancel() {
+    public void onCancelClick() {
         getView().getFragmentActivity().onBackPressed();
     }
 
@@ -48,7 +48,7 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     @Override
     public void onResume(Context context) {
         super.onResume(context);
-        if(ImportWalletFragmentInteractorImpl.isDataLoaded){
+        if (ImportWalletFragmentInteractorImpl.isDataLoaded) {
             CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(false);
             getView().openRootFragment(createWalletNameFragment);
             getView().dismissProgressDialog();
@@ -56,8 +56,4 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
         }
     }
 
-    @Override
-    public void onPause(Context context) {
-        super.onPause(context);
-    }
 }

@@ -22,14 +22,18 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerView.ResultHandler{
 
-    ZXingScannerView mZXingScannerView;
+    private ZXingScannerView mZXingScannerView;
 
     @BindView(R.id.camera_container)
     LinearLayout mLinearLayout;
 
-    public static QrCodeRecognitionFragment newInstance(){
-        QrCodeRecognitionFragment qrCodeRecognitionFragment = new QrCodeRecognitionFragment();
-        return qrCodeRecognitionFragment;
+    public static QrCodeRecognitionFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        QrCodeRecognitionFragment fragment = new QrCodeRecognitionFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
 

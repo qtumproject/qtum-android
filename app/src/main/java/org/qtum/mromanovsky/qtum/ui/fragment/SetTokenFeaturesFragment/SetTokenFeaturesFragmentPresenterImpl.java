@@ -1,16 +1,18 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenFeaturesFragment;
 
-import org.qtum.mromanovsky.qtum.datastorage.QtumToken;
+
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.SetTokenParametersFragment.SetTokenParametersFragment;
 
 
-public class SetTokenFeaturesFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SetTokenFeaturesFragmentPresenter {
+class SetTokenFeaturesFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SetTokenFeaturesFragmentPresenter {
 
-    SetTokenFeaturesFragmentView mSetTokenFeaturesFragmentView;
+    private SetTokenFeaturesFragmentView mSetTokenFeaturesFragmentView;
+    private SetTokenFeaturesFragmentInteractorImpl mSetTokenFeaturesFragmentInteractor;
 
-    public SetTokenFeaturesFragmentPresenterImpl(SetTokenFeaturesFragmentView setTokenFeaturesFragmentView){
+    SetTokenFeaturesFragmentPresenterImpl(SetTokenFeaturesFragmentView setTokenFeaturesFragmentView){
         mSetTokenFeaturesFragmentView = setTokenFeaturesFragmentView;
+        mSetTokenFeaturesFragmentInteractor = new SetTokenFeaturesFragmentInteractorImpl();
     }
 
     @Override
@@ -19,12 +21,21 @@ public class SetTokenFeaturesFragmentPresenterImpl extends BaseFragmentPresenter
     }
 
     @Override
-    public void onNextClick(boolean isAutomaticSellingAndBuying, boolean isFreezingOfAssets,
-                            boolean isAutorefill, boolean isProofOfWork) {
-        QtumToken.getQtumToken().setAutomaticSellingAndBuying(isAutomaticSellingAndBuying);
-        QtumToken.getQtumToken().setFreezingOfAssets(isFreezingOfAssets);
-        QtumToken.getQtumToken().setAutorefill(isAutorefill);
-        QtumToken.getQtumToken().setProofOfWork(isProofOfWork);
+    public void initializeViews() {
+        super.initializeViews();
+
+        getView().setData(getInteractor().getFreezingOfAssets(), getInteractor().getAutomaticSellingAndBuying(),
+                getInteractor().getAutorefill(),getInteractor().getProofOfWork());
+    }
+
+    @Override
+    public void onNextClick(boolean automaticSellingAndBuying, boolean freezingOfAssets,
+                            boolean autorefill, boolean proofOfWork) {
+        getInteractor().setAutomaticSellingAndBuying(automaticSellingAndBuying);
+        getInteractor().setFreezingOfAssets(freezingOfAssets);
+        getInteractor().setAutorefill(autorefill);
+        getInteractor().setProofOfWork(proofOfWork);
+
         SetTokenParametersFragment setTokenParametersFragment = SetTokenParametersFragment.newInstance();
         getView().openFragment(setTokenParametersFragment);
     }
@@ -32,5 +43,9 @@ public class SetTokenFeaturesFragmentPresenterImpl extends BaseFragmentPresenter
     @Override
     public void onBackClick() {
         getView().getFragmentActivity().onBackPressed();
+    }
+
+    public SetTokenFeaturesFragmentInteractorImpl getInteractor() {
+        return mSetTokenFeaturesFragmentInteractor;
     }
 }

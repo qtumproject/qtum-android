@@ -2,10 +2,8 @@ package org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment;
 
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,9 +21,7 @@ import butterknife.OnClick;
 
 public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView {
 
-    ReceiveFragmentPresenterImpl mReceiveFragmentPresenter;
-
-    public final int LAYOUT = R.layout.fragment_receive;
+    private ReceiveFragmentPresenterImpl mReceiveFragmentPresenter;
 
     @BindView(R.id.iv_qr_code)
     ImageView mImageViewQrCode;
@@ -46,10 +42,10 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_copy_wallet_address:
-                getPresenter().onClickCopyWalletAddress();
+                getPresenter().onCopyWalletAddressClick();
                 break;
             case R.id.bt_choose_another_address:
-                getPresenter().onClickChooseAnotherAddress();
+                getPresenter().onChooseAnotherAddressClick();
                 break;
             case R.id.ibt_back:
                 getActivity().onBackPressed();
@@ -58,8 +54,12 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     }
 
     public static ReceiveFragment newInstance() {
-        ReceiveFragment receiveFragment = new ReceiveFragment();
-        return receiveFragment;
+
+        Bundle args = new Bundle();
+
+        ReceiveFragment fragment = new ReceiveFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -74,24 +74,21 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_receive;
     }
 
     @Override
     public void initializeViews() {
-
         mTextInputEditTextAmount.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if(i == EditorInfo.IME_ACTION_DONE) {
-                    getPresenter().generateQrCode(mTextInputEditTextAmount.getText().toString());
+                    getPresenter().changeAmount(mTextInputEditTextAmount.getText().toString());
                     return false;
                 }
                 return false;
             }
         });
-
-        getPresenter().generateQrCode(mTextInputEditTextAmount.getText().toString());
     }
 
     @Override

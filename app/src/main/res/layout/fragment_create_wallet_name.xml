@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 android:background="@drawable/background_main"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
+                                                 android:background="@drawable/background_main"
                                                  android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
         android:background="@color/alpha"
-        android:id="@+id/app_bar_layout"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            android:background="@color/alpha">
+            android:background="@color/alpha"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="@dimen/toolbar_text_size"
+                android:text="@string/wallet_name"
                 android:textColor="@android:color/white"
-                android:text="@string/wallet_name"/>
+                android:textSize="@dimen/toolbar_text_size"/>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
@@ -37,72 +38,70 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_wallet_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/white_alpha80"
-            android:id="@+id/til_wallet_name"
-            android:focusable="true"
-            android:layout_marginTop="48dp"
             android:layout_marginLeft="64dp"
-            android:layout_marginRight="64dp">
+            android:layout_marginRight="64dp"
+            android:layout_marginTop="48dp"
+            android:focusable="true"
+            android:textColorHint="@color/white_alpha80">
 
             <android.support.design.widget.TextInputEditText
-                android:gravity="center"
+                android:id="@+id/et_wallet_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
                 android:focusable="true"
-                android:textSize="32sp"
+                android:gravity="center"
+                android:hint="@string/enter_name"
+                android:inputType="textPersonName"
                 android:textColor="@color/white_alpha80"
-                android:id="@+id/et_wallet_name"
-                android:hint="@string/enter_name"/>
+                android:textSize="32sp"/>
         </android.support.design.widget.TextInputLayout>
 
 
-
         <Button
-            android:text="@string/confirm"
+            android:id="@+id/bt_confirm"
             android:layout_width="202dp"
             android:layout_height="wrap_content"
             android:layout_above="@+id/bt_cancel"
             android:layout_alignLeft="@+id/bt_cancel"
             android:layout_alignStart="@+id/bt_cancel"
-            android:textColor="@android:color/white"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/background_bt_alpha"
-            android:id="@+id/bt_confirm"
+            android:text="@string/confirm"
             android:textAllCaps="false"
-            android:textSize="@dimen/button_text"
-            android:layout_marginBottom="16dp"/>
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/button_text"/>
 
         <Button
-            android:text="@string/cancel"
+            android:id="@+id/bt_cancel"
             android:layout_width="202dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:textColor="@android:color/white"
+            android:layout_marginBottom="32dp"
             android:background="@drawable/background_bt_alpha"
-            android:id="@+id/bt_cancel"
-            android:textSize="@dimen/button_text"
+            android:text="@string/cancel"
             android:textAllCaps="false"
-            android:layout_marginBottom="32dp" />
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/button_text"/>
 
     </RelativeLayout>
 
     <org.qtum.mromanovsky.qtum.ui.customview.WaveTop
+        android:id="@+id/iv_top_wave"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:id="@+id/iv_top_wave"
-        android:clickable="false"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:clickable="false"/>
 
     <org.qtum.mromanovsky.qtum.ui.customview.WaveBottom
+        android:id="@+id/iv_bottom_wave"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:clickable="false"
-        android:id="@+id/iv_bottom_wave"
-        android:layout_gravity="bottom"/>
-
+        android:layout_gravity="bottom"
+        android:clickable="false"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

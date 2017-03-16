@@ -1,12 +1,9 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,7 +21,6 @@ import butterknife.OnClick;
 
 public class SendBaseFragment extends BaseFragment implements SendBaseFragmentView {
 
-    public final int LAYOUT = R.layout.fragment_send_base;
     private static final String IS_QR_CODE_RECOGNITION = "is_qr_code_recognition";
 
     @BindView(R.id.et_receivers_address)
@@ -52,7 +48,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @OnClick({R.id.bt_qr_code,R.id.bt_send, R.id.ibt_back,R.id.ll_currency})
+    @OnClick({R.id.bt_qr_code, R.id.bt_send, R.id.ibt_back, R.id.ll_currency})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_qr_code:
@@ -74,10 +70,10 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         }
     }
 
-    public static SendBaseFragment newInstance(boolean qrCodeRecognition){
+    public static SendBaseFragment newInstance(boolean qrCodeRecognition) {
         SendBaseFragment sendBaseFragment = new SendBaseFragment();
         Bundle args = new Bundle();
-        args.putBoolean(IS_QR_CODE_RECOGNITION,qrCodeRecognition);
+        args.putBoolean(IS_QR_CODE_RECOGNITION, qrCodeRecognition);
         sendBaseFragment.setArguments(args);
         return sendBaseFragment;
     }
@@ -86,7 +82,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     public void onResume() {
         super.onResume();
         getPresenter().isQrCodeRecognition(getArguments().getBoolean(IS_QR_CODE_RECOGNITION));
-        getArguments().putBoolean(IS_QR_CODE_RECOGNITION,false);
+        getArguments().putBoolean(IS_QR_CODE_RECOGNITION, false);
     }
 
     @Override
@@ -101,7 +97,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_send_base;
     }
 
     @Override
@@ -110,8 +106,8 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         fragment.setTargetFragment(this, code_response);
         getFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
-                .add(R.id.fragment_container_send_base,fragment,fragment.getClass().getCanonicalName())
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .add(R.id.fragment_container_send_base, fragment, fragment.getClass().getCanonicalName())
                 .addToBackStack(null)
                 .commit();
     }
@@ -125,7 +121,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
 
     @Override
     public void sendToolBar() {
-        if(mButtonQrCode!=null) {
+        if (mButtonQrCode != null) {
             mTextViewToolBar.setText(R.string.send);
             mButtonQrCode.setVisibility(View.VISIBLE);
             mImageButtonBack.setVisibility(View.GONE);
@@ -163,16 +159,16 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
 
     @Override
     public void setBalance(double balance) {
-        mTextViewTotalBalanceNumber.setText(String.valueOf(balance)+" QTUM");
+        mTextViewTotalBalanceNumber.setText(String.valueOf(balance) + " QTUM");
     }
 
-    public void onResponse(String pubAddress, Double amount){
-        getPresenter().onResponse(pubAddress,amount);
+    public void onResponse(String pubAddress, Double amount) {
+        getPresenter().onResponse(pubAddress, amount);
     }
 
-    public void onResponseError(){
+    public void onResponseError() {
         //TODO : change notification type
-        Toast.makeText(getContext(),"Invalid QR Code", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Invalid QR Code", Toast.LENGTH_SHORT).show();
     }
 
     @Override

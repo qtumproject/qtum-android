@@ -1,5 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenConfirmFragment;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -47,25 +48,28 @@ public class SetTokenConfirmFragment extends BaseFragment implements SetTokenCon
         }
     }
 
-    private final int LAYOUT = R.layout.fragment_token_confirm;
     private SetTokenConfirmFragmentPresenterImpl mSetTokenConfirmFragmentPresenter;
 
-    public static SetTokenConfirmFragment newInstance(){
-        SetTokenConfirmFragment setTokenConfirmFragment = new SetTokenConfirmFragment();
-        return setTokenConfirmFragment;
+    public static SetTokenConfirmFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        SetTokenConfirmFragment fragment = new SetTokenConfirmFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void initializeViews() {
         super.initializeViews();
-        mTextViewTokenName.setText(QtumToken.getQtumToken().getTokenName());
-        mTextViewTokenSymbol.setText(QtumToken.getQtumToken().getTokenSymbol());
-        mTextViewInitialSupply.setText(String.valueOf(QtumToken.getQtumToken().getInitialSupply()));
-        mTextViewDecimalUnits.setText(String.valueOf(QtumToken.getQtumToken().getDecimalUnits()));
-        mTextViewFreezingOfAssets.setText(QtumToken.getQtumToken().isFreezingOfAssets() ? "Yes" : "No");
-        mTextViewAutomaticSellingAndBuying.setText(QtumToken.getQtumToken().isAutomaticSellingAndBuying() ? "Yes" : "No");
-        mTextViewAutorefill.setText(QtumToken.getQtumToken().isAutorefill() ? "Yes" : "No");
-        mTextViewProofOfWork.setText(QtumToken.getQtumToken().isProofOfWork() ? "Yes" : "No");
+        mTextViewTokenName.setText(QtumToken.getInstance().getTokenName());
+        mTextViewTokenSymbol.setText(QtumToken.getInstance().getTokenSymbol());
+        mTextViewInitialSupply.setText(String.valueOf(QtumToken.getInstance().getInitialSupply()));
+        mTextViewDecimalUnits.setText(String.valueOf(QtumToken.getInstance().getDecimalUnits()));
+        mTextViewFreezingOfAssets.setText(QtumToken.getInstance().isFreezingOfAssets() ? "Yes" : "No");
+        mTextViewAutomaticSellingAndBuying.setText(QtumToken.getInstance().isAutomaticSellingAndBuying() ? "Yes" : "No");
+        mTextViewAutorefill.setText(QtumToken.getInstance().isAutorefill() ? "Yes" : "No");
+        mTextViewProofOfWork.setText(QtumToken.getInstance().isProofOfWork() ? "Yes" : "No");
     }
 
     @Override
@@ -80,6 +84,6 @@ public class SetTokenConfirmFragment extends BaseFragment implements SetTokenCon
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_set_token_confirm;
     }
 }

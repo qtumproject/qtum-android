@@ -1,21 +1,29 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenNameFragment;
 
-import org.qtum.mromanovsky.qtum.datastorage.QtumToken;
+
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.SetTokenFeaturesFragment.SetTokenFeaturesFragment;
 
 
-public class SetTokenNameFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SetTokenNameFragmentPresenter {
+class SetTokenNameFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SetTokenNameFragmentPresenter {
 
-    SetTokenNameFragmentView mSetTokenNameFragmentView;
+    private SetTokenNameFragmentView mSetTokenNameFragmentView;
+    private SetTokenNameFragmentInteractorImpl mSetTokenNameFragmentInteractor;
 
-    public SetTokenNameFragmentPresenterImpl(SetTokenNameFragmentView setTokenNameFragmentView){
+    SetTokenNameFragmentPresenterImpl(SetTokenNameFragmentView setTokenNameFragmentView){
         mSetTokenNameFragmentView = setTokenNameFragmentView;
+        mSetTokenNameFragmentInteractor = new SetTokenNameFragmentInteractorImpl();
     }
 
     @Override
     public SetTokenNameFragmentView getView() {
         return mSetTokenNameFragmentView;
+    }
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        getView().setData(getInteractor().getTokenName(),getInteractor().getTokenSymbol());
     }
 
     @Override
@@ -37,8 +45,9 @@ public class SetTokenNameFragmentPresenterImpl extends BaseFragmentPresenterImpl
             }
         }
 
-        QtumToken.getQtumToken().setTokenName(name);
-        QtumToken.getQtumToken().setTokenSymbol(symbol);
+        getInteractor().setTokenName(name);
+        getInteractor().setTokenSymbol(symbol);
+        getView().hideKeyBoard();
         SetTokenFeaturesFragment setTokenFeaturesFragment = SetTokenFeaturesFragment.newInstance();
         getView().openFragment(setTokenFeaturesFragment);
     }
@@ -46,5 +55,9 @@ public class SetTokenNameFragmentPresenterImpl extends BaseFragmentPresenterImpl
     @Override
     public void onCancelClick() {
         getView().getFragmentActivity().onBackPressed();
+    }
+
+    public SetTokenNameFragmentInteractorImpl getInteractor() {
+        return mSetTokenNameFragmentInteractor;
     }
 }

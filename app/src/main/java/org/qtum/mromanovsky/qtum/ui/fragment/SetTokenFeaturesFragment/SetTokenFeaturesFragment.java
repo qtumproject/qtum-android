@@ -1,6 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenFeaturesFragment;
 
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
@@ -27,8 +28,6 @@ public class SetTokenFeaturesFragment extends BaseFragment implements SetTokenFe
     @BindView(R.id.switch_proof_of_work)
     Switch mSwitchProofOfWork;
 
-
-
     @OnClick({R.id.bt_back,R.id.bt_next})
     public void onClick(View view){
         switch (view.getId()){
@@ -42,12 +41,15 @@ public class SetTokenFeaturesFragment extends BaseFragment implements SetTokenFe
         }
     }
 
-    private final int LAYOUT = R.layout.fragment_set_token_features;
     private SetTokenFeaturesFragmentPresenterImpl mSetTokenFeaturesFragmentPresenter;
 
-    public static SetTokenFeaturesFragment newInstance(){
-        SetTokenFeaturesFragment setTokenFeaturesFragment = new SetTokenFeaturesFragment();
-        return setTokenFeaturesFragment;
+    public static SetTokenFeaturesFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        SetTokenFeaturesFragment fragment = new SetTokenFeaturesFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -62,6 +64,14 @@ public class SetTokenFeaturesFragment extends BaseFragment implements SetTokenFe
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_set_token_features;
+    }
+
+    @Override
+    public void setData(boolean freezingOfAssets, boolean automaticSellingAndBuying, boolean autorefill, boolean proofOfWork) {
+        mSwitchFreezingOfAssets.setChecked(freezingOfAssets);
+        mSwitchAutomaticSellingAndBuying.setChecked(automaticSellingAndBuying);
+        mSwitchAutorefill.setChecked(autorefill);
+        mSwitchProofOfWork.setChecked(proofOfWork);
     }
 }

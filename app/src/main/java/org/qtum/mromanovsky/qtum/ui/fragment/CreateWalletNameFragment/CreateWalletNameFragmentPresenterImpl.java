@@ -1,6 +1,5 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.CreateWalletNameFragment;
 
-import android.content.Context;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -22,9 +21,9 @@ class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl im
     }
 
     @Override
-    public void confirm(String name) {
+    public void onConfirmClick(String name) {
         if (name.isEmpty()) {
-            getView().incorrectName(getView().getContext().getString(R.string.empty_name));
+            getView().setErrorText(getView().getContext().getString(R.string.empty_name));
         } else {
             getInteractor().saveWalletName(name);
             getView().clearError();
@@ -35,12 +34,13 @@ class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl im
                 pinFragment = PinFragment.newInstance(PinFragment.IMPORTING);
 
             }
+            getView().hideKeyBoard();
             getView().openFragment(pinFragment);
         }
     }
 
     @Override
-    public void cancel() {
+    public void onCancelClick() {
         getView().getFragmentActivity().onBackPressed();
     }
 
@@ -49,9 +49,4 @@ class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl im
         return mCreateWalletNameFragmentView;
     }
 
-    @Override
-    public void onPause(Context context) {
-        super.onPause(context);
-        getView().hideKeyBoard();
-    }
 }

@@ -8,7 +8,6 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -17,7 +16,7 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 
-public interface QtumRestService {
+interface QtumRestService {
 
     @GET("/outputs/unspent/{address}")
     Observable<List<UnspentOutput>> getOutputsUnspent(@Path("address") String address);

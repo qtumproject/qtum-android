@@ -1,20 +1,15 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
-import org.qtum.mromanovsky.qtum.dataprovider.UpdateData;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionFragment;
 
@@ -58,9 +53,8 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     public void onStart(Context context) {
         super.onStart(context);
 
-
         mIntent = new Intent(context, UpdateService.class);
-        if(!isMyServiceRunning(UpdateService.class)) {
+        if (!isMyServiceRunning(UpdateService.class)) {
             //context.startService(mIntent);
         }
     }
@@ -85,7 +79,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onPause(Context context) {
         super.onPause(context);
-        if(mUpdateService!=null && !    mUpdateService.isMonitoring()) {
+        if (mUpdateService != null && !mUpdateService.isMonitoring()) {
             //mUpdateService.startMonitoringHistory();
         }
     }
@@ -109,8 +103,8 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     public void onClickQrCode() {
         SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true);
         getView().openRootFragment(sendBaseFragment);
-        ((MainActivity)getView().getFragmentActivity()).setRootFragment(sendBaseFragment);
-        ((MainActivity)getView().getFragmentActivity()).getBottomNavigationView().getMenu().getItem(3).setChecked(true);
+        ((MainActivity) getView().getFragmentActivity()).setRootFragment(sendBaseFragment);
+        ((MainActivity) getView().getFragmentActivity()).getBottomNavigationView().getMenu().getItem(3).setChecked(true);
     }
 
     @Override
@@ -165,7 +159,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         super.onDestroy(context);
     }
 
-    private void loadAndUpdateData(){
+    private void loadAndUpdateData() {
         getView().startRefreshAnimation();
         getInteractor().getHistoryList(new WalletFragmentInteractorImpl.GetHistoryListCallBack() {
             @Override
@@ -176,12 +170,12 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
             @Override
             public void onError(Throwable e) {
                 getView().stopRefreshRecyclerAnimation();
-                Toast.makeText(getView().getContext(),e.toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getView().getContext(), e.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void loadAndUpdateBalance(){
+    private void loadAndUpdateBalance() {
         getInteractor().getBalance(new WalletFragmentInteractorImpl.GetBalanceCallBack() {
             @Override
             public void onSuccess(long balance) {
@@ -190,7 +184,8 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         });
     }
 
-    private void updateData(){
+    private void updateData() {
         getView().updateRecyclerView(getInteractor().getHistoryList());
     }
+
 }

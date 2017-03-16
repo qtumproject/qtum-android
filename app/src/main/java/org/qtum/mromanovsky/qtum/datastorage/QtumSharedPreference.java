@@ -18,7 +18,8 @@ public class QtumSharedPreference {
     private final String QTUM_HISTORY_COUNT = "qtum_history_count";
     private final String QTUM_EXCHANGE_RATES = "qtum_exchange_rates";
 
-    private QtumSharedPreference() { }
+    private QtumSharedPreference() {
+    }
 
     public static QtumSharedPreference getInstance() {
         if (sInstance == null) {
@@ -104,7 +105,7 @@ public class QtumSharedPreference {
         mEditor.apply();
     }
 
-    public void clear(Context context){
+    public void clear(Context context) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
         mEditor.clear();

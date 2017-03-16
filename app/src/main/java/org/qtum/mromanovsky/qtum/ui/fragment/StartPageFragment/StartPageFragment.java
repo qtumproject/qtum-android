@@ -2,6 +2,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment;
 
 
 import android.animation.Animator;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -25,7 +26,6 @@ import butterknife.OnClick;
 
 public class StartPageFragment extends BaseFragment implements StartPageFragmentView {
 
-    public final int LAYOUT = R.layout.fragment_start_page;
     private int mAnimState;
     private Animation mAnimation;
     private boolean mIsStarted = false;
@@ -65,8 +65,12 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     }
 
     public static StartPageFragment newInstance() {
-        StartPageFragment startPageFragment = new StartPageFragment();
-        return startPageFragment;
+
+        Bundle args = new Bundle();
+
+        StartPageFragment fragment = new StartPageFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -82,7 +86,7 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_start_page;
     }
 
     @Override

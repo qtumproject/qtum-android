@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 xmlns:tools="http://schemas.android.com/tools"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
-                                                 android:clickable="true"
                                                  android:background="@android:color/white"
+                                                 android:clickable="true"
                                                  android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -23,9 +22,9 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
+                android:id="@+id/tv_toolbar_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_toolbar_send"
                 android:text="@string/confirm"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"/>
@@ -35,9 +34,9 @@
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
+        android:id="@+id/fragment_container_send_base"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_container_send_base"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
@@ -59,8 +58,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:stateListAnimator="@null"
                     android:background="@drawable/background_bt_grey"
+                    android:stateListAnimator="@null"
                     android:text="@string/back"
                     android:textAllCaps="false"
                     android:textColor="@color/grey"
@@ -75,8 +74,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:stateListAnimator="@null"
                     android:background="@drawable/background_bt_green"
+                    android:stateListAnimator="@null"
                     android:text="@string/confirm"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
@@ -88,203 +87,216 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp">
+                android:layout_centerHorizontal="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/grey70"
-                        android:text="@string/token_name"/>
+                        android:text="@string/token_name"
+                        android:textColor="@color/grey70"/>
+
                     <TextView
                         android:id="@+id/tv_token_name"
-                        android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="end"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/grey"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="12dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/grey70"
-                        android:text="@string/token_symbol"/>
+                        android:text="@string/token_symbol"
+                        android:textColor="@color/grey70"/>
+
                     <TextView
                         android:id="@+id/tv_token_symbol"
-                        android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="end"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/grey"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="24dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/grey70"
-                        android:text="@string/initial_supply"/>
+                        android:text="@string/initial_supply"
+                        android:textColor="@color/grey70"/>
+
                     <TextView
                         android:id="@+id/tv_initial_supply"
-                        android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="end"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/grey"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="12dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/grey70"
-                        android:text="@string/decimal_units"/>
+                        android:text="@string/decimal_units"
+                        android:textColor="@color/grey70"/>
+
                     <TextView
                         android:id="@+id/tv_decimal_units"
-                        android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="end"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/grey"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="24dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/grey70"
-                        android:text="@string/freezing_of_assets"/>
+                        android:text="@string/freezing_of_assets"
+                        android:textColor="@color/grey70"/>
+
                     <TextView
                         android:id="@+id/tv_freezing_of_assets"
-                        android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="end"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/grey"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="12dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/grey70"
-                        android:text="@string/automatic_selling_and_buying"/>
+                        android:text="@string/automatic_selling_and_buying"
+                        android:textColor="@color/grey70"/>
+
                     <TextView
                         android:id="@+id/tv_automatic_selling_and_buying"
-                        android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="end"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/grey"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="12dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/grey70"
-                        android:text="@string/autorefill"/>
+                        android:text="@string/autorefill"
+                        android:textColor="@color/grey70"/>
+
                     <TextView
                         android:id="@+id/tv_autorefill"
-                        android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="end"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/grey"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="12dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/grey70"
-                        android:text="@string/proof_of_work"/>
+                        android:text="@string/proof_of_work"
+                        android:textColor="@color/grey70"/>
+
                     <TextView
                         android:id="@+id/tv_proof_of_work"
-                        android:textColor="@color/grey"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="end"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/grey"/>
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/grey_line"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:id="@+id/grey_line"
                     android:layout_marginTop="24dp"
                     android:background="@color/grey_lite"/>
 
                 <TextView
-                    android:text="@string/minter_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:textColor="@color/grey70"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
                     android:text="@string/minter_address"
-                    android:textColor="@color/grey"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textColor="@color/grey70"/>
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/minter_address"
+                    android:textColor="@color/grey"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     android:text="@string/fee"
-                    android:layout_marginTop="24dp"
-                    android:textColor="@color/grey70"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textColor="@color/grey70"/>
 
                 <TextView
-                    android:text="@string/minter_address"
-                    android:textColor="@color/grey"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="@string/minter_address"
+                    android:textColor="@color/grey"/>
             </TableLayout>
-
-
 
 
         </RelativeLayout>

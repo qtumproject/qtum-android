@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 xmlns:tools="http://schemas.android.com/tools"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
                                                  android:background="@android:color/white"
@@ -9,18 +8,18 @@
                                                  android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
-        android:id="@+id/app_bar_layout"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -28,36 +27,36 @@
                 android:orientation="horizontal">
 
                 <ImageButton
+                    android:id="@+id/ibt_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/background_ibtn_back"
-                    android:id="@+id/ibt_back"
-                    android:paddingTop="10dp"
                     android:layout_gravity="center"
+                    android:background="@drawable/background_ibtn_back"
                     android:paddingBottom="10dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
+                    android:paddingTop="10dp"
                     app:srcCompat="@drawable/ic_back_indicator"/>
 
                 <TextView
+                    android:id="@+id/tv_toolbar_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:id="@+id/tv_toolbar_title"
-                    android:textSize="24sp"
+                    android:text="@string/wallet_back_up"
                     android:textColor="@android:color/white"
-                    android:text="@string/wallet_back_up"/>
+                    android:textSize="24sp"/>
 
                 <ImageButton
-                    android:layout_width="36dp"
-                    android:layout_gravity="center"
-                    android:layout_height="36dp"
-                    android:layout_margin="8dp"
                     android:id="@+id/bt_qr_code"
-                    app:srcCompat="@drawable/ic_share2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/background_pressed_alpha_white"
                     android:scaleType="centerInside"
-                    android:background="@drawable/background_pressed_alpha_white"/>
+                    app:srcCompat="@drawable/ic_share2"/>
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
@@ -71,58 +70,57 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
+            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/button_text"
-            android:textColor="@color/grey"
-            android:gravity="center"
-            android:text="@string/copy_brain_code_n_to_use_it_in_another_app"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:id="@+id/textView4"/>
+            android:gravity="center"
+            android:text="@string/copy_brain_code_n_to_use_it_in_another_app"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/button_text"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textSize="@dimen/button_text"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/grey"
-            android:background="@drawable/background_tv_brain_code"
-            android:text="Your deputy nithing occasional objection ally aesthetic swing mad have stay objective consumption"
             android:id="@+id/tv_brain_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/textView4"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/background_tv_brain_code"
+            android:padding="16dp"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/button_text"/>
 
         <Button
-            android:text="@string/copy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:background="@drawable/background_bt_green"
-            android:stateListAnimator="@null"
             android:id="@+id/bt_copy"
-            android:textSize="@dimen/button_text"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@+id/bt_continue"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"/>
-
-        <Button
-            android:text="@string/copy_brain_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
+            android:layout_above="@+id/bt_continue"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:background="@drawable/background_bt_green"
             android:stateListAnimator="@null"
+            android:text="@string/copy"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/button_text"/>
+
+        <Button
             android:id="@+id/bt_copy_brain_code"
-            android:textSize="@dimen/button_text"
-            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"/>
+            android:layout_marginRight="16dp"
+            android:background="@drawable/background_bt_green"
+            android:stateListAnimator="@null"
+            android:text="@string/copy_brain_code"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/button_text"/>
 
         <Button
             android:id="@+id/bt_continue"
@@ -130,26 +128,26 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:stateListAnimator="@null"
+            android:layout_marginTop="16dp"
             android:background="@drawable/background_bt_grey"
+            android:stateListAnimator="@null"
             android:text="@string/_continue"
             android:textAllCaps="false"
             android:textColor="@color/grey"
             android:textSize="@dimen/button_text"/>
 
         <TextView
+            android:id="@+id/tv_you_can_skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want"
-            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:textColor="@color/grey50"
-            android:gravity="center"
+            android:layout_centerVertical="true"
             android:layout_margin="16dp"
-            android:id="@+id/tv_you_can_skip"/>
+            android:gravity="center"
+            android:text="@string/you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want"
+            android:textColor="@color/grey50"/>
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,54 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
+
     <ImageView
+        android:id="@+id/iv_news_header"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/colorAccent"
-        app:srcCompat="@drawable/logo"
-        android:id="@+id/iv_news_header"/>
+        app:srcCompat="@drawable/logo"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_news_header_date"
-        android:text="Today, 10:20 AM"
-        android:padding="3dp"
         android:id="@+id/tv_date_news_header"
-        android:textColor="@android:color/white"
-        android:layout_margin="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/iv_news_header"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_margin="8dp"
+        android:background="@drawable/background_news_header_date"
+        android:padding="3dp"
+        android:text="Today, 10:20 AM"
+        android:textColor="@android:color/white"/>
 
     <TextView
+        android:id="@+id/tv_title_news_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bitcoin News for the week"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/iv_news_header"
-        android:textColor="@color/black"
         android:layout_margin="8dp"
-        android:textSize="22sp"
-        android:layout_alignParentLeft="true"
-        android:id="@+id/tv_title_news_header"/>
+        android:text="Bitcoin News for the week"
+        android:textColor="@color/black"
+        android:textSize="22sp"/>
 
     <TextView
+        android:id="@+id/tv_short_text_news_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textColor="@color/grey"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        android:layout_below="@+id/tv_title_news_header"
         android:layout_alignParentLeft="true"
-        android:id="@+id/tv_short_text_news_header"/>
+        android:layout_below="@+id/tv_title_news_header"
+        android:layout_margin="8dp"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        android:textColor="@color/grey"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@id/tv_short_text_news_header"
-        android:background = "@color/grey_lite"/>
+        android:background="@color/grey_lite"/>
 
 </RelativeLayout>

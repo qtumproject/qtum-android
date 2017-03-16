@@ -4,7 +4,7 @@ package org.qtum.mromanovsky.qtum.datastorage;
 public class Currency {
     private String mName;
 
-    public Currency(String name){
+    public Currency(String name) {
         mName = name;
     }
 

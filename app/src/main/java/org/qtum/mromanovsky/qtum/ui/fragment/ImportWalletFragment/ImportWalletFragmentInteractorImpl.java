@@ -15,14 +15,14 @@ class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentInteract
     private Context mContext;
     static boolean isDataLoaded = false;
 
-    ImportWalletFragmentInteractorImpl(Context context){
+    ImportWalletFragmentInteractorImpl(Context context) {
         mContext = context;
     }
 
     @Override
     public void importWallet(String seed, final ImportWalletCallBack callBack) {
         KeyStorage.getInstance()
-                .importWallet(seed,mContext)
+                .importWallet(seed, mContext)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Wallet>() {
@@ -44,7 +44,7 @@ class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentInteract
                 });
     }
 
-    interface ImportWalletCallBack{
+    interface ImportWalletCallBack {
         void onSuccess();
     }
 }

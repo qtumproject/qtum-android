@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -32,7 +33,6 @@ import rx.schedulers.Schedulers;
 
 public class UpdateService extends Service {
 
-    private final String TAG = "UpdateService";
     public static final int DEFAULT_NOTIFICATION_ID = 101;
     private NotificationManager notificationManager;
     Subscription subscription;
@@ -47,7 +47,7 @@ public class UpdateService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        notificationManager = (NotificationManager) this.getSystemService(this.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
         uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     }
 

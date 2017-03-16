@@ -23,7 +23,7 @@ public class HistoryList {
         return sHistoryList;
     }
 
-    public void clearHistoryList(){
+    public void clearHistoryList() {
         sHistoryList = null;
     }
 

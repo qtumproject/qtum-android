@@ -37,7 +37,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
     private Context mContext;
 
-    SendBaseFragmentInteractorImpl(Context context){
+    SendBaseFragmentInteractorImpl(Context context) {
         mContext = context;
     }
 
@@ -70,51 +70,51 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
                 Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
-                Address addressToSend=null;
+                Address addressToSend = null;
                 try {
                     addressToSend = Address.fromBase58(CurrentNetParams.getNetParams(), address);
-                }catch (AddressFormatException a){
+                } catch (AddressFormatException a) {
                     callBack.onError("Incorrect Address");
                 }
                 ECKey ecKey = KeyStorage.getInstance().getCurrentKey();
-                long amount = (long)(Double.parseDouble(amountString)/(QtumSharedPreference.getInstance().getExchangeRates(mContext)));
+                long amount = (long) (Double.parseDouble(amountString) / (QtumSharedPreference.getInstance().getExchangeRates(mContext)));
                 long fee = 100000L;
 
 
                 Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
                     @Override
                     public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {
-                        return unspentOutput.getAmount() > t1.getAmount() ? 1 : (unspentOutput.getAmount() < t1.getAmount() ) ? -1 : 0;
+                        return unspentOutput.getAmount() > t1.getAmount() ? 1 : (unspentOutput.getAmount() < t1.getAmount()) ? -1 : 0;
                     }
                 });
 
-                long amountFromOutput = (long)0;
-                long overFlow = (long)0;
+                long amountFromOutput = (long) 0;
+                long overFlow = (long) 0;
                 if (addressToSend != null) {
-                    transaction.addOutput(Coin.valueOf(amount),addressToSend);
+                    transaction.addOutput(Coin.valueOf(amount), addressToSend);
                 }
 
-                amount+=fee;
+                amount += fee;
 
-                for(UnspentOutput unspentOutput : unspentOutputs){
+                for (UnspentOutput unspentOutput : unspentOutputs) {
                     overFlow += unspentOutput.getAmount();
-                    if(overFlow>=amount){
+                    if (overFlow >= amount) {
                         break;
                     }
                 }
-                if(overFlow<amount){
+                if (overFlow < amount) {
                     //TODO: throw exception
                     callBack.onError("Not enough money");
                     return;
                 }
                 long delivery = overFlow - amount;
-                if(delivery!=0L) {
+                if (delivery != 0L) {
                     transaction.addOutput(Coin.valueOf((delivery)), ecKey.toAddress(CurrentNetParams.getNetParams()));
                 }
 
-                for(UnspentOutput unspentOutput : unspentOutputs){
-                    for(DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()){
-                        if(Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())){
+                for (UnspentOutput unspentOutput : unspentOutputs) {
+                    for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
+                        if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
                             Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
                             TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
                             Script script = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
@@ -123,7 +123,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                             break;
                         }
                     }
-                    if(amountFromOutput>=amount){
+                    if (amountFromOutput >= amount) {
                         break;
                     }
                 }
@@ -136,7 +136,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                 String transactionHex = Hex.toHexString(bytes);
 
                 Date date = new Date();
-                long l =  date.getTime()/1000;
+                long l = date.getTime() / 1000;
                 int i3 = (int) l;
                 byte[] bytesData = ByteBuffer.allocate(4).putInt(i3).array();
                 byte tmp1 = bytesData[3];
@@ -148,7 +148,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                 bytesData[2] = tmp3;
                 bytesData[3] = tmp4;
 
-                transactionHex+=Hex.toHexString(bytesData);
+                transactionHex += Hex.toHexString(bytesData);
                 callBack.onSuccess(transactionHex);
             }
         });
@@ -187,17 +187,19 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
         });
     }
 
-    interface GetUnspentListCallBack{
+    interface GetUnspentListCallBack {
         void onSuccess(List<UnspentOutput> unspentOutputs);
     }
 
     interface CreateTxCallBack {
         void onSuccess(String txHex);
+
         void onError(String error);
     }
 
     interface SendTxCallBack {
         void onSuccess();
+
         void onError(String error);
     }
 
@@ -208,6 +210,6 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
     @Override
     public double getBalance() {
-        return HistoryList.getInstance().getBalance()*QtumSharedPreference.getInstance().getExchangeRates(mContext);
+        return HistoryList.getInstance().getBalance() * QtumSharedPreference.getInstance().getExchangeRates(mContext);
     }
 }

@@ -5,12 +5,14 @@ import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterI
 import org.qtum.mromanovsky.qtum.ui.fragment.SetTokenConfirmFragment.SetTokenConfirmFragment;
 
 
-public class SetTokenParametersFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SetTokenParametersFragmentPresenter {
+class SetTokenParametersFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SetTokenParametersFragmentPresenter {
 
-    SetTokenParametersFragmentView mSetTokenParametersFragmentView;
+    private SetTokenParametersFragmentView mSetTokenParametersFragmentView;
+    private SetTokenParametersFragmentInteractorImpl mSetTokenParametersFragmentInteractor;
 
-    public SetTokenParametersFragmentPresenterImpl(SetTokenParametersFragmentView setTokenParametersFragmentView){
+    SetTokenParametersFragmentPresenterImpl(SetTokenParametersFragmentView setTokenParametersFragmentView){
         mSetTokenParametersFragmentView = setTokenParametersFragmentView;
+        mSetTokenParametersFragmentInteractor = new SetTokenParametersFragmentInteractorImpl();
     }
 
     @Override
@@ -36,14 +38,25 @@ public class SetTokenParametersFragmentPresenterImpl extends BaseFragmentPresent
             }
         }
 
-        QtumToken.getQtumToken().setInitialSupply(Long.parseLong(initialSupply));
-        QtumToken.getQtumToken().setDecimalUnits(Long.parseLong(decimalUnits));
+        getInteractor().setInitialSupply(initialSupply);
+        getInteractor().setDecimalUnits(decimalUnits);
+        getView().hideKeyBoard();
         SetTokenConfirmFragment setTokenConfirmFragment = SetTokenConfirmFragment.newInstance();
         getView().openFragment(setTokenConfirmFragment);
     }
 
     @Override
+    public void initializeViews() {
+        super.initializeViews();
+        getView().setData(getInteractor().getInitialSupply(), getInteractor().getDecimalUnits());
+    }
+
+    @Override
     public void onBackClick() {
         getView().getFragmentActivity().onBackPressed();
+    }
+
+    public SetTokenParametersFragmentInteractorImpl getInteractor() {
+        return mSetTokenParametersFragmentInteractor;
     }
 }

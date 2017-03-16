@@ -23,14 +23,14 @@ public class QtumService {
     private static final String BASE_URL = "http://139.162.178.174/";
     private QtumRestService mServiceApi;
 
-    public static QtumService newInstance(){
-        if(sQtumService == null){
+    public static QtumService newInstance() {
+        if (sQtumService == null) {
             sQtumService = new QtumService();
         }
         return sQtumService;
     }
 
-    private QtumService(){
+    private QtumService() {
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(10, TimeUnit.SECONDS)
@@ -55,11 +55,11 @@ public class QtumService {
     }
 
     public Observable<List<History>> getHistoryListForSeveralAddresses(final List<String> addresses, final int limit, final int offset) {
-        return mServiceApi.getHistoryListForSeveralAddresses(limit,offset,addresses);
+        return mServiceApi.getHistoryListForSeveralAddresses(limit, offset, addresses);
     }
 
     //TODO: create
-    public void getHistoryCount(final List<String> addresses, final GetHistoryCountCallBack callBack){
+    public void getHistoryCount(final List<String> addresses, final GetHistoryCountCallBack callBack) {
 //        Call<List<History>> request;
 //        request = mServiceApi.getHistoryListForSeveralAddresses(1000,0,addresses);
 //
@@ -77,13 +77,14 @@ public class QtumService {
 
     }
 
-    public interface GetHistoryCountCallBack{
+    public interface GetHistoryCountCallBack {
         void onResponse(int count);
+
         void onError();
     }
 
     public Observable<List<History>> getHistoryList(final String address, final int limit, final int offset) {
-        return mServiceApi.getHistoryList(address,limit,offset);
+        return mServiceApi.getHistoryList(address, limit, offset);
     }
 
     public Observable<List<News>> getNews(final String lang) {

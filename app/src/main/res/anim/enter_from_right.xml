@@ -2,7 +2,7 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:shareInterpolator="true">
     <translate
-        android:interpolator = "@anim/interpolator_wave"
+        android:interpolator = "@anim/interpolator_accelerate_decelerate"
         android:fromXDelta="100%" android:toXDelta="0%"
         android:fromYDelta="0%" android:toYDelta="0%"
         android:duration="400" />

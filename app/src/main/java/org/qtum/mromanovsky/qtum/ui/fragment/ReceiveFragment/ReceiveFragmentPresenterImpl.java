@@ -42,10 +42,10 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     }
 
     @Override
-    public void generateQrCode(String s) {
+    public void changeAmount(String s) {
         JSONObject json = new JSONObject();
         try {
-            json.put("amount",s);
+            json.put("amount", s);
             json.put("publicAddress", getInteractor().getCurrentReceiveAddress());
             getView().setQrCode(TextToImageEncode(json.toString()));
         } catch (JSONException | WriterException e) {
@@ -54,16 +54,16 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     }
 
     @Override
-    public void onClickCopyWalletAddress() {
+    public void onCopyWalletAddressClick() {
         ClipboardManager clipboard = (ClipboardManager) getView().getFragmentActivity().getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", getInteractor().getCurrentReceiveAddress());
         clipboard.setPrimaryClip(clip);
         //TODO : change notification type
-        Toast.makeText(getView().getContext(),"Coped",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getView().getContext(), "Coped", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onClickChooseAnotherAddress() {
+    public void onChooseAnotherAddressClick() {
         AddressesFragment addressesFragment = AddressesFragment.newInstance();
         getView().openFragment(addressesFragment);
     }
@@ -73,12 +73,12 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         super.initializeViews();
         getView().setAddressInTV(getInteractor().getCurrentReceiveAddress());
         getView().setBalance(getInteractor().getBalance());
+        changeAmount(null);
     }
 
     @Override
     public void onPause(Context context) {
         super.onPause(context);
-        getView().hideKeyBoard();
     }
 
     private Bitmap TextToImageEncode(String Value) throws WriterException {
@@ -86,8 +86,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         Display display = getView().getFragmentActivity().getWindowManager().getDefaultDisplay();
         display.getMetrics(displayMetrics);
-        int QRCodeWidth = displayMetrics.heightPixels/3;
-
+        int QRCodeWidth = displayMetrics.heightPixels / 3;
         BitMatrix bitMatrix;
         try {
             bitMatrix = new MultiFormatWriter().encode(
@@ -101,11 +100,8 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
             return null;
         }
         int bitMatrixWidth = bitMatrix.getWidth();
-
         int bitMatrixHeight = bitMatrix.getHeight();
-
         int[] pixels = new int[bitMatrixWidth * bitMatrixHeight];
-
         for (int y = 0; y < bitMatrixHeight; y++) {
             int offset = y * bitMatrixWidth;
 
@@ -116,7 +112,6 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
             }
         }
         Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
-
         bitmap.setPixels(pixels, 0, QRCodeWidth, 0, 0, bitMatrixWidth, bitMatrixHeight);
         return bitmap;
     }

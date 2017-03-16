@@ -4,11 +4,8 @@ package org.qtum.mromanovsky.qtum.ui.fragment.AddressesFragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,17 +25,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddressesFragment extends BaseFragment implements AddressesFragmentView{
+public class AddressesFragment extends BaseFragment implements AddressesFragmentView {
 
-    public final int LAYOUT = R.layout.fragment_addresses;
-    AddressesFragmentPresenterImpl mAddressesFragmentPresenter;
-    AddressAdapter mAddressAdapter;
+    private AddressesFragmentPresenterImpl mAddressesFragmentPresenter;
+    private AddressAdapter mAddressAdapter;
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
     @OnClick({R.id.ibt_back})
-    public void onClick(View view){
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ibt_back:
                 getActivity().onBackPressed();
@@ -47,9 +43,9 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
     }
 
     public static AddressesFragment newInstance() {
-        
+
         Bundle args = new Bundle();
-        
+
         AddressesFragment fragment = new AddressesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -67,7 +63,7 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_addresses;
     }
 
     @Override
@@ -106,13 +102,13 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
                     mAddressAdapter.notifyItemChanged(getAdapterPosition());
                 }
             });
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
 
-        void bindAddress(String address, int position){
-            if(position == KeyStorage.getInstance().getCurrentKeyPosition()){
+        void bindAddress(String address, int position) {
+            if (position == KeyStorage.getInstance().getCurrentKeyPosition()) {
                 mImageViewCheckIndicator.setVisibility(View.VISIBLE);
-                mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.grey20));
+                mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey20));
             } else {
                 mImageViewCheckIndicator.setVisibility(View.GONE);
                 mLinearLayoutAddress.setBackgroundColor(Color.WHITE);
@@ -121,13 +117,13 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
         }
     }
 
-    public class AddressAdapter extends RecyclerView.Adapter<AddressHolder>{
+    public class AddressAdapter extends RecyclerView.Adapter<AddressHolder> {
 
         private List<DeterministicKey> mDeterministicKeys;
         private String mAddress;
 
 
-        AddressAdapter(List<DeterministicKey> deterministicKeys){
+        AddressAdapter(List<DeterministicKey> deterministicKeys) {
             mDeterministicKeys = deterministicKeys;
         }
 

@@ -1,6 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenNameFragment;
 
 
+import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
@@ -43,12 +44,15 @@ public class SetTokenNameFragment extends BaseFragment implements SetTokenNameFr
         }
     }
 
-    private final int LAYOUT = R.layout.fragment_set_token_name;
     private SetTokenNameFragmentPresenterImpl mSetTokenNameFragmentPresenter;
 
-    public static SetTokenNameFragment newInstance(){
-        SetTokenNameFragment setTokenNameFragment = new SetTokenNameFragment();
-        return setTokenNameFragment;
+    public static SetTokenNameFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        SetTokenNameFragment fragment = new SetTokenNameFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -63,7 +67,7 @@ public class SetTokenNameFragment extends BaseFragment implements SetTokenNameFr
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_set_token_name;
     }
 
     @Override
@@ -83,4 +87,12 @@ public class SetTokenNameFragment extends BaseFragment implements SetTokenNameFr
         mTextInputLayoutTokenName.setError("");
         mTextInputLayoutTokenSymbol.setError("");
     }
+
+    @Override
+    public void setData(String name, String symbol) {
+        mTextInputEditTextTokenName.setText(name);
+        mTextInputEditTextTokenSymbol.setText(symbol);
+    }
+
+
 }

@@ -1,49 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
 
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-                    android:background="@drawable/background_main"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin">
+        android:background="@drawable/background_main"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
         <RelativeLayout
+            android:id="@+id/rl_button_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:id="@+id/rl_button_container"
             android:layout_centerHorizontal="true">
-        <Button
-            android:id="@+id/bt_create_new"
-            android:layout_width="202dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_bt_alpha"
-            android:text="@string/create_new"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/button_text"/>
 
-        <Button
-            android:id="@+id/bt_import_wallet"
-            android:layout_width="202dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/bt_create_new"
-            android:background="@drawable/background_bt_alpha"
-            android:text="@string/import_wallet"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/button_text"/>
+            <Button
+                android:id="@+id/bt_create_new"
+                android:layout_width="202dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_bt_alpha"
+                android:text="@string/create_new"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/button_text"/>
+
+            <Button
+                android:id="@+id/bt_import_wallet"
+                android:layout_width="202dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bt_create_new"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/background_bt_alpha"
+                android:text="@string/import_wallet"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/button_text"/>
         </RelativeLayout>
 
         <TextView
@@ -64,17 +66,17 @@
             android:layout_height="190dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            app:lottie_fileName="logo_anim.json"
-            app:lottie_autoPlay="true"/>
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="logo_anim.json"/>
 
         <ImageView
+            android:id="@+id/iv_logo_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/animation_view"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_below="@+id/animation_view"
             android:layout_marginTop="16dp"
-            android:id="@+id/iv_logo_txt"
             app:srcCompat="@drawable/logo_txt"/>
 
 
@@ -91,17 +93,17 @@
     </RelativeLayout>
 
     <org.qtum.mromanovsky.qtum.ui.customview.WaveTop
+        android:id="@+id/iv_top_wave"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:id="@+id/iv_top_wave"
-        android:clickable="false"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:clickable="false"/>
 
     <org.qtum.mromanovsky.qtum.ui.customview.WaveBottom
+        android:id="@+id/iv_bottom_wave"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:clickable="false"
-        android:id="@+id/iv_bottom_wave"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:clickable="false"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -19,10 +19,6 @@ import android.view.View;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment.NewsFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment.ProfileFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
 import java.lang.reflect.Field;
 
@@ -33,8 +29,8 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
     private static final int LAYOUT = R.layout.activity_main;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
-    private static final int REQUEST_CAMERA=0;
-    private Fragment mRootFragment;
+    private static final int REQUEST_CAMERA = 0;
+
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
 
@@ -54,15 +50,14 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         setContentView(LAYOUT);
         //TODO:uncoment
         //Fabric.with(this, new Crashlytics());
-        
-        loadPermissions(Manifest.permission.CAMERA ,REQUEST_CAMERA);
+        loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
 
     }
 
-    private void loadPermissions(String perm,int requestCode) {
+    private void loadPermissions(String perm, int requestCode) {
         if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
-                ActivityCompat.requestPermissions(this, new String[]{perm},requestCode);
+                ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
             }
         }
     }
@@ -82,11 +77,16 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                 .commit();
     }
 
+    @Override
+    public void popBackStack() {
+        getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, 0);
+    }
+
     public void showBottomNavigationView() {
         mBottomNavigationView.setVisibility(View.VISIBLE);
     }
 
-    public BottomNavigationView getBottomNavigationView(){
+    public BottomNavigationView getBottomNavigationView() {
         return mBottomNavigationView;
     }
 
@@ -105,10 +105,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
             shiftingMode.setAccessible(false);
             for (int i = 0; i < menuView.getChildCount(); i++) {
                 BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
-                //noinspection RestrictedApi
                 item.setShiftingMode(false);
-                // set once again checked value, so view will be updated
-                //noinspection RestrictedApi
                 item.setChecked(item.getItemData().isChecked());
             }
         } catch (NoSuchFieldException e) {
@@ -120,48 +117,12 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                switch (item.getItemId()) {
-                    case R.id.item_wallet:
-                        if(mRootFragment !=null && mRootFragment.getClass().getCanonicalName().equals(WalletFragment.class.getCanonicalName())){
-                            getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, 0);
-                            return true;
-                        }
-                        mRootFragment = WalletFragment.newInstance();
-                        break;
-                    case R.id.item_profile:
-                        if(mRootFragment !=null && mRootFragment.getClass().getCanonicalName().equals(ProfileFragment.class.getCanonicalName())){
-                            getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, 0);
-                            return true;
-                        }
-                        mRootFragment = ProfileFragment.newInstance();
-                        break;
-                    case R.id.item_news:
-                        if(mRootFragment !=null && mRootFragment.getClass().getCanonicalName().equals(NewsFragment.class.getCanonicalName())){
-                            getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, 0);
-                            return true;
-                        }
-                        mRootFragment = NewsFragment.newInstance();
-                        break;
-                    case R.id.item_send:
-                        if(mRootFragment !=null && mRootFragment.getClass().getCanonicalName().equals(SendBaseFragment.class.getCanonicalName())){
-                            getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, 0);
-                            return true;
-                        }
-                        mRootFragment = SendBaseFragment.newInstance(false);
-                        break;
-                    default:
-                        return false;
-                }
-
-                getPresenter().openFragment(mRootFragment);
-                return true;
+                return getPresenter().onNavigationItemSelected(item);
             }
         });
     }
 
-
     public void setRootFragment(Fragment rootFragment) {
-        mRootFragment = rootFragment;
+        getPresenter().setRootFragment(rootFragment);
     }
 }

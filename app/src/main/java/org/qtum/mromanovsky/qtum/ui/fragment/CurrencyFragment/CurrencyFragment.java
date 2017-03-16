@@ -28,7 +28,6 @@ import butterknife.OnClick;
 
 public class CurrencyFragment extends BaseFragment implements CurrencyFragmentView{
 
-    private final int LAYOUT = R.layout.fragment_currency;
     private CurrencyFragmentPresenterImpl mCurrencyFragmentPresenter;
     private CurrencyAdapter mCurrencyAdapter;
     private String mSearchString;
@@ -75,7 +74,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
 
     @Override
     protected int getLayout() {
-        return LAYOUT;
+        return R.layout.fragment_currency;
     }
 
     @Override
@@ -115,7 +114,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
                     mCurrencyAdapter.setFilter(list);
                 } else {
                     mSearchString = editable.toString().toLowerCase();
-                    List<Currency> newList = new ArrayList<Currency>();
+                    List<Currency> newList = new ArrayList<>();
                     for(Currency currency: list){
                         if(currency.getName().contains(mSearchString))
                             newList.add(currency);
@@ -142,8 +141,10 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        currentCurrency = mCurrencyAdapter.getCurrencyList().get(getAdapterPosition()).getName();
-                        mCurrencyAdapter.notifyDataSetChanged();
+                        if(getAdapterPosition()>=0) {
+                            currentCurrency = mCurrencyAdapter.getCurrencyList().get(getAdapterPosition()).getName();
+                            mCurrencyAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
             }
@@ -186,13 +187,13 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
             return mCurrencyList.size();
         }
 
-        public void setFilter(List<Currency> newList){
+        void setFilter(List<Currency> newList){
             mCurrencyList = new ArrayList<>();
             mCurrencyList.addAll(newList);
             notifyDataSetChanged();
         }
 
-        public List<Currency> getCurrencyList() {
+        List<Currency> getCurrencyList() {
             return mCurrencyList;
         }
     }

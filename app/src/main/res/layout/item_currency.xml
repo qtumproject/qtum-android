@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
               android:id="@+id/ll_currency"
-              android:clickable="true"
-              android:background="@drawable/background_white_with_grey_pressed"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+              android:background="@drawable/background_white_with_grey_pressed"
+              android:clickable="true"
+              android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="horizontal"
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/tv_currency"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
             android:layout_weight="1"
-            android:id="@+id/tv_currency"
-            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:text="asdas12312kmddm7m12312mfvf6"
             android:textColor="@color/grey"
-            android:text="asdas12312kmddm7m12312mfvf6"/>
+            android:textSize="14sp"/>
 
         <ImageView
+            android:id="@+id/iv_check_indicator"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:visibility="gone"
-            app:srcCompat="@drawable/ic_check"
-            android:id="@+id/iv_check_indicator"/>
+            app:srcCompat="@drawable/ic_check"/>
 
     </LinearLayout>
 
