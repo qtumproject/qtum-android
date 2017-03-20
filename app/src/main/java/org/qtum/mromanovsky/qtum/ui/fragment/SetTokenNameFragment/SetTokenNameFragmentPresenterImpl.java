@@ -47,7 +47,6 @@ class SetTokenNameFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
 
         getInteractor().setTokenName(name);
         getInteractor().setTokenSymbol(symbol);
-        getView().hideKeyBoard();
         SetTokenFeaturesFragment setTokenFeaturesFragment = SetTokenFeaturesFragment.newInstance();
         getView().openFragment(setTokenFeaturesFragment);
     }

@@ -49,7 +49,6 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                             getView().clearError();
                             final BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(true);
                             getView().setProgressDialog("Key generation");
-                            getView().hideKeyBoard();
                             getInteractor().createWallet(getView().getContext(), new PinFragmentInteractorImpl.CreateWalletCallBack() {
                                 @Override
                                 public void onSuccess() {
@@ -79,7 +78,6 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                         if (Integer.parseInt(pin) == pinForRepeat) {
                             getView().clearError();
                             final WalletFragment walletFragment = WalletFragment.newInstance();
-                            getView().hideKeyBoard();
                             getInteractor().savePassword(pinForRepeat);
                             getInteractor().setKeyGeneratedInstance(true);
                             ((MainActivity) getView().getFragmentActivity()).setRootFragment(walletFragment);
@@ -98,7 +96,6 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     getView().clearError();
                     final WalletFragment walletFragment = WalletFragment.newInstance();
                     getView().setProgressDialog("Loading key");
-                    getView().hideKeyBoard();
                     getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
                         @Override
                         public void onSuccess() {
@@ -135,7 +132,6 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     case 2:
                         if (Integer.parseInt(pin) == pinForRepeat) {
                             getView().clearError();
-                            getView().hideKeyBoard();
                             getInteractor().savePassword(Integer.parseInt(pin));
                             getView().getFragmentActivity().onBackPressed();
                         } else {

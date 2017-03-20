@@ -84,6 +84,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void onPause() {
         super.onPause();
+        hideKeyBoard();
         getPresenter().onPause(getActivity());
     }
 
@@ -171,6 +172,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void openRootFragment(Fragment fragment) {
         getFragmentManager().popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        hideKeyBoard();
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
@@ -181,6 +183,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void openFragment(Fragment fragment) {
+        hideKeyBoard();
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)

@@ -77,6 +77,7 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
         mTextInputLayoutWalletName.requestFocus();
         mTextInputEditTextWalletName.setFocusable(true);
         mTextInputEditTextWalletName.requestFocus();
+        showSoftInput();
     }
 
     @Override

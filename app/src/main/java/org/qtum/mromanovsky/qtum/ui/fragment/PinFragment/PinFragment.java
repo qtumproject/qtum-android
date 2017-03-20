@@ -125,6 +125,9 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
             }
         });
 
+        mTextInputEditTextWalletPin.setFocusableInTouchMode(true);
+        mTextInputEditTextWalletPin.requestFocus();
+        showSoftInput();
 
     }
 }

@@ -34,7 +34,6 @@ class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl im
                 pinFragment = PinFragment.newInstance(PinFragment.IMPORTING);
 
             }
-            getView().hideKeyBoard();
             getView().openFragment(pinFragment);
         }
     }

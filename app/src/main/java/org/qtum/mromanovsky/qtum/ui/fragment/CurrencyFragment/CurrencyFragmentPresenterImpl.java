@@ -19,9 +19,4 @@ class CurrencyFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
         return mCurrencyFragmentView;
     }
 
-    @Override
-    public void onPause(Context context) {
-        super.onPause(context);
-        getView().hideKeyBoard();
-    }
 }

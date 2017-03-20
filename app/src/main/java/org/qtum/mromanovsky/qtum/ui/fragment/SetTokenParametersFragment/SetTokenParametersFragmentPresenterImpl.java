@@ -40,7 +40,6 @@ class SetTokenParametersFragmentPresenterImpl extends BaseFragmentPresenterImpl 
 
         getInteractor().setInitialSupply(initialSupply);
         getInteractor().setDecimalUnits(decimalUnits);
-        getView().hideKeyBoard();
         SetTokenConfirmFragment setTokenConfirmFragment = SetTokenConfirmFragment.newInstance();
         getView().openFragment(setTokenConfirmFragment);
     }
