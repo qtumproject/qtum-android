@@ -1,6 +1,8 @@
 package org.qtum.mromanovsky.qtum.dataprovider.RestAPI;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.GenerateTokenBytecodeRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
@@ -8,6 +10,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -33,7 +36,11 @@ interface QtumRestService {
     @POST("/send-raw-transaction")
     Observable<Void> sendRawTransaction(@Body SendRawTransactionRequest sendRawTransactionRequest);
 
+    @POST("/contracts/generate-token-bytecode")
+    Observable<ByteCode> generateTokenBytecode(@Body GenerateTokenBytecodeRequest generateTokenBytecodeRequest);
+
     @GET("/outputs/unspent")
+//    Call<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses(@Query("addresses[]") List<String> addresses);
     Observable<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses(@Query("addresses[]") List<String> addresses);
 
     @GET("/history/{limit}/{offset}")

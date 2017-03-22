@@ -48,11 +48,13 @@ class SetTokenParametersFragmentPresenterImpl extends BaseFragmentPresenterImpl 
     public void initializeViews() {
         super.initializeViews();
         getView().setData(getInteractor().getInitialSupply(), getInteractor().getDecimalUnits());
+        getView().showSoftInput();
     }
 
     @Override
     public void onBackClick() {
         getView().getFragmentActivity().onBackPressed();
+        getView().hideKeyBoard();
     }
 
     public SetTokenParametersFragmentInteractorImpl getInteractor() {

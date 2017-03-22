@@ -79,18 +79,22 @@
 
     </RelativeLayout>
 
-    <org.qtum.mromanovsky.qtum.ui.customview.WaveTop
-        android:id="@+id/iv_top_wave"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/wave1"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:clickable="false"/>
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_fileName="w1.json"/>
 
-    <org.qtum.mromanovsky.qtum.ui.customview.WaveBottom
-        android:id="@+id/iv_bottom_wave"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/wave2"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:clickable="false"/>
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_fileName="w2.json"/>
 
 </android.support.design.widget.CoordinatorLayout>

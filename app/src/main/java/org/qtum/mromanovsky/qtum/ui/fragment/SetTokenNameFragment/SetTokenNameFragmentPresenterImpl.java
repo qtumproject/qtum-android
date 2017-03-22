@@ -1,6 +1,9 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenNameFragment;
 
 
+import android.content.Context;
+
+import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.SetTokenFeaturesFragment.SetTokenFeaturesFragment;
 
@@ -24,6 +27,8 @@ class SetTokenNameFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     public void initializeViews() {
         super.initializeViews();
         getView().setData(getInteractor().getTokenName(),getInteractor().getTokenSymbol());
+        ((MainActivity) getView().getFragmentActivity()).hideBottomNavigationView();
+        getView().showSoftInput();
     }
 
     @Override
@@ -54,9 +59,16 @@ class SetTokenNameFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     @Override
     public void onCancelClick() {
         getView().getFragmentActivity().onBackPressed();
+        getView().hideKeyBoard();
     }
 
     public SetTokenNameFragmentInteractorImpl getInteractor() {
         return mSetTokenNameFragmentInteractor;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity) getView().getFragmentActivity()).showBottomNavigationView();
     }
 }

@@ -85,4 +85,11 @@ public class SetTokenParametersFragment extends BaseFragment implements SetToken
         mTextInputEditTextInitialSupply.setText(initialSupply);
         mTextInputEditTextDecimalUnits.setText(decimalUnits);
     }
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        mTextInputEditTextInitialSupply.setFocusableInTouchMode(true);
+        mTextInputEditTextInitialSupply.requestFocus();
+    }
 }

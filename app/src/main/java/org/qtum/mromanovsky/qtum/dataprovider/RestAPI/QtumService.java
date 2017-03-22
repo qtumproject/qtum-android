@@ -2,25 +2,31 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI;
 
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.GenerateTokenBytecodeRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
+import rx.Subscriber;
 
 
 public class QtumService {
 
     private static QtumService sQtumService;
-    private static final String BASE_URL = "http://139.162.178.174/";
+    private static final String BASE_URL = "http://163.172.68.103:5931/";
     private QtumRestService mServiceApi;
 
     public static QtumService newInstance() {
@@ -51,6 +57,23 @@ public class QtumService {
     }
 
     public Observable<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses(final List<String> addresses) {
+//        return Observable.create(new Observable.OnSubscribe<List<UnspentOutput>>() {
+//            @Override
+//            public void call(Subscriber<? super List<UnspentOutput>> subscriber) {
+//                Call<List<UnspentOutput>> request;
+//                request = mServiceApi.getUnspentOutputsForSeveralAddresses(addresses);
+//                try {
+//                    Response<List<UnspentOutput>> response = request.execute();
+//                    if(response.errorBody() != null){
+//                        subscriber.onError(new Throwable(response.errorBody().toString()));
+//                    }else {
+//                        subscriber.onNext(response.body());
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
         return mServiceApi.getUnspentOutputsForSeveralAddresses(addresses);
     }
 
@@ -97,5 +120,9 @@ public class QtumService {
 
     public Observable<Void> sendRawTransaction(final SendRawTransactionRequest sendRawTransactionRequest) {
         return mServiceApi.sendRawTransaction(sendRawTransactionRequest);
+    }
+
+    public Observable<ByteCode> generateTokenBytecode(final GenerateTokenBytecodeRequest generateTokenBytecodeRequest){
+        return mServiceApi.generateTokenBytecode(generateTokenBytecodeRequest);
     }
 }

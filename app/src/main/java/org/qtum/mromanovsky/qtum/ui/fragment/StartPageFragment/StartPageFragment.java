@@ -3,7 +3,6 @@ package org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment;
 
 import android.animation.Animator;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,8 +15,6 @@ import com.airbnb.lottie.LottieAnimationView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
-import org.qtum.mromanovsky.qtum.ui.customview.WaveBottom;
-import org.qtum.mromanovsky.qtum.ui.customview.WaveTop;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 import butterknife.BindView;
@@ -41,10 +38,12 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     TextView mTextViewYouDontHave;
     @BindView(R.id.tv_start_page_create)
     TextView mTextViewStartPageCreate;
-    @BindView(R.id.iv_bottom_wave)
-    WaveBottom mViewBottomWave;
-    @BindView(R.id.iv_top_wave)
-    WaveTop mViewTopWave;
+
+    @BindView(R.id.wave1)
+    LottieAnimationView mWave1;
+    @BindView(R.id.wave2)
+    LottieAnimationView mWave2;
+
     @BindView(R.id.iv_logo_txt)
     ImageView mImageViewLogoTxt;
     @BindView(R.id.rl_button_container)
@@ -142,16 +141,16 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
                         mAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.alpha_for_text);
                         mTextViewYouDontHave.startAnimation(mAnimation);
                         mAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.alpha_for_wave);
-                        mViewBottomWave.startAnimation(mAnimation);
-                        mViewTopWave.startAnimation(mAnimation);
+                        mWave1.startAnimation(mAnimation);
+                        mWave2.startAnimation(mAnimation);
                         break;
                     case 1:
                         mAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.alpha_for_text);
                         mTextViewYouDontHave.setVisibility(View.VISIBLE);
                         mTextViewStartPageCreate.startAnimation(mAnimation);
 
-                        mViewTopWave.setVisibility(View.INVISIBLE);
-                        mViewBottomWave.setVisibility(View.INVISIBLE);
+                        mWave2.setVisibility(View.INVISIBLE);
+                        mWave1.setVisibility(View.INVISIBLE);
 
                         break;
                     case 2:

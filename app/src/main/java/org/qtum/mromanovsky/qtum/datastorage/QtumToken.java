@@ -10,7 +10,7 @@ public class QtumToken {
     private boolean mIsAutorefill;
     private boolean mIsProofOfWork;
     private long mInitialSupply;
-    private long mDecimalUnits;
+    private int mDecimalUnits;
 
     public static QtumToken getInstance() {
         if (sQtumToken == null) {
@@ -79,11 +79,11 @@ public class QtumToken {
         mInitialSupply = initialSupply;
     }
 
-    public long getDecimalUnits() {
+    public int getDecimalUnits() {
         return mDecimalUnits;
     }
 
-    public void setDecimalUnits(long decimalUnits) {
+    public void setDecimalUnits(int decimalUnits) {
         mDecimalUnits = decimalUnits;
     }
 

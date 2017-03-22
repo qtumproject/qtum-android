@@ -94,5 +94,10 @@ public class SetTokenNameFragment extends BaseFragment implements SetTokenNameFr
         mTextInputEditTextTokenSymbol.setText(symbol);
     }
 
-
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        mTextInputEditTextTokenName.setFocusableInTouchMode(true);
+        mTextInputEditTextTokenName.requestFocus();
+    }
 }
