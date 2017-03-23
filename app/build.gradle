@@ -83,6 +83,11 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
 
+    compile ('io.socket:socket.io-client:0.8.3') {
+        // excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
+
     compile 'com.airbnb.android:lottie:1.5.1'
     //fabric.io
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {

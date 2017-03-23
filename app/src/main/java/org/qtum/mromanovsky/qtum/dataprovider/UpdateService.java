@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -12,22 +11,21 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 
 import org.bitcoinj.wallet.Wallet;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
-import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 
-import java.util.concurrent.TimeUnit;
+import java.net.URISyntaxException;
 
-import rx.Observable;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
@@ -35,26 +33,68 @@ public class UpdateService extends Service {
 
     public static final int DEFAULT_NOTIFICATION_ID = 101;
     private NotificationManager notificationManager;
-    Subscription subscription;
     boolean monitoringFlag = false;
-    UpdateData mUpdateData = null;
-    int currentCount;
+    UpdateServiceListener mListener = null;
     Notification notification;
     Uri uri;
+    private Socket socket;
 
     UpdateBinder mUpdateBinder = new UpdateBinder();
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        try {
+            socket = IO.socket("http://163.172.68.103:5931/");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+
+                JSONArray arr = new JSONArray();
+                arr.put("mt8WVPpaThMykC6cMrParAbykRBYWLDkPR");
+//                for(String address : KeyStorage.getInstance().getAddresses()){
+//                    arr.put(address);
+//                }
+                socket.emit("subscribe","quantumd/addresstxid", arr);
+                sendDefaultNotification();
+
+
+            }
+        }).on("quantumd/addresstxid", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                if(mListener != null) {
+                    mListener.updateDate();
+                    JSONObject data = (JSONObject) args[0];
+                } else {
+                    sendNotification("Call","Call","Call");
+                }
+            }
+        }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+
+            }
+        });
+
+
+
         notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
         uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     }
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         notificationManager.cancel(DEFAULT_NOTIFICATION_ID);
+        socket.emit("removeListener","quantumd/addresstxid");
+        socket.disconnect();
         stopSelf();
     }
 
@@ -65,7 +105,7 @@ public class UpdateService extends Service {
         loadWalletFromFile(new LoadWalletFromFileCallBack() {
             @Override
             public void onSuccess() {
-                startMonitoringHistory();
+                socket.connect();
             }
         });
 
@@ -87,44 +127,9 @@ public class UpdateService extends Service {
 
                     @Override
                     public void onNext(Wallet wallet) {
-                        if(mUpdateData!=null) {
-                            mUpdateData.updateDate();
-                        }
                         callback.onSuccess();
                     }
                 });
-    }
-
-    public void startMonitoringHistory() {
-        monitoringFlag = true;
-        //sendDefaultNotification();
-        currentCount = QtumSharedPreference.getInstance().getHistoryCount(getBaseContext());
-        subscription = Observable.interval(1000, 3000, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Long>() {
-                    public void call(Long aLong) {
-                        QtumService.newInstance().getHistoryCount(KeyStorage.getInstance().getAddresses(), new QtumService.GetHistoryCountCallBack() {
-                            @Override
-                            public void onResponse(int count) {
-                                Log.d("hello", ""+count);
-                                if(count!=currentCount){
-                                    sendNotification("Ticker","New Transaction","Count: " + (count-currentCount));
-                                    subscription.unsubscribe();
-                                }
-                            }
-                            @Override
-                            public void onError() {
-
-                            }
-                        });
-                    }
-                });
-    }
-
-    public void unsubscribe(){
-        monitoringFlag = false;
-        subscription.unsubscribe();
     }
 
     //TODO: merge with sendNotification method
@@ -201,10 +206,13 @@ public class UpdateService extends Service {
         return mUpdateBinder;
     }
 
-    public void registerListener(UpdateData updateData){
-        mUpdateData = updateData;
+    public void registerListener(UpdateServiceListener updateServiceListener){
+        mListener = updateServiceListener;
     }
 
+    public void removeListener(){
+        mListener = null;
+    }
 
     public class UpdateBinder extends Binder {
         public UpdateService getService() {

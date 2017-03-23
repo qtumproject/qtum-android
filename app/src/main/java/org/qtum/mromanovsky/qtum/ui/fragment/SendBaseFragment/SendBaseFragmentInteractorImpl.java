@@ -128,6 +128,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     }
                 }
 
+
                 transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
                 transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
 

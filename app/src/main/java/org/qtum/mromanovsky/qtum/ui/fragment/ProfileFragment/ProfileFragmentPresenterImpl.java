@@ -60,8 +60,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     public void onLogOutYesClick() {
         mIntent = new Intent(getView().getContext(), UpdateService.class);
 
-        //TODO : service
-        //getView().getContext().bindService(mIntent,mServiceConnection,0);
+        getView().getContext().bindService(mIntent,mServiceConnection,0);
 
         getInteractor().clearWallet();
 
@@ -86,7 +85,6 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
-            mUpdateService.unsubscribe();
             getView().getContext().unbindService(mServiceConnection);
             mUpdateService.stopSelf();
         }

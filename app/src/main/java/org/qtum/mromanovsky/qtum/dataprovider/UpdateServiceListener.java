@@ -1,6 +1,6 @@
 package org.qtum.mromanovsky.qtum.dataprovider;
 
 
-public interface UpdateData {
+public interface UpdateServiceListener {
     void updateDate();
 }

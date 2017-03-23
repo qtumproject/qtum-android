@@ -1,11 +1,15 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
+import org.qtum.mromanovsky.qtum.dataprovider.UpdateServiceListener;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
@@ -27,27 +31,23 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     }
 
 
-//    private ServiceConnection mServiceConnection = new ServiceConnection() {
-//        @Override
-//        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-//            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
-//            if(mUpdateService.isMonitoring()){
-//                mUpdateService.unsubscribe();
-//            }
-//            mUpdateService.registerListener(new UpdateData() {
-//                @Override
-//                public void updateDate() {
-//                    mUpdateService.unsubscribe();
-//                }
-//            });
-//            mUpdateService.sendDefaultNotification();
-//        }
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName componentName) {
-//
-//        }
-//    };
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
+            mUpdateService.registerListener(new UpdateServiceListener() {
+                @Override
+                public void updateDate() {
+
+                }
+            });
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
 
     @Override
     public void onStart(Context context) {
@@ -55,7 +55,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
         mIntent = new Intent(context, UpdateService.class);
         if (!isMyServiceRunning(UpdateService.class)) {
-            //context.startService(mIntent);
+            context.startService(mIntent);
         }
     }
 
@@ -73,21 +73,19 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onResume(Context context) {
         super.onResume(context);
-        //context.bindService(mIntent,mServiceConnection,0);
+        context.bindService(mIntent,mServiceConnection,0);
     }
 
     @Override
     public void onPause(Context context) {
         super.onPause(context);
-        if (mUpdateService != null && !mUpdateService.isMonitoring()) {
-            //mUpdateService.startMonitoringHistory();
-        }
+        mUpdateService.removeListener();
     }
 
     @Override
     public void onStop(Context context) {
         super.onStop(context);
-        //context.unbindService(mServiceConnection);
+        context.unbindService(mServiceConnection);
     }
 
     @Override
