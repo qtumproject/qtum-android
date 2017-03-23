@@ -80,12 +80,12 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     public void onPause(Context context) {
         super.onPause(context);
         mUpdateService.removeListener();
+        context.unbindService(mServiceConnection);
     }
 
     @Override
     public void onStop(Context context) {
         super.onStop(context);
-        context.unbindService(mServiceConnection);
     }
 
     @Override

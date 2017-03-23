@@ -31,12 +31,10 @@ import rx.schedulers.Schedulers;
 
 public class UpdateService extends Service {
 
-    public static final int DEFAULT_NOTIFICATION_ID = 101;
+    public final int DEFAULT_NOTIFICATION_ID = 101;
     private NotificationManager notificationManager;
-    boolean monitoringFlag = false;
-    UpdateServiceListener mListener = null;
-    Notification notification;
-    Uri uri;
+    private UpdateServiceListener mListener = null;
+    private Notification notification;
     private Socket socket;
 
     UpdateBinder mUpdateBinder = new UpdateBinder();
@@ -61,8 +59,7 @@ public class UpdateService extends Service {
 //                    arr.put(address);
 //                }
                 socket.emit("subscribe","quantumd/addresstxid", arr);
-                sendDefaultNotification();
-
+                sendNotification("Default","Default","Defaul",null);
 
             }
         }).on("quantumd/addresstxid", new Emitter.Listener() {
@@ -72,7 +69,7 @@ public class UpdateService extends Service {
                     mListener.updateDate();
                     JSONObject data = (JSONObject) args[0];
                 } else {
-                    sendNotification("Call","Call","Call");
+                    sendNotification("Call","Call","Call",RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                 }
             }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
@@ -83,9 +80,7 @@ public class UpdateService extends Service {
         });
 
 
-
         notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
-        uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     }
 
 
@@ -93,7 +88,7 @@ public class UpdateService extends Service {
     public void onDestroy() {
         super.onDestroy();
         notificationManager.cancel(DEFAULT_NOTIFICATION_ID);
-        socket.emit("removeListener","quantumd/addresstxid");
+        socket.emit("unsubscribe","quantumd/addresstxid");
         socket.disconnect();
         stopSelf();
     }
@@ -132,46 +127,12 @@ public class UpdateService extends Service {
                 });
     }
 
-    //TODO: merge with sendNotification method
-    public void sendDefaultNotification(){
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        notificationIntent.setAction(Intent.ACTION_MAIN);
-        notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-
-        notificationIntent.putExtra("notification_action", true);
-
-        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentIntent(contentIntent)
-                .setOngoing(true)   //Can't be swiped out
-                .setSmallIcon(R.drawable.ic_launcher)
-                //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))   // большая картинка
-                .setTicker("Default Ticker")
-                .setContentTitle("Default Title") //Заголовок
-                .setContentText("Default Text") // Текст уведомления
-                .setWhen(System.currentTimeMillis());
-
-        if (android.os.Build.VERSION.SDK_INT<=15) {
-            notification = builder.getNotification(); // API-15 and lower
-        }else{
-            notification = builder.build();
-        }
-
-        startForeground(DEFAULT_NOTIFICATION_ID, notification);
-    }
-
-    public boolean isMonitoring(){
-        return monitoringFlag;
-    }
-
-    public interface LoadWalletFromFileCallBack {
+    interface LoadWalletFromFileCallBack {
         void onSuccess();
     }
 
-    public void sendNotification(String Ticker,String Title,String Text) {
+    public void sendNotification(String Ticker,String Title,String Text, Uri sound) {
 
-        //These three lines makes Notification to open main activity after clicking on it
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setAction(Intent.ACTION_MAIN);
         notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -182,17 +143,17 @@ public class UpdateService extends Service {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentIntent(contentIntent)
-                .setOngoing(true)   //Can't be swiped out
+                .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_launcher)
                 //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))   // большая картинка
                 .setTicker(Ticker)
-                .setContentTitle(Title) //Заголовок
-                .setContentText(Text) // Текст уведомления
+                .setContentTitle(Title)
+                .setContentText(Text)
                 .setWhen(System.currentTimeMillis())
-                .setSound(uri);
+                .setSound(sound);
 
         if (android.os.Build.VERSION.SDK_INT<=15) {
-            notification = builder.getNotification(); // API-15 and lower
+            notification = builder.getNotification();
         }else{
             notification = builder.build();
         }
