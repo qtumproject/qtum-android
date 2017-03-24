@@ -38,7 +38,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
             mUpdateService.registerListener(new UpdateServiceListener() {
                 @Override
                 public void updateDate() {
-
+                    //TODO : add new transaction action
                 }
             });
         }

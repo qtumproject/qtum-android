@@ -81,25 +81,6 @@ public class QtumService {
         return mServiceApi.getHistoryListForSeveralAddresses(limit, offset, addresses);
     }
 
-    //TODO: create
-    public void getHistoryCount(final List<String> addresses, final GetHistoryCountCallBack callBack) {
-//        Call<List<History>> request;
-//        request = mServiceApi.getHistoryListForSeveralAddresses(1000,0,addresses);
-//
-//            request.enqueue(new Callback<List<History>>() {
-//                @Override
-//                public void onResponse(Call<List<History>> call, Response<List<History>> response) {
-//                    callBack.onResponse(response.body().size());
-//                }
-//
-//                @Override
-//                public void onFailure(Call<List<History>> call, Throwable t) {
-//
-//                }
-//            });
-
-    }
-
     public interface GetHistoryCountCallBack {
         void onResponse(int count);
 

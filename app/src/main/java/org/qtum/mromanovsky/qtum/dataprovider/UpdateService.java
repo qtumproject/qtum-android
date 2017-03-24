@@ -54,20 +54,20 @@ public class UpdateService extends Service {
             public void call(Object... args) {
 
                 JSONArray arr = new JSONArray();
-                arr.put("mt8WVPpaThMykC6cMrParAbykRBYWLDkPR");
-//                for(String address : KeyStorage.getInstance().getAddresses()){
-//                    arr.put(address);
-//                }
-                socket.emit("subscribe","quantumd/addresstxid", arr);
+                //arr.put("mxDkwrDixgLNhNW9HHq73d1VpLcwYUtyja");
+                for(String address : KeyStorage.getInstance().getAddresses()){
+                    arr.put(address);
+                }
+                socket.emit("subscribe","quantumd/addressbalance", arr);
                 sendNotification("Default","Default","Defaul",null);
 
             }
-        }).on("quantumd/addresstxid", new Emitter.Listener() {
+        }).on("quantumd/addressbalance", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 if(mListener != null) {
                     mListener.updateDate();
-                    JSONObject data = (JSONObject) args[0];
+                    //JSONObject data = (JSONObject) args[0];
                 } else {
                     sendNotification("Call","Call","Call",RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                 }
@@ -88,7 +88,7 @@ public class UpdateService extends Service {
     public void onDestroy() {
         super.onDestroy();
         notificationManager.cancel(DEFAULT_NOTIFICATION_ID);
-        socket.emit("unsubscribe","quantumd/addresstxid");
+        socket.emit("unsubscribe","quantumd/addressbalance");
         socket.disconnect();
         stopSelf();
     }
