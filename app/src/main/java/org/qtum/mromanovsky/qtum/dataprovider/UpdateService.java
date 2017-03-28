@@ -5,12 +5,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 
 import org.bitcoinj.wallet.Wallet;
 import org.json.JSONArray;
@@ -54,7 +56,6 @@ public class UpdateService extends Service {
             public void call(Object... args) {
 
                 JSONArray arr = new JSONArray();
-                //arr.put("mxDkwrDixgLNhNW9HHq73d1VpLcwYUtyja");
                 for(String address : KeyStorage.getInstance().getAddresses()){
                     arr.put(address);
                 }
@@ -145,7 +146,7 @@ public class UpdateService extends Service {
         builder.setContentIntent(contentIntent)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_launcher)
-                //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))   // большая картинка
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
                 .setTicker(Ticker)
                 .setContentTitle(Title)
                 .setContentText(Text)

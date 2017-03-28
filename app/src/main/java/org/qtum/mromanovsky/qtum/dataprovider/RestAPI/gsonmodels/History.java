@@ -4,6 +4,8 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class History {
 
     @SerializedName("block_time")
@@ -26,10 +28,10 @@ public class History {
     private Long amount;
     @SerializedName("from_address")
     @Expose
-    private String fromAddress;
+    private List<String> fromAddress = null;
     @SerializedName("to_address")
     @Expose
-    private String toAddress;
+    private List<String> toAddress = null;
 
     public Long getBlockTime() {
         return blockTime;
@@ -79,19 +81,19 @@ public class History {
         this.amount = amount;
     }
 
-    public String getFromAddress() {
+    public List<String> getFromAddress() {
         return fromAddress;
     }
 
-    public void setFromAddress(String fromAddress) {
+    public void setFromAddress(List<String> fromAddress) {
         this.fromAddress = fromAddress;
     }
 
-    public String getToAddress() {
+    public List<String> getToAddress() {
         return toAddress;
     }
 
-    public void setToAddress(String toAddress) {
+    public void setToAddress(List<String> toAddress) {
         this.toAddress = toAddress;
     }
 

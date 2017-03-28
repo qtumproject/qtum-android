@@ -51,7 +51,7 @@ class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         calendar.setTime(date);
         String time = new SimpleDateFormat("HH:mm:ss").format(date);
         String dateString = calendar.getDisplayName(Calendar.MONTH,Calendar.LONG, Locale.US) + ", " + calendar.get(Calendar.DATE) + " " + time;
-        getView().setUpTransactionData(history.getAmount()*(QtumSharedPreference.getInstance().getExchangeRates(getView().getContext())), dateString,
-                history.getFromAddress(), history.getToAddress());
+//        getView().setUpTransactionData(history.getAmount()*(QtumSharedPreference.getInstance().getExchangeRates(getView().getContext())), dateString,
+//                history.getFromAddress(), history.getToAddress());
     }
 }

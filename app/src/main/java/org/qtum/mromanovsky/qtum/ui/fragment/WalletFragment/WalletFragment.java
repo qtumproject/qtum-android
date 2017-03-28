@@ -126,7 +126,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
         mTransactionAdapter = new TransactionAdapter(historyList);
         mRecyclerView.setAdapter(mTransactionAdapter);
-
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -352,12 +351,12 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
             if (history.getAmount() > 0) {
                 mTextViewOperationType.setText(R.string.received);
-                mTextViewID.setText(history.getFromAddress());
+                //mTextViewID.setText(history.getFromAddress());
                 mImageViewIcon.setImageResource(R.drawable.ic_received);
                 mTextViewOperationType.setTextColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
             } else {
                 mTextViewOperationType.setText(R.string.sent);
-                mTextViewID.setText(history.getToAddress());
+                //mTextViewID.setText(history.getToAddress());
                 mImageViewIcon.setImageResource(R.drawable.ic_sent);
                 mTextViewOperationType.setTextColor(ContextCompat.getColor(getContext(), R.color.pink));
             }

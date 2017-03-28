@@ -1,6 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.AddressFormatException;
@@ -56,7 +57,6 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     public void onError(Throwable e) {
                         e.printStackTrace();
                     }
-
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
                         callBack.onSuccess(unspentOutputs);

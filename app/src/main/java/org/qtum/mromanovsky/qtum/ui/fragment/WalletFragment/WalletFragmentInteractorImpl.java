@@ -2,6 +2,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
@@ -37,7 +38,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     public void getHistoryList(final GetHistoryListCallBack callBack) {
 
         mSubscriptionHistoryList = QtumService.newInstance()
-                .getHistoryListForSeveralAddresses(KeyStorage.getInstance().getAddresses(), 500,0)
+                .getHistoryListForSeveralAddresses(KeyStorage.getInstance().getAddresses(), 50,0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<History>>() {
@@ -82,7 +83,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override
