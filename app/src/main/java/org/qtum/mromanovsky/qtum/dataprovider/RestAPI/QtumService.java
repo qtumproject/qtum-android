@@ -4,7 +4,8 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.GenerateTokenBytecodeRequest;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
+
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;

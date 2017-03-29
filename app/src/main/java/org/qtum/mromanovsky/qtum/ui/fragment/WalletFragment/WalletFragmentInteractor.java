@@ -1,7 +1,9 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
+
+
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 
 import java.util.List;
 

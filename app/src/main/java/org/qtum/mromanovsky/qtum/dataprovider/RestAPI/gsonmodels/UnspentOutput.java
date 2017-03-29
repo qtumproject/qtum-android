@@ -8,7 +8,7 @@ public class UnspentOutput {
 
     @SerializedName("amount")
     @Expose
-    private Long amount;
+    private Double amount;
     @SerializedName("vout")
     @Expose
     private Integer vout;
@@ -22,11 +22,11 @@ public class UnspentOutput {
     @Expose
     private String pubkeyHash;
 
-    public Long getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

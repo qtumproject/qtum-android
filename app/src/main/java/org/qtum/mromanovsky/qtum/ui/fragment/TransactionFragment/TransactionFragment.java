@@ -8,12 +8,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -25,10 +29,10 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     TextView mTextViewValue;
     @BindView(R.id.tv_received_time)
     TextView mTextViewReceivedTime;
-    @BindView(R.id.tv_from)
-    TextView mTextViewFrom;
-    @BindView(R.id.tv_to)
-    TextView mTextViewTo;
+    @BindView(R.id.lv_from)
+    ListView mListViewFrom;
+    @BindView(R.id.lv_to)
+    ListView mListViewTo;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
 
@@ -76,12 +80,19 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
 
     @Override
-    public void setUpTransactionData(double value, String receivedTime, String from, String to) {
+    public void setUpTransactionData(double value, String receivedTime, List<String> from, List<String> to) {
 
-        mTextViewValue.setText(String.valueOf(value));
+        DecimalFormat df = new DecimalFormat("0");
+        df.setMaximumFractionDigits(8);
+        mTextViewValue.setText(df.format(value));
+
         mTextViewReceivedTime.setText(receivedTime);
-        mTextViewFrom.setText(from);
-        mTextViewTo.setText(to);
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, from);
+        mListViewFrom.setAdapter(arrayAdapter);
+        arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, to);
+        mListViewTo.setAdapter(arrayAdapter);
+
         if (value > 0) {
             mAppBarLayout.setBackgroundResource(R.drawable.background_tb_sent);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

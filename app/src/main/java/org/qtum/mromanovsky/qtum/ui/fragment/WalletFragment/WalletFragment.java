@@ -21,7 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
+
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -325,44 +326,49 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
         void bindTransactionData(History history) {
 
-            long transactionTime = history.getBlockTime();
-            long delay = currentTime - transactionTime;
-            String dateString;
-            if (delay < 3600) {
-                dateString = delay / 60 + " min ago";
-            } else {
-
-                Calendar calendarNow = Calendar.getInstance();
-                calendarNow.set( Calendar.HOUR_OF_DAY, 0);
-                calendarNow.set(Calendar.MINUTE, 0);
-                calendarNow.set(Calendar.SECOND, 0);
-                date = calendarNow.getTime();
-
-                Date dateTransaction = new Date(transactionTime * 1000L);
-                Calendar calendar = new GregorianCalendar();
-                calendar.setTime(dateTransaction);
-                if ((transactionTime - date.getTime() / 1000L) > 0) {
-                    dateString = calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
+            if(history.getBlockTime() != null) {
+                long transactionTime = history.getBlockTime();
+                long delay = currentTime - transactionTime;
+                String dateString;
+                if (delay < 3600) {
+                    dateString = delay / 60 + " min ago";
                 } else {
-                    dateString = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + ", " + calendar.get(Calendar.DATE);
-                }
-            }
-            mTextViewDate.setText(dateString);
 
-            if (history.getAmount() > 0) {
+                    Calendar calendarNow = Calendar.getInstance();
+                    calendarNow.set(Calendar.HOUR_OF_DAY, 0);
+                    calendarNow.set(Calendar.MINUTE, 0);
+                    calendarNow.set(Calendar.SECOND, 0);
+                    date = calendarNow.getTime();
+
+                    Date dateTransaction = new Date(transactionTime * 1000L);
+                    Calendar calendar = new GregorianCalendar();
+                    calendar.setTime(dateTransaction);
+                    if ((transactionTime - date.getTime() / 1000L) > 0) {
+                        dateString = calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
+                    } else {
+                        dateString = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + ", " + calendar.get(Calendar.DATE);
+                    }
+                }
+                mTextViewDate.setText(dateString);
+            } else {
+                mTextViewDate.setText("Not confirmed");
+            }
+            if (history.getChangeInBalance() > 0) {
                 mTextViewOperationType.setText(R.string.received);
                 //mTextViewID.setText(history.getFromAddress());
+                mTextViewID.setText(history.getTxHash());
                 mImageViewIcon.setImageResource(R.drawable.ic_received);
                 mTextViewOperationType.setTextColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
             } else {
                 mTextViewOperationType.setText(R.string.sent);
                 //mTextViewID.setText(history.getToAddress());
+                mTextViewID.setText(history.getTxHash());
                 mImageViewIcon.setImageResource(R.drawable.ic_sent);
                 mTextViewOperationType.setTextColor(ContextCompat.getColor(getContext(), R.color.pink));
             }
             DecimalFormat df = new DecimalFormat("0");
             df.setMaximumFractionDigits(8);
-            mTextViewValue.setText(df.format(history.getAmount() * (QtumSharedPreference.getInstance().getExchangeRates(getContext()))) + " QTUM");
+            mTextViewValue.setText(df.format(history.getChangeInBalance() * (QtumSharedPreference.getInstance().getExchangeRates(getContext()))) + " QTUM");
         }
     }
 }

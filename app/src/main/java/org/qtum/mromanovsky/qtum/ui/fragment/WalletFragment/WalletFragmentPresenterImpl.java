@@ -176,7 +176,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     private void loadAndUpdateBalance() {
         getInteractor().getBalance(new WalletFragmentInteractorImpl.GetBalanceCallBack() {
             @Override
-            public void onSuccess(long balance) {
+            public void onSuccess(double balance) {
                 getView().updateBalance(balance * (QtumSharedPreference.getInstance().getExchangeRates(getView().getContext())));
             }
         });

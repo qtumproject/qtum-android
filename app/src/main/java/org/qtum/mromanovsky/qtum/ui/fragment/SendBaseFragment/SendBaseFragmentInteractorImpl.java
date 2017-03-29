@@ -77,8 +77,8 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     callBack.onError("Incorrect Address");
                 }
                 ECKey ecKey = KeyStorage.getInstance().getCurrentKey();
-                long amount = (long) (Double.parseDouble(amountString) / (QtumSharedPreference.getInstance().getExchangeRates(mContext)));
-                long fee = 100000L;
+                double amount = Double.parseDouble(amountString) / (QtumSharedPreference.getInstance().getExchangeRates(mContext));
+                double fee = 0.00001;
 
 
                 Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
@@ -88,10 +88,10 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     }
                 });
 
-                long amountFromOutput = (long) 0;
-                long overFlow = (long) 0;
+                double amountFromOutput = 0.0;
+                double overFlow = 0.0;
                 if (addressToSend != null) {
-                    transaction.addOutput(Coin.valueOf(amount), addressToSend);
+                    transaction.addOutput(Coin.valueOf((long)(amount*100000000)), addressToSend);
                 }
 
                 amount += fee;
@@ -107,12 +107,13 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     callBack.onError("Not enough money");
                     return;
                 }
-                long delivery = overFlow - amount;
-                if (delivery != 0L) {
-                    transaction.addOutput(Coin.valueOf((delivery)), ecKey.toAddress(CurrentNetParams.getNetParams()));
+                double delivery = overFlow - amount;
+                if (delivery != 0.0) {
+                    transaction.addOutput(Coin.valueOf((long)(delivery*100000000)), ecKey.toAddress(CurrentNetParams.getNetParams()));
                 }
 
                 for (UnspentOutput unspentOutput : unspentOutputs) {
+                    if(unspentOutput.getAmount() != 0.0)
                     for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
                         if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
                             Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));

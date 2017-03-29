@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -92,7 +94,9 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
     }
 
     public void updateBalance(double balance) {
-        mTvBalance.setText(String.valueOf(balance));
+        DecimalFormat df = new DecimalFormat("0");
+        df.setMaximumFractionDigits(8);
+        mTvBalance.setText(df.format(balance));
         mTvBalance.setVisibility(View.VISIBLE);
         mProgressBarDialog.setVisibility(View.GONE);
     }

@@ -5,12 +5,15 @@ import android.content.Context;
 import android.util.Log;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
+
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vin;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
-import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import rx.Subscriber;
@@ -36,9 +39,9 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     @Override
     public void getHistoryList(final GetHistoryListCallBack callBack) {
-
+        final List<String> addresses = KeyStorage.getInstance().getAddresses();
         mSubscriptionHistoryList = QtumService.newInstance()
-                .getHistoryListForSeveralAddresses(KeyStorage.getInstance().getAddresses(), 50,0)
+                .getHistoryListForSeveralAddresses(addresses, 50,0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<History>>() {
@@ -61,12 +64,43 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 //                                return;
 //                            }
 //                        }
+
+
+                        for(History history : historyList){
+                            BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));
+                            history.setChangeInBalance(changeInBalance.doubleValue());
+                        }
+
                         HistoryList.getInstance().setHistoryList(historyList);
-                        QtumSharedPreference.getInstance().saveHistoryCount(mContext,historyList.size());
                         callBack.onSuccess();
                     }
                 });
 
+    }
+
+    private BigDecimal calculateVin(History history, List<String> addresses){
+        BigDecimal totalVin = new BigDecimal("0.0");
+        for(Vin vin : history.getVin()){
+            for(String address : addresses){
+                if(vin.getAddress().equals(address)){
+                    totalVin = new BigDecimal(history.getAmount());
+                    return totalVin;
+                }
+            }
+        }
+        return totalVin;
+    }
+
+    private BigDecimal calculateVout(History history, List<String> addresses){
+        BigDecimal totalVout = new BigDecimal("0.0");
+        for(Vout vout : history.getVout()){
+            for(String address : addresses){
+                if(vout.getAddress().equals(address)){
+                    totalVout = totalVout.add(new BigDecimal(vout.getValue()));
+                }
+            }
+        }
+        return totalVout;
     }
 
     @Override
@@ -88,7 +122,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
-                        long balance = 0;
+                        double balance = 0.0;
                         for(UnspentOutput unspentOutput : unspentOutputs){
                             balance+=unspentOutput.getAmount();
                         }
@@ -96,7 +130,6 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                         callBack.onSuccess(balance);
                     }
                 });
-
     }
 
     void unSubscribe(){
@@ -114,7 +147,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     }
 
     interface GetBalanceCallBack {
-        void onSuccess(long balance);
+        void onSuccess(double balance);
     }
 
     @Override

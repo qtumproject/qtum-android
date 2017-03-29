@@ -1,7 +1,8 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment;
 
 
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
+
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 
 class TransactionFragmentInteractorImpl implements TransactionFragmentInteractor {

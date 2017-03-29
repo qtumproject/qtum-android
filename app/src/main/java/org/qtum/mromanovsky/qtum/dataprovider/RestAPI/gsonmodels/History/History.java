@@ -1,5 +1,5 @@
 
-package org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels;
+package org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -10,7 +10,7 @@ public class History {
 
     @SerializedName("block_time")
     @Expose
-    private Long blockTime;
+    private Integer blockTime;
     @SerializedName("block_height")
     @Expose
     private Integer blockHeight;
@@ -20,24 +20,23 @@ public class History {
     @SerializedName("tx_hash")
     @Expose
     private String txHash;
-    @SerializedName("txin_pos")
-    @Expose
-    private Integer txinPos;
     @SerializedName("amount")
     @Expose
-    private Long amount;
-    @SerializedName("from_address")
+    private String amount;
+    @SerializedName("vout")
     @Expose
-    private List<String> fromAddress = null;
-    @SerializedName("to_address")
+    private List<Vout> vout = null;
+    @SerializedName("vin")
     @Expose
-    private List<String> toAddress = null;
+    private List<Vin> vin = null;
 
-    public Long getBlockTime() {
+    private double changeInBalance;
+
+    public Integer getBlockTime() {
         return blockTime;
     }
 
-    public void setBlockTime(Long blockTime) {
+    public void setBlockTime(Integer blockTime) {
         this.blockTime = blockTime;
     }
 
@@ -65,36 +64,35 @@ public class History {
         this.txHash = txHash;
     }
 
-    public Integer getTxinPos() {
-        return txinPos;
-    }
-
-    public void setTxinPos(Integer txinPos) {
-        this.txinPos = txinPos;
-    }
-
-    public Long getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
-    public List<String> getFromAddress() {
-        return fromAddress;
+    public List<Vout> getVout() {
+        return vout;
     }
 
-    public void setFromAddress(List<String> fromAddress) {
-        this.fromAddress = fromAddress;
+    public void setVout(List<Vout> vout) {
+        this.vout = vout;
     }
 
-    public List<String> getToAddress() {
-        return toAddress;
+    public List<Vin> getVin() {
+        return vin;
     }
 
-    public void setToAddress(List<String> toAddress) {
-        this.toAddress = toAddress;
+    public void setVin(List<Vin> vin) {
+        this.vin = vin;
     }
 
+    public double getChangeInBalance() {
+        return changeInBalance;
+    }
+
+    public void setChangeInBalance(double changeInBalance) {
+        this.changeInBalance = changeInBalance;
+    }
 }

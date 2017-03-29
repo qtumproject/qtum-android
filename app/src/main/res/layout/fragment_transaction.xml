@@ -24,21 +24,21 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/wave1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_gravity="bottom|center"
+                android:layout_width="1080dp"
+                android:layout_height="158dp"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
-                app:lottie_fileName="w1.json"/>
+                app:lottie_fileName="wave2_test.json"/>
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/wave2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_gravity="bottom|center"
+                android:layout_width="1080dp"
+                android:layout_height="158dp"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
-                app:lottie_fileName="w2.json"/>
+                app:lottie_fileName="wave1_test.json"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -51,6 +51,7 @@
                     android:id="@+id/tv_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="23.000.000.097"
                     android:textColor="@android:color/white"
                     android:textSize="30sp"/>
@@ -119,10 +120,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="16dp"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -130,13 +137,18 @@
             android:text="@string/from"
             android:textColor="@color/grey70"/>
 
-        <TextView
-            android:id="@+id/tv_from"
+        <ListView
+            android:id="@+id/lv_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="asdaseqwe123dasdas2222123"
             android:textColor="@color/grey"/>
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,12 +156,13 @@
             android:text="@string/to"
             android:textColor="@color/grey70"/>
 
-        <TextView
-            android:id="@+id/tv_to"
+        <ListView
+            android:id="@+id/lv_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="asdaseqwe123dasdas2222123"
             android:textColor="@color/grey"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 

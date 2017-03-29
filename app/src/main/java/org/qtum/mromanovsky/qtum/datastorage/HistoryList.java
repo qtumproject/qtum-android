@@ -1,7 +1,9 @@
 package org.qtum.mromanovsky.qtum.datastorage;
 
 
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
+
+
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,7 @@ public class HistoryList {
     private static HistoryList sHistoryList;
 
     private List<History> mHistoryList;
-    private long mBalance = 0;
+    private double mBalance = 0;
 
     private HistoryList() {
         mHistoryList = new ArrayList<>();
@@ -35,11 +37,11 @@ public class HistoryList {
         mHistoryList = historyList;
     }
 
-    public long getBalance() {
+    public double getBalance() {
         return mBalance;
     }
 
-    public void setBalance(long balance) {
+    public void setBalance(double balance) {
         mBalance = balance;
     }
 }

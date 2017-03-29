@@ -15,7 +15,6 @@ public class QtumSharedPreference {
     private final String QTUM_IS_KEY_GENERATED = "qtum_is_key_generated";
     private final String QTUM_KEY_IDENTIFIER = "qtum_key_identifier";
     private final String QTUM_SEED = "qtum_seed";
-    private final String QTUM_HISTORY_COUNT = "qtum_history_count";
     private final String QTUM_EXCHANGE_RATES = "qtum_exchange_rates";
 
     private QtumSharedPreference() {
@@ -58,7 +57,7 @@ public class QtumSharedPreference {
     }
 
     public double getExchangeRates(Context context) {
-        return Double.parseDouble(context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_EXCHANGE_RATES, "0.00000001"));
+        return Double.parseDouble(context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_EXCHANGE_RATES, "1"));
     }
 
     public void setKeyGeneratedInstance(Context context, boolean isKeyGenerated) {
@@ -91,17 +90,6 @@ public class QtumSharedPreference {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
         mEditor.putString(QTUM_SEED, seed);
-        mEditor.apply();
-    }
-
-    public int getHistoryCount(Context context) {
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getInt(QTUM_HISTORY_COUNT, 0);
-    }
-
-    public void saveHistoryCount(Context context, int count) {
-        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putInt(QTUM_HISTORY_COUNT, count);
         mEditor.apply();
     }
 
