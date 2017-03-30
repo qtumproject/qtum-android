@@ -4,7 +4,7 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Vin{
+public class Vin extends TransactionInfo{
 
     @SerializedName("value")
     @Expose

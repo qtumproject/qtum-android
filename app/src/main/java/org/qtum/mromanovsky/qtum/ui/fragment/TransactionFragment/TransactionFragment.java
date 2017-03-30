@@ -4,6 +4,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -17,6 +20,8 @@ import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionDetailFragment.TransactionDetailFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarFragment.WalletAppBarFragment;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -31,7 +36,7 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     TextView mTextViewValue;
     @BindView(R.id.tv_received_time)
     TextView mTextViewReceivedTime;
-    @BindView(R.id.view_pager)
+    @BindView(R.id.view_pager_transaction)
     ViewPager mViewPager;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
@@ -111,6 +116,71 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getFragmentActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),R.color.pink_lite));
             }
+        }
+
+        TransactionPagerAdapter transactionPagerAdapter = new TransactionPagerAdapter(getFragmentManager());
+        mViewPager.setAdapter(transactionPagerAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mTabLayout.getTabAt(position).select();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    class TransactionPagerAdapter extends FragmentStatePagerAdapter{
+
+        public TransactionPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            TransactionDetailFragment transactionDetailFragment = null;
+            switch (position){
+                case TransactionDetailFragment.ACTION_FROM:{
+                    transactionDetailFragment =  TransactionDetailFragment.newInstance(TransactionDetailFragment.ACTION_FROM,
+                            getArguments().getInt(POSITION));
+                    break;
+                }
+                case TransactionDetailFragment.ACTION_TO:{
+                    transactionDetailFragment = TransactionDetailFragment.newInstance(TransactionDetailFragment.ACTION_TO,
+                            getArguments().getInt(POSITION));
+                    break;
+                }
+            }
+            return transactionDetailFragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
         }
     }
 }
