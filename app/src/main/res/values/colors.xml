@@ -18,6 +18,7 @@
     <color name="grey_background_brain_code">#f7f7f7</color>
     <color name="white_alpha80">#ccffffff</color>
     <color name="white_alpha50">#7affffff</color>
+    <color name="white_alpha20">#33ffffff</color>
     <color name="alpha">#00ffffff</color>
 
     <color name="wave_background">#24ffffff</color>

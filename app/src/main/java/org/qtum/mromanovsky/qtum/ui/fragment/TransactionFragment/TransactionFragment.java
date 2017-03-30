@@ -3,7 +3,9 @@ package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,12 +31,12 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     TextView mTextViewValue;
     @BindView(R.id.tv_received_time)
     TextView mTextViewReceivedTime;
-    @BindView(R.id.lv_from)
-    ListView mListViewFrom;
-    @BindView(R.id.lv_to)
-    ListView mListViewTo;
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
+    @BindView(R.id.tab_layout)
+    TabLayout mTabLayout;
 
     @OnClick({R.id.ibt_back})
     public void onClick(View view){
@@ -78,6 +80,16 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
         getPresenter().openTransactionView(getArguments().getInt(POSITION));
     }
 
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        TabLayout.Tab tabFrom = mTabLayout.newTab();
+        TabLayout.Tab tabTo = mTabLayout.newTab();
+        tabFrom.setText("From");
+        tabTo.setText("To");
+        mTabLayout.addTab(tabFrom);
+        mTabLayout.addTab(tabTo);
+    }
 
     @Override
     public void setUpTransactionData(double value, String receivedTime, List<String> from, List<String> to) {
@@ -88,10 +100,6 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
         mTextViewReceivedTime.setText(receivedTime);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, from);
-        mListViewFrom.setAdapter(arrayAdapter);
-        arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, to);
-        mListViewTo.setAdapter(arrayAdapter);
 
         if (value > 0) {
             mAppBarLayout.setBackgroundResource(R.drawable.background_tb_sent);

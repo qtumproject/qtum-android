@@ -50,13 +50,17 @@ class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     @Override
     public void openTransactionView(int position) {
 
+        String dateString;
         History history = getInteractor().getHistory(position);
-        Date date = new Date(history.getBlockTime()*1000L);
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        String time = new SimpleDateFormat("HH:mm:ss").format(date);
-        String dateString = calendar.getDisplayName(Calendar.MONTH,Calendar.LONG, Locale.US) + ", " + calendar.get(Calendar.DATE) + " " + time;
-
+        if(history.getBlockTime()!=null) {
+            Date date = new Date(history.getBlockTime() * 1000L);
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(date);
+            String time = new SimpleDateFormat("HH:mm:ss").format(date);
+            dateString = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US) + ", " + calendar.get(Calendar.DATE) + " " + time;
+        } else {
+            dateString = "Not confirmed";
+        }
         List<String> listTo = new ArrayList<>();
         List<String> listFrom = new ArrayList<>();
 

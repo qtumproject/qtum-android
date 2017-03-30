@@ -1,10 +1,10 @@
-
 package org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+
 
 public class History {
 
@@ -95,4 +95,5 @@ public class History {
     public void setChangeInBalance(double changeInBalance) {
         this.changeInBalance = changeInBalance;
     }
+
 }

@@ -7,6 +7,7 @@ import android.util.Log;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.HistoryResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vin;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
@@ -44,7 +45,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                 .getHistoryListForSeveralAddresses(addresses, 50,0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<History>>() {
+                .subscribe(new Subscriber<HistoryResponse>() {
                     @Override
                     public void onCompleted() {
 
@@ -56,7 +57,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                     }
 
                     @Override
-                    public void onNext(List<History> historyList) {
+                    public void onNext(HistoryResponse historyResponse) {
                         //TODO : edit
 //                        if(getHistoryList().size()!=0){
 //                            if(getHistoryList().size()==historyList.size()){
@@ -66,12 +67,12 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 //                        }
 
 
-                        for(History history : historyList){
+                        for(History history : historyResponse.getItems()){
                             BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));
                             history.setChangeInBalance(changeInBalance.doubleValue());
                         }
 
-                        HistoryList.getInstance().setHistoryList(historyList);
+                        HistoryList.getInstance().setHistoryList(historyResponse.getItems());
                         callBack.onSuccess();
                     }
                 });

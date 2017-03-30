@@ -6,6 +6,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.GenerateTokenBytecodeRequest;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.HistoryResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
@@ -78,7 +79,7 @@ public class QtumService {
         return mServiceApi.getUnspentOutputsForSeveralAddresses(addresses);
     }
 
-    public Observable<List<History>> getHistoryListForSeveralAddresses(final List<String> addresses, final int limit, final int offset) {
+    public Observable<HistoryResponse> getHistoryListForSeveralAddresses(final List<String> addresses, final int limit, final int offset) {
         return mServiceApi.getHistoryListForSeveralAddresses(limit, offset, addresses);
     }
 

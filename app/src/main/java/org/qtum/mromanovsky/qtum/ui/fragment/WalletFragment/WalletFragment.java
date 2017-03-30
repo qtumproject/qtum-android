@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -31,6 +32,7 @@ import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAda
 
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -163,7 +165,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
         mWalletAppBarPagerAdapter = new WalletAppBarPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mWalletAppBarPagerAdapter);
-
         try {
             Field mScroller;
             mScroller = ViewPager.class.getDeclaredField("mScroller");

@@ -59,11 +59,11 @@ public class UpdateService extends Service {
                 for(String address : KeyStorage.getInstance().getAddresses()){
                     arr.put(address);
                 }
-                socket.emit("subscribe","quantumd/addressbalance", arr);
+                socket.emit("subscribe","balance_subscribe", arr);
                 sendNotification("Default","Default","Defaul",null);
 
             }
-        }).on("quantumd/addressbalance", new Emitter.Listener() {
+        }).on("balance_changed", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 if(mListener != null) {
@@ -72,6 +72,11 @@ public class UpdateService extends Service {
                 } else {
                     sendNotification("Call","Call","Call",RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                 }
+            }
+        }).on("new_transaction", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.d("t","t");
             }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override

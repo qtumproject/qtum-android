@@ -5,6 +5,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.GenerateTokenBytecodeRequest;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.HistoryResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
@@ -45,5 +46,5 @@ interface QtumRestService {
     Observable<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses(@Query("addresses[]") List<String> addresses);
 
     @GET("/history/{limit}/{offset}")
-    Observable<List<History>> getHistoryListForSeveralAddresses(@Path("limit") int limit, @Path("offset") int offset, @Query("addresses[]") List<String> addresses);
+    Observable<HistoryResponse> getHistoryListForSeveralAddresses(@Path("limit") int limit, @Path("offset") int offset, @Query("addresses[]") List<String> addresses);
 }

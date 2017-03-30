@@ -11,7 +11,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
+        android:layout_height="288dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
@@ -40,58 +40,72 @@
                 app:lottie_loop="true"
                 app:lottie_fileName="wave1_test.json"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_value"
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="23.000.000.097"
-                    android:textColor="@android:color/white"
-                    android:textSize="30sp"/>
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="48dp"
+                    android:orientation="vertical">
 
-                <TextView
+                    <TextView
+                        android:id="@+id/tv_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="23.000.000.097"
+                        android:textColor="@android:color/white"
+                        android:textSize="30sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/qtum"
+                        android:textColor="@android:color/white"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_receive_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/qtum"
-                    android:textColor="@android:color/white"/>
-            </LinearLayout>
+                    android:layout_gravity="left|bottom"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="64dp"
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_receive_time"
-                android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/received_time"
+                        android:textColor="@color/white_alpha50"/>
+
+                    <TextView
+                        android:id="@+id/tv_received_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dec 18"
+                        android:textColor="@android:color/white"/>
+
+                </LinearLayout>
+
+
+
+            <android.support.design.widget.TabLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|bottom"
-                android:layout_margin="16dp"
-                android:layout_marginRight="16dp"
-                android:orientation="vertical">
+                android:background="@color/white_alpha20"
+                android:layout_gravity="bottom"
+                android:id="@+id/tab_layout">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/received_time"
-                    android:textColor="@color/white_alpha50"/>
-
-                <TextView
-                    android:id="@+id/tv_received_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dec 18"
-                    android:textColor="@android:color/white"/>
-
-            </LinearLayout>
+            </android.support.design.widget.TabLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="80dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -118,52 +132,15 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="16dp"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1">
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:id="@+id/view_pager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/from"
-            android:textColor="@color/grey70"/>
-
-        <ListView
-            android:id="@+id/lv_from"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/grey"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/to"
-            android:textColor="@color/grey70"/>
-
-        <ListView
-            android:id="@+id/lv_to"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/grey"/>
-        </LinearLayout>
-
-    </LinearLayout>
+        </android.support.v4.view.ViewPager>
 
 
 </android.support.design.widget.CoordinatorLayout>
