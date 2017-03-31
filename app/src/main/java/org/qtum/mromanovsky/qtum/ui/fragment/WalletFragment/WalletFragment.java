@@ -19,6 +19,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -54,6 +55,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     private Animation mAnimation;
     private boolean mIsVisible = false;
     private boolean mIsInitialInitialize = true;
+    private LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
     @BindView(R.id.fab)
     FloatingActionButton mFloatingActionButton;
@@ -219,7 +221,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             }
         });
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(),R.color.colorAccent));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

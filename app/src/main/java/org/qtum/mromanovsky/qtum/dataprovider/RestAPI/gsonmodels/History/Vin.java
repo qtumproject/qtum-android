@@ -13,6 +13,16 @@ public class Vin extends TransactionInfo{
     @Expose
     private String address;
 
+    private boolean isOwnAddress = false;
+
+    public boolean isOwnAddress() {
+        return isOwnAddress;
+    }
+
+    public void setOwnAddress(boolean ownAddress) {
+        isOwnAddress = ownAddress;
+    }
+
     public String getValue() {
         return value;
     }

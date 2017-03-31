@@ -84,6 +84,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
         for(Vin vin : history.getVin()){
             for(String address : addresses){
                 if(vin.getAddress().equals(address)){
+                    vin.setOwnAddress(true);
                     totalVin = new BigDecimal(history.getAmount());
                     return totalVin;
                 }
@@ -97,6 +98,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
         for(Vout vout : history.getVout()){
             for(String address : addresses){
                 if(vout.getAddress().equals(address)){
+                    vout.setOwnAddress(true);
                     totalVout = totalVout.add(new BigDecimal(vout.getValue()));
                 }
             }

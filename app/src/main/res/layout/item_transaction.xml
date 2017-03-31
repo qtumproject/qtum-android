@@ -31,9 +31,9 @@
 
             <ImageView
                 android:id="@+id/iv_icon"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.08"
+
                 android:gravity="start"
                 android:scaleType="fitStart"
                 app:srcCompat="@drawable/ic_sent"/>

@@ -4,6 +4,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionDet
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -91,7 +92,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionDe
         @BindView(R.id.tv_value)
         TextView mTextViewValue;
 
-        public TransactionDetailHolder(View itemView) {
+        TransactionDetailHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
@@ -99,10 +100,22 @@ public class TransactionDetailFragment extends Fragment implements TransactionDe
         void bindTransactionDetail(TransactionInfo transactionInfo){
             mTextViewAddress.setText(transactionInfo.getAddress());
             mTextViewValue.setText(transactionInfo.getValue());
+            if(transactionInfo.isOwnAddress()){
+                switch (getArguments().getInt(ACTION)){
+                    case ACTION_FROM:
+                        mTextViewAddress.setTextColor(ContextCompat.getColor(getContext(),R.color.pink_lite));
+                        break;
+                    case ACTION_TO:
+                        mTextViewAddress.setTextColor(ContextCompat.getColor(getContext(),R.color.green));
+                        break;
+                }
+            } else {
+                mTextViewAddress.setTextColor(ContextCompat.getColor(getContext(),R.color.grey70));
+            }
         }
     }
 
-    class TransactionDetailAdapter extends RecyclerView.Adapter<TransactionDetailHolder>{
+    private class TransactionDetailAdapter extends RecyclerView.Adapter<TransactionDetailHolder>{
 
         private List<TransactionInfo> mTransactionInfoList;
 

@@ -29,7 +29,7 @@
                 android:layout_height="158dp"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
-                app:lottie_fileName="wave2_test.json"/>
+                app:lottie_fileName="w1Test2.json"/>
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/wave2"
@@ -38,7 +38,7 @@
                 android:layout_height="158dp"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
-                app:lottie_fileName="wave1_test.json"/>
+                app:lottie_fileName="w2Test2.json"/>
 
 
 
@@ -136,7 +136,6 @@
         <android.support.v4.view.ViewPager
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="16dp"
             android:id="@+id/view_pager_transaction"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
