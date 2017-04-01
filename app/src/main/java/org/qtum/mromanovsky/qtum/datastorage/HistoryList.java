@@ -13,6 +13,7 @@ public class HistoryList {
 
     private List<History> mHistoryList;
     private double mBalance = 0;
+    private int mTotalItem = 0;
 
     private HistoryList() {
         mHistoryList = new ArrayList<>();
@@ -43,5 +44,13 @@ public class HistoryList {
 
     public void setBalance(double balance) {
         mBalance = balance;
+    }
+
+    public int getTotalItem() {
+        return mTotalItem;
+    }
+
+    public void setTotalItem(int totalItem) {
+        this.mTotalItem = totalItem;
     }
 }

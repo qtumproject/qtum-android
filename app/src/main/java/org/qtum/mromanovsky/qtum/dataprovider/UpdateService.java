@@ -14,10 +14,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.bitcoinj.wallet.Wallet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.qtum.mromanovsky.qtum.R;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 
@@ -67,7 +70,7 @@ public class UpdateService extends Service {
             @Override
             public void call(Object... args) {
                 if(mListener != null) {
-                    mListener.updateDate();
+                    //mListener.updateDate();
                     //JSONObject data = (JSONObject) args[0];
                 } else {
                     sendNotification("Call","Call","Call",RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
@@ -76,7 +79,15 @@ public class UpdateService extends Service {
         }).on("new_transaction", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Log.d("t","t");
+                Gson gson = new Gson();
+                JSONObject data = (JSONObject) args[0];
+                History history = gson.fromJson(data.toString(),History.class);
+                if(mListener != null) {
+                    mListener.updateHistory(history);
+                } else {
+                    sendNotification("Call","Call","Call",RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                }
+
             }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override

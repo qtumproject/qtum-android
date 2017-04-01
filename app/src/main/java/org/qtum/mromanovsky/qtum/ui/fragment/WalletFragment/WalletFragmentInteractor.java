@@ -9,7 +9,9 @@ import java.util.List;
 
 interface WalletFragmentInteractor {
     List<History> getHistoryList();
-    void getHistoryList(WalletFragmentInteractorImpl.GetHistoryListCallBack callBack);
+    void getHistoryList(int STATE, int limit, int offset, WalletFragmentInteractorImpl.GetHistoryListCallBack callBack);
     String getAddress();
     void getBalance(WalletFragmentInteractorImpl.GetBalanceCallBack callBack);
+    int getTotalHistoryItem();
+    void addToHistoryList(History history);
 }

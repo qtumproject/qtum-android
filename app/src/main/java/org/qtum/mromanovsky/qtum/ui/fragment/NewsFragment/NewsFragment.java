@@ -164,8 +164,8 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
             mNewsList = newsList;
         }
 
-        private static final int TYPE_HEADER = 0;
-        private static final int TYPE_ITEM = 1;
+        private final int TYPE_HEADER = 0;
+        private final int TYPE_ITEM = 1;
 
         @Override
         public int getItemViewType(int position) {

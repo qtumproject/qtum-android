@@ -24,12 +24,14 @@ import rx.schedulers.Schedulers;
 
 class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
-    private Context mContext;
     private Subscription mSubscriptionHistoryList = null;
     private Subscription mSubscriptionBalance = null;
+    static final int UPDATE_STATE = 0;
+    static final int LOAD_STATE = 1;
+    private final List<String> addresses = KeyStorage.getInstance().getAddresses();
 
-    WalletFragmentInteractorImpl(Context context){
-        mContext = context;
+    WalletFragmentInteractorImpl(){
+
     }
 
     @Override
@@ -39,10 +41,10 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
 
     @Override
-    public void getHistoryList(final GetHistoryListCallBack callBack) {
-        final List<String> addresses = KeyStorage.getInstance().getAddresses();
+    public void getHistoryList(final int STATE, int limit, int offest, final GetHistoryListCallBack callBack) {
+
         mSubscriptionHistoryList = QtumService.newInstance()
-                .getHistoryListForSeveralAddresses(addresses, 50,0)
+                .getHistoryListForSeveralAddresses(addresses, limit, offest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<HistoryResponse>() {
@@ -72,11 +74,23 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                             history.setChangeInBalance(changeInBalance.doubleValue());
                         }
 
-                        HistoryList.getInstance().setHistoryList(historyResponse.getItems());
-                        callBack.onSuccess();
+                        switch (STATE){
+                            case UPDATE_STATE: {
+                                HistoryList.getInstance().setHistoryList(historyResponse.getItems());
+                                HistoryList.getInstance().setTotalItem(historyResponse.getTotalItems());
+                                callBack.onSuccess();
+                                break;
+                            }
+                            case LOAD_STATE:{
+                                HistoryList.getInstance().getHistoryList().addAll(historyResponse.getItems());
+                                callBack.onSuccess();
+                                break;
+                            }
+
+                        }
+
                     }
                 });
-
     }
 
     private BigDecimal calculateVin(History history, List<String> addresses){
@@ -133,6 +147,18 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                         callBack.onSuccess(balance);
                     }
                 });
+    }
+
+    @Override
+    public int getTotalHistoryItem() {
+        return HistoryList.getInstance().getTotalItem();
+    }
+
+    @Override
+    public void addToHistoryList(History history) {
+        BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));
+        history.setChangeInBalance(changeInBalance.doubleValue());
+        HistoryList.getInstance().getHistoryList().add(0,history);
     }
 
     void unSubscribe(){

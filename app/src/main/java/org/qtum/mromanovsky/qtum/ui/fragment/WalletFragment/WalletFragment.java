@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -56,6 +58,10 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     private boolean mIsVisible = false;
     private boolean mIsInitialInitialize = true;
     private LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+    private int visibleItemCount;
+    private int totalItemCount;
+    private int pastVisibleItems;
+    private boolean mLoadingFlag = false;
 
     @BindView(R.id.fab)
     FloatingActionButton mFloatingActionButton;
@@ -127,11 +133,11 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
     @Override
-    public void updateRecyclerView(List<History> historyList) {
-
+    public void updateHistory(List<History> historyList) {
         mTransactionAdapter = new TransactionAdapter(historyList);
         mRecyclerView.setAdapter(mTransactionAdapter);
         mSwipeRefreshLayout.setRefreshing(false);
+        mLoadingFlag = false;
     }
 
     @Override
@@ -159,6 +165,30 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     @Override
     public void stopRefreshRecyclerAnimation() {
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void addHistory(int positionStart, int itemCount, List<History> historyList) {
+        mTransactionAdapter.setHistoryList(historyList);
+        mLoadingFlag = false;
+        mTransactionAdapter.notifyItemRangeChanged(positionStart,itemCount);
+    }
+
+    @Override
+    public void loadNewHistory() {
+        mLoadingFlag = true;
+        mTransactionAdapter.notifyItemChanged(totalItemCount-1);
+    }
+
+    @Override
+    public void notifyNewHistory() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTransactionAdapter.notifyItemChanged(0);
+            }
+        });
+
     }
 
     @Override
@@ -223,6 +253,24 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy>0){
+                    if(!mLoadingFlag) {
+                        visibleItemCount = mLinearLayoutManager.getChildCount();
+                        totalItemCount = mLinearLayoutManager.getItemCount();
+                        pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                            getPresenter().onLastItem(totalItemCount-1);
+                        }
+                    }
+
+                }
+            }
+        });
+
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(),R.color.colorAccent));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -271,31 +319,75 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         });
     }
 
-    public class TransactionAdapter extends RecyclerView.Adapter<TransactionHolder> {
+    public class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private List<History> mHistoryList;
         History mHistory;
+
+        private final int TYPE_PROGRESS_BAR = 0;
+        private final int TYPE_TRANSACTION = 1;
 
         TransactionAdapter(List<History> historyList) {
             mHistoryList = historyList;
         }
 
         @Override
-        public TransactionHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.item_transaction, parent, false);
-            return new TransactionHolder(view);
+        public int getItemViewType(int position) {
+            if(position == mHistoryList.size()){
+                return TYPE_PROGRESS_BAR;
+            }
+            return TYPE_TRANSACTION;
         }
 
         @Override
-        public void onBindViewHolder(TransactionHolder holder, int position) {
-            mHistory = mHistoryList.get(position);
-            holder.bindTransactionData(mHistory);
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if(viewType == TYPE_TRANSACTION) {
+                LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+                View view = layoutInflater.inflate(R.layout.item_transaction, parent, false);
+                return new TransactionHolder(view);
+            } else {
+                LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+                View view = layoutInflater.inflate(R.layout.item_progress_bar, parent, false);
+                return new ProgressBarHolder(view);
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if(holder instanceof ProgressBarHolder){
+                ((ProgressBarHolder)holder).bindProgressBar();
+            } else {
+                mHistory = mHistoryList.get(position);
+                ((TransactionHolder) holder).bindTransactionData(mHistory);
+            }
         }
 
         @Override
         public int getItemCount() {
-            return mHistoryList.size();
+            return mHistoryList.size()+1;
+        }
+
+        public void setHistoryList(List<History> historyList) {
+            mHistoryList = historyList;
+        }
+    }
+
+    class ProgressBarHolder extends RecyclerView.ViewHolder{
+
+        @BindView(R.id.progressBar)
+        ProgressBar mProgressBar;
+
+        public ProgressBarHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
+
+        public void bindProgressBar(){
+            if(mLoadingFlag){
+                mProgressBar.setVisibility(View.VISIBLE);
+            } else {
+                mProgressBar.setVisibility(View.GONE);
+            }
         }
     }
 

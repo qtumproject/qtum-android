@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateServiceListener;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
@@ -25,9 +26,11 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     private WalletFragmentInteractorImpl mWalletFragmentInteractor;
     private WalletFragmentView mWalletFragmentView;
 
+    private final int ONE_PAGE_COUNT = 25;
+
     WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView) {
         mWalletFragmentView = walletFragmentView;
-        mWalletFragmentInteractor = new WalletFragmentInteractorImpl(getView().getContext());
+        mWalletFragmentInteractor = new WalletFragmentInteractorImpl();
     }
 
 
@@ -37,8 +40,9 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
             mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
             mUpdateService.registerListener(new UpdateServiceListener() {
                 @Override
-                public void updateDate() {
-                    //TODO : add new transaction action
+                public void updateHistory(History history) {
+                    getInteractor().addToHistoryList(history);
+                    getView().notifyNewHistory();
                 }
             });
         }
@@ -140,6 +144,26 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     }
 
     @Override
+    public void onLastItem(final int currentItemCount) {
+        if(getInteractor().getHistoryList().size()!=getInteractor().getTotalHistoryItem()) {
+            getView().loadNewHistory();
+            getInteractor().getHistoryList(WalletFragmentInteractorImpl.LOAD_STATE, ONE_PAGE_COUNT,
+                    currentItemCount, new WalletFragmentInteractorImpl.GetHistoryListCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            getView().addHistory(currentItemCount, getInteractor().getHistoryList().size() - currentItemCount + 1,
+                                    getInteractor().getHistoryList());
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+                    });
+        }
+    }
+
+    @Override
     public void initializeViews() {
         super.initializeViews();
         updateData();
@@ -159,7 +183,8 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     private void loadAndUpdateData() {
         getView().startRefreshAnimation();
-        getInteractor().getHistoryList(new WalletFragmentInteractorImpl.GetHistoryListCallBack() {
+        getInteractor().getHistoryList(WalletFragmentInteractorImpl.UPDATE_STATE, ONE_PAGE_COUNT,
+                0, new WalletFragmentInteractorImpl.GetHistoryListCallBack() {
             @Override
             public void onSuccess() {
                 updateData();
@@ -183,7 +208,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     }
 
     private void updateData() {
-        getView().updateRecyclerView(getInteractor().getHistoryList());
+        getView().updateHistory(getInteractor().getHistoryList());
     }
 
 }
