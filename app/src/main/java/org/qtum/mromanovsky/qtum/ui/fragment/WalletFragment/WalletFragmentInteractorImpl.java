@@ -60,14 +60,6 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
                     @Override
                     public void onNext(HistoryResponse historyResponse) {
-                        //TODO : edit
-//                        if(getHistoryList().size()!=0){
-//                            if(getHistoryList().size()==historyList.size()){
-//                                callBack.onSuccessWithoutChange();
-//                                return;
-//                            }
-//                        }
-
 
                         for(History history : historyResponse.getItems()){
                             BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));

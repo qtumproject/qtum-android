@@ -75,6 +75,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     addressToSend = Address.fromBase58(CurrentNetParams.getNetParams(), address);
                 } catch (AddressFormatException a) {
                     callBack.onError("Incorrect Address");
+                    return;
                 }
                 ECKey ecKey = KeyStorage.getInstance().getCurrentKey();
                 double amount = Double.parseDouble(amountString) / (QtumSharedPreference.getInstance().getExchangeRates(mContext));
