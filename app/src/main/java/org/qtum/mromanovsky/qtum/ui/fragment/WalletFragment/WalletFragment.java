@@ -185,10 +185,20 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mTransactionAdapter.notifyItemChanged(0);
+                mTransactionAdapter.notifyDataSetChanged();
             }
         });
 
+    }
+
+    @Override
+    public void notifyConfirmHistory(final int notifyPosition) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTransactionAdapter.notifyItemChanged(notifyPosition);
+            }
+        });
     }
 
     @Override
@@ -404,6 +414,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         TextView mTextViewOperationType;
         @BindView(R.id.iv_icon)
         ImageView mImageViewIcon;
+        @BindView(R.id.ll_transaction)
+        LinearLayout mLinearLayoutTransaction;
 
         Date date = new Date();
         long currentTime = date.getTime() / 1000L;
@@ -445,8 +457,10 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                     }
                 }
                 mTextViewDate.setText(dateString);
+                mLinearLayoutTransaction.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.background_white_with_grey_pressed));
             } else {
                 mTextViewDate.setText("Not confirmed");
+                mLinearLayoutTransaction.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.background_grey_with_grey_pressed));
             }
             if (history.getChangeInBalance() > 0) {
                 mTextViewOperationType.setText(R.string.received);

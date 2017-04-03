@@ -153,6 +153,20 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
         HistoryList.getInstance().getHistoryList().add(0,history);
     }
 
+    @Override
+    public int setHistory(History history) {
+        for(History historyReplacing : getHistoryList()){
+            if(historyReplacing.getTxHash().equals(history.getTxHash())){
+                int position = getHistoryList().indexOf(historyReplacing);
+                BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));
+                history.setChangeInBalance(changeInBalance.doubleValue());
+                getHistoryList().set(position,history);
+                return position;
+            }
+        }
+        return 0;
+    }
+
     void unSubscribe(){
         if(mSubscriptionHistoryList != null){
             mSubscriptionHistoryList.unsubscribe();

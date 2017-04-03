@@ -41,6 +41,7 @@ public class UpdateService extends Service {
     private UpdateServiceListener mListener = null;
     private Notification notification;
     private Socket socket;
+    private int totalTransaction = 0;
 
     UpdateBinder mUpdateBinder = new UpdateBinder();
 
@@ -69,12 +70,7 @@ public class UpdateService extends Service {
         }).on("balance_changed", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                if(mListener != null) {
-                    //mListener.updateDate();
-                    //JSONObject data = (JSONObject) args[0];
-                } else {
-                    sendNotification("Call","Call","Call",RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-                }
+
             }
         }).on("new_transaction", new Emitter.Listener() {
             @Override
@@ -83,9 +79,13 @@ public class UpdateService extends Service {
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(),History.class);
                 if(mListener != null) {
-                    mListener.updateHistory(history);
+                    mListener.onNewHistory(history);
                 } else {
-                    sendNotification("Call","Call","Call",RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                    if(history.getBlockTime()!=null) {
+                        totalTransaction++;
+                        sendNotification("New confirmed transaction", totalTransaction + " new confirmed transaction",
+                                "Touch to open transaction history", RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                    }
                 }
 
             }
@@ -186,6 +186,8 @@ public class UpdateService extends Service {
 
     public void registerListener(UpdateServiceListener updateServiceListener){
         mListener = updateServiceListener;
+        totalTransaction = 0;
+        sendNotification("Default","Default","Defaul",null);
     }
 
     public void removeListener(){

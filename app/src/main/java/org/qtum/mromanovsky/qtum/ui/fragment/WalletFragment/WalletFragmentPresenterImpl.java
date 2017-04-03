@@ -40,9 +40,14 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
             mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
             mUpdateService.registerListener(new UpdateServiceListener() {
                 @Override
-                public void updateHistory(History history) {
-                    getInteractor().addToHistoryList(history);
-                    getView().notifyNewHistory();
+                public void onNewHistory(History history) {
+                    if(history.getBlockTime()!=null){
+                        int notifyPosition = getInteractor().setHistory(history);
+                        getView().notifyConfirmHistory(notifyPosition);
+                    }else {
+                        getInteractor().addToHistoryList(history);
+                        getView().notifyNewHistory();
+                    }
                 }
             });
         }

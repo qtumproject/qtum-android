@@ -74,22 +74,22 @@
 
     </RelativeLayout>
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/wave1"
-        android:layout_gravity="bottom"
-        android:layout_width="1080dp"
-        android:layout_height="158dp"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_fileName="w1Test3.json"/>
+    <!--<com.airbnb.lottie.LottieAnimationView-->
+        <!--android:id="@+id/wave1"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:layout_width="1080dp"-->
+        <!--android:layout_height="158dp"-->
+        <!--app:lottie_autoPlay="true"-->
+        <!--app:lottie_loop="true"-->
+        <!--app:lottie_fileName="w1Test3.json"/>-->
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/wave2"
-        android:layout_gravity="bottom"
-        android:layout_width="1080dp"
-        android:layout_height="158dp"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_fileName="w2Test3.json"/>
+    <!--<com.airbnb.lottie.LottieAnimationView-->
+        <!--android:id="@+id/wave2"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:layout_width="1080dp"-->
+        <!--android:layout_height="158dp"-->
+        <!--app:lottie_autoPlay="true"-->
+        <!--app:lottie_loop="true"-->
+        <!--app:lottie_fileName="w2Test3.json"/>-->
 
 </android.support.design.widget.CoordinatorLayout>

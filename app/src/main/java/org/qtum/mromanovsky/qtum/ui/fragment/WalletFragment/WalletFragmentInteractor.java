@@ -14,4 +14,5 @@ interface WalletFragmentInteractor {
     void getBalance(WalletFragmentInteractorImpl.GetBalanceCallBack callBack);
     int getTotalHistoryItem();
     void addToHistoryList(History history);
+    int setHistory(History history);
 }

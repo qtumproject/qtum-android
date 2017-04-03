@@ -17,4 +17,5 @@ interface WalletFragmentView extends BaseFragmentView {
     void addHistory(int positionStart, int itemCount, List<History> historyList);
     void loadNewHistory();
     void notifyNewHistory();
+    void notifyConfirmHistory(int notifyPosition);
 }
