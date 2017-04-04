@@ -1,6 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment;
 
 import android.content.Context;
+import android.support.v4.content.res.TypedArrayUtils;
 import android.util.Log;
 
 import org.bitcoinj.core.Address;
@@ -59,6 +60,11 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     }
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
+                        for(UnspentOutput unspentOutput : unspentOutputs){
+                            if(unspentOutput.getConfirmations()==0){
+                                unspentOutputs.remove(unspentOutput);
+                            }
+                        }
                         callBack.onSuccess(unspentOutputs);
                     }
                 });
@@ -70,7 +76,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
                 Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
-                Address addressToSend = null;
+                Address addressToSend;
                 try {
                     addressToSend = Address.fromBase58(CurrentNetParams.getNetParams(), address);
                 } catch (AddressFormatException a) {
@@ -91,9 +97,8 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
                 double amountFromOutput = 0.0;
                 double overFlow = 0.0;
-                if (addressToSend != null) {
-                    transaction.addOutput(Coin.valueOf((long)(amount*100000000)), addressToSend);
-                }
+                transaction.addOutput(Coin.valueOf((long)(amount*100000000)), addressToSend);
+
 
                 amount += fee;
 

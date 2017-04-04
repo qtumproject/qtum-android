@@ -1,6 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.activity.MainActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -54,6 +55,13 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        getPresenter().processIntent(intent);
+    }
+
+
     private void loadPermissions(String perm, int requestCode) {
         if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
@@ -82,12 +90,13 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, 0);
     }
 
-    public void showBottomNavigationView() {
-        mBottomNavigationView.setVisibility(View.VISIBLE);
+    @Override
+    public void setIconChecked(int position) {
+        mBottomNavigationView.getMenu().getItem(position).setChecked(true);
     }
 
-    public BottomNavigationView getBottomNavigationView() {
-        return mBottomNavigationView;
+    public void showBottomNavigationView() {
+        mBottomNavigationView.setVisibility(View.VISIBLE);
     }
 
     public void hideBottomNavigationView() {

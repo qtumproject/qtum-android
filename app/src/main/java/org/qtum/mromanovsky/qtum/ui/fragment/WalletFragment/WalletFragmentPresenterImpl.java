@@ -25,6 +25,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     private WalletFragmentInteractorImpl mWalletFragmentInteractor;
     private WalletFragmentView mWalletFragmentView;
+    private boolean mVisibility = false;
 
     private final int ONE_PAGE_COUNT = 25;
 
@@ -49,6 +50,16 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
                         getView().notifyNewHistory();
                     }
                 }
+
+                @Override
+                public void onChangeBalance(String balance, String unconfirmedBalance) {
+
+                }
+
+                @Override
+                public boolean getVisibility() {
+                    return mVisibility;
+                }
             });
         }
 
@@ -57,16 +68,6 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
         }
     };
-
-    @Override
-    public void onStart(Context context) {
-        super.onStart(context);
-
-        mIntent = new Intent(context, UpdateService.class);
-        if (!isMyServiceRunning(UpdateService.class)) {
-            context.startService(mIntent);
-        }
-    }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getView().getFragmentActivity().getSystemService(Context.ACTIVITY_SERVICE);
@@ -82,19 +83,28 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onResume(Context context) {
         super.onResume(context);
-        context.bindService(mIntent,mServiceConnection,0);
+        mVisibility = true;
+        if(mUpdateService!=null) {
+            mUpdateService.clearNotification();
+        }
+
     }
 
     @Override
     public void onPause(Context context) {
         super.onPause(context);
-        mUpdateService.removeListener();
-        context.unbindService(mServiceConnection);
+        mVisibility = false;
     }
 
     @Override
-    public void onStop(Context context) {
-        super.onStop(context);
+    public void onViewCreated() {
+        super.onViewCreated();
+        Context context = getView().getContext();
+        mIntent = new Intent(context, UpdateService.class);
+        if (!isMyServiceRunning(UpdateService.class)) {
+            context.startService(mIntent);
+        }
+        context.bindService(mIntent,mServiceConnection,0);
     }
 
     @Override
@@ -111,7 +121,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true);
         getView().openRootFragment(sendBaseFragment);
         ((MainActivity) getView().getFragmentActivity()).setRootFragment(sendBaseFragment);
-        ((MainActivity) getView().getFragmentActivity()).getBottomNavigationView().getMenu().getItem(3).setChecked(true);
+        ((MainActivity) getView().getFragmentActivity()).setIconChecked(3);
     }
 
     @Override
@@ -177,14 +187,12 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        getView().getContext().unbindService(mServiceConnection);
+        mUpdateService.removeListener();
         getInteractor().unSubscribe();
         getView().setAdapterNull();
     }
 
-    @Override
-    public void onDestroy(Context context) {
-        super.onDestroy(context);
-    }
 
     private void loadAndUpdateData() {
         getView().startRefreshAnimation();

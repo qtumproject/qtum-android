@@ -19,6 +19,7 @@
         <activity
             android:name=".ui.activity.MainActivity.MainActivity"
             android:windowSoftInputMode="adjustResize"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,6 +39,7 @@
         <receiver
             android:name=".dataprovider.BootReceiver"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
+            android:exported="true"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

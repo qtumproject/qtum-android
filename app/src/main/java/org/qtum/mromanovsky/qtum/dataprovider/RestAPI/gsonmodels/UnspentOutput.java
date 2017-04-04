@@ -21,6 +21,9 @@ public class UnspentOutput {
     @SerializedName("pubkey_hash")
     @Expose
     private String pubkeyHash;
+    @SerializedName("confirmations")
+    @Expose
+    private Integer confirmations;
 
     public Double getAmount() {
         return amount;
@@ -64,4 +67,11 @@ public class UnspentOutput {
         this.pubkeyHash = pubkeyHash;
     }
 
+    public Integer getConfirmations() {
+        return confirmations;
+    }
+
+    public void setConfirmations(Integer confirmations) {
+        this.confirmations = confirmations;
+    }
 }

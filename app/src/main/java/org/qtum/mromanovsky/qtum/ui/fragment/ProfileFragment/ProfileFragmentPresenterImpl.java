@@ -66,7 +66,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
         StartPageFragment startPageFragment = StartPageFragment.newInstance();
         ((MainActivity)getView().getFragmentActivity()).openRootFragment(startPageFragment);
-        ((MainActivity)getView().getFragmentActivity()).getBottomNavigationView().getMenu().getItem(0).setChecked(true);
+        ((MainActivity)getView().getFragmentActivity()).setIconChecked(0);
     }
 
     @Override

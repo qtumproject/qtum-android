@@ -9,4 +9,5 @@ import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseContextView;
 interface MainActivityView extends BaseContextView {
     void openRootFragment(Fragment fragment);
     void popBackStack();
+    void setIconChecked(int position);
 }

@@ -18,12 +18,14 @@ import com.google.gson.Gson;
 
 import org.bitcoinj.wallet.Wallet;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 
+import java.math.BigDecimal;
 import java.net.URISyntaxException;
 
 import io.socket.client.IO;
@@ -70,7 +72,16 @@ public class UpdateService extends Service {
         }).on("balance_changed", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-
+                if(mListener!=null) {
+                    JSONObject data = (JSONObject) args[0];
+                    try {
+                        double unconfirmedBalance = data.getDouble("unconfirmedBalance") / 100000000;
+                        double balance = data.getDouble("balance") / 100000000;
+                        mListener.onChangeBalance(String.valueOf(balance), String.valueOf(unconfirmedBalance));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }).on("new_transaction", new Emitter.Listener() {
             @Override
@@ -80,6 +91,13 @@ public class UpdateService extends Service {
                 History history = gson.fromJson(data.toString(),History.class);
                 if(mListener != null) {
                     mListener.onNewHistory(history);
+                    if(!mListener.getVisibility()){
+                        if(history.getBlockTime()!=null) {
+                            totalTransaction++;
+                            sendNotification("New confirmed transaction", totalTransaction + " new confirmed transaction",
+                                    "Touch to open transaction history", RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                        }
+                    }
                 } else {
                     if(history.getBlockTime()!=null) {
                         totalTransaction++;
@@ -186,8 +204,13 @@ public class UpdateService extends Service {
 
     public void registerListener(UpdateServiceListener updateServiceListener){
         mListener = updateServiceListener;
-        totalTransaction = 0;
-        sendNotification("Default","Default","Defaul",null);
+    }
+
+    public void clearNotification(){
+        if(totalTransaction!=0) {
+            sendNotification("Default", "Default", "Default", null);
+            totalTransaction = 0;
+        }
     }
 
     public void removeListener(){

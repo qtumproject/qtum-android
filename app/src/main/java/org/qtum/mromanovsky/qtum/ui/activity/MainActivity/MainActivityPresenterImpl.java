@@ -1,6 +1,7 @@
 package org.qtum.mromanovsky.qtum.ui.activity.MainActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
@@ -93,5 +94,14 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     @Override
     public void setRootFragment(Fragment fragment) {
         mRootFragment = fragment;
+    }
+
+    @Override
+    public void processIntent(Intent intent) {
+        if(intent.getBooleanExtra("notification_action", false)){
+            WalletFragment walletFragment = WalletFragment.newInstance();
+            getView().openRootFragment(walletFragment);
+            getView().setIconChecked(0);
+        }
     }
 }
