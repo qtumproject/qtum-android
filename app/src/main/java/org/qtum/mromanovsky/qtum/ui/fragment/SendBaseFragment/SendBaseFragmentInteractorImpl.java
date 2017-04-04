@@ -28,6 +28,7 @@ import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import rx.Subscriber;
@@ -60,11 +61,14 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     }
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
-                        for(UnspentOutput unspentOutput : unspentOutputs){
+
+                        for(Iterator<UnspentOutput> iterator = unspentOutputs.iterator();iterator.hasNext();){
+                            UnspentOutput unspentOutput = iterator.next();
                             if(unspentOutput.getConfirmations()==0){
-                                unspentOutputs.remove(unspentOutput);
+                                iterator.remove();
                             }
                         }
+
                         callBack.onSuccess(unspentOutputs);
                     }
                 });
