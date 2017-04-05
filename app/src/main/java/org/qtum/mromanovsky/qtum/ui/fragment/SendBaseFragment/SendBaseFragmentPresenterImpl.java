@@ -1,21 +1,93 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Handler;
+import android.os.IBinder;
 
 import org.qtum.mromanovsky.qtum.R;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vin;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
+import org.qtum.mromanovsky.qtum.dataprovider.TransactionListener;
+import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 
 class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SendBaseFragmentPresenter {
 
     private SendBaseFragmentView mSendBaseFragmentView;
     private SendBaseFragmentInteractorImpl mSendBaseFragmentInteractor;
+    private UpdateService mUpdateService;
+    private Context mContext;
+
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
+
+            mUpdateService.addTransactionListener(new TransactionListener() {
+                @Override
+                public void onNewHistory(History history) {
+                    calculateChangeInBalance(history,getInteractor().getAddresses());
+                    if(history.getChangeInBalance()<0){
+                        getView().getFragmentActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateAvailableBalance();
+                            }
+                        });
+                    } else if(history.getBlockTime()!=null){
+                        getView().getFragmentActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateAvailableBalance();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public boolean getVisibility() {
+                    return false;
+                }
+            });
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
 
     SendBaseFragmentPresenterImpl(SendBaseFragmentView sendBaseFragmentView) {
         mSendBaseFragmentView = sendBaseFragmentView;
-        mSendBaseFragmentInteractor = new SendBaseFragmentInteractorImpl(getView().getContext());
+        mContext = getView().getContext();
+        mSendBaseFragmentInteractor = new SendBaseFragmentInteractorImpl(mContext);
+    }
+
+    @Override
+    public void onViewCreated() {
+        super.onViewCreated();
+        Intent intent = new Intent(mContext, UpdateService.class);
+        mContext.bindService(intent,mServiceConnection,0);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mContext.unbindService(mServiceConnection);
+        mUpdateService.removeTransactionListener();
+
+        //TODO:unsubscribe rx
     }
 
     @Override
@@ -27,13 +99,28 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     public void onClickQrCode() {
         QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
         getView().openFragmentForResult(qrCodeRecognitionFragment);
+    }
 
+    private void updateAvailableBalance(){
+        getView().setProgressBar();
+        getInteractor().getUnspentOutputs(new SendBaseFragmentInteractorImpl.GetUnspentListCallBack() {
+            @Override
+            public void onSuccess(List<UnspentOutput> unspentOutputs) {
+                BigDecimal balance = new BigDecimal("0");
+                BigDecimal amount;
+                for(UnspentOutput unspentOutput : unspentOutputs){
+                    amount = new BigDecimal(String.valueOf(unspentOutput.getAmount()));
+                    balance = balance.add(amount);
+                }
+                getView().updateAvailableBalance(balance.toString());
+            }
+        });
     }
 
     @Override
     public void initializeViews() {
         super.initializeViews();
-        getView().setBalance(getInteractor().getBalance());
+        updateAvailableBalance();
     }
 
     public SendBaseFragmentInteractorImpl getInteractor() {
@@ -105,5 +192,36 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
         });
     }
 
+    private void calculateChangeInBalance(History history, List<String> addresses){
+        BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));
+        history.setChangeInBalance(changeInBalance.doubleValue());
+    }
+
+    private BigDecimal calculateVin(History history, List<String> addresses){
+        BigDecimal totalVin = new BigDecimal("0.0");
+        for(Vin vin : history.getVin()){
+            for(String address : addresses){
+                if(vin.getAddress().equals(address)){
+                    vin.setOwnAddress(true);
+                    totalVin = new BigDecimal(history.getAmount());
+                    return totalVin;
+                }
+            }
+        }
+        return totalVin;
+    }
+
+    private BigDecimal calculateVout(History history, List<String> addresses){
+        BigDecimal totalVout = new BigDecimal("0.0");
+        for(Vout vout : history.getVout()){
+            for(String address : addresses){
+                if(vout.getAddress().equals(address)){
+                    vout.setOwnAddress(true);
+                    totalVout = totalVout.add(new BigDecimal(vout.getValue()));
+                }
+            }
+        }
+        return totalVout;
+    }
 
 }

@@ -12,7 +12,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -25,7 +24,6 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 
-import java.math.BigDecimal;
 import java.net.URISyntaxException;
 
 import io.socket.client.IO;
@@ -40,7 +38,8 @@ public class UpdateService extends Service {
 
     public final int DEFAULT_NOTIFICATION_ID = 101;
     private NotificationManager notificationManager;
-    private UpdateServiceListener mListener = null;
+    private TransactionListener mTransactionListener = null;
+    private BalanceChangeListener mBalanceChangeListener;
     private Notification notification;
     private Socket socket;
     private int totalTransaction = 0;
@@ -66,18 +65,18 @@ public class UpdateService extends Service {
                     arr.put(address);
                 }
                 socket.emit("subscribe","balance_subscribe", arr);
-                sendNotification("Default","Default","Defaul",null);
+                sendNotification("Default","Default","Default",null);
 
             }
         }).on("balance_changed", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                if(mListener!=null) {
+                if(mBalanceChangeListener !=null) {
                     JSONObject data = (JSONObject) args[0];
                     try {
                         double unconfirmedBalance = data.getDouble("unconfirmedBalance") / 100000000;
                         double balance = data.getDouble("balance") / 100000000;
-                        mListener.onChangeBalance(String.valueOf(balance), String.valueOf(unconfirmedBalance));
+                        mBalanceChangeListener.onChangeBalance(String.valueOf(balance), String.valueOf(unconfirmedBalance));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -89,9 +88,9 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(),History.class);
-                if(mListener != null) {
-                    mListener.onNewHistory(history);
-                    if(!mListener.getVisibility()){
+                if(mTransactionListener != null) {
+                    mTransactionListener.onNewHistory(history);
+                    if(!mTransactionListener.getVisibility()){
                         if(history.getBlockTime()!=null) {
                             totalTransaction++;
                             sendNotification("New confirmed transaction", totalTransaction + " new confirmed transaction",
@@ -202,8 +201,20 @@ public class UpdateService extends Service {
         return mUpdateBinder;
     }
 
-    public void registerListener(UpdateServiceListener updateServiceListener){
-        mListener = updateServiceListener;
+    public void addTransactionListener(TransactionListener updateServiceListener){
+        mTransactionListener = updateServiceListener;
+    }
+
+    public void removeTransactionListener(){
+        mTransactionListener = null;
+    }
+
+    public void addBalanceChangeListener(BalanceChangeListener balanceChangeListener){
+        mBalanceChangeListener = balanceChangeListener;
+    }
+
+    public void removeBalanceChangeListener(){
+        mBalanceChangeListener = null;
     }
 
     public void clearNotification(){
@@ -211,10 +222,6 @@ public class UpdateService extends Service {
             sendNotification("Default", "Default", "Default", null);
             totalTransaction = 0;
         }
-    }
-
-    public void removeListener(){
-        mListener = null;
     }
 
     public class UpdateBinder extends Binder {

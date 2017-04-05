@@ -62,8 +62,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                     public void onNext(HistoryResponse historyResponse) {
 
                         for(History history : historyResponse.getItems()){
-                            BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));
-                            history.setChangeInBalance(changeInBalance.doubleValue());
+                            calculateChangeInBalance(history, addresses);
                         }
 
                         switch (STATE){
@@ -83,6 +82,11 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
                     }
                 });
+    }
+
+    private void calculateChangeInBalance(History history, List<String> addresses){
+        BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));
+        history.setChangeInBalance(changeInBalance.doubleValue());
     }
 
     private BigDecimal calculateVin(History history, List<String> addresses){
@@ -148,8 +152,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     @Override
     public void addToHistoryList(History history) {
-        BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));
-        history.setChangeInBalance(changeInBalance.doubleValue());
+        calculateChangeInBalance(history,addresses);
         HistoryList.getInstance().getHistoryList().add(0,history);
     }
 
@@ -158,8 +161,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
         for(History historyReplacing : getHistoryList()){
             if(historyReplacing.getTxHash().equals(history.getTxHash())){
                 int position = getHistoryList().indexOf(historyReplacing);
-                BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));
-                history.setChangeInBalance(changeInBalance.doubleValue());
+                calculateChangeInBalance(history,addresses);
                 getHistoryList().set(position,history);
                 return position;
             }

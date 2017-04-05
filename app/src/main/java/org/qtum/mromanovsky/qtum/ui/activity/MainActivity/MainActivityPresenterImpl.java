@@ -99,8 +99,8 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     @Override
     public void processIntent(Intent intent) {
         if(intent.getBooleanExtra("notification_action", false)){
-            WalletFragment walletFragment = WalletFragment.newInstance();
-            getView().openRootFragment(walletFragment);
+            mRootFragment = WalletFragment.newInstance();
+            getView().openRootFragment(mRootFragment);
             getView().setIconChecked(0);
         }
     }

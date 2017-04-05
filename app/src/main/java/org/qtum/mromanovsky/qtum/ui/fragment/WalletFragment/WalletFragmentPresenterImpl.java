@@ -9,8 +9,9 @@ import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
+import org.qtum.mromanovsky.qtum.dataprovider.BalanceChangeListener;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import org.qtum.mromanovsky.qtum.dataprovider.UpdateServiceListener;
+import org.qtum.mromanovsky.qtum.dataprovider.TransactionListener;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
@@ -22,6 +23,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     private Intent mIntent;
     private UpdateService mUpdateService;
+    private Context mContext;
 
     private WalletFragmentInteractorImpl mWalletFragmentInteractor;
     private WalletFragmentView mWalletFragmentView;
@@ -31,6 +33,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView) {
         mWalletFragmentView = walletFragmentView;
+        mContext = getView().getContext();
         mWalletFragmentInteractor = new WalletFragmentInteractorImpl();
     }
 
@@ -39,7 +42,8 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
-            mUpdateService.registerListener(new UpdateServiceListener() {
+            mUpdateService.clearNotification();
+            mUpdateService.addTransactionListener(new TransactionListener() {
                 @Override
                 public void onNewHistory(History history) {
                     if(history.getBlockTime()!=null){
@@ -51,6 +55,13 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
                     }
                 }
 
+                @Override
+                public boolean getVisibility() {
+                    return mVisibility;
+                }
+            });
+
+            mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
                 @Override
                 public void onChangeBalance(String balance, String unconfirmedBalance) {
 
@@ -99,12 +110,11 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        Context context = getView().getContext();
-        mIntent = new Intent(context, UpdateService.class);
+        mIntent = new Intent(mContext, UpdateService.class);
         if (!isMyServiceRunning(UpdateService.class)) {
-            context.startService(mIntent);
+            mContext.startService(mIntent);
         }
-        context.bindService(mIntent,mServiceConnection,0);
+        mContext.bindService(mIntent,mServiceConnection,0);
     }
 
     @Override
@@ -187,8 +197,8 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getView().getContext().unbindService(mServiceConnection);
-        mUpdateService.removeListener();
+        mContext.unbindService(mServiceConnection);
+        mUpdateService.removeTransactionListener();
         getInteractor().unSubscribe();
         getView().setAdapterNull();
     }
@@ -206,7 +216,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
             @Override
             public void onError(Throwable e) {
                 getView().stopRefreshRecyclerAnimation();
-                Toast.makeText(getView().getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, e.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -215,7 +225,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         getInteractor().getBalance(new WalletFragmentInteractorImpl.GetBalanceCallBack() {
             @Override
             public void onSuccess(double balance) {
-                getView().updateBalance(balance * (QtumSharedPreference.getInstance().getExchangeRates(getView().getContext())));
+                getView().updateBalance(balance * (QtumSharedPreference.getInstance().getExchangeRates(mContext)));
             }
         });
     }

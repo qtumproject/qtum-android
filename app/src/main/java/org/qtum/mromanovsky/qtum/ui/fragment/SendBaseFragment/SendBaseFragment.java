@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,8 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     ImageButton mImageButtonBack;
     @BindView(R.id.tv_toolbar_send)
     TextView mTextViewToolBar;
-
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
     @BindView(R.id.tv_total_balance_number)
     TextView mTextViewTotalBalanceNumber;
 
@@ -158,8 +160,16 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     }
 
     @Override
-    public void setBalance(double balance) {
-        mTextViewTotalBalanceNumber.setText(String.valueOf(balance) + " QTUM");
+    public void setProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mTextViewTotalBalanceNumber.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void updateAvailableBalance(String balance) {
+        mProgressBar.setVisibility(View.GONE);
+        mTextViewTotalBalanceNumber.setVisibility(View.VISIBLE);
+        mTextViewTotalBalanceNumber.setText(balance);
     }
 
     public void onResponse(String pubAddress, Double amount) {

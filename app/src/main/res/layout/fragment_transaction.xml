@@ -22,23 +22,23 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/wave1"
-                android:layout_gravity="bottom|center"
-                android:layout_width="1080dp"
-                android:layout_height="158dp"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_fileName="w1Test2.json"/>
+            <!--<com.airbnb.lottie.LottieAnimationView-->
+                <!--android:id="@+id/wave1"-->
+                <!--android:layout_gravity="bottom|center"-->
+                <!--android:layout_width="1080dp"-->
+                <!--android:layout_height="158dp"-->
+                <!--app:lottie_autoPlay="true"-->
+                <!--app:lottie_loop="true"-->
+                <!--app:lottie_fileName="w1Test2.json"/>-->
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/wave2"
-                android:layout_gravity="bottom|center"
-                android:layout_width="1080dp"
-                android:layout_height="158dp"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_fileName="w2Test2.json"/>
+            <!--<com.airbnb.lottie.LottieAnimationView-->
+                <!--android:id="@+id/wave2"-->
+                <!--android:layout_gravity="bottom|center"-->
+                <!--android:layout_width="1080dp"-->
+                <!--android:layout_height="158dp"-->
+                <!--app:lottie_autoPlay="true"-->
+                <!--app:lottie_loop="true"-->
+                <!--app:lottie_fileName="w2Test2.json"/>-->
 
 
 

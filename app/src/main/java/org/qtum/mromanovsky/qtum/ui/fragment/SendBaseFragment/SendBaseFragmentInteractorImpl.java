@@ -1,8 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment;
 
 import android.content.Context;
-import android.support.v4.content.res.TypedArrayUtils;
-import android.util.Log;
 
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.AddressFormatException;
@@ -223,5 +221,10 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
     @Override
     public double getBalance() {
         return HistoryList.getInstance().getBalance() * QtumSharedPreference.getInstance().getExchangeRates(mContext);
+    }
+
+    @Override
+    public List<String> getAddresses() {
+        return KeyStorage.getInstance().getAddresses();
     }
 }
