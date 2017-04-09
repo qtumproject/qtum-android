@@ -10,7 +10,7 @@ import java.util.List;
 interface WalletFragmentView extends BaseFragmentView {
     void updateHistory(List<History> historyList);
     void setAdapterNull();
-    void updateBalance(double balance);
+    void updateBalance(String balance);
     void updatePubKey(String pubKey);
     void startRefreshAnimation();
     void stopRefreshRecyclerAnimation();

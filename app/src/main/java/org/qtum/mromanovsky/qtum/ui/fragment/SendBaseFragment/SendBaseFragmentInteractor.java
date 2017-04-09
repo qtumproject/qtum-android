@@ -8,6 +8,6 @@ interface SendBaseFragmentInteractor {
     void sendTx(String address, String amount, SendBaseFragmentInteractorImpl.SendTxCallBack callBack);
     void createTx(String address, String amount, SendBaseFragmentInteractorImpl.CreateTxCallBack callBack);
     int getPassword();
-    double getBalance();
+    String getBalance();
     List<String> getAddresses();
 }

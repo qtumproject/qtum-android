@@ -199,6 +199,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         super.onDestroyView();
         mContext.unbindService(mServiceConnection);
         mUpdateService.removeTransactionListener();
+        mUpdateService.removeBalanceChangeListener();
         getInteractor().unSubscribe();
         getView().setAdapterNull();
     }
@@ -224,8 +225,8 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     private void loadAndUpdateBalance() {
         getInteractor().getBalance(new WalletFragmentInteractorImpl.GetBalanceCallBack() {
             @Override
-            public void onSuccess(double balance) {
-                getView().updateBalance(balance * (QtumSharedPreference.getInstance().getExchangeRates(mContext)));
+            public void onSuccess(String balance) {
+                getView().updateBalance(balance);
             }
         });
     }

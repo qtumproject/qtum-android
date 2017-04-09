@@ -21,7 +21,7 @@ class ReceiveFragmentInteractorImpl implements ReceiveFragmentInteractor{
     }
 
     @Override
-    public double getBalance() {
-        return HistoryList.getInstance().getBalance()* QtumSharedPreference.getInstance().getExchangeRates(mContext);
+    public String getBalance() {
+        return HistoryList.getInstance().getBalance();
     }
 }

@@ -8,7 +8,7 @@ public class UnspentOutput {
 
     @SerializedName("amount")
     @Expose
-    private Double amount;
+    private String amount;
     @SerializedName("vout")
     @Expose
     private Integer vout;
@@ -25,11 +25,11 @@ public class UnspentOutput {
     @Expose
     private Integer confirmations;
 
-    public Double getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 

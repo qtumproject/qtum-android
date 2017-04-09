@@ -146,8 +146,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
     @Override
-    public void updateBalance(double balance) {
-        mTextViewTotalBalanceNumber.setText(String.valueOf(balance)+" QTUM");
+    public void updateBalance(String balance) {
+        mTextViewTotalBalanceNumber.setText(balance+" QTUM");
         mWalletAppBarPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem()).updateBalance(balance);
     }
 

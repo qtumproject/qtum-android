@@ -1,9 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
-import android.content.Context;
-import android.util.Log;
-
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
@@ -135,12 +132,12 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
-                        double balance = 0.0;
+                        BigDecimal balance = new BigDecimal("0.0");
                         for(UnspentOutput unspentOutput : unspentOutputs){
-                            balance+=unspentOutput.getAmount();
+                            balance = balance.add(new BigDecimal(unspentOutput.getAmount()));
                         }
-                        HistoryList.getInstance().setBalance(balance);
-                        callBack.onSuccess(balance);
+                        HistoryList.getInstance().setBalance(balance.toString());
+                        callBack.onSuccess(balance.toString());
                     }
                 });
     }
@@ -184,7 +181,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     }
 
     interface GetBalanceCallBack {
-        void onSuccess(double balance);
+        void onSuccess(String balance);
     }
 
     @Override

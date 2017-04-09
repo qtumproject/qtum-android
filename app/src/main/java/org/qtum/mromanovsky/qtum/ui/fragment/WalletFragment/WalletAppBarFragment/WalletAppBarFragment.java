@@ -31,6 +31,8 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
     TextView mTvBalance;
     @BindView(R.id.ll_receive)
     LinearLayout mLinearLayoutReceive;
+    @BindView(R.id.tv_unconfirmed_balance)
+    TextView mTextViewUnconfirmedBalance;
 
     @BindView(R.id.progress_bar_balance)
     ProgressBar mProgressBarDialog;
@@ -93,10 +95,8 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
         mTvPublicKey.setText(pubKey);
     }
 
-    public void updateBalance(double balance) {
-        DecimalFormat df = new DecimalFormat("0");
-        df.setMaximumFractionDigits(8);
-        mTvBalance.setText(df.format(balance));
+    public void updateBalance(String balance) {
+        mTvBalance.setText(balance);
         mTvBalance.setVisibility(View.VISIBLE);
         mProgressBarDialog.setVisibility(View.GONE);
     }

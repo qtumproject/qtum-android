@@ -108,7 +108,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     }
 
     @Override
-    public void setBalance(double balance) {
+    public void setBalance(String balance) {
         mTextViewTotalBalanceNumber.setText(String.valueOf(balance)+" QTUM");
     }
 

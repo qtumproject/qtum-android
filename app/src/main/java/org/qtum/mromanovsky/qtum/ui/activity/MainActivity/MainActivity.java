@@ -62,8 +62,11 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
 
         //TODO: NFC
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        boolean b = mNfcAdapter.isEnabled();
+        if(mNfcAdapter != null) {
+            mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+            boolean b = mNfcAdapter.isEnabled();
+
+        }
         String s = getIntent().getAction();
 
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(s)) {
@@ -75,62 +78,62 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                     msgs[i] = (NdefMessage) rawMsgs[i];
                 }
             }
-            buildTagViews(msgs);
+            //buildTagViews(msgs);
         }
     }
 
-    private void buildTagViews(NdefMessage[] msgs) {
-        if (msgs == null || msgs.length == 0) return;
-
-        String text = "";
-//        String tagId = new String(msgs[0].getRecords()[0].getType());
-        byte[] payload = msgs[0].getRecords()[0].getPayload();
-        String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-16"; // Get the Text Encoding
-        int languageCodeLength = payload[0] & 0063; // Get the Language Code, e.g. "en"
-        // String languageCode = new String(payload, 1, languageCodeLength, "US-ASCII");
-
-        try {
-            // Get the Text
-            text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
-        } catch (UnsupportedEncodingException e) {
-            Log.e("UnsupportedEncoding", e.toString());
-        }
-
-        int i = 2;
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Intent intent = new Intent(getContext(),MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        final PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        IntentFilter[] filters = new IntentFilter[1];
-        String[][] techList = new String[][]{};
-
-        // Notice that this is the same filter as in our manifest.
-        filters[0] = new IntentFilter();
-        filters[0].addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        filters[0].addCategory(Intent.CATEGORY_DEFAULT);
-        try {
-            filters[0].addDataType("text/plain");
-        } catch (IntentFilter.MalformedMimeTypeException e) {
-            throw new RuntimeException("Check your mime type.");
-        }
-
-        mNfcAdapter.enableForegroundDispatch(this,pendingIntent,filters,techList);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        mNfcAdapter.disableForegroundDispatch(this);
-    }
+//    private void buildTagViews(NdefMessage[] msgs) {
+//        if (msgs == null || msgs.length == 0) return;
+//
+//        String text = "";
+////        String tagId = new String(msgs[0].getRecords()[0].getType());
+//        byte[] payload = msgs[0].getRecords()[0].getPayload();
+//        String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-16"; // Get the Text Encoding
+//        int languageCodeLength = payload[0] & 0063; // Get the Language Code, e.g. "en"
+//        // String languageCode = new String(payload, 1, languageCodeLength, "US-ASCII");
+//
+//        try {
+//            // Get the Text
+//            text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
+//        } catch (UnsupportedEncodingException e) {
+//            Log.e("UnsupportedEncoding", e.toString());
+//        }
+//
+//        int i = 2;
+//    }
+//
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        Intent intent = new Intent(getContext(),MainActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//
+//        final PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        IntentFilter[] filters = new IntentFilter[1];
+//        String[][] techList = new String[][]{};
+//
+//        // Notice that this is the same filter as in our manifest.
+//        filters[0] = new IntentFilter();
+//        filters[0].addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
+//        filters[0].addCategory(Intent.CATEGORY_DEFAULT);
+//        try {
+//            filters[0].addDataType("text/plain");
+//        } catch (IntentFilter.MalformedMimeTypeException e) {
+//            throw new RuntimeException("Check your mime type.");
+//        }
+//
+//        mNfcAdapter.enableForegroundDispatch(this,pendingIntent,filters,techList);
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//
+//        mNfcAdapter.disableForegroundDispatch(this);
+//    }
     //TODO: NFC END
 
     @Override

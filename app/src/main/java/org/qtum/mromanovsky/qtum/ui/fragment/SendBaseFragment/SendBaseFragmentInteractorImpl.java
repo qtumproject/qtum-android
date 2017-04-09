@@ -22,6 +22,7 @@ import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.utils.CurrentNetParams;
 import org.spongycastle.util.encoders.Hex;
 
+import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.Comparator;
@@ -86,53 +87,53 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     return;
                 }
                 ECKey ecKey = KeyStorage.getInstance().getCurrentKey();
-                double amount = Double.parseDouble(amountString) / (QtumSharedPreference.getInstance().getExchangeRates(mContext));
-                double fee = 0.00001;
+                BigDecimal amount = new BigDecimal(amountString);
+                BigDecimal fee = new BigDecimal("0.00001");
 
 
                 Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
                     @Override
                     public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {
-                        return unspentOutput.getAmount() > t1.getAmount() ? 1 : (unspentOutput.getAmount() < t1.getAmount()) ? -1 : 0;
+                        return Double.valueOf(unspentOutput.getAmount()) > Double.valueOf(t1.getAmount()) ? 1 : (Double.valueOf(unspentOutput.getAmount()) < Double.valueOf(t1.getAmount())) ? -1 : 0;
                     }
                 });
 
-                double amountFromOutput = 0.0;
-                double overFlow = 0.0;
-                transaction.addOutput(Coin.valueOf((long)(amount*100000000)), addressToSend);
+                BigDecimal amountFromOutput = new BigDecimal("0.0");
+                BigDecimal overFlow = new BigDecimal("0.0");
+                transaction.addOutput(Coin.valueOf((long)(amount.doubleValue()*100000000)), addressToSend);
 
 
-                amount += fee;
+                amount = amount.add(fee);
 
                 for (UnspentOutput unspentOutput : unspentOutputs) {
-                    overFlow += unspentOutput.getAmount();
-                    if (overFlow >= amount) {
+                    overFlow = overFlow.add(new BigDecimal(unspentOutput.getAmount()));
+                    if (overFlow.doubleValue() >= amount.doubleValue()) {
                         break;
                     }
                 }
-                if (overFlow < amount) {
+                if (overFlow.doubleValue() < amount.doubleValue()) {
                     //TODO: throw exception
                     callBack.onError("Not enough money");
                     return;
                 }
-                double delivery = overFlow - amount;
-                if (delivery != 0.0) {
-                    transaction.addOutput(Coin.valueOf((long)(delivery*100000000)), ecKey.toAddress(CurrentNetParams.getNetParams()));
+                BigDecimal delivery = overFlow.subtract(amount);
+                if (delivery.doubleValue() != 0.0) {
+                    transaction.addOutput(Coin.valueOf((long)(delivery.doubleValue()*100000000)), ecKey.toAddress(CurrentNetParams.getNetParams()));
                 }
 
                 for (UnspentOutput unspentOutput : unspentOutputs) {
-                    if(unspentOutput.getAmount() != 0.0)
+                    if(Double.valueOf(unspentOutput.getAmount()) != 0.0)
                     for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
                         if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
                             Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
                             TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
                             Script script = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
                             transaction.addSignedInput(outPoint, script, deterministicKey, Transaction.SigHash.ALL, true);
-                            amountFromOutput += unspentOutput.getAmount();
+                            amountFromOutput = amountFromOutput.add(new BigDecimal(unspentOutput.getAmount()));
                             break;
                         }
                     }
-                    if (amountFromOutput >= amount) {
+                    if (amountFromOutput.doubleValue() >= amount.doubleValue()) {
                         break;
                     }
                 }
@@ -219,8 +220,8 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
     }
 
     @Override
-    public double getBalance() {
-        return HistoryList.getInstance().getBalance() * QtumSharedPreference.getInstance().getExchangeRates(mContext);
+    public String getBalance() {
+        return HistoryList.getInstance().getBalance();
     }
 
     @Override
