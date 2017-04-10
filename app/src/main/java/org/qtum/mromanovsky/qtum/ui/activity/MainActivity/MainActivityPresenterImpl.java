@@ -1,12 +1,20 @@
 package org.qtum.mromanovsky.qtum.ui.activity.MainActivity;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import org.qtum.mromanovsky.qtum.R;
+import org.qtum.mromanovsky.qtum.dataprovider.BalanceChangeListener;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
+import org.qtum.mromanovsky.qtum.dataprovider.TransactionListener;
+import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BasePresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment.NewsFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
@@ -21,10 +29,15 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     private MainActivityView mMainActivityView;
     private MainActivityInteractorImpl mMainActivityInteractor;
     private Fragment mRootFragment;
+    private Context mContext;
+
+    private Intent mIntent;
+    private UpdateService mUpdateService;
 
     MainActivityPresenterImpl(MainActivityView mainActivityView) {
         mMainActivityView = mainActivityView;
-        mMainActivityInteractor = new MainActivityInteractorImpl();
+        mContext = getView().getContext();
+        mMainActivityInteractor = new MainActivityInteractorImpl(mContext);
     }
 
     @Override
@@ -36,15 +49,51 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         return mMainActivityInteractor;
     }
 
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
+            mUpdateService.clearNotification();
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
+
+    public UpdateService getUpdateService(){
+        return mUpdateService;
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onPostCreate(Context contex) {
         super.onPostCreate(contex);
+
+        mIntent = new Intent(mContext, UpdateService.class);
+        if (!isMyServiceRunning(UpdateService.class)) {
+            mContext.startService(mIntent);
+        }
+        mContext.bindService(mIntent,mServiceConnection,0);
+
         openStartFragment();
     }
 
     private void openStartFragment() {
         Fragment fragment;
-        if (getInteractor().getKeyGeneratedInstance(getView().getContext())) {
+        if (getInteractor().getKeyGeneratedInstance(mContext)) {
             fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION);
             getView().openRootFragment(fragment);
         } else {
@@ -103,5 +152,12 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
             getView().openRootFragment(mRootFragment);
             getView().setIconChecked(0);
         }
+    }
+
+    @Override
+    public void onDestroy(Context context) {
+        super.onDestroy(context);
+        mContext.unbindService(mServiceConnection);
+        getInteractor().clearStatic();
     }
 }

@@ -3,6 +3,7 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -22,7 +23,7 @@ public class History {
     private String txHash;
     @SerializedName("amount")
     @Expose
-    private String amount;
+    private BigDecimal amount;
     @SerializedName("vout")
     @Expose
     private List<Vout> vout = null;
@@ -30,7 +31,7 @@ public class History {
     @Expose
     private List<Vin> vin = null;
 
-    private double changeInBalance;
+    private BigDecimal changeInBalance;
 
     public Integer getBlockTime() {
         return blockTime;
@@ -64,11 +65,11 @@ public class History {
         this.txHash = txHash;
     }
 
-    public String getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -88,11 +89,11 @@ public class History {
         this.vin = vin;
     }
 
-    public double getChangeInBalance() {
+    public BigDecimal getChangeInBalance() {
         return changeInBalance;
     }
 
-    public void setChangeInBalance(double changeInBalance) {
+    public void setChangeInBalance(BigDecimal changeInBalance) {
         this.changeInBalance = changeInBalance;
     }
 

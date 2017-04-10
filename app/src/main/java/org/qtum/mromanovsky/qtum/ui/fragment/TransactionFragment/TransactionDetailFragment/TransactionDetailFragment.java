@@ -99,7 +99,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionDe
 
         void bindTransactionDetail(TransactionInfo transactionInfo){
             mTextViewAddress.setText(transactionInfo.getAddress());
-            mTextViewValue.setText(transactionInfo.getValue());
+            mTextViewValue.setText(transactionInfo.getValue().toString());
             if(transactionInfo.isOwnAddress()){
                 switch (getArguments().getInt(ACTION)){
                     case ACTION_FROM:

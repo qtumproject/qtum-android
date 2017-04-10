@@ -1,9 +1,10 @@
 package org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 
 
+import java.math.BigDecimal;
 
 public abstract class TransactionInfo {
     public abstract String getAddress();
-    public abstract String getValue();
+    public abstract BigDecimal getValue();
     public abstract boolean isOwnAddress();
 }

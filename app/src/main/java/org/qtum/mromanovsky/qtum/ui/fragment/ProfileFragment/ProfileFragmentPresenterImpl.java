@@ -1,9 +1,5 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment;
 
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
@@ -17,7 +13,6 @@ import org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment.StartPageFragment
 
 class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ProfileFragmentPresenter {
 
-    private Intent mIntent;
     private UpdateService mUpdateService;
 
     private ProfileFragmentView mProfileFragmentView;
@@ -58,11 +53,10 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     @Override
     public void onLogOutYesClick() {
-        mIntent = new Intent(getView().getContext(), UpdateService.class);
-
-        getView().getContext().bindService(mIntent,mServiceConnection,0);
-
         getInteractor().clearWallet();
+
+        mUpdateService = ((MainActivity) getView().getFragmentActivity()).getUpdateService();
+        mUpdateService.stopMonitoring();
 
         StartPageFragment startPageFragment = StartPageFragment.newInstance();
         ((MainActivity)getView().getFragmentActivity()).openRootFragment(startPageFragment);
@@ -80,19 +74,5 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         CurrencyFragment currencyFragment = CurrencyFragment.newInstance(false);
         getView().openFragment(currencyFragment);
     }
-
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
-            getView().getContext().unbindService(mServiceConnection);
-            mUpdateService.stopSelf();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-
-        }
-    };
 
 }

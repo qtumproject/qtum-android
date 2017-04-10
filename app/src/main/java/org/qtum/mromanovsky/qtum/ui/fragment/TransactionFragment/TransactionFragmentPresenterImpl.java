@@ -72,7 +72,7 @@ class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
             listFrom.add(vin.getAddress());
         }
 
-        getView().setUpTransactionData(history.getChangeInBalance()*(QtumSharedPreference.getInstance().getExchangeRates(getView().getContext())), dateString,
+        getView().setUpTransactionData(history.getChangeInBalance().toString(), dateString,
                 listFrom, listTo);
     }
 }

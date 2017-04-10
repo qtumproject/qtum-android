@@ -83,19 +83,22 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     private void calculateChangeInBalance(History history, List<String> addresses){
         BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));
-        history.setChangeInBalance(changeInBalance.doubleValue());
+        history.setChangeInBalance(changeInBalance);
     }
 
     private BigDecimal calculateVin(History history, List<String> addresses){
         BigDecimal totalVin = new BigDecimal("0.0");
+        boolean equals = false;
         for(Vin vin : history.getVin()){
             for(String address : addresses){
                 if(vin.getAddress().equals(address)){
                     vin.setOwnAddress(true);
-                    totalVin = new BigDecimal(history.getAmount());
-                    return totalVin;
+                    equals = true;
                 }
             }
+        }
+        if(equals){
+            totalVin = history.getAmount();
         }
         return totalVin;
     }
@@ -106,7 +109,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
             for(String address : addresses){
                 if(vout.getAddress().equals(address)){
                     vout.setOwnAddress(true);
-                    totalVout = totalVout.add(new BigDecimal(vout.getValue()));
+                    totalVout = totalVout.add(vout.getValue());
                 }
             }
         }
@@ -114,32 +117,8 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     }
 
     @Override
-    public void getBalance(final GetBalanceCallBack callBack) {
-        mSubscriptionBalance = QtumService.newInstance()
-                .getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<UnspentOutput>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(List<UnspentOutput> unspentOutputs) {
-                        BigDecimal balance = new BigDecimal("0.0");
-                        for(UnspentOutput unspentOutput : unspentOutputs){
-                            balance = balance.add(new BigDecimal(unspentOutput.getAmount()));
-                        }
-                        HistoryList.getInstance().setBalance(balance.toString());
-                        callBack.onSuccess(balance.toString());
-                    }
-                });
+    public String getBalance() {
+        return HistoryList.getInstance().getBalance();
     }
 
     @Override
@@ -178,10 +157,6 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     interface GetHistoryListCallBack {
         void onSuccess();
         void onError(Throwable e);
-    }
-
-    interface GetBalanceCallBack {
-        void onSuccess(String balance);
     }
 
     @Override

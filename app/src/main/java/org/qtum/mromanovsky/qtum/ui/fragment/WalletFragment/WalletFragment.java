@@ -147,7 +147,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void updateBalance(String balance) {
-        mTextViewTotalBalanceNumber.setText(balance+" QTUM");
+        String s = balance;
+        mTextViewTotalBalanceNumber.setText(balance + " QTUM");
         mWalletAppBarPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem()).updateBalance(balance);
     }
 
@@ -159,7 +160,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     @Override
     public void startRefreshAnimation() {
         mSwipeRefreshLayout.setRefreshing(true);
-        mWalletAppBarPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem()).startRefreshAnimation();
     }
 
     @Override
@@ -462,7 +462,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                 mTextViewDate.setText("Not confirmed");
                 mLinearLayoutTransaction.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.background_grey_with_grey_pressed));
             }
-            if (history.getChangeInBalance() > 0) {
+            if (history.getChangeInBalance().doubleValue() > 0) {
                 mTextViewOperationType.setText(R.string.received);
                 //mTextViewID.setText(history.getFromAddress());
                 mTextViewID.setText(history.getTxHash());
@@ -475,9 +475,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                 mImageViewIcon.setImageResource(R.drawable.ic_sent);
                 mTextViewOperationType.setTextColor(ContextCompat.getColor(getContext(), R.color.pink));
             }
-            DecimalFormat df = new DecimalFormat("0");
-            df.setMaximumFractionDigits(8);
-            mTextViewValue.setText(df.format(history.getChangeInBalance() * (QtumSharedPreference.getInstance().getExchangeRates(getContext()))) + " QTUM");
+            mTextViewValue.setText(history.getChangeInBalance().toString() + " QTUM");
         }
     }
 }

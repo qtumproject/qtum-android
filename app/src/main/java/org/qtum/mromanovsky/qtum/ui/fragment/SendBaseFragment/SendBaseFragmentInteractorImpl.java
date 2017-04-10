@@ -94,7 +94,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                 Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
                     @Override
                     public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {
-                        return Double.valueOf(unspentOutput.getAmount()) > Double.valueOf(t1.getAmount()) ? 1 : (Double.valueOf(unspentOutput.getAmount()) < Double.valueOf(t1.getAmount())) ? -1 : 0;
+                        return unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? -1 : 0;
                     }
                 });
 
@@ -106,7 +106,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                 amount = amount.add(fee);
 
                 for (UnspentOutput unspentOutput : unspentOutputs) {
-                    overFlow = overFlow.add(new BigDecimal(unspentOutput.getAmount()));
+                    overFlow = overFlow.add(unspentOutput.getAmount());
                     if (overFlow.doubleValue() >= amount.doubleValue()) {
                         break;
                     }
@@ -122,14 +122,14 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                 }
 
                 for (UnspentOutput unspentOutput : unspentOutputs) {
-                    if(Double.valueOf(unspentOutput.getAmount()) != 0.0)
+                    if(unspentOutput.getAmount().doubleValue() != 0.0)
                     for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
                         if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
                             Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
                             TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
                             Script script = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
                             transaction.addSignedInput(outPoint, script, deterministicKey, Transaction.SigHash.ALL, true);
-                            amountFromOutput = amountFromOutput.add(new BigDecimal(unspentOutput.getAmount()));
+                            amountFromOutput = amountFromOutput.add(unspentOutput.getAmount());
                             break;
                         }
                     }

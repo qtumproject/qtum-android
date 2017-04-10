@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.qtum.mromanovsky.qtum.R;
+import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
@@ -164,6 +165,10 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                 .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
                 .addToBackStack(BaseFragment.BACK_STACK_ROOT_TAG)
                 .commit();
+    }
+
+    public UpdateService getUpdateService(){
+        return getPresenter().getUpdateService();
     }
 
     @Override

@@ -4,11 +4,11 @@
     <translate
         android:interpolator = "@anim/interpolator_accelerate_decelerate"
         android:fromXDelta="0%" android:toXDelta="0%"
-        android:fromYDelta="10%" android:toYDelta="0%"
-        android:duration="300" />
+        android:fromYDelta="5%" android:toYDelta="0%"
+        android:duration="280" />
 
     <alpha
         android:fromAlpha="0"
         android:toAlpha="1"
-        android:duration = "300"/>
+        android:duration = "280"/>
 </set>

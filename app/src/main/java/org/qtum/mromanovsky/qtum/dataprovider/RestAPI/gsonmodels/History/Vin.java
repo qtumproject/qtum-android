@@ -4,11 +4,13 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 public class Vin extends TransactionInfo{
 
     @SerializedName("value")
     @Expose
-    private String value;
+    private BigDecimal value;
     @SerializedName("address")
     @Expose
     private String address;
@@ -23,11 +25,11 @@ public class Vin extends TransactionInfo{
         isOwnAddress = ownAddress;
     }
 
-    public String getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 

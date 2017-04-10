@@ -97,16 +97,14 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     }
 
     @Override
-    public void setUpTransactionData(double value, String receivedTime, List<String> from, List<String> to) {
+    public void setUpTransactionData(String value, String receivedTime, List<String> from, List<String> to) {
 
-        DecimalFormat df = new DecimalFormat("0");
-        df.setMaximumFractionDigits(8);
-        mTextViewValue.setText(df.format(value));
+        mTextViewValue.setText(value);
 
         mTextViewReceivedTime.setText(receivedTime);
 
 
-        if (value > 0) {
+        if (Double.valueOf(value) > 0) {
             mAppBarLayout.setBackgroundResource(R.drawable.background_tb_sent);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getFragmentActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),R.color.green));

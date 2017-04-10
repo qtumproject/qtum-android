@@ -4,11 +4,13 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 public class UnspentOutput {
 
     @SerializedName("amount")
     @Expose
-    private String amount;
+    private BigDecimal amount;
     @SerializedName("vout")
     @Expose
     private Integer vout;
@@ -25,11 +27,11 @@ public class UnspentOutput {
     @Expose
     private Integer confirmations;
 
-    public String getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

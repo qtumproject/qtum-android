@@ -14,6 +14,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import org.qtum.mromanovsky.qtum.dataprovider.TransactionListener;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
+import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
@@ -29,44 +30,6 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     private UpdateService mUpdateService;
     private Context mContext;
 
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
-
-            mUpdateService.addTransactionListener(new TransactionListener() {
-                @Override
-                public void onNewHistory(History history) {
-                    calculateChangeInBalance(history,getInteractor().getAddresses());
-                    if(history.getChangeInBalance()<0){
-                        getView().getFragmentActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateAvailableBalance();
-                            }
-                        });
-                    } else if(history.getBlockTime()!=null){
-                        getView().getFragmentActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateAvailableBalance();
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public boolean getVisibility() {
-                    return false;
-                }
-            });
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-
-        }
-    };
 
     SendBaseFragmentPresenterImpl(SendBaseFragmentView sendBaseFragmentView) {
         mSendBaseFragmentView = sendBaseFragmentView;
@@ -77,14 +40,38 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        Intent intent = new Intent(mContext, UpdateService.class);
-        mContext.bindService(intent,mServiceConnection,0);
+        mUpdateService = ((MainActivity) getView().getFragmentActivity()).getUpdateService();
+        mUpdateService.addTransactionListener(new TransactionListener() {
+            @Override
+            public void onNewHistory(History history) {
+                calculateChangeInBalance(history,getInteractor().getAddresses());
+                if(history.getChangeInBalance().doubleValue()<0){
+                    getView().getFragmentActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateAvailableBalance();
+                        }
+                    });
+                } else if(history.getBlockTime()!=null){
+                    getView().getFragmentActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateAvailableBalance();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public boolean getVisibility() {
+                return false;
+            }
+        });
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mContext.unbindService(mServiceConnection);
         mUpdateService.removeTransactionListener();
 
         //TODO:unsubscribe rx
@@ -194,19 +181,22 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
     private void calculateChangeInBalance(History history, List<String> addresses){
         BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));
-        history.setChangeInBalance(changeInBalance.doubleValue());
+        history.setChangeInBalance(changeInBalance);
     }
 
     private BigDecimal calculateVin(History history, List<String> addresses){
         BigDecimal totalVin = new BigDecimal("0.0");
+        boolean equals = false;
         for(Vin vin : history.getVin()){
             for(String address : addresses){
                 if(vin.getAddress().equals(address)){
                     vin.setOwnAddress(true);
-                    totalVin = new BigDecimal(history.getAmount());
-                    return totalVin;
+                    equals = true;
                 }
             }
+        }
+        if(equals){
+            totalVin = history.getAmount();
         }
         return totalVin;
     }
@@ -217,7 +207,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
             for(String address : addresses){
                 if(vout.getAddress().equals(address)){
                     vout.setOwnAddress(true);
-                    totalVout = totalVout.add(new BigDecimal(vout.getValue()));
+                    totalVout = totalVout.add(vout.getValue());
                 }
             }
         }

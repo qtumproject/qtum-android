@@ -86,11 +86,6 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
         mUnbinder.unbind();
     }
 
-    public void startRefreshAnimation() {
-        mTvBalance.setVisibility(View.GONE);
-        mProgressBarDialog.setVisibility(View.VISIBLE);
-    }
-
     public void updatePubKey(String pubKey) {
         mTvPublicKey.setText(pubKey);
     }

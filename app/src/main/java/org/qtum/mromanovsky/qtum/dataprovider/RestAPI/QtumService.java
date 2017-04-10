@@ -83,12 +83,6 @@ public class QtumService {
         return mServiceApi.getHistoryListForSeveralAddresses(limit, offset, addresses);
     }
 
-    public interface GetHistoryCountCallBack {
-        void onResponse(int count);
-
-        void onError();
-    }
-
     public Observable<List<History>> getHistoryList(final String address, final int limit, final int offset) {
         return mServiceApi.getHistoryList(address, limit, offset);
     }
