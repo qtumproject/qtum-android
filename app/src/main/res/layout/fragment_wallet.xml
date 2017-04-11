@@ -116,17 +116,19 @@
 
                         <TextView
                             android:id="@+id/tv_total_balance"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:text="@string/total_balance"
                             android:textColor="@android:color/white"/>
 
                         <TextView
                             android:id="@+id/tv_total_balance_number"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
                             android:layout_marginRight="12dp"
+
                             android:textColor="@android:color/white"/>
                     </LinearLayout>
 

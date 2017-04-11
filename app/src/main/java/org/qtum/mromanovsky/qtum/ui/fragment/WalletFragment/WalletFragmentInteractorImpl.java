@@ -122,6 +122,11 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     }
 
     @Override
+    public String getUnconfirmedBalance() {
+        return HistoryList.getInstance().getUnconfirmedBalance();
+    }
+
+    @Override
     public int getTotalHistoryItem() {
         return HistoryList.getInstance().getTotalItem();
     }

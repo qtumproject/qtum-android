@@ -90,8 +90,9 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
         mTvPublicKey.setText(pubKey);
     }
 
-    public void updateBalance(String balance) {
+    public void updateBalance(String balance,String unconfirmedBalance) {
         mTvBalance.setText(balance);
+        mTextViewUnconfirmedBalance.setText(unconfirmedBalance);
         mTvBalance.setVisibility(View.VISIBLE);
         mProgressBarDialog.setVisibility(View.GONE);
     }

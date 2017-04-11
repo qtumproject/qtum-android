@@ -85,6 +85,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     @Override
     public void onClickQrCode() {
         QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
+        getView().hideKeyBoard();
         getView().openFragmentForResult(qrCodeRecognitionFragment);
     }
 

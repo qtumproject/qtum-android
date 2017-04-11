@@ -1,8 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.AddressesFragment;
 
 
-import android.content.Context;
-
 import org.bitcoinj.crypto.DeterministicKey;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 
@@ -17,6 +15,6 @@ class AddressesFragmentInteractorImpl implements AddressesFragmentInteractor {
 
     @Override
     public List<DeterministicKey> getKeyList() {
-        return KeyStorage.getInstance().getKeyList();
+        return KeyStorage.getInstance().getKeyList(100);
     }
 }

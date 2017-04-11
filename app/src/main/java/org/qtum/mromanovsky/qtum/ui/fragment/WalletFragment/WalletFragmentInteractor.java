@@ -10,6 +10,7 @@ interface WalletFragmentInteractor {
     void getHistoryList(int STATE, int limit, int offset, WalletFragmentInteractorImpl.GetHistoryListCallBack callBack);
     String getAddress();
     String getBalance();
+    String getUnconfirmedBalance();
     int getTotalHistoryItem();
     void addToHistoryList(History history);
     int setHistory(History history);

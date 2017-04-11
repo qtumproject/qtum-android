@@ -14,6 +14,8 @@ import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterI
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.TransactionFragment.TransactionFragment;
 
+import java.math.BigDecimal;
+
 class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
 
 
@@ -63,7 +65,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
                 getView().getFragmentActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        getView().updateBalance(getInteractor().getBalance());
+                        setUpBalance();
                     }
                 });
             }
@@ -193,7 +195,14 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     private void setUpBalance() {
         String balance = getInteractor().getBalance();
         if(balance!=null) {
-            getView().updateBalance(getInteractor().getBalance());
+            String unconfirmedBalance = getInteractor().getUnconfirmedBalance();
+            if(!unconfirmedBalance.equals("0")) {
+                BigDecimal unconfirmedBalanceDecimal = new BigDecimal(unconfirmedBalance);
+                BigDecimal balanceDecimal = new BigDecimal(balance);
+                getView().updateBalance(getInteractor().getBalance(),balanceDecimal.add(unconfirmedBalanceDecimal).toString());
+            } else {
+                getView().updateBalance(getInteractor().getBalance(),null);
+            }
         }
     }
 

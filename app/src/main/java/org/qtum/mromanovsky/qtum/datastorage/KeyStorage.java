@@ -4,7 +4,12 @@ package org.qtum.mromanovsky.qtum.datastorage;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.common.collect.ImmutableList;
+
+import org.bitcoinj.crypto.ChildNumber;
+import org.bitcoinj.crypto.DeterministicHierarchy;
 import org.bitcoinj.crypto.DeterministicKey;
+import org.bitcoinj.crypto.HDUtils;
 import org.bitcoinj.wallet.DeterministicSeed;
 import org.bitcoinj.wallet.KeyChain;
 import org.bitcoinj.wallet.UnreadableWalletException;
@@ -30,6 +35,7 @@ public class KeyStorage {
     private Wallet sWallet = null;
     private int sCurrentKeyPosition = 0;
     private File mFile;
+    private final int ADDRESSES_COUNT = 100;
 
     public static KeyStorage getInstance() {
         if (sKeyStorage == null) {
@@ -76,7 +82,7 @@ public class KeyStorage {
                 } catch (UnreadableWalletException e) {
                     e.printStackTrace();
                 }
-                getKeyList();
+                getKeyList(ADDRESSES_COUNT);
                 subscriber.onNext(sWallet);
             }
         });
@@ -97,10 +103,9 @@ public class KeyStorage {
                 seedString += DictionaryWords.getRandomWord();
 
                 String passphrase = "";
-                Long creationtime = 1409478661L;
                 DeterministicSeed seed = null;
                 try {
-                    seed = new DeterministicSeed(seedString, null, passphrase, creationtime);
+                    seed = new DeterministicSeed(seedString, null, passphrase, DeterministicHierarchy.BIP32_STANDARDISATION_TIME_SECS);
                 } catch (UnreadableWalletException e) {
                     e.printStackTrace();
                 }
@@ -110,7 +115,7 @@ public class KeyStorage {
                 }
                 try {
                     sWallet.saveToFile(mFile);
-                    getKeyList();
+                    getKeyList(ADDRESSES_COUNT);
                     subscriber.onNext(sWallet);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -127,10 +132,9 @@ public class KeyStorage {
             public void call(Subscriber<? super Wallet> subscriber) {
 
                 String passphrase = "";
-                Long creationtime = 1409478661L;
                 DeterministicSeed seed = null;
                 try {
-                    seed = new DeterministicSeed(seedString, null, passphrase, creationtime);
+                    seed = new DeterministicSeed(seedString, null, passphrase, DeterministicHierarchy.BIP32_STANDARDISATION_TIME_SECS);
                     Log.d("test", Hex.toHexString(seed.getSeedBytes()));
 
                 } catch (UnreadableWalletException e) {
@@ -141,7 +145,7 @@ public class KeyStorage {
                 }
                 try {
                     sWallet.saveToFile(mFile);
-                    getKeyList();
+                    getKeyList(ADDRESSES_COUNT);
                     subscriber.onNext(sWallet);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -151,28 +155,35 @@ public class KeyStorage {
         });
     }
 
-    public List<DeterministicKey> getKeyList() {
+    public List<DeterministicKey> getKeyList(int numberOfKeys) {
         if (sDeterministicKeyList == null) {
-            sDeterministicKeyList = sWallet.freshKeys(KeyChain.KeyPurpose.AUTHENTICATION, 100);
-
+            sDeterministicKeyList = new ArrayList<>(numberOfKeys);
+            List<ChildNumber> pathParent = new ArrayList<>();
+            pathParent.add(new ChildNumber(0,true));
+            pathParent.add(new ChildNumber(0,true));
+            for (int i = 0; i < numberOfKeys; i++) {
+                ImmutableList<ChildNumber> path = HDUtils.append(pathParent, new ChildNumber(i, true));
+                DeterministicKey k = sWallet.getActiveKeyChain().getKeyByPath(path,true);
+                sDeterministicKeyList.add(k);
+            }
         }
         return sDeterministicKeyList;
     }
 
     public String getCurrentAddress() {
-        return getKeyList().get(sCurrentKeyPosition).toAddress(CurrentNetParams.getNetParams()).toString();
+        return getKeyList(ADDRESSES_COUNT).get(sCurrentKeyPosition).toAddress(CurrentNetParams.getNetParams()).toString();
     }
 
     public List<String> getAddresses() {
         List<String> list = new ArrayList<>();
-        for (DeterministicKey deterministicKey : getKeyList()) {
+        for (DeterministicKey deterministicKey : getKeyList(ADDRESSES_COUNT)) {
             list.add(deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString());
         }
         return list;
     }
 
     public DeterministicKey getCurrentKey() {
-        return getKeyList().get(sCurrentKeyPosition);
+        return getKeyList(ADDRESSES_COUNT).get(sCurrentKeyPosition);
     }
 
     public void setCurrentKeyPosition(int currentKeyPosition) {

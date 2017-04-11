@@ -139,6 +139,7 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
                     case 0:
                         mImageViewLogoTxt.setVisibility(View.VISIBLE);
                         mAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.alpha_for_text);
+                        mTextViewYouDontHave.setVisibility(View.VISIBLE);
                         mTextViewYouDontHave.startAnimation(mAnimation);
                         mAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.alpha_for_wave);
                         mWave1.startAnimation(mAnimation);
