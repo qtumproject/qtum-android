@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.dataprovider.BalanceChangeListener;
+import org.qtum.mromanovsky.qtum.dataprovider.NetworkStateReceiver;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.NetworkStateListener;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.dataprovider.TransactionListener;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
@@ -25,6 +27,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     private WalletFragmentView mWalletFragmentView;
     private boolean mVisibility = false;
     private UpdateService mUpdateService;
+    private NetworkStateReceiver mNetworkStateReceiver;
 
     private final int ONE_PAGE_COUNT = 25;
 
@@ -68,6 +71,19 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
                         setUpBalance();
                     }
                 });
+            }
+        });
+
+        mNetworkStateReceiver  = ((MainActivity) getView().getFragmentActivity()).getNetworkReceiver();
+        mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
+            @Override
+            public void onNetworkConnected() {
+                loadAndUpdateData();
+            }
+
+            @Override
+            public void onNetworkDisconnected() {
+
             }
         });
     }
@@ -167,7 +183,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
+        mNetworkStateReceiver.removeNetworkStateListener();
         mUpdateService.removeTransactionListener();
         mUpdateService.removeBalanceChangeListener();
         getInteractor().unSubscribe();

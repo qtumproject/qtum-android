@@ -5,10 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+    <!--<uses-permission android:name="android.permission.NFC" />-->
+    <!--<uses-feature android:name="android.hardware.nfc" android:required="true" />-->
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
@@ -28,23 +29,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.nfc.action.NDEF_DISCOVERED" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
 
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-
+                <!--<data android:mimeType="text/plain" />-->
+            <!--</intent-filter>-->
         </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="22036fc0a51e9c43e14fd7d906f36fe03afd5005"/>
+            android:value="22036fc0a51e9c43e14fd7d906f36fe03afd5005">
+        </meta-data>
 
         <service
             android:name=".dataprovider.UpdateService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true">
+        </service>
 
         <receiver
             android:name=".dataprovider.BootReceiver"
@@ -57,7 +60,6 @@
                 <action android:name="android.intent.action.REBOOT"/>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </receiver>
 
     </application>

@@ -12,6 +12,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -118,7 +119,7 @@ public class UpdateService extends Service {
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-
+                Log.d("socket","disconnect");
             }
         });
 
@@ -132,6 +133,7 @@ public class UpdateService extends Service {
         stopMonitoring();
         stopSelf();
     }
+
 
 
     @Override

@@ -80,6 +80,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
                 Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
                 Address addressToSend;
+                BigDecimal bitcoin = new BigDecimal(100000000);
                 try {
                     addressToSend = Address.fromBase58(CurrentNetParams.getNetParams(), address);
                 } catch (AddressFormatException a) {
@@ -100,7 +101,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
                 BigDecimal amountFromOutput = new BigDecimal("0.0");
                 BigDecimal overFlow = new BigDecimal("0.0");
-                transaction.addOutput(Coin.valueOf((long)(amount.doubleValue()*100000000)), addressToSend);
+                transaction.addOutput(Coin.valueOf((long)(amount.multiply(bitcoin).doubleValue())), addressToSend);
 
 
                 amount = amount.add(fee);
@@ -118,8 +119,10 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                 }
                 BigDecimal delivery = overFlow.subtract(amount);
                 if (delivery.doubleValue() != 0.0) {
-                    transaction.addOutput(Coin.valueOf((long)(delivery.doubleValue()*100000000)), ecKey.toAddress(CurrentNetParams.getNetParams()));
+                    transaction.addOutput(Coin.valueOf((long)(delivery.multiply(bitcoin).doubleValue())), ecKey.toAddress(CurrentNetParams.getNetParams()));
                 }
+
+
 
                 for (UnspentOutput unspentOutput : unspentOutputs) {
                     if(unspentOutput.getAmount().doubleValue() != 0.0)

@@ -4,7 +4,10 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.net.ConnectivityManager;
+import android.nfc.NfcAdapter;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -12,6 +15,7 @@ import android.view.MenuItem;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.dataprovider.BalanceChangeListener;
+import org.qtum.mromanovsky.qtum.dataprovider.NetworkStateReceiver;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.dataprovider.TransactionListener;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
@@ -34,10 +38,22 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     private Intent mIntent;
     private UpdateService mUpdateService;
 
+    private NetworkStateReceiver mNetworkReceiver;
+
     MainActivityPresenterImpl(MainActivityView mainActivityView) {
         mMainActivityView = mainActivityView;
         mContext = getView().getContext();
         mMainActivityInteractor = new MainActivityInteractorImpl(mContext);
+    }
+
+    @Override
+    public void onCreate(Context context) {
+        super.onCreate(context);
+
+        mNetworkReceiver = new NetworkStateReceiver();
+        mContext.registerReceiver(mNetworkReceiver,
+                    new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
     }
 
     @Override
@@ -155,9 +171,15 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     }
 
     @Override
+    public NetworkStateReceiver getNetworkReceiver() {
+        return mNetworkReceiver;
+    }
+
+    @Override
     public void onDestroy(Context context) {
         super.onDestroy(context);
         mContext.unbindService(mServiceConnection);
         getInteractor().clearStatic();
+        mContext.unregisterReceiver(mNetworkReceiver);
     }
 }

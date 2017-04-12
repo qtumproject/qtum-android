@@ -5,9 +5,11 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -24,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.qtum.mromanovsky.qtum.R;
+import org.qtum.mromanovsky.qtum.dataprovider.NetworkStateReceiver;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -40,6 +43,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
     private static final int REQUEST_CAMERA = 0;
     private NfcAdapter mNfcAdapter;
+
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
@@ -63,24 +67,24 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
 
         //TODO: NFC
-        if(mNfcAdapter != null) {
-            mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-            boolean b = mNfcAdapter.isEnabled();
 
-        }
-        String s = getIntent().getAction();
-
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(s)) {
-            Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-            NdefMessage[] msgs = null;
-            if (rawMsgs != null) {
-                msgs = new NdefMessage[rawMsgs.length];
-                for (int i = 0; i < rawMsgs.length; i++) {
-                    msgs[i] = (NdefMessage) rawMsgs[i];
-                }
-            }
+//            mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+//            boolean b = mNfcAdapter.isEnabled();
+//
+//
+//        String s = getIntent().getAction();
+//
+//        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(s)) {
+//            Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+//            NdefMessage[] msgs = null;
+//            if (rawMsgs != null) {
+//                msgs = new NdefMessage[rawMsgs.length];
+//                for (int i = 0; i < rawMsgs.length; i++) {
+//                    msgs[i] = (NdefMessage) rawMsgs[i];
+//                }
+//            }
             //buildTagViews(msgs);
-        }
+//        }
     }
 
 //    private void buildTagViews(NdefMessage[] msgs) {
@@ -219,5 +223,9 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
     public void setRootFragment(Fragment rootFragment) {
         getPresenter().setRootFragment(rootFragment);
+    }
+
+    public NetworkStateReceiver getNetworkReceiver(){
+        return getPresenter().getNetworkReceiver();
     }
 }
