@@ -67,7 +67,12 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                                 iterator.remove();
                             }
                         }
-
+                        Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
+                            @Override
+                            public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {
+                                return unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? -1 : 0;
+                            }
+                        });
                         callBack.onSuccess(unspentOutputs);
                     }
                 });
@@ -91,18 +96,9 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                 BigDecimal amount = new BigDecimal(amountString);
                 BigDecimal fee = new BigDecimal("0.00001");
 
-
-                Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
-                    @Override
-                    public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {
-                        return unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? -1 : 0;
-                    }
-                });
-
                 BigDecimal amountFromOutput = new BigDecimal("0.0");
                 BigDecimal overFlow = new BigDecimal("0.0");
                 transaction.addOutput(Coin.valueOf((long)(amount.multiply(bitcoin).doubleValue())), addressToSend);
-
 
                 amount = amount.add(fee);
 

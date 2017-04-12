@@ -1,5 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenConfirmFragment;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -22,10 +23,10 @@ class SetTokenConfirmFragmentPresenterImpl extends BaseFragmentPresenterImpl imp
 
     @Override
     public void onConfirmClick() {
-        getInteractor().generateTokenBytecode(new SetTokenConfirmFragmentInteractorImpl.GenerateTokenBytecodeCallBack() {
+        getInteractor().sendToken(new SetTokenConfirmFragmentInteractorImpl.SendTokenCallBack() {
             @Override
-            public void onSuccess(String byteCode) {
-                Toast.makeText(getView().getContext(),byteCode,Toast.LENGTH_SHORT).show();
+            public void onSuccess() {
+                Log.d("yes","yeah");
             }
         });
     }
