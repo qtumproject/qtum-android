@@ -54,6 +54,12 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getView().hideKeyBoard();
+    }
+
+    @Override
     public void onCopyWalletAddressClick() {
         ClipboardManager clipboard = (ClipboardManager) getView().getFragmentActivity().getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", getInteractor().getCurrentReceiveAddress());

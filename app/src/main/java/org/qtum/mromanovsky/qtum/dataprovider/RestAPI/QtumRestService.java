@@ -8,6 +8,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.HistoryResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 
 import java.util.List;
@@ -36,7 +37,7 @@ interface QtumRestService {
     Observable<BlockChainInfo> getBlockChainInfo();
 
     @POST("/send-raw-transaction")
-    Observable<Void> sendRawTransaction(@Body SendRawTransactionRequest sendRawTransactionRequest);
+    Observable<SendRawTransactionResponse> sendRawTransaction(@Body SendRawTransactionRequest sendRawTransactionRequest);
 
     @POST("/contracts/generate-token-bytecode")
     Observable<ByteCode> generateTokenBytecode(@Body GenerateTokenBytecodeRequest generateTokenBytecodeRequest);

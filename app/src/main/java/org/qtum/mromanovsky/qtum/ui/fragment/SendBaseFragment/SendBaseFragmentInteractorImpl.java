@@ -15,6 +15,7 @@ import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
@@ -172,7 +173,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                 QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(txHex, 1))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<Void>() {
+                        .subscribe(new Subscriber<SendRawTransactionResponse>() {
                             @Override
                             public void onCompleted() {
 
@@ -184,7 +185,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                             }
 
                             @Override
-                            public void onNext(Void aVoid) {
+                            public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
                                 callBack.onSuccess();
                             }
                         });

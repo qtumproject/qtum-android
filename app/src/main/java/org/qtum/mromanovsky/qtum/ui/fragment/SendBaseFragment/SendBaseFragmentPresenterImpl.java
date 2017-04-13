@@ -1,13 +1,11 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Handler;
-import android.os.IBinder;
 
 import org.qtum.mromanovsky.qtum.R;
+import org.qtum.mromanovsky.qtum.dataprovider.NetworkStateReceiver;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.NetworkStateListener;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vin;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
@@ -29,6 +27,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     private SendBaseFragmentInteractorImpl mSendBaseFragmentInteractor;
     private UpdateService mUpdateService;
     private Context mContext;
+    private NetworkStateReceiver mNetworkStateReceiver;
 
 
     SendBaseFragmentPresenterImpl(SendBaseFragmentView sendBaseFragmentView) {
@@ -67,13 +66,26 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                 return false;
             }
         });
+
+        mNetworkStateReceiver  = ((MainActivity) getView().getFragmentActivity()).getNetworkReceiver();
+        mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
+            @Override
+            public void onNetworkConnected() {
+                getView().enableSendButton();
+            }
+
+            @Override
+            public void onNetworkDisconnected() {
+                getView().disableSendButton();
+            }
+        });
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         mUpdateService.removeTransactionListener();
-
+        mNetworkStateReceiver.removeNetworkStateListener();
         //TODO:unsubscribe rx
     }
 

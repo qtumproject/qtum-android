@@ -9,6 +9,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.HistoryResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 
 import java.io.IOException;
@@ -95,7 +96,7 @@ public class QtumService {
         return mServiceApi.getBlockChainInfo();
     }
 
-    public Observable<Void> sendRawTransaction(final SendRawTransactionRequest sendRawTransactionRequest) {
+    public Observable<SendRawTransactionResponse> sendRawTransaction(final SendRawTransactionRequest sendRawTransactionRequest) {
         return mServiceApi.sendRawTransaction(sendRawTransactionRequest);
     }
 

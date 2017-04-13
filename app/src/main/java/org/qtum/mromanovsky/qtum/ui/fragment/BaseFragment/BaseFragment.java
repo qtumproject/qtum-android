@@ -134,6 +134,13 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
+    public void setFocusTextInput(View textInputEditText, View textInputLayout){
+        textInputEditText.setFocusableInTouchMode(true);
+        textInputEditText.requestFocus();
+        textInputLayout.setFocusableInTouchMode(true);
+        textInputLayout.requestFocus();
+    }
+
     @Override
     public void finish() {
         ActivityCompat.finishAffinity(getActivity());

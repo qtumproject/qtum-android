@@ -43,6 +43,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="@dimen/activity_horizontal_margin"
+            android:id="@+id/cl_base_layout"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:theme="@style/InputText">
 
             <android.support.design.widget.TextInputLayout
@@ -76,6 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/token_symbol"
+                    android:imeOptions="actionDone"
                     android:inputType="textPersonName"
                     android:textColor="@color/grey"/>
             </android.support.design.widget.TextInputLayout>

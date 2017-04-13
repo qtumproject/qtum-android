@@ -17,7 +17,7 @@ public class SetTokenConfirmFragment extends BaseFragment implements SetTokenCon
     @BindView(R.id.bt_back)
     Button mButtonBack;
     @BindView(R.id.bt_confirm)
-    Button mButtonFinish;
+    Button mButtonConfirm;
 
     @BindView(R.id.tv_token_name)
     TextView mTextViewTokenName;
@@ -85,5 +85,15 @@ public class SetTokenConfirmFragment extends BaseFragment implements SetTokenCon
     @Override
     protected int getLayout() {
         return R.layout.fragment_set_token_confirm;
+    }
+
+    @Override
+    public void enableSendButton() {
+        mButtonConfirm.setEnabled(true);
+    }
+
+    @Override
+    public void disableSendButton() {
+        mButtonConfirm.setEnabled(false);
     }
 }

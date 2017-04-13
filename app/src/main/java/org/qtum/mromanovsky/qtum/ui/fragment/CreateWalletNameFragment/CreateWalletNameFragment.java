@@ -73,11 +73,7 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
 
     @Override
     public void initializeViews() {
-        mTextInputLayoutWalletName.setFocusableInTouchMode(true);
-        mTextInputLayoutWalletName.requestFocus();
-        mTextInputEditTextWalletName.setFocusable(true);
-        mTextInputEditTextWalletName.requestFocus();
-        showSoftInput();
+        setFocusTextInput(mTextInputLayoutWalletName,mTextInputEditTextWalletName);
     }
 
     @Override

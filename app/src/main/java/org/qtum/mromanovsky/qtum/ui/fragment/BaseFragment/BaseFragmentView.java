@@ -3,6 +3,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseContextView;
 
@@ -16,4 +17,5 @@ public interface BaseFragmentView extends BaseContextView {
     void setAlertDialog(String message);
     void dismissAlertDialog();
     void showSoftInput();
+    void setFocusTextInput(View textInputEditText, View textInputLayout);
 }

@@ -7,6 +7,7 @@ import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -30,6 +31,8 @@ public class SetTokenNameFragment extends BaseFragment implements SetTokenNameFr
     TextInputEditText mTextInputEditTextTokenSymbol;
     @BindView(R.id.til_token_symbol)
     TextInputLayout mTextInputLayoutTokenSymbol;
+    @BindView(R.id.cl_base_layout)
+    RelativeLayout mRelativeLayout;
 
     @OnClick({R.id.bt_cancel,R.id.bt_next})
     public void onClick(View view){
@@ -97,7 +100,15 @@ public class SetTokenNameFragment extends BaseFragment implements SetTokenNameFr
     @Override
     public void initializeViews() {
         super.initializeViews();
-        mTextInputEditTextTokenName.setFocusableInTouchMode(true);
-        mTextInputEditTextTokenName.requestFocus();
+        setFocusTextInput(mTextInputEditTextTokenName,mTextInputEditTextTokenName);
+        mRelativeLayout.requestFocus();
+        mRelativeLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b)
+                    hideKeyBoard();
+            }
+        });
     }
+
 }

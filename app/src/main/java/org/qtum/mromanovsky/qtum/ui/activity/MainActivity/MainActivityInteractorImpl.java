@@ -26,6 +26,6 @@ class MainActivityInteractorImpl implements MainActivityInteractor {
         KeyStorage.getInstance().clearKeyStorage();
         HistoryList.getInstance().clearHistoryList();
         NewsList.getInstance().clearNewsList();
-        QtumToken.getInstance().clearQtumToken();
+        QtumToken.getInstance().clearToken();
     }
 }

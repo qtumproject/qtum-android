@@ -87,7 +87,7 @@ public class QtumToken {
         mDecimalUnits = decimalUnits;
     }
 
-    public void clearQtumToken(){
+    public void clearToken(){
         sQtumToken = null;
     }
 }

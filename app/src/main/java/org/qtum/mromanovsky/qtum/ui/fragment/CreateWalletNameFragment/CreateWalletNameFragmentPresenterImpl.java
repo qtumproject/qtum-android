@@ -21,6 +21,18 @@ class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl im
     }
 
     @Override
+    public void initializeViews() {
+        super.initializeViews();
+        getView().showSoftInput();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getView().hideKeyBoard();
+    }
+
+    @Override
     public void onConfirmClick(String name) {
         if (name.isEmpty()) {
             getView().setErrorText(getView().getContext().getString(R.string.empty_name));

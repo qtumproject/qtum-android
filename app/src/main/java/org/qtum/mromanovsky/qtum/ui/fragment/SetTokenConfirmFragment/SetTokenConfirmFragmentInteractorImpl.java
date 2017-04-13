@@ -15,6 +15,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.GenerateTokenBytecodeRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.QtumToken;
@@ -23,9 +24,11 @@ import org.spongycastle.util.encoders.Hex;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -63,6 +66,11 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
                 });
     }
 
+    @Override
+    public void clearToken() {
+        QtumToken.getInstance().clearToken();
+    }
+
     public void sendToken(final SendTokenCallBack sendTokenCallBack){
         generateTokenBytecode(new GenerateTokenBytecodeCallBack() {
             @Override
@@ -77,10 +85,10 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
                         final int OP_EXEC_ASSIGN = 194;
                         final int OP_EXEC_SPEND = 195;
 
-                        byte[] version = hexStringToByteArray("01");
-                        byte[] gasLimit = hexStringToByteArray("0100000000000000");
-                        byte[] gasPrice = hexStringToByteArray("0100000000000000");
-                        byte[] data = hexStringToByteArray(byteCode);
+                        byte[] version = Hex.decode("01");
+                        byte[] gasLimit = Hex.decode("0100000000000000");
+                        byte[] gasPrice = Hex.decode("0100000000000000");
+                        byte[] data = Hex.decode(byteCode);
                         byte[] program;
 
                         ScriptChunk versionChunk = new ScriptChunk(OP_PUSHDATA_1,version);
@@ -127,10 +135,25 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
                         byte[] bytes = transaction.unsafeBitcoinSerialize();
                         String transactionHex = Hex.toHexString(bytes);
 
+                        Date date = new Date();
+                        long l = date.getTime() / 1000;
+                        int i3 = (int) l;
+                        byte[] bytesData = ByteBuffer.allocate(4).putInt(i3).array();
+                        byte tmp1 = bytesData[3];
+                        byte tmp2 = bytesData[2];
+                        byte tmp3 = bytesData[1];
+                        byte tmp4 = bytesData[0];
+                        bytesData[0] = tmp1;
+                        bytesData[1] = tmp2;
+                        bytesData[2] = tmp3;
+                        bytesData[3] = tmp4;
+
+                        transactionHex += Hex.toHexString(bytesData);
+
                         QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(transactionHex, 1))
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Subscriber<Void>() {
+                                .subscribe(new Subscriber<SendRawTransactionResponse>() {
                                     @Override
                                     public void onCompleted() {
 
@@ -142,7 +165,7 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
                                     }
 
                                     @Override
-                                    public void onNext(Void aVoid) {
+                                    public void onNext(SendRawTransactionResponse rawTransactionResponse) {
                                         sendTokenCallBack.onSuccess();
                                     }
                                 });
@@ -184,16 +207,6 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
                         callBack.onSuccess(unspentOutputs);
                     }
                 });
-    }
-
-    public byte[] hexStringToByteArray(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
-        }
-        return data;
     }
 
     interface GenerateTokenBytecodeCallBack{

@@ -15,4 +15,6 @@ interface SendBaseFragmentView extends BaseFragmentView{
     void clearError();
     void setProgressBar();
     void updateAvailableBalance(String balance);
+    void enableSendButton();
+    void disableSendButton();
 }

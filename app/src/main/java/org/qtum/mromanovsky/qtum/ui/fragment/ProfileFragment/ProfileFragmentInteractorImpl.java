@@ -23,6 +23,6 @@ class ProfileFragmentInteractorImpl implements ProfileFragmentInteractor {
         KeyStorage.getInstance().clearKeyStorage();
         HistoryList.getInstance().clearHistoryList();
         NewsList.getInstance().clearNewsList();
-        QtumToken.getInstance().clearQtumToken();
+        QtumToken.getInstance().clearToken();
     }
 }
