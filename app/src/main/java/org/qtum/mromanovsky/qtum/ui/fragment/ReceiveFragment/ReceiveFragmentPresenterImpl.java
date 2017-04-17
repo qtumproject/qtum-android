@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.view.Display;
-import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -64,8 +63,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         ClipboardManager clipboard = (ClipboardManager) getView().getFragmentActivity().getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", getInteractor().getCurrentReceiveAddress());
         clipboard.setPrimaryClip(clip);
-        //TODO : change notification type
-        Toast.makeText(getView().getContext(), "Coped", Toast.LENGTH_SHORT).show();
+        getView().showToast();
     }
 
     @Override
@@ -79,7 +77,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         super.initializeViews();
         getView().setAddressInTV(getInteractor().getCurrentReceiveAddress());
         getView().setBalance(getInteractor().getBalance());
-        changeAmount(null);
+        changeAmount("");
     }
 
     @Override

@@ -3,6 +3,8 @@ package org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.view.KeyEvent;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
@@ -37,6 +40,10 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     ImageButton mImageButtonBack;
     @BindView(R.id.tv_total_balance_number)
     TextView mTextViewTotalBalanceNumber;
+    @BindView(R.id.rl_receive)
+    RelativeLayout mRelativeLayoutBase;
+    @BindView(R.id.cl_receive)
+    CoordinatorLayout mCoordinatorLayout;
 
     @OnClick({R.id.bt_copy_wallet_address,R.id.bt_choose_another_address,R.id.ibt_back})
     public void onClick(View view) {
@@ -48,6 +55,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
                 getPresenter().onChooseAnotherAddressClick();
                 break;
             case R.id.ibt_back:
+                getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 getActivity().onBackPressed();
                 break;
         }
@@ -84,9 +92,20 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if(i == EditorInfo.IME_ACTION_DONE) {
                     getPresenter().changeAmount(mTextInputEditTextAmount.getText().toString());
+                    mRelativeLayoutBase.requestFocus();
                     return false;
                 }
                 return false;
+            }
+        });
+
+        mRelativeLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b) {
+                    getPresenter().changeAmount(mTextInputEditTextAmount.getText().toString());
+                    hideKeyBoard();
+                }
             }
         });
     }
@@ -110,6 +129,11 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     @Override
     public void setBalance(String balance) {
         mTextViewTotalBalanceNumber.setText(String.valueOf(balance)+" QTUM");
+    }
+
+    @Override
+    public void showToast() {
+        Snackbar.make(mCoordinatorLayout, "Coped", Snackbar.LENGTH_SHORT).show();
     }
 
 }

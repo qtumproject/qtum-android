@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,8 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     ProgressBar mProgressBar;
     @BindView(R.id.tv_total_balance_number)
     TextView mTextViewTotalBalanceNumber;
+    @BindView(R.id.rl_send)
+    RelativeLayout mRelativeLayoutBase;
 
     SendBaseFragmentPresenterImpl sendBaseFragmentPresenter;
 
@@ -50,7 +53,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @OnClick({R.id.bt_qr_code, R.id.bt_send, R.id.ibt_back, R.id.ll_currency})
+    @OnClick({R.id.bt_qr_code, R.id.bt_send, R.id.ibt_back, R.id.fl_currency})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_qr_code:
@@ -66,7 +69,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
             case R.id.ibt_back:
                 getActivity().onBackPressed();
                 break;
-            case R.id.ll_currency:
+            case R.id.fl_currency:
                 getPresenter().onCurrencyClick();
                 break;
         }
@@ -134,6 +137,14 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     public void initializeViews() {
         super.initializeViews();
         mImageButtonBack.setVisibility(View.GONE);
+        mRelativeLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b) {
+                    hideKeyBoard();
+                }
+            }
+        });
     }
 
     @Override

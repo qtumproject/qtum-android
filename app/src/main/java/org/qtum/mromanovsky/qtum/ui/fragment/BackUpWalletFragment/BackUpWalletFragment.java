@@ -2,6 +2,8 @@ package org.qtum.mromanovsky.qtum.ui.fragment.BackUpWalletFragment;
 
 
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,6 +32,8 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
     TextView mTextViewYouCanSkip;
     @BindView(R.id.bt_copy_brain_code)
     Button mButtonCopyBrainCode;
+    @BindView(R.id.cl_back_up_wallet)
+    CoordinatorLayout mCoordinatorLayout;
 
     @OnClick({R.id.bt_copy,R.id.bt_continue,R.id.bt_copy_brain_code,R.id.ibt_back})
     public void onClick(View view) {
@@ -97,5 +101,10 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
     @Override
     public void setBrainCode(String seed) {
         mTextViewBrainCode.setText(seed);
+    }
+
+    @Override
+    public void showToast() {
+        Snackbar.make(mCoordinatorLayout, "Coped", Snackbar.LENGTH_SHORT).show();
     }
 }

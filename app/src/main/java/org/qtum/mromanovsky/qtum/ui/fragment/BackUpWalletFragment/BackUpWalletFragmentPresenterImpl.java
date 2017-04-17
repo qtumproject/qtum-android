@@ -41,8 +41,7 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
         ClipboardManager clipboard = (ClipboardManager) getView().getFragmentActivity().getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", getInteractor().getSeed());
         clipboard.setPrimaryClip(clip);
-        //TODO : change notification type
-        Toast.makeText(getView().getContext(),"Coped",Toast.LENGTH_SHORT).show();
+        getView().showToast();
     }
 
     @Override

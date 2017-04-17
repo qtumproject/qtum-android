@@ -48,7 +48,6 @@ class SetTokenParametersFragmentPresenterImpl extends BaseFragmentPresenterImpl 
     public void initializeViews() {
         super.initializeViews();
         getView().setData(getInteractor().getInitialSupply(), getInteractor().getDecimalUnits());
-        getView().showSoftInput();
     }
 
     @Override

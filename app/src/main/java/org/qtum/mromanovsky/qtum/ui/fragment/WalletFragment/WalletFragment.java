@@ -9,9 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -25,17 +23,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
-
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.FixedSpeedScroller;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.WalletAppBarPagerAdapter;
 
 import java.lang.reflect.Field;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -147,7 +141,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
-        String s = balance;
         mTextViewTotalBalanceNumber.setText(balance + " QTUM");
         mWalletAppBarPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem()).updateBalance(balance,unconfirmedBalance);
     }
@@ -242,6 +235,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if(mIsInitialInitialize){
+
                     getPresenter().onInitialInitialize();
                     mIsInitialInitialize = false;
                 }
@@ -251,6 +245,18 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             public void onPageSelected(int position) {
                 getPresenter().changePage();
                 mIsInitialInitialize = true;
+
+                if(position==0){
+                    mImageButtonLeft.setVisibility(View.GONE);
+                } else {
+                    mImageButtonLeft.setVisibility(View.VISIBLE);
+                }
+                if(position == mViewPager.getAdapter().getCount()-1){
+                    mImageButtonRight.setVisibility(View.GONE);
+                } else {
+                    mImageButtonRight.setVisibility(View.VISIBLE);
+                }
+
                 mTextViewWalletName.startAnimation(animationWallet);
 
             }
@@ -260,6 +266,17 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
             }
         });
+
+        if(mViewPager.getCurrentItem()==0){
+            mImageButtonLeft.setVisibility(View.GONE);
+        } else {
+            mImageButtonLeft.setVisibility(View.VISIBLE);
+        }
+        if(mViewPager.getCurrentItem() == mViewPager.getAdapter().getCount()-1){
+            mImageButtonRight.setVisibility(View.GONE);
+        } else {
+            mImageButtonRight.setVisibility(View.VISIBLE);
+        }
 
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
@@ -272,7 +289,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                         visibleItemCount = mLinearLayoutManager.getChildCount();
                         totalItemCount = mLinearLayoutManager.getItemCount();
                         pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
-                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount-1) {
                             getPresenter().onLastItem(totalItemCount-1);
                         }
                     }
@@ -329,7 +346,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         });
     }
 
-    public class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private List<History> mHistoryList;
         History mHistory;
@@ -377,7 +394,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             return mHistoryList.size()+1;
         }
 
-        public void setHistoryList(List<History> historyList) {
+        void setHistoryList(List<History> historyList) {
             mHistoryList = historyList;
         }
     }
@@ -387,12 +404,12 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         @BindView(R.id.progressBar)
         ProgressBar mProgressBar;
 
-        public ProgressBarHolder(View itemView) {
+        ProgressBarHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
 
-        public void bindProgressBar(){
+        void bindProgressBar(){
             if(mLoadingFlag){
                 mProgressBar.setVisibility(View.VISIBLE);
             } else {
@@ -402,7 +419,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
 
-    public class TransactionHolder extends RecyclerView.ViewHolder {
+    class TransactionHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_value)
         TextView mTextViewValue;

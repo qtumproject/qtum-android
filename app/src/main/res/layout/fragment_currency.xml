@@ -43,40 +43,50 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="16dp"
-        android:orientation="horizontal"
-        android:background="@drawable/background_edit_text_search"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            app:srcCompat="@drawable/ic_zoom"/>
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:hint="@string/search"
-            android:id="@+id/et_search_currency"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
-            android:textSize="18sp"
-            android:layout_marginRight="8dp"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="64dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/recycler_view">
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/fl_currency"
+        android:focusableInTouchMode="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </android.support.v7.widget.RecyclerView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="16dp"
+            android:orientation="horizontal"
+            android:background="@drawable/background_edit_text_search">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                app:srcCompat="@drawable/ic_zoom"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:hint="@string/search"
+                android:id="@+id/et_search_currency"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textSize="18sp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:id="@+id/recycler_view">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

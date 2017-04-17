@@ -49,6 +49,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                             getView().clearError();
                             final BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(true);
                             getView().setProgressDialog("Key generation");
+                            getView().hideKeyBoard();
                             getInteractor().createWallet(getView().getContext(), new PinFragmentInteractorImpl.CreateWalletCallBack() {
                                 @Override
                                 public void onSuccess() {
@@ -96,6 +97,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     getView().clearError();
                     final WalletFragment walletFragment = WalletFragment.newInstance();
                     getView().setProgressDialog("Loading key");
+                    getView().hideKeyBoard();
                     getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
                         @Override
                         public void onSuccess() {

@@ -5,6 +5,7 @@
                                                  android:layout_height="match_parent"
                                                  android:background="@android:color/white"
                                                  android:clickable="true"
+                                                 android:id="@+id/cl_back_up_wallet"
                                                  android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -92,6 +93,25 @@
             android:textColor="@color/grey"
             android:textSize="@dimen/button_text"/>
 
+        <TextView
+            android:id="@+id/tv_you_can_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:text="@string/you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want"
+            android:textColor="@color/grey50"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_behavior="org.qtum.mromanovsky.qtum.utils.MoveUpwardBehavior"
+        android:layout_gravity="bottom"
+        android:paddingBottom="@dimen/activity_horizontal_margin">
+
         <Button
             android:id="@+id/bt_copy"
             android:layout_width="match_parent"
@@ -138,16 +158,6 @@
             android:textColor="@color/grey"
             android:textSize="@dimen/button_text"/>
 
-        <TextView
-            android:id="@+id/tv_you_can_skip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="16dp"
-            android:gravity="center"
-            android:text="@string/you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want"
-            android:textColor="@color/grey50"/>
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

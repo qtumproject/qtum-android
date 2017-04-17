@@ -28,7 +28,6 @@ class SetTokenNameFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
         super.initializeViews();
         getView().setData(getInteractor().getTokenName(),getInteractor().getTokenSymbol());
         ((MainActivity) getView().getFragmentActivity()).hideBottomNavigationView();
-        getView().showSoftInput();
     }
 
     @Override

@@ -9,4 +9,5 @@ interface ReceiveFragmentView extends BaseFragmentView {
     void setQrCode(Bitmap bitmap);
     void setAddressInTV(String s);
     void setBalance(String balance);
+    void showToast();
 }

@@ -96,7 +96,7 @@
         <!--android:layout_height="158dp"-->
         <!--app:lottie_autoPlay="true"-->
         <!--app:lottie_loop="true"-->
-        <!--app:lottie_fileName="wave2_test.json"/>-->
+        <!--app:lottie_fileName="w1Test.json"/>-->
 
     <!--<com.airbnb.lottie.LottieAnimationView-->
         <!--android:id="@+id/wave2"-->
@@ -105,7 +105,7 @@
         <!--android:layout_height="158dp"-->
         <!--app:lottie_autoPlay="true"-->
         <!--app:lottie_loop="true"-->
-        <!--app:lottie_fileName="wave1_test.json"/>-->
+        <!--app:lottie_fileName="w2Test.json"/>-->
 
 
 </android.support.design.widget.CoordinatorLayout>

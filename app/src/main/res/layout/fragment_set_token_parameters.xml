@@ -33,17 +33,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/fragment_container_send_base"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="@dimen/activity_horizontal_margin"
-            android:theme="@style/InputText">
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/rl_token_parameters"
+            android:focusableInTouchMode="true"
+            android:theme="@style/InputText"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_initial_supply"
@@ -58,7 +57,9 @@
                     android:id="@+id/et_initial_supply"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
                     android:hint="@string/initial_supply"
+                    android:nextFocusForward="@+id/et_decimal_units"
                     android:inputType="numberDecimal"
                     android:textColor="@color/grey"/>
             </android.support.design.widget.TextInputLayout>
@@ -127,5 +128,5 @@
                 android:text="@string/step_3_of_3"/>
 
         </RelativeLayout>
-    </FrameLayout>
+
 </android.support.design.widget.CoordinatorLayout>

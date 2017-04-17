@@ -7,10 +7,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,6 +46,8 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
     EditText mEditTextSearchCurrency;
     @BindView(R.id.tv_currency_title)
     TextView mTextViewCurrencyTitle;
+    @BindView(R.id.fl_currency)
+    FrameLayout mFrameLayoutBase;
 
     @OnClick({R.id.ibt_back})
     public void onClick(View view){
@@ -123,6 +128,26 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
                 }
             }
         });
+
+        mEditTextSearchCurrency.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(i == EditorInfo.IME_ACTION_SEARCH) {
+                    mFrameLayoutBase.requestFocus();
+                    hideKeyBoard();
+                    return false;
+                }
+                return false;
+            }
+        });
+
+        mFrameLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b)
+                    hideKeyBoard();
+            }
+        });
     }
 
     public class CurrencyHolder extends RecyclerView.ViewHolder{
@@ -131,7 +156,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
         TextView mTextViewCurrency;
         @BindView(R.id.iv_check_indicator)
         ImageView mImageViewCheckIndicator;
-        @BindView(R.id.ll_currency)
+        @BindView(R.id.fl_currency)
         LinearLayout mLinearLayoutCurrency;
 
         CurrencyHolder(View itemView) {

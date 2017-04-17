@@ -93,7 +93,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     callBack.onError("Incorrect Address");
                     return;
                 }
-                ECKey ecKey = KeyStorage.getInstance().getCurrentKey();
+                ECKey myKey = KeyStorage.getInstance().getCurrentKey();
                 BigDecimal amount = new BigDecimal(amountString);
                 BigDecimal fee = new BigDecimal("0.00001");
 
@@ -116,7 +116,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                 }
                 BigDecimal delivery = overFlow.subtract(amount);
                 if (delivery.doubleValue() != 0.0) {
-                    transaction.addOutput(Coin.valueOf((long)(delivery.multiply(bitcoin).doubleValue())), ecKey.toAddress(CurrentNetParams.getNetParams()));
+                    transaction.addOutput(Coin.valueOf((long)(delivery.multiply(bitcoin).doubleValue())), myKey.toAddress(CurrentNetParams.getNetParams()));
                 }
 
 

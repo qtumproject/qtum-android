@@ -4,10 +4,13 @@ package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenNameFragment;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -31,8 +34,8 @@ public class SetTokenNameFragment extends BaseFragment implements SetTokenNameFr
     TextInputEditText mTextInputEditTextTokenSymbol;
     @BindView(R.id.til_token_symbol)
     TextInputLayout mTextInputLayoutTokenSymbol;
-    @BindView(R.id.cl_base_layout)
-    RelativeLayout mRelativeLayout;
+    @BindView(R.id.rl_set_token_name)
+    RelativeLayout mRelativeLayoutBase;
 
     @OnClick({R.id.bt_cancel,R.id.bt_next})
     public void onClick(View view){
@@ -97,16 +100,26 @@ public class SetTokenNameFragment extends BaseFragment implements SetTokenNameFr
         mTextInputEditTextTokenSymbol.setText(symbol);
     }
 
+
     @Override
     public void initializeViews() {
         super.initializeViews();
-        setFocusTextInput(mTextInputEditTextTokenName,mTextInputEditTextTokenName);
-        mRelativeLayout.requestFocus();
-        mRelativeLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mRelativeLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if(b)
                     hideKeyBoard();
+            }
+        });
+
+        mTextInputEditTextTokenSymbol.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(i == EditorInfo.IME_ACTION_DONE) {
+                    mRelativeLayoutBase.requestFocus();
+                    return false;
+                }
+                return false;
             }
         });
     }

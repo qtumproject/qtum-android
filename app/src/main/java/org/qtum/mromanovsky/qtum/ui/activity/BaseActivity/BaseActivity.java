@@ -120,7 +120,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
 
     @Override
     public void onBackPressed() {
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             ActivityCompat.finishAffinity(this);
         }

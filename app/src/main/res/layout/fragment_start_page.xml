@@ -92,13 +92,14 @@
 
     </RelativeLayout>
 
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/wave1"
         android:layout_gravity="bottom|center"
         android:layout_width="1080dp"
         android:layout_height="158dp"
 
-        app:lottie_fileName="wave2_test.json"/>
+        app:lottie_fileName="w1Test.json"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/wave2"
@@ -106,6 +107,6 @@
         android:layout_width="1080dp"
         android:layout_height="158dp"
 
-        app:lottie_fileName="wave1_test.json"/>
+        app:lottie_fileName="w2Test.json"/>
 
 </android.support.design.widget.CoordinatorLayout>

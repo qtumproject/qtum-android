@@ -2,6 +2,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenConfirmFragment;
 
 
 import org.bitcoinj.core.Coin;
+import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.Sha256Hash;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionConfidence;
@@ -24,6 +25,7 @@ import org.spongycastle.util.encoders.Hex;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,6 +120,12 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
                         transaction.addOutput(Coin.ZERO,script);
 
                         UnspentOutput unspentOutput = unspentOutputs.get(0);
+
+                        //TODO:test
+                        BigDecimal bitcoin = new BigDecimal(100000000);
+                        ECKey myKey = KeyStorage.getInstance().getCurrentKey();
+                        transaction.addOutput(Coin.valueOf((long)(unspentOutput.getAmount().multiply(bitcoin).subtract(new BigDecimal("1000")).doubleValue())),
+                                myKey.toAddress(CurrentNetParams.getNetParams()));
 
                         for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList(100)) {
                             if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
