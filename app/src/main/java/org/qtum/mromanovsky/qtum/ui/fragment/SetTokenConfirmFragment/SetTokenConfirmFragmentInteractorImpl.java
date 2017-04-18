@@ -1,6 +1,8 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenConfirmFragment;
 
 
+import android.util.Log;
+
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.Sha256Hash;
@@ -15,6 +17,7 @@ import org.bitcoinj.script.ScriptOpCodes;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParams;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParamsRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
@@ -45,9 +48,9 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
     @Override
     public void generateTokenBytecode(final GenerateTokenBytecodeCallBack callBack) {
         QtumToken qtumToken = QtumToken.getInstance();
-        ContractParams generateTokenBytecodeRequest = new ContractParams(qtumToken.getInitialSupply(),qtumToken.getTokenName(),
+        ContractParamsRequest contractParamsRequest = new ContractParamsRequest(qtumToken.getInitialSupply(),qtumToken.getTokenName(),
                 qtumToken.getDecimalUnits(),qtumToken.getTokenSymbol());
-        QtumService.newInstance().generateTokenBytecode(generateTokenBytecodeRequest)
+        QtumService.newInstance().generateTokenBytecode(contractParamsRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ByteCode>() {
@@ -124,7 +127,7 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
                         //TODO:test
                         BigDecimal bitcoin = new BigDecimal(100000000);
                         ECKey myKey = KeyStorage.getInstance().getCurrentKey();
-                        transaction.addOutput(Coin.valueOf((long)(unspentOutput.getAmount().multiply(bitcoin).subtract(new BigDecimal("1000")).doubleValue())),
+                        transaction.addOutput(Coin.valueOf((long)(unspentOutput.getAmount().multiply(bitcoin).subtract(new BigDecimal("10000000")).doubleValue())),
                                 myKey.toAddress(CurrentNetParams.getNetParams()));
 
                         for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList(100)) {
@@ -169,7 +172,7 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
 
                                     @Override
                                     public void onError(Throwable e) {
-
+                                        Log.d("s",e.getLocalizedMessage());
                                     }
 
                                     @Override

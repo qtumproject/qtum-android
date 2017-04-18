@@ -11,7 +11,7 @@ class SetTokenParametersFragmentInteractorImpl implements SetTokenParametersFrag
 
     @Override
     public void setInitialSupply(String initialSupply) {
-        QtumToken.getInstance().setInitialSupply(Long.parseLong(initialSupply));
+        QtumToken.getInstance().setInitialSupply(Integer.parseInt(initialSupply));
     }
 
     @Override

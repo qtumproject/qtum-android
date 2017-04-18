@@ -5,6 +5,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParams;
 
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParamsRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.HistoryResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
@@ -96,8 +97,8 @@ public class QtumService {
         return mServiceApi.sendRawTransaction(sendRawTransactionRequest);
     }
 
-    public Observable<ByteCode> generateTokenBytecode(final ContractParams generateTokenBytecodeRequest){
-        return mServiceApi.generateTokenBytecode(generateTokenBytecodeRequest);
+    public Observable<ByteCode> generateTokenBytecode(final ContractParamsRequest contractParamsRequest){
+        return mServiceApi.generateTokenBytecode(contractParamsRequest);
     }
 
     public Observable<ContractParams> getContractsParams(String addressContact){

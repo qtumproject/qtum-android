@@ -4,6 +4,7 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParams;
 
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParamsRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.HistoryResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.News;
@@ -39,7 +40,7 @@ interface QtumRestService {
     Observable<SendRawTransactionResponse> sendRawTransaction(@Body SendRawTransactionRequest sendRawTransactionRequest);
 
     @POST("/contracts/generate-token-bytecode")
-    Observable<ByteCode> generateTokenBytecode(@Body ContractParams generateTokenBytecodeRequest);
+    Observable<ByteCode> generateTokenBytecode(@Body ContractParamsRequest contractParamsRequest);
 
     @GET("/outputs/unspent")
 //    Call<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses(@Query("addresses[]") List<String> addresses);

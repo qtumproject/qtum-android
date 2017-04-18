@@ -104,7 +104,7 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(), History.class);
-                if(history.getContractHasBeenCreated()){
+                if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated()){
                     try {
                         byte [] array = history.getTxHash().getBytes("UTF-16BE");
                         String hexBigEndian = Hex.toHexString(array);
@@ -137,7 +137,7 @@ public class UpdateService extends Service {
 
                                     @Override
                                     public void onError(Throwable e) {
-
+                                        Log.d("error","onerror");
                                     }
 
                                     @Override
