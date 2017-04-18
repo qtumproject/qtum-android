@@ -3,7 +3,7 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.GenerateTokenBytecodeRequest;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParams;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.HistoryResponse;
@@ -12,18 +12,14 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransact
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
-import rx.Subscriber;
 
 
 public class QtumService {
@@ -100,7 +96,11 @@ public class QtumService {
         return mServiceApi.sendRawTransaction(sendRawTransactionRequest);
     }
 
-    public Observable<ByteCode> generateTokenBytecode(final GenerateTokenBytecodeRequest generateTokenBytecodeRequest){
+    public Observable<ByteCode> generateTokenBytecode(final ContractParams generateTokenBytecodeRequest){
         return mServiceApi.generateTokenBytecode(generateTokenBytecodeRequest);
+    }
+
+    public Observable<ContractParams> getContractsParams(String addressContact){
+        return mServiceApi.getContractsParams(addressContact,"symbol,decimals,name,totalSupply");
     }
 }

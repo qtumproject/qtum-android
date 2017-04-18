@@ -24,6 +24,9 @@ public class History {
     @SerializedName("amount")
     @Expose
     private BigDecimal amount;
+    @SerializedName("contract_has_been_created")
+    @Expose
+    private Boolean contractHasBeenCreated;
     @SerializedName("vout")
     @Expose
     private List<Vout> vout = null;
@@ -97,4 +100,11 @@ public class History {
         this.changeInBalance = changeInBalance;
     }
 
+    public Boolean getContractHasBeenCreated() {
+        return contractHasBeenCreated;
+    }
+
+    public void setContractHasBeenCreated(Boolean contractHasBeenCreated) {
+        this.contractHasBeenCreated = contractHasBeenCreated;
+    }
 }

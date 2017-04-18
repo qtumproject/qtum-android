@@ -21,11 +21,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.qtum.mromanovsky.qtum.R;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParams;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
+import org.spongycastle.crypto.digests.RIPEMD160Digest;
+import org.spongycastle.crypto.digests.SHA256Digest;
+import org.spongycastle.util.encoders.Hex;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 
@@ -98,6 +104,51 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(), History.class);
+                if(history.getContractHasBeenCreated()){
+                    try {
+                        byte [] array = history.getTxHash().getBytes("UTF-16BE");
+                        String hexBigEndian = Hex.toHexString(array);
+                        hexBigEndian = hexBigEndian.concat("00");
+
+                        byte[] hexBigEndianBytes = hexBigEndian.getBytes();
+
+                        SHA256Digest sha256Digest = new SHA256Digest();
+                        sha256Digest.update(hexBigEndianBytes, 0 , hexBigEndianBytes.length);
+                        byte[] out = new byte[sha256Digest.getDigestSize()];
+                        sha256Digest.doFinal(out,0);
+                        String resultSHA256 = Hex.toHexString(out);
+
+                        byte [] resultSHA256Bytes = resultSHA256.getBytes("US-ASCII");
+
+                        RIPEMD160Digest ripemd160Digest = new RIPEMD160Digest();
+
+                        ripemd160Digest.update(resultSHA256Bytes,0,resultSHA256Bytes.length);
+
+                        byte[] out2 = new byte[ripemd160Digest.getDigestSize()];
+                        ripemd160Digest.doFinal (out2, 0);
+                        String tokenAddress = Hex.toHexString(out2);
+
+                        QtumService.newInstance().getContractsParams(tokenAddress)
+                                .subscribe(new Subscriber<ContractParams>() {
+                                    @Override
+                                    public void onCompleted() {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(ContractParams contractParams) {
+                                        Log.d("uspeh","yes");
+                                    }
+                                });
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
                 if (mTransactionListener != null) {
                     mTransactionListener.onNewHistory(history);
                     if (!mTransactionListener.getVisibility()) {

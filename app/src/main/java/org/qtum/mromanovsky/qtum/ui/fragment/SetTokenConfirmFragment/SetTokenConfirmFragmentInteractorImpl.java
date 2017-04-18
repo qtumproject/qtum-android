@@ -14,7 +14,7 @@ import org.bitcoinj.script.ScriptChunk;
 import org.bitcoinj.script.ScriptOpCodes;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.GenerateTokenBytecodeRequest;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParams;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
@@ -45,7 +45,7 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
     @Override
     public void generateTokenBytecode(final GenerateTokenBytecodeCallBack callBack) {
         QtumToken qtumToken = QtumToken.getInstance();
-        GenerateTokenBytecodeRequest generateTokenBytecodeRequest = new GenerateTokenBytecodeRequest(qtumToken.getInitialSupply(),qtumToken.getTokenName(),
+        ContractParams generateTokenBytecodeRequest = new ContractParams(qtumToken.getInitialSupply(),qtumToken.getTokenName(),
                 qtumToken.getDecimalUnits(),qtumToken.getTokenSymbol());
         QtumService.newInstance().generateTokenBytecode(generateTokenBytecodeRequest)
                 .subscribeOn(Schedulers.io())
