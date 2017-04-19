@@ -2,14 +2,14 @@ package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment;
 
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
-
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.TokenParams;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.HistoryResponse;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vin;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
-import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
+import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
+import org.qtum.mromanovsky.qtum.datastorage.TokenList;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -138,16 +138,46 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     }
 
     @Override
-    public int setHistory(History history) {
+    public Integer setHistory(History history) {
+        calculateChangeInBalance(history,addresses);
         for(History historyReplacing : getHistoryList()){
             if(historyReplacing.getTxHash().equals(history.getTxHash())){
                 int position = getHistoryList().indexOf(historyReplacing);
-                calculateChangeInBalance(history,addresses);
                 getHistoryList().set(position,history);
                 return position;
             }
         }
-        return 0;
+        getHistoryList().add(0,history);
+        return null;
+    }
+
+//    @Override
+//    public void newToken(String tokenAddress, final AddToListCallBack addToListCallBack) {
+//        QtumService.newInstance().getContractsParams(tokenAddress)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<TokenParams>() {
+//                    @Override
+//                    public void onCompleted() {
+//                    }
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//                    @Override
+//                    public void onNext(TokenParams contractParams) {
+//                        addToTokenList(contractParams);
+//                        addToListCallBack.onSuccess();
+//                    }
+//                });
+//    }
+//
+//    public void addToTokenList(TokenParams contractParams){
+//        TokenList.getTokenList().addToTokenList(contractParams);
+//    }
+
+    public List<TokenParams> getTokenList(){
+        return TokenList.getTokenList().getList();
     }
 
     void unSubscribe(){
@@ -163,6 +193,10 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
         void onSuccess();
         void onError(Throwable e);
     }
+
+//    interface AddToListCallBack{
+//        void onSuccess();
+//    }
 
     @Override
     public String getAddress() {

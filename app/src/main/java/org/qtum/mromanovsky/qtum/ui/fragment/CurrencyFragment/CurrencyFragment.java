@@ -21,6 +21,7 @@ import android.widget.TextView;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.datastorage.Currency;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
     private String mSearchString;
     private boolean mIsCurrencyFragment;
     private static String IS_CURRENCY_FRAGMENT = "is_currency_fragment";
+    private List<String> currentList;
 
     //TODO: remove
     String currentCurrency = "one";
@@ -94,13 +96,6 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        final List<Currency> list = new ArrayList<>();
-        list.add(new Currency("one"));
-        list.add(new Currency("two"));
-        list.add(new Currency("three"));
-
-        mCurrencyAdapter = new CurrencyAdapter(list);
-        mRecyclerView.setAdapter(mCurrencyAdapter);
 
         mEditTextSearchCurrency.addTextChangedListener(new TextWatcher() {
             @Override
@@ -116,12 +111,12 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
             @Override
             public void afterTextChanged(Editable editable) {
                 if(editable.toString().isEmpty()){
-                    mCurrencyAdapter.setFilter(list);
+                    mCurrencyAdapter.setFilter(currentList);
                 } else {
                     mSearchString = editable.toString().toLowerCase();
-                    List<Currency> newList = new ArrayList<>();
-                    for(Currency currency: list){
-                        if(currency.getName().contains(mSearchString))
+                    List<String> newList = new ArrayList<>();
+                    for(String currency: mCurrencyAdapter.getCurrencyList()){
+                        if(currency.contains(mSearchString))
                             newList.add(currency);
                     }
                     mCurrencyAdapter.setFilter(newList);
@@ -150,6 +145,13 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
         });
     }
 
+    @Override
+    public void setTokenList(List<String> tokenList) {
+        mCurrencyAdapter = new CurrencyAdapter(tokenList);
+        currentList = tokenList;
+        mRecyclerView.setAdapter(mCurrencyAdapter);
+    }
+
     public class CurrencyHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.tv_currency)
@@ -167,7 +169,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
                     @Override
                     public void onClick(View view) {
                         if(getAdapterPosition()>=0) {
-                            currentCurrency = mCurrencyAdapter.getCurrencyList().get(getAdapterPosition()).getName();
+                            currentCurrency = mCurrencyAdapter.getCurrencyList().get(getAdapterPosition());
                             mCurrencyAdapter.notifyDataSetChanged();
                         }
                     }
@@ -189,9 +191,9 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
 
     public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyHolder>{
 
-        List<Currency> mCurrencyList;
+        List<String> mCurrencyList;
 
-        CurrencyAdapter(List<Currency> currencyList){
+        CurrencyAdapter(List<String> currencyList){
             mCurrencyList = currencyList;
         }
 
@@ -204,7 +206,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
 
         @Override
         public void onBindViewHolder(CurrencyHolder holder, int position) {
-            holder.bindCurrency(mCurrencyList.get(position).getName());
+            holder.bindCurrency(mCurrencyList.get(position));
         }
 
         @Override
@@ -212,13 +214,13 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
             return mCurrencyList.size();
         }
 
-        void setFilter(List<Currency> newList){
+        void setFilter(List<String> newList){
             mCurrencyList = new ArrayList<>();
             mCurrencyList.addAll(newList);
             notifyDataSetChanged();
         }
 
-        List<Currency> getCurrencyList() {
+        List<String> getCurrencyList() {
             return mCurrencyList;
         }
     }

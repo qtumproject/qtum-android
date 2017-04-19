@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
@@ -22,18 +21,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParams;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.TokenListener;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.TokenBalanceChangeListener;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.TokenParams;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
 import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
+import org.qtum.mromanovsky.qtum.datastorage.TokenList;
+import org.qtum.mromanovsky.qtum.datastorage.TokenSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 import org.spongycastle.crypto.digests.SHA256Digest;
 import org.spongycastle.util.encoders.Hex;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -49,6 +53,8 @@ public class UpdateService extends Service {
     private NotificationManager notificationManager;
     private TransactionListener mTransactionListener = null;
     private BalanceChangeListener mBalanceChangeListener;
+    private HashMap<String,TokenBalanceChangeListener> mStringTokenBalanceChangeListenerHashMap = new HashMap<>();
+    private TokenListener mTokenListener;
     private boolean monitoringFlag = false;
     private Notification notification;
     private Socket socket;
@@ -104,50 +110,55 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(), History.class);
-                if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated()){
-                    try {
-                        byte [] array = history.getTxHash().getBytes("UTF-16BE");
-                        String hexBigEndian = Hex.toHexString(array);
-                        hexBigEndian = hexBigEndian.concat("00");
-
-                        byte[] hexBigEndianBytes = hexBigEndian.getBytes();
-
-                        SHA256Digest sha256Digest = new SHA256Digest();
-                        sha256Digest.update(hexBigEndianBytes, 0 , hexBigEndianBytes.length);
-                        byte[] out = new byte[sha256Digest.getDigestSize()];
-                        sha256Digest.doFinal(out,0);
-                        String resultSHA256 = Hex.toHexString(out);
-
-                        byte [] resultSHA256Bytes = resultSHA256.getBytes("US-ASCII");
-
-                        RIPEMD160Digest ripemd160Digest = new RIPEMD160Digest();
-
-                        ripemd160Digest.update(resultSHA256Bytes,0,resultSHA256Bytes.length);
-
-                        byte[] out2 = new byte[ripemd160Digest.getDigestSize()];
-                        ripemd160Digest.doFinal (out2, 0);
-                        String tokenAddress = Hex.toHexString(out2);
-
-                        QtumService.newInstance().getContractsParams(tokenAddress)
-                                .subscribe(new Subscriber<ContractParams>() {
-                                    @Override
-                                    public void onCompleted() {
-
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.d("error","onerror");
-                                    }
-
-                                    @Override
-                                    public void onNext(ContractParams contractParams) {
-                                        Log.d("uspeh","yes");
-                                    }
-                                });
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
+                if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
+                    String txHash = history.getTxHash();
+                    char[] ca = txHash.toCharArray();
+                    StringBuilder sb = new StringBuilder(txHash.length());
+                    for (int i = 0; i < txHash.length(); i += 2) {
+                        sb.insert(0, ca, i, 2);
                     }
+
+                    String reverse_tx_hash = sb.toString();
+                    reverse_tx_hash = reverse_tx_hash.concat("00");
+
+
+                    byte[] test5 = Hex.decode(reverse_tx_hash);
+
+                    SHA256Digest sha256Digest = new SHA256Digest();
+                    sha256Digest.update(test5, 0, test5.length);
+                    byte[] out = new byte[sha256Digest.getDigestSize()];
+                    sha256Digest.doFinal(out, 0);
+
+                    RIPEMD160Digest ripemd160Digest = new RIPEMD160Digest();
+                    ripemd160Digest.update(out, 0, out.length);
+                    byte[] out2 = new byte[ripemd160Digest.getDigestSize()];
+                    ripemd160Digest.doFinal(out2, 0);
+
+                    final String tokenAddress = Hex.toHexString(out2);
+
+                    QtumService.newInstance().getContractsParams(tokenAddress)
+                            .subscribe(new Subscriber<TokenParams>() {
+                                @Override
+                                public void onCompleted() {
+                                }
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+                                @Override
+                                public void onNext(TokenParams tokenParams) {
+                                    tokenParams.setAddress(tokenAddress);
+                                    addToTokenList(tokenParams);
+                                    if(mTokenListener != null){
+                                        mTokenListener.newToken();
+                                    }
+                                }
+                            });
+
+
+                    subscribeTokenBalanceChange(tokenAddress);
+                    TokenSharedPreference.getInstance().addToTokenList(getApplicationContext(), tokenAddress);
+
                 }
                 if (mTransactionListener != null) {
                     mTransactionListener.onNewHistory(history);
@@ -169,6 +180,18 @@ public class UpdateService extends Service {
                 }
 
             }
+        }).on("token_balance_change", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Gson gson = new Gson();
+                JSONObject data = (JSONObject) args[0];
+                TokenBalance tokenBalance = gson.fromJson(data.toString(), TokenBalance.class);
+                TokenList.getTokenList().setTokenBalance(tokenBalance);
+                TokenBalanceChangeListener tokenBalanceChangeListener = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
+                if(tokenBalanceChangeListener!=null){
+                    tokenBalanceChangeListener.onBalanceChange();
+                }
+            }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -187,6 +210,20 @@ public class UpdateService extends Service {
         stopSelf();
     }
 
+    private void subscribeTokenBalanceChange(String tokenAddress){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("contract_address",tokenAddress);
+            jsonObject.put("addresses",mAddresses);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        socket.emit("subscribe","token_balance_change",jsonObject);
+    }
+
+    private void addToTokenList(TokenParams tokenParams){
+        TokenList.getTokenList().addToTokenList(tokenParams);
+    }
 
 
     @Override
@@ -306,6 +343,24 @@ public class UpdateService extends Service {
 
     public void addBalanceChangeListener(BalanceChangeListener balanceChangeListener) {
         mBalanceChangeListener = balanceChangeListener;
+    }
+
+    public void addTokenListener(TokenListener tokenListener){
+        mTokenListener = tokenListener;
+    }
+
+    public void removeTokenListener(){
+        mTokenListener = null;
+    }
+
+    public void addTokenBalanceChangeListener(String address, TokenBalanceChangeListener tokenBalanceChangeListener){
+        mStringTokenBalanceChangeListenerHashMap.put(address,tokenBalanceChangeListener);
+        int i =0;
+    }
+
+    public void removeTokenBalanceChangeListener(String address){
+        mStringTokenBalanceChangeListenerHashMap.remove(address);
+        int i=0;
     }
 
     public void removeBalanceChangeListener() {

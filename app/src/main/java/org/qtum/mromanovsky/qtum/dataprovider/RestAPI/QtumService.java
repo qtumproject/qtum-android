@@ -3,7 +3,7 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParams;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.TokenParams;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParamsRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
@@ -101,7 +101,7 @@ public class QtumService {
         return mServiceApi.generateTokenBytecode(contractParamsRequest);
     }
 
-    public Observable<ContractParams> getContractsParams(String addressContact){
+    public Observable<TokenParams> getContractsParams(String addressContact){
         return mServiceApi.getContractsParams(addressContact,"symbol,decimals,name,totalSupply");
     }
 }

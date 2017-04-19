@@ -18,4 +18,7 @@ interface WalletFragmentView extends BaseFragmentView {
     void loadNewHistory();
     void notifyNewHistory();
     void notifyConfirmHistory(int notifyPosition);
+    void setWalletName(String walletName);
+    void notifyNewToken();
+    int getPosition();
 }

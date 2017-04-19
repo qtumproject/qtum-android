@@ -40,6 +40,17 @@ class SetTokenConfirmFragmentPresenterImpl extends BaseFragmentPresenterImpl imp
                 }, 2000);
                 getInteractor().clearToken();
             }
+
+            @Override
+            public void onError(String error) {
+                getView().dismissProgressDialog();
+                getView().setAlertDialog(error);
+                (new Handler()).postDelayed(new Runnable() {
+                    public void run() {
+                        getView().dismissAlertDialog();
+                    }
+                }, 2000);
+            }
         });
     }
 

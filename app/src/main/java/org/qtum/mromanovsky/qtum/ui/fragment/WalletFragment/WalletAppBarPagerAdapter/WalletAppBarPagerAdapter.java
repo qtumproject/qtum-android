@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import org.qtum.mromanovsky.qtum.datastorage.TokenList;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarFragment.WalletAppBarFragment;
 
 
@@ -20,13 +21,13 @@ public class WalletAppBarPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return WalletAppBarFragment.newInstance();
+        return WalletAppBarFragment.newInstance(position-1);
     }
 
     //TODO: edit
     @Override
     public int getCount() {
-        return 3;
+        return TokenList.getTokenList().getList().size()+1;
     }
 
     @Override

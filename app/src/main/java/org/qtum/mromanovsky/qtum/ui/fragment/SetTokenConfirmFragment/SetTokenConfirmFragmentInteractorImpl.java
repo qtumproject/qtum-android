@@ -16,7 +16,6 @@ import org.bitcoinj.script.ScriptChunk;
 import org.bitcoinj.script.ScriptOpCodes;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.QtumService;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParams;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParamsRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
@@ -91,7 +90,7 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
                         final int OP_EXEC_SPEND = 195;
 
                         byte[] version = Hex.decode("01");
-                        byte[] gasLimit = Hex.decode("0100000000000000");
+                        byte[] gasLimit = Hex.decode("80841e0000000000");
                         byte[] gasPrice = Hex.decode("0100000000000000");
                         byte[] data = Hex.decode(byteCode);
                         byte[] program;
@@ -122,7 +121,18 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
                         Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
                         transaction.addOutput(Coin.ZERO,script);
 
-                        UnspentOutput unspentOutput = unspentOutputs.get(0);
+                        UnspentOutput unspentOutput = null;
+                        for(UnspentOutput unspentOutput1: unspentOutputs) {
+                            if(unspentOutput1.getAmount().doubleValue()>1.0) {
+                                unspentOutput = unspentOutput1;
+                                break;
+                            }
+                        }
+
+                        if(unspentOutput == null){
+                            sendTokenCallBack.onError("Not enough money");
+                            return;
+                        }
 
                         //TODO:test
                         BigDecimal bitcoin = new BigDecimal(100000000);
@@ -230,5 +240,6 @@ class SetTokenConfirmFragmentInteractorImpl implements SetTokenConfirmFragmentIn
 
     interface SendTokenCallBack{
         void onSuccess();
+        void onError(String error);
     }
 }

@@ -2,7 +2,7 @@ package org.qtum.mromanovsky.qtum.dataprovider.RestAPI;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParams;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.TokenParams;
 
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.ContractParamsRequest;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
@@ -50,5 +50,5 @@ interface QtumRestService {
     Observable<HistoryResponse> getHistoryListForSeveralAddresses(@Path("limit") int limit, @Path("offset") int offset, @Query("addresses[]") List<String> addresses);
 
     @GET("/contracts/{address_contract}/params")
-    Observable<ContractParams> getContractsParams(@Path("address_contract") String addressContract, @Query("keys") String keys);
+    Observable<TokenParams> getContractsParams(@Path("address_contract") String addressContract, @Query("keys") String keys);
 }

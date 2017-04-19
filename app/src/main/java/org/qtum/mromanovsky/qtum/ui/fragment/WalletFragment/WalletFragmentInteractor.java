@@ -13,5 +13,6 @@ interface WalletFragmentInteractor {
     String getUnconfirmedBalance();
     int getTotalHistoryItem();
     void addToHistoryList(History history);
-    int setHistory(History history);
+    Integer setHistory(History history);
+    //void newToken(String tokenAddress, WalletFragmentInteractorImpl.AddToListCallBack addToListCallBack);
 }

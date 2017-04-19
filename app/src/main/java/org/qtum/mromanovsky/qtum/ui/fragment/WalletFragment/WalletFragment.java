@@ -30,6 +30,7 @@ import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAda
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.WalletAppBarPagerAdapter;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -56,6 +57,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     private int totalItemCount;
     private int pastVisibleItems;
     private boolean mLoadingFlag = false;
+    private String mWalletName = "QTUM";
 
     @BindView(R.id.fab)
     FloatingActionButton mFloatingActionButton;
@@ -195,6 +197,32 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
     @Override
+    public void setWalletName(String walletName) {
+        mWalletName = walletName;
+    }
+
+    @Override
+    public void notifyNewToken() {
+        mWalletAppBarPagerAdapter.notifyDataSetChanged();
+        int position = mViewPager.getCurrentItem();
+        if(position==0){
+            mImageButtonLeft.setVisibility(View.GONE);
+        } else {
+            mImageButtonLeft.setVisibility(View.VISIBLE);
+        }
+        if(position == mViewPager.getAdapter().getCount()-1){
+            mImageButtonRight.setVisibility(View.GONE);
+        } else {
+            mImageButtonRight.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public int getPosition() {
+        return mViewPager.getCurrentItem();
+    }
+
+    @Override
     public void initializeViews() {
         ((MainActivity) getActivity()).showBottomNavigationView();
 
@@ -221,7 +249,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mTextViewWalletName.setText("New wallet");
+                mTextViewWalletName.setText(mWalletName);
                 mTextViewWalletName.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_show));
             }
 
@@ -243,7 +271,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
             @Override
             public void onPageSelected(int position) {
-                getPresenter().changePage();
+                getPresenter().changePage(position);
                 mIsInitialInitialize = true;
 
                 if(position==0){

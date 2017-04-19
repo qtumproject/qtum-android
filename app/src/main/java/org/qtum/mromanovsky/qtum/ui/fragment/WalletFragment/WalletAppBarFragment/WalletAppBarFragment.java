@@ -1,5 +1,6 @@
 package org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletAppBarFragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
 
     private Unbinder mUnbinder;
     private WalletAppBarFragmentPresenter mWalletAppBarFragmentPresenter;
+    private final static String POSITION = "position";
 
     @BindView(R.id.tv_public_key)
     TextView mTvPublicKey;
@@ -33,6 +35,8 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
     LinearLayout mLinearLayoutReceive;
     @BindView(R.id.tv_unconfirmed_balance)
     TextView mTextViewUnconfirmedBalance;
+    @BindView(R.id.tv_symbol)
+    TextView mTextViewSymbol;
 
     @BindView(R.id.progress_bar_balance)
     ProgressBar mProgressBarDialog;
@@ -47,10 +51,10 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
         }
     }
 
-    public static WalletAppBarFragment newInstance() {
+    public static WalletAppBarFragment newInstance(int position) {
         
         Bundle args = new Bundle();
-        
+        args.putInt(POSITION,position);
         WalletAppBarFragment fragment = new WalletAppBarFragment();
         fragment.setArguments(args);
         return fragment;
@@ -78,11 +82,14 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
+        getPresenter().setPosition(getArguments().getInt(POSITION));
+        getPresenter().onViewCreated();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        getPresenter().onDestroyView();
         mUnbinder.unbind();
     }
 
@@ -98,6 +105,11 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
     }
 
     @Override
+    public void setSymbol(String symbol) {
+        mTextViewSymbol.setText(symbol);
+    }
+
+    @Override
     public void openFragment(Fragment fragment) {
         getFragmentManager()
                 .beginTransaction()
@@ -105,5 +117,10 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
                 .add(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public Activity getFragmentActivity() {
+        return getActivity();
     }
 }

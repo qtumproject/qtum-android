@@ -8,6 +8,7 @@ import android.widget.Toast;
 import org.qtum.mromanovsky.qtum.dataprovider.BalanceChangeListener;
 import org.qtum.mromanovsky.qtum.dataprovider.NetworkStateReceiver;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.NetworkStateListener;
+import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.TokenListener;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import org.qtum.mromanovsky.qtum.dataprovider.TransactionListener;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
@@ -48,8 +49,12 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
             @Override
             public void onNewHistory(History history) {
                 if(history.getBlockTime()!=null){
-                    int notifyPosition = getInteractor().setHistory(history);
-                    getView().notifyConfirmHistory(notifyPosition);
+                    Integer notifyPosition = getInteractor().setHistory(history);
+                    if(notifyPosition==null){
+                        getView().notifyNewHistory();
+                    } else {
+                        getView().notifyConfirmHistory(notifyPosition);
+                    }
                 }else {
                     getInteractor().addToHistoryList(history);
                     getView().notifyNewHistory();
@@ -73,6 +78,19 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
                 });
             }
         });
+
+        mUpdateService.addTokenListener(new TokenListener() {
+            @Override
+            public void newToken() {
+                getView().getFragmentActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getView().notifyNewToken();
+                    }
+                });
+            }
+        });
+
 
         mNetworkStateReceiver  = ((MainActivity) getView().getFragmentActivity()).getNetworkReceiver();
         mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
@@ -144,14 +162,21 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     public void onInitialInitialize() {
         String pubKey = getInteractor().getAddress();
         getView().updatePubKey(pubKey);
-        loadAndUpdateData();
-        setUpBalance();
+        if(getView().getPosition()==0) {
+            loadAndUpdateData();
+            setUpBalance();
+        }
     }
 
     @Override
-    public void changePage() {
+    public void changePage(int position) {
         getInteractor().unSubscribe();
         getView().setAdapterNull();
+        if(position==0){
+            getView().setWalletName("QTUM");
+        } else {
+            getView().setWalletName(getInteractor().getTokenList().get(position-1).getName());
+        }
     }
 
     @Override
