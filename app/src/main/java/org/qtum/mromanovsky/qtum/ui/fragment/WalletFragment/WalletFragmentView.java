@@ -21,4 +21,5 @@ interface WalletFragmentView extends BaseFragmentView {
     void setWalletName(String walletName);
     void notifyNewToken();
     int getPosition();
+    void addScrollListener(WalletFragment.ScrollListener scrollListener);
 }

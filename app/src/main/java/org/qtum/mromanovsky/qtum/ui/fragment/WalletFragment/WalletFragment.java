@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     private int pastVisibleItems;
     private boolean mLoadingFlag = false;
     private String mWalletName = "QTUM";
+    private ScrollListener mScrollListener;
 
     @BindView(R.id.fab)
     FloatingActionButton mFloatingActionButton;
@@ -223,6 +225,11 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
     @Override
+    public void addScrollListener(ScrollListener scrollListener) {
+        mScrollListener = scrollListener;
+    }
+
+    @Override
     public void initializeViews() {
         ((MainActivity) getActivity()).showBottomNavigationView();
 
@@ -258,13 +265,13 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
             }
         });
-
+        
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if(mIsInitialInitialize){
 
-                    getPresenter().onInitialInitialize();
+
                     mIsInitialInitialize = false;
                 }
             }
@@ -291,7 +298,12 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                if(state==ViewPager.SCROLL_STATE_SETTLING){
+                    getPresenter().onInitialInitialize();
+                   // mScrollListener.onScrollStart();
+                }else if(state==ViewPager.SCROLL_STATE_IDLE){
+                   // mScrollListener.onScrollEnd();
+                }
             }
         });
 
@@ -522,5 +534,10 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             }
             mTextViewValue.setText(history.getChangeInBalance().toString() + " QTUM");
         }
+    }
+
+    interface ScrollListener{
+        void onScrollEnd();
+        void onScrollStart();
     }
 }

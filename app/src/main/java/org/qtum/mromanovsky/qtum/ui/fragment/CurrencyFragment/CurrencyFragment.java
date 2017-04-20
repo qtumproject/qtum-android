@@ -19,9 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.datastorage.Currency;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
-import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +31,11 @@ import butterknife.OnClick;
 public class CurrencyFragment extends BaseFragment implements CurrencyFragmentView{
 
     private CurrencyFragmentPresenterImpl mCurrencyFragmentPresenter;
-    private CurrencyAdapter mCurrencyAdapter;
+    private TokenAdapter mTokenAdapter;
     private String mSearchString;
     private boolean mIsCurrencyFragment;
     private static String IS_CURRENCY_FRAGMENT = "is_currency_fragment";
-    private List<String> currentList;
+    private List<String> mCurrentList;
 
     //TODO: remove
     String currentCurrency = "one";
@@ -111,15 +109,15 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
             @Override
             public void afterTextChanged(Editable editable) {
                 if(editable.toString().isEmpty()){
-                    mCurrencyAdapter.setFilter(currentList);
+                    mTokenAdapter.setFilter(mCurrentList);
                 } else {
                     mSearchString = editable.toString().toLowerCase();
                     List<String> newList = new ArrayList<>();
-                    for(String currency: mCurrencyAdapter.getCurrencyList()){
+                    for(String currency: mCurrentList){
                         if(currency.contains(mSearchString))
                             newList.add(currency);
                     }
-                    mCurrencyAdapter.setFilter(newList);
+                    mTokenAdapter.setFilter(newList);
                 }
             }
         });
@@ -147,9 +145,9 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
 
     @Override
     public void setTokenList(List<String> tokenList) {
-        mCurrencyAdapter = new CurrencyAdapter(tokenList);
-        currentList = tokenList;
-        mRecyclerView.setAdapter(mCurrencyAdapter);
+        mTokenAdapter = new TokenAdapter(tokenList);
+        mCurrentList = tokenList;
+        mRecyclerView.setAdapter(mTokenAdapter);
     }
 
     public class CurrencyHolder extends RecyclerView.ViewHolder{
@@ -169,8 +167,8 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
                     @Override
                     public void onClick(View view) {
                         if(getAdapterPosition()>=0) {
-                            currentCurrency = mCurrencyAdapter.getCurrencyList().get(getAdapterPosition());
-                            mCurrencyAdapter.notifyDataSetChanged();
+                            currentCurrency = mTokenAdapter.getTokenList().get(getAdapterPosition());
+                            mTokenAdapter.notifyDataSetChanged();
                         }
                     }
                 });
@@ -189,12 +187,12 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
         }
     }
 
-    public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyHolder>{
+    public class TokenAdapter extends RecyclerView.Adapter<CurrencyHolder>{
 
-        List<String> mCurrencyList;
+        List<String> mTokenList;
 
-        CurrencyAdapter(List<String> currencyList){
-            mCurrencyList = currencyList;
+        TokenAdapter(List<String> tokenList){
+            mTokenList = tokenList;
         }
 
         @Override
@@ -206,22 +204,22 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
 
         @Override
         public void onBindViewHolder(CurrencyHolder holder, int position) {
-            holder.bindCurrency(mCurrencyList.get(position));
+            holder.bindCurrency(mTokenList.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return mCurrencyList.size();
+            return mTokenList.size();
         }
 
         void setFilter(List<String> newList){
-            mCurrencyList = new ArrayList<>();
-            mCurrencyList.addAll(newList);
+            mTokenList = new ArrayList<>();
+            mTokenList.addAll(newList);
             notifyDataSetChanged();
         }
 
-        List<String> getCurrencyList() {
-            return mCurrencyList;
+        List<String> getTokenList() {
+            return mTokenList;
         }
     }
 }
