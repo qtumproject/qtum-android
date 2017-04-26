@@ -58,8 +58,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     private int totalItemCount;
     private int pastVisibleItems;
     private boolean mLoadingFlag = false;
+    private boolean mChangePageFlag = false;
     private String mWalletName = "QTUM";
-    private ScrollListener mScrollListener;
 
     @BindView(R.id.fab)
     FloatingActionButton mFloatingActionButton;
@@ -140,7 +140,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void setAdapterNull() {
-        mTransactionAdapter = null;
+        //mTransactionAdapter = null;
     }
 
     @Override
@@ -225,11 +225,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
     @Override
-    public void addScrollListener(ScrollListener scrollListener) {
-        mScrollListener = scrollListener;
-    }
-
-    @Override
     public void initializeViews() {
         ((MainActivity) getActivity()).showBottomNavigationView();
 
@@ -270,17 +265,15 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if(mIsInitialInitialize){
-
-
+                    getPresenter().changePage(position);
                     mIsInitialInitialize = false;
                 }
             }
 
             @Override
             public void onPageSelected(int position) {
-                getPresenter().changePage(position);
-                mIsInitialInitialize = true;
-
+                //getPresenter().changePage(position);
+                mChangePageFlag = true;
                 if(position==0){
                     mImageButtonLeft.setVisibility(View.GONE);
                 } else {
@@ -292,17 +285,15 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                     mImageButtonRight.setVisibility(View.VISIBLE);
                 }
 
-                mTextViewWalletName.startAnimation(animationWallet);
-
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if(state==ViewPager.SCROLL_STATE_SETTLING){
-                    getPresenter().onInitialInitialize();
-                   // mScrollListener.onScrollStart();
-                }else if(state==ViewPager.SCROLL_STATE_IDLE){
-                   // mScrollListener.onScrollEnd();
+                if(mChangePageFlag && state==ViewPager.SCROLL_STATE_IDLE){
+                    getPresenter().changePage(mViewPager.getCurrentItem());
+                    mChangePageFlag = false;
+                    //TODO : this change currency name in toolbar
+                    //mTextViewWalletName.startAnimation(animationWallet);
                 }
             }
         });
@@ -534,10 +525,5 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             }
             mTextViewValue.setText(history.getChangeInBalance().toString() + " QTUM");
         }
-    }
-
-    interface ScrollListener{
-        void onScrollEnd();
-        void onScrollStart();
     }
 }

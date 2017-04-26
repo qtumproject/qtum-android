@@ -160,22 +160,24 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     @Override
     public void onInitialInitialize() {
-        String pubKey = getInteractor().getAddress();
-        getView().updatePubKey(pubKey);
-        if(getView().getPosition()==0) {
-            loadAndUpdateData();
-            setUpBalance();
-        }
+
     }
 
     @Override
     public void changePage(int position) {
         getInteractor().unSubscribe();
+        //TODO: delete
         getView().setAdapterNull();
         if(position==0){
             getView().setWalletName("QTUM");
         } else {
             getView().setWalletName(getInteractor().getTokenList().get(position-1).getName());
+        }
+        String pubKey = getInteractor().getAddress();
+        getView().updatePubKey(pubKey);
+        if(getView().getPosition()==0) {
+            loadAndUpdateData();
+            setUpBalance();
         }
     }
 
