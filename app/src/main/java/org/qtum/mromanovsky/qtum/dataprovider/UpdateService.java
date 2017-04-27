@@ -31,6 +31,7 @@ import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.datastorage.TokenList;
 import org.qtum.mromanovsky.qtum.datastorage.TokenSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
+import org.qtum.mromanovsky.qtum.utils.QtumIntentAction;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 import org.spongycastle.crypto.digests.SHA256Digest;
 import org.spongycastle.util.encoders.Hex;
@@ -287,10 +288,8 @@ public class UpdateService extends Service {
     public void sendNotification(String Ticker, String Title, String Text, Uri sound) {
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        notificationIntent.setAction(Intent.ACTION_MAIN);
-        notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-
-        notificationIntent.putExtra("notification_action", true);
+        notificationIntent.setAction(QtumIntentAction.OPEN_FROM_NOTIFICATION);
+        //notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

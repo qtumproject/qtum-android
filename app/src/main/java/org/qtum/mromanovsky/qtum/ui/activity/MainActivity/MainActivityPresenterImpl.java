@@ -26,6 +26,7 @@ import org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
+import org.qtum.mromanovsky.qtum.utils.QtumIntentAction;
 
 
 class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivityPresenter {
@@ -147,7 +148,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                     getView().popBackStack();
                     return true;
                 }
-                mRootFragment = SendBaseFragment.newInstance(false);
+                mRootFragment = SendBaseFragment.newInstance(false,null,null);
                 break;
             default:
                 return false;
@@ -163,10 +164,13 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
     @Override
     public void processIntent(Intent intent) {
-        if(intent.getBooleanExtra("notification_action", false)){
-            mRootFragment = WalletFragment.newInstance();
-            getView().openRootFragment(mRootFragment);
-            getView().setIconChecked(0);
+        switch (intent.getAction()){
+            case QtumIntentAction.OPEN_FROM_NOTIFICATION:
+                mRootFragment = WalletFragment.newInstance();
+                getView().openRootFragment(mRootFragment);
+                getView().setIconChecked(0);
+                break;
+
         }
     }
 

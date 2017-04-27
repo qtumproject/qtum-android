@@ -122,8 +122,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             ActivityCompat.finishAffinity(this);
+        }else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 
     @Override

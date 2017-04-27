@@ -133,7 +133,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     @Override
     public void onClickQrCode() {
-        SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true);
+        SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true,null,null);
         getView().openRootFragment(sendBaseFragment);
         ((MainActivity) getView().getFragmentActivity()).setRootFragment(sendBaseFragment);
         ((MainActivity) getView().getFragmentActivity()).setIconChecked(3);

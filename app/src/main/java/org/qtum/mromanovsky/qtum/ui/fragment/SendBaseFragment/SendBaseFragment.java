@@ -24,6 +24,8 @@ import butterknife.OnClick;
 public class SendBaseFragment extends BaseFragment implements SendBaseFragmentView {
 
     private static final String IS_QR_CODE_RECOGNITION = "is_qr_code_recognition";
+    private static final String ADDRESS = "address";
+    private static final String AMOUNT = "amount";
 
     @BindView(R.id.et_receivers_address)
     TextInputEditText mTextInputEditTextAddress;
@@ -75,10 +77,12 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         }
     }
 
-    public static SendBaseFragment newInstance(boolean qrCodeRecognition) {
+    public static SendBaseFragment newInstance(boolean qrCodeRecognition, String address, String amount) {
         SendBaseFragment sendBaseFragment = new SendBaseFragment();
         Bundle args = new Bundle();
         args.putBoolean(IS_QR_CODE_RECOGNITION, qrCodeRecognition);
+        args.putString(ADDRESS,address);
+        args.putString(AMOUNT,amount);
         sendBaseFragment.setArguments(args);
         return sendBaseFragment;
     }
@@ -145,6 +149,10 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
                 }
             }
         });
+        String address = getArguments().getString(ADDRESS, "");
+        String amount = getArguments().getString(AMOUNT, "");
+        mTextInputEditTextAmount.setText(amount);
+        mTextInputEditTextAddress.setText(address);
     }
 
     @Override

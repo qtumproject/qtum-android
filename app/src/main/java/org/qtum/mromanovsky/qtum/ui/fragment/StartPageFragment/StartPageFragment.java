@@ -109,7 +109,9 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                mImageViewLogoTxt.startAnimation(mAnimation);
+                if(mImageViewLogoTxt != null) {
+                    mImageViewLogoTxt.startAnimation(mAnimation);
+                }
             }
 
             @Override

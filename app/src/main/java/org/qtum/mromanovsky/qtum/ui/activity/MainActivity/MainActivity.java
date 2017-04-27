@@ -219,6 +219,8 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                 return getPresenter().onNavigationItemSelected(item);
             }
         });
+
+        getPresenter().processIntent(getIntent());
     }
 
     public void setRootFragment(Fragment rootFragment) {
