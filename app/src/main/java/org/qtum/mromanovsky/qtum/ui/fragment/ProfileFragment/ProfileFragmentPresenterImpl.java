@@ -54,7 +54,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void onLogOutYesClick() {
         getInteractor().clearWallet();
-
+        ((MainActivity) getView().getFragmentActivity()).setAuthenticationFlag(false);
         mUpdateService = ((MainActivity) getView().getFragmentActivity()).getUpdateService();
         mUpdateService.stopMonitoring();
 

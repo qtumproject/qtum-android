@@ -27,6 +27,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
 
     public final static String CREATING = "creating";
     public final static String AUTHENTICATION = "authentication";
+    public final static String AUTHENTICATION_AND_SEND = "authentication_and_send";
     public final static String CHANGING = "changing";
     public final static String IMPORTING = "importing";
 

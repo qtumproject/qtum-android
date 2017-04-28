@@ -7,17 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
-import android.nfc.NfcAdapter;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import org.qtum.mromanovsky.qtum.R;
-import org.qtum.mromanovsky.qtum.dataprovider.BalanceChangeListener;
 import org.qtum.mromanovsky.qtum.dataprovider.NetworkStateReceiver;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import org.qtum.mromanovsky.qtum.dataprovider.TransactionListener;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BasePresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment.NewsFragment;
@@ -26,7 +22,7 @@ import org.qtum.mromanovsky.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
-import org.qtum.mromanovsky.qtum.utils.QtumIntentAction;
+import org.qtum.mromanovsky.qtum.utils.QtumIntent;
 
 
 class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivityPresenter {
@@ -36,10 +32,16 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     private Fragment mRootFragment;
     private Context mContext;
 
+    private boolean mAuthenticationFlag = false;
+    private boolean mSendFromSdkFlag = false;
+
     private Intent mIntent;
     private UpdateService mUpdateService;
 
     private NetworkStateReceiver mNetworkReceiver;
+
+    private String mAddressForSendAction;
+    private String mAmountForSendAction;
 
     MainActivityPresenterImpl(MainActivityView mainActivityView) {
         mMainActivityView = mainActivityView;
@@ -111,8 +113,13 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     private void openStartFragment() {
         Fragment fragment;
         if (getInteractor().getKeyGeneratedInstance(mContext)) {
-            fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION);
-            getView().openRootFragment(fragment);
+            if(mSendFromSdkFlag){
+                fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
+                getView().openRootFragment(fragment);
+            } else {
+                fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION);
+                getView().openRootFragment(fragment);
+            }
         } else {
             fragment = StartPageFragment.newInstance();
             getView().openRootFragment(fragment);
@@ -165,12 +172,38 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     @Override
     public void processIntent(Intent intent) {
         switch (intent.getAction()){
-            case QtumIntentAction.OPEN_FROM_NOTIFICATION:
+            case QtumIntent.SEND_FROM_SDK:
+                mSendFromSdkFlag = true;
+                mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
+                mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void processNewIntent(Intent intent) {
+        switch (intent.getAction()) {
+            case QtumIntent.OPEN_FROM_NOTIFICATION:
                 mRootFragment = WalletFragment.newInstance();
                 getView().openRootFragment(mRootFragment);
                 getView().setIconChecked(0);
                 break;
-
+            case QtumIntent.SEND_FROM_SDK:
+                mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
+                mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
+                if(mAuthenticationFlag){
+                    mRootFragment = SendBaseFragment.newInstance(false,mAddressForSendAction,mAmountForSendAction);
+                    getView().openRootFragment(mRootFragment);
+                    getView().setIconChecked(3);
+                } else {
+                    Fragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
+                    getView().openRootFragment(fragment);
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -185,5 +218,17 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         mContext.unbindService(mServiceConnection);
         getInteractor().clearStatic();
         mContext.unregisterReceiver(mNetworkReceiver);
+    }
+
+    public void setAuthenticationFlag(boolean authenticationFlag) {
+        mAuthenticationFlag = authenticationFlag;
+    }
+
+    public String getAddressForSendAction() {
+        return mAddressForSendAction;
+    }
+
+    public String getAmountForSendAction() {
+        return mAmountForSendAction;
     }
 }

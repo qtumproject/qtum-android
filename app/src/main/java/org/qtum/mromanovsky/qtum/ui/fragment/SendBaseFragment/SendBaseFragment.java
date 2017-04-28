@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.qtum.mromanovsky.qtum.R;
+import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 import butterknife.BindView;
@@ -140,6 +141,8 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @Override
     public void initializeViews() {
         super.initializeViews();
+        ((MainActivity) getActivity()).showBottomNavigationView();
+        ((MainActivity) getActivity()).setIconChecked(3);
         mImageButtonBack.setVisibility(View.GONE);
         mRelativeLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

@@ -28,10 +28,11 @@ import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.History
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
 import org.qtum.mromanovsky.qtum.datastorage.HistoryList;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.datastorage.TokenList;
 import org.qtum.mromanovsky.qtum.datastorage.TokenSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
-import org.qtum.mromanovsky.qtum.utils.QtumIntentAction;
+import org.qtum.mromanovsky.qtum.utils.QtumIntent;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 import org.spongycastle.crypto.digests.SHA256Digest;
 import org.spongycastle.util.encoders.Hex;
@@ -229,6 +230,9 @@ public class UpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if(QtumSharedPreference.getInstance().getKeyGeneratedInstance(getBaseContext())){
+            starMonitoring();
+        }
         return START_REDELIVER_INTENT;
     }
 
@@ -288,15 +292,14 @@ public class UpdateService extends Service {
     public void sendNotification(String Ticker, String Title, String Text, Uri sound) {
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        notificationIntent.setAction(QtumIntentAction.OPEN_FROM_NOTIFICATION);
-        //notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        notificationIntent.setAction(QtumIntent.OPEN_FROM_NOTIFICATION);
 
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentIntent(contentIntent)
                 .setOngoing(true)
-                .setSmallIcon(R.drawable.logo)
+
                 //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
                 .setTicker(Ticker)
                 .setContentTitle(Title)
@@ -304,11 +307,17 @@ public class UpdateService extends Service {
                 .setWhen(System.currentTimeMillis())
                 .setSound(sound);
 
+        if (android.os.Build.VERSION.SDK_INT <= 21) {
+            builder.setSmallIcon(R.drawable.ic_launcher);
+        } else {
+            builder.setSmallIcon(R.drawable.logo);
+        }
         if (android.os.Build.VERSION.SDK_INT <= 15) {
             notification = builder.getNotification();
         } else {
             notification = builder.build();
         }
+
         startForeground(DEFAULT_NOTIFICATION_ID, notification);
     }
 

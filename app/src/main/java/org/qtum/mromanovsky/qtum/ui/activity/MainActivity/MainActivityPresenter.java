@@ -12,5 +12,6 @@ interface MainActivityPresenter {
     boolean onNavigationItemSelected(@NonNull MenuItem item);
     void setRootFragment(Fragment fragment);
     void processIntent(Intent intent);
+    void processNewIntent(Intent intent);
     NetworkStateReceiver getNetworkReceiver();
 }

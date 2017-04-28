@@ -144,9 +144,20 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        getPresenter().processIntent(intent);
+        getPresenter().processNewIntent(intent);
     }
 
+    public void setAuthenticationFlag(boolean authenticationFlag){
+        getPresenter().setAuthenticationFlag(authenticationFlag);
+    }
+
+    public String getAddressForSendAction(){
+        return getPresenter().getAddressForSendAction();
+    }
+
+    public String getAmountForSendAction(){
+        return getPresenter().getAmountForSendAction();
+    }
 
     private void loadPermissions(String perm, int requestCode) {
         if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {

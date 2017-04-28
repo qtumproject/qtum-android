@@ -136,7 +136,6 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true,null,null);
         getView().openRootFragment(sendBaseFragment);
         ((MainActivity) getView().getFragmentActivity()).setRootFragment(sendBaseFragment);
-        ((MainActivity) getView().getFragmentActivity()).setIconChecked(3);
     }
 
     @Override

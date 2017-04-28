@@ -7,6 +7,7 @@ import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import org.qtum.mromanovsky.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.WalletFragment.WalletFragment;
 
 
@@ -54,6 +55,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                                 @Override
                                 public void onSuccess() {
                                     getInteractor().savePassword(pinForRepeat);
+                                    ((MainActivity) getView().getFragmentActivity()).setAuthenticationFlag(true);
                                     getView().openRootFragment(backUpWalletFragment);
                                     getView().dismissProgressDialog();
                                     PinFragmentInteractorImpl.isDataLoaded = false;
@@ -82,6 +84,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                             getInteractor().savePassword(pinForRepeat);
                             getInteractor().setKeyGeneratedInstance(true);
                             ((MainActivity) getView().getFragmentActivity()).setRootFragment(walletFragment);
+                            ((MainActivity) getView().getFragmentActivity()).setAuthenticationFlag(true);
                             getView().openRootFragment(walletFragment);
                         } else {
                             getView().confirmError(getView().getContext().getString(R.string.incorrect_repeated_pin));
@@ -102,7 +105,33 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                         @Override
                         public void onSuccess() {
                             ((MainActivity) getView().getFragmentActivity()).setRootFragment(walletFragment);
+                            ((MainActivity) getView().getFragmentActivity()).setAuthenticationFlag(true);
                             getView().openRootFragment(walletFragment);
+                            getView().dismissProgressDialog();
+                            PinFragmentInteractorImpl.isDataLoaded = false;
+                        }
+                    });
+                } else {
+                    getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
+                }
+            }
+            break;
+
+            case PinFragment.AUTHENTICATION_AND_SEND: {
+                int intPassword = Integer.parseInt(pin);
+                if (intPassword == getInteractor().getPassword()) {
+                    getView().clearError();
+                    String address = ((MainActivity) getView().getFragmentActivity()).getAddressForSendAction();
+                    String amount = ((MainActivity) getView().getFragmentActivity()).getAmountForSendAction();
+                    final SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(false,address,amount);
+                    getView().setProgressDialog("Loading key");
+                    getView().hideKeyBoard();
+                    getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            ((MainActivity) getView().getFragmentActivity()).setRootFragment(sendBaseFragment);
+                            ((MainActivity) getView().getFragmentActivity()).setAuthenticationFlag(true);
+                            getView().openRootFragment(sendBaseFragment);
                             getView().dismissProgressDialog();
                             PinFragmentInteractorImpl.isDataLoaded = false;
                         }
@@ -151,7 +180,8 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
     public void cancel() {
         switch (mAction) {
 
-            case PinFragment.AUTHENTICATION: {
+            case PinFragment.AUTHENTICATION:
+            case PinFragment.AUTHENTICATION_AND_SEND:{
                 getView().finish();
                 break;
             }
@@ -179,6 +209,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
             case PinFragment.CREATING:
                 titleID = R.string.create_pin;
                 break;
+            case PinFragment.AUTHENTICATION_AND_SEND:
             case PinFragment.AUTHENTICATION:
                 titleID = R.string.enter_pin;
                 break;
@@ -217,6 +248,15 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     getView().dismissProgressDialog();
                     break;
                 }
+                case PinFragment.AUTHENTICATION_AND_SEND: {
+                    String address = ((MainActivity) getView().getFragmentActivity()).getAddressForSendAction();
+                    String amount = ((MainActivity) getView().getFragmentActivity()).getAmountForSendAction();
+                    final SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(false,address,amount);
+                    ((MainActivity) getView().getFragmentActivity()).setRootFragment(sendBaseFragment);
+                    getView().openRootFragment(sendBaseFragment);
+                    getView().dismissProgressDialog();
+                    break;
+                }
             }
             PinFragmentInteractorImpl.isDataLoaded = false;
         }
@@ -248,6 +288,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                 state = CREATING_STATE[currentState];
                 break;
             case PinFragment.AUTHENTICATION:
+            case PinFragment.AUTHENTICATION_AND_SEND:
                 state = AUTHENTICATION_STATE[currentState];
                 break;
             case PinFragment.CHANGING:
