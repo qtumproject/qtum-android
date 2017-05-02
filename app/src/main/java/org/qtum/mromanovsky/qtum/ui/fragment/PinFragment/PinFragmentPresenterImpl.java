@@ -185,9 +185,8 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                 getView().finish();
                 break;
             }
-            case PinFragment.CREATING: {
-
-            }
+            case PinFragment.CREATING:
+            case PinFragment.IMPORTING:
             case PinFragment.CHANGING: {
                 getView().getFragmentActivity().onBackPressed();
                 break;

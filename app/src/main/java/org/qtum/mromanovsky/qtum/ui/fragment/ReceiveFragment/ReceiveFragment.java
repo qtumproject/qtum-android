@@ -30,7 +30,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     ImageView mImageViewQrCode;
     @BindView(R.id.et_amount)
     TextInputEditText mTextInputEditTextAmount;
-    @BindView(R.id.tv_address)
+    @BindView(R.id.tv_single_string)
     TextView mTextViewAddress;
     @BindView(R.id.bt_copy_wallet_address)
     Button mButtonCopyWalletAddress;

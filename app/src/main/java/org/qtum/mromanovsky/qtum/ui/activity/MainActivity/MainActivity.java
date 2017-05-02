@@ -2,6 +2,7 @@ package org.qtum.mromanovsky.qtum.ui.activity.MainActivity;
 
 import android.Manifest;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -28,8 +29,10 @@ import android.view.View;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.dataprovider.NetworkStateReceiver;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BaseActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
+import org.qtum.mromanovsky.qtum.utils.CustomContextWrapper;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
@@ -43,7 +46,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
     private static final int REQUEST_CAMERA = 0;
     private NfcAdapter mNfcAdapter;
-
+    private BottomNavigationMenuView mMenuView;
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
@@ -196,6 +199,15 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         mBottomNavigationView.getMenu().getItem(position).setChecked(true);
     }
 
+    @Override
+    public void resetMenuText() {
+        int[] menuResources = new int[]{R.string.wallet,R.string.profile,R.string.news,R.string.send};
+        for (int i = 0; i < mMenuView.getChildCount(); i++) {
+            BottomNavigationItemView item = (BottomNavigationItemView) mMenuView.getChildAt(i);
+            item.setTitle(getResources().getString(menuResources[i]));
+        }
+    }
+
     public void showBottomNavigationView() {
         mBottomNavigationView.setVisibility(View.VISIBLE);
     }
@@ -207,14 +219,14 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     @Override
     public void initializeViews() {
 
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) mBottomNavigationView.getChildAt(0);
+        mMenuView = (BottomNavigationMenuView) mBottomNavigationView.getChildAt(0);
         try {
-            Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
+            Field shiftingMode = mMenuView.getClass().getDeclaredField("mShiftingMode");
             shiftingMode.setAccessible(true);
-            shiftingMode.setBoolean(menuView, false);
+            shiftingMode.setBoolean(mMenuView, false);
             shiftingMode.setAccessible(false);
-            for (int i = 0; i < menuView.getChildCount(); i++) {
-                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
+            for (int i = 0; i < mMenuView.getChildCount(); i++) {
+                BottomNavigationItemView item = (BottomNavigationItemView) mMenuView.getChildAt(i);
                 item.setShiftingMode(false);
                 item.setChecked(item.getItemData().isChecked());
             }
@@ -240,5 +252,10 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
     public NetworkStateReceiver getNetworkReceiver(){
         return getPresenter().getNetworkReceiver();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CustomContextWrapper.wrap(newBase, QtumSharedPreference.getInstance().getLanguage(newBase)));
     }
 }

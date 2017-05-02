@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.dataprovider.NetworkStateReceiver;
 import org.qtum.mromanovsky.qtum.dataprovider.UpdateService;
+import org.qtum.mromanovsky.qtum.datastorage.LanguageChangeListener;
+import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 import org.qtum.mromanovsky.qtum.ui.activity.BaseActivity.BasePresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.NewsFragment.NewsFragment;
 import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
@@ -43,6 +45,8 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     private String mAddressForSendAction;
     private String mAmountForSendAction;
 
+    private LanguageChangeListener mLanguageChangeListener;
+
     MainActivityPresenterImpl(MainActivityView mainActivityView) {
         mMainActivityView = mainActivityView;
         mContext = getView().getContext();
@@ -56,6 +60,15 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         mNetworkReceiver = new NetworkStateReceiver();
         mContext.registerReceiver(mNetworkReceiver,
                     new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+        mLanguageChangeListener = new LanguageChangeListener() {
+            @Override
+            public void onLanguageChange() {
+                getView().resetMenuText();
+            }
+        };
+
+        QtumSharedPreference.getInstance().addLanguageListener(mLanguageChangeListener);
 
     }
 

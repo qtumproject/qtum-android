@@ -11,7 +11,6 @@ import org.bitcoinj.crypto.DeterministicHierarchy;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.crypto.HDUtils;
 import org.bitcoinj.wallet.DeterministicSeed;
-import org.bitcoinj.wallet.KeyChain;
 import org.bitcoinj.wallet.UnreadableWalletException;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.WalletExtension;
@@ -31,7 +30,8 @@ import rx.Subscriber;
 public class KeyStorage {
 
     private static KeyStorage sKeyStorage;
-    private List<DeterministicKey> sDeterministicKeyList;
+    private List<DeterministicKey> mDeterministicKeyList;
+    private List<String> mAddressesList;
     private Wallet sWallet = null;
     private int sCurrentKeyPosition = 0;
     private File mFile;
@@ -156,18 +156,20 @@ public class KeyStorage {
     }
 
     public List<DeterministicKey> getKeyList(int numberOfKeys) {
-        if (sDeterministicKeyList == null) {
-            sDeterministicKeyList = new ArrayList<>(numberOfKeys);
+        if (mDeterministicKeyList == null) {
+            mDeterministicKeyList = new ArrayList<>(numberOfKeys);
+            mAddressesList = new ArrayList<>();
             List<ChildNumber> pathParent = new ArrayList<>();
             pathParent.add(new ChildNumber(0,true));
             pathParent.add(new ChildNumber(0,true));
             for (int i = 0; i < numberOfKeys; i++) {
                 ImmutableList<ChildNumber> path = HDUtils.append(pathParent, new ChildNumber(i, true));
                 DeterministicKey k = sWallet.getActiveKeyChain().getKeyByPath(path,true);
-                sDeterministicKeyList.add(k);
+                mDeterministicKeyList.add(k);
+                mAddressesList.add(k.toAddress(CurrentNetParams.getNetParams()).toString());
             }
         }
-        return sDeterministicKeyList;
+        return mDeterministicKeyList;
     }
 
     public String getCurrentAddress() {
@@ -175,11 +177,7 @@ public class KeyStorage {
     }
 
     public List<String> getAddresses() {
-        List<String> list = new ArrayList<>();
-        for (DeterministicKey deterministicKey : getKeyList(ADDRESSES_COUNT)) {
-            list.add(deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString());
-        }
-        return list;
+        return mAddressesList;
     }
 
     public DeterministicKey getCurrentKey() {

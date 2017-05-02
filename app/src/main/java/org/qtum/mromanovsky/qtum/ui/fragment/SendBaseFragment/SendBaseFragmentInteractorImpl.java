@@ -95,7 +95,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                 }
                 ECKey myKey = KeyStorage.getInstance().getCurrentKey();
                 BigDecimal amount = new BigDecimal(amountString);
-                BigDecimal fee = new BigDecimal("0.00001");
+                BigDecimal fee = new BigDecimal("0.1");
 
                 BigDecimal amountFromOutput = new BigDecimal("0.0");
                 BigDecimal overFlow = new BigDecimal("0.0");

@@ -10,4 +10,5 @@ interface MainActivityView extends BaseContextView {
     void openRootFragment(Fragment fragment);
     void popBackStack();
     void setIconChecked(int position);
+    void resetMenuText();
 }

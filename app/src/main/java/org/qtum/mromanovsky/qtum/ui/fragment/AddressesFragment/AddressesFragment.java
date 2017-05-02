@@ -84,11 +84,11 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
 
     public class AddressHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_address)
+        @BindView(R.id.tv_single_string)
         TextView mTextViewAddress;
         @BindView(R.id.iv_check_indicator)
         ImageView mImageViewCheckIndicator;
-        @BindView(R.id.ll_address)
+        @BindView(R.id.ll_single_item)
         LinearLayout mLinearLayoutAddress;
 
         AddressHolder(View itemView) {
@@ -130,7 +130,7 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
         @Override
         public AddressHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.item_address, parent, false);
+            View view = layoutInflater.inflate(R.layout.item_single_checkable, parent, false);
             return new AddressHolder(view);
         }
 

@@ -14,9 +14,6 @@ import android.widget.TextView;
 
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.TransactionInfo;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vin;
-import org.qtum.mromanovsky.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
-import org.qtum.mromanovsky.qtum.ui.fragment.PinFragment.PinFragment;
 
 import java.util.List;
 
@@ -87,7 +84,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionDe
 
     class TransactionDetailHolder extends RecyclerView.ViewHolder{
 
-        @BindView(R.id.tv_address)
+        @BindView(R.id.tv_single_string)
         TextView mTextViewAddress;
         @BindView(R.id.tv_value)
         TextView mTextViewValue;

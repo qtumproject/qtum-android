@@ -28,7 +28,14 @@ class AddressesFragmentPresenterImpl extends BaseFragmentPresenterImpl implement
     @Override
     public void onResume(Context context) {
         super.onResume(context);
+
+    }
+
+    @Override
+    public void onViewCreated() {
+        super.onViewCreated();
         getView().updateAddressList(getInteractor().getKeyList());
+
     }
 
     @Override
