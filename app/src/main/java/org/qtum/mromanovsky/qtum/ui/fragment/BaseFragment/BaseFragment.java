@@ -54,7 +54,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     public void setProgressDialog(String message) {
         mProgressDialog =  new ProgressDialog(getActivity());
         mProgressDialog.setTitle(message);
-        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
     }

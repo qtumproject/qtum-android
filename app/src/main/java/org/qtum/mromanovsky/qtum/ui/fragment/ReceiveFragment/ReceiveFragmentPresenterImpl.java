@@ -25,6 +25,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     private ReceiveFragmentView mReceiveFragmentView;
     private ReceiveFragmentInteractorImpl mReceiveFragmentInteractor;
+    private String mAmount;
 
     ReceiveFragmentPresenterImpl(ReceiveFragmentView receiveFragmentView) {
         mReceiveFragmentView = receiveFragmentView;
@@ -43,10 +44,11 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void changeAmount(String s) {
         JSONObject json = new JSONObject();
+        mAmount = s;
         try {
             json.put("amount", s);
             json.put("publicAddress", getInteractor().getCurrentReceiveAddress());
-            getView().setQrCode(TextToImageEncode(json.toString()));
+            getView().setQrCode(textToImageEncode(json.toString()));
         } catch (JSONException | WriterException e) {
             e.printStackTrace();
         }
@@ -69,15 +71,30 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void onChooseAnotherAddressClick() {
         AddressesFragment addressesFragment = AddressesFragment.newInstance();
-        getView().openFragment(addressesFragment);
+        getView().openFragmentForResult(addressesFragment);
     }
+
+
 
     @Override
     public void initializeViews() {
         super.initializeViews();
-        getView().setAddressInTV(getInteractor().getCurrentReceiveAddress());
+        getView().setUpAddress(getInteractor().getCurrentReceiveAddress());
         getView().setBalance(getInteractor().getBalance());
         changeAmount("");
+    }
+
+    @Override
+    public void changeAddress(){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("amount", mAmount);
+            json.put("publicAddress", getInteractor().getCurrentReceiveAddress());
+            getView().setQrCode(textToImageEncode(json.toString()));
+        } catch (JSONException | WriterException e) {
+            e.printStackTrace();
+        }
+        getView().setUpAddress(getInteractor().getCurrentReceiveAddress());
     }
 
     @Override
@@ -85,7 +102,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         super.onPause(context);
     }
 
-    private Bitmap TextToImageEncode(String Value) throws WriterException {
+    private Bitmap textToImageEncode(String Value) throws WriterException {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         Display display = getView().getFragmentActivity().getWindowManager().getDefaultDisplay();

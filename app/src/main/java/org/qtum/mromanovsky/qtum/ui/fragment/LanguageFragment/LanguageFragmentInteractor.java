@@ -2,6 +2,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.LanguageFragment;
 
 
 import android.content.Context;
+import android.util.Pair;
 
 import org.qtum.mromanovsky.qtum.datastorage.QtumSharedPreference;
 
@@ -10,13 +11,13 @@ import java.util.List;
 
 class LanguageFragmentInteractor {
     private Context mContext;
-    private List<String> mLanguagesList;
+    private List<Pair<String,String>> mLanguagesList;
 
     LanguageFragmentInteractor(Context context){
         mContext = context;
         mLanguagesList = new ArrayList<>();
-        mLanguagesList.add("default");
-        mLanguagesList.add("ru");
+        mLanguagesList.add(new Pair<String, String>("default","English"));
+        mLanguagesList.add(new Pair<String, String>("zh","Chinese"));
     }
 
     public String getLanguage(){
@@ -27,7 +28,7 @@ class LanguageFragmentInteractor {
         QtumSharedPreference.getInstance().saveLanguage(mContext, language);
     }
 
-    public List<String> getLanguagesList(){
+    public List<Pair<String,String>> getLanguagesList(){
         return mLanguagesList;
     }
 

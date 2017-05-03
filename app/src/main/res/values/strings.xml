@@ -86,4 +86,15 @@
     <string name="currency">Currency</string>
     <string name="search">Search</string>
     <string name="chose_to_subscribe">Choose to subscribe</string>
+    <string name="enter_pin_lower_case">enter pin</string>
+    <string name="enter_new_pin">enter new pin</string>
+    <string name="repeat_pin">repeat pin</string>
+    <string name="enter_old_pin">enter old pin</string>
+    <string name="empty_field">Empty field</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="coped">Coped</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="loading">Loading</string>
 </resources>

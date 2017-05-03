@@ -17,6 +17,7 @@ import org.bitcoinj.crypto.DeterministicKey;
 import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.datastorage.KeyStorage;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragment;
+import org.qtum.mromanovsky.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import org.qtum.mromanovsky.qtum.utils.CurrentNetParams;
 
 import java.util.List;
@@ -100,6 +101,7 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
                     KeyStorage.getInstance().setCurrentKeyPosition(getAdapterPosition());
                     mAddressAdapter.notifyItemChanged(oldPosition);
                     mAddressAdapter.notifyItemChanged(getAdapterPosition());
+                    ((ReceiveFragment) getTargetFragment()).onChangeAddress();
                 }
             });
             ButterKnife.bind(this, itemView);

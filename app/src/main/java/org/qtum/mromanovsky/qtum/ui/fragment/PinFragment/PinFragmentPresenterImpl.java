@@ -18,19 +18,23 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
     private int pinForRepeat;
     private String mAction;
 
-    private final String ENTER_PIN = "enter pin";
-    private final String ENTER_NEW_PIN = "enter new pin";
-    private final String REPEAT_PIN = "repeat pin";
-    private final String ENTER_OLD_PIN = "enter old pin";
-
-    private final String[] CREATING_STATE = new String[]{ENTER_NEW_PIN, REPEAT_PIN};
-    private final String[] AUTHENTICATION_STATE = new String[]{ENTER_PIN};
-    private final String[] CHANGING_STATE = new String[]{ENTER_OLD_PIN, ENTER_NEW_PIN, REPEAT_PIN};
+    private String[] CREATING_STATE;
+    private String[] AUTHENTICATION_STATE;
+    private String[] CHANGING_STATE;
 
     private int currentState = 0;
 
     PinFragmentPresenterImpl(PinFragmentView pinFragmentView) {
         mPinFragmentView = pinFragmentView;
+
+        String ENTER_PIN = getView().getContext().getString(R.string.enter_pin_lower_case);
+        String ENTER_NEW_PIN = getView().getContext().getString(R.string.enter_new_pin);
+        String REPEAT_PIN = getView().getContext().getString(R.string.repeat_pin);
+        String ENTER_OLD_PIN = getView().getContext().getString(R.string.enter_old_pin);
+        CREATING_STATE = new String[]{ENTER_NEW_PIN, REPEAT_PIN};
+        AUTHENTICATION_STATE = new String[]{ENTER_PIN};
+        CHANGING_STATE = new String[]{ENTER_OLD_PIN, ENTER_NEW_PIN, REPEAT_PIN};
+
         mPinFragmentInteractor = new PinFragmentInteractorImpl(getView().getContext());
     }
 
@@ -49,7 +53,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                         if (Integer.parseInt(pin) == pinForRepeat) {
                             getView().clearError();
                             final BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(true);
-                            getView().setProgressDialog("Key generation");
+                            getView().setProgressDialog(getView().getContext().getString(R.string.loading));
                             getView().hideKeyBoard();
                             getInteractor().createWallet(getView().getContext(), new PinFragmentInteractorImpl.CreateWalletCallBack() {
                                 @Override
@@ -99,7 +103,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                 if (intPassword == getInteractor().getPassword()) {
                     getView().clearError();
                     final WalletFragment walletFragment = WalletFragment.newInstance();
-                    getView().setProgressDialog("Loading key");
+                    getView().setProgressDialog(getView().getContext().getString(R.string.loading));
                     getView().hideKeyBoard();
                     getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
                         @Override
@@ -124,7 +128,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     String address = ((MainActivity) getView().getFragmentActivity()).getAddressForSendAction();
                     String amount = ((MainActivity) getView().getFragmentActivity()).getAmountForSendAction();
                     final SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(false,address,amount);
-                    getView().setProgressDialog("Loading key");
+                    getView().setProgressDialog(getView().getContext().getString(R.string.loading));
                     getView().hideKeyBoard();
                     getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
                         @Override

@@ -105,6 +105,6 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
 
     @Override
     public void showToast() {
-        Snackbar.make(mCoordinatorLayout, "Coped", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mCoordinatorLayout, getString(R.string.coped), Snackbar.LENGTH_SHORT).show();
     }
 }

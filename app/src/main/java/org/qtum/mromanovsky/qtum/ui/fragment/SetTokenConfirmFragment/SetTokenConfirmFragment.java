@@ -66,10 +66,10 @@ public class SetTokenConfirmFragment extends BaseFragment implements SetTokenCon
         mTextViewTokenSymbol.setText(QtumToken.getInstance().getTokenSymbol());
         mTextViewInitialSupply.setText(String.valueOf(QtumToken.getInstance().getInitialSupply()));
         mTextViewDecimalUnits.setText(String.valueOf(QtumToken.getInstance().getDecimalUnits()));
-        mTextViewFreezingOfAssets.setText(QtumToken.getInstance().isFreezingOfAssets() ? "Yes" : "No");
-        mTextViewAutomaticSellingAndBuying.setText(QtumToken.getInstance().isAutomaticSellingAndBuying() ? "Yes" : "No");
-        mTextViewAutorefill.setText(QtumToken.getInstance().isAutorefill() ? "Yes" : "No");
-        mTextViewProofOfWork.setText(QtumToken.getInstance().isProofOfWork() ? "Yes" : "No");
+        mTextViewFreezingOfAssets.setText(QtumToken.getInstance().isFreezingOfAssets() ? getString(R.string.yes) : getString(R.string.no));
+        mTextViewAutomaticSellingAndBuying.setText(QtumToken.getInstance().isAutomaticSellingAndBuying() ? getString(R.string.yes) : getString(R.string.no));
+        mTextViewAutorefill.setText(QtumToken.getInstance().isAutorefill() ? getString(R.string.yes) : getString(R.string.no));
+        mTextViewProofOfWork.setText(QtumToken.getInstance().isProofOfWork() ? getString(R.string.yes) : getString(R.string.no));
     }
 
     @Override

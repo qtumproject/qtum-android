@@ -3,6 +3,7 @@ package org.qtum.mromanovsky.qtum.ui.fragment.SetTokenNameFragment;
 
 import android.content.Context;
 
+import org.qtum.mromanovsky.qtum.R;
 import org.qtum.mromanovsky.qtum.ui.activity.MainActivity.MainActivity;
 import org.qtum.mromanovsky.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import org.qtum.mromanovsky.qtum.ui.fragment.SetTokenFeaturesFragment.SetTokenFeaturesFragment;
@@ -34,17 +35,17 @@ class SetTokenNameFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     public void onNextClick(String name, String symbol) {
 
         getView().clearError();
-
+        String emptyField = getView().getContext().getString(R.string.empty_field);
         if (name.isEmpty() && symbol.isEmpty()) {
-            getView().setError("Empty field", "Empty field");
+            getView().setError(emptyField, emptyField);
             return;
         } else {
             if (symbol.isEmpty()) {
-                getView().setError("", "Empty field");
+                getView().setError("", emptyField);
                 return;
             }
             if(name.isEmpty()){
-                getView().setError("Empty field","");
+                getView().setError(emptyField,"");
                 return;
             }
         }

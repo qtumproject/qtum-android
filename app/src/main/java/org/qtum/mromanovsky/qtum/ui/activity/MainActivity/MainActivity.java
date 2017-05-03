@@ -23,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -46,7 +47,6 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
     private static final int REQUEST_CAMERA = 0;
     private NfcAdapter mNfcAdapter;
-    private BottomNavigationMenuView mMenuView;
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
@@ -202,9 +202,9 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     @Override
     public void resetMenuText() {
         int[] menuResources = new int[]{R.string.wallet,R.string.profile,R.string.news,R.string.send};
-        for (int i = 0; i < mMenuView.getChildCount(); i++) {
-            BottomNavigationItemView item = (BottomNavigationItemView) mMenuView.getChildAt(i);
-            item.setTitle(getResources().getString(menuResources[i]));
+        Menu menu = mBottomNavigationView.getMenu();
+        for (int i = 0; i < menu.size(); i++) {
+            menu.getItem(i).setTitle(getResources().getString(menuResources[i]));
         }
     }
 
@@ -218,15 +218,14 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
     @Override
     public void initializeViews() {
-
-        mMenuView = (BottomNavigationMenuView) mBottomNavigationView.getChildAt(0);
+        BottomNavigationMenuView menuView = (BottomNavigationMenuView) mBottomNavigationView.getChildAt(0);
         try {
-            Field shiftingMode = mMenuView.getClass().getDeclaredField("mShiftingMode");
+            Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
             shiftingMode.setAccessible(true);
-            shiftingMode.setBoolean(mMenuView, false);
+            shiftingMode.setBoolean(menuView, false);
             shiftingMode.setAccessible(false);
-            for (int i = 0; i < mMenuView.getChildCount(); i++) {
-                BottomNavigationItemView item = (BottomNavigationItemView) mMenuView.getChildAt(i);
+            for (int i = 0; i < menuView.getChildCount(); i++) {
+                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
                 item.setShiftingMode(false);
                 item.setChecked(item.getItemData().isChecked());
             }

@@ -83,7 +83,7 @@ public class UpdateService extends Service {
             public void call(Object... args) {
 
                 socket.emit("subscribe", "balance_subscribe", mAddresses);
-                sendNotification("Default", "QTUM Monitoring", "Touch to open application", null);
+                sendNotification("Default", "QTUM monitoring", "Touch to open application", null);
 
             }
         }).on("balance_changed", new Emitter.Listener() {
@@ -171,7 +171,7 @@ public class UpdateService extends Service {
                                     "Touch to open transaction history", RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                         }
                     } else {
-                        sendNotification("Default", "QTUM Monitoring", "Touch to open application", RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                        sendNotification("Default", "QTUM monitoring", "Touch to open application", RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                     }
                 } else {
                     if (history.getBlockTime() != null) {
@@ -377,7 +377,7 @@ public class UpdateService extends Service {
 
     public void clearNotification() {
         if (totalTransaction != 0) {
-            sendNotification("Default", "QTUM Monitoring", "Touch to open application", null);
+            sendNotification("Default", "QTUM monitoring", "Touch to open application", null);
             totalTransaction = 0;
         }
     }

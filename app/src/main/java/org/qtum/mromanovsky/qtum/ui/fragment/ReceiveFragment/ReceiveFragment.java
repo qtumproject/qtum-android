@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -111,6 +112,18 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     }
 
     @Override
+    public void openFragmentForResult(Fragment fragment) {
+        int code_response = 201;
+        fragment.setTargetFragment(this, code_response);
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .add(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
     public void setSoftMode() {
         super.setSoftMode();
         getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -122,7 +135,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     }
 
     @Override
-    public void setAddressInTV(String s) {
+    public void setUpAddress(String s) {
         mTextViewAddress.setText(s);
     }
 
@@ -133,7 +146,11 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
     @Override
     public void showToast() {
-        Snackbar.make(mCoordinatorLayout, "Coped", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mCoordinatorLayout, R.string.coped, Snackbar.LENGTH_SHORT).show();
+    }
+
+    public void onChangeAddress(){
+        getPresenter().changeAddress();
     }
 
 }

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">QTUM</string>
-    <string name="about">О нас</string>
-    <string name="profile">Профиль</string>
-    <string name="wallet">Кошелёк</string>
-    <string name="language">Язык</string>
-</resources>

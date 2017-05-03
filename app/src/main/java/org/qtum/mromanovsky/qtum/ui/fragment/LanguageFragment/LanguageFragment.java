@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public class LanguageFragment extends BaseFragment implements LanguageFragmentVi
 
     LanguageFragmentPresenter mLanguageFragmentPresenter;
     private LanguageAdapter mLanguageAdapter;
-    private List<String> mLanguagesList;
+    private List<Pair<String,String>> mLanguagesList;
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -72,7 +73,7 @@ public class LanguageFragment extends BaseFragment implements LanguageFragmentVi
     }
 
     @Override
-    public void setUpLanguagesList(List<String> languagesList) {
+    public void setUpLanguagesList(List<Pair<String,String>> languagesList) {
         mLanguagesList = languagesList;
         mLanguageAdapter = new LanguageAdapter(languagesList);
         mRecyclerView.setAdapter(mLanguageAdapter);
@@ -99,7 +100,7 @@ public class LanguageFragment extends BaseFragment implements LanguageFragmentVi
                 public void onClick(View view) {
                     int oldPosition = findLanguagePosition(getPresenter().getCurrentLanguage());
                     if(oldPosition != getAdapterPosition()){
-                        getPresenter().setCurrentLanguage(mLanguageAdapter.mLanguagesList.get(getAdapterPosition()));
+                        getPresenter().setCurrentLanguage(mLanguageAdapter.mLanguagesList.get(getAdapterPosition()).first);
                         mLanguageAdapter.notifyItemChanged(oldPosition);
                         mLanguageAdapter.notifyItemChanged(getAdapterPosition());
                     }
@@ -108,25 +109,25 @@ public class LanguageFragment extends BaseFragment implements LanguageFragmentVi
             ButterKnife.bind(this, itemView);
         }
 
-        void bindLanguage(String language) {
-            if (language.equals(getPresenter().getCurrentLanguage())) {
+        void bindLanguage(Pair<String,String> language) {
+            if (language.first.equals(getPresenter().getCurrentLanguage())) {
                 mImageViewCheckIndicator.setVisibility(View.VISIBLE);
                 mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey20));
             } else {
                 mImageViewCheckIndicator.setVisibility(View.GONE);
                 mLinearLayoutAddress.setBackgroundColor(Color.WHITE);
             }
-            mTextViewLanguage.setText(language);
+            mTextViewLanguage.setText(language.second);
         }
     }
 
     public class LanguageAdapter extends RecyclerView.Adapter<LanguageHolder> {
 
-        private List<String> mLanguagesList;
-        private String mLanguage;
+        private List<Pair<String,String>> mLanguagesList;
+        private Pair<String,String> mLanguage;
 
 
-        LanguageAdapter(List<String> languagesList) {
+        LanguageAdapter(List<Pair<String,String>> languagesList) {
             mLanguagesList = languagesList;
         }
 
@@ -151,8 +152,8 @@ public class LanguageFragment extends BaseFragment implements LanguageFragmentVi
 
     private int findLanguagePosition(String currentLanguage){
         int pos = 0;
-        for(String lang : mLanguagesList){
-            if(lang.equals(currentLanguage)){
+        for(Pair<String,String> lang : mLanguagesList){
+            if(lang.first.equals(currentLanguage)){
                 return pos;
             }
             pos++;

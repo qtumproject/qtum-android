@@ -38,6 +38,8 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     TextView mTextViewSubscribeTokens;
     @BindView(R.id.tv_profile_about)
     TextView mTextViewAbout;
+    @BindView(R.id.tv_toolbar_profile)
+    TextView mTextViewToolbar;
 
     @OnClick({R.id.ll_change_pin, R.id.ll_wallet_back_up, R.id.ll_log_out, R.id.ll_create_token, R.id.ll_subscribe_tokens, R.id.ll_language})
     public void onClick(View view) {
@@ -107,6 +109,7 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
         mTextViewCreateToken.setText(R.string.create_token);
         mTextViewSubscribeTokens.setText(R.string.subscribe_tokens);
         mTextViewAbout.setText(R.string.about);
+        mTextViewToolbar.setText(R.string.profile);
     }
 
     @Override
