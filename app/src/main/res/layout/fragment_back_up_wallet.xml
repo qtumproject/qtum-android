@@ -108,7 +108,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_behavior="org.qtum.mromanovsky.qtum.utils.MoveUpwardBehavior"
+        app:layout_behavior="com.pixelplex.qtum.utils.MoveUpwardBehavior"
         android:layout_gravity="bottom"
         android:paddingBottom="@dimen/activity_horizontal_margin">
 

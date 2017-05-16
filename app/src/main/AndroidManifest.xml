@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.qtum.mromanovsky.qtum">
+          package="com.pixelplex.qtum">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -13,16 +13,30 @@
 
     <application
         android:allowBackup="true"
-        android:name="android.support.multidex.MultiDexApplication"
+        android:name=".QtumApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.activity.MainActivity.MainActivity"
+            android:name="com.pixelplex.qtum.ui.activity.MainActivity.MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.nfc.action.NDEF_DISCOVERED" />-->
+
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+
+                <!--<data android:mimeType="text/plain" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity
+            android:name="com.pixelplex.qtum.ui.activity.SplashActivity.SplashActivity"
+            android:theme="@style/SplashTheme"
+            android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,11 +44,11 @@
             </intent-filter>
 
             <!--<intent-filter>-->
-                <!--<action android:name="android.nfc.action.NDEF_DISCOVERED" />-->
+            <!--<action android:name="android.nfc.action.NDEF_DISCOVERED" />-->
 
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--<category android:name="android.intent.category.DEFAULT" />-->
 
-                <!--<data android:mimeType="text/plain" />-->
+            <!--<data android:mimeType="text/plain" />-->
             <!--</intent-filter>-->
         </activity>
 
