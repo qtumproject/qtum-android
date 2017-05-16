@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#3e3ec4</color>
-    <color name="colorPrimaryDark">#3e3ec4</color>
-    <color name="colorAccent">#36b9c8</color>
+<resources xmlns:android="http://schemas.android.com/tools">
+    <color name="colorPrimary">#2e9ad0</color>
+    <color name="colorPrimaryDark">#232328</color>
+    <color name="colorAccent">#e75647</color>
+    <color name="pink">#f95e86</color>
+    <color name="pink_lite">#e39a9a</color>
+    <color name="green">#53cd7e</color>
     <color name="grey">#4e5d6f</color>
-    <color name="lite_grey">#e6e6e6</color>
+    <color name="grey70">#b24e5d6f</color>
+    <color name="grey50">#7a4e5d6f</color>
+    <color name="grey20">#334e5d6f</color>
+    <color name="grey_devider">#c9c9c9</color>
+    <color name="black">#1a1b1e</color>
+    <color name="grey_lite">#f8f8f8</color>
+    <color name="grey_data">#d6dae2</color>
+    <color name="grey_input_text">#bdc6cf</color>
+    <color name="grey_background_brain_code">#f7f7f7</color>
+    <color name="white_alpha80">#ccffffff</color>
+    <color name="white_alpha50">#7affffff</color>
+    <color name="white_alpha20">#33ffffff</color>
+    <color name="alpha">#00ffffff</color>
+
+    <color name="wave_background">#24ffffff</color>
+    <color name="wave_stroke">#4058c0dd</color>
+
+    <!--NEW DESIGN COLORS-->
+
+    <color name="background">#232328</color>
+    <color name="primary_text_color">#2e9ad0</color>
+    <color name="accent_red_color">#e75647</color>
 </resources>

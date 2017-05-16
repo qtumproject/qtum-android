@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="330dp"
+        android:height="35dp"
+        android:viewportWidth="330"
+        android:viewportHeight="35">
+    <path
+        android:name="wave"
+        android:pathData="M0,35C0,23.28 0,21.77 0,15.8C1.5,-0.08 39.35,25 65.37,25C93.01,25 99.89,5.52 118.88,5.52C133.69,5.52 155.91,21.14 170.19,21.14C192.03,21.14 201.63,1.5 222.37,1.5C242.58,1.5 258.25,25 277.65,25C292.77,25.12 328.58,10.46 330,17.98C330,22.15 330,23.19 330,35L330,35"
+        android:strokeLineCap="square"
+        android:strokeColor="#4058c0dd"
+        android:fillColor="#24ffffff"
+        android:strokeWidth="0.5"
+        android:strokeLineJoin="miter"/>
+</vector>

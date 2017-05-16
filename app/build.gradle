@@ -1,15 +1,46 @@
+
+//fabric.io
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        // These docs use an open ended version so that our plugin
+        // can be updated quickly in response to Android tooling updates
+
+        // We recommend changing it to the latest version from our changelog:
+        // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
+        classpath 'io.fabric.tools:gradle:1.22.1'
+    }
+}
+//
+
 apply plugin: 'com.android.application'
 
+//fabric.io
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://jitpack.io" }
+}
+//
+
 android {
+    def appName="QTUM"
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
+
     defaultConfig {
-        applicationId "org.qtum.mromanovsky.qtum"
-        minSdkVersion 17
+        applicationId "com.pixelplex.qtum"
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionName "0.0.9"
+        //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled  true
     }
     buildTypes {
         release {
@@ -17,22 +48,48 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    defaultConfig {
-        vectorDrawables.useSupportLibrary = true
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def apk = output.outputFile;
+            def newName = appName+  "-${versionName}(${versionCode})-${variant.buildType.name}.apk";
+            output.outputFile = new File(apk.parentFile, newName);
+        }
     }
+
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
-
-    compile 'com.android.support:support-v4:25.1.0'
-    compile 'com.android.support:design:25.1.0'
-
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'org.bitcoinj:bitcoinj-core:0.14.3'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.google.zxing:core:3.2.1'
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.google.zxing:android-core:3.3.0'
+    compile 'me.dm7.barcodescanner:zxing:1.8.4'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile('io.socket:socket.io-client:0.8.3') {
+        exclude group: 'org.json', module: 'json'
+    }
+    compile 'com.airbnb.android:lottie:2.0.0-beta3'
+    //fabric.io
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
+        transitive = true;
+    }
+    //
+    compile "com.andkulikov:transitionseverywhere:1.7.2"
 }

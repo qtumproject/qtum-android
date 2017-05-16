@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_lite"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:background="@drawable/background_main"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+            <!--<com.airbnb.lottie.LottieAnimationView-->
+                <!--android:id="@+id/wave1"-->
+                <!--android:layout_gravity="bottom|center"-->
+                <!--android:layout_width="1080dp"-->
+                <!--android:layout_height="158dp"-->
+                <!--app:lottie_autoPlay="true"-->
+                <!--app:lottie_loop="true"-->
+                <!--app:lottie_fileName="w1Test.json"/>-->
+
+            <!--<com.airbnb.lottie.LottieAnimationView-->
+                <!--android:id="@+id/wave2"-->
+                <!--android:layout_gravity="bottom|center"-->
+                <!--android:layout_width="1080dp"-->
+                <!--android:layout_height="158dp"-->
+                <!--app:lottie_autoPlay="true"-->
+                <!--app:lottie_loop="true"-->
+                <!--app:lottie_fileName="w2Test.json"/>-->
+
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <ImageButton
+                android:id="@+id/ibtn_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/background_pressed_alpha_white"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_arrow_left"/>
+
+            <ImageButton
+                android:id="@+id/ibtn_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/background_pressed_alpha_white"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_arrow_right"/>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginBottom="24dp"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_wallet_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="@string/my_wallet"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/toolbar_text_size"/>
+
+                        <ImageButton
+                            android:id="@+id/bt_qr_code"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="9dp"
+                            android:background="@drawable/background_pressed_alpha_white"
+                            android:scaleType="centerInside"
+                            app:srcCompat="@drawable/ic_qrcode"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_total_balance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/total_balance"
+                            android:textColor="@android:color/white"/>
+
+                        <TextView
+                            android:id="@+id/tv_total_balance_number"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:layout_marginRight="12dp"
+
+                            android:textColor="@android:color/white"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/activity"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:splitMotionEvents="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|end"
+        app:srcCompat="@drawable/ic_share"/>
+
+</android.support.design.widget.CoordinatorLayout>
