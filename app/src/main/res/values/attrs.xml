@@ -11,4 +11,8 @@
     <declare-styleable name="FontTextInputEditText">
         <attr name="inputTypeface" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="FontEditText">
+        <attr name="editTextTypeface" format="string"/>
+    </declare-styleable>
 </resources>

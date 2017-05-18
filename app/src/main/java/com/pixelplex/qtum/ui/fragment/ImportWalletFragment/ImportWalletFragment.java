@@ -3,11 +3,11 @@ package com.pixelplex.qtum.ui.fragment.ImportWalletFragment;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.utils.FontButton;
+import com.pixelplex.qtum.utils.FontEditText;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -20,11 +20,11 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
     ImportWalletFragmentPresenterImpl mImportWalletFragmentPresenter;
 
     @BindView(R.id.bt_cancel)
-    Button mButtonCancel;
+    FontButton mButtonCancel;
     @BindView(R.id.bt_import)
-    Button mButtonImport;
+    FontButton mButtonImport;
     @BindView(R.id.et_your_brain_code)
-    EditText mEditTextYourBrainCode;
+    FontEditText mEditTextYourBrainCode;
 
     @OnClick({R.id.bt_cancel, R.id.bt_import})
     public void onClick(View view) {
@@ -55,6 +55,15 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
     @Override
     protected ImportWalletFragmentPresenterImpl getPresenter() {
         return mImportWalletFragmentPresenter;
+    }
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+
+        mEditTextYourBrainCode.setFocusableInTouchMode(true);
+        mEditTextYourBrainCode.requestFocus();
+        showSoftInput();
     }
 
     @Override

@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.utils.FontButton;
+import com.pixelplex.qtum.utils.FontEditText;
+import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -20,33 +23,25 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
 
     public static final String IS_WALLET_CREATING = "is_wallet_creating";
 
-    @BindView(R.id.tv_brain_code)
-    TextView mTextViewBrainCode;
     @BindView(R.id.bt_copy)
-    Button mButtonCopy;
+    FontButton mButtonCopy;
     @BindView(R.id.bt_continue)
-    Button mButtonContinue;
+    FontButton mButtonContinue;
     @BindView(R.id.tv_toolbar_title)
-    TextView mTextViewToolbarTitle;
+    FontTextView mTextViewToolbarTitle;
     @BindView(R.id.tv_you_can_skip)
-    TextView mTextViewYouCanSkip;
-    @BindView(R.id.bt_copy_brain_code)
-    Button mButtonCopyBrainCode;
+    FontTextView mTextViewYouCanSkip;
     @BindView(R.id.cl_back_up_wallet)
     CoordinatorLayout mCoordinatorLayout;
 
-    @OnClick({R.id.bt_copy,R.id.bt_continue,R.id.bt_copy_brain_code,R.id.ibt_back})
+    @OnClick({R.id.bt_copy,R.id.bt_continue})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.bt_copy_brain_code:
             case R.id.bt_copy:
                 getPresenter().onCopyBrainCodeClick();
                 break;
             case R.id.bt_continue:
                 getPresenter().onContinueClick();
-                break;
-            case R.id.ibt_back:
-                getActivity().onBackPressed();
                 break;
         }
     }
@@ -87,20 +82,18 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
 
             mButtonContinue.setVisibility(View.VISIBLE);
             mButtonCopy.setVisibility(View.VISIBLE);
-            mButtonCopyBrainCode.setVisibility(View.GONE);
         }else {
             mTextViewToolbarTitle.setText(R.string.wallet_back_up);
             mTextViewYouCanSkip.setVisibility(View.GONE);
 
             mButtonContinue.setVisibility(View.GONE);
             mButtonCopy.setVisibility(View.GONE);
-            mButtonCopyBrainCode.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void setBrainCode(String seed) {
-        mTextViewBrainCode.setText(seed);
+        //TODO
     }
 
     @Override
