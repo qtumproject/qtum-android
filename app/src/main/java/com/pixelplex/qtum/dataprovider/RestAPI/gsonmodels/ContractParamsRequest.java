@@ -1,7 +1,7 @@
 package com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels;
 
 /**
- * Created by maksimromanovskij on 18.04.17.
+ * Created by Kirill Volkov on 18.04.17.
  */
 
 public class ContractParamsRequest {

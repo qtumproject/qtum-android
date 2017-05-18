@@ -43,7 +43,6 @@ interface QtumRestService {
     Observable<ByteCode> generateTokenBytecode(@Body ContractParamsRequest contractParamsRequest);
 
     @GET("/outputs/unspent")
-//    Call<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses(@Query("addresses[]") List<String> addresses);
     Observable<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses(@Query("addresses[]") List<String> addresses);
 
     @GET("/history/{limit}/{offset}")
