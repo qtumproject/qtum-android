@@ -1,18 +1,12 @@
 package com.pixelplex.qtum.ui.activity.MainActivity;
 
 import android.Manifest;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
+
 import android.nfc.NfcAdapter;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationItemView;
@@ -27,7 +21,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.crashlytics.android.Crashlytics;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.UpdateService;
@@ -36,12 +29,9 @@ import com.pixelplex.qtum.ui.activity.BaseActivity.BaseActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
-import io.fabric.sdk.android.BuildConfig;
-import io.fabric.sdk.android.Fabric;
 
 
 public class MainActivity extends BaseActivity implements MainActivityView {
@@ -70,7 +60,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         setContentView(LAYOUT);
         loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
     }
-    
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
