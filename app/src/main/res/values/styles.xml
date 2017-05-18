@@ -16,6 +16,12 @@
     <style name="InputText" parent="Widget.Design.TextInputLayout">
         <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
