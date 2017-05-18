@@ -46,7 +46,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     private String mAmountForSendAction;
 
     private LanguageChangeListener mLanguageChangeListener;
-    
 
     MainActivityPresenterImpl(MainActivityView mainActivityView) {
         mMainActivityView = mainActivityView;
