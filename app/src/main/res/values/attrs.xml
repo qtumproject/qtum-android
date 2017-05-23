@@ -3,4 +3,20 @@
     <declare-styleable name="FontTextView">
         <attr name="typefaceAsset" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="FontButton">
+        <attr name="typeface" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="FontTextInputEditText">
+        <attr name="inputTypeface" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="FontEditText">
+        <attr name="editTextTypeface" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="FontTextInputLayout">
+        <attr name="textInputLayoutTypeface" format="string"/>
+    </declare-styleable>
 </resources>

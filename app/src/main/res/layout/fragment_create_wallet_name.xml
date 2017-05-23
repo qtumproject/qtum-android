@@ -3,7 +3,7 @@
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
-                                                 android:background="@drawable/background_main"
+                                                 android:background="@color/background"
                                                  android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -21,13 +21,16 @@
             android:background="@color/alpha"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <TextView
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/tv_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:text="@string/wallet_name"
-                android:textColor="@android:color/white"
+                android:layout_gravity="center"
+                app:typefaceAsset="@string/euclidFlexMedium"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/toolbar_text_size"/>
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
@@ -37,75 +40,72 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <RelativeLayout
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"
+            android:layout_marginTop="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_wallet_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="64dp"
-            android:layout_marginRight="64dp"
-            android:layout_marginTop="48dp"
-            android:focusable="true"
-            android:textColorHint="@color/white_alpha80">
+            android:theme="@style/InputText"
+            android:focusable="true">
 
-            <android.support.design.widget.TextInputEditText
+            <com.pixelplex.qtum.utils.FontTextInputEditText
                 android:id="@+id/et_wallet_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="true"
+                app:inputTypeface="@string/simplonMonoRegular"
                 android:gravity="center"
+                android:background="@android:color/transparent"
                 android:hint="@string/enter_name"
                 android:inputType="textPersonName"
-                android:textColor="@color/white_alpha80"
+                android:textColor="@color/colorPrimary"
                 android:textSize="32sp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorPrimary"/>
         </android.support.design.widget.TextInputLayout>
+        </RelativeLayout>
 
-
-        <Button
+        <com.pixelplex.qtum.utils.FontButton
             android:id="@+id/bt_confirm"
             android:layout_width="202dp"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/bt_cancel"
-            android:layout_alignLeft="@+id/bt_cancel"
-            android:layout_alignStart="@+id/bt_cancel"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/background_bt_alpha"
-            android:text="@string/confirm"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/button_text"/>
-
-        <Button
-            android:id="@+id/bt_cancel"
-            android:layout_width="202dp"
+            android:padding="16dp"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/confirm"
+            android:layout_marginBottom="16dp"
+            android:textAllCaps="true"
+            app:typeface="@string/simplonMonoRegular"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/button_text"/>
+
+        <com.pixelplex.qtum.utils.FontButton
+            android:id="@+id/bt_cancel"
+            android:layout_width="202dp"
+            android:padding="16dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/background_bt_alpha"
+            android:layout_marginBottom="16dp"
+            android:background="?attr/selectableItemBackground"
+            app:typeface="@string/simplonMonoRegular"
             android:text="@string/cancel"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/button_text"/>
 
     </RelativeLayout>
-
-    <!--<com.airbnb.lottie.LottieAnimationView-->
-        <!--android:id="@+id/wave1"-->
-        <!--android:layout_gravity="bottom|center"-->
-        <!--android:layout_width="1080dp"-->
-        <!--android:layout_height="158dp"-->
-        <!--app:lottie_autoPlay="true"-->
-        <!--app:lottie_loop="true"-->
-        <!--app:lottie_fileName="w1Test.json"/>-->
-
-    <!--<com.airbnb.lottie.LottieAnimationView-->
-        <!--android:id="@+id/wave2"-->
-        <!--android:layout_gravity="bottom|center"-->
-        <!--android:layout_width="1080dp"-->
-        <!--android:layout_height="158dp"-->
-        <!--app:lottie_autoPlay="true"-->
-        <!--app:lottie_loop="true"-->
-        <!--app:lottie_fileName="w2Test.json"/>-->
-
 
 </android.support.design.widget.CoordinatorLayout>

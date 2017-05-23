@@ -73,6 +73,6 @@ class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         }
 
         getView().setUpTransactionData(history.getChangeInBalance().toString(), dateString,
-                listFrom, listTo);
+                listFrom, listTo, history.getBlockHeight()>0);
     }
 }

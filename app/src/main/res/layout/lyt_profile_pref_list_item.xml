@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
+    android:clickable="true"
+    android:background="@drawable/list_item_background_selector"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/icon"
+        app:srcCompat="@drawable/ic_about"
+        android:layout_centerVertical="true"
+        android:tint="@color/colorPrimary"
+        android:layout_width="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_height="30dp" />
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:maxLines="1"
+        android:text="@string/about"
+        android:gravity="center_vertical"
+        android:layout_marginStart="8dp"
+        android:textSize="18sp"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:textColor="@color/colorPrimary"
+        android:ellipsize="end"
+        android:layout_height="60dp"
+        android:layout_toEndOf="@+id/icon"/>
+
+    <ImageView
+        android:id="@+id/arrow"
+        app:srcCompat="@drawable/ic_arrow_right"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:scaleType="center"
+        android:layout_marginEnd="16dp"
+        android:tint="@color/colorPrimary"
+        android:layout_width="16dp"
+        android:layout_height="16dp" />
+
+</RelativeLayout>

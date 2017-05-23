@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@android:color/white"
               android:orientation="vertical">
 
     <LinearLayout
@@ -30,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:text="Reaching 10 Million Wallets and Beyond"
-                android:textColor="@color/black"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp"/>
 
             <TextView
@@ -38,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="November 22, 2016"
-                android:textColor="@color/grey50"/>
+                android:textColor="@color/colorPrimary"/>
 
         </LinearLayout>
     </LinearLayout>
@@ -46,7 +45,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/grey_lite"/>
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
 
 </LinearLayout>

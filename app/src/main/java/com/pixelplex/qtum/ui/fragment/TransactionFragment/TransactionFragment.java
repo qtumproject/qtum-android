@@ -9,26 +9,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.TransactionFragment.TransactionDetailFragment.TransactionDetailFragment;
-import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletAppBarFragment.WalletAppBarFragment;
+import com.pixelplex.qtum.utils.FontTextView;
 
-import java.text.DecimalFormat;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
-
 
 public class TransactionFragment extends BaseFragment implements TransactionFragmentView {
 
@@ -40,8 +30,12 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     ViewPager mViewPager;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
-    @BindView(R.id.tab_layout)
-    TabLayout mTabLayout;
+
+    @BindView(R.id.tab_indicator)
+    TabLayout tabIndicator;
+
+    @BindView(R.id.not_confirmed_flag)
+    FontTextView notConfFlag;
 
     @OnClick({R.id.ibt_back})
     public void onClick(View view){
@@ -88,36 +82,22 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     @Override
     public void initializeViews() {
         super.initializeViews();
-        TabLayout.Tab tabFrom = mTabLayout.newTab();
-        TabLayout.Tab tabTo = mTabLayout.newTab();
-        tabFrom.setText("From");
-        tabTo.setText("To");
-        mTabLayout.addTab(tabFrom);
-        mTabLayout.addTab(tabTo);
     }
 
     @Override
-    public void setUpTransactionData(String value, String receivedTime, List<String> from, List<String> to) {
+    public void setUpTransactionData(String value, String receivedTime, List<String> from, List<String> to, boolean confirmed) {
 
         mTextViewValue.setText(value);
 
         mTextViewReceivedTime.setText(receivedTime);
 
-
-        if (Double.valueOf(value) > 0) {
-            mAppBarLayout.setBackgroundResource(R.drawable.background_tb_sent);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getFragmentActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),R.color.green));
-            }
-        } else {
-            mAppBarLayout.setBackgroundResource(R.drawable.background_tb_received);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getFragmentActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),R.color.pink_lite));
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getFragmentActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
         }
 
         TransactionPagerAdapter transactionPagerAdapter = new TransactionPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(transactionPagerAdapter);
+        tabIndicator.setupWithViewPager(mViewPager,true);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -126,7 +106,7 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
             @Override
             public void onPageSelected(int position) {
-                mTabLayout.getTabAt(position).select();
+
             }
 
             @Override
@@ -134,22 +114,8 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
             }
         });
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                mViewPager.setCurrentItem(tab.getPosition());
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        notConfFlag.setVisibility((!confirmed)? View.VISIBLE : View.INVISIBLE);
     }
 
     class TransactionPagerAdapter extends FragmentStatePagerAdapter{

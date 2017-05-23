@@ -12,8 +12,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,25 +33,16 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     public final static String CHANGING = "changing";
     public final static String IMPORTING = "importing";
 
-    @BindView(R.id.bt_cancel)
-    Button mButtonCancel;
-    @BindView(R.id.et_wallet_pin)
-    TextInputEditText mTextInputEditTextWalletPin;
     @BindView(R.id.til_wallet_pin)
-    TextInputLayout mTextInputLayoutWalletPin;
+    PinEntryEditText mWalletPin;
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.tv_toolbar_title)
-    TextView mTextViewToolBarTitle;
+    FontTextView mTextViewToolBarTitle;
 
-    @OnClick({R.id.bt_cancel})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.bt_cancel:
-                getPresenter().cancel();
-                break;
-        }
-    }
+    @BindView(R.id.tooltip)
+    FontTextView tooltip;
 
     public static PinFragment newInstance(String action) {
         PinFragment pinFragment = new PinFragment();
@@ -77,19 +70,24 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
 
     @Override
     public void confirmError(String errorText) {
-        mTextInputEditTextWalletPin.setText("");
-        mTextInputLayoutWalletPin.setError(errorText);
+        mWalletPin.setText("");
+        tooltip.setText(errorText);
+        tooltip.setTextColor(getResources().getColor(R.color.accent_red_color));
+        tooltip.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void updateState(String state) {
-        mTextInputEditTextWalletPin.setText("");
-        mTextInputLayoutWalletPin.setHint(state);
+        mWalletPin.setText("");
+        tooltip.setText(state);
+        tooltip.setTextColor(getResources().getColor(android.R.color.white));
+        tooltip.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void clearError() {
-        mTextInputLayoutWalletPin.setError("");
+        tooltip.setText("");
+        tooltip.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -107,27 +105,17 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     public void initializeViews() {
         getPresenter().setAction(getArguments().getString(ACTION));
 
-        mTextInputEditTextWalletPin.addTextChangedListener(new TextWatcher() {
+        mWalletPin.setOnPinEnteredListener(new PinEntryEditText.OnPinEnteredListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (editable.toString().length() == 4) {
-                    getPresenter().confirm(editable.toString());
+            public void onPinEntered(CharSequence str) {
+                if (str.length() == 4) {
+                    getPresenter().confirm(str.toString());
                 }
             }
         });
 
-        mTextInputEditTextWalletPin.setFocusableInTouchMode(true);
-        mTextInputEditTextWalletPin.requestFocus();
+        mWalletPin.setFocusableInTouchMode(true);
+        mWalletPin.requestFocus();
         showSoftInput();
 
     }
