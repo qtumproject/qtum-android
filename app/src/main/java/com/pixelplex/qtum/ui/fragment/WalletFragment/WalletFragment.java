@@ -3,13 +3,12 @@ package com.pixelplex.qtum.ui.fragment.WalletFragment;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
@@ -31,7 +31,6 @@ import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.Fi
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.WalletAppBarPagerAdapter;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -61,8 +60,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     private boolean mChangePageFlag = false;
     private String mWalletName = "QTUM";
 
-    @BindView(R.id.fab)
-    FloatingActionButton mFloatingActionButton;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh)
@@ -73,35 +70,17 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     AppBarLayout mAppBarLayout;
     @BindView(R.id.bt_qr_code)
     ImageButton mButtonQrCode;
-    @BindView(R.id.tv_total_balance)
-    TextView mTextViewTotalBalance;
-    @BindView(R.id.tv_total_balance_number)
-    TextView mTextViewTotalBalanceNumber;
     @BindView(R.id.tv_wallet_name)
     TextView mTextViewWalletName;
-    @BindView(R.id.ibtn_left)
-    ImageButton mImageButtonLeft;
-    @BindView(R.id.ibtn_right)
-    ImageButton mImageButtonRight;
 
-    @OnClick({R.id.fab, R.id.bt_qr_code,R.id.ibtn_left,R.id.ibtn_right})
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    @OnClick({R.id.bt_qr_code,})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.fab:
-                mWalletFragmentPresenter.sharePubKey();
-                break;
             case R.id.bt_qr_code:
                 getPresenter().onClickQrCode();
-                break;
-            case R.id.ibtn_left:
-                if(mViewPager.getCurrentItem()>0) {
-                    mViewPager.setCurrentItem(mViewPager.getCurrentItem()-1);
-                }
-                break;
-            case R.id.ibtn_right:
-                if(mViewPager.getChildCount()>mViewPager.getCurrentItem()) {
-                    mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
-                }
                 break;
         }
     }
@@ -140,12 +119,10 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void setAdapterNull() {
-        //mTransactionAdapter = null;
     }
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
-        mTextViewTotalBalanceNumber.setText(balance + " QTUM");
         mWalletAppBarPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem()).updateBalance(balance,unconfirmedBalance);
     }
 
@@ -206,17 +183,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     @Override
     public void notifyNewToken() {
         mWalletAppBarPagerAdapter.notifyDataSetChanged();
-        int position = mViewPager.getCurrentItem();
-        if(position==0){
-            mImageButtonLeft.setVisibility(View.GONE);
-        } else {
-            mImageButtonLeft.setVisibility(View.VISIBLE);
-        }
-        if(position == mViewPager.getAdapter().getCount()-1){
-            mImageButtonRight.setVisibility(View.GONE);
-        } else {
-            mImageButtonRight.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -272,19 +238,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
             @Override
             public void onPageSelected(int position) {
-                //getPresenter().changePage(position);
                 mChangePageFlag = true;
-                if(position==0){
-                    mImageButtonLeft.setVisibility(View.GONE);
-                } else {
-                    mImageButtonLeft.setVisibility(View.VISIBLE);
-                }
-                if(position == mViewPager.getAdapter().getCount()-1){
-                    mImageButtonRight.setVisibility(View.GONE);
-                } else {
-                    mImageButtonRight.setVisibility(View.VISIBLE);
-                }
-
             }
 
             @Override
@@ -292,22 +246,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                 if(mChangePageFlag && state==ViewPager.SCROLL_STATE_IDLE){
                     getPresenter().changePage(mViewPager.getCurrentItem());
                     mChangePageFlag = false;
-                    //TODO : this change currency name in toolbar
-                    //mTextViewWalletName.startAnimation(animationWallet);
                 }
             }
         });
-
-        if(mViewPager.getCurrentItem()==0){
-            mImageButtonLeft.setVisibility(View.GONE);
-        } else {
-            mImageButtonLeft.setVisibility(View.VISIBLE);
-        }
-        if(mViewPager.getCurrentItem() == mViewPager.getAdapter().getCount()-1){
-            mImageButtonRight.setVisibility(View.GONE);
-        } else {
-            mImageButtonRight.setVisibility(View.VISIBLE);
-        }
 
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
@@ -331,50 +272,42 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(),R.color.colorAccent));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getPresenter().onRefresh();
-            }
-        });
+                                                     @Override
+                                                     public void onRefresh() {
+                                                         getPresenter().onRefresh();
+                                                     }
+                                                 });
 
-        mTextViewTotalBalance.setVisibility(View.INVISIBLE);
-        mTextViewTotalBalanceNumber.setVisibility(View.INVISIBLE);
+                mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                    @Override
+                    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                        if (!mSwipeRefreshLayout.isActivated()) {
+                            if (verticalOffset == 0) {
+                                mSwipeRefreshLayout.setEnabled(true);
+                            } else {
+                                mSwipeRefreshLayout.setEnabled(false);
+                            }
+                        }
 
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (!mSwipeRefreshLayout.isRefreshing()) {
-                    if (verticalOffset == 0) {
-                        mSwipeRefreshLayout.setEnabled(true);
-                    } else {
-                        mSwipeRefreshLayout.setEnabled(false);
+                        if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange() - mToolbar.getHeight()) {
+                            if (!mIsVisible) {
+                                mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_hide);
+                                mViewPager.startAnimation(mAnimation);
+                                mViewPager.setVisibility(View.INVISIBLE);
+                                mIsVisible = true;
+                            }
+
+                        } else {
+                            if (mIsVisible) {
+                                mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_show);
+                                mViewPager.startAnimation(mAnimation);
+                                mViewPager.setVisibility(View.VISIBLE);
+                                mIsVisible = false;
+                            }
+                        }
+
                     }
-                }
-
-                if(verticalOffset==0){
-                    if(mIsVisible) {
-                        mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_hide);
-                        mTextViewTotalBalanceNumber.startAnimation(mAnimation);
-                        mTextViewTotalBalance.startAnimation(mAnimation);
-
-                        mTextViewTotalBalance.setVisibility(View.INVISIBLE);
-                        mTextViewTotalBalanceNumber.setVisibility(View.INVISIBLE);
-                        mIsVisible=false;
-                    }
-                } else if(Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
-                    if(!mIsVisible) {
-                        mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_show);
-                        mTextViewTotalBalanceNumber.startAnimation(mAnimation);
-                        mTextViewTotalBalance.startAnimation(mAnimation);
-
-                        mTextViewTotalBalanceNumber.setVisibility(View.VISIBLE);
-                        mTextViewTotalBalance.setVisibility(View.VISIBLE);
-                        mIsVisible = true;
-                    }
-                }
-
-            }
-        });
+                });
     }
 
     private class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -505,23 +438,17 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                     }
                 }
                 mTextViewDate.setText(dateString);
-                mLinearLayoutTransaction.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.background_white_with_grey_pressed));
             } else {
                 mTextViewDate.setText("Not confirmed");
-                mLinearLayoutTransaction.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.background_grey_with_grey_pressed));
             }
             if (history.getChangeInBalance().doubleValue() > 0) {
                 mTextViewOperationType.setText(R.string.received);
-                //mTextViewID.setText(history.getFromAddress());
                 mTextViewID.setText(history.getTxHash());
                 mImageViewIcon.setImageResource(R.drawable.ic_received);
-                mTextViewOperationType.setTextColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
             } else {
                 mTextViewOperationType.setText(R.string.sent);
-                //mTextViewID.setText(history.getToAddress());
                 mTextViewID.setText(history.getTxHash());
                 mImageViewIcon.setImageResource(R.drawable.ic_sent);
-                mTextViewOperationType.setTextColor(ContextCompat.getColor(getContext(), R.color.pink));
             }
             mTextViewValue.setText(history.getChangeInBalance().toString() + " QTUM");
         }

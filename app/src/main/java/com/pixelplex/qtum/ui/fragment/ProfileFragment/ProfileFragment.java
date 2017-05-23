@@ -1,6 +1,8 @@
 package com.pixelplex.qtum.ui.fragment.ProfileFragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -8,61 +10,20 @@ import android.widget.TextView;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class ProfileFragment extends BaseFragment implements ProfileFragmentView, LogOutDialogFragment.OnYesClickListener {
+public class ProfileFragment extends BaseFragment implements ProfileFragmentView, LogOutDialogFragment.OnYesClickListener, OnSettingClickListener {
 
     ProfileFragmentPresenterImpl mProfileFragmentPresenter;
 
-    @BindView(R.id.ll_change_pin)
-    LinearLayout mLinearLayoutChangePin;
-    @BindView(R.id.ll_wallet_back_up)
-    LinearLayout mLinearLayoutWalletBackUp;
-    @BindView(R.id.ll_log_out)
-    LinearLayout mLinearLayoutLogOut;
-    @BindView(R.id.ll_create_token)
-    LinearLayout mLinearLayoutCreateToken;
-    @BindView(R.id.tv_profile_language)
-    TextView mTextViewLanguage;
-    @BindView(R.id.tv_profile_change_pin)
-    TextView mTextViewChangePin;
-    @BindView(R.id.tv_profile_wallet_back_up)
-    TextView mTextViewWalletBackUp;
-    @BindView(R.id.tv_profile_log_out)
-    TextView mTextViewLogOut;
-    @BindView(R.id.tv_profile_create_token)
-    TextView mTextViewCreateToken;
-    @BindView(R.id.tv_profile_subscribe_tokens)
-    TextView mTextViewSubscribeTokens;
-    @BindView(R.id.tv_profile_about)
-    TextView mTextViewAbout;
-    @BindView(R.id.tv_toolbar_profile)
-    TextView mTextViewToolbar;
+    @BindView(R.id.pref_list)
+    RecyclerView prefList;
 
-    @OnClick({R.id.ll_change_pin, R.id.ll_wallet_back_up, R.id.ll_log_out, R.id.ll_create_token, R.id.ll_subscribe_tokens, R.id.ll_language})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.ll_change_pin:
-                getPresenter().onChangePinClick();
-                break;
-            case R.id.ll_wallet_back_up:
-                getPresenter().onWalletBackUpClick();
-                break;
-            case R.id.ll_log_out:
-                getPresenter().onLogOutClick();
-                break;
-            case R.id.ll_create_token:
-                getPresenter().onCreateTokenClick();
-                break;
-            case R.id.ll_subscribe_tokens:
-                getPresenter().onSubscribeTokensClick();
-                break;
-            case R.id.ll_language:
-                getPresenter().onLanguageClick();
-        }
-    }
+    PrefAdapter adapter;
 
     public static ProfileFragment newInstance() {
 
@@ -85,12 +46,15 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
 
     @Override
     protected int getLayout() {
-        return R.layout.fragment_profile;
+        return R.layout.lyt_profile_preference;
     }
 
     @Override
     public void initializeViews() {
-
+        prefList.setLayoutManager(new LinearLayoutManager(getContext()));
+        prefList.addItemDecoration(new DividerItemDecoration(getContext(), R.drawable.color_primary_divider, R.drawable.section_setting_divider, mProfileFragmentPresenter.getSettingsData()));
+        adapter = new PrefAdapter(mProfileFragmentPresenter.getSettingsData(), this);
+        prefList.setAdapter(adapter);
     }
 
     @Override
@@ -102,18 +66,38 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
 
     @Override
     public void resetText() {
-        mTextViewLanguage.setText(R.string.language);
-        mTextViewChangePin.setText(R.string.change_pin);
-        mTextViewWalletBackUp.setText(R.string.wallet_back_up);
-        mTextViewLogOut.setText(R.string.log_out);
-        mTextViewCreateToken.setText(R.string.create_token);
-        mTextViewSubscribeTokens.setText(R.string.subscribe_tokens);
-        mTextViewAbout.setText(R.string.about);
-        mTextViewToolbar.setText(R.string.profile);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onClick() {
         getPresenter().onLogOutYesClick();
+    }
+
+    @Override
+    public void onSettingClick(int key) {
+        switch (key){
+            case R.string.language:
+                getPresenter().onLanguageClick();
+                break;
+            case R.string.change_pin:
+                getPresenter().onChangePinClick();
+                break;
+            case R.string.wallet_back_up:
+                getPresenter().onWalletBackUpClick();
+                break;
+            case R.string.create_token:
+                getPresenter().onCreateTokenClick();
+                break;
+            case R.string.subscribe_tokens:
+                getPresenter().onSubscribeTokensClick();
+                break;
+            case R.string.about:
+               // getPresenter().onAboutClick();
+                break;
+            case R.string.log_out:
+                getPresenter().onLogOutClick();
+                break;
+        }
     }
 }

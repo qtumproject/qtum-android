@@ -125,6 +125,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         }
     }
 
+
     public void showBottomNavigationView() {
         mBottomNavigationView.setVisibility(View.VISIBLE);
     }

@@ -1,9 +1,11 @@
 package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,6 +19,8 @@ import android.widget.Toast;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.utils.FontManager;
+import com.pixelplex.qtum.utils.PinTextInputEditText;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,9 +37,15 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @BindView(R.id.et_amount)
     TextInputEditText mTextInputEditTextAmount;
     @BindView(R.id.et_pin)
-    TextInputEditText mTextInputEditTextPin;
+    PinTextInputEditText mTextInputEditTextPin;
+
     @BindView(R.id.til_pin)
     TextInputLayout mTextInputLayoutPin;
+    @BindView(R.id.til_receivers_address)
+    TextInputLayout tilAdress;
+    @BindView(R.id.til_amount)
+    TextInputLayout tilAmount;
+
     @BindView(R.id.bt_send)
     Button mButtonSend;
     @BindView(R.id.ibt_back)
@@ -156,6 +166,16 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         String amount = getArguments().getString(AMOUNT, "");
         mTextInputEditTextAmount.setText(amount);
         mTextInputEditTextAddress.setText(address);
+
+
+        mTextInputEditTextAddress.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
+        mTextInputEditTextAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
+        mTextInputEditTextPin.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
+
+        mTextInputLayoutPin.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
+        tilAdress.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
+        tilAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
+
     }
 
     @Override

@@ -3,7 +3,6 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
                 android:orientation="vertical">
 
     <ImageView
@@ -23,7 +22,7 @@
         android:background="@drawable/background_news_header_date"
         android:padding="3dp"
         android:text="Today, 10:20 AM"
-        android:textColor="@android:color/white"/>
+        android:textColor="@color/colorPrimary"/>
 
     <TextView
         android:id="@+id/tv_title_news_header"
@@ -33,7 +32,7 @@
         android:layout_below="@+id/iv_news_header"
         android:layout_margin="8dp"
         android:text="Bitcoin News for the week"
-        android:textColor="@color/black"
+        android:textColor="@color/colorPrimary"
         android:textSize="22sp"/>
 
     <TextView
@@ -44,12 +43,12 @@
         android:layout_below="@+id/tv_title_news_header"
         android:layout_margin="8dp"
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        android:textColor="@color/grey"/>
+        android:textColor="@color/colorPrimary"/>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_below="@id/tv_short_text_news_header"
-        android:background="@color/grey_lite"/>
+        android:background="@color/colorPrimary"/>
 
 </RelativeLayout>

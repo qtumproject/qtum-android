@@ -100,9 +100,18 @@
     <string name="loading">Loading</string>
     <string name="cpy_brain_code_descr">Your deputy nothing occasional objection ally aesthetic swing mad have stay objective consumption</string>
     <string name="skip">Skip</string>
+    <string name="not_confirmed_balance">Not Confirmed Balance</string>
+    <array name="not_confirmed_trans">Transaction Not Confirmed Yet</array>
 
     <!--FONT PATHS-->
     <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
     <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
+
+    <string-array name="listArray">
+    <item>Number 1</item>
+    <item>Number 2</item>
+    <item>Number 3</item>
+    <item>Number 4</item>
+    </string-array>
 </resources>

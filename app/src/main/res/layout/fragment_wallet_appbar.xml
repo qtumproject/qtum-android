@@ -1,85 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:app="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
+    <View
+        android:id="@+id/center_marker"
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_height="0dp"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical">
-
-        <ProgressBar
-            android:id="@+id/progress_bar_balance"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible"/>
-
-        <TextView
+        <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/tv_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:typefaceAsset="@string/simplonMonoMedium"
             android:layout_gravity="center"
-            android:visibility="gone"
-            android:text="0.0"
-            android:textColor="@android:color/white"
+            android:text="23 700.000027"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/available_balance_title"
+            android:textColor="@color/background"
             android:textSize="30sp"/>
 
-        <TextView
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/available_balance_title"
+        android:layout_above="@+id/center_marker"
+        android:gravity="center"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:textColor="@color/background"
+        android:layout_marginBottom="8dp"
+        android:text="@string/available_balance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+        <com.pixelplex.qtum.utils.FontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_alignBottom="@+id/tv_balance"
+            android:layout_toEndOf="@+id/tv_balance"
             android:id="@+id/tv_symbol"
             android:text="@string/qtum"
-            android:textColor="@android:color/white"/>
+            app:typefaceAsset="@string/simplonMonoMedium"
+            android:textColor="@color/background"/>
 
-        <TextView
+        <com.pixelplex.qtum.utils.FontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            app:typefaceAsset="@string/simplonMonoRegular"
+            android:text="3 700.00137 QTUM"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/center_marker"
             android:textSize="20sp"
-            android:textColor="@color/white_alpha50"
+            android:textColor="@color/background"
             android:id="@+id/tv_unconfirmed_balance"/>
-    </LinearLayout>
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/unconfirmed_balance_title"
+        android:layout_below="@+id/tv_unconfirmed_balance"
+        android:gravity="center"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:textColor="@color/background"
+        android:layout_marginBottom="8dp"
+        android:text="@string/not_confirmed_balance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/ll_receive"
+        android:background="@color/background"/>
 
     <LinearLayout
         android:id="@+id/ll_receive"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|bottom"
-        android:layout_marginRight="16dp"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/background_pressed_alpha_white"
         android:clickable="true"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:tint="@color/background"
+            android:paddingEnd="6dp"
+            android:layout_marginStart="8dp"
+            app:srcCompat="@drawable/ic_createnew"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <com.pixelplex.qtum.utils.FontTextView
                 android:layout_width="wrap_content"
+                android:layout_marginTop="8dp"
+                app:typefaceAsset="@string/simplonMonoRegular"
                 android:layout_height="wrap_content"
                 android:text="@string/public_key"
-                android:textColor="@color/white_alpha50"/>
+                android:textColor="@color/background"/>
 
-            <TextView
+            <com.pixelplex.qtum.utils.FontTextView
                 android:id="@+id/tv_public_key"
+                app:typefaceAsset="@string/simplonMonoMedium"
+                android:layout_marginBottom="8dp"
                 android:layout_width="wrap_content"
+                android:paddingEnd="16dp"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"/>
+                android:textColor="@color/background"/>
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:paddingLeft="6dp"
-            app:srcCompat="@drawable/ic_createnew"/>
     </LinearLayout>
 
-</FrameLayout>
+</RelativeLayout>

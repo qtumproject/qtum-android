@@ -96,19 +96,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionDe
 
         void bindTransactionDetail(TransactionInfo transactionInfo){
             mTextViewAddress.setText(transactionInfo.getAddress());
-            mTextViewValue.setText(transactionInfo.getValue().toString());
-            if(transactionInfo.isOwnAddress()){
-                switch (getArguments().getInt(ACTION)){
-                    case ACTION_FROM:
-                        mTextViewAddress.setTextColor(ContextCompat.getColor(getContext(),R.color.pink_lite));
-                        break;
-                    case ACTION_TO:
-                        mTextViewAddress.setTextColor(ContextCompat.getColor(getContext(),R.color.green));
-                        break;
-                }
-            } else {
-                mTextViewAddress.setTextColor(ContextCompat.getColor(getContext(),R.color.grey70));
-            }
+            mTextViewValue.setText(String.format("%s QTUM",transactionInfo.getValue().toString()));
         }
     }
 

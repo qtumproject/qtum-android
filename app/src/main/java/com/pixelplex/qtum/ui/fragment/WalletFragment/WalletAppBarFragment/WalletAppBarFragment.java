@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.utils.FontTextView;
 
 import java.text.DecimalFormat;
 
@@ -28,18 +29,18 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
     private final static String POSITION = "position";
 
     @BindView(R.id.tv_public_key)
-    TextView mTvPublicKey;
+    FontTextView mTvPublicKey;
     @BindView(R.id.tv_balance)
-    TextView mTvBalance;
+    FontTextView mTvBalance;
     @BindView(R.id.ll_receive)
     LinearLayout mLinearLayoutReceive;
     @BindView(R.id.tv_unconfirmed_balance)
-    TextView mTextViewUnconfirmedBalance;
+    FontTextView mTextViewUnconfirmedBalance;
     @BindView(R.id.tv_symbol)
-    TextView mTextViewSymbol;
+    FontTextView mTextViewSymbol;
 
-    @BindView(R.id.progress_bar_balance)
-    ProgressBar mProgressBarDialog;
+//    @BindView(R.id.progress_bar_balance)
+//    ProgressBar mProgressBarDialog;
 
 
     @OnClick({R.id.ll_receive})
@@ -99,9 +100,9 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
 
     public void updateBalance(String balance,String unconfirmedBalance) {
         mTvBalance.setText(balance);
-        mTextViewUnconfirmedBalance.setText(unconfirmedBalance);
+        mTextViewUnconfirmedBalance.setText((unconfirmedBalance == null)? "N/A" : unconfirmedBalance);
         mTvBalance.setVisibility(View.VISIBLE);
-        mProgressBarDialog.setVisibility(View.GONE);
+        //mProgressBarDialog.setVisibility(View.GONE);
     }
 
     @Override

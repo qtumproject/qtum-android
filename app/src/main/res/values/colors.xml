@@ -29,4 +29,5 @@
     <color name="background">#232328</color>
     <color name="primary_text_color">#2e9ad0</color>
     <color name="accent_red_color">#e75647</color>
+    <color name="section_divider_color">#0d2e9ad0</color>
 </resources>
