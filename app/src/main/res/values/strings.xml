@@ -108,10 +108,4 @@
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
     <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
 
-    <string-array name="listArray">
-    <item>Number 1</item>
-    <item>Number 2</item>
-    <item>Number 3</item>
-    <item>Number 4</item>
-    </string-array>
 </resources>

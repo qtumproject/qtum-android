@@ -31,7 +31,7 @@
 
     <ImageView
         android:id="@+id/arrow"
-        app:srcCompat="@drawable/ic_arrow_right"
+        app:srcCompat="@drawable/ic_setting_arrow"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:scaleType="center"

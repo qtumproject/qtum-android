@@ -85,6 +85,5 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     @Override
     public void initializeViews() {
         ((MainActivity) getActivity()).hideBottomNavigationView();
-
     }
 }
