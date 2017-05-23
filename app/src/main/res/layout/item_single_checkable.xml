@@ -4,7 +4,6 @@
               android:id="@+id/ll_single_item"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@android:color/white"
               android:orientation="vertical">
 
     <LinearLayout
@@ -13,20 +12,22 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <TextView
+        <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/tv_single_string"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            app:typefaceAsset="@string/simplonMonoRegular"
             android:gravity="center_vertical"
             android:text="asdas12312kmddm7m12312mfvf6"
-            android:textColor="@color/grey"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp"/>
 
         <ImageView
             android:id="@+id/iv_check_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tint="@color/background"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_check"/>
 
@@ -35,7 +36,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/grey_devider"/>
+        android:layout_marginStart="16dp"
+        android:background="@color/colorPrimary"/>
 
 
 </LinearLayout>

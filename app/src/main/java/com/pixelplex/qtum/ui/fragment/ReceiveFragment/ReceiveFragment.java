@@ -2,11 +2,14 @@ package com.pixelplex.qtum.ui.fragment.ReceiveFragment;
 
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,11 +17,13 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.utils.FontManager;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,6 +36,8 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     ImageView mImageViewQrCode;
     @BindView(R.id.et_amount)
     TextInputEditText mTextInputEditTextAmount;
+    @BindView(R.id.til_amount)
+    TextInputLayout mTextInputLayoutAmount;
     @BindView(R.id.tv_single_string)
     TextView mTextViewAddress;
     @BindView(R.id.bt_copy_wallet_address)
@@ -45,6 +52,9 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     RelativeLayout mRelativeLayoutBase;
     @BindView(R.id.cl_receive)
     CoordinatorLayout mCoordinatorLayout;
+
+    @BindView(R.id.qr_progress_bar)
+    ProgressBar qrProgressBar;
 
     @OnClick({R.id.bt_copy_wallet_address,R.id.bt_choose_another_address,R.id.ibt_back})
     public void onClick(View view) {
@@ -88,6 +98,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
     @Override
     public void initializeViews() {
+        getPresenter().setQrColors(mCoordinatorLayout.getDrawingCacheBackgroundColor(), ContextCompat.getColor(getContext(),R.color.colorPrimary));
         mTextInputEditTextAmount.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -109,6 +120,9 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
                 }
             }
         });
+
+        mTextInputEditTextAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
+        mTextInputLayoutAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
     }
 
     @Override
@@ -131,7 +145,20 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
     @Override
     public void setQrCode(Bitmap bitmap) {
-        mImageViewQrCode.setImageBitmap(bitmap);
+        if(bitmap != null && mImageViewQrCode != null) {
+            hideSpinner();
+            mImageViewQrCode.setImageBitmap(bitmap);
+        }
+    }
+
+    @Override
+    public void showSpinner() {
+        qrProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideSpinner() {
+        qrProgressBar.setVisibility(View.GONE);
     }
 
     @Override

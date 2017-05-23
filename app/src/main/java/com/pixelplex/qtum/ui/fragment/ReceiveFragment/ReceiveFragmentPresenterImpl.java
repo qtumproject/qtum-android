@@ -4,19 +4,29 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.os.AsyncTask;
+import android.support.v4.graphics.ColorUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.pixelplex.qtum.ui.fragment.AddressesFragment.AddressesFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -26,6 +36,16 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     private ReceiveFragmentView mReceiveFragmentView;
     private ReceiveFragmentInteractorImpl mReceiveFragmentInteractor;
     private String mAmount;
+
+    DrawQRTask drawQRTask;
+
+    private int qrCodeColor = Color.BLACK;
+    private int qrBackColor = Color.WHITE;
+
+    public void setQrColors(int crossColor, int qrColor){
+        this.qrCodeColor = qrColor;
+        this.qrBackColor = crossColor;
+    }
 
     ReceiveFragmentPresenterImpl(ReceiveFragmentView receiveFragmentView) {
         mReceiveFragmentView = receiveFragmentView;
@@ -48,8 +68,10 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         try {
             json.put("amount", s);
             json.put("publicAddress", getInteractor().getCurrentReceiveAddress());
-            getView().setQrCode(textToImageEncode(json.toString()));
-        } catch (JSONException | WriterException e) {
+            getView().showSpinner();
+            drawQRTask = new DrawQRTask();
+            drawQRTask.execute(json.toString());
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -58,6 +80,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     public void onDestroyView() {
         super.onDestroyView();
         getView().hideKeyBoard();
+        drawQRTask.cancel(false);
     }
 
     @Override
@@ -90,8 +113,11 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         try {
             json.put("amount", mAmount);
             json.put("publicAddress", getInteractor().getCurrentReceiveAddress());
-            getView().setQrCode(textToImageEncode(json.toString()));
-        } catch (JSONException | WriterException e) {
+            getView().showSpinner();
+            drawQRTask = new DrawQRTask();
+            drawQRTask.execute(json.toString());
+
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         getView().setUpAddress(getInteractor().getCurrentReceiveAddress());
@@ -102,18 +128,52 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         super.onPause(context);
     }
 
+    int moduleWidth = 0;
+    boolean withCrossQR = true;
+
+    public void setQRCrossing(boolean crossing) {
+        withCrossQR = crossing;
+    }
+
+    class DrawQRTask extends AsyncTask<String, Bitmap, Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            for (String param : params) {
+                try {
+                    return textToImageEncode(param);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            if(bitmap != null){
+                getView().setQrCode(bitmap);
+            }
+        }
+    }
+
     private Bitmap textToImageEncode(String Value) throws WriterException {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         Display display = getView().getFragmentActivity().getWindowManager().getDefaultDisplay();
         display.getMetrics(displayMetrics);
         int QRCodeWidth = displayMetrics.heightPixels / 3;
+        moduleWidth = QRCodeWidth;
         BitMatrix bitMatrix;
         try {
+            Map<EncodeHintType, Object> hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+            hints.put(EncodeHintType.MARGIN,0);
+
             bitMatrix = new MultiFormatWriter().encode(
                     Value,
                     BarcodeFormat.QR_CODE,
-                    QRCodeWidth, QRCodeWidth, null
+                    QRCodeWidth, QRCodeWidth, hints
             );
 
         } catch (IllegalArgumentException Illegalargumentexception) {
@@ -123,17 +183,62 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         int bitMatrixWidth = bitMatrix.getWidth();
         int bitMatrixHeight = bitMatrix.getHeight();
         int[] pixels = new int[bitMatrixWidth * bitMatrixHeight];
+
         for (int y = 0; y < bitMatrixHeight; y++) {
             int offset = y * bitMatrixWidth;
 
             for (int x = 0; x < bitMatrixWidth; x++) {
 
-                pixels[offset + x] = bitMatrix.get(x, y) ?
-                        Color.BLACK : Color.WHITE;
+                boolean isDataPixel = bitMatrix.get(x, y);
+
+                calcModuleWidth(isDataPixel, x, y);
+
+                pixels[offset + x] = isDataPixel ?
+                        qrCodeColor : qrBackColor;
             }
         }
+
+        if(withCrossQR) {
+            for (int i = topOffsetHeight; i < bitMatrixHeight; i += moduleWidth) {
+
+                int offset = i * bitMatrixWidth;
+                for (int j = 0; j < bitMatrixWidth; j++) {
+                    pixels[offset + j] = qrBackColor;
+                    pixels[j * bitMatrixHeight + i] = qrBackColor;
+                }
+            }
+        }
+
         Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
         bitmap.setPixels(pixels, 0, QRCodeWidth, 0, 0, bitMatrixWidth, bitMatrixHeight);
+
         return bitmap;
+    }
+
+    private int patternWidth = 0;
+    private int topOffsetHeight = 0;
+    private int leftOffcetWidth = 0;
+    private boolean firstInputY, firstInputX = false;
+
+    private void calcModuleWidth(boolean isDataPixel, int x, int y){
+        if(isDataPixel) {
+
+            if(!firstInputY) {
+                topOffsetHeight = y;
+                firstInputY = true;
+            }
+
+            if(!firstInputX) {
+                leftOffcetWidth = x;
+                firstInputX = true;
+            }
+
+            patternWidth ++;
+        } else {
+            if(patternWidth > 0) {
+                moduleWidth = (moduleWidth > patternWidth)? patternWidth : moduleWidth;
+                patternWidth = 0;
+            }
+        }
     }
 }
