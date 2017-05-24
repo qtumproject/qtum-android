@@ -92,6 +92,8 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
         @BindView(R.id.ll_single_item)
         LinearLayout mLinearLayoutAddress;
 
+        int defaultTextColor, selectedTextColor;
+
         AddressHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -105,15 +107,20 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
                 }
             });
             ButterKnife.bind(this, itemView);
+
+            defaultTextColor = ContextCompat.getColor(mTextViewAddress.getContext(), R.color.colorPrimary);
+            selectedTextColor = ContextCompat.getColor(mTextViewAddress.getContext(), R.color.background);
         }
 
         void bindAddress(String address, int position) {
             if (position == KeyStorage.getInstance().getCurrentKeyPosition()) {
                 mImageViewCheckIndicator.setVisibility(View.VISIBLE);
-                mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey20));
+                mTextViewAddress.setTextColor(selectedTextColor);
+                mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent_red_color));
             } else {
                 mImageViewCheckIndicator.setVisibility(View.GONE);
-                mLinearLayoutAddress.setBackgroundColor(Color.WHITE);
+                mTextViewAddress.setTextColor(defaultTextColor);
+                mLinearLayoutAddress.setBackgroundColor(mLinearLayoutAddress.getResources().getColor(android.R.color.transparent));
             }
             mTextViewAddress.setText(address);
         }

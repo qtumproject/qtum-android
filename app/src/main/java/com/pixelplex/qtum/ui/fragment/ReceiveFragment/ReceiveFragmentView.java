@@ -8,6 +8,8 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 interface ReceiveFragmentView extends BaseFragmentView {
     void setQrCode(Bitmap bitmap);
+    void showSpinner();
+    void hideSpinner();
     void setUpAddress(String s);
     void setBalance(String balance);
     void showToast();

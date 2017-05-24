@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import android.nfc.NfcAdapter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -128,10 +129,18 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
     public void showBottomNavigationView() {
         mBottomNavigationView.setVisibility(View.VISIBLE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
+        }
     }
 
     public void hideBottomNavigationView() {
         mBottomNavigationView.setVisibility(View.GONE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),R.color.background));
+        }
     }
 
     @Override

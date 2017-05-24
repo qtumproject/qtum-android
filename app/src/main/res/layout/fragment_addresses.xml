@@ -3,7 +3,7 @@
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
-                                                 android:background="@android:color/white"
+                                                 android:background="@color/background"
                                                  android:clickable="true"
                                                  android:fitsSystemWindows="true">
 
@@ -23,21 +23,25 @@
 
             <ImageButton
                 android:id="@+id/ibt_back"
+                android:tint="@color/background"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_ibtn_back"
                 android:paddingBottom="10dp"
-                android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="10dp"
                 app:srcCompat="@drawable/ic_back_indicator"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/addresses"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/toolbar_text_size"/>
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/tv_toolbar_send"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="48dp"
+                android:gravity="center"
+                android:text="@string/receive"
+                android:textColor="@color/background"
+                android:textSize="@dimen/toolbar_text_size"
+                app:typefaceAsset="@string/euclidFlexMedium" />
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
