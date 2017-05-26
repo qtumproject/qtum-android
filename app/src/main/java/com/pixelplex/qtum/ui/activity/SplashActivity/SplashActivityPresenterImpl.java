@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.activity.SplashActivity;
 import android.content.Context;
 import android.os.Handler;
 
+import com.pixelplex.qtum.SmartContractsManager.StorageManager;
 import com.pixelplex.qtum.ui.activity.BaseActivity.BasePresenterImpl;
 
 /**
@@ -21,6 +22,7 @@ public class SplashActivityPresenterImpl extends BasePresenterImpl implements Sp
         mContext = getView().getContext();
         mMainActivityInteractor = new SplashActivityInteractorImpl(mContext);
         handler = new Handler();
+        StorageManager.getInstance().migrateDefaultContracts(mContext);
     }
 
     Handler handler;

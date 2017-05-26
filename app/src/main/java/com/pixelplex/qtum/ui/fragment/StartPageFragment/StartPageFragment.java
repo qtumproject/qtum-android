@@ -7,7 +7,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.SmartContractsManager.StorageManager;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.transitionseverywhere.Fade;
@@ -85,5 +88,6 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     @Override
     public void initializeViews() {
         ((MainActivity) getActivity()).hideBottomNavigationView();
+        StorageManager.getInstance().getContracts(getContext());
     }
 }

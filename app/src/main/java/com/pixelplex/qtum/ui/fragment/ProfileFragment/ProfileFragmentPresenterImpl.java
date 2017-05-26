@@ -12,6 +12,7 @@ import com.pixelplex.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
 import com.pixelplex.qtum.ui.fragment.LanguageFragment.LanguageFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 import com.pixelplex.qtum.ui.fragment.SetTokenNameFragment.SetTokenNameFragment;
+import com.pixelplex.qtum.ui.fragment.SmartContractListFragment.SmartContractListFragment;
 import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 
 import java.util.ArrayList;
@@ -116,8 +117,8 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     @Override
     public void onCreateTokenClick() {
-        SetTokenNameFragment setTokenNameFragment = SetTokenNameFragment.newInstance();
-        getView().openFragment(setTokenNameFragment);
+        SmartContractListFragment smartContractListFragment = SmartContractListFragment.newInstance();
+        getView().openFragment(smartContractListFragment);
     }
 
     @Override

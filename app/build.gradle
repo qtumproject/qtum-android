@@ -98,4 +98,6 @@ dependencies {
     compile 'com.baoyz.pullrefreshlayout:library:1.2.0'
 
     compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+
+    compile 'com.mikhaellopez:hfrecyclerview:1.0.0'
 }
