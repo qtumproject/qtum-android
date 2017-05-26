@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/background"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="64dp"
+    android:paddingBottom="64dp"
+    android:layout_height="wrap_content">
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/miner_title"
+        android:text="@string/mine_address"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/miner_value"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        android:text="value"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/free_title"
+        android:layout_marginTop="16dp"
+        android:text="@string/fee"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        android:maxLines="1"
+        android:textAllCaps="true"
+        android:ellipsize="end"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/free_value"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        android:text="0 QTUM"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+</LinearLayout>

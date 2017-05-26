@@ -82,6 +82,7 @@
     <string name="finish">Finish</string>
     <string name="token_name">Token Name</string>
     <string name="minter_address">Minter Address</string>
+    <string name="mine_address">Mine Address</string>
     <string name="fee">FEE</string>
     <string name="currency">Currency</string>
     <string name="search">Search</string>
@@ -101,7 +102,12 @@
     <string name="cpy_brain_code_descr">Your deputy nothing occasional objection ally aesthetic swing mad have stay objective consumption</string>
     <string name="skip">Skip</string>
     <string name="not_confirmed_balance">Not Confirmed Balance</string>
-    <array name="not_confirmed_trans">Transaction Not Confirmed Yet</array>
+    <string name="not_confirmed_trans">Transaction Not Confirmed Yet</string>
+    <string name="templates">Templates</string>
+    <string name="set_your_token">Set Your Token</string>
+    <string name="step_1_2">Step 1 of 2</string>
+    <string name="step_2_2">Step 2 of 2</string>
+    <string name="free">Free</string>
 
     <!--FONT PATHS-->
     <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>

@@ -11,7 +11,7 @@
         android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/grey_lite"
+        android:background="@color/background"
         android:fitsSystemWindows="true"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
         app:layout_constraintLeft_toLeftOf="parent"
