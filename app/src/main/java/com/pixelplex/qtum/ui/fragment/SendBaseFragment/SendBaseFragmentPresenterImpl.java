@@ -28,6 +28,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     private UpdateService mUpdateService;
     private Context mContext;
     private NetworkStateReceiver mNetworkStateReceiver;
+    private boolean mNetworkConnectedFlag = false;
 
 
     SendBaseFragmentPresenterImpl(SendBaseFragmentView sendBaseFragmentView) {
@@ -69,14 +70,10 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
         mNetworkStateReceiver  = ((MainActivity) getView().getFragmentActivity()).getNetworkReceiver();
         mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
-            @Override
-            public void onNetworkConnected() {
-                getView().enableSendButton();
-            }
 
             @Override
-            public void onNetworkDisconnected() {
-                getView().disableSendButton();
+            public void onNetworkStateChanged(boolean networkConnectedFlag) {
+                mNetworkConnectedFlag = networkConnectedFlag;
             }
         });
     }
@@ -155,41 +152,45 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
     @Override
     public void send(String[] sendInfo) {
-        if (sendInfo[2].length() < 4) {
-            getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
-            return;
-        } else {
-            int intPassword = Integer.parseInt(sendInfo[2]);
-            if (intPassword != getInteractor().getPassword()) {
-                getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
+        if(mNetworkConnectedFlag) {
+            if (sendInfo[2].length() < 4) {
+                getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
                 return;
+            } else {
+                int intPassword = Integer.parseInt(sendInfo[2]);
+                if (intPassword != getInteractor().getPassword()) {
+                    getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
+                    return;
+                }
             }
-        }
-        getView().clearError();
-        getView().setProgressDialog("Sending");
-        getInteractor().sendTx(sendInfo[0], sendInfo[1], new SendBaseFragmentInteractorImpl.SendTxCallBack() {
-            @Override
-            public void onSuccess() {
-                getView().dismissProgressDialog();
-                getView().setAlertDialog("Sent");
-                (new Handler()).postDelayed(new Runnable() {
-                    public void run() {
-                        getView().dismissAlertDialog();
-                    }
-                }, 2000);
-            }
+            getView().clearError();
+            getView().setProgressDialog("Sending");
+            getInteractor().sendTx(sendInfo[0], sendInfo[1], new SendBaseFragmentInteractorImpl.SendTxCallBack() {
+                @Override
+                public void onSuccess() {
+                    getView().dismissProgressDialog();
+                    getView().setAlertDialog("Sent", "Has been sent", "Ok");
+                    (new Handler()).postDelayed(new Runnable() {
+                        public void run() {
+                            getView().dismissAlertDialog();
+                        }
+                    }, 2000);
+                }
 
-            @Override
-            public void onError(String error) {
-                getView().dismissProgressDialog();
-                getView().setAlertDialog(error);
-                (new Handler()).postDelayed(new Runnable() {
-                    public void run() {
-                        getView().dismissAlertDialog();
-                    }
-                }, 2000);
-            }
-        });
+                @Override
+                public void onError(String error) {
+                    getView().dismissProgressDialog();
+                    getView().setAlertDialog("Error", error, "Ok");
+                    (new Handler()).postDelayed(new Runnable() {
+                        public void run() {
+                            getView().dismissAlertDialog();
+                        }
+                    }, 2000);
+                }
+            });
+        } else {
+            getView().setAlertDialog("No Internet Connection","Please check your network settings","Ok");
+        }
     }
 
     private void calculateChangeInBalance(History history, List<String> addresses){

@@ -2,6 +2,5 @@ package com.pixelplex.qtum.dataprovider.RestAPI;
 
 
 public interface NetworkStateListener {
-    void onNetworkConnected();
-    void onNetworkDisconnected();
+    void onNetworkStateChanged(boolean networkConnectedFlag);
 }

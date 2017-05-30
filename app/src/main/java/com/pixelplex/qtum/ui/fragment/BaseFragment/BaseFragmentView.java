@@ -14,7 +14,7 @@ public interface BaseFragmentView extends BaseContextView {
     Activity getFragmentActivity();
     void setProgressDialog(String message);
     void dismissProgressDialog();
-    void setAlertDialog(String message);
+    void setAlertDialog(String title, String message,String buttonText);
     void dismissAlertDialog();
     void showSoftInput();
     void setFocusTextInput(View textInputEditText, View textInputLayout);

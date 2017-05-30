@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
@@ -124,6 +126,17 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         for (int i = 0; i < menu.size(); i++) {
             menu.getItem(i).setTitle(getResources().getString(menuResources[i]));
         }
+    }
+
+    @Override
+    public boolean getNetworkConnectedFlag() {
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting())
+        {
+            return true;
+        }
+        return false;
     }
 
 

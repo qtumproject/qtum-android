@@ -18,8 +18,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.utils.FontButton;
+import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,15 +68,26 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
-    public void setAlertDialog(String message) {
-        //TODO: change icon and message
+    public void setAlertDialog(String title, String message, String buttonText) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_popup_fragment,null);
+        ((FontTextView)view.findViewById(R.id.tv_pop_up_title)).setText(title);
+        ((FontTextView)view.findViewById(R.id.tv_pop_up_message)).setText(message);
+        FontButton popUpButton = ((FontButton)view.findViewById(R.id.bt_pop_up));
+        popUpButton.setText(buttonText);
+        popUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAlertDialog.cancel();
+            }
+        });
+
         mAlertDialog = new AlertDialog
                 .Builder(getContext())
-                .setTitle(message)
-                .setMessage("TestText")
+                .setView(view)
                 .create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.show();
+
     }
 
     @Override

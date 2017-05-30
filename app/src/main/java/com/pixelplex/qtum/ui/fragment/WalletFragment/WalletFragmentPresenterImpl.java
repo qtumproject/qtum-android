@@ -29,6 +29,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     private boolean mVisibility = false;
     private UpdateService mUpdateService;
     private NetworkStateReceiver mNetworkStateReceiver;
+    private boolean mNetworkConnectedFlag = false;
 
     private final int ONE_PAGE_COUNT = 25;
 
@@ -94,14 +95,15 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
         mNetworkStateReceiver  = ((MainActivity) getView().getFragmentActivity()).getNetworkReceiver();
         mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
-            @Override
-            public void onNetworkConnected() {
-                loadAndUpdateData();
-            }
 
             @Override
-            public void onNetworkDisconnected() {
+            public void onNetworkStateChanged(boolean networkConnectedFlag) {
+                mNetworkConnectedFlag = networkConnectedFlag;
+                if(networkConnectedFlag){
+                    loadAndUpdateData();
+                }else{
 
+                }
             }
         });
     }
@@ -140,7 +142,12 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     @Override
     public void onRefresh() {
-        loadAndUpdateData();
+        if(mNetworkConnectedFlag) {
+            loadAndUpdateData();
+        }else{
+            getView().setAlertDialog("No Internet Connection","Please check your network settings","Ok");
+            getView().stopRefreshRecyclerAnimation();
+        }
     }
 
     @Override
