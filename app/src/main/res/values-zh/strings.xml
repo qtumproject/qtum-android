@@ -100,6 +100,14 @@
     <string name="skip">Skip</string>
     <string name="not_confirmed_balance">Not Confirmed Balance</string>
 
+    <string name="not_confirmed_trans">Transaction Not Confirmed Yet</string>
+    <string name="templates">Templates</string>
+    <string name="set_your_token">Set Your Token</string>
+    <string name="step_1_2">Step 1 of 2</string>
+    <string name="step_2_2">Step 2 of 2</string>
+    <string name="free">Free</string>
+    <string name="mine_address">Mine Address</string>
+
     <!--FONT PATHS-->
     <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
