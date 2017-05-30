@@ -36,8 +36,8 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
     LinearLayout mLinearLayoutReceive;
     @BindView(R.id.tv_unconfirmed_balance)
     FontTextView mTextViewUnconfirmedBalance;
-    @BindView(R.id.tv_symbol)
-    FontTextView mTextViewSymbol;
+//    @BindView(R.id.tv_symbol)
+//    FontTextView mTextViewSymbol;
 
 //    @BindView(R.id.progress_bar_balance)
 //    ProgressBar mProgressBarDialog;
@@ -107,7 +107,7 @@ public class WalletAppBarFragment extends Fragment implements WalletAppBarFragme
 
     @Override
     public void setSymbol(String symbol) {
-        mTextViewSymbol.setText(symbol);
+       //mTextViewSymbol.setText(symbol);
     }
 
     @Override

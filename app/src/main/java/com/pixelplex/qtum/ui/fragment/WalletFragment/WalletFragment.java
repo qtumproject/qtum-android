@@ -9,13 +9,19 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +35,7 @@ import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.FixedSpeedScroller;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.WalletAppBarPagerAdapter;
+import com.pixelplex.qtum.utils.FontTextView;
 
 import java.lang.reflect.Field;
 import java.util.Calendar;
@@ -48,24 +55,16 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     private WalletFragmentPresenterImpl mWalletFragmentPresenter;
     private TransactionAdapter mTransactionAdapter;
 
-    private WalletAppBarPagerAdapter mWalletAppBarPagerAdapter;
-    private Animation mAnimation;
-    private boolean mIsVisible = false;
-    private boolean mIsInitialInitialize = true;
     private LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
     private int visibleItemCount;
     private int totalItemCount;
     private int pastVisibleItems;
     private boolean mLoadingFlag = false;
-    private boolean mChangePageFlag = false;
-    private String mWalletName = "QTUM";
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.view_pager)
-    ViewPager mViewPager;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
     @BindView(R.id.bt_qr_code)
@@ -73,8 +72,26 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     @BindView(R.id.tv_wallet_name)
     TextView mTextViewWalletName;
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+//    @BindView(R.id.toolbar)
+//    LinearLayout mToolbar;
+
+    //HEADER
+    @BindView(R.id.tv_balance)
+    FontTextView balanceValue;
+    @BindView(R.id.available_balance_title)
+    FontTextView balanceTitle;
+
+    @BindView(R.id.tv_unconfirmed_balance)
+    FontTextView uncomfirmedBalanceValue;
+    @BindView(R.id.unconfirmed_balance_title)
+    FontTextView uncomfirmedBalanceTitle;
+    //HEADER
+
+//    @BindView(R.id.center_marker)
+//    View centerMarker;
+
+    @BindView(R.id.balance_view)
+    FrameLayout balanceView;
 
     @OnClick({R.id.bt_qr_code,})
     public void onClick(View view) {
@@ -123,12 +140,12 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
-        mWalletAppBarPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem()).updateBalance(balance,unconfirmedBalance);
+       //TODO UPDATE BALANCE
     }
 
     @Override
     public void updatePubKey(String pubKey) {
-        mWalletAppBarPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem()).updatePubKey(pubKey);
+      //TODO UPDATE PUB KEY
     }
 
     @Override
@@ -177,78 +194,23 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void setWalletName(String walletName) {
-        mWalletName = walletName;
+        //TODO WALLET NAME
     }
 
     @Override
     public void notifyNewToken() {
-        mWalletAppBarPagerAdapter.notifyDataSetChanged();
+       //TODO NOTIFY TOKEN
     }
 
-    @Override
-    public int getPosition() {
-        return mViewPager.getCurrentItem();
-    }
+    final DisplayMetrics dm = new DisplayMetrics();
+
 
     @Override
     public void initializeViews() {
+
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
         ((MainActivity) getActivity()).showBottomNavigationView();
-
-        mWalletAppBarPagerAdapter = new WalletAppBarPagerAdapter(getFragmentManager());
-        mViewPager.setAdapter(mWalletAppBarPagerAdapter);
-        try {
-            Field mScroller;
-            mScroller = ViewPager.class.getDeclaredField("mScroller");
-            mScroller.setAccessible(true);
-            Interpolator interpolator = new LinearInterpolator();
-            FixedSpeedScroller scroller = new FixedSpeedScroller(getContext(), interpolator,true);
-            scroller.setDuration(300);
-            mScroller.set(mViewPager, scroller);
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        final Animation animationWallet =  AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_hide);
-        animationWallet.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mTextViewWalletName.setText(mWalletName);
-                mTextViewWalletName.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_show));
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if(mIsInitialInitialize){
-                    getPresenter().changePage(position);
-                    mIsInitialInitialize = false;
-                }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mChangePageFlag = true;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                if(mChangePageFlag && state==ViewPager.SCROLL_STATE_IDLE){
-                    getPresenter().changePage(mViewPager.getCurrentItem());
-                    mChangePageFlag = false;
-                }
-            }
-        });
 
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
@@ -288,27 +250,69 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                                 mSwipeRefreshLayout.setEnabled(false);
                             }
                         }
+                        float percents = (((getTotalRange() - Math.abs(verticalOffset))*1.0f)/getTotalRange());
 
-                        if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange() - mToolbar.getHeight()) {
-                            if (!mIsVisible) {
-                                mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_hide);
-                                mViewPager.startAnimation(mAnimation);
-                                mViewPager.setVisibility(View.INVISIBLE);
-                                mIsVisible = true;
-                            }
+                        //BALANCE TITLE +
+                        animateText(percents, balanceTitle);
 
-                        } else {
-                            if (mIsVisible) {
-                                mAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.alpha_balance_show);
-                                mViewPager.startAnimation(mAnimation);
-                                mViewPager.setVisibility(View.VISIBLE);
-                                mIsVisible = false;
-                            }
-                        }
+                        float xValue;
 
+                        //if(xValue + (balanceTitle.getWidth()*percents)/2 > 0) {
+                            balanceTitle.setX(appBarLayout.getWidth()/2 * percents - (balanceTitle.getWidth()*percents)/2);
+
+                       // }
+                        //BALANCE TITLE +
+
+                        //BALANCE VALUE
+                        //animateText(percents, balanceValue);
+                        //balanceValue.setX(appBarLayout.getWidth() - (appBarLayout.getWidth()/2 * percents + balanceValue.getWidth()/2));
+//                        if(balanceValue.getY() > appBarLayout.getHeight() / 2 * percents - balanceValue.getHeight() - balanceTitle.getHeight()) {
+//                            balanceValue.setY(appBarLayout.getHeight() / 2 * percents - balanceValue.getHeight() - balanceTitle.getHeight());
+//                        }
+                        //BALANCE VALUE
+
+                        //UNCONFIRMED BALANCE VALUE
+                        animateText(percents, uncomfirmedBalanceValue);
+                        uncomfirmedBalanceValue.setX(appBarLayout.getWidth() - (appBarLayout.getWidth()/2 * percents + (uncomfirmedBalanceValue.getWidth()*percents)/2) - uncomfirmedBalanceValue.getWidth()* (1-percents));
+
+
+                        //UNCONFIRMED BALANCE VALUE
+
+                        //UNCONFIRMED BALANCE TITLE
+                        animateText(percents, uncomfirmedBalanceTitle);
+                        uncomfirmedBalanceTitle.setY(balanceView.getHeight()/2 + uncomfirmedBalanceValue.getHeight() * percents - (uncomfirmedBalanceTitle.getHeight()*percents/2*(1-percents)));
+                        uncomfirmedBalanceTitle.setX(appBarLayout.getWidth()/2 * percents - (uncomfirmedBalanceTitle.getWidth()*percents)/2);
+
+                        //UNCONFIRMED BALANCE TITLE
+
+                        prevPercents = percents;
+                        Log.d("PERCENT ",String.valueOf(percents));
                     }
                 });
     }
+
+    float prevPercents=1;
+
+    public int getUnconfirmedValueCenter() {
+        return (int) (uncomfirmedBalanceValue.getY() + uncomfirmedBalanceValue.getHeight()/2);
+    }
+
+    public int getUnconfirmedTitleCenter() {
+        return (int) (uncomfirmedBalanceTitle.getY() + uncomfirmedBalanceTitle.getHeight()/2);
+    }
+
+    public int getTotalRange() {
+        return mAppBarLayout.getTotalScrollRange();
+    }
+
+    private void animateText(float percents, View view) {
+        if(percents>0.9f) {
+            view.setScaleX(percents);
+            view.setScaleY(percents);
+        }
+    }
+
+    float maxFontSize = 24;
 
     private class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

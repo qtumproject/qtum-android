@@ -112,10 +112,12 @@ public class LanguageFragment extends BaseFragment implements LanguageFragmentVi
         void bindLanguage(Pair<String,String> language) {
             if (language.first.equals(getPresenter().getCurrentLanguage())) {
                 mImageViewCheckIndicator.setVisibility(View.VISIBLE);
-                mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey20));
+                mTextViewLanguage.setTextColor(ContextCompat.getColor(getContext(), R.color.background));
+                mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent_red_color));
             } else {
+                mTextViewLanguage.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
                 mImageViewCheckIndicator.setVisibility(View.GONE);
-                mLinearLayoutAddress.setBackgroundColor(Color.WHITE);
+                mLinearLayoutAddress.setBackgroundColor(Color.TRANSPARENT);
             }
             mTextViewLanguage.setText(language.second);
         }

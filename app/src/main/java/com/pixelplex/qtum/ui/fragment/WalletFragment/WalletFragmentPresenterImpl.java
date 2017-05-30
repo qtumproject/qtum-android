@@ -174,10 +174,9 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         }
         String pubKey = getInteractor().getAddress();
         getView().updatePubKey(pubKey);
-        if(getView().getPosition()==0) {
-            loadAndUpdateData();
-            setUpBalance();
-        }
+
+        loadAndUpdateData();
+        setUpBalance();
     }
 
     @Override

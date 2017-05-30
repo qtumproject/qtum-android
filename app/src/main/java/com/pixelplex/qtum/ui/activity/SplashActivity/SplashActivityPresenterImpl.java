@@ -35,7 +35,7 @@ public class SplashActivityPresenterImpl extends BasePresenterImpl implements Sp
             public void run() {
                 getView().startApp();
             }
-        },3000);
+        },1000);
     }
 
     @Override

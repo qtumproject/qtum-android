@@ -66,7 +66,7 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
                         return validateUINT(content, uint64);
 
                     default:
-                        parameter.value = content;
+                        parameter.value = source.toString();
                         return ALLOW;
                 }
             } else {
