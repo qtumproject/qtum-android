@@ -25,6 +25,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -155,11 +160,22 @@ public class StorageManager {
         return data;
     }
 
-    public String[] getContracts(Context context) {
+    public List<ContractInfo> getContracts(Context context) {
         ContextWrapper cw = new ContextWrapper(context);
         File contractDir = getPackagePath(cw,CONTRACTS_PACKAGE);
+        List<ContractInfo> list = new ArrayList<>();
+        for(File file :  contractDir.listFiles()){
+            list.add(new ContractInfo(file.getName(),file.lastModified(),"stub!"));
+        }
 
-        return contractDir.list();
+        Collections.sort(list, new Comparator<ContractInfo>() {
+            @Override
+            public int compare(ContractInfo contractInfo, ContractInfo t1) {
+                return contractInfo.getDate() > t1.getDate() ? 1 : contractInfo.getDate() < t1.getDate() ? -1 : 0;
+            }
+        });
+
+        return list;
     }
 
     public boolean writeAbiContract(Context context, String packageName,String content){

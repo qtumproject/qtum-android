@@ -418,6 +418,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                 long transactionTime = history.getBlockTime();
                 long delay = currentTime - transactionTime;
                 String dateString;
+                if(delay<60){
+                    dateString = delay + " sec ago";
+                }else
                 if (delay < 3600) {
                     dateString = delay / 60 + " min ago";
                 } else {
