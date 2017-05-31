@@ -72,8 +72,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     @BindView(R.id.tv_wallet_name)
     TextView mTextViewWalletName;
 
-//    @BindView(R.id.toolbar)
-//    LinearLayout mToolbar;
+    @BindView(R.id.fade_divider)
+    View fadeDivider;
 
     //HEADER
     @BindView(R.id.tv_balance)
@@ -140,7 +140,15 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
-       //TODO UPDATE BALANCE
+       balanceValue.setText(String.format("%s QTUM",balance));
+        if(unconfirmedBalance != null) {
+            uncomfirmedBalanceValue.setVisibility(View.VISIBLE);
+            uncomfirmedBalanceTitle.setVisibility(View.VISIBLE);
+            uncomfirmedBalanceValue.setText(String.format("%s QTUM", unconfirmedBalance));
+        } else {
+            uncomfirmedBalanceValue.setVisibility(View.GONE);
+            uncomfirmedBalanceTitle.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -250,55 +258,45 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                                 mSwipeRefreshLayout.setEnabled(false);
                             }
                         }
+
+                        uncomfirmedBalanceValue.setVisibility(View.GONE);
+                        uncomfirmedBalanceTitle.setVisibility(View.GONE);
+
                         float percents = (((getTotalRange() - Math.abs(verticalOffset))*1.0f)/getTotalRange());
 
-                        //BALANCE TITLE +
-                        animateText(percents, balanceTitle);
+                        balanceView.setAlpha((percents>0.5f)? percents : 1 - percents);
 
-                        float xValue;
+                        fadeDivider.setVisibility((percents == 0)? View.VISIBLE : View.INVISIBLE);
 
-                        //if(xValue + (balanceTitle.getWidth()*percents)/2 > 0) {
-                            balanceTitle.setX(appBarLayout.getWidth()/2 * percents - (balanceTitle.getWidth()*percents)/2);
+                        if(uncomfirmedBalanceTitle.getVisibility() == View.VISIBLE) {
+                            animateText(percents, balanceTitle);
+                            balanceTitle.setX(appBarLayout.getWidth() / 2 * percents - (balanceTitle.getWidth() * percents) / 2);
 
-                       // }
-                        //BALANCE TITLE +
-
-                        //BALANCE VALUE
-                        //animateText(percents, balanceValue);
-                        //balanceValue.setX(appBarLayout.getWidth() - (appBarLayout.getWidth()/2 * percents + balanceValue.getWidth()/2));
-//                        if(balanceValue.getY() > appBarLayout.getHeight() / 2 * percents - balanceValue.getHeight() - balanceTitle.getHeight()) {
-//                            balanceValue.setY(appBarLayout.getHeight() / 2 * percents - balanceValue.getHeight() - balanceTitle.getHeight());
-//                        }
-                        //BALANCE VALUE
-
-                        //UNCONFIRMED BALANCE VALUE
-                        animateText(percents, uncomfirmedBalanceValue);
-                        uncomfirmedBalanceValue.setX(appBarLayout.getWidth() - (appBarLayout.getWidth()/2 * percents + (uncomfirmedBalanceValue.getWidth()*percents)/2) - uncomfirmedBalanceValue.getWidth()* (1-percents));
+                            animateText(percents, balanceValue);
+                            balanceValue.setX(appBarLayout.getWidth() - (appBarLayout.getWidth() / 2 * percents + (balanceValue.getWidth() * percents) / 2) - balanceValue.getWidth() * (1 - percents));
+                            balanceValue.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - balanceValue.getHeight() * percents - balanceValue.getHeight() * (1 - percents));
 
 
-                        //UNCONFIRMED BALANCE VALUE
+                            animateText(percents, uncomfirmedBalanceValue);
+                            uncomfirmedBalanceValue.setX(appBarLayout.getWidth() - (appBarLayout.getWidth() / 2 * percents + (uncomfirmedBalanceValue.getWidth() * percents) / 2) - uncomfirmedBalanceValue.getWidth() * (1 - percents));
 
-                        //UNCONFIRMED BALANCE TITLE
-                        animateText(percents, uncomfirmedBalanceTitle);
-                        uncomfirmedBalanceTitle.setY(balanceView.getHeight()/2 + uncomfirmedBalanceValue.getHeight() * percents - (uncomfirmedBalanceTitle.getHeight()*percents/2*(1-percents)));
-                        uncomfirmedBalanceTitle.setX(appBarLayout.getWidth()/2 * percents - (uncomfirmedBalanceTitle.getWidth()*percents)/2);
+                            animateText(percents, uncomfirmedBalanceTitle);
+                            uncomfirmedBalanceTitle.setY(balanceView.getHeight() / 2 + uncomfirmedBalanceValue.getHeight() * percents - (uncomfirmedBalanceTitle.getHeight() * percents * (1 - percents)));
+                            uncomfirmedBalanceTitle.setX(appBarLayout.getWidth() / 2 * percents - (uncomfirmedBalanceTitle.getWidth() * percents) / 2);
+                        } else {
 
-                        //UNCONFIRMED BALANCE TITLE
+                            animateText(percents, balanceTitle);
+                            balanceTitle.setX(appBarLayout.getWidth() / 2 * percents - (balanceTitle.getWidth() * percents) / 2);
 
-                        prevPercents = percents;
-                        Log.d("PERCENT ",String.valueOf(percents));
+                            animateText(percents, balanceValue);
+                            balanceValue.setX(appBarLayout.getWidth() - (appBarLayout.getWidth() / 2 * percents + (balanceValue.getWidth() * percents) / 2) - balanceValue.getWidth() * (1 - percents));
+                            balanceValue.setY(balanceView.getHeight() / 2 - balanceValue.getHeight() * percents - balanceValue.getHeight() * (1 - percents));
+                            //TODO
+
+                        }
+
                     }
                 });
-    }
-
-    float prevPercents=1;
-
-    public int getUnconfirmedValueCenter() {
-        return (int) (uncomfirmedBalanceValue.getY() + uncomfirmedBalanceValue.getHeight()/2);
-    }
-
-    public int getUnconfirmedTitleCenter() {
-        return (int) (uncomfirmedBalanceTitle.getY() + uncomfirmedBalanceTitle.getHeight()/2);
     }
 
     public int getTotalRange() {
@@ -311,8 +309,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             view.setScaleY(percents);
         }
     }
-
-    float maxFontSize = 24;
 
     private class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

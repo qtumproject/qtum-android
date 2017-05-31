@@ -11,7 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:typefaceAsset="@string/simplonMonoMedium"
-            android:text="23 700.000027 QTUM"
+            android:text="0 QTUM"
             android:textColor="@color/background"
             android:textSize="24sp" />
 
@@ -25,17 +25,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/background"/>
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@color/background"/>-->
 
         <com.pixelplex.qtum.utils.FontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+
             app:typefaceAsset="@string/simplonMonoRegular"
-            android:text="3 700.00137 QTUM"
+            android:text="0 QTUM"
             android:textSize="20sp"
             android:textColor="@color/background"
             android:id="@+id/tv_unconfirmed_balance"/>
@@ -44,6 +45,7 @@
         android:id="@+id/unconfirmed_balance_title"
         android:gravity="center"
         app:typefaceAsset="@string/simplonMonoRegular"
+
         android:textColor="@color/background"
         android:padding="4dp"
         android:text="@string/not_confirmed_balance"

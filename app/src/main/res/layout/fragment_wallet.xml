@@ -45,7 +45,8 @@
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
                 app:contentInsetRight="0dp"
-                app:contentInsetEnd="0dp">
+                app:contentInsetEnd="0dp"
+                app:elevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -57,11 +58,12 @@
                         android:background="@color/colorPrimary"
                         android:layout_height="56dp">
 
-                        <TextView
+                        <com.pixelplex.qtum.utils.FontTextView
                             android:id="@+id/tv_wallet_name"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
+                            app:typefaceAsset="@string/euclidFlexMedium"
                             android:text="@string/my_wallet"
                             android:textColor="@color/background"
                             android:textSize="@dimen/toolbar_text_size"/>
@@ -78,6 +80,8 @@
                             android:scaleType="centerInside"
                             app:srcCompat="@drawable/ic_qrcode"/>
                         <View
+                            android:id="@+id/fade_divider"
+                            android:visibility="invisible"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_alignParentBottom="true"
