@@ -101,8 +101,6 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
                 mNetworkConnectedFlag = networkConnectedFlag;
                 if(networkConnectedFlag){
                     loadAndUpdateData();
-                }else{
-
                 }
             }
         });
