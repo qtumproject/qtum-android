@@ -158,6 +158,7 @@ public class StorageManager {
     public String[] getContracts(Context context) {
         ContextWrapper cw = new ContextWrapper(context);
         File contractDir = getPackagePath(cw,CONTRACTS_PACKAGE);
+
         return contractDir.list();
     }
 

@@ -11,6 +11,7 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
 import com.pixelplex.qtum.ui.fragment.LanguageFragment.LanguageFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
+import com.pixelplex.qtum.ui.fragment.ProfileFragment.SmartContractsFragment.SmartContractsFragment;
 import com.pixelplex.qtum.ui.fragment.SetTokenNameFragment.SetTokenNameFragment;
 import com.pixelplex.qtum.ui.fragment.SmartContractListFragment.SmartContractListFragment;
 import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
@@ -116,9 +117,9 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     }
 
     @Override
-    public void onCreateTokenClick() {
-        SmartContractListFragment smartContractListFragment = SmartContractListFragment.newInstance();
-        getView().openFragment(smartContractListFragment);
+    public void onSmartContractsClick() {
+        SmartContractsFragment smartContractsFragment = SmartContractsFragment.newInstance();
+        getView().openFragment(smartContractsFragment);
     }
 
     @Override

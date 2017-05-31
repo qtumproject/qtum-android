@@ -115,5 +115,8 @@
     <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
     <string name="retry">RETRY</string>
     <string name="smart_contracts">Smart Contracts</string>
+    <string name="create_contract">Create Contract</string>
+    <string name="my_contracts">My Contracts</string>
+    <string name="contracts_store">Contracts Store</string>
 
 </resources>

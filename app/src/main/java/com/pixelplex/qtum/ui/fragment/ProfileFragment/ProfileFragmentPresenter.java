@@ -6,6 +6,6 @@ interface ProfileFragmentPresenter {
     void onLogOutClick();
     void onWalletBackUpClick();
     void onLogOutYesClick();
-    void onCreateTokenClick();
+    void onSmartContractsClick();
     void onSubscribeTokensClick();
 }
