@@ -114,5 +114,6 @@
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
     <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
     <string name="retry">RETRY</string>
+    <string name="smart_contracts">Smart Contracts</string>
 
 </resources>
