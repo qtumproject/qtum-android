@@ -4,6 +4,5 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 
 interface SetTokenConfirmFragmentView extends BaseFragmentView{
-    void enableSendButton();
-    void disableSendButton();
+
 }

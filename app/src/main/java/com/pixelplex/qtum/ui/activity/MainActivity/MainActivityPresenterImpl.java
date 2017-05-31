@@ -57,7 +57,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     public void onCreate(Context context) {
         super.onCreate(context);
 
-        mNetworkReceiver = new NetworkStateReceiver();
+        mNetworkReceiver = new NetworkStateReceiver(getView().getNetworkConnectedFlag());
         mContext.registerReceiver(mNetworkReceiver,
                     new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 

@@ -214,15 +214,6 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         mTextViewTotalBalanceNumber.setText(balance);
     }
 
-    @Override
-    public void enableSendButton() {
-        mButtonSend.setEnabled(true);
-    }
-
-    @Override
-    public void disableSendButton() {
-        mButtonSend.setEnabled(false);
-    }
 
     public void onResponse(String pubAddress, Double amount) {
         getPresenter().onResponse(pubAddress, amount);

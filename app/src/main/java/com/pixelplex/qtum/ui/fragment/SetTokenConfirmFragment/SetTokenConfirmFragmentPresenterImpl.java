@@ -14,6 +14,7 @@ class SetTokenConfirmFragmentPresenterImpl extends BaseFragmentPresenterImpl imp
     private SetTokenConfirmFragmentView mSetTokenConfirmFragmentView;
     private SetTokenConfirmFragmentInteractorImpl mSetTokenConfirmFragmentInteractor;
     private NetworkStateReceiver mNetworkStateReceiver;
+    private boolean mNetworkConnectedFlag = false;
 
     SetTokenConfirmFragmentPresenterImpl(SetTokenConfirmFragmentView setTokenConfirmFragmentView){
         mSetTokenConfirmFragmentView = setTokenConfirmFragmentView;
@@ -27,31 +28,35 @@ class SetTokenConfirmFragmentPresenterImpl extends BaseFragmentPresenterImpl imp
 
     @Override
     public void onConfirmClick() {
-        getView().setProgressDialog("Sending");
-        getInteractor().sendToken(new SetTokenConfirmFragmentInteractorImpl.SendTokenCallBack() {
-            @Override
-            public void onSuccess() {
-                getView().dismissProgressDialog();
-                getView().setAlertDialog("Sent");
-                (new Handler()).postDelayed(new Runnable() {
-                    public void run() {
-                        getView().dismissAlertDialog();
-                    }
-                }, 2000);
-                getInteractor().clearToken();
-            }
+        if(mNetworkConnectedFlag){
+            getView().setProgressDialog("Sending");
+            getInteractor().sendToken(new SetTokenConfirmFragmentInteractorImpl.SendTokenCallBack() {
+                @Override
+                public void onSuccess() {
+                    getView().dismissProgressDialog();
+                    getView().setAlertDialog("Sent", "Has been sent", "Ok");
+                    (new Handler()).postDelayed(new Runnable() {
+                        public void run() {
+                            getView().dismissAlertDialog();
+                        }
+                    }, 2000);
+                    getInteractor().clearToken();
+                }
 
-            @Override
-            public void onError(String error) {
-                getView().dismissProgressDialog();
-                getView().setAlertDialog(error);
-                (new Handler()).postDelayed(new Runnable() {
-                    public void run() {
-                        getView().dismissAlertDialog();
-                    }
-                }, 2000);
-            }
-        });
+                @Override
+                public void onError(String error) {
+                    getView().dismissProgressDialog();
+                    getView().setAlertDialog("Error", error, "Ok");
+                    (new Handler()).postDelayed(new Runnable() {
+                        public void run() {
+                            getView().dismissAlertDialog();
+                        }
+                    }, 2000);
+                }
+            });
+        }else {
+            getView().setAlertDialog("No Internet Connection","Please check your network settings","Ok");
+        }
     }
 
     @Override
@@ -69,14 +74,10 @@ class SetTokenConfirmFragmentPresenterImpl extends BaseFragmentPresenterImpl imp
         mNetworkStateReceiver  = ((MainActivity) getView().getFragmentActivity()).getNetworkReceiver();
         mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
             @Override
-            public void onNetworkConnected() {
-                getView().enableSendButton();
+            public void onNetworkStateChanged(boolean networkConnectedFlag) {
+                mNetworkConnectedFlag = networkConnectedFlag;
             }
 
-            @Override
-            public void onNetworkDisconnected() {
-                getView().disableSendButton();
-            }
         });
 
     }
