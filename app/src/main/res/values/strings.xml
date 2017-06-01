@@ -115,5 +115,6 @@
     <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
     <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
+    <string name="retry">RETRY</string>
 
 </resources>

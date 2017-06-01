@@ -87,13 +87,4 @@ public class SetTokenConfirmFragment extends BaseFragment implements SetTokenCon
         return R.layout.fragment_set_token_confirm;
     }
 
-    @Override
-    public void enableSendButton() {
-        mButtonConfirm.setEnabled(true);
-    }
-
-    @Override
-    public void disableSendButton() {
-        mButtonConfirm.setEnabled(false);
-    }
 }
