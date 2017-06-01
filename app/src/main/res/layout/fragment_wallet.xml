@@ -99,90 +99,90 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_height="match_parent">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@+id/ll_receive"
-        android:background="@color/background"/>
-
-    <LinearLayout
-        android:id="@+id/ll_receive"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
-        android:clickable="true"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:tint="@color/background"
-            android:paddingEnd="6dp"
-            android:layout_marginStart="8dp"
-            app:srcCompat="@drawable/ic_createnew"/>
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.pixelplex.qtum.utils.FontTextView
-                android:layout_width="wrap_content"
-                android:layout_marginTop="8dp"
-                app:typefaceAsset="@string/simplonMonoRegular"
-                android:layout_height="wrap_content"
-                android:text="@string/public_key"
-                android:textColor="@color/background"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_above="@+id/ll_receive"
+                android:background="@color/background" />
 
-            <com.pixelplex.qtum.utils.FontTextView
-                android:id="@+id/tv_public_key"
-                app:typefaceAsset="@string/simplonMonoMedium"
-                android:layout_marginBottom="8dp"
-                android:layout_width="wrap_content"
-                android:paddingEnd="16dp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/background"/>
+            <LinearLayout
+                android:id="@+id/ll_receive"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorPrimary"
+                android:clickable="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:paddingEnd="6dp"
+                    android:tint="@color/background"
+                    app:srcCompat="@drawable/ic_createnew" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:weightSum="2"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@string/public_key"
+                        android:textColor="@color/background"
+                        app:typefaceAsset="@string/simplonMonoRegular" />
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        android:id="@+id/tv_public_key"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="16dp"
+                        android:textColor="@color/background"
+                        app:typefaceAsset="@string/simplonMonoMedium" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/bottom_vav_view_tab_selected_drawable"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:text="@string/activity"
+                android:textColor="@color/colorPrimary" />
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:splitMotionEvents="false" />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
         </LinearLayout>
-    </LinearLayout>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center_vertical"
-        android:padding="8dp"
-        android:textColor="@color/colorPrimary"
-        android:background="@drawable/bottom_vav_view_tab_selected_drawable"
-        android:text="@string/activity"
-        />
-
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="40dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:splitMotionEvents="false"/>
-
-    </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

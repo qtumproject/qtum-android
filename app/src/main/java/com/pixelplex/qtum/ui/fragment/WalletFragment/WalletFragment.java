@@ -75,6 +75,14 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     @BindView(R.id.fade_divider)
     View fadeDivider;
 
+    @BindView(R.id.tv_public_key)
+    FontTextView publicKeyValue;
+
+    @OnClick(R.id.ll_receive)
+    public void onReceiveClick(){
+        mWalletFragmentPresenter.onReceiveClick();
+    }
+
     //HEADER
     @BindView(R.id.tv_balance)
     FontTextView balanceValue;
@@ -86,9 +94,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     @BindView(R.id.unconfirmed_balance_title)
     FontTextView uncomfirmedBalanceTitle;
     //HEADER
-
-//    @BindView(R.id.center_marker)
-//    View centerMarker;
 
     @BindView(R.id.balance_view)
     FrameLayout balanceView;
@@ -153,7 +158,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void updatePubKey(String pubKey) {
-      //TODO UPDATE PUB KEY
+      publicKeyValue.setText(pubKey);
     }
 
     @Override
@@ -297,6 +302,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
                     }
                 });
+        mWalletFragmentPresenter.notifyHeader();
     }
 
     public int getTotalRange() {
