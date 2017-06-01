@@ -35,6 +35,23 @@
 
                 <include layout="@layout/fragment_wallet_appbar" />
 
+                <!--<LinearLayout-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:gravity="center"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content">-->
+
+                    <!--<ImageView-->
+                        <!--android:src="@drawable/tab_indicator_selected_inverse"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content" />-->
+                    <!--<ImageView-->
+                        <!--android:src="@drawable/tab_indicator_default_inverse"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content" />-->
+
+                <!--</LinearLayout>-->
+
             </FrameLayout>
 
             <android.support.v7.widget.Toolbar
@@ -97,10 +114,15 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -167,23 +189,15 @@
                 android:text="@string/activity"
                 android:textColor="@color/colorPrimary" />
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_refresh"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false" />
 
-            </android.support.v4.widget.SwipeRefreshLayout>
-
-
-
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>
