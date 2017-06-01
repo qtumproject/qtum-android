@@ -39,8 +39,8 @@ public class SmartContractConstructorPresenterImpl extends BaseFragmentPresenter
        getView().onContractConstructorPrepared(contractMethod.inputParams);
     }
 
-    public void confirm(List<ContractMethodParameter> list){
-        ContractConfirmFragment fragment = ContractConfirmFragment.newInstance(list);
+    public void confirm(List<ContractMethodParameter> list, String contractName){
+        ContractConfirmFragment fragment = ContractConfirmFragment.newInstance(list, contractName);
         getView().openFragment(fragment);
     }
 

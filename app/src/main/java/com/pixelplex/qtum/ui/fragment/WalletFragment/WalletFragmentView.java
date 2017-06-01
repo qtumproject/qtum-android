@@ -20,5 +20,5 @@ interface WalletFragmentView extends BaseFragmentView {
     void notifyConfirmHistory(int notifyPosition);
     void setWalletName(String walletName);
     void notifyNewToken();
-    int getPosition();
+
 }

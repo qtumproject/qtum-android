@@ -14,6 +14,7 @@ import com.pixelplex.qtum.dataprovider.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.ui.fragment.TransactionFragment.TransactionFragment;
 
@@ -116,6 +117,13 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     }
 
+    public void notifyHeader() {
+        String pubKey = getInteractor().getAddress();
+        getView().updatePubKey(pubKey);
+        loadAndUpdateData();
+        setUpBalance();
+    }
+
     @Override
     public void onPause(Context context) {
         super.onPause(context);
@@ -136,6 +144,11 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true,null,null);
         getView().openRootFragment(sendBaseFragment);
         ((MainActivity) getView().getFragmentActivity()).setRootFragment(sendBaseFragment);
+    }
+
+    public void onReceiveClick(){
+        ReceiveFragment receiveFragment = ReceiveFragment.newInstance();
+        getView().openFragment(receiveFragment);
     }
 
     @Override
@@ -169,20 +182,19 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     @Override
     public void changePage(int position) {
-        getInteractor().unSubscribe();
-        //TODO: delete
-        getView().setAdapterNull();
-        if(position==0){
-            getView().setWalletName("QTUM");
-        } else {
-            getView().setWalletName(getInteractor().getTokenList().get(position-1).getName());
-        }
-        String pubKey = getInteractor().getAddress();
-        getView().updatePubKey(pubKey);
-        if(getView().getPosition()==0) {
-            loadAndUpdateData();
-            setUpBalance();
-        }
+//        getInteractor().unSubscribe();
+//        //TODO: delete
+//        getView().setAdapterNull();
+//        if(position==0){
+//            getView().setWalletName("QTUM");
+//        } else {
+//            getView().setWalletName(getInteractor().getTokenList().get(position-1).getName());
+//        }
+//        String pubKey = getInteractor().getAddress();
+//        getView().updatePubKey(pubKey);
+//
+//        loadAndUpdateData();
+//        setUpBalance();
     }
 
     @Override

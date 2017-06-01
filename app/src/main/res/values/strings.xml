@@ -108,6 +108,8 @@
     <string name="step_1_2">Step 1 of 2</string>
     <string name="step_2_2">Step 2 of 2</string>
     <string name="free">Free</string>
+    <string name="complete">Complete</string>
+    <string name="ok">Ok</string>
 
     <!--FONT PATHS-->
     <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
