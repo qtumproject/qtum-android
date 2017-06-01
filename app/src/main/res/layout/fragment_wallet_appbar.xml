@@ -1,119 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:gravity="center"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
-    <View
-        android:id="@+id/center_marker"
-        android:layout_width="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_height="0dp"/>
 
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/tv_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:typefaceAsset="@string/simplonMonoMedium"
-            android:layout_gravity="center"
-            android:text="23 700.000027"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@+id/available_balance_title"
+            android:text="0 QTUM"
             android:textColor="@color/background"
-            android:textSize="30sp"/>
+            android:textSize="24sp" />
 
     <com.pixelplex.qtum.utils.FontTextView
         android:id="@+id/available_balance_title"
-        android:layout_above="@+id/center_marker"
         android:gravity="center"
         app:typefaceAsset="@string/simplonMonoRegular"
         android:textColor="@color/background"
-        android:layout_marginBottom="8dp"
+        android:padding="4dp"
         android:text="@string/available_balance"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
         <com.pixelplex.qtum.utils.FontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center"
-            android:layout_marginStart="16dp"
-            android:layout_alignBottom="@+id/tv_balance"
-            android:layout_toEndOf="@+id/tv_balance"
-            android:id="@+id/tv_symbol"
-            android:text="@string/qtum"
-            app:typefaceAsset="@string/simplonMonoMedium"
-            android:textColor="@color/background"/>
 
-        <com.pixelplex.qtum.utils.FontTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
             app:typefaceAsset="@string/simplonMonoRegular"
-            android:text="3 700.00137 QTUM"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/center_marker"
+            android:text="0 QTUM"
             android:textSize="20sp"
             android:textColor="@color/background"
             android:id="@+id/tv_unconfirmed_balance"/>
 
     <com.pixelplex.qtum.utils.FontTextView
         android:id="@+id/unconfirmed_balance_title"
-        android:layout_below="@+id/tv_unconfirmed_balance"
         android:gravity="center"
         app:typefaceAsset="@string/simplonMonoRegular"
+
         android:textColor="@color/background"
-        android:layout_marginBottom="8dp"
+        android:padding="4dp"
         android:text="@string/not_confirmed_balance"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@+id/ll_receive"
-        android:background="@color/background"/>
-
-    <LinearLayout
-        android:id="@+id/ll_receive"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/background_pressed_alpha_white"
-        android:clickable="true"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:tint="@color/background"
-            android:paddingEnd="6dp"
-            android:layout_marginStart="8dp"
-            app:srcCompat="@drawable/ic_createnew"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.pixelplex.qtum.utils.FontTextView
-                android:layout_width="wrap_content"
-                android:layout_marginTop="8dp"
-                app:typefaceAsset="@string/simplonMonoRegular"
-                android:layout_height="wrap_content"
-                android:text="@string/public_key"
-                android:textColor="@color/background"/>
-
-            <com.pixelplex.qtum.utils.FontTextView
-                android:id="@+id/tv_public_key"
-                app:typefaceAsset="@string/simplonMonoMedium"
-                android:layout_marginBottom="8dp"
-                android:layout_width="wrap_content"
-                android:paddingEnd="16dp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/background"/>
-        </LinearLayout>
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

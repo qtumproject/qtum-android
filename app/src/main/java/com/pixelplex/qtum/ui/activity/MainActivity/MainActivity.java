@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.activity.MainActivity;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,6 +31,7 @@ import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.BaseActivity.BaseActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.ui.fragment.ContractConfirmFragment.CompleteDialogFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 
 import java.lang.reflect.Field;
@@ -183,6 +185,30 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         });
 
         getPresenter().processIntent(getIntent());
+    }
+
+    Dialog processingDialog;
+
+    public void showProcessing() {
+        if(processingDialog == null) {
+            processingDialog = new Dialog(this);
+            processingDialog.setContentView(R.layout.lyt_processing_dialog);
+        }
+        processingDialog.show();
+    }
+
+    public void hideProcessing() {
+        if(processingDialog != null && processingDialog.isShowing()) {
+            processingDialog.hide();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(processingDialog != null) {
+            processingDialog.dismiss();
+        }
     }
 
     public void setRootFragment(Fragment rootFragment) {

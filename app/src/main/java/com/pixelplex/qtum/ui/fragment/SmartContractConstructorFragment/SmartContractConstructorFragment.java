@@ -47,7 +47,7 @@ public class SmartContractConstructorFragment extends BaseFragment implements Sm
     @OnClick(R.id.confirm)
     public void onConfirmClick(){
         if(adapter != null) {
-            presenter.confirm(adapter.getParams());
+            presenter.confirm(adapter.getParams(), getArguments().getString(constructorNameKey));
         }
     }
 
