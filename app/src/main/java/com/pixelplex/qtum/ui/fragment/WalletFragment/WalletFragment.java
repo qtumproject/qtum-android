@@ -216,6 +216,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     @Override
     public void initializeViews() {
 
+        uncomfirmedBalanceValue.setVisibility(View.GONE);
+        uncomfirmedBalanceTitle.setVisibility(View.GONE);
+
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
 
         ((MainActivity) getActivity()).showBottomNavigationView();
@@ -259,9 +262,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                             }
                         }
 
-                        uncomfirmedBalanceValue.setVisibility(View.GONE);
-                        uncomfirmedBalanceTitle.setVisibility(View.GONE);
-
                         float percents = (((getTotalRange() - Math.abs(verticalOffset))*1.0f)/getTotalRange());
 
                         balanceView.setAlpha((percents>0.5f)? percents : 1 - percents);
@@ -287,11 +287,11 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
                             animateText(percents, balanceTitle);
                             balanceTitle.setX(appBarLayout.getWidth() / 2 * percents - (balanceTitle.getWidth() * percents) / 2);
+                            balanceTitle.setY(balanceView.getHeight()/2 + balanceTitle.getHeight()/2 * percents - balanceTitle.getHeight()/2 * (1-percents));
 
                             animateText(percents, balanceValue);
                             balanceValue.setX(appBarLayout.getWidth() - (appBarLayout.getWidth() / 2 * percents + (balanceValue.getWidth() * percents) / 2) - balanceValue.getWidth() * (1 - percents));
-                            balanceValue.setY(balanceView.getHeight() / 2 - balanceValue.getHeight() * percents - balanceValue.getHeight() * (1 - percents));
-                            //TODO
+                            balanceValue.setY(balanceView.getHeight() / 2 - balanceValue.getHeight() * percents - balanceValue.getHeight()/2 * (1-percents));
 
                         }
 
