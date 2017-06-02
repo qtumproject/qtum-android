@@ -168,7 +168,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void stopRefreshRecyclerAnimation() {
-        mSwipeRefreshLayout.setRefreshing(false);
+        if(mSwipeRefreshLayout!=null) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override

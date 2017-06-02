@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_ibtn_back"
                 android:paddingBottom="10dp"
-                android:tint="@color/background"
+                android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="10dp"
                 app:srcCompat="@drawable/ic_back_indicator"/>

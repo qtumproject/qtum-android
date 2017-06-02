@@ -32,9 +32,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="?attr/selectableItemBackground"
+                        android:background="@drawable/background_ibtn_back"
                         android:paddingBottom="10dp"
-                        android:tint="@color/background"
+                        android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:paddingTop="10dp"
                         app:srcCompat="@drawable/ic_back_indicator"/>
@@ -60,7 +60,7 @@
                         android:layout_margin="9dp"
                         android:background="@drawable/background_pressed_alpha_white"
                         android:scaleType="centerInside"
-                        app:srcCompat="@drawable/ic_share2"/>
+                        app:srcCompat="@drawable/ic_share"/>
                 </LinearLayout>
 
         </android.support.v7.widget.Toolbar>

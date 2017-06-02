@@ -2,6 +2,7 @@ package com.pixelplex.qtum.ui.fragment.ProfileFragment.SmartContractsFragment;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.ui.fragment.MyContractsFragment.MyContractsFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.SettingObject;
 import com.pixelplex.qtum.ui.fragment.SmartContractListFragment.SmartContractListFragment;
 
@@ -25,7 +26,7 @@ public class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterIm
 
     private void initSettingsData() {
         settingsData = new ArrayList<>();
-        settingsData.add(new SettingObject(R.string.create_contract,R.drawable.ic_tokencreate,0));
+        settingsData.add(new SettingObject(R.string.create_contract,R.drawable.ic_token,0));
         settingsData.add(new SettingObject(R.string.my_contracts,R.drawable.ic_tokensubscribe,0));
         settingsData.add(new SettingObject(R.string.contracts_store,R.drawable.ic_about,0));
     }
@@ -40,7 +41,8 @@ public class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterIm
     }
 
     public void onMyContractsClick(){
-
+        MyContractsFragment myContractsFragment = MyContractsFragment.newInstance();
+        view.openFragment(myContractsFragment);
     }
 
     public void onContractsStoreClick(){

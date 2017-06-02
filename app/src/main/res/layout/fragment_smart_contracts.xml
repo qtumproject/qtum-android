@@ -21,6 +21,17 @@
             android:background="@color/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
+            <ImageButton
+                android:id="@+id/ibt_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_ibtn_back"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp"
+                app:srcCompat="@drawable/ic_back_indicator"/>
+
             <com.pixelplex.qtum.utils.FontTextView
                 android:id="@+id/tv_toolbar_profile"
                 android:layout_width="match_parent"

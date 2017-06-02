@@ -23,6 +23,7 @@
 
             <ImageButton
                 android:id="@+id/ibt_back"
+                android:tint="@color/background"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_ibtn_back"
@@ -38,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="48dp"
                 android:gravity="center"
-                android:text="@string/receive"
+                android:text="@string/function_detail"
                 android:textColor="@color/background"
                 android:textSize="@dimen/toolbar_text_size"
                 app:typefaceAsset="@string/euclidFlexMedium" />
@@ -46,12 +47,55 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_above="@+id/buttons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+
+            <com.pixelplex.qtum.utils.FontButton
+                android:id="@+id/cancel"
+                android:text="@string/cancel"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"
+                app:typeface="@string/simplonMonoRegular"
+                android:textAllCaps="true"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <com.pixelplex.qtum.utils.FontButton
+                android:id="@+id/confirm"
+                android:text="@string/call"
+                android:gravity="center"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:background="?attr/selectableItemBackground"
+                android:textColor="@color/colorPrimary"
+                app:typeface="@string/simplonMonoRegular"
+                android:textAllCaps="true"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

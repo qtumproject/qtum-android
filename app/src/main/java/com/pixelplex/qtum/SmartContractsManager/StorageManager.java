@@ -52,6 +52,7 @@ public class StorageManager {
 
     private static String TYPE = "type";
     private static String CONSTRUCTOR_TYPE = "constructor";
+    private static String FUNCTION_TYPE = "function";
 
     private static String CONTRACTS_PACKAGE = "contracts";
 
@@ -261,6 +262,28 @@ public class StorageManager {
                     return gson.fromJson(jb.toString(), ContractMethod.class);
                 }
             }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<ContractMethod> getContractMethods(Context context, String contractName) {
+        String abiContent = readAbiContract(context,contractName);
+        JSONArray array = null;
+        List<ContractMethod> contractMethods = new ArrayList<>();
+        try {
+            array = new JSONArray(abiContent);
+
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jb = (JSONObject)array.getJSONObject(i);
+                if(FUNCTION_TYPE.equals(jb.getString(TYPE))){
+                    Gson gson = new Gson();
+                    contractMethods.add(gson.fromJson(jb.toString(), ContractMethod.class));
+                }
+            }
+            return contractMethods;
 
         } catch (JSONException e) {
             e.printStackTrace();

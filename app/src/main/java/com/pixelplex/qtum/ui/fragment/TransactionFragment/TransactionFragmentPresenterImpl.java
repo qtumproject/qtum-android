@@ -40,14 +40,6 @@ class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getView().getFragmentActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getView().getContext(), R.color.colorPrimaryDark));
-        }
-    }
-
-    @Override
     public void openTransactionView(int position) {
 
         String dateString;

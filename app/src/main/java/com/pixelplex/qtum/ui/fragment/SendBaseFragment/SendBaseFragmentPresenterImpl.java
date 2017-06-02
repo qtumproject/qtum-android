@@ -109,7 +109,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                     amount = new BigDecimal(String.valueOf(unspentOutput.getAmount()));
                     balance = balance.add(amount);
                 }
-                getView().updateAvailableBalance(balance.toString());
+                getView().updateAvailableBalance(balance.toString() + " QTUM");
             }
         });
     }

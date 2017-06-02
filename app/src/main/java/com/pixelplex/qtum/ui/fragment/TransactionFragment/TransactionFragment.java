@@ -94,10 +94,6 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
         mTextViewReceivedTime.setText(receivedTime);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getFragmentActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
-        }
-
         TransactionPagerAdapter transactionPagerAdapter = new TransactionPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(transactionPagerAdapter);
         tabIndicator.setupWithViewPager(mViewPager,true);

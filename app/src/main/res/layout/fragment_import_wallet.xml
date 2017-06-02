@@ -54,22 +54,22 @@
             android:textColorHint="@color/colorPrimary"/>
 
         <com.pixelplex.qtum.utils.FontButton
-            android:id="@+id/bt_import"
+            android:id="@+id/bt_cancel"
             android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/bt_cancel"
+            android:layout_above="@+id/bt_import"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="32dp"
             android:background="?attr/selectableItemBackground"
-            android:text="@string/import_button"
+            android:text="@string/cancel"
             app:typeface="@string/simplonMonoRegular"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/button_text"/>
 
         <com.pixelplex.qtum.utils.FontButton
-            android:id="@+id/bt_cancel"
+            android:id="@+id/bt_import"
             android:layout_width="wrap_content"
             android:layout_marginEnd="32dp"
             android:padding="16dp"
@@ -78,7 +78,7 @@
             android:layout_alignParentEnd="true"
             app:typeface="@string/simplonMonoRegular"
             android:background="?attr/selectableItemBackground"
-            android:text="@string/cancel"
+            android:text="@string/import_button"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/button_text"/>

@@ -147,6 +147,7 @@ public class KeyStorage {
                     sWallet.saveToFile(mFile);
                     getKeyList(ADDRESSES_COUNT);
                     subscriber.onNext(sWallet);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

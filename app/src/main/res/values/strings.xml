@@ -120,5 +120,8 @@
     <string name="create_contract">Create Contract</string>
     <string name="my_contracts">My Contracts</string>
     <string name="contracts_store">Contracts Store</string>
+    <string name="call">Call</string>
+    <string name="function_detail">Function Detail</string>
+    <string name="contracts">Contracts</string>
 
 </resources>

@@ -23,11 +23,11 @@
 
             <ImageButton
                 android:id="@+id/ibt_back"
+                android:tint="@color/background"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_ibtn_back"
                 android:paddingBottom="10dp"
-                android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="10dp"
                 app:srcCompat="@drawable/ic_back_indicator"/>
@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="48dp"
                 android:gravity="center"
-                android:text="@string/receive"
+                android:text="@string/contracts"
                 android:textColor="@color/background"
                 android:textSize="@dimen/toolbar_text_size"
                 app:typefaceAsset="@string/euclidFlexMedium" />
@@ -46,12 +46,18 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_above="@+id/buttons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
