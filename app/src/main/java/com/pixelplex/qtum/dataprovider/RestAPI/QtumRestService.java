@@ -2,7 +2,6 @@ package com.pixelplex.qtum.dataprovider.RestAPI;
 
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenParams;
 
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractParamsRequest;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
@@ -48,6 +47,4 @@ interface QtumRestService {
     @GET("/history/{limit}/{offset}")
     Observable<HistoryResponse> getHistoryListForSeveralAddresses(@Path("limit") int limit, @Path("offset") int offset, @Query("addresses[]") List<String> addresses);
 
-    @GET("/contracts/{address_contract}/params")
-    Observable<TokenParams> getContractsParams(@Path("address_contract") String addressContract, @Query("keys") String keys);
 }

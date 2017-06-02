@@ -3,7 +3,6 @@ package com.pixelplex.qtum.dataprovider.RestAPI;
 
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenParams;
 
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractParamsRequest;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
@@ -84,7 +83,4 @@ public class QtumService {
         return mServiceApi.generateTokenBytecode(contractParamsRequest);
     }
 
-    public Observable<TokenParams> getContractsParams(String addressContact){
-        return mServiceApi.getContractsParams(addressContact,"symbol,decimals,name,totalSupply");
-    }
 }

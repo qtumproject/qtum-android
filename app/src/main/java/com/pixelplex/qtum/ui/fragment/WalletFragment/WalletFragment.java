@@ -33,8 +33,7 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.FixedSpeedScroller;
-import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.WalletAppBarPagerAdapter;
+
 import com.pixelplex.qtum.utils.FontTextView;
 
 import java.lang.reflect.Field;

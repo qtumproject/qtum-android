@@ -23,13 +23,11 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
 import com.pixelplex.qtum.dataprovider.RestAPI.TokenListener;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalanceChangeListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenParams;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.datastorage.TokenList;
 import com.pixelplex.qtum.datastorage.TokenSharedPreference;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.utils.QtumIntent;
@@ -138,24 +136,6 @@ public class UpdateService extends Service {
 
                     final String tokenAddress = Hex.toHexString(out2);
 
-                    QtumService.newInstance().getContractsParams(tokenAddress)
-                            .subscribe(new Subscriber<TokenParams>() {
-                                @Override
-                                public void onCompleted() {
-                                }
-                                @Override
-                                public void onError(Throwable e) {
-
-                                }
-                                @Override
-                                public void onNext(TokenParams tokenParams) {
-                                    tokenParams.setAddress(tokenAddress);
-                                    addToTokenList(tokenParams);
-                                    if(mTokenListener != null){
-                                        mTokenListener.newToken();
-                                    }
-                                }
-                            });
 
 
                     subscribeTokenBalanceChange(tokenAddress);
@@ -188,7 +168,7 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 TokenBalance tokenBalance = gson.fromJson(data.toString(), TokenBalance.class);
-                TokenList.getTokenList().setTokenBalance(tokenBalance);
+
                 TokenBalanceChangeListener tokenBalanceChangeListener = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
                 if(tokenBalanceChangeListener!=null){
                     tokenBalanceChangeListener.onBalanceChange();
@@ -221,10 +201,6 @@ public class UpdateService extends Service {
             e.printStackTrace();
         }
         socket.emit("subscribe","token_balance_change",jsonObject);
-    }
-
-    private void addToTokenList(TokenParams tokenParams){
-        TokenList.getTokenList().addToTokenList(tokenParams);
     }
 
 
