@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragment;
+import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -46,7 +47,7 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
 
     @Override
     public void onContinueClick() {
-        final WalletFragment walletFragment = WalletFragment.newInstance();
+        final WalletMainFragment walletFragment = WalletMainFragment.newInstance();
         ((MainActivity)getView().getFragmentActivity()).setRootFragment(walletFragment);
         getView().openRootFragment(walletFragment);
     }

@@ -24,6 +24,7 @@ import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragment;
+import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 import com.pixelplex.qtum.utils.QtumIntent;
 
 
@@ -147,7 +148,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                     getView().popBackStack();
                     return true;
                 }
-                mRootFragment = WalletFragment.newInstance();
+                mRootFragment = WalletMainFragment.newInstance();
                 break;
             case R.id.item_profile:
                 if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(ProfileFragment.class.getCanonicalName())) {
@@ -199,7 +200,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     public void processNewIntent(Intent intent) {
         switch (intent.getAction()) {
             case QtumIntent.OPEN_FROM_NOTIFICATION:
-                mRootFragment = WalletFragment.newInstance();
+                mRootFragment = WalletMainFragment.newInstance();
                 getView().openRootFragment(mRootFragment);
                 getView().setIconChecked(0);
                 break;

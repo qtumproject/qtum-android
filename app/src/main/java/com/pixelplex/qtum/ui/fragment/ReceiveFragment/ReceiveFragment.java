@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -168,12 +169,12 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
     @Override
     public void setBalance(String balance) {
-        mTextViewTotalBalanceNumber.setText(String.valueOf(balance)+" QTUM");
+        mTextViewTotalBalanceNumber.setText((balance != null)? String.format("%s QTUM",balance) : "N/A");
     }
 
     @Override
     public void showToast() {
-        Snackbar.make(mCoordinatorLayout, R.string.coped, Snackbar.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),R.string.coped,Toast.LENGTH_SHORT).show();
     }
 
     public void onChangeAddress(){
