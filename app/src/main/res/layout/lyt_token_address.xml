@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/ll_receive"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:clickable="true"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/plus"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:paddingEnd="6dp"
+        android:layout_centerVertical="true"
+        android:tint="@color/background"
+        app:srcCompat="@drawable/ic_createnew" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:weightSum="2"
+        android:layout_toEndOf="@+id/plus"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/token_address"
+            android:textColor="@color/background"
+            app:typefaceAsset="@string/simplonMonoRegular" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/tv_public_key"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="N/A"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingEnd="16dp"
+            android:textColor="@color/background"
+            app:typefaceAsset="@string/simplonMonoMedium" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="1dp"
+        android:background="@color/background"/>
+</RelativeLayout>

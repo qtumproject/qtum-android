@@ -110,11 +110,15 @@
     <string name="free">Free</string>
     <string name="complete">Complete</string>
     <string name="ok">Ok</string>
+    <string name="other_tokens">Other Tokens</string>
+    <string name="token_address">Token Address</string>
 
     <!--FONT PATHS-->
     <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
     <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
     <string name="retry">RETRY</string>
+    <string name="sender_address">Sender Address</string>
+    <string name="contract_address">Contract Address</string>
 
 </resources>

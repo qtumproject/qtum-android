@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.WalletFragment;
 
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
@@ -36,6 +38,8 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.FixedSpeedScroller;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.WalletAppBarPagerAdapter;
 import com.pixelplex.qtum.utils.FontTextView;
+import com.transitionseverywhere.ChangeClipBounds;
+import com.transitionseverywhere.TransitionManager;
 
 import java.lang.reflect.Field;
 import java.util.Calendar;
@@ -75,6 +79,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     @BindView(R.id.fade_divider)
     View fadeDivider;
 
+    @BindView(R.id.fade_divider_root)
+    RelativeLayout fadeDividerRoot;
+
     @BindView(R.id.tv_public_key)
     FontTextView publicKeyValue;
 
@@ -97,6 +104,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @BindView(R.id.balance_view)
     FrameLayout balanceView;
+
+    ChangeClipBounds clip;
 
     @OnClick({R.id.bt_qr_code,})
     public void onClick(View view) {
@@ -217,9 +226,26 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     final DisplayMetrics dm = new DisplayMetrics();
 
+    public void doDividerExpand() {
+        fadeDivider.setVisibility(View.VISIBLE);
+        TransitionManager.endTransitions(fadeDividerRoot);
+        fadeDivider.setClipBounds(new Rect(0,0,0,fadeDivider.getHeight()));
+        TransitionManager.beginDelayedTransition(fadeDividerRoot, clip);
+        fadeDivider.setClipBounds(new Rect(0,0,getResources().getDisplayMetrics().widthPixels,fadeDivider.getHeight()));
+    }
+
+    public void doDividerCollapse() {
+        fadeDivider.setVisibility(View.INVISIBLE);
+    }
+
+    float prevPercents = 0;
 
     @Override
     public void initializeViews() {
+
+        clip = new ChangeClipBounds();
+        clip.addTarget(fadeDivider);
+        clip.setDuration(300);
 
         uncomfirmedBalanceValue.setVisibility(View.GONE);
         uncomfirmedBalanceTitle.setVisibility(View.GONE);
@@ -271,11 +297,16 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
                         balanceView.setAlpha((percents>0.5f)? percents : 1 - percents);
 
-                        fadeDivider.setVisibility((percents == 0)? View.VISIBLE : View.INVISIBLE);
+                        if(percents == 0){
+                            doDividerExpand();
+                        } else {
+                            doDividerCollapse();
+                        }
 
                         if(uncomfirmedBalanceTitle.getVisibility() == View.VISIBLE) {
                             animateText(percents, balanceTitle);
                             balanceTitle.setX(appBarLayout.getWidth() / 2 * percents - (balanceTitle.getWidth() * percents) / 2);
+                            balanceTitle.setY(balanceView.getHeight()/2 - balanceTitle.getHeight() * percents - balanceTitle.getHeight() * (1-percents) );
 
                             animateText(percents, balanceValue);
                             balanceValue.setX(appBarLayout.getWidth() - (appBarLayout.getWidth() / 2 * percents + (balanceValue.getWidth() * percents) / 2) - balanceValue.getWidth() * (1 - percents));
@@ -299,7 +330,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                             balanceValue.setY(balanceView.getHeight() / 2 - balanceValue.getHeight() * percents - balanceValue.getHeight()/2 * (1-percents));
 
                         }
-
+                        prevPercents = percents;
                     }
                 });
         mWalletFragmentPresenter.notifyHeader();

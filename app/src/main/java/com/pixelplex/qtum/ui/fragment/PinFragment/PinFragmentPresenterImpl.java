@@ -9,6 +9,7 @@ import com.pixelplex.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragment;
+import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 
 
 class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinFragmentPresenter {
@@ -84,7 +85,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     case 1:
                         if (Integer.parseInt(pin) == pinForRepeat) {
                             getView().clearError();
-                            final WalletFragment walletFragment = WalletFragment.newInstance();
+                            final WalletMainFragment walletFragment = WalletMainFragment.newInstance();
                             getInteractor().savePassword(pinForRepeat);
                             getInteractor().setKeyGeneratedInstance(true);
                             ((MainActivity) getView().getFragmentActivity()).setRootFragment(walletFragment);
@@ -102,7 +103,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                 int intPassword = Integer.parseInt(pin);
                 if (intPassword == getInteractor().getPassword()) {
                     getView().clearError();
-                    final WalletFragment walletFragment = WalletFragment.newInstance();
+                    final WalletMainFragment walletFragment = WalletMainFragment.newInstance();
                     getView().setProgressDialog(getView().getContext().getString(R.string.loading));
                     getView().hideKeyBoard();
                     getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
@@ -245,7 +246,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     break;
                 }
                 case PinFragment.AUTHENTICATION: {
-                    WalletFragment walletFragment = WalletFragment.newInstance();
+                    WalletMainFragment walletFragment = WalletMainFragment.newInstance();
                     ((MainActivity) getView().getFragmentActivity()).setRootFragment(walletFragment);
                     getView().openRootFragment(walletFragment);
                     getView().dismissProgressDialog();

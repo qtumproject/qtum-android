@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.ContractConfirmFragment;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.pixelplex.qtum.SmartContractsManager.StorageManager;
 import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -59,6 +61,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
     private String resultString = "";
     private static final String TYPE_INT = "int";
+    private static final String TYPE_STRING = "string";
 
     private List<ContractMethodParameter> params;
 
@@ -109,11 +112,11 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
             @Override
             public String call() throws Exception {
                 if(params != null) {
-                    resultString = getByteCodeByContractName(contractName);
                     for (ContractMethodParameter parameter : params) {
-                        resultString += convertParameter(parameter);
+                        convertParameter(parameter);
                     }
                 }
+                resultString = getByteCodeByContractName(contractName) + resultString;
                 return resultString;
             }
         });
@@ -123,20 +126,55 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
         return StorageManager.getInstance().readByteCodeContract(mContext, contractName);
     }
 
+    boolean isStringChainNow = false;
+
     @Override
     public ContractConfirmView getView() {
         return view;
     }
 
-    public String convertParameter(ContractMethodParameter parameter) {
+    public void convertParameter(ContractMethodParameter parameter) {
 
         String _value = parameter.value;
 
         if(parameter.type.contains(TYPE_INT)){
-            return appendNumericPattern(convertToByteCode(Long.valueOf(_value)));
+            isStringChainNow = false;
+            resultString += appendNumericPattern(convertToByteCode(Long.valueOf(_value)));
         } else {
-            return appendStringPattern(convertToByteCode(_value));
+
+            if(!isStringChainNow) {
+                int stringChainSize = getStringsChainSize(parameter);
+                for (int i = 0; i < stringChainSize; i++){
+                    String offset = getStringOffset();
+                    resultString += offset;
+                }
+                isStringChainNow = true;
+            }
+            resultString += appendStringPattern(convertToByteCode(_value));
         }
+    }
+
+    private int getStringsChainSize(ContractMethodParameter parameter) {
+
+        if(params == null || params.size() == 0){
+            return 0;
+        }
+
+        int index = params.indexOf(parameter);
+
+        if(index == params.size()-1) {
+            return 1;
+        }
+
+        int chainSize = 0;
+
+        for (int i = index; i<params.size();i++){
+            if(params.get(index).type.contains(TYPE_STRING)){
+                chainSize++;
+            }
+        }
+
+        return chainSize;
     }
 
     private String convertToByteCode(long _value) {
@@ -160,14 +198,12 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
     private String getStringLength(String _value) {
-        return appendNumericPattern(convertToByteCode(_value.length()));
+        return appendNumericPattern(convertToByteCode(_value.length()/2));
     }
 
     private String appendStringPattern(String _value) {
 
         String fullParameter = "";
-
-        fullParameter += getStringOffset(); // add string offset pointer
         fullParameter += getStringLength(_value); // add string parameter length
 
         if(_value.length()<=hashPattern.length()) {
@@ -331,6 +367,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
+                        String s = sendRawTransactionResponse.getResult();
                     }
                 });
     }
