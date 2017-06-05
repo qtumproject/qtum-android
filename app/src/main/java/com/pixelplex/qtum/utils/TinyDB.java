@@ -26,6 +26,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 
 //import com.google.gson.Gson;
@@ -349,6 +351,19 @@ public class TinyDB {
             ContractInfo contractInfo = gson.fromJson(contractInfoString,ContractInfo.class);
             contractInfoArrayList.add(contractInfo);
         }
+
+        Collections.sort(contractInfoArrayList, new Comparator<ContractInfo>() {
+            @Override
+            public int compare(ContractInfo contractInfo, ContractInfo t1) {
+                if(contractInfo.getDate()==null){
+                    return -1;
+                } else if(t1.getDate()==null) {
+                    return 1;
+                } else {
+                    return contractInfo.getDate() > t1.getDate() ? -1 : contractInfo.getDate() < t1.getDate() ? 1 : 0;
+                }
+            }
+        });
 
         return contractInfoArrayList;
     }

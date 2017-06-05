@@ -6,22 +6,24 @@ package com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels;
 
 public class ContractInfo {
 
-    private String name;
+    private String contractAddress;
     private String templateName;
     private Boolean hasBeenCreated;
+    private Long date;
 
-    public ContractInfo(String name, String templateName, Boolean hasBeenCreated){
-        this.name = name;
+    public ContractInfo(String contractAddress, String templateName, Boolean hasBeenCreated, Long date){
+        this.contractAddress = contractAddress;
         this.templateName = templateName;
         this.hasBeenCreated = hasBeenCreated;
+        this.date = date;
     }
 
-    public String getName() {
-        return name;
+    public String getContractAddress() {
+        return contractAddress;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setContractAddress(String contractAddress) {
+        this.contractAddress = contractAddress;
     }
 
     public String getTemplateName() {
@@ -38,5 +40,13 @@ public class ContractInfo {
 
     public void setHasBeenCreated(Boolean hasBeenCreated) {
         this.hasBeenCreated = hasBeenCreated;
+    }
+
+    public Long getDate() {
+        return date;
+    }
+
+    public void setDate(Long date) {
+        this.date = date;
     }
 }

@@ -129,6 +129,7 @@
 
     <string name="sender_address">Sender Address</string>
     <string name="contract_address">Contract Address</string>
+    <string name="not_confirmed">Not Confirmed</string>
 
 
 </resources>

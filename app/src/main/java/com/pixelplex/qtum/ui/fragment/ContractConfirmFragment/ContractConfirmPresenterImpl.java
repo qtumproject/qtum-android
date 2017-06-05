@@ -60,6 +60,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
     private static final int radix = 16;
     private String hashPattern = "0000000000000000000000000000000000000000000000000000000000000000";
+
                                 //0000000000000000000000000000000000000000000000000000000000000037
                                 //0000000000000000000000000000000000000000000000000000000000000002
                                 //00000000000000000000000000000000000000000000000000000000000021dc
@@ -381,7 +382,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                     public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
                         String s = sendRawTransactionResponse.getResult();
                         getView().getApplication().setContractAwait(true);
-                        ContractInfo contractInfo = new ContractInfo(null,contractName,null);
+                        ContractInfo contractInfo = new ContractInfo(null,contractName,false,null);
                         TinyDB tinyDB = new TinyDB(mContext);
                         ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
                         contractInfoList.add(contractInfo);

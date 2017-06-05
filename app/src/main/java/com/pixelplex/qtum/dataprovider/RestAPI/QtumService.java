@@ -5,7 +5,7 @@ import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
 
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractRequest;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractResponse;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractResponse.CallSmartContractResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractParamsRequest;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.HistoryResponse;
@@ -15,7 +15,6 @@ import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResp
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -88,7 +87,7 @@ public class QtumService {
         return mServiceApi.generateTokenBytecode(contractParamsRequest);
     }
 
-    public Observable<JSONObject> callSmartContract(String contractAddress, final CallSmartContractRequest callSmartContractRequest){
+    public Observable<CallSmartContractResponse> callSmartContract(String contractAddress, final CallSmartContractRequest callSmartContractRequest){
         return mServiceApi.callSmartContract(contractAddress,callSmartContractRequest);
     }
 

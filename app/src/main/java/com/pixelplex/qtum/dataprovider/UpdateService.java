@@ -120,8 +120,8 @@ public class UpdateService extends Service {
 
                     ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
                     for(ContractInfo contractInfo : contractInfoList){
-                        if(contractInfo.getName()==null){
-                            contractInfo.setName(generateContractAddress(history.getTxHash()));
+                        if(contractInfo.getContractAddress()==null){
+                            contractInfo.setContractAddress(generateContractAddress(history.getTxHash()));
                             break;
                         }
                     }
@@ -136,8 +136,9 @@ public class UpdateService extends Service {
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
                     ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
                     for(ContractInfo contractInfo : contractInfoList){
-                        if(contractInfo.getName().equals(contractAddress)){
+                        if(contractInfo.getContractAddress().equals(contractAddress)){
                             contractInfo.setHasBeenCreated(true);
+                            contractInfo.setDate((long)history.getBlockTime());
                             break;
                         }
                     }

@@ -12,12 +12,14 @@ import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragment;
+import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by max-v on 6/2/2017.
@@ -31,6 +33,15 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
     RecyclerView mRecyclerView;
 
     ContractAdapter mContractAdapter;
+
+    @OnClick({R.id.ibt_back})
+    public void onClick(View view){
+        switch (view.getId()) {
+            case R.id.ibt_back:
+                getActivity().onBackPressed();
+                break;
+        }
+    }
 
     public static MyContractsFragment newInstance() {
 
@@ -71,13 +82,13 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
     class ContractViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.title)
-        FontTextView title;
+        FontTextView mTextViewTitle;
 
         @BindView(R.id.date)
-        FontTextView date;
+        FontTextView mTextViewDate;
 
         @BindView(R.id.contract_type)
-        FontTextView contractType;
+        FontTextView mTextViewContractType;
 
         ContractInfo mContractInfo;
 
@@ -87,15 +98,23 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ContractManagementFragment contractManagementFragment = ContractManagementFragment.newInstance(mContractInfo.getTemplateName(),mContractInfo.getName());
-                    openFragment(contractManagementFragment);
+                    if(mContractInfo.isHasBeenCreated()) {
+                        ContractManagementFragment contractManagementFragment = ContractManagementFragment.newInstance(mContractInfo.getTemplateName(), mContractInfo.getContractAddress());
+                        openFragment(contractManagementFragment);
+                    }
                 }
             });
         }
 
         public void bindContract(ContractInfo contractInfo){
             mContractInfo = contractInfo;
-            title.setText(contractInfo.getName().substring(0,8));
+            if(contractInfo.getDate()!=null){
+                mTextViewDate.setText(DateCalculator.getDate(contractInfo.getDate()*1000));
+            }else{
+                mTextViewDate.setText(R.string.not_confirmed);
+            }
+            mTextViewTitle.setText(contractInfo.getContractAddress().substring(0,8));
+            mTextViewContractType.setText("(token)");
         }
     }
 

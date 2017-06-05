@@ -26,6 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by max-v on 6/2/2017.
@@ -40,6 +41,16 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
     @BindView(R.id.recycler_view)
     RecyclerView mParameterList;
     ParameterAdapter mParameterAdapter;
+
+    @OnClick({R.id.ibt_back,R.id.cancel})
+    public void onClick(View view){
+        switch (view.getId()) {
+            case R.id.cancel:
+            case R.id.ibt_back:
+                getActivity().onBackPressed();
+                break;
+        }
+    }
 
     public static ContractFunctionFragment newInstance(String methodName, String contractTemplateName) {
 

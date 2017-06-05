@@ -8,8 +8,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.pixelplex.qtum.BuildConfig;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
 
@@ -24,12 +22,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -161,17 +156,17 @@ public class StorageManager {
         return data;
     }
 
-    public List<ContractInfo> getContracts(Context context) {
+    public List<ContractTemplateInfo> getContracts(Context context) {
         ContextWrapper cw = new ContextWrapper(context);
         File contractDir = getPackagePath(cw,CONTRACTS_PACKAGE);
-        List<ContractInfo> list = new ArrayList<>();
+        List<ContractTemplateInfo> list = new ArrayList<>();
         for(File file :  contractDir.listFiles()){
-            list.add(new ContractInfo(file.getName(),file.lastModified(),"stub!"));
+            list.add(new ContractTemplateInfo(file.getName(),file.lastModified(),"stub!"));
         }
 
-        Collections.sort(list, new Comparator<ContractInfo>() {
+        Collections.sort(list, new Comparator<ContractTemplateInfo>() {
             @Override
-            public int compare(ContractInfo contractInfo, ContractInfo t1) {
+            public int compare(ContractTemplateInfo contractInfo, ContractTemplateInfo t1) {
                 return contractInfo.getDate() > t1.getDate() ? 1 : contractInfo.getDate() < t1.getDate() ? -1 : 0;
             }
         });
@@ -269,7 +264,7 @@ public class StorageManager {
         return null;
     }
 
-    public List<ContractMethod> getContractMethods(Context context, String contractName) {
+    public List<ContractMethod> getContractMethods(final Context context, String contractName) {
         String abiContent = readAbiContract(context,contractName);
         JSONArray array = null;
         List<ContractMethod> contractMethods = new ArrayList<>();
@@ -283,6 +278,18 @@ public class StorageManager {
                     contractMethods.add(gson.fromJson(jb.toString(), ContractMethod.class));
                 }
             }
+            Collections.sort(contractMethods, new Comparator<ContractMethod>() {
+                @Override
+                public int compare(ContractMethod contractMethod, ContractMethod t1) {
+                    if(contractMethod.constant && !t1.constant){
+                        return -1;
+                    } else if(!contractMethod.constant && t1.constant){
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
             return contractMethods;
 
         } catch (JSONException e) {

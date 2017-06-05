@@ -7,29 +7,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractRequest;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractResponse;
+
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ContractFunctionFragment.ContractFunctionFragment;
 import com.pixelplex.qtum.utils.FontTextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import butterknife.OnClick;
+
 
 public class ContractManagementFragment extends BaseFragment implements ContractManagementFragmentView{
 
@@ -40,7 +33,17 @@ public class ContractManagementFragment extends BaseFragment implements Contract
     @BindView(R.id.methods_list)
     RecyclerView mRecyclerView;
 
+    @OnClick({R.id.ibt_back})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ibt_back:
+                getActivity().onBackPressed();
+                break;
+        }
+    }
+
     MethodAdapter mMethodAdapter;
+    String mContractAddress;
 
     public static ContractManagementFragment newInstance(String contractTemplateName, String contractAddress) {
         
@@ -58,7 +61,7 @@ public class ContractManagementFragment extends BaseFragment implements Contract
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected ContractManagementFragmentPresenter getPresenter() {
         return mContractManagmentFragmentPresenter;
     }
 
@@ -70,45 +73,7 @@ public class ContractManagementFragment extends BaseFragment implements Contract
     @Override
     public void initializeViews() {
         super.initializeViews();
-
-//        JSONArray jsonArray = new JSONArray();
-//        jsonArray.put("18160ddd");
-//        JSONObject jsonObject = new JSONObject();
-//        try {
-//            jsonObject.put("hashes", jsonArray);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        JSONStringer jsonStringer = new JSONStringer();
-//        try {
-//            jsonStringer.object().key("hashes").array().value("18160ddd").endArray().endObject();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
-        String[] hashes = new String[]{"18160ddd"};
-
-        QtumService.newInstance().callSmartContract(getArguments().getString(CONTRACT_ADDRESS), new CallSmartContractRequest(hashes))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<JSONObject>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        String s = e.toString();
-                        int i = 2;
-                    }
-
-                    @Override
-                    public void onNext(JSONObject callSmartContractResponse) {
-                        JSONObject s = callSmartContractResponse;
-                        int i = 2;
-                    }
-                });
+        mContractAddress = getArguments().getString(CONTRACT_ADDRESS);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -155,6 +120,10 @@ public class ContractManagementFragment extends BaseFragment implements Contract
         FontTextView mTextViewPropertyName;
         @BindView(R.id.property_value)
         FontTextView mTextViewPropertyValue;
+        @BindView(R.id.progress_bar)
+        ProgressBar mProgressBar;
+
+        ContractMethod mContractMethod;
 
         PropertiesViewHolder(View itemView) {
             super(itemView);
@@ -163,7 +132,15 @@ public class ContractManagementFragment extends BaseFragment implements Contract
 
         void bindProperty(ContractMethod contractMethod){
             mTextViewPropertyName.setText(contractMethod.name);
-            //TODO get property with spinner
+            mContractMethod = contractMethod;
+            getPresenter().getPropertyValue(mContractAddress, mContractMethod, new ContractManagementFragmentPresenter.GetPropertyValueCallBack() {
+                @Override
+                public void onSuccess(String value) {
+                    mProgressBar.setVisibility(View.GONE);
+                    mTextViewPropertyValue.setVisibility(View.VISIBLE);
+                    mTextViewPropertyValue.setText(value);
+                }
+            });
         }
 
     }
@@ -182,9 +159,9 @@ public class ContractManagementFragment extends BaseFragment implements Contract
         @Override
         public int getItemViewType(int position) {
             if(contractMethods.get(position).constant){
-                return 0;
+                return TYPE_PROPERTY;
             } else{
-                return 1;
+                return TYPE_METHOD;
             }
         }
 

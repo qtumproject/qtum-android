@@ -4,12 +4,12 @@ package com.pixelplex.qtum.SmartContractsManager;
  * Created by max-v on 5/31/2017.
  */
 
-public class ContractInfo {
+public class ContractTemplateInfo {
     private String name;
     private long date;
     private String contractType = "token";
 
-    public ContractInfo(String name, long date, String contractType){
+    public ContractTemplateInfo(String name, long date, String contractType){
         this.name = name;
         this.date = date;
         //this.contractType = contractType;
