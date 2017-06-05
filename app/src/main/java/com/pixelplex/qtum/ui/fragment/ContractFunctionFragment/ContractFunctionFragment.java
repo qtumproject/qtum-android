@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -33,14 +34,18 @@ import butterknife.ButterKnife;
 public class ContractFunctionFragment extends BaseFragment implements ContractFunctionFragmentView {
 
     ContractFunctionFragmentPresenter mContractMethodFragmentPresenter;
+    public final static String CONTRACT_TEMPLATE_NAME = "contract_template_name";
+    public final static String METHOD_NAME = "method_name";
 
     @BindView(R.id.recycler_view)
-    RecyclerView constructorList;
+    RecyclerView mParameterList;
+    ParameterAdapter mParameterAdapter;
 
-    public static ContractFunctionFragment newInstance(String methodName, String contractAddress) {
+    public static ContractFunctionFragment newInstance(String methodName, String contractTemplateName) {
 
         Bundle args = new Bundle();
-
+        args.putString(CONTRACT_TEMPLATE_NAME,contractTemplateName);
+        args.putString(METHOD_NAME,methodName);
         ContractFunctionFragment fragment = new ContractFunctionFragment();
         fragment.setArguments(args);
         return fragment;
@@ -64,7 +69,24 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
     @Override
     public void initializeViews() {
         super.initializeViews();
+        mParameterList.setLayoutManager(new LinearLayoutManager(getActivity()));
         //TODO setUpRecyclerVIew
+    }
+
+    @Override
+    public void setUpParameterList(List<ContractMethodParameter> contractMethodParameterList) {
+        mParameterAdapter = new ParameterAdapter(contractMethodParameterList);
+        mParameterList.setAdapter(mParameterAdapter);
+    }
+
+    @Override
+    public String getContractTemplateName() {
+        return getArguments().getString(CONTRACT_TEMPLATE_NAME);
+    }
+
+    @Override
+    public String getMethodName() {
+        return getArguments().getString(METHOD_NAME);
     }
 
     class ParameterViewHolder extends RecyclerView.ViewHolder{

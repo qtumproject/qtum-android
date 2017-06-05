@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
+
+import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
@@ -102,6 +104,11 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
     @Override
     public void onStartTransaction() {
         showActivityProcessing();
+    }
+
+    @Override
+    public QtumApplication getApplication() {
+        return ((MainActivity)getFragmentActivity()).getQtumApplication();
     }
 
     private void showActivityProcessing() {

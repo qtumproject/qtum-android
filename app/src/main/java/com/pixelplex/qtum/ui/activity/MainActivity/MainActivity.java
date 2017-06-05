@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.UpdateService;
@@ -222,5 +223,9 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CustomContextWrapper.wrap(newBase, QtumSharedPreference.getInstance().getLanguage(newBase)));
+    }
+
+    public QtumApplication getQtumApplication(){
+        return (QtumApplication)getApplication();
     }
 }

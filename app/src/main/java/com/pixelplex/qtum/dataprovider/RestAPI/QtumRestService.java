@@ -3,6 +3,8 @@ package com.pixelplex.qtum.dataprovider.RestAPI;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.BlockChainInfo;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ByteCode;
 
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractRequest;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractParamsRequest;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.HistoryResponse;
@@ -10,6 +12,9 @@ import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.News;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
+
+import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.util.List;
 
@@ -40,6 +45,9 @@ interface QtumRestService {
 
     @POST("/contracts/generate-token-bytecode")
     Observable<ByteCode> generateTokenBytecode(@Body ContractParamsRequest contractParamsRequest);
+
+    @POST("/contracts/{addressContract}/call")
+    Observable<JSONObject> callSmartContract(@Path("addressContract") String addressContract, @Body CallSmartContractRequest callSmartContractRequest);
 
     @GET("/outputs/unspent")
     Observable<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses(@Query("addresses[]") List<String> addresses);

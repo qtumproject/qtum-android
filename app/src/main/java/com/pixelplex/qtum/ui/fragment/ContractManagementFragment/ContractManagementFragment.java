@@ -2,33 +2,50 @@ package com.pixelplex.qtum.ui.fragment.ContractManagementFragment;
 
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractRequest;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.ui.fragment.ContractFunctionFragment.ContractFunctionFragment;
 import com.pixelplex.qtum.utils.FontTextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class ContractManagementFragment extends BaseFragment implements ContractManagementFragmentView{
 
     ContractManagementFragmentPresenter mContractManagmentFragmentPresenter;
+    private static final String CONTRACT_TEMPLATE_NAME = "contract_template_name";
     private static final String CONTRACT_ADDRESS = "contract_address";
 
     @BindView(R.id.methods_list)
     RecyclerView mRecyclerView;
 
-    public static ContractManagementFragment newInstance(String contractAddress) {
+    MethodAdapter mMethodAdapter;
+
+    public static ContractManagementFragment newInstance(String contractTemplateName, String contractAddress) {
         
         Bundle args = new Bundle();
+        args.putString(CONTRACT_TEMPLATE_NAME, contractTemplateName);
         args.putString(CONTRACT_ADDRESS, contractAddress);
         ContractManagementFragment fragment = new ContractManagementFragment();
         fragment.setArguments(args);
@@ -50,10 +67,68 @@ public class ContractManagementFragment extends BaseFragment implements Contract
         return R.layout.fragment_contract_management;
     }
 
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+
+//        JSONArray jsonArray = new JSONArray();
+//        jsonArray.put("18160ddd");
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("hashes", jsonArray);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        JSONStringer jsonStringer = new JSONStringer();
+//        try {
+//            jsonStringer.object().key("hashes").array().value("18160ddd").endArray().endObject();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+
+        String[] hashes = new String[]{"18160ddd"};
+
+        QtumService.newInstance().callSmartContract(getArguments().getString(CONTRACT_ADDRESS), new CallSmartContractRequest(hashes))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<JSONObject>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        String s = e.toString();
+                        int i = 2;
+                    }
+
+                    @Override
+                    public void onNext(JSONObject callSmartContractResponse) {
+                        JSONObject s = callSmartContractResponse;
+                        int i = 2;
+                    }
+                });
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    @Override
+    public void setRecyclerView(List<ContractMethod> contractMethodList) {
+        mMethodAdapter = new MethodAdapter(contractMethodList);
+        mRecyclerView.setAdapter(mMethodAdapter);
+    }
+
+    @Override
+    public String getContractTemplateName() {
+        return getArguments().getString(CONTRACT_TEMPLATE_NAME);
+    }
+
     class MethodViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.method_name)
         FontTextView mTextViewName;
+        ContractMethod mContractMethod;
 
         MethodViewHolder(View itemView) {
             super(itemView);
@@ -61,12 +136,14 @@ public class ContractManagementFragment extends BaseFragment implements Contract
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    ContractFunctionFragment contractFunctionFragment = ContractFunctionFragment.newInstance(mContractMethod.name,getContractTemplateName());
+                    openFragment(contractFunctionFragment);
                 }
             });
         }
 
         void bindMethod(ContractMethod contractMethod){
+            mContractMethod = contractMethod;
             mTextViewName.setText(contractMethod.name);
         }
 

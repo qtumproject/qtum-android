@@ -14,6 +14,8 @@ import io.fabric.sdk.android.*;
 
 public class QtumApplication extends MultiDexApplication {
 
+    private boolean contractAwait = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -23,5 +25,13 @@ public class QtumApplication extends MultiDexApplication {
         }
 
         FontManager.init(getAssets());
+    }
+
+    public boolean isContractAwait() {
+        return contractAwait;
+    }
+
+    public void setContractAwait(boolean contractAwait) {
+        this.contractAwait = contractAwait;
     }
 }
