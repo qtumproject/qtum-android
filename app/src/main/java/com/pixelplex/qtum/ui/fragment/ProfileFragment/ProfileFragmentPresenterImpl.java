@@ -11,7 +11,7 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
 import com.pixelplex.qtum.ui.fragment.LanguageFragment.LanguageFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
-import com.pixelplex.qtum.ui.fragment.ProfileFragment.SmartContractsFragment.SmartContractsFragment;
+import com.pixelplex.qtum.ui.fragment.SmartContractsFragment.SmartContractsFragment;
 import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 
 import java.util.ArrayList;

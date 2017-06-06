@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content" />
 
             <com.pixelplex.qtum.utils.FontButton
-                android:id="@+id/confirm"
+                android:id="@+id/call"
                 android:text="@string/call"
                 android:gravity="center"
                 android:padding="16dp"

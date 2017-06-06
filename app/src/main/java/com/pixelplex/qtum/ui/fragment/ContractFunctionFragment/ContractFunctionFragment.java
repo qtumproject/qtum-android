@@ -18,8 +18,6 @@ import android.view.inputmethod.EditorInfo;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import com.pixelplex.qtum.ui.fragment.SmartContractConstructorFragment.InputViewHolder;
 import com.pixelplex.qtum.utils.FontManager;
 
 import java.util.List;
@@ -34,29 +32,34 @@ import butterknife.OnClick;
 
 public class ContractFunctionFragment extends BaseFragment implements ContractFunctionFragmentView {
 
-    ContractFunctionFragmentPresenter mContractMethodFragmentPresenter;
+    ContractFunctionFragmentPresenter mContractFunctionFragmentPresenter;
     public final static String CONTRACT_TEMPLATE_NAME = "contract_template_name";
     public final static String METHOD_NAME = "method_name";
+    public final static String CONTRACT_ADDRESS = "contract_address";
 
     @BindView(R.id.recycler_view)
     RecyclerView mParameterList;
     ParameterAdapter mParameterAdapter;
 
-    @OnClick({R.id.ibt_back,R.id.cancel})
+    @OnClick({R.id.ibt_back,R.id.cancel,R.id.call})
     public void onClick(View view){
         switch (view.getId()) {
             case R.id.cancel:
             case R.id.ibt_back:
                 getActivity().onBackPressed();
                 break;
+            case R.id.call:
+                getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_NAME),getArguments().getString(CONTRACT_ADDRESS),getArguments().getString(METHOD_NAME));
+                break;
         }
     }
 
-    public static ContractFunctionFragment newInstance(String methodName, String contractTemplateName) {
+    public static ContractFunctionFragment newInstance(String methodName, String contractTemplateName, String contractAddress) {
 
         Bundle args = new Bundle();
         args.putString(CONTRACT_TEMPLATE_NAME,contractTemplateName);
         args.putString(METHOD_NAME,methodName);
+        args.putString(CONTRACT_ADDRESS,contractAddress);
         ContractFunctionFragment fragment = new ContractFunctionFragment();
         fragment.setArguments(args);
         return fragment;
@@ -64,12 +67,12 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
 
     @Override
     protected void createPresenter() {
-        mContractMethodFragmentPresenter = new ContractFunctionFragmentPresenter(this);
+        mContractFunctionFragmentPresenter = new ContractFunctionFragmentPresenter(this);
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
-        return mContractMethodFragmentPresenter;
+    protected ContractFunctionFragmentPresenter getPresenter() {
+        return mContractFunctionFragmentPresenter;
     }
 
     @Override
@@ -81,7 +84,6 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
     public void initializeViews() {
         super.initializeViews();
         mParameterList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //TODO setUpRecyclerVIew
     }
 
     @Override
@@ -144,7 +146,7 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
                             return validateUINT(content, uint64);
 
                         default:
-                            parameter.value = source.toString();
+                            parameter.value = content;
                             return ALLOW;
                     }
                 } else {
@@ -253,7 +255,7 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
         }
     }
 
-    public class ParameterAdapter extends RecyclerView.Adapter<InputViewHolder> {
+    public class ParameterAdapter extends RecyclerView.Adapter<ParameterViewHolder> {
 
         List<ContractMethodParameter> params;
 
@@ -266,12 +268,12 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
         }
 
         @Override
-        public InputViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new InputViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_constructor_input,parent, false));
+        public ParameterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ParameterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_constructor_input,parent, false));
         }
 
         @Override
-        public void onBindViewHolder(InputViewHolder holder, int position) {
+        public void onBindViewHolder(ParameterViewHolder holder, int position) {
             holder.bind(params.get(position),position == getItemCount()-1);
         }
 
