@@ -35,7 +35,5 @@ public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl
                 return;
             }
         }
-
     }
-
 }
