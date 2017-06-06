@@ -159,7 +159,6 @@
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:paddingTop="10dp"
-                    android:tint="@color/background"
                     app:srcCompat="@drawable/ic_back_indicator" />
 
                 <com.pixelplex.qtum.utils.FontTextView

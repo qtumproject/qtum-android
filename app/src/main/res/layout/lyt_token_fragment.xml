@@ -90,7 +90,7 @@
                             android:tint="@color/background"
                             android:background="@drawable/background_pressed_alpha_white"
                             android:scaleType="centerInside"
-                            app:srcCompat="@drawable/ic_share2"/>
+                            app:srcCompat="@drawable/ic_share"/>
 
                         <FrameLayout
                             android:layout_width="match_parent"

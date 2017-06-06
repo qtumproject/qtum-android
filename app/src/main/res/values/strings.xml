@@ -118,7 +118,18 @@
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
     <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
     <string name="retry">RETRY</string>
+
+    <string name="smart_contracts">Smart Contracts</string>
+    <string name="create_contract">Create Contract</string>
+    <string name="my_contracts">My Contracts</string>
+    <string name="contracts_store">Contracts Store</string>
+    <string name="call">Call</string>
+    <string name="function_detail">Function Detail</string>
+    <string name="contracts">Contracts</string>
+
     <string name="sender_address">Sender Address</string>
     <string name="contract_address">Contract Address</string>
+    <string name="not_confirmed">Not Confirmed</string>
+
 
 </resources>

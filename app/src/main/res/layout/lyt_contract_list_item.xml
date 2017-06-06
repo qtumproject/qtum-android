@@ -8,7 +8,7 @@
 
     <com.pixelplex.qtum.utils.FontTextView
         android:id="@+id/title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:maxLines="1"
         android:text="@string/about"
         android:gravity="center_vertical"
@@ -29,6 +29,37 @@
         android:tint="@color/colorPrimary"
         android:layout_width="16dp"
         android:layout_height="16dp" />
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:text="@string/about"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:layout_marginEnd="16dp"
+        android:layout_alignBaseline="@+id/contract_type"
+        android:layout_alignBottom="@+id/contract_type"
+        android:layout_toStartOf="@+id/arrow"/>
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/contract_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:text="@string/about"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:layout_marginStart="16dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/title"/>
 
     <View
         android:layout_alignParentBottom="true"

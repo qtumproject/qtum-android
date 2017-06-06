@@ -5,7 +5,14 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.SmartContractsManager.ContractTemplateInfo;
+import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.FontTextView;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,6 +25,12 @@ public class ContractViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.title)
     FontTextView title;
+
+    @BindView(R.id.date)
+    FontTextView date;
+
+    @BindView(R.id.contract_type)
+    FontTextView contractType;
 
     @BindView(R.id.root_layout)
     RelativeLayout rootLayout;
@@ -34,7 +47,11 @@ public class ContractViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void bind(String contract) {
-        title.setText(contract);
+    public void bind(ContractTemplateInfo contract) {
+        title.setText(contract.getName());
+
+        date.setText(DateCalculator.getDate(contract.getDate()));
+
+        contractType.setText("("+contract.getContractType()+")");
     }
 }

@@ -26,6 +26,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 
 //import com.google.gson.Gson;
@@ -40,12 +42,16 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+
 
 public class TinyDB {
 
     private SharedPreferences preferences;
     private String DEFAULT_APP_IMAGEDATA_DIRECTORY;
     private String lastImagePath = "";
+    private final String CONTRACT_INFO_LIST = "contract_info_list";
 
     public TinyDB(Context appContext) {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
@@ -311,29 +317,56 @@ public class TinyDB {
     }
 
 
-//    public ArrayList<Object> getListObject(String key, Class<?> mClass){
-//    	Gson gson = new Gson(); 
-//    	
-//    	ArrayList<String> objStrings = getListString(key);
-//    	ArrayList<Object> objects =  new ArrayList<Object>();
-//    	
-//    	for(String jObjString : objStrings){
-//    		Object value  = gson.fromJson(jObjString,  mClass);
-//    		objects.add(value);
-//    	}
-//    	return objects;
-//    }
+    public ArrayList<Object> getListObject(String key, Class<?> mClass){
+    	Gson gson = new Gson();
+
+    	ArrayList<String> objStrings = getListString(key);
+    	ArrayList<Object> objects =  new ArrayList<Object>();
+
+    	for(String jObjString : objStrings){
+    		Object value  = gson.fromJson(jObjString,  mClass);
+    		objects.add(value);
+    	}
+    	return objects;
+    }
 
 
 
-//    public <T> T getObject(String key, Class<T> classOfT){
-//
-//        String json = getString(key);
-//        Object value = new Gson().fromJson(json, classOfT);
-//        if (value == null)
-//            throw new NullPointerException();
-//        return (T)value;
-//    }
+    public <T> T getObject(String key, Class<T> classOfT){
+
+        String json = getString(key);
+        Object value = new Gson().fromJson(json, classOfT);
+        if (value == null)
+            throw new NullPointerException();
+        return (T)value;
+    }
+
+    public ArrayList<ContractInfo> getListContractInfo(){
+        Gson gson = new Gson();
+
+        ArrayList<String> contractInfoStrings = getListString(CONTRACT_INFO_LIST);
+        ArrayList<ContractInfo> contractInfoArrayList = new ArrayList<ContractInfo>();
+
+        for(String contractInfoString : contractInfoStrings){
+            ContractInfo contractInfo = gson.fromJson(contractInfoString,ContractInfo.class);
+            contractInfoArrayList.add(contractInfo);
+        }
+
+        Collections.sort(contractInfoArrayList, new Comparator<ContractInfo>() {
+            @Override
+            public int compare(ContractInfo contractInfo, ContractInfo t1) {
+                if(contractInfo.getDate()==null){
+                    return -1;
+                } else if(t1.getDate()==null) {
+                    return 1;
+                } else {
+                    return contractInfo.getDate() > t1.getDate() ? -1 : contractInfo.getDate() < t1.getDate() ? 1 : 0;
+                }
+            }
+        });
+
+        return contractInfoArrayList;
+    }
 
 
     // Put methods
@@ -456,21 +489,30 @@ public class TinyDB {
      * @param key SharedPreferences key
      * @param obj is the Object you want to put 
      */
-//    public void putObject(String key, Object obj){
-//    	checkForNullKey(key);
-//    	Gson gson = new Gson(); 
-//    	putString(key, gson.toJson(obj));
-//    }
-//    
-//    public void putListObject(String key, ArrayList<Object> objArray){
-//    	checkForNullKey(key); 
-//    	Gson gson = new Gson(); 
-//    	ArrayList<String> objStrings = new ArrayList<String>();
-//    	for(Object obj : objArray){
-//    		objStrings.add(gson.toJson(obj));
-//    	}
-//    	putListString(key, objStrings);
-//    }
+    public void putObject(String key, Object obj){
+    	checkForNullKey(key);
+    	Gson gson = new Gson();
+    	putString(key, gson.toJson(obj));
+    }
+
+    public void putListObject(String key, ArrayList<Object> objArray){
+    	checkForNullKey(key);
+    	Gson gson = new Gson();
+    	ArrayList<String> objStrings = new ArrayList<String>();
+    	for(Object obj : objArray){
+    		objStrings.add(gson.toJson(obj));
+    	}
+    	putListString(key, objStrings);
+    }
+
+    public void putListContractInfo(ArrayList<ContractInfo> contractInfoArrayList){
+        Gson gson = new Gson();
+        ArrayList<String> contractInfoStrings = new ArrayList<String>();
+        for(ContractInfo contractInfo : contractInfoArrayList){
+            contractInfoStrings.add(gson.toJson(contractInfo));
+        }
+        putListString(CONTRACT_INFO_LIST,contractInfoStrings);
+    }
 
     /**
      * Remove SharedPreferences item with 'key'

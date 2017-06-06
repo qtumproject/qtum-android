@@ -86,8 +86,8 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
             case R.string.wallet_back_up:
                 getPresenter().onWalletBackUpClick();
                 break;
-            case R.string.create_token:
-                getPresenter().onCreateTokenClick();
+            case R.string.smart_contracts:
+                getPresenter().onSmartContractsClick();
                 break;
             case R.string.subscribe_tokens:
                 getPresenter().onSubscribeTokensClick();

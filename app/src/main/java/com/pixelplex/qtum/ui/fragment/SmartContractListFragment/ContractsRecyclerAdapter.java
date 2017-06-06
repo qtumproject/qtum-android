@@ -5,6 +5,9 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.SmartContractsManager.ContractTemplateInfo;
+
+import java.util.List;
 
 /**
  * Created by kirillvolkov on 25.05.17.
@@ -12,11 +15,11 @@ import com.pixelplex.qtum.R;
 
 public class ContractsRecyclerAdapter extends RecyclerView.Adapter<ContractViewHolder> {
 
-    String[] list;
+    List<ContractTemplateInfo> list;
 
     ContractSelectListener listener;
 
-    public ContractsRecyclerAdapter(String[] list, ContractSelectListener listener){
+    public ContractsRecyclerAdapter(List<ContractTemplateInfo> list, ContractSelectListener listener){
         this.list = list;
         this.listener = listener;
     }
@@ -28,11 +31,11 @@ public class ContractsRecyclerAdapter extends RecyclerView.Adapter<ContractViewH
 
     @Override
     public void onBindViewHolder(ContractViewHolder holder, int position) {
-        holder.bind(list[position]);
+        holder.bind(list.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return list.length;
+        return list.size();
     }
 }

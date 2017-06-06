@@ -8,8 +8,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.pixelplex.qtum.BuildConfig;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
 
@@ -24,7 +22,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -47,6 +47,7 @@ public class StorageManager {
 
     private static String TYPE = "type";
     private static String CONSTRUCTOR_TYPE = "constructor";
+    private static String FUNCTION_TYPE = "function";
 
     private static String CONTRACTS_PACKAGE = "contracts";
 
@@ -155,10 +156,22 @@ public class StorageManager {
         return data;
     }
 
-    public String[] getContracts(Context context) {
+    public List<ContractTemplateInfo> getContracts(Context context) {
         ContextWrapper cw = new ContextWrapper(context);
         File contractDir = getPackagePath(cw,CONTRACTS_PACKAGE);
-        return contractDir.list();
+        List<ContractTemplateInfo> list = new ArrayList<>();
+        for(File file :  contractDir.listFiles()){
+            list.add(new ContractTemplateInfo(file.getName(),file.lastModified(),"stub!"));
+        }
+
+        Collections.sort(list, new Comparator<ContractTemplateInfo>() {
+            @Override
+            public int compare(ContractTemplateInfo contractInfo, ContractTemplateInfo t1) {
+                return contractInfo.getDate() > t1.getDate() ? 1 : contractInfo.getDate() < t1.getDate() ? -1 : 0;
+            }
+        });
+
+        return list;
     }
 
     public boolean writeAbiContract(Context context, String packageName,String content){
@@ -244,6 +257,40 @@ public class StorageManager {
                     return gson.fromJson(jb.toString(), ContractMethod.class);
                 }
             }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<ContractMethod> getContractMethods(final Context context, String contractName) {
+        String abiContent = readAbiContract(context,contractName);
+        JSONArray array = null;
+        List<ContractMethod> contractMethods = new ArrayList<>();
+        try {
+            array = new JSONArray(abiContent);
+
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jb = (JSONObject)array.getJSONObject(i);
+                if(FUNCTION_TYPE.equals(jb.getString(TYPE))){
+                    Gson gson = new Gson();
+                    contractMethods.add(gson.fromJson(jb.toString(), ContractMethod.class));
+                }
+            }
+            Collections.sort(contractMethods, new Comparator<ContractMethod>() {
+                @Override
+                public int compare(ContractMethod contractMethod, ContractMethod t1) {
+                    if(contractMethod.constant && !t1.constant){
+                        return -1;
+                    } else if(!contractMethod.constant && t1.constant){
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+            return contractMethods;
 
         } catch (JSONException e) {
             e.printStackTrace();

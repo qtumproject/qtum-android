@@ -35,8 +35,7 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.FixedSpeedScroller;
-import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletAppBarPagerAdapter.WalletAppBarPagerAdapter;
+
 import com.pixelplex.qtum.utils.FontTextView;
 import com.transitionseverywhere.ChangeClipBounds;
 import com.transitionseverywhere.TransitionManager;
@@ -177,7 +176,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void stopRefreshRecyclerAnimation() {
-        mSwipeRefreshLayout.setRefreshing(false);
+        if(mSwipeRefreshLayout!=null) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -455,6 +456,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                 long transactionTime = history.getBlockTime();
                 long delay = currentTime - transactionTime;
                 String dateString;
+                if(delay<60){
+                    dateString = delay + " sec ago";
+                }else
                 if (delay < 3600) {
                     dateString = delay / 60 + " min ago";
                 } else {

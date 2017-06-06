@@ -22,14 +22,14 @@ import butterknife.OnClick;
 public class SmartContractConstructorFragment extends BaseFragment implements SmartContractConstructorView {
 
     public final int LAYOUT = R.layout.lyt_smart_contract_constructor;
-    public static String constructorNameKey = "constructorName";
+    public final static String CONTRACT_TEMPLATE_NAME = "contract_template_name";
 
     private ConstructorAdapter adapter;
 
-    public static SmartContractConstructorFragment newInstance(String contractName) {
+    public static SmartContractConstructorFragment newInstance(String contractTemplateName) {
         Bundle args = new Bundle();
         SmartContractConstructorFragment fragment = new SmartContractConstructorFragment();
-        args.putString(constructorNameKey,contractName);
+        args.putString(CONTRACT_TEMPLATE_NAME,contractTemplateName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,7 +47,7 @@ public class SmartContractConstructorFragment extends BaseFragment implements Sm
     @OnClick(R.id.confirm)
     public void onConfirmClick(){
         if(adapter != null) {
-            presenter.confirm(adapter.getParams(), getArguments().getString(constructorNameKey));
+            presenter.confirm(adapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_NAME));
         }
     }
 
@@ -76,7 +76,7 @@ public class SmartContractConstructorFragment extends BaseFragment implements Sm
     public void initializeViews() {
         super.initializeViews();
         constructorList.setLayoutManager(new LinearLayoutManager(getContext()));
-        presenter.getConstructorByName(getArguments().getString(constructorNameKey));
+        presenter.getConstructorByName(getArguments().getString(CONTRACT_TEMPLATE_NAME));
     }
 
     @Override

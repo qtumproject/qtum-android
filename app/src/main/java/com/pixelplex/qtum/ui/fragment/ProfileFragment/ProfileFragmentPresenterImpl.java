@@ -11,13 +11,10 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
 import com.pixelplex.qtum.ui.fragment.LanguageFragment.LanguageFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
-import com.pixelplex.qtum.ui.fragment.SetTokenNameFragment.SetTokenNameFragment;
-import com.pixelplex.qtum.ui.fragment.SmartContractListFragment.SmartContractListFragment;
+import com.pixelplex.qtum.ui.fragment.ProfileFragment.SmartContractsFragment.SmartContractsFragment;
 import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -42,8 +39,8 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         settingsData.add(new SettingObject(R.string.language, R.drawable.ic_language, 0));
         settingsData.add(new SettingObject(R.string.change_pin, R.drawable.ic_changepin, 1));
         settingsData.add(new SettingObject(R.string.wallet_back_up, R.drawable.ic_backup, 1));
-        settingsData.add(new SettingObject(R.string.create_token,R.drawable.ic_tokencreate,2));
         settingsData.add(new SettingObject(R.string.subscribe_tokens,R.drawable.ic_tokensubscribe,2));
+        settingsData.add(new SettingObject(R.string.smart_contracts,R.drawable.ic_token,2));
         settingsData.add(new SettingObject(R.string.about,R.drawable.ic_about,3));
         settingsData.add(new SettingObject(R.string.log_out, R.drawable.ic_logout, 3));
     }
@@ -116,9 +113,9 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     }
 
     @Override
-    public void onCreateTokenClick() {
-        SmartContractListFragment smartContractListFragment = SmartContractListFragment.newInstance();
-        getView().openFragment(smartContractListFragment);
+    public void onSmartContractsClick() {
+        SmartContractsFragment smartContractsFragment = SmartContractsFragment.newInstance();
+        getView().openFragment(smartContractsFragment);
     }
 
     @Override

@@ -6,12 +6,14 @@ import android.util.Log;
 import com.pixelplex.qtum.SmartContractsManager.StorageManager;
 import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.CurrentNetParams;
+import com.pixelplex.qtum.utils.TinyDB;
 
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.ECKey;
@@ -59,7 +61,17 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
     private static final int radix = 16;
     private String hashPattern = "0000000000000000000000000000000000000000000000000000000000000000";
 
+                                //0000000000000000000000000000000000000000000000000000000000000037
+                                //0000000000000000000000000000000000000000000000000000000000000002
+                                //00000000000000000000000000000000000000000000000000000000000021dc
+                                //0000000000000000000000000000000000000000000000000000000000000002
+                                //7500000000000000000000000000000000000000000000000000000000000000
+                                //000000000000000000000000000000000000000000000000000000000000229c
+                                //0000000000000000000000000000000000000000000000000000000000000002
+                                //7900000000000000000000000000000000000000000000000000000000000000
+
     private String resultString = "";
+    private String contractName = "";
     private static final String TYPE_INT = "int";
     private static final String TYPE_STRING = "string";
 
@@ -85,6 +97,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
     public void confirmContract(final String contractName) {
         getView().onStartTransaction();
+        this.contractName = contractName;
         formContract(contractName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -368,6 +381,12 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                     @Override
                     public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
                         String s = sendRawTransactionResponse.getResult();
+                        getView().getApplication().setContractAwait(true);
+                        ContractInfo contractInfo = new ContractInfo(null,contractName,false,null);
+                        TinyDB tinyDB = new TinyDB(mContext);
+                        ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
+                        contractInfoList.add(contractInfo);
+                        tinyDB.putListContractInfo(contractInfoList);
                     }
                 });
     }

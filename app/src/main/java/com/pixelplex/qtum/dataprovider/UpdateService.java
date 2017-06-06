@@ -19,26 +19,29 @@ import org.bitcoinj.wallet.Wallet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
 import com.pixelplex.qtum.dataprovider.RestAPI.TokenListener;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalanceChangeListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenParams;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.datastorage.TokenList;
 import com.pixelplex.qtum.datastorage.TokenSharedPreference;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.utils.QtumIntent;
+import com.pixelplex.qtum.utils.TinyDB;
+
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 import org.spongycastle.crypto.digests.SHA256Digest;
 import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.socket.client.IO;
@@ -112,54 +115,37 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(), History.class);
-                if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
-                    String txHash = history.getTxHash();
-                    char[] ca = txHash.toCharArray();
-                    StringBuilder sb = new StringBuilder(txHash.length());
-                    for (int i = 0; i < txHash.length(); i += 2) {
-                        sb.insert(0, ca, i, 2);
+                if(((QtumApplication)getApplication()).isContractAwait()){
+                    TinyDB tinyDB = new TinyDB(getApplicationContext());
+
+                    ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
+                    for(ContractInfo contractInfo : contractInfoList){
+                        if(contractInfo.getContractAddress()==null){
+                            contractInfo.setContractAddress(generateContractAddress(history.getTxHash()));
+                            break;
+                        }
                     }
+                    tinyDB.putListContractInfo(contractInfoList);
+                    ((QtumApplication)getApplication()).setContractAwait(false);
+                }
+                if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
 
-                    String reverse_tx_hash = sb.toString();
-                    reverse_tx_hash = reverse_tx_hash.concat("00");
+                    String txHash = history.getTxHash();
+                    String contractAddress = generateContractAddress(txHash);
 
+                    TinyDB tinyDB = new TinyDB(getApplicationContext());
+                    ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
+                    for(ContractInfo contractInfo : contractInfoList){
+                        if(contractInfo.getContractAddress().equals(contractAddress)){
+                            contractInfo.setHasBeenCreated(true);
+                            contractInfo.setDate((long)history.getBlockTime());
+                            break;
+                        }
+                    }
+                    tinyDB.putListContractInfo(contractInfoList);
 
-                    byte[] test5 = Hex.decode(reverse_tx_hash);
-
-                    SHA256Digest sha256Digest = new SHA256Digest();
-                    sha256Digest.update(test5, 0, test5.length);
-                    byte[] out = new byte[sha256Digest.getDigestSize()];
-                    sha256Digest.doFinal(out, 0);
-
-                    RIPEMD160Digest ripemd160Digest = new RIPEMD160Digest();
-                    ripemd160Digest.update(out, 0, out.length);
-                    byte[] out2 = new byte[ripemd160Digest.getDigestSize()];
-                    ripemd160Digest.doFinal(out2, 0);
-
-                    final String tokenAddress = Hex.toHexString(out2);
-
-                    QtumService.newInstance().getContractsParams(tokenAddress)
-                            .subscribe(new Subscriber<TokenParams>() {
-                                @Override
-                                public void onCompleted() {
-                                }
-                                @Override
-                                public void onError(Throwable e) {
-
-                                }
-                                @Override
-                                public void onNext(TokenParams tokenParams) {
-                                    tokenParams.setAddress(tokenAddress);
-                                    addToTokenList(tokenParams);
-                                    if(mTokenListener != null){
-                                        mTokenListener.newToken();
-                                    }
-                                }
-                            });
-
-
-                    subscribeTokenBalanceChange(tokenAddress);
-                    TokenSharedPreference.getInstance().addToTokenList(getApplicationContext(), tokenAddress);
+                    subscribeTokenBalanceChange(contractAddress);
+                    TokenSharedPreference.getInstance().addToTokenList(getApplicationContext(), contractAddress);
 
                 }
                 if (mTransactionListener != null) {
@@ -188,7 +174,7 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 TokenBalance tokenBalance = gson.fromJson(data.toString(), TokenBalance.class);
-                TokenList.getTokenList().setTokenBalance(tokenBalance);
+
                 TokenBalanceChangeListener tokenBalanceChangeListener = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
                 if(tokenBalanceChangeListener!=null){
                     tokenBalanceChangeListener.onBalanceChange();
@@ -223,10 +209,6 @@ public class UpdateService extends Service {
         socket.emit("subscribe","token_balance_change",jsonObject);
     }
 
-    private void addToTokenList(TokenParams tokenParams){
-        TokenList.getTokenList().addToTokenList(tokenParams);
-    }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -234,6 +216,32 @@ public class UpdateService extends Service {
             starMonitoring();
         }
         return START_REDELIVER_INTENT;
+    }
+
+    private String generateContractAddress(String txHash){
+        char[] ca = txHash.toCharArray();
+        StringBuilder sb = new StringBuilder(txHash.length());
+        for (int i = 0; i < txHash.length(); i += 2) {
+            sb.insert(0, ca, i, 2);
+        }
+
+        String reverse_tx_hash = sb.toString();
+        reverse_tx_hash = reverse_tx_hash.concat("00");
+
+
+        byte[] test5 = Hex.decode(reverse_tx_hash);
+
+        SHA256Digest sha256Digest = new SHA256Digest();
+        sha256Digest.update(test5, 0, test5.length);
+        byte[] out = new byte[sha256Digest.getDigestSize()];
+        sha256Digest.doFinal(out, 0);
+
+        RIPEMD160Digest ripemd160Digest = new RIPEMD160Digest();
+        ripemd160Digest.update(out, 0, out.length);
+        byte[] out2 = new byte[ripemd160Digest.getDigestSize()];
+        ripemd160Digest.doFinal(out2, 0);
+
+        return Hex.toHexString(out2);
     }
 
     private void loadWalletFromFile(final LoadWalletFromFileCallBack callback) {
