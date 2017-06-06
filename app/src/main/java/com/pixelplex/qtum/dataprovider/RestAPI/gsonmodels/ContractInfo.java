@@ -1,21 +1,56 @@
 package com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels;
 
+import java.io.Serializable;
+
 /**
  * Created by maksimromanovskij on 03.06.17.
  */
 
-public class ContractInfo {
+public class ContractInfo implements Serializable {
 
     private String contractAddress;
     private String templateName;
     private Boolean hasBeenCreated;
     private Long date;
+    private Boolean isToken;
+    private float lastBalance = 0;
+
+    public String getSenderAddress() {
+        return senderAddress;
+    }
+
+    String senderAddress;
 
     public ContractInfo(String contractAddress, String templateName, Boolean hasBeenCreated, Long date){
         this.contractAddress = contractAddress;
         this.templateName = templateName;
         this.hasBeenCreated = hasBeenCreated;
         this.date = date;
+    }
+
+    public ContractInfo(String contractAddress, String templateName, Boolean hasBeenCreated, Long date, Boolean isToken, String senderAddress){
+        this.contractAddress = contractAddress;
+        this.templateName = templateName;
+        this.hasBeenCreated = hasBeenCreated;
+        this.date = date;
+        this.isToken = isToken;
+        this.senderAddress = senderAddress;
+    }
+
+    public void setLastBalance(float balance){
+        this.lastBalance = balance;
+    }
+
+    public float getLastBalance(){
+        return lastBalance;
+    }
+
+    public void markSmartContractAsToken(Boolean isToken) {
+        this.isToken = isToken;
+    }
+
+    public Boolean isToken() {
+        return this.isToken;
     }
 
     public String getContractAddress() {

@@ -71,7 +71,7 @@ public class WalletMainFragment extends BaseFragment implements WalletMainFragme
                 case 0:
                     return WalletFragment.newInstance();
                 case 1:
-                    return OtherTokensFragment.newInstance(); //TODO OTHER TOKENS FRAGMENT
+                    return OtherTokensFragment.newInstance();
                 default:
                     return null;
             }

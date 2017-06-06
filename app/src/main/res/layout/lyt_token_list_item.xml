@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/root_layout"
+    android:clickable="true"
+    android:layout_width="match_parent"
+    android:background="?attr/selectableItemBackground"
+    android:layout_height="56dp">
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/token_name"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/token_name"
+        android:gravity="center"
+        android:padding="16dp"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:layout_marginStart="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"/>
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/token_balance"
+        android:textSize="14sp"
+        android:textColor="@color/colorPrimary"
+        app:typefaceAsset="@string/simplonMonoMedium"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ProgressBar
+        android:id="@+id/spinner"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"/>
+
+</RelativeLayout>

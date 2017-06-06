@@ -39,7 +39,7 @@ public class StorageManager {
 
     private final static String prefMigrationBuildVersion = "migration_buid_version";
 
-    private static String[] STANDART_CONTRACTS = {"Standart", "Version1", "Version2"};
+    private static String[] STANDART_CONTRACTS = {"Standart", "Version1", "Version2", "Crowdsale"};
 
     private static String abiContractName = "abi-contract";
     private static String byteCodeContractName = "bitecode-contract";

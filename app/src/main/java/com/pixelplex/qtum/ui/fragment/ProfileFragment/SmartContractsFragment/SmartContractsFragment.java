@@ -13,6 +13,7 @@ import com.pixelplex.qtum.ui.fragment.ProfileFragment.OnSettingClickListener;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.PrefAdapter;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 public class SmartContractsFragment extends BaseFragment implements OnSettingClickListener, SmartContractsFragmentView{
@@ -21,6 +22,11 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
 
     @BindView(R.id.smart_contracts_list)
     RecyclerView smartContractsList;
+
+    @OnClick(R.id.ibt_back)
+    public void onClickBack(){
+        getActivity().onBackPressed();
+    }
 
     PrefAdapter adapter;
 
