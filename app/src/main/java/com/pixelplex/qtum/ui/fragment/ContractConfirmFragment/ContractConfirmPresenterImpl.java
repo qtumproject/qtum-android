@@ -59,15 +59,6 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
     private static final int radix = 16;
     private String hashPattern = "0000000000000000000000000000000000000000000000000000000000000000";
 
-                                //0000000000000000000000000000000000000000000000000000000000000037
-                                //0000000000000000000000000000000000000000000000000000000000000002
-                                //00000000000000000000000000000000000000000000000000000000000021dc
-                                //0000000000000000000000000000000000000000000000000000000000000002
-                                //7500000000000000000000000000000000000000000000000000000000000000
-                                //000000000000000000000000000000000000000000000000000000000000229c
-                                //0000000000000000000000000000000000000000000000000000000000000002
-                                //7900000000000000000000000000000000000000000000000000000000000000
-
     private String resultString = "";
     private String mContractTemplateName = "";
     private static final String TYPE_INT = "int";
@@ -323,7 +314,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                 transactionHex += Hex.toHexString(bytesData);
 
-                sendTx(transactionHex);
+                sendTx(transactionHex, unspentOutput.getPubkeyHash());
     }
 
     public void getUnspentOutputs() {
@@ -360,7 +351,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                 });
     }
 
-    public void sendTx(String code) {
+    public void sendTx(String code, final String senderAddress) {
         QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(code, 1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -379,7 +370,9 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                     public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
                         String s = sendRawTransactionResponse.getResult();
                         getView().getApplication().setContractAwait(true);
-                        ContractInfo contractInfo = new ContractInfo(null, mContractTemplateName,false,null);
+
+                        ContractInfo contractInfo = new ContractInfo(null,mContractTemplateName,false,null,true, senderAddress);
+
                         TinyDB tinyDB = new TinyDB(mContext);
                         ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
                         contractInfoList.add(contractInfo);

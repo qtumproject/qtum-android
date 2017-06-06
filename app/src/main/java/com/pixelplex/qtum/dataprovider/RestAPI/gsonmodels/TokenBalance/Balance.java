@@ -22,7 +22,7 @@ public class Balance {
     }
 
     public Integer getBalance() {
-        return balance;
+        return (balance != null)? balance : 0;
     }
 
     public void setBalance(Integer balance) {

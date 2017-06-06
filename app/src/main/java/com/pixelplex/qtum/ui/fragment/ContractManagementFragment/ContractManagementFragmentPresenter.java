@@ -46,7 +46,7 @@ public class ContractManagementFragmentPresenter extends BaseFragmentPresenterIm
         getView().setRecyclerView(contractMethodList);
     }
 
-    public Observable<String[]> getHash(final String name) {
+    private Observable<String[]> getHash(final String name) {
 
         return Observable.fromCallable(new Callable<String[]>() {
             @Override
@@ -121,7 +121,7 @@ public class ContractManagementFragmentPresenter extends BaseFragmentPresenterIm
         return output;
     }
 
-    interface GetPropertyValueCallBack{
+    public interface GetPropertyValueCallBack{
         void onSuccess(String value);
     }
 }

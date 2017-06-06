@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -91,21 +92,25 @@ public class UpdateService extends Service {
         }).on("balance_changed", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                JSONObject data = (JSONObject) args[0];
-                BigDecimal unconfirmedBalance = null;
-                BigDecimal balance = null;
                 try {
-                    unconfirmedBalance = (new BigDecimal(data.getString("unconfirmedBalance"))).divide(new BigDecimal("100000000"));
-                    balance = (new BigDecimal(data.getString("balance"))).divide(new BigDecimal("100000000"));
-                    mBalance = balance.toString();
-                    mUnconfirmedBalance = unconfirmedBalance.toString();
-                    HistoryList.getInstance().setBalance(balance.toString());
-                    HistoryList.getInstance().setUnconfirmedBalance(unconfirmedBalance.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (mBalanceChangeListener != null) {
-                    mBalanceChangeListener.onChangeBalance();
+                    JSONObject data = (JSONObject) args[0];
+                    BigDecimal unconfirmedBalance = null;
+                    BigDecimal balance = null;
+                    try {
+                        unconfirmedBalance = (new BigDecimal(data.getString("unconfirmedBalance"))).divide(new BigDecimal("100000000"));
+                        balance = (new BigDecimal(data.getString("balance"))).divide(new BigDecimal("100000000"));
+                        mBalance = balance.toString();
+                        mUnconfirmedBalance = unconfirmedBalance.toString();
+                        HistoryList.getInstance().setBalance(balance.toString());
+                        HistoryList.getInstance().setUnconfirmedBalance(unconfirmedBalance.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (mBalanceChangeListener != null) {
+                        mBalanceChangeListener.onChangeBalance();
+                    }
+                } catch (ClassCastException e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         }).on("new_transaction", new Emitter.Listener() {
@@ -174,7 +179,7 @@ public class UpdateService extends Service {
 
                 TokenBalanceChangeListener tokenBalanceChangeListener = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
                 if(tokenBalanceChangeListener!=null){
-                    tokenBalanceChangeListener.onBalanceChange();
+                    tokenBalanceChangeListener.onBalanceChange(tokenBalance);
                 }
             }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
@@ -195,7 +200,7 @@ public class UpdateService extends Service {
         stopSelf();
     }
 
-    private void subscribeTokenBalanceChange(String tokenAddress){
+    public void subscribeTokenBalanceChange(String tokenAddress){
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("contract_address",tokenAddress);
@@ -368,12 +373,10 @@ public class UpdateService extends Service {
 
     public void addTokenBalanceChangeListener(String address, TokenBalanceChangeListener tokenBalanceChangeListener){
         mStringTokenBalanceChangeListenerHashMap.put(address,tokenBalanceChangeListener);
-        int i =0;
     }
 
     public void removeTokenBalanceChangeListener(String address){
         mStringTokenBalanceChangeListenerHashMap.remove(address);
-        int i=0;
     }
 
     public void removeBalanceChangeListener() {

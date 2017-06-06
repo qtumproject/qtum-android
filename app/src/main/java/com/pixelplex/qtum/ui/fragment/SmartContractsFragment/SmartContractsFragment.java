@@ -24,7 +24,9 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
     RecyclerView smartContractsList;
 
     @OnClick(R.id.ibt_back)
+
     public void onClick() {
+        
         getActivity().onBackPressed();
     }
 

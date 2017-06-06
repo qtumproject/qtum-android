@@ -25,6 +25,16 @@ public class TokenBalance {
         return balances;
     }
 
+    public float getSummaryBalance() {
+        float summaryBalance = 0;
+        if(balances != null && balances.size() > 0){
+            for (Balance balance: balances) {
+                summaryBalance += balance.getBalance();
+            }
+        }
+        return summaryBalance;
+    }
+
     public void setBalances(List<Balance> balances) {
         this.balances = balances;
     }

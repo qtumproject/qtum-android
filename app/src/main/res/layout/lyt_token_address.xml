@@ -36,7 +36,7 @@
             app:typefaceAsset="@string/simplonMonoRegular" />
 
         <com.pixelplex.qtum.utils.FontTextView
-            android:id="@+id/tv_public_key"
+            android:id="@+id/tv_token_address"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:text="N/A"

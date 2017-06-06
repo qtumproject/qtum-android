@@ -87,6 +87,7 @@ public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl
                 return;
             }
         }
+
     }
 
     public void onCallClick(List<ContractMethodParameter> contractMethodParameterList, String contractTemplateName, String contractAddress, String methodName){
@@ -395,6 +396,6 @@ public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl
 
                     }
                 });
-    }
 
+    }
 }
