@@ -87,7 +87,7 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
 
     @Override
     public void initializeViews() {
-        ((MainActivity) getActivity()).hideBottomNavigationView();
+        hideBottomNavView(true);
         StorageManager.getInstance().getContracts(getContext());
     }
 }

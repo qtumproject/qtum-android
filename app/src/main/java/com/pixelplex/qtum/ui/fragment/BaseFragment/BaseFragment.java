@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
 
@@ -88,6 +89,14 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.show();
 
+    }
+
+    protected void hideBottomNavView(boolean recolorStatusBar) {
+        ((MainActivity) getActivity()).hideBottomNavigationView(recolorStatusBar);
+    }
+
+    protected void showBottomNavView(boolean recolorStatusBar) {
+        ((MainActivity) getActivity()).showBottomNavigationView(recolorStatusBar);
     }
 
     @Override

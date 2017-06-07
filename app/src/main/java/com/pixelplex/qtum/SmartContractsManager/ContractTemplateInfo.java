@@ -9,10 +9,15 @@ public class ContractTemplateInfo {
     private long date;
     private String contractType = "token";
 
+    public ContractTemplateInfo(String name, long date){
+        this.name = name;
+        this.date = date;
+    }
+
     public ContractTemplateInfo(String name, long date, String contractType){
         this.name = name;
         this.date = date;
-        //this.contractType = contractType;
+        this.contractType = contractType;
     }
 
     public String getName() {

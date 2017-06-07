@@ -1,9 +1,14 @@
 package com.pixelplex.qtum.ui.fragment.WalletFragment;
 
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,6 +19,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -37,6 +43,7 @@ import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 import com.pixelplex.qtum.utils.FontTextView;
+import com.pixelplex.qtum.utils.ResizeWidthAnimation;
 import com.transitionseverywhere.ChangeClipBounds;
 import com.transitionseverywhere.TransitionManager;
 
@@ -50,6 +57,8 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
@@ -104,7 +113,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     @BindView(R.id.balance_view)
     FrameLayout balanceView;
 
-    ChangeClipBounds clip;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout collapsingToolbar;
 
     @OnClick({R.id.bt_qr_code,})
     public void onClick(View view) {
@@ -227,33 +237,71 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     final DisplayMetrics dm = new DisplayMetrics();
 
+    boolean expanded = false;
+
     public void doDividerExpand() {
-        fadeDivider.setVisibility(View.VISIBLE);
-        TransitionManager.endTransitions(fadeDividerRoot);
-        fadeDivider.setClipBounds(new Rect(0,0,0,fadeDivider.getHeight()));
-        TransitionManager.beginDelayedTransition(fadeDividerRoot, clip);
-        fadeDivider.setClipBounds(new Rect(0,0,getResources().getDisplayMetrics().widthPixels,fadeDivider.getHeight()));
+        if(!expanded) {
+            expanded = true;
+            fadeDivider.clearAnimation();
+            fadeDivider.setVisibility(View.VISIBLE);
+            ResizeWidthAnimation anim = new ResizeWidthAnimation(fadeDivider, getResources().getDisplayMetrics().widthPixels);
+            anim.setDuration(300);
+            anim.setFillEnabled(true);
+            anim.setFillAfter(true);
+            fadeDivider.startAnimation(anim);
+        }
     }
 
     public void doDividerCollapse() {
-        fadeDivider.setVisibility(View.INVISIBLE);
+        if(expanded) {
+            fadeDivider.clearAnimation();
+            fadeDivider.setVisibility(View.INVISIBLE);
+            ViewGroup.LayoutParams lp = fadeDivider.getLayoutParams();
+            lp.width = 0;
+            fadeDivider.setLayoutParams(lp);
+            expanded = false;
+        }
     }
 
-    float prevPercents = 0;
+    float headerPAdding = 0;
+    float percents = 1;
+    float prevPercents = 1;
 
     @Override
     public void initializeViews() {
+        super.initializeViews();
 
-        clip = new ChangeClipBounds();
-        clip.addTarget(fadeDivider);
-        clip.setDuration(300);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState == SCROLL_STATE_IDLE){
+                    autodetectAppbar();
+                }
+            }
+        });
+
+        // Disable "Drag" for AppBarLayout (i.e. User can't scroll appBarLayout by directly touching appBarLayout - User can only scroll appBarLayout by only using scrollContent)
+        if (mAppBarLayout.getLayoutParams() != null) {
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
+            AppBarLayout.Behavior appBarLayoutBehaviour = new AppBarLayout.Behavior();
+            appBarLayoutBehaviour.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
+                @Override
+                public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                    return false;
+                }
+            });
+            layoutParams.setBehavior(appBarLayoutBehaviour);
+        }
+
+        headerPAdding = convertDpToPixel(16,getContext());
 
         uncomfirmedBalanceValue.setVisibility(View.GONE);
         uncomfirmedBalanceTitle.setVisibility(View.GONE);
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        ((MainActivity) getActivity()).showBottomNavigationView();
+        showBottomNavView(true);
 
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
@@ -270,7 +318,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                             getPresenter().onLastItem(totalItemCount-1);
                         }
                     }
-
                 }
             }
         });
@@ -294,7 +341,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                             }
                         }
 
-                        float percents = (((getTotalRange() - Math.abs(verticalOffset))*1.0f)/getTotalRange());
+                        percents = (((getTotalRange() - Math.abs(verticalOffset))*1.0f)/getTotalRange());
 
                         balanceView.setAlpha((percents>0.5f)? percents : 1 - percents);
 
@@ -304,47 +351,66 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                             doDividerCollapse();
                         }
 
-                        if(uncomfirmedBalanceTitle.getVisibility() == View.VISIBLE) {
-                            animateText(percents, balanceTitle);
-                            balanceTitle.setX(appBarLayout.getWidth() / 2 * percents - (balanceTitle.getWidth() * percents) / 2);
-                            balanceTitle.setY(balanceView.getHeight()/2 - balanceTitle.getHeight() * percents - balanceTitle.getHeight() * (1-percents) );
+                        final float textPercent = (percents >= .5f)? percents : .5f;
+                        final float textPercent3f = (percents >= .3f)? percents : .3f;
 
-                            animateText(percents, balanceValue);
-                            balanceValue.setX(appBarLayout.getWidth() - (appBarLayout.getWidth() / 2 * percents + (balanceValue.getWidth() * percents) / 2) - balanceValue.getWidth() * (1 - percents));
+                        if(uncomfirmedBalanceTitle.getVisibility() == View.VISIBLE) {
+                            animateText(percents, balanceValue, .5f);
+                            balanceValue.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (balanceValue.getWidth() * textPercent) / 2) - balanceValue.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
                             balanceValue.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - balanceValue.getHeight() * percents - balanceValue.getHeight() * (1 - percents));
 
+                            animateText(percents, balanceTitle, .7f);
+                            balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
+                            balanceTitle.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - balanceTitle.getHeight() * (1 - percents) );
 
-                            animateText(percents, uncomfirmedBalanceValue);
-                            uncomfirmedBalanceValue.setX(appBarLayout.getWidth() - (appBarLayout.getWidth() / 2 * percents + (uncomfirmedBalanceValue.getWidth() * percents) / 2) - uncomfirmedBalanceValue.getWidth() * (1 - percents));
+                            animateText(percents, uncomfirmedBalanceValue, .5f);
+                            uncomfirmedBalanceValue.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (uncomfirmedBalanceValue.getWidth() * textPercent) / 2) - uncomfirmedBalanceValue.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
 
-                            animateText(percents, uncomfirmedBalanceTitle);
+                            animateText(percents, uncomfirmedBalanceTitle, .7f);
                             uncomfirmedBalanceTitle.setY(balanceView.getHeight() / 2 + uncomfirmedBalanceValue.getHeight() * percents - (uncomfirmedBalanceTitle.getHeight() * percents * (1 - percents)));
-                            uncomfirmedBalanceTitle.setX(appBarLayout.getWidth() / 2 * percents - (uncomfirmedBalanceTitle.getWidth() * percents) / 2);
+                            uncomfirmedBalanceTitle.setX(balanceView.getWidth() / 2 * percents - (uncomfirmedBalanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
                         } else {
+                            animateText(percents, balanceTitle, .7f);
+                            balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
+                            balanceTitle.setY(balanceView.getHeight() / 2 + balanceTitle.getHeight() / 2 * percents - balanceTitle.getHeight() / 2 * (1-percents));
 
-                            animateText(percents, balanceTitle);
-                            balanceTitle.setX(appBarLayout.getWidth() / 2 * percents - (balanceTitle.getWidth() * percents) / 2);
-                            balanceTitle.setY(balanceView.getHeight()/2 + balanceTitle.getHeight()/2 * percents - balanceTitle.getHeight()/2 * (1-percents));
-
-                            animateText(percents, balanceValue);
-                            balanceValue.setX(appBarLayout.getWidth() - (appBarLayout.getWidth() / 2 * percents + (balanceValue.getWidth() * percents) / 2) - balanceValue.getWidth() * (1 - percents));
-                            balanceValue.setY(balanceView.getHeight() / 2 - balanceValue.getHeight() * percents - balanceValue.getHeight()/2 * (1-percents));
-
+                            animateText(percents, balanceValue, .5f);
+                            balanceValue.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (balanceValue.getWidth() * textPercent) / 2) - balanceValue.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
+                            balanceValue.setY(balanceView.getHeight() / 2 - balanceValue.getHeight() * percents - balanceValue.getHeight() / 2 * (1-percents));
                         }
                         prevPercents = percents;
                     }
+
                 });
         mWalletFragmentPresenter.notifyHeader();
+    }
+
+    private void autodetectAppbar(){
+        if(percents >=.5f){
+            mAppBarLayout.setExpanded(true, true);
+        } else {
+            mAppBarLayout.setExpanded(false, true);
+        }
+    }
+
+    public static float convertDpToPixel(float dp, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
     }
 
     public int getTotalRange() {
         return mAppBarLayout.getTotalScrollRange();
     }
 
-    private void animateText(float percents, View view) {
-        if(percents>0.9f) {
+    private void animateText(float percents, View view, float fringe) {
+        if(percents > fringe) {
             view.setScaleX(percents);
             view.setScaleY(percents);
+        } else {
+            view.setScaleX(fringe);
+            view.setScaleY(fringe);
         }
     }
 

@@ -151,7 +151,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @Override
     public void initializeViews() {
         super.initializeViews();
-        ((MainActivity) getActivity()).showBottomNavigationView();
+        showBottomNavView(true);
         ((MainActivity) getActivity()).setIconChecked(3);
         mImageButtonBack.setVisibility(View.GONE);
         mRelativeLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {

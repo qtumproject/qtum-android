@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
