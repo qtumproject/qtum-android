@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.fragment.ProfileFragment.SmartContractsFragment;
+package com.pixelplex.qtum.ui.fragment.SmartContractsFragment;
 
 
 import android.os.Bundle;
@@ -24,7 +24,9 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
     RecyclerView smartContractsList;
 
     @OnClick(R.id.ibt_back)
-    public void onClickBack(){
+
+    public void onClick() {
+        
         getActivity().onBackPressed();
     }
 

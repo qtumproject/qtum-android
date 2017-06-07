@@ -101,7 +101,7 @@ public class ContractManagementFragment extends BaseFragment implements Contract
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ContractFunctionFragment contractFunctionFragment = ContractFunctionFragment.newInstance(mContractMethod.name,getContractTemplateName());
+                    ContractFunctionFragment contractFunctionFragment = ContractFunctionFragment.newInstance(mContractMethod.name,getContractTemplateName(),getArguments().getString(CONTRACT_ADDRESS));
                     openFragment(contractFunctionFragment);
                 }
             });

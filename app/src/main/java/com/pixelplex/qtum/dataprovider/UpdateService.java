@@ -31,7 +31,6 @@ import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBala
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.datastorage.TokenSharedPreference;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.utils.QtumIntent;
 import com.pixelplex.qtum.utils.TinyDB;
@@ -150,8 +149,6 @@ public class UpdateService extends Service {
                     tinyDB.putListContractInfo(contractInfoList);
 
                     subscribeTokenBalanceChange(contractAddress);
-                    TokenSharedPreference.getInstance().addToTokenList(getApplicationContext(), contractAddress);
-
                 }
                 if (mTransactionListener != null) {
                     mTransactionListener.onNewHistory(history);

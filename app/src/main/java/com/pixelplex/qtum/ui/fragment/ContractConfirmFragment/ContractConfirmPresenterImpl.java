@@ -1,7 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.ContractConfirmFragment;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.pixelplex.qtum.SmartContractsManager.StorageManager;
 import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
@@ -33,7 +32,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -62,18 +60,18 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
     private String hashPattern = "0000000000000000000000000000000000000000000000000000000000000000";
 
     private String resultString = "";
-    private String contractName = "";
+    private String mContractTemplateName = "";
     private static final String TYPE_INT = "int";
     private static final String TYPE_STRING = "string";
 
-    private List<ContractMethodParameter> params;
+    private List<ContractMethodParameter> mContractMethodParameterList;
 
-    public void setParams(List<ContractMethodParameter> params) {
-        this.params = params;
+    public void setContractMethodParameterList(List<ContractMethodParameter> contractMethodParameterList) {
+        this.mContractMethodParameterList = contractMethodParameterList;
     }
 
-    public List<ContractMethodParameter> getParams() {
-        return params;
+    public List<ContractMethodParameter> getContractMethodParameterList() {
+        return mContractMethodParameterList;
     }
 
     public ContractConfirmPresenterImpl(ContractConfirmView view) {
@@ -82,14 +80,11 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
         interactor = new ContractConfirmInteractorImpl();
     }
 
-    public String getResult() {
-        return resultString;
-    }
 
-    public void confirmContract(final String contractName) {
+    public void confirmContract(final String contractTemplateName) {
         getView().onStartTransaction();
-        this.contractName = contractName;
-        formContract(contractName)
+        this.mContractTemplateName = contractTemplateName;
+        formContract(contractTemplateName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<String>() {
@@ -115,8 +110,8 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
        return Observable.fromCallable(new Callable<String>() {
             @Override
             public String call() throws Exception {
-                if(params != null) {
-                    for (ContractMethodParameter parameter : params) {
+                if(mContractMethodParameterList != null) {
+                    for (ContractMethodParameter parameter : mContractMethodParameterList) {
                         convertParameter(parameter);
                     }
                 }
@@ -160,20 +155,20 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
     private int getStringsChainSize(ContractMethodParameter parameter) {
 
-        if(params == null || params.size() == 0){
+        if(mContractMethodParameterList == null || mContractMethodParameterList.size() == 0){
             return 0;
         }
 
-        int index = params.indexOf(parameter);
+        int index = mContractMethodParameterList.indexOf(parameter);
 
-        if(index == params.size()-1) {
+        if(index == mContractMethodParameterList.size()-1) {
             return 1;
         }
 
         int chainSize = 0;
 
-        for (int i = index; i<params.size();i++){
-            if(params.get(index).type.contains(TYPE_STRING)){
+        for (int i = index; i< mContractMethodParameterList.size(); i++){
+            if(mContractMethodParameterList.get(index).type.contains(TYPE_STRING)){
                 chainSize++;
             }
         }
@@ -240,6 +235,8 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                 byte[] gasPrice = Hex.decode("0100000000000000");
                 byte[] data = Hex.decode(resultString);
                 byte[] program;
+
+                resultString = "";
 
                 ScriptChunk versionChunk = new ScriptChunk(OP_PUSHDATA_1,version);
                 ScriptChunk gasLimitChunk = new ScriptChunk(OP_PUSHDATA_8,gasLimit);
@@ -373,7 +370,9 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                     public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
                         String s = sendRawTransactionResponse.getResult();
                         getView().getApplication().setContractAwait(true);
-                        ContractInfo contractInfo = new ContractInfo(null,contractName,false,null,true, senderAddress);
+
+                        ContractInfo contractInfo = new ContractInfo(null,mContractTemplateName,false,null,true, senderAddress);
+
                         TinyDB tinyDB = new TinyDB(mContext);
                         ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
                         contractInfoList.add(contractInfo);

@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.fragment.ProfileFragment.SmartContractsFragment;
+package com.pixelplex.qtum.ui.fragment.SmartContractsFragment;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
