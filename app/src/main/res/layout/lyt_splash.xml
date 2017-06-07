@@ -18,7 +18,7 @@
         android:textColor="@color/primary_text_color"
         android:layout_height="wrap_content" />
 
-     <android.support.v7.widget.AppCompatImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/ic_app_logo_red"
         android:layout_above="@+id/txt_app_name"
         android:layout_centerHorizontal="true"

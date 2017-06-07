@@ -40,7 +40,7 @@ import java.lang.reflect.Field;
 import butterknife.BindView;
 
 
-public class MainActivity extends BaseActivity implements MainActivityView {
+public class MainActivity extends BaseActivity implements MainActivityView{
 
     private static final int LAYOUT = R.layout.activity_main;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
@@ -188,28 +188,9 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         getPresenter().processIntent(getIntent());
     }
 
-    Dialog processingDialog;
-
-    public void showProcessing() {
-        if(processingDialog == null) {
-            processingDialog = new Dialog(this);
-            processingDialog.setContentView(R.layout.lyt_processing_dialog);
-        }
-        processingDialog.show();
-    }
-
-    public void hideProcessing() {
-        if(processingDialog != null && processingDialog.isShowing()) {
-            processingDialog.hide();
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(processingDialog != null) {
-            processingDialog.dismiss();
-        }
     }
 
     public void setRootFragment(Fragment rootFragment) {

@@ -13,6 +13,7 @@ import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import com.pixelplex.qtum.dataprovider.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
@@ -156,7 +157,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         if(mNetworkConnectedFlag) {
             loadAndUpdateData();
         }else{
-            getView().setAlertDialog("No Internet Connection","Please check your network settings","Ok");
+            getView().setAlertDialog("No Internet Connection","Please check your network settings","Ok", BaseFragment.PopUpType.error);
             getView().stopRefreshRecyclerAnimation();
         }
     }

@@ -88,35 +88,8 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
     }
 
     @Override
-    public void onCompleteTransaction() {
-        hideActivityProcessing();
-        CompleteDialogFragment completeDialogFragment = new CompleteDialogFragment();
-        completeDialogFragment.setTargetFragment(this, 200);
-        completeDialogFragment.show(getFragmentManager(), CompleteDialogFragment.class.getCanonicalName());
-    }
-
-    @Override
-    public void onErrorTransaction(String error) {
-        hideActivityProcessing();
-        makeToast(error);
-    }
-
-    @Override
-    public void onStartTransaction() {
-        showActivityProcessing();
-    }
-
-    @Override
     public QtumApplication getApplication() {
         return ((MainActivity)getFragmentActivity()).getQtumApplication();
-    }
-
-    private void showActivityProcessing() {
-        ((MainActivity) getActivity()).showProcessing();
-    }
-
-    private void hideActivityProcessing() {
-        ((MainActivity) getActivity()).hideProcessing();
     }
 
     @Override

@@ -26,7 +26,7 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
     @OnClick(R.id.ibt_back)
 
     public void onClick() {
-        
+
         getActivity().onBackPressed();
     }
 

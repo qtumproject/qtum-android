@@ -60,7 +60,6 @@ public class SplashActivity extends BaseActivity implements SplashActivityView, 
         appLogo.setClipBounds(new Rect(0,0,appLogoHeight,appLogoHeight));
         TransitionManager.beginDelayedTransition(rootLayout, clip);
         appLogo.setClipBounds(new Rect(0,0,appLogoHeight,0));
-
     }
 
     @Override

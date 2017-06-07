@@ -13,6 +13,7 @@ import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import com.pixelplex.qtum.dataprovider.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
@@ -169,27 +170,17 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                 @Override
                 public void onSuccess() {
                     getView().dismissProgressDialog();
-                    getView().setAlertDialog("Sent", "Has been sent", "Ok");
-                    (new Handler()).postDelayed(new Runnable() {
-                        public void run() {
-                            getView().dismissAlertDialog();
-                        }
-                    }, 2000);
+                    getView().setAlertDialog("Payment completed successfully", "Ok", BaseFragment.PopUpType.confirm);
                 }
 
                 @Override
                 public void onError(String error) {
                     getView().dismissProgressDialog();
-                    getView().setAlertDialog("Error", error, "Ok");
-                    (new Handler()).postDelayed(new Runnable() {
-                        public void run() {
-                            getView().dismissAlertDialog();
-                        }
-                    }, 2000);
+                    getView().setAlertDialog("Error", error, "Ok", BaseFragment.PopUpType.error);
                 }
             });
         } else {
-            getView().setAlertDialog("No Internet Connection","Please check your network settings","Ok");
+            getView().setAlertDialog("No Internet Connection","Please check your network settings","Ok", BaseFragment.PopUpType.error);
         }
     }
 

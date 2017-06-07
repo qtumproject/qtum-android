@@ -2,7 +2,6 @@ package com.pixelplex.qtum.ui.fragment.BaseFragment;
 
 import android.app.Activity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,9 +17,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.fragment.ProcessingDialogFragment;
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
 
@@ -40,8 +40,9 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     public static final String BACK_STACK_ROOT_TAG = "root_fragment";
 
     private Unbinder mUnbinder;
-    ProgressDialog mProgressDialog;
+
     AlertDialog mAlertDialog;
+    ProcessingDialogFragment processingDialogFragment;
 
     @Nullable
     @BindView(R.id.toolbar)
@@ -55,20 +56,28 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void setProgressDialog(String message) {
-        mProgressDialog =  new ProgressDialog(getActivity());
-        mProgressDialog.setTitle(message);
-        mProgressDialog.setMessage(getString(R.string.please_wait));
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
+        processingDialogFragment = new ProcessingDialogFragment();
+        processingDialogFragment.show(getFragmentManager(),"tralalal");
+        //TODO
     }
 
     @Override
     public void dismissProgressDialog() {
-        mProgressDialog.dismiss();
+        //processingDialogFragment.dismiss();
+        //TODO
+    }
+
+    public enum PopUpType{
+        error, confirm
     }
 
     @Override
-    public void setAlertDialog(String title, String message, String buttonText) {
+    public void setAlertDialog(String title, String buttonText, PopUpType type) {
+        setAlertDialog(title,"",buttonText,type);
+    }
+
+    @Override
+    public void setAlertDialog(String title, String message, String buttonText, PopUpType popUpType) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_popup_fragment,null);
         ((FontTextView)view.findViewById(R.id.tv_pop_up_title)).setText(title);
         ((FontTextView)view.findViewById(R.id.tv_pop_up_message)).setText(message);
@@ -80,6 +89,17 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
                 mAlertDialog.cancel();
             }
         });
+
+        switch (popUpType.name()){
+            case "error":
+                ((ImageView)view.findViewById(R.id.iv_icon)).setImageResource(R.drawable.ic_error);
+                view.findViewById(R.id.red_line).setVisibility(View.VISIBLE);
+                break;
+            case "confirm":
+                ((ImageView)view.findViewById(R.id.iv_icon)).setImageResource(R.drawable.ic_confirm);
+                view.findViewById(R.id.red_line).setVisibility(View.GONE);
+                break;
+        }
 
         mAlertDialog = new AlertDialog
                 .Builder(getContext())

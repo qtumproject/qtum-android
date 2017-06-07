@@ -10,6 +10,7 @@ import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequ
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import com.pixelplex.qtum.datastorage.KeyStorage;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.CurrentNetParams;
 import com.pixelplex.qtum.utils.TinyDB;
@@ -82,7 +83,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
 
     public void confirmContract(final String contractTemplateName) {
-        getView().onStartTransaction();
+        getView().setProgressDialog("Loading...");
         this.mContractTemplateName = contractTemplateName;
         formContract(contractTemplateName)
                 .subscribeOn(Schedulers.io())
@@ -95,7 +96,8 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onError(Throwable e) {
-                        getView().onErrorTransaction(e.getMessage());
+                        getView().dismissProgressDialog();
+                        getView().setAlertDialog("Error", e.getMessage(),"Ok", BaseFragment.PopUpType.error);
                     }
 
                     @Override
@@ -273,7 +275,8 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                 }
 
                 if(unspentOutput == null){
-                    getView().onErrorTransaction("Not enough money");
+                    getView().dismissProgressDialog();
+                    getView().setAlertDialog("Error","Not enough money","OK", BaseFragment.PopUpType.error);
                     return;
                 }
 
@@ -358,12 +361,14 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                 .subscribe(new Subscriber<SendRawTransactionResponse>() {
                     @Override
                     public void onCompleted() {
-                        getView().onCompleteTransaction();
+                        getView().dismissProgressDialog();
+                        getView().setAlertDialog("Contract created successfully","OK", BaseFragment.PopUpType.confirm);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        getView().onErrorTransaction(e.getMessage());
+                        getView().dismissProgressDialog();
+                        getView().setAlertDialog("Error",e.getMessage(),"OK", BaseFragment.PopUpType.error);
                     }
 
                     @Override
