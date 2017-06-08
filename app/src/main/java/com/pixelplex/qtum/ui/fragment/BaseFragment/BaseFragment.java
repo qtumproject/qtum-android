@@ -57,14 +57,13 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void setProgressDialog(String message) {
         processingDialogFragment = new ProcessingDialogFragment();
-        processingDialogFragment.show(getFragmentManager(),"tralalal");
-        //TODO
+        processingDialogFragment.show(getFragmentManager(), processingDialogFragment.getClass().getCanonicalName());
     }
 
     @Override
     public void dismissProgressDialog() {
+        //TODO uncomment
         //processingDialogFragment.dismiss();
-        //TODO
     }
 
     public enum PopUpType{

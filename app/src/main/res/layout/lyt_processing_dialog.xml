@@ -7,8 +7,8 @@
 
     <FrameLayout
         android:id="@+id/spinner"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_margin="16dp"
         android:background="@drawable/spinner_empty"
         android:layout_centerVertical="true"

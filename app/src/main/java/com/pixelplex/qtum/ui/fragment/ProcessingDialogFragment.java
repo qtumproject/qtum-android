@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -34,12 +35,13 @@ public class ProcessingDialogFragment extends DialogFragment implements Transiti
     @BindView(R.id.root_layout)
     RelativeLayout mRootLayout;
 
-    ChangeClipBounds mClip;
+    ChangeClipBounds mClipBoundsTransition;
+    Rotate mRotateTransition;
     int appLogoHeight = 0;
 
     String CLIP_BOUND = "com.transitionseverywhere.ChangeClipBounds";
 
-    int rotate_state = 0;
+    boolean forward_rotate = true;
     boolean forward_clip = true;
 
     @NonNull
@@ -58,10 +60,16 @@ public class ProcessingDialogFragment extends DialogFragment implements Transiti
     public void onResume() {
         super.onResume();
 
-        mClip = new ChangeClipBounds();
-        mClip.addTarget(mSpinnerInside);
-        mClip.setDuration(1000);
-        mClip.addListener(this);
+        mClipBoundsTransition = new ChangeClipBounds();
+        mClipBoundsTransition.addTarget(mSpinnerInside);
+        mClipBoundsTransition.setDuration(300);
+        mClipBoundsTransition.setInterpolator(new LinearInterpolator());
+        mClipBoundsTransition.addListener(this);
+
+        mRotateTransition = new Rotate();
+        mRotateTransition.addTarget(mSpinner);
+        mRotateTransition.setDuration(300);
+        mRotateTransition.addListener(this);
 
         if(mSpinnerInside.getHeight()==0) {
             mSpinnerInside.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -69,38 +77,57 @@ public class ProcessingDialogFragment extends DialogFragment implements Transiti
                 public void onGlobalLayout() {
                     mSpinnerInside.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     appLogoHeight = (appLogoHeight == 0) ?  mSpinnerInside.getHeight() : appLogoHeight;
-                    doClipTransition();
+
+                    mSpinnerInside.setClipBounds(new Rect(0, appLogoHeight, appLogoHeight, appLogoHeight));
+
+                    doClipBoundsTransition();
                 }
             });
         } else {
             appLogoHeight = (appLogoHeight == 0) ?  mSpinnerInside.getHeight() : appLogoHeight;
-            doClipTransition();
+
+            mSpinnerInside.setClipBounds(new Rect(0, appLogoHeight, appLogoHeight, appLogoHeight));
+
+            doClipBoundsTransition();
         }
     }
 
-    private void doClipTransition(){
-        //TransitionManager.endTransitions(mRootLayout);
-        //mSpinnerFull.setClipBounds(new Rect(0,0,appLogoHeight,appLogoHeight));
+    private void doClipBoundsTransition(){
+        //TransitionManager.endTransitions(mSpinner);
+        //mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, 0));
+        if(forward_clip) {
+//            TransitionManager.endTransitions(mSpinner);
+//            mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, appLogoHeight));
+            TransitionManager.endTransitions(mSpinner);
+            mSpinnerInside.setVisibility(View.VISIBLE);
+            TransitionManager.beginDelayedTransition(mSpinner, mClipBoundsTransition);
+            mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, appLogoHeight));
 
-        TransitionManager.beginDelayedTransition(mRootLayout, mClip);
-        mSpinnerInside.setClipBounds(new Rect(0,0,appLogoHeight,forward_clip?0:appLogoHeight));
+        }else{
+//            TransitionManager.endTransitions(mSpinner);
+//            mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, 0));
+            TransitionManager.beginDelayedTransition(mSpinner, mClipBoundsTransition);
 
-
+            mSpinnerInside.setClipBounds(new Rect(0, appLogoHeight, appLogoHeight, appLogoHeight));
+        }
+        forward_clip = !forward_clip;
     }
 
     private void doRotateTransition(){
-        TransitionManager.beginDelayedTransition(mRootLayout, (new Rotate().setDuration(1000)).addListener(this));
-        switch(rotate_state) {
-            case 0:
-                mSpinner.setRotation(0);
-                break;
-            case 1:
-                mSpinner.setRotation(180);
-                break;
-            case 2:
-                mSpinner.setRotation(360);
-                break;
+
+        if(forward_rotate) {
+            TransitionManager.endTransitions(mRootLayout);
+            mSpinner.setRotation(0);
+            TransitionManager.beginDelayedTransition(mRootLayout, (new Rotate().setDuration(1000)).addListener(this));
+            mSpinner.setRotation(180);
+
+        }else {
+            TransitionManager.beginDelayedTransition(mRootLayout, (new Rotate().setDuration(1000)).addListener(this));
+            mSpinner.setRotation(360);
         }
+
+        forward_rotate = !forward_rotate;
+
     }
 
     @Override
@@ -111,13 +138,24 @@ public class ProcessingDialogFragment extends DialogFragment implements Transiti
     @Override
     public void onTransitionEnd(Transition transition) {
         if(transition.getName().equals(CLIP_BOUND)) {
+
+            if(forward_clip){
+                mSpinnerInside.setVisibility(View.GONE);
+            }
+
             doRotateTransition();
-            rotate_state = (rotate_state+1)%3;
+
         } else {
-            doClipTransition();
-            forward_clip = !forward_clip;
+
+            //mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, appLogoHeight));
+            //if(!forward_clip)
+             //   mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, appLogoHeight));
+           // mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, 0));
+            doClipBoundsTransition();
+
+            //doClipBoundsTransition();
+
         }
-        //doTransition();
     }
 
     @Override
