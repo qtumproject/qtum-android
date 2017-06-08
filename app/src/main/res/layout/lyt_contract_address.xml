@@ -35,6 +35,8 @@
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/contract_address_value"
             android:text="N/A"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:layout_centerVertical="true"
             android:textSize="12sp"
             app:typefaceAsset="@string/simplonMonoMedium"

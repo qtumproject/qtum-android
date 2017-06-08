@@ -7,4 +7,5 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
  */
 
 public interface WalletMainFragmentView extends BaseFragmentView {
+    void showOtherTokens(boolean isShow);
 }

@@ -22,7 +22,7 @@ import butterknife.OnClick;
  * Created by kirillvolkov on 26.05.17.
  */
 
-public class ContractConfirmFragment extends BaseFragment implements  ContractConfirmView, OnValueClick, CompleteDialogFragment.OnDialogClick{
+public class ContractConfirmFragment extends BaseFragment implements  ContractConfirmView, OnValueClick{
 
     public final int LAYOUT = R.layout.lyt_contract_confirm;
     public static final String paramsKey = "params";
@@ -92,12 +92,4 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
         return ((MainActivity)getFragmentActivity()).getQtumApplication();
     }
 
-    @Override
-    public void onDialogClick() {
-        FragmentManager fm = getFragmentManager(); //move to root
-        int count = fm.getBackStackEntryCount()-1;
-        for(int i = 0; i < count; ++i) {
-            fm.popBackStack();
-        }
-    }
 }

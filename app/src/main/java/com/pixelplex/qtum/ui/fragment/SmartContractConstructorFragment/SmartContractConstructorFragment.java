@@ -47,6 +47,7 @@ public class SmartContractConstructorFragment extends BaseFragment implements Sm
     @OnClick(R.id.confirm)
     public void onConfirmClick(){
         if(adapter != null) {
+            adapter.notifyDataSetChanged();
             presenter.confirm(adapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_NAME));
         }
     }
@@ -77,6 +78,18 @@ public class SmartContractConstructorFragment extends BaseFragment implements Sm
         super.initializeViews();
         constructorList.setLayoutManager(new LinearLayoutManager(getContext()));
         presenter.getConstructorByName(getArguments().getString(CONTRACT_TEMPLATE_NAME));
+    }
+
+    @Override
+    public void onResume() {
+        hideBottomNavView(false);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        showBottomNavView(false);
     }
 
     @Override

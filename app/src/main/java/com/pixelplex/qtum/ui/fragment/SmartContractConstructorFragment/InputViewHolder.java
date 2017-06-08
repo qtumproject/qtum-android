@@ -95,6 +95,9 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
 
     public void bind (ContractMethodParameter parameter, boolean isLast) {
         this.parameter = parameter;
+
+        //etParam.setText(parameter.value);
+
         tilParam.setHint(fromCamelCase(parameter.name));
         setInputType(parameter.type);
         if(isLast){

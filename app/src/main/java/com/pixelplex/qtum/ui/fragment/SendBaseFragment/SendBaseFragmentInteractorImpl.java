@@ -15,6 +15,7 @@ import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
 import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
@@ -22,6 +23,8 @@ import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.utils.CurrentNetParams;
+import com.pixelplex.qtum.utils.TinyDB;
+
 import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigDecimal;
@@ -199,6 +202,8 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
         });
     }
 
+
+
     interface GetUnspentListCallBack {
         void onSuccess(List<UnspentOutput> unspentOutputs);
     }
@@ -228,5 +233,10 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
     @Override
     public List<String> getAddresses() {
         return KeyStorage.getInstance().getAddresses();
+    }
+
+    @Override
+    public List<ContractInfo> getContractList() {
+        return (new TinyDB(mContext).getListContractInfo());
     }
 }

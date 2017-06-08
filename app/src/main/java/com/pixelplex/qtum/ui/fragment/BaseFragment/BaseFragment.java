@@ -20,7 +20,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.pixelplex.qtum.R;
+
 import com.pixelplex.qtum.ui.fragment.ProcessingDialogFragment;
+
+import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
 
@@ -62,8 +66,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void dismissProgressDialog() {
-        //TODO uncomment
-        //processingDialogFragment.dismiss();
+        processingDialogFragment.dismiss();
     }
 
     public enum PopUpType{
@@ -107,6 +110,14 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.show();
 
+    }
+
+    protected void hideBottomNavView(boolean recolorStatusBar) {
+        ((MainActivity) getActivity()).hideBottomNavigationView(recolorStatusBar);
+    }
+
+    protected void showBottomNavView(boolean recolorStatusBar) {
+        ((MainActivity) getActivity()).showBottomNavigationView(recolorStatusBar);
     }
 
     @Override
@@ -224,6 +235,19 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void openFragment(Fragment fragment) {
         hideKeyBoard();
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                .add(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void openFragmentForResult(Fragment targetFragment, Fragment fragment) {
+        hideKeyBoard();
+        int code_response = 200;
+        fragment.setTargetFragment(targetFragment, code_response);
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)

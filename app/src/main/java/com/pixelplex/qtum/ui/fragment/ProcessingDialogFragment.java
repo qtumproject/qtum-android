@@ -1,7 +1,6 @@
 package com.pixelplex.qtum.ui.fragment;
 
 import android.app.Dialog;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,12 +8,12 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.animation.LinearInterpolator;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.pixelplex.qtum.R;
-import com.transitionseverywhere.ChangeClipBounds;
+import com.pixelplex.qtum.utils.ResizeHeightAnimation;
 import com.transitionseverywhere.Rotate;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
@@ -26,7 +25,7 @@ import butterknife.ButterKnife;
  * Created by max-v on 6/7/2017.
  */
 
-public class ProcessingDialogFragment extends DialogFragment implements Transition.TransitionListener{
+public class ProcessingDialogFragment extends DialogFragment implements Transition.TransitionListener, Animation.AnimationListener{
 
     @BindView(R.id.spinner)
     FrameLayout mSpinner;
@@ -35,11 +34,10 @@ public class ProcessingDialogFragment extends DialogFragment implements Transiti
     @BindView(R.id.root_layout)
     RelativeLayout mRootLayout;
 
-    ChangeClipBounds mClipBoundsTransition;
+    ResizeHeightAnimation mAnimForward;
+    ResizeHeightAnimation mAnimBackward;
     Rotate mRotateTransition;
     int appLogoHeight = 0;
-
-    String CLIP_BOUND = "com.transitionseverywhere.ChangeClipBounds";
 
     boolean forward_rotate = true;
     boolean forward_clip = true;
@@ -60,12 +58,6 @@ public class ProcessingDialogFragment extends DialogFragment implements Transiti
     public void onResume() {
         super.onResume();
 
-        mClipBoundsTransition = new ChangeClipBounds();
-        mClipBoundsTransition.addTarget(mSpinnerInside);
-        mClipBoundsTransition.setDuration(300);
-        mClipBoundsTransition.setInterpolator(new LinearInterpolator());
-        mClipBoundsTransition.addListener(this);
-
         mRotateTransition = new Rotate();
         mRotateTransition.addTarget(mSpinner);
         mRotateTransition.setDuration(300);
@@ -77,38 +69,37 @@ public class ProcessingDialogFragment extends DialogFragment implements Transiti
                 public void onGlobalLayout() {
                     mSpinnerInside.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     appLogoHeight = (appLogoHeight == 0) ?  mSpinnerInside.getHeight() : appLogoHeight;
-
-                    mSpinnerInside.setClipBounds(new Rect(0, appLogoHeight, appLogoHeight, appLogoHeight));
-
+                    initializeAnim();
                     doClipBoundsTransition();
                 }
             });
         } else {
             appLogoHeight = (appLogoHeight == 0) ?  mSpinnerInside.getHeight() : appLogoHeight;
-
-            mSpinnerInside.setClipBounds(new Rect(0, appLogoHeight, appLogoHeight, appLogoHeight));
-
+            initializeAnim();
             doClipBoundsTransition();
         }
     }
 
+    private void initializeAnim(){
+        mAnimForward = new ResizeHeightAnimation(mSpinnerInside, 0, appLogoHeight);
+        mAnimForward.setDuration(300);
+        mAnimForward.setFillEnabled(true);
+        mAnimForward.setFillAfter(true);
+        mAnimForward.setAnimationListener(this);
+
+        mAnimBackward = new ResizeHeightAnimation(mSpinnerInside, appLogoHeight, 0);
+        mAnimBackward.setDuration(300);
+        mAnimBackward.setFillEnabled(true);
+        mAnimBackward.setFillAfter(true);
+        mAnimBackward.setAnimationListener(this);
+    }
+
     private void doClipBoundsTransition(){
-        //TransitionManager.endTransitions(mSpinner);
-        //mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, 0));
+
         if(forward_clip) {
-//            TransitionManager.endTransitions(mSpinner);
-//            mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, appLogoHeight));
-            TransitionManager.endTransitions(mSpinner);
-            mSpinnerInside.setVisibility(View.VISIBLE);
-            TransitionManager.beginDelayedTransition(mSpinner, mClipBoundsTransition);
-            mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, appLogoHeight));
-
+            mSpinnerInside.startAnimation(mAnimForward);
         }else{
-//            TransitionManager.endTransitions(mSpinner);
-//            mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, 0));
-            TransitionManager.beginDelayedTransition(mSpinner, mClipBoundsTransition);
-
-            mSpinnerInside.setClipBounds(new Rect(0, appLogoHeight, appLogoHeight, appLogoHeight));
+            mSpinnerInside.startAnimation(mAnimBackward);
         }
         forward_clip = !forward_clip;
     }
@@ -137,25 +128,7 @@ public class ProcessingDialogFragment extends DialogFragment implements Transiti
 
     @Override
     public void onTransitionEnd(Transition transition) {
-        if(transition.getName().equals(CLIP_BOUND)) {
-
-            if(forward_clip){
-                mSpinnerInside.setVisibility(View.GONE);
-            }
-
-            doRotateTransition();
-
-        } else {
-
-            //mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, appLogoHeight));
-            //if(!forward_clip)
-             //   mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, appLogoHeight));
-           // mSpinnerInside.setClipBounds(new Rect(0, 0, appLogoHeight, 0));
-            doClipBoundsTransition();
-
-            //doClipBoundsTransition();
-
-        }
+        doClipBoundsTransition();
     }
 
     @Override
@@ -170,6 +143,23 @@ public class ProcessingDialogFragment extends DialogFragment implements Transiti
 
     @Override
     public void onTransitionResume(Transition transition) {
+
+    }
+
+
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        doRotateTransition();
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
 
     }
 }

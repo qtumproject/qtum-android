@@ -354,7 +354,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                 });
     }
 
-    public void sendTx(String code, final String senderAddress) {
+    public void sendTx(final String code, final String senderAddress) {
         QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(code, 1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -375,8 +375,13 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                     public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
                         String s = sendRawTransactionResponse.getResult();
                         getView().getApplication().setContractAwait(true);
-
-                        ContractInfo contractInfo = new ContractInfo(null,mContractTemplateName,false,null,true, senderAddress);
+                        String name = "";
+                        for(ContractMethodParameter contractMethodParameter : mContractMethodParameterList){
+                            if(contractMethodParameter.name.equals("_name")){
+                                name = contractMethodParameter.value;
+                            }
+                        }
+                        ContractInfo contractInfo = new ContractInfo(null,mContractTemplateName,false,null,true, senderAddress, name);
 
                         TinyDB tinyDB = new TinyDB(mContext);
                         ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();

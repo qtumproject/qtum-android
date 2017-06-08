@@ -10,6 +10,7 @@ public class ContractInfo implements Serializable {
 
     private String contractAddress;
     private String templateName;
+    private String contractName;
     private Boolean hasBeenCreated;
     private Long date;
     private Boolean isToken;
@@ -28,10 +29,11 @@ public class ContractInfo implements Serializable {
         this.date = date;
     }
 
-    public ContractInfo(String contractAddress, String templateName, Boolean hasBeenCreated, Long date, Boolean isToken, String senderAddress){
+    public ContractInfo(String contractAddress, String templateName, Boolean hasBeenCreated, Long date, Boolean isToken, String senderAddress, String contractName){
         this.contractAddress = contractAddress;
         this.templateName = templateName;
         this.hasBeenCreated = hasBeenCreated;
+        this.contractName = contractName;
         this.date = date;
         this.isToken = isToken;
         this.senderAddress = senderAddress;
@@ -83,5 +85,13 @@ public class ContractInfo implements Serializable {
 
     public void setDate(Long date) {
         this.date = date;
+    }
+
+    public String getContractName() {
+        return contractName;
+    }
+
+    public void setContractName(String contractName) {
+        this.contractName = contractName;
     }
 }

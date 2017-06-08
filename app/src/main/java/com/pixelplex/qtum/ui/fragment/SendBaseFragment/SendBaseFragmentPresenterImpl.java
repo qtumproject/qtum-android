@@ -1,11 +1,11 @@
 package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
 
 import android.content.Context;
-import android.os.Handler;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.RestAPI.NetworkStateListener;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.Vin;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
@@ -30,6 +30,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     private Context mContext;
     private NetworkStateReceiver mNetworkStateReceiver;
     private boolean mNetworkConnectedFlag = false;
+    private List<ContractInfo> mContractInfoList;
 
 
     SendBaseFragmentPresenterImpl(SendBaseFragmentView sendBaseFragmentView) {
@@ -79,6 +80,10 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
         });
     }
 
+    public void onCurrencyChoose(String currency){
+        getView().setUpCurrencyField(currency);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -96,7 +101,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     public void onClickQrCode() {
         QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
         getView().hideKeyBoard();
-        getView().openFragmentForResult(qrCodeRecognitionFragment);
+        getView().openInnerFragmentForResult(qrCodeRecognitionFragment);
     }
 
     private void updateAvailableBalance(){
@@ -119,6 +124,13 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     public void initializeViews() {
         super.initializeViews();
         updateAvailableBalance();
+        mContractInfoList = getInteractor ().getContractList();
+        for(ContractInfo contractInfo : mContractInfoList){
+            if(contractInfo.isToken()){
+                getView().setUpCurrencyField("Qtum");
+                break;
+            }
+        }
     }
 
     public SendBaseFragmentInteractorImpl getInteractor() {
@@ -130,7 +142,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
         if (isQrCodeRecognition) {
             QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
-            getView().openFragmentForResult(qrCodeRecognitionFragment);
+            getView().openInnerFragmentForResult(qrCodeRecognitionFragment);
 
         }
     }
@@ -147,8 +159,8 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
     @Override
     public void onCurrencyClick() {
-        CurrencyFragment currencyFragment = CurrencyFragment.newInstance(true);
-        getView().openFragment(currencyFragment);
+        CurrencyFragment currencyFragment = CurrencyFragment.newInstance();
+        getView().openFragmentForResult(getView().getFragment(), currencyFragment);
     }
 
     @Override

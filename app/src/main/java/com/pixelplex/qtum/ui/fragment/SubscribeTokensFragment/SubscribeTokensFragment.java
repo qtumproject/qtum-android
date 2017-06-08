@@ -1,5 +1,4 @@
-package com.pixelplex.qtum.ui.fragment.CurrencyFragment;
-
+package com.pixelplex.qtum.ui.fragment.SubscribeTokensFragment;
 
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -20,7 +19,7 @@ import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +28,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CurrencyFragment extends BaseFragment implements CurrencyFragmentView{
 
-    private CurrencyFragmentPresenterImpl mCurrencyFragmentPresenter;
+public class SubscribeTokensFragment extends BaseFragment implements SubscribeTokensFragmentView {
+
+    private SubscribeTokensFragmentPresenter mSubscribeTokensFragmentPresenter;
     private TokenAdapter mTokenAdapter;
     private String mSearchString;
     private List<String> mCurrentList;
@@ -57,23 +57,23 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
         }
     }
 
-    public static CurrencyFragment newInstance() {
+    public static SubscribeTokensFragment newInstance() {
 
         Bundle args = new Bundle();
 
-        CurrencyFragment fragment = new CurrencyFragment();
+        SubscribeTokensFragment fragment = new SubscribeTokensFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void createPresenter() {
-        mCurrencyFragmentPresenter = new CurrencyFragmentPresenterImpl(this);
+        mSubscribeTokensFragmentPresenter = new SubscribeTokensFragmentPresenter(this);
     }
 
     @Override
-    protected CurrencyFragmentPresenterImpl getPresenter() {
-        return mCurrencyFragmentPresenter;
+    protected SubscribeTokensFragmentPresenter getPresenter() {
+        return mSubscribeTokensFragmentPresenter;
     }
 
     @Override
@@ -84,8 +84,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
     @Override
     public void initializeViews() {
         super.initializeViews();
-
-        mTextViewCurrencyTitle.setText(R.string.currency);
+        mTextViewCurrencyTitle.setText(R.string.chose_to_subscribe);
 
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -146,7 +145,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
         mRecyclerView.setAdapter(mTokenAdapter);
     }
 
-    public class CurrencyHolder extends RecyclerView.ViewHolder{
+    public class TokenHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.tv_single_string)
         TextView mTextViewCurrency;
@@ -155,28 +154,35 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
         @BindView(R.id.ll_single_item)
         LinearLayout mLinearLayoutCurrency;
 
-        String mCurrency;
-
-        CurrencyHolder(View itemView) {
+        TokenHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+
             itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((SendBaseFragment) getTargetFragment()).onCurrencyChoose(mCurrency);
-                    getActivity().onBackPressed();
-                }
-            });
+                    @Override
+                    public void onClick(View view) {
+                        if(getAdapterPosition()>=0) {
+                            currentCurrency = mTokenAdapter.getTokenList().get(getAdapterPosition());
+                            mTokenAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
 
         }
 
-        void bindCurrency(String currency){
-            mCurrency = currency;
+        void bindToken(String currency){
             mTextViewCurrency.setText(currency);
+            if(currency.equals(currentCurrency)){
+                mLinearLayoutCurrency.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.grey20));
+                mImageViewCheckIndicator.setVisibility(View.VISIBLE);
+            } else {
+                mLinearLayoutCurrency.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.background_white_with_grey_pressed));
+                mImageViewCheckIndicator.setVisibility(View.GONE);
+            }
         }
     }
 
-    public class TokenAdapter extends RecyclerView.Adapter<CurrencyHolder>{
+    public class TokenAdapter extends RecyclerView.Adapter<TokenHolder>{
 
         List<String> mTokenList;
 
@@ -185,15 +191,15 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
         }
 
         @Override
-        public CurrencyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public TokenHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater.inflate(R.layout.item_single_checkable, parent, false);
-            return new CurrencyHolder(view);
+            return new TokenHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(CurrencyHolder holder, int position) {
-            holder.bindCurrency(mTokenList.get(position));
+        public void onBindViewHolder(TokenHolder holder, int position) {
+            holder.bindToken(mTokenList.get(position));
         }
 
         @Override

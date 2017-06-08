@@ -13,6 +13,7 @@ import com.pixelplex.qtum.ui.fragment.LanguageFragment.LanguageFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 import com.pixelplex.qtum.ui.fragment.SmartContractsFragment.SmartContractsFragment;
 import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
+import com.pixelplex.qtum.ui.fragment.SubscribeTokensFragment.SubscribeTokensFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,8 +121,8 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     @Override
     public void onSubscribeTokensClick() {
-        CurrencyFragment currencyFragment = CurrencyFragment.newInstance(false);
-        getView().openFragment(currencyFragment);
+        SubscribeTokensFragment subscribeTokensFragment = SubscribeTokensFragment.newInstance();
+        getView().openFragment(subscribeTokensFragment);
     }
 
 }

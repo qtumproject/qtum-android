@@ -107,7 +107,8 @@
 
                             <View
                                 android:id="@+id/fade_divider"
-                                android:layout_width="match_parent"
+                                android:visibility="invisible"
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:background="@color/background"/>
 
@@ -161,7 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
+                    android:gravity="bottom"
                     android:text="@string/public_key"
                     android:textColor="@color/background"
                     app:typefaceAsset="@string/simplonMonoRegular" />
@@ -171,13 +172,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:gravity="top"
                     android:paddingEnd="16dp"
                     android:textColor="@color/background"
                     app:typefaceAsset="@string/simplonMonoMedium" />
             </LinearLayout>
         </LinearLayout>
-
 
         <TextView
             android:layout_width="match_parent"
@@ -200,7 +202,5 @@
             </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
-
-
 
 </android.support.design.widget.CoordinatorLayout>

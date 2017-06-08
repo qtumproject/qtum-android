@@ -1,6 +1,8 @@
 package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
 
 
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+
 import java.util.List;
 
 interface SendBaseFragmentInteractor {
@@ -10,4 +12,5 @@ interface SendBaseFragmentInteractor {
     int getPassword();
     String getBalance();
     List<String> getAddresses();
+    List<ContractInfo> getContractList();
 }
