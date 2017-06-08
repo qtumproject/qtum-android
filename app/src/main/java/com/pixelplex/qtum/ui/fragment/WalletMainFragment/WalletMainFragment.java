@@ -53,13 +53,33 @@ public class WalletMainFragment extends BaseFragment implements WalletMainFragme
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(mWalletMainFragmentPresenter != null){
+            mWalletMainFragmentPresenter.checkOtherTokens();
+        }
+    }
+
+    @Override
     protected int getLayout() {
         return LAYOUT;
     }
 
+    @Override
+    public void showOtherTokens(boolean isShow) {
+        if(pager.getAdapter() != null) {
+            ((FragmentAdapter) pager.getAdapter()).showOtherTokens(isShow);
+        }
+    }
+
     public class FragmentAdapter extends FragmentStatePagerAdapter {
 
-        private static final int NUM_ITEMS = 2;
+        int NUM_ITEMS = 1;
+
+        public void showOtherTokens(boolean show){
+            NUM_ITEMS = (show)? 2 : 1;
+            notifyDataSetChanged();
+        }
 
         public FragmentAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);

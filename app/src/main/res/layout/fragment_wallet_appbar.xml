@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:orientation="vertical"
-                android:gravity="center"
+             android:orientation="vertical"
+             android:gravity="center"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
@@ -28,11 +28,9 @@
         <com.pixelplex.qtum.utils.FontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-
             app:typefaceAsset="@string/simplonMonoRegular"
-            android:text="0 QTUM"
-            android:textSize="20sp"
+            android:text="0.0000000003 QTUM"
+            android:textSize="24sp"
             android:textColor="@color/background"
             android:id="@+id/tv_unconfirmed_balance"/>
 
@@ -40,7 +38,6 @@
         android:id="@+id/unconfirmed_balance_title"
         android:gravity="center"
         app:typefaceAsset="@string/simplonMonoRegular"
-
         android:textColor="@color/background"
         android:padding="4dp"
         android:text="@string/not_confirmed_balance"

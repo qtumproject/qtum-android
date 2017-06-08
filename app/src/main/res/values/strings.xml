@@ -25,7 +25,7 @@
     <string name="receiver_s_address">Receiver\'s Address</string>
     <string name="amount">Amount</string>
     <string name="pin">PIN</string>
-    <string name="available_balance">"Available Balance: "</string>
+    <string name="available_balance">"Available Balance:"</string>
     <string name="total_balance">"Total Balance: "</string>
     <string name="copy_wallet_address">Copy Wallet Address</string>
     <string name="confirm">Confirm</string>

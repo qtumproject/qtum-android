@@ -37,6 +37,8 @@
             android:text="N/A"
             android:layout_centerVertical="true"
             android:textSize="12sp"
+            android:maxLines="1"
+            android:ellipsize="end"
             app:typefaceAsset="@string/simplonMonoMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

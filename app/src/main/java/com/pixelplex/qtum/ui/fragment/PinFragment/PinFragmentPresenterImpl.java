@@ -235,7 +235,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
     public void onResume(Context context) {
         super.onResume(context);
         updateState();
-        ((MainActivity) getView().getFragmentActivity()).hideBottomNavigationView();
+        ((MainActivity) getView().getFragmentActivity()).hideBottomNavigationView(true);
         if (PinFragmentInteractorImpl.isDataLoaded) {
             switch (mAction) {
                 case PinFragment.CREATING: {
@@ -271,7 +271,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
     public void onDestroyView() {
         super.onDestroyView();
         if (mAction.equals(PinFragment.CHANGING)) {
-            ((MainActivity) getView().getFragmentActivity()).showBottomNavigationView();
+            ((MainActivity) getView().getFragmentActivity()).showBottomNavigationView(true);
         }
     }
 

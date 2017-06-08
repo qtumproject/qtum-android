@@ -58,11 +58,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="true"
+                android:inputType="textNoSuggestions|textVisiblePassword"
                 app:inputTypeface="@string/simplonMonoRegular"
                 android:gravity="center"
+                android:paddingTop="8dp"
+                android:paddingBottom="2dp"
                 android:background="@android:color/transparent"
                 android:hint="@string/enter_name"
-                android:inputType="textPersonName"
                 android:textColor="@color/colorPrimary"
                 android:textSize="32sp"/>
 
@@ -70,6 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/colorPrimary"/>
+
         </android.support.design.widget.TextInputLayout>
         </RelativeLayout>
 

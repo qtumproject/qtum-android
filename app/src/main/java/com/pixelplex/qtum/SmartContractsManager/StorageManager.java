@@ -39,6 +39,7 @@ public class StorageManager {
 
     private final static String prefMigrationBuildVersion = "migration_buid_version";
 
+    private final static String CrowdSale = "Crowdsale";
     private static String[] STANDART_CONTRACTS = {"Standart", "Version1", "Version2", "Crowdsale"};
 
     private static String abiContractName = "abi-contract";
@@ -161,7 +162,7 @@ public class StorageManager {
         File contractDir = getPackagePath(cw,CONTRACTS_PACKAGE);
         List<ContractTemplateInfo> list = new ArrayList<>();
         for(File file :  contractDir.listFiles()){
-            list.add(new ContractTemplateInfo(file.getName(),file.lastModified(),"stub!"));
+            list.add(new ContractTemplateInfo(file.getName(),file.lastModified(),(file.getName().equalsIgnoreCase(CrowdSale)? CrowdSale : "Token")));
         }
 
         Collections.sort(list, new Comparator<ContractTemplateInfo>() {
