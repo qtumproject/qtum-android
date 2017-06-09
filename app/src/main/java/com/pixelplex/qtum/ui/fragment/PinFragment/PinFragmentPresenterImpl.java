@@ -54,7 +54,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                         if (Integer.parseInt(pin) == pinForRepeat) {
                             getView().clearError();
                             final BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(true);
-                            getView().setProgressDialog(getView().getContext().getString(R.string.loading));
+                            getView().setProgressDialog();
                             getView().hideKeyBoard();
                             getInteractor().createWallet(getView().getContext(), new PinFragmentInteractorImpl.CreateWalletCallBack() {
                                 @Override
@@ -104,7 +104,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                 if (intPassword == getInteractor().getPassword()) {
                     getView().clearError();
                     final WalletMainFragment walletFragment = WalletMainFragment.newInstance();
-                    getView().setProgressDialog(getView().getContext().getString(R.string.loading));
+                    getView().setProgressDialog();
                     getView().hideKeyBoard();
                     getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
                         @Override
@@ -129,7 +129,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     String address = ((MainActivity) getView().getFragmentActivity()).getAddressForSendAction();
                     String amount = ((MainActivity) getView().getFragmentActivity()).getAmountForSendAction();
                     final SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(false,address,amount);
-                    getView().setProgressDialog(getView().getContext().getString(R.string.loading));
+                    getView().setProgressDialog();
                     getView().hideKeyBoard();
                     getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
                         @Override

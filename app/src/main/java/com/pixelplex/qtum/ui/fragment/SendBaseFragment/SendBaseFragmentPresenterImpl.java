@@ -124,13 +124,15 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     public void initializeViews() {
         super.initializeViews();
         updateAvailableBalance();
+        String currency = "";
         mContractInfoList = getInteractor ().getContractList();
         for(ContractInfo contractInfo : mContractInfoList){
             if(contractInfo.isToken()){
-                getView().setUpCurrencyField("Qtum");
+                currency = "Qtum";
                 break;
             }
         }
+        getView().setUpCurrencyField(currency);
     }
 
     public SendBaseFragmentInteractorImpl getInteractor() {
@@ -177,7 +179,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                 }
             }
             getView().clearError();
-            getView().setProgressDialog("Sending");
+            getView().setProgressDialog();
             getInteractor().sendTx(sendInfo[0], sendInfo[1], new SendBaseFragmentInteractorImpl.SendTxCallBack() {
                 @Override
                 public void onSuccess() {

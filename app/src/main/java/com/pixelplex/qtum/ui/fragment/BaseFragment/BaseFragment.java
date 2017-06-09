@@ -46,7 +46,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     private Unbinder mUnbinder;
 
     AlertDialog mAlertDialog;
-    ProcessingDialogFragment processingDialogFragment;
+    ProcessingDialogFragment mProcessingDialog;
 
     @Nullable
     @BindView(R.id.toolbar)
@@ -59,14 +59,16 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
-    public void setProgressDialog(String message) {
-        processingDialogFragment = new ProcessingDialogFragment();
-        processingDialogFragment.show(getFragmentManager(), processingDialogFragment.getClass().getCanonicalName());
+    public void setProgressDialog() {
+        mProcessingDialog = new ProcessingDialogFragment();
+        mProcessingDialog.show(getFragmentManager(), mProcessingDialog.getClass().getCanonicalName());
     }
 
     @Override
     public void dismissProgressDialog() {
-        processingDialogFragment.dismiss();
+        if(mProcessingDialog !=null){
+            mProcessingDialog.dismiss();
+        }
     }
 
     public enum PopUpType{
@@ -80,6 +82,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void setAlertDialog(String title, String message, String buttonText, PopUpType popUpType) {
+        dismissProgressDialog();
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_popup_fragment,null);
         ((FontTextView)view.findViewById(R.id.tv_pop_up_title)).setText(title);
         ((FontTextView)view.findViewById(R.id.tv_pop_up_message)).setText(message);

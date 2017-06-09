@@ -13,7 +13,7 @@ public interface BaseFragmentView extends BaseContextView {
     void openFragment(Fragment fragment);
     void openFragmentForResult(Fragment targetFragment, Fragment fragment);
     Activity getFragmentActivity();
-    void setProgressDialog(String message);
+    void setProgressDialog();
     void dismissProgressDialog();
     void setAlertDialog(String title,String buttonText, BaseFragment.PopUpType type);
     void setAlertDialog(String title, String message,String buttonText, BaseFragment.PopUpType type);

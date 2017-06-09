@@ -144,7 +144,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_wallet:
-                if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(WalletFragment.class.getCanonicalName())) {
+                if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(WalletMainFragment.class.getCanonicalName())) {
                     getView().popBackStack();
                     return true;
                 }

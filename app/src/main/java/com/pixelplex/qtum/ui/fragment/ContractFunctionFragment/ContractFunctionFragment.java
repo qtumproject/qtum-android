@@ -49,7 +49,7 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
                 getActivity().onBackPressed();
                 break;
             case R.id.call:
-                getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_NAME),getArguments().getString(CONTRACT_ADDRESS),getArguments().getString(METHOD_NAME));
+                getPresenter().onCallClick(mParameterAdapter.getParams(),getArguments().getString(CONTRACT_ADDRESS),getArguments().getString(METHOD_NAME));
                 break;
         }
     }
