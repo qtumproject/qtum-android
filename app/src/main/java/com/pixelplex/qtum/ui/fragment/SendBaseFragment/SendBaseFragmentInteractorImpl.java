@@ -197,7 +197,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        callBack.onError(e.getLocalizedMessage());
                     }
 
                     @Override

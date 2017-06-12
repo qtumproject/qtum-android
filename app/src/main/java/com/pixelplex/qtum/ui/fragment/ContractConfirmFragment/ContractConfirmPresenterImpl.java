@@ -5,6 +5,7 @@ import android.content.Context;
 import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
@@ -148,12 +149,12 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                                 name = contractMethodParameter.getValue();
                             }
                         }
-                        Contract contract = new Contract(null, mContractTemplateName, false, null, senderAddress, name);
+                        Token token = new Token(null, mContractTemplateName, false, null, senderAddress, name);
 
                         TinyDB tinyDB = new TinyDB(mContext);
-                        List<Contract> contractList = tinyDB.getContractList();
-                        contractList.add(contract);
-                        tinyDB.putContractList(contractList);
+                        List<Token> tokenList = tinyDB.getTokenList();
+                        tokenList.add(token);
+                        tinyDB.putTokenList(tokenList);
                     }
                 });
     }

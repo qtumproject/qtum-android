@@ -17,4 +17,5 @@ interface SendBaseFragmentView extends BaseFragmentView{
     void updateAvailableBalance(String balance);
     void setUpCurrencyField(String currency);
     Fragment getFragment();
+    void hideCurrencyField();
 }

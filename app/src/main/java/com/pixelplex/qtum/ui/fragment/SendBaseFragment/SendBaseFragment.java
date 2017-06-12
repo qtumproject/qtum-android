@@ -83,7 +83,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
                 if(mLinearLayoutCurrency.getVisibility()==View.VISIBLE){
                     sendInfo[2] = mTextViewCurrency.getText().toString();
                 } else {
-                    sendInfo[2] = "Qtum";
+                    sendInfo[2] = "Qtum (default currency)";
                 }
                 getPresenter().send(sendInfo);
                 break;
@@ -224,21 +224,18 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
 
     @Override
     public void setUpCurrencyField(String currency) {
-        if(currency.isEmpty()) {
-            mLinearLayoutCurrency.setVisibility(View.GONE);
-        } else {
-            mLinearLayoutCurrency.setVisibility(View.VISIBLE);
-            if(currency.equals("Qtum")){
-                mTextViewCurrency.setText(currency + " (default currency)");
-            } else {
-                mTextViewCurrency.setText(currency);
-            }
-        }
+        mLinearLayoutCurrency.setVisibility(View.VISIBLE);
+        mTextViewCurrency.setText(currency);
     }
 
     @Override
     public Fragment getFragment() {
         return this;
+    }
+
+    @Override
+    public void hideCurrencyField() {
+        mLinearLayoutCurrency.setVisibility(View.GONE);
     }
 
 

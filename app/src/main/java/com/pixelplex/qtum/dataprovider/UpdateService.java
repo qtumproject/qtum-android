@@ -25,6 +25,7 @@ import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.TokenListener;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalanceChangeListener;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
@@ -41,7 +42,6 @@ import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -123,14 +123,29 @@ public class UpdateService extends Service {
                 if(((QtumApplication)getApplication()).isContractAwait()){
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
 
-                    List<Contract> contractList = tinyDB.getContractList();
-                    for(Contract contract : contractList){
+                    boolean done = false;
+
+                    List<Contract> contractListWithoutToken = tinyDB.getContractListWithoutToken();
+                    for(Contract contract : contractListWithoutToken){
                         if(contract.getContractAddress()==null){
                             contract.setContractAddress(generateContractAddress(history.getTxHash()));
+                            done = true;
                             break;
                         }
                     }
-                    tinyDB.putContractList(contractList);
+                    tinyDB.putContractListWithoutToken(contractListWithoutToken);
+
+                    if(!done) {
+                        List<Token> tokenList = tinyDB.getTokenList();
+                        for (Token token : tokenList) {
+                            if (token.getContractAddress() == null) {
+                                token.setContractAddress(generateContractAddress(history.getTxHash()));
+                                break;
+                            }
+                        }
+                        tinyDB.putTokenList(tokenList);
+                    }
+
                     ((QtumApplication)getApplication()).setContractAwait(false);
                 }
                 if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
@@ -139,15 +154,31 @@ public class UpdateService extends Service {
                     String contractAddress = generateContractAddress(txHash);
 
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
-                    List<Contract> contractList = tinyDB.getContractList();
+
+                    boolean done = false;
+
+                    List<Contract> contractList = tinyDB.getContractListWithoutToken();
                     for(Contract contract : contractList){
-                        if(contract.getContractAddress().equals(contractAddress)){
+                        if(contract.getContractAddress()!=null && contract.getContractAddress().equals(contractAddress)){
                             contract.setHasBeenCreated(true);
                             contract.setDate((long)history.getBlockTime());
+                            done = true;
                             break;
                         }
                     }
-                    tinyDB.putContractList(contractList);
+                    tinyDB.putContractListWithoutToken(contractList);
+
+                    if(!done){
+                        List<Token> tokenList = tinyDB.getTokenList();
+                        for(Token token : tokenList){
+                            if(token.getContractAddress()!=null && token.getContractAddress().equals(contractAddress)){
+                                token.setHasBeenCreated(true);
+                                token.setDate((long)history.getBlockTime());
+                                break;
+                            }
+                        }
+                        tinyDB.putTokenList(tokenList);
+                    }
 
                     subscribeTokenBalanceChange(contractAddress);
                 }

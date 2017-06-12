@@ -26,9 +26,9 @@ public class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterIm
 
     private void initSettingsData() {
         settingsData = new ArrayList<>();
-        settingsData.add(new SettingObject(R.string.create_contract,R.drawable.ic_token,0));
-        settingsData.add(new SettingObject(R.string.my_contracts,R.drawable.ic_tokensubscribe,0));
-        settingsData.add(new SettingObject(R.string.contracts_store,R.drawable.ic_about,0));
+        settingsData.add(new SettingObject(R.string.create_contract,R.drawable.ic_my_new_contracts,0));
+        settingsData.add(new SettingObject(R.string.my_contracts,R.drawable.ic_my_publiched_contracts,0));
+        settingsData.add(new SettingObject(R.string.contracts_store,R.drawable.ic_contract_store,0));
     }
 
     public List<SettingObject> getSettingsData () {

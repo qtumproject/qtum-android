@@ -63,8 +63,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/ll_token_field"
+            android:layout_below="@+id/step">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:srcCompat="@drawable/ic_token2"/>
+        </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@+id/step"
+        android:layout_below="@+id/ll_token_field"
         android:id="@+id/recycler_view"
         android:layout_above="@+id/buttons"
         android:layout_width="match_parent"

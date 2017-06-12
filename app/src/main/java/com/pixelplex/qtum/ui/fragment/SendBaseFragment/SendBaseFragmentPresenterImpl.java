@@ -135,11 +135,18 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
         super.initializeViews();
         updateAvailableBalance();
         String currency = "";
-        mTokenList = getInteractor().getTokenList();
-        if(!mTokenList.isEmpty()) {
-            currency = "Qtum";
+        mTokenList = new ArrayList<>();
+        for(Token token : getInteractor().getTokenList()){
+            if(token.isSubscribe()){
+                mTokenList.add(token);
+            }
         }
-        getView().setUpCurrencyField(currency);
+        if(!mTokenList.isEmpty()) {
+            currency = "Qtum (default currency)";
+            getView().setUpCurrencyField(currency);
+        }else {
+            getView().hideCurrencyField();
+        }
     }
 
     public SendBaseFragmentInteractorImpl getInteractor() {
@@ -191,7 +198,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
             }
             getView().clearError();
             getView().setProgressDialog();
-            if(currency.equals("Qtum")) {
+            if(currency.equals("Qtum (default currency)")) {
                 getInteractor().sendTx(address, amount, new SendBaseFragmentInteractorImpl.SendTxCallBack() {
                     @Override
                     public void onSuccess() {
@@ -205,7 +212,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                     }
                 });
             } else {
-                for(Contract contract : mTokenList){
+                for(final Contract contract : mTokenList){
                     if(contract.getContractName().equals(currency)){
                         ContractBuilder contractBuilder = new ContractBuilder();
                         List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
@@ -228,7 +235,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
                             @Override
                             public void onNext(String s) {
-
+                                createTx(s,contract.getContractAddress());
                             }
                         });
                         return;

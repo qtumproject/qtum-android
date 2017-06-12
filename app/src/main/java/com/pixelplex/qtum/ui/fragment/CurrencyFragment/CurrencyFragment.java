@@ -110,7 +110,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
                     mSearchString = editable.toString().toLowerCase();
                     List<String> newList = new ArrayList<>();
                     for(String currency: mCurrentList){
-                        if(currency.contains(mSearchString))
+                        if(currency.toLowerCase().contains(mSearchString))
                             newList.add(currency);
                     }
                     mTokenAdapter.setFilter(newList);

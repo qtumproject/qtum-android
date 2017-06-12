@@ -345,16 +345,10 @@ public class TinyDB {
     }
 
     public List<Contract> getContractList(){
-        Gson gson = new Gson();
 
-        ArrayList<String> contractInfoStrings = getListString(CONTRACT_LIST);
         ArrayList<Contract> contractArrayList = new ArrayList<Contract>();
 
-        for(String contractInfoString : contractInfoStrings){
-            Contract contract = gson.fromJson(contractInfoString,Contract.class);
-            contractArrayList.add(contract);
-        }
-
+        contractArrayList.addAll(getContractListWithoutToken());
         contractArrayList.addAll(getTokenList());
 
         Collections.sort(contractArrayList, new Comparator<Contract>() {
@@ -369,6 +363,20 @@ public class TinyDB {
                 }
             }
         });
+
+        return contractArrayList;
+    }
+
+    public List<Contract> getContractListWithoutToken(){
+        Gson gson = new Gson();
+
+        ArrayList<String> contractInfoStrings = getListString(CONTRACT_LIST);
+        ArrayList<Contract> contractArrayList = new ArrayList<Contract>();
+
+        for(String contractInfoString : contractInfoStrings){
+            Contract contract = gson.fromJson(contractInfoString,Contract.class);
+            contractArrayList.add(contract);
+        }
 
         return contractArrayList;
     }
@@ -524,7 +532,7 @@ public class TinyDB {
     	putListString(key, objStrings);
     }
 
-    public void putContractList(List<Contract> contractArrayList){
+    public void putContractListWithoutToken(List<Contract> contractArrayList){
         Gson gson = new Gson();
         ArrayList<String> contractInfoStrings = new ArrayList<String>();
         for(Contract contract : contractArrayList){

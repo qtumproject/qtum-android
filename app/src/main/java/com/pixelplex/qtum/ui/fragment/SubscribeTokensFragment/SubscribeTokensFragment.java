@@ -24,6 +24,8 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -109,7 +111,7 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
                     mSearchString = editable.toString().toLowerCase();
                     List<Token> newList = new ArrayList<>();
                     for(Token currency: mCurrentList){
-                        if(currency.getContractName().contains(mSearchString))
+                        if(currency.getContractName().toLowerCase().contains(mSearchString))
                             newList.add(currency);
                     }
                     mTokenAdapter.setFilter(newList);
@@ -140,6 +142,20 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
 
     @Override
     public void setTokenList(List<Token> tokenList) {
+
+        Collections.sort(tokenList, new Comparator<Token>() {
+            @Override
+            public int compare(Token token, Token t1) {
+                if(token.isSubscribe() && !t1.isSubscribe()){
+                    return -1;
+                } else if(!token.isSubscribe() && t1.isSubscribe()){
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+
         mTokenAdapter = new TokenAdapter(tokenList);
         mCurrentList = tokenList;
         mRecyclerView.setAdapter(mTokenAdapter);
@@ -154,7 +170,7 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
 
         @BindView(R.id.tv_single_string)
         TextView mTextViewCurrency;
-        @BindView(R.id.iv_check_indicator)
+        @BindView(R.id.iv_check_indicator_blue)
         ImageView mImageViewCheckIndicator;
         @BindView(R.id.ll_single_item)
         LinearLayout mLinearLayoutCurrency;
@@ -171,21 +187,19 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
                         if(getAdapterPosition()>=0) {
                             mTokenAdapter.getTokenList().get(getAdapterPosition()).setSubscribe(!mToken.isSubscribe());
                             //TODO notifyItemSetChanged
-                            mTokenAdapter.notifyDataSetChanged();
+                            mTokenAdapter.notifyItemChanged(getAdapterPosition());
+                           // mTokenAdapter.notifyDataSetChanged();
                         }
                     }
                 });
-
         }
 
         void bindToken(Token currency){
             mTextViewCurrency.setText(currency.getContractName());
             mToken = currency;
             if(currency.isSubscribe()){
-                mLinearLayoutCurrency.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.grey20));
                 mImageViewCheckIndicator.setVisibility(View.VISIBLE);
             } else {
-                mLinearLayoutCurrency.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.background_white_with_grey_pressed));
                 mImageViewCheckIndicator.setVisibility(View.GONE);
             }
         }
