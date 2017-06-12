@@ -57,7 +57,7 @@ public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl
 
         getView().setProgressDialog();
         ContractBuilder contractBuilder = new ContractBuilder();
-        contractBuilder.createAbiParams(methodName,contractMethodParameterList)
+        contractBuilder.createAbiMethodParams(methodName,contractMethodParameterList)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<String>() {

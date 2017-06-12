@@ -56,7 +56,7 @@ public class SmartContractListFragment extends BaseFragment implements SmartCont
     public void initializeViews() {
         super.initializeViews();
         contractList.setLayoutManager(new LinearLayoutManager(getContext()));
-        contractList.setAdapter(new ContractsRecyclerAdapter(StorageManager.getInstance().getContracts(getContext()),this));
+        contractList.setAdapter(new ContractsRecyclerAdapter(StorageManager.getInstance().getContractTemplateList(getContext()),this));
     }
 
     @Override

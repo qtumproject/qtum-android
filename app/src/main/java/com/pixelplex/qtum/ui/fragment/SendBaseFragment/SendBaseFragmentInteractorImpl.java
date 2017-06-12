@@ -4,7 +4,6 @@ import android.content.Context;
 
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.AddressFormatException;
-import org.bitcoinj.core.Base58;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.Sha256Hash;
@@ -15,7 +14,7 @@ import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
 import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
@@ -23,7 +22,7 @@ import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.utils.CurrentNetParams;
-import com.pixelplex.qtum.utils.TinyDB;
+import com.pixelplex.qtum.datastorage.TinyDB;
 
 import org.spongycastle.util.encoders.Hex;
 
@@ -174,25 +173,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
         createTx(address, amount, new CreateTxCallBack() {
             @Override
             public void onSuccess(String txHex) {
-                QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(txHex, 1))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<SendRawTransactionResponse>() {
-                            @Override
-                            public void onCompleted() {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
-                                callBack.onSuccess();
-                            }
-                        });
+                sendTx(txHex, callBack);
             }
 
             @Override
@@ -202,6 +183,28 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
         });
     }
 
+    @Override
+    public void sendTx(String txHex, final SendTxCallBack callBack){
+        QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(txHex, 1))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<SendRawTransactionResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
+                        callBack.onSuccess();
+                    }
+                });
+    }
 
 
     interface GetUnspentListCallBack {
@@ -236,7 +239,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
     }
 
     @Override
-    public List<ContractInfo> getContractList() {
-        return (new TinyDB(mContext).getListContractInfo());
+    public List<Contract> getContractList() {
+        return (new TinyDB(mContext).getContractList());
     }
 }

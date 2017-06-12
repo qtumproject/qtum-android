@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.SubscribeTokensFragment;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 
@@ -30,9 +30,9 @@ public class SubscribeTokensFragmentPresenter extends BaseFragmentPresenterImpl 
     public void onViewCreated() {
         super.onViewCreated();
         List<String> contractTokenList = new ArrayList<>();
-        for(ContractInfo contractInfo : getInteractor().getTokenList()){
-            if(contractInfo.isToken()){
-                contractTokenList.add(contractInfo.getContractName());
+        for(Contract contract : getInteractor().getTokenList()){
+            if(contract.isToken()){
+                contractTokenList.add(contract.getContractName());
             }
         }
         getView().setTokenList(contractTokenList);

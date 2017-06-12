@@ -1,7 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.CurrencyFragment;
 
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 import java.util.ArrayList;
@@ -28,9 +28,9 @@ class CurrencyFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
         super.onViewCreated();
         List<String> contractTokenList = new ArrayList<>();
         contractTokenList.add("Qtum (default currency)");
-        for(ContractInfo contractInfo : getInteractor().getTokenList()){
-            if(contractInfo.isToken()){
-                contractTokenList.add(contractInfo.getContractName());
+        for(Contract contract : getInteractor().getTokenList()){
+            if(contract.isToken()){
+                contractTokenList.add(contract.getContractName());
             }
         }
         getView().setTokenList(contractTokenList);

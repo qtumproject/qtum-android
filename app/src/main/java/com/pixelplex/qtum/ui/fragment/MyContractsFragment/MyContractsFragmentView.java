@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.MyContractsFragment;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 import java.util.List;
@@ -10,5 +10,5 @@ import java.util.List;
  */
 
 interface MyContractsFragmentView extends BaseFragmentView{
-    void updateRecyclerView(List<ContractInfo> contractInfoList);
+    void updateRecyclerView(List<Contract> contractList);
 }

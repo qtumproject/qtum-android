@@ -3,7 +3,6 @@ package com.pixelplex.qtum.ui.fragment.TokenFragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -21,14 +20,12 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.FontTextView;
 import com.pixelplex.qtum.utils.ResizeWidthAnimation;
 import com.pixelplex.qtum.utils.StackCollapseLinearLayout;
-import com.transitionseverywhere.ChangeClipBounds;
-import com.transitionseverywhere.TransitionManager;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,7 +44,7 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
     public static final String totalSupply = "totalSupply";
     public static final String decimals = "decimals";
 
-    public static TokenFragment newInstance(ContractInfo token) {
+    public static TokenFragment newInstance(Contract token) {
         Bundle args = new Bundle();
         TokenFragment fragment = new TokenFragment();
         args.putSerializable(tokenKey,token);
@@ -147,7 +144,7 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
             layoutParams.setBehavior(appBarLayoutBehaviour);
         }
 
-        presenter.setToken((ContractInfo) getArguments().getSerializable(tokenKey));
+        presenter.setToken((Contract) getArguments().getSerializable(tokenKey));
         presenter.getPropertyValue(totalSupply);
         presenter.getPropertyValue(decimals);
 

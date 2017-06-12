@@ -19,7 +19,7 @@
  *  and unicode 2017 that are used for separating the items in a list.
  */
 
-package com.pixelplex.qtum.utils;
+package com.pixelplex.qtum.datastorage;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,7 +43,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 
 
 public class TinyDB {
@@ -341,31 +341,31 @@ public class TinyDB {
         return (T)value;
     }
 
-    public ArrayList<ContractInfo> getListContractInfo(){
+    public ArrayList<Contract> getContractList(){
         Gson gson = new Gson();
 
         ArrayList<String> contractInfoStrings = getListString(CONTRACT_INFO_LIST);
-        ArrayList<ContractInfo> contractInfoArrayList = new ArrayList<ContractInfo>();
+        ArrayList<Contract> contractArrayList = new ArrayList<Contract>();
 
         for(String contractInfoString : contractInfoStrings){
-            ContractInfo contractInfo = gson.fromJson(contractInfoString,ContractInfo.class);
-            contractInfoArrayList.add(contractInfo);
+            Contract contract = gson.fromJson(contractInfoString,Contract.class);
+            contractArrayList.add(contract);
         }
 
-        Collections.sort(contractInfoArrayList, new Comparator<ContractInfo>() {
+        Collections.sort(contractArrayList, new Comparator<Contract>() {
             @Override
-            public int compare(ContractInfo contractInfo, ContractInfo t1) {
-                if(contractInfo.getDate()==null){
+            public int compare(Contract contract, Contract t1) {
+                if(contract.getDate()==null){
                     return -1;
                 } else if(t1.getDate()==null) {
                     return 1;
                 } else {
-                    return contractInfo.getDate() > t1.getDate() ? -1 : contractInfo.getDate() < t1.getDate() ? 1 : 0;
+                    return contract.getDate() > t1.getDate() ? -1 : contract.getDate() < t1.getDate() ? 1 : 0;
                 }
             }
         });
 
-        return contractInfoArrayList;
+        return contractArrayList;
     }
 
 
@@ -505,11 +505,11 @@ public class TinyDB {
     	putListString(key, objStrings);
     }
 
-    public void putListContractInfo(ArrayList<ContractInfo> contractInfoArrayList){
+    public void putContractList(ArrayList<Contract> contractArrayList){
         Gson gson = new Gson();
         ArrayList<String> contractInfoStrings = new ArrayList<String>();
-        for(ContractInfo contractInfo : contractInfoArrayList){
-            contractInfoStrings.add(gson.toJson(contractInfo));
+        for(Contract contract : contractArrayList){
+            contractInfoStrings.add(gson.toJson(contract));
         }
         putListString(CONTRACT_INFO_LIST,contractInfoStrings);
     }

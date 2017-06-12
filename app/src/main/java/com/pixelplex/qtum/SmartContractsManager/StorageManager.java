@@ -157,17 +157,17 @@ public class StorageManager {
         return data;
     }
 
-    public List<ContractTemplateInfo> getContracts(Context context) {
+    public List<ContractTemplate> getContractTemplateList(Context context) {
         ContextWrapper cw = new ContextWrapper(context);
         File contractDir = getPackagePath(cw,CONTRACTS_PACKAGE);
-        List<ContractTemplateInfo> list = new ArrayList<>();
+        List<ContractTemplate> list = new ArrayList<>();
         for(File file :  contractDir.listFiles()){
-            list.add(new ContractTemplateInfo(file.getName(),file.lastModified(),(file.getName().equalsIgnoreCase(CrowdSale)? CrowdSale : "Token")));
+            list.add(new ContractTemplate(file.getName(),file.lastModified(),(file.getName().equalsIgnoreCase(CrowdSale)? CrowdSale : "Token")));
         }
 
-        Collections.sort(list, new Comparator<ContractTemplateInfo>() {
+        Collections.sort(list, new Comparator<ContractTemplate>() {
             @Override
-            public int compare(ContractTemplateInfo contractInfo, ContractTemplateInfo t1) {
+            public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
                 return contractInfo.getDate() > t1.getDate() ? 1 : contractInfo.getDate() < t1.getDate() ? -1 : 0;
             }
         });

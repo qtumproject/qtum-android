@@ -1,8 +1,8 @@
 package com.pixelplex.qtum.ui.fragment.WalletMainFragment;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
-import com.pixelplex.qtum.utils.TinyDB;
+import com.pixelplex.qtum.datastorage.TinyDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
         getTokens()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<ContractInfo>>() {
+                .subscribe(new Subscriber<List<Contract>>() {
                     @Override
                     public void onCompleted() {
 
@@ -48,21 +48,21 @@ public class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
                     }
 
                     @Override
-                    public void onNext(List<ContractInfo> tokens) {
+                    public void onNext(List<Contract> tokens) {
                         mWalletMainFragmentView.showOtherTokens(tokens != null && tokens.size() > 0);
                     }
                 });
     }
 
-    private Observable<List<ContractInfo>> getTokens() {
-        return Observable.fromCallable(new Callable<List<ContractInfo>>() {
+    private Observable<List<Contract>> getTokens() {
+        return Observable.fromCallable(new Callable<List<Contract>>() {
             @Override
-            public List<ContractInfo> call() throws Exception {
+            public List<Contract> call() throws Exception {
                 TinyDB tinyDB = new TinyDB(getView().getContext());
-                List<ContractInfo> contracts = tinyDB.getListContractInfo();
-                List<ContractInfo> tokens = new ArrayList<>();
+                List<Contract> contracts = tinyDB.getContractList();
+                List<Contract> tokens = new ArrayList<>();
 
-                for (ContractInfo contract: contracts) {
+                for (Contract contract: contracts) {
                     if(contract.isToken()){
                         tokens.add(contract);
                     }

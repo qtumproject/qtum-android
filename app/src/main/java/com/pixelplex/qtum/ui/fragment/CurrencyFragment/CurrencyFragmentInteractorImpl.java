@@ -3,10 +3,9 @@ package com.pixelplex.qtum.ui.fragment.CurrencyFragment;
 
 import android.content.Context;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
-import com.pixelplex.qtum.utils.TinyDB;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.datastorage.TinyDB;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class CurrencyFragmentInteractorImpl implements CurrencyFragmentInteractor{
@@ -18,8 +17,8 @@ class CurrencyFragmentInteractorImpl implements CurrencyFragmentInteractor{
     }
 
     @Override
-    public List<ContractInfo> getTokenList() {
-        List<ContractInfo> contractInfoList = (new TinyDB(mContext)).getListContractInfo();
-        return contractInfoList;
+    public List<Contract> getTokenList() {
+        List<Contract> contractList = (new TinyDB(mContext)).getContractList();
+        return contractList;
     }
 }

@@ -1,22 +1,15 @@
 package com.pixelplex.qtum.ui.fragment.StartPageFragment;
 
 import android.os.Bundle;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.SmartContractsManager.StorageManager;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.transitionseverywhere.Fade;
-import com.transitionseverywhere.TransitionManager;
-import com.transitionseverywhere.TransitionSet;
-import com.transitionseverywhere.extra.Scale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -88,6 +81,6 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     @Override
     public void initializeViews() {
         hideBottomNavView(true);
-        StorageManager.getInstance().getContracts(getContext());
+        StorageManager.getInstance().getContractTemplateList(getContext());
     }
 }

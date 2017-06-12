@@ -51,7 +51,7 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             String content = etParam.getText().toString() + source;
             if (!TextUtils.isEmpty(content)) {
-                switch (parameter.type) {
+                switch (parameter.getType()) {
                     case TYPE_INT:
                         return validateINT(content);
                     case TYPE_UINT8:
@@ -66,7 +66,7 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
                         return validateUINT(content, uint64);
 
                     default:
-                        parameter.value = content;
+                        parameter.setValue(content);
                         return ALLOW;
                 }
             } else {
@@ -98,8 +98,8 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
 
         //etParam.setText(parameter.value);
 
-        tilParam.setHint(fromCamelCase(parameter.name));
-        setInputType(parameter.type);
+        tilParam.setHint(fromCamelCase(parameter.getName()));
+        setInputType(parameter.getType());
         if(isLast){
             etParam.setImeOptions(EditorInfo.IME_ACTION_DONE);
         }else {
@@ -108,7 +108,7 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
     }
 
     private String fromCamelCase(String cCase) {
-        if(TextUtils.isEmpty(parameter.displayName)) {
+        if(TextUtils.isEmpty(parameter.getDisplayName())) {
             StringBuilder builder = new StringBuilder(cCase);
             for (int i = builder.length() - 1; i > 0; i--) {
                 char ch = builder.charAt(i);
@@ -118,9 +118,9 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
             }
 
             String value = builder.toString().replace("_", "");
-            parameter.displayName = value.substring(0, 1).toUpperCase() + value.substring(1);
+            parameter.setDisplayName(value.substring(0, 1).toUpperCase() + value.substring(1));
         }
-        return parameter.displayName;
+        return parameter.getDisplayName();
     }
 
     private void setInputType(String type){
@@ -155,7 +155,7 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
         try {
             int num = Integer.parseInt(content);
             if (num > Integer.MIN_VALUE && num < Integer.MAX_VALUE) {
-                parameter.value = String.valueOf(num);
+                parameter.setValue(String.valueOf(num));
                 return ALLOW;
             }
         } catch (Exception e) {
@@ -168,7 +168,7 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
         try {
             long num = Long.parseLong(content);
             if (num > 0 && num < uint) {
-                parameter.value = String.valueOf(num);
+                parameter.setValue(String.valueOf(num));
                 return ALLOW;
             }
         } catch (Exception e) {

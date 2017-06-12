@@ -2,10 +2,9 @@ package com.pixelplex.qtum.ui.fragment.ContractConfirmFragment;
 
 import android.content.Context;
 
-import com.pixelplex.qtum.SmartContractsManager.StorageManager;
 import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
@@ -13,36 +12,16 @@ import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.ContractBuilder;
-import com.pixelplex.qtum.utils.CurrentNetParams;
-import com.pixelplex.qtum.utils.TinyDB;
+import com.pixelplex.qtum.datastorage.TinyDB;
 
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.core.Sha256Hash;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionConfidence;
-import org.bitcoinj.core.TransactionOutPoint;
-import org.bitcoinj.core.Utils;
-import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
-import org.bitcoinj.script.ScriptChunk;
-import org.bitcoinj.script.ScriptOpCodes;
-import org.spongycastle.util.encoders.Hex;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import java.util.concurrent.Callable;
-
-import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -165,16 +144,16 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                         getView().getApplication().setContractAwait(true);
                         String name = "";
                         for(ContractMethodParameter contractMethodParameter : mContractMethodParameterList){
-                            if(contractMethodParameter.name.equals("_name")){
-                                name = contractMethodParameter.value;
+                            if(contractMethodParameter.getName().equals("_name")){
+                                name = contractMethodParameter.getValue();
                             }
                         }
-                        ContractInfo contractInfo = new ContractInfo(null,mContractTemplateName,false,null,true, senderAddress, name);
+                        Contract contract = new Contract(null,mContractTemplateName,false,null,true, senderAddress, name);
 
                         TinyDB tinyDB = new TinyDB(mContext);
-                        ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
-                        contractInfoList.add(contractInfo);
-                        tinyDB.putListContractInfo(contractInfoList);
+                        ArrayList<Contract> contractList = tinyDB.getContractList();
+                        contractList.add(contract);
+                        tinyDB.putContractList(contractList);
                     }
                 });
     }

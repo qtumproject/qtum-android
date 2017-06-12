@@ -76,10 +76,15 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
                 getPresenter().onClickQrCode();
                 break;
             case R.id.bt_send:
-                String[] sendInfo = new String[3];
+                String[] sendInfo = new String[4];
                 sendInfo[0] = mTextInputEditTextAddress.getText().toString();
                 sendInfo[1] = mTextInputEditTextAmount.getText().toString();
-                sendInfo[2] = mTextInputEditTextPin.getText().toString();
+                sendInfo[3] = mTextInputEditTextPin.getText().toString();
+                if(mLinearLayoutCurrency.getVisibility()==View.VISIBLE){
+                    sendInfo[2] = mTextViewCurrency.getText().toString();
+                } else {
+                    sendInfo[2] = "Qtum";
+                }
                 getPresenter().send(sendInfo);
                 break;
             case R.id.ibt_back:

@@ -9,10 +9,8 @@ import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractReque
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractResponse.CallSmartContractResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragmentPresenter;
-import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragmentView;
 import com.pixelplex.qtum.utils.sha3.sha.Keccak;
 import com.pixelplex.qtum.utils.sha3.sha.Parameters;
 
@@ -37,13 +35,13 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
     TokenFragmentView view;
     Context mContext;
 
-    private ContractInfo token;
+    private Contract token;
 
-    public ContractInfo getToken() {
+    public Contract getToken() {
         return token;
     }
 
-    public void setToken(ContractInfo token) {
+    public void setToken(Contract token) {
         this.token = token;
         getView().setBalance(this.token.getLastBalance());
         getView().setTokenAddress(this.token.getContractAddress());
@@ -108,7 +106,7 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
     }
 
     private String processResponse(List<ContractMethodParameter> contractMethodOutputParameterList, String output){
-        String type = contractMethodOutputParameterList.get(0).type;
+        String type = contractMethodOutputParameterList.get(0).getType();
         if(type.contains("int")){
             if(output.isEmpty()){
                 return "0";

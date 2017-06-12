@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 
 import java.util.List;
 
@@ -16,16 +16,16 @@ import java.util.List;
 public class TokensAdapter extends RecyclerView.Adapter<TokenViewHolder> {
 
     private final UpdateSocketInstance socketInstace;
-    List<ContractInfo> tokens;
+    List<Contract> tokens;
     OnTokenClickListener listener;
 
-    public TokensAdapter(List<ContractInfo> tokens, UpdateSocketInstance socketInstance, OnTokenClickListener listener) {
+    public TokensAdapter(List<Contract> tokens, UpdateSocketInstance socketInstance, OnTokenClickListener listener) {
         this.tokens = tokens;
         this.socketInstace = socketInstance;
         this.listener = listener;
     }
 
-    public ContractInfo get(int adapterPosition) {
+    public Contract get(int adapterPosition) {
         return tokens.get(adapterPosition);
     }
 

@@ -62,7 +62,7 @@ public class ContractBuilder {
 
     private List<ContractMethodParameter> mContractMethodParameterList;
 
-    public Observable<String> createAbiParams(final String _methodName, final List<ContractMethodParameter> contractMethodParameterList){
+    public Observable<String> createAbiMethodParams(final String _methodName, final List<ContractMethodParameter> contractMethodParameterList){
         return rx.Observable.fromCallable(new Callable<String>() {
             @Override
             public String call() throws Exception {
@@ -73,7 +73,7 @@ public class ContractBuilder {
                 if(contractMethodParameterList != null && contractMethodParameterList.size()!=0) {
                     for (ContractMethodParameter parameter : contractMethodParameterList) {
                         abiParams += convertParameter(parameter,abiParams);
-                        parameters = parameters + parameter.type + ",";
+                        parameters = parameters + parameter.getType() + ",";
                     }
                     methodName = methodName + "("+parameters.substring(0,parameters.length()-1)+")";
                 } else{
@@ -107,12 +107,12 @@ public class ContractBuilder {
 
     private String convertParameter(ContractMethodParameter parameter, String abiParams) {
 
-        String _value = parameter.value;
+        String _value = parameter.getValue();
 
-        if(parameter.type.contains(TYPE_INT)){
+        if(parameter.getType().contains(TYPE_INT)){
             isStringChainNow = false;
             return appendNumericPattern(convertToByteCode(Long.valueOf(_value)));
-        } else if(parameter.type.contains(TYPE_STRING)){
+        } else if(parameter.getType().contains(TYPE_STRING)){
             String offsetToAbi = "";
             if(!isStringChainNow) {
                 int stringChainSize = getStringsChainSize(parameter);
@@ -124,7 +124,7 @@ public class ContractBuilder {
                 isStringChainNow = true;
             }
             return  offsetToAbi + appendStringPattern(convertToByteCode(_value));
-        } else if(parameter.type.contains(TYPE_ADDRESS)){
+        } else if(parameter.getType().contains(TYPE_ADDRESS)){
             return appendAddressPattern(Hex.toHexString(Base58.decode(_value)).substring(2,42));
         }
         return "";
@@ -145,7 +145,7 @@ public class ContractBuilder {
         int chainSize = 0;
 
         for (int i = index; i< mContractMethodParameterList.size(); i++){
-            if(mContractMethodParameterList.get(index).type.contains(TYPE_STRING)){
+            if(mContractMethodParameterList.get(index).getType().contains(TYPE_STRING)){
                 chainSize++;
             }
         }

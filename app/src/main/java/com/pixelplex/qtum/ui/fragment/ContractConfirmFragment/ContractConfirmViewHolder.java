@@ -41,7 +41,7 @@ public class ContractConfirmViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(ContractMethodParameter parameter) {
-        name.setText(parameter.displayName);
-        value.setText(parameter.value);
+        name.setText(parameter.getDisplayName());
+        value.setText(parameter.getValue());
     }
 }

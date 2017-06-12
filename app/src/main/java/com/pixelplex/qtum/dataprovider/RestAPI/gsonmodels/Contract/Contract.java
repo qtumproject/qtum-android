@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels;
+package com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by maksimromanovskij on 03.06.17.
  */
 
-public class ContractInfo implements Serializable {
+public class Contract implements Serializable {
 
     private String contractAddress;
     private String templateName;
@@ -22,14 +22,14 @@ public class ContractInfo implements Serializable {
 
     String senderAddress;
 
-    public ContractInfo(String contractAddress, String templateName, Boolean hasBeenCreated, Long date){
+    public Contract(String contractAddress, String templateName, Boolean hasBeenCreated, Long date){
         this.contractAddress = contractAddress;
         this.templateName = templateName;
         this.hasBeenCreated = hasBeenCreated;
         this.date = date;
     }
 
-    public ContractInfo(String contractAddress, String templateName, Boolean hasBeenCreated, Long date, Boolean isToken, String senderAddress, String contractName){
+    public Contract(String contractAddress, String templateName, Boolean hasBeenCreated, Long date, Boolean isToken, String senderAddress, String contractName){
         this.contractAddress = contractAddress;
         this.templateName = templateName;
         this.hasBeenCreated = hasBeenCreated;

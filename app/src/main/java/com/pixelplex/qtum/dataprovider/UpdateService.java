@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.TokenListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalanceChangeListener;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
@@ -33,7 +33,7 @@ import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.utils.QtumIntent;
-import com.pixelplex.qtum.utils.TinyDB;
+import com.pixelplex.qtum.datastorage.TinyDB;
 
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 import org.spongycastle.crypto.digests.SHA256Digest;
@@ -122,14 +122,14 @@ public class UpdateService extends Service {
                 if(((QtumApplication)getApplication()).isContractAwait()){
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
 
-                    ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
-                    for(ContractInfo contractInfo : contractInfoList){
-                        if(contractInfo.getContractAddress()==null){
-                            contractInfo.setContractAddress(generateContractAddress(history.getTxHash()));
+                    ArrayList<Contract> contractList = tinyDB.getContractList();
+                    for(Contract contract : contractList){
+                        if(contract.getContractAddress()==null){
+                            contract.setContractAddress(generateContractAddress(history.getTxHash()));
                             break;
                         }
                     }
-                    tinyDB.putListContractInfo(contractInfoList);
+                    tinyDB.putContractList(contractList);
                     ((QtumApplication)getApplication()).setContractAwait(false);
                 }
                 if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
@@ -138,15 +138,15 @@ public class UpdateService extends Service {
                     String contractAddress = generateContractAddress(txHash);
 
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
-                    ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
-                    for(ContractInfo contractInfo : contractInfoList){
-                        if(contractInfo.getContractAddress().equals(contractAddress)){
-                            contractInfo.setHasBeenCreated(true);
-                            contractInfo.setDate((long)history.getBlockTime());
+                    ArrayList<Contract> contractList = tinyDB.getContractList();
+                    for(Contract contract : contractList){
+                        if(contract.getContractAddress().equals(contractAddress)){
+                            contract.setHasBeenCreated(true);
+                            contract.setDate((long)history.getBlockTime());
                             break;
                         }
                     }
-                    tinyDB.putListContractInfo(contractInfoList);
+                    tinyDB.putContractList(contractList);
 
                     subscribeTokenBalanceChange(contractAddress);
                 }
