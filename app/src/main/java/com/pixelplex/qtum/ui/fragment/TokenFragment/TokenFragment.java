@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.FontTextView;
@@ -144,7 +145,7 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
             layoutParams.setBehavior(appBarLayoutBehaviour);
         }
 
-        presenter.setToken((Contract) getArguments().getSerializable(tokenKey));
+        presenter.setToken((Token) getArguments().getSerializable(tokenKey));
         presenter.getPropertyValue(totalSupply);
         presenter.getPropertyValue(decimals);
 

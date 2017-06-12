@@ -1,5 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.SubscribeTokensFragment;
 
+import android.content.Context;
+
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
@@ -7,9 +9,6 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by max-v on 6/8/2017.
- */
 
 public class SubscribeTokensFragmentPresenter extends BaseFragmentPresenterImpl {
 
@@ -27,15 +26,15 @@ public class SubscribeTokensFragmentPresenter extends BaseFragmentPresenterImpl 
     }
 
     @Override
-    public void onViewCreated() {
-        super.onViewCreated();
-        List<String> contractTokenList = new ArrayList<>();
-        for(Contract contract : getInteractor().getTokenList()){
-            if(contract.isToken()){
-                contractTokenList.add(contract.getContractName());
-            }
-        }
-        getView().setTokenList(contractTokenList);
+    public void initializeViews() {
+        super.initializeViews();
+        getView().setTokenList(getInteractor().getTokenList());
+    }
+
+    @Override
+    public void onPause(Context context) {
+        super.onPause(context);
+        getInteractor().saveTokenList(getView().getTokenList());
     }
 
     public SubscribeTokensFragmentInteractor getInteractor() {

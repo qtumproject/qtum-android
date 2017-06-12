@@ -148,10 +148,10 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                                 name = contractMethodParameter.getValue();
                             }
                         }
-                        Contract contract = new Contract(null,mContractTemplateName,false,null,true, senderAddress, name);
+                        Contract contract = new Contract(null, mContractTemplateName, false, null, senderAddress, name);
 
                         TinyDB tinyDB = new TinyDB(mContext);
-                        ArrayList<Contract> contractList = tinyDB.getContractList();
+                        List<Contract> contractList = tinyDB.getContractList();
                         contractList.add(contract);
                         tinyDB.putContractList(contractList);
                     }

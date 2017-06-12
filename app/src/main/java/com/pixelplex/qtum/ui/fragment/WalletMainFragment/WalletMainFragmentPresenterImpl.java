@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.WalletMainFragment;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 import com.pixelplex.qtum.datastorage.TinyDB;
@@ -36,7 +37,7 @@ public class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
         getTokens()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Contract>>() {
+                .subscribe(new Subscriber<List<Token>>() {
                     @Override
                     public void onCompleted() {
 
@@ -48,26 +49,26 @@ public class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
                     }
 
                     @Override
-                    public void onNext(List<Contract> tokens) {
+                    public void onNext(List<Token> tokens) {
                         mWalletMainFragmentView.showOtherTokens(tokens != null && tokens.size() > 0);
                     }
                 });
     }
 
-    private Observable<List<Contract>> getTokens() {
-        return Observable.fromCallable(new Callable<List<Contract>>() {
+    private Observable<List<Token>> getTokens() {
+        return Observable.fromCallable(new Callable<List<Token>>() {
             @Override
-            public List<Contract> call() throws Exception {
+            public List<Token> call() throws Exception {
                 TinyDB tinyDB = new TinyDB(getView().getContext());
-                List<Contract> contracts = tinyDB.getContractList();
-                List<Contract> tokens = new ArrayList<>();
+                List<Token> tokenList = tinyDB.getTokenList();
+                List<Token> tokens = new ArrayList<>();
 
-                for (Contract contract: contracts) {
-                    if(contract.isToken()){
-                        tokens.add(contract);
+                for (Token token: tokenList) {
+                    if(token.isSubscribe()){
+                        tokens.add(token);
                     }
                 }
-                contracts.clear();
+                tokenList.clear();
                 return tokens;
             }
         });

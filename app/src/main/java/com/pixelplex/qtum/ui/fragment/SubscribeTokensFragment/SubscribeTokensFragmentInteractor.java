@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.SubscribeTokensFragment;
 import android.content.Context;
 
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.datastorage.TinyDB;
 
 import java.util.List;
@@ -20,8 +21,13 @@ public class SubscribeTokensFragmentInteractor {
     }
 
 
-    public List<Contract> getTokenList() {
-        List<Contract> contractList = (new TinyDB(mContext)).getContractList();
-        return contractList;
+    public List<Token> getTokenList() {
+        List<Token> tokenList = (new TinyDB(mContext)).getTokenList();
+        return tokenList;
+    }
+
+
+    public void saveTokenList(List<Token> tokenList) {
+        (new TinyDB(mContext)).putTokenList(tokenList);
     }
 }

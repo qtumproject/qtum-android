@@ -10,6 +10,7 @@ import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractRespo
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.sha3.sha.Keccak;
 import com.pixelplex.qtum.utils.sha3.sha.Parameters;
@@ -35,13 +36,13 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
     TokenFragmentView view;
     Context mContext;
 
-    private Contract token;
+    private Token token;
 
-    public Contract getToken() {
+    public Token getToken() {
         return token;
     }
 
-    public void setToken(Contract token) {
+    public void setToken(Token token) {
         this.token = token;
         getView().setBalance(this.token.getLastBalance());
         getView().setTokenAddress(this.token.getContractAddress());

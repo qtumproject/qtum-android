@@ -15,6 +15,7 @@ import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
 import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
@@ -239,7 +240,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
     }
 
     @Override
-    public List<Contract> getContractList() {
-        return (new TinyDB(mContext).getContractList());
+    public List<Token> getTokenList() {
+        return (new TinyDB(mContext).getTokenList());
     }
 }

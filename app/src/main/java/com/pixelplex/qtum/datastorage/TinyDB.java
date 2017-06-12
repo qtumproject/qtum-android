@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 //import com.google.gson.Gson;
@@ -44,6 +45,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 
 
 public class TinyDB {
@@ -51,7 +53,8 @@ public class TinyDB {
     private SharedPreferences preferences;
     private String DEFAULT_APP_IMAGEDATA_DIRECTORY;
     private String lastImagePath = "";
-    private final String CONTRACT_INFO_LIST = "contract_info_list";
+    private final String CONTRACT_LIST = "contract_list";
+    private final String TOKEN_LIST = "token_list";
 
     public TinyDB(Context appContext) {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
@@ -341,16 +344,18 @@ public class TinyDB {
         return (T)value;
     }
 
-    public ArrayList<Contract> getContractList(){
+    public List<Contract> getContractList(){
         Gson gson = new Gson();
 
-        ArrayList<String> contractInfoStrings = getListString(CONTRACT_INFO_LIST);
+        ArrayList<String> contractInfoStrings = getListString(CONTRACT_LIST);
         ArrayList<Contract> contractArrayList = new ArrayList<Contract>();
 
         for(String contractInfoString : contractInfoStrings){
             Contract contract = gson.fromJson(contractInfoString,Contract.class);
             contractArrayList.add(contract);
         }
+
+        contractArrayList.addAll(getTokenList());
 
         Collections.sort(contractArrayList, new Comparator<Contract>() {
             @Override
@@ -366,6 +371,20 @@ public class TinyDB {
         });
 
         return contractArrayList;
+    }
+
+    public List<Token> getTokenList(){
+        Gson gson = new Gson();
+
+        ArrayList<String> tokenStrings = getListString(TOKEN_LIST);
+        ArrayList<Token> tokenArrayList = new ArrayList<Token>();
+
+        for(String contractInfoString : tokenStrings){
+            Token token = gson.fromJson(contractInfoString,Token.class);
+            tokenArrayList.add(token);
+        }
+
+        return tokenArrayList;
     }
 
 
@@ -505,13 +524,22 @@ public class TinyDB {
     	putListString(key, objStrings);
     }
 
-    public void putContractList(ArrayList<Contract> contractArrayList){
+    public void putContractList(List<Contract> contractArrayList){
         Gson gson = new Gson();
         ArrayList<String> contractInfoStrings = new ArrayList<String>();
         for(Contract contract : contractArrayList){
             contractInfoStrings.add(gson.toJson(contract));
         }
-        putListString(CONTRACT_INFO_LIST,contractInfoStrings);
+        putListString(CONTRACT_LIST,contractInfoStrings);
+    }
+
+    public void putTokenList(List<Token> tokenArrayList){
+        Gson gson = new Gson();
+        ArrayList<String> tokenStrings = new ArrayList<String>();
+        for(Token token : tokenArrayList){
+            tokenStrings.add(gson.toJson(token));
+        }
+        putListString(TOKEN_LIST,tokenStrings);
     }
 
     /**

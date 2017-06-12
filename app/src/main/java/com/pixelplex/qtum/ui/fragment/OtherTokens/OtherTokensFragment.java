@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
@@ -83,7 +84,7 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
     }
 
     @Override
-    public void setTokensData(List<Contract> tokensData) {
+    public void setTokensData(List<Token> tokensData) {
         tokensList.setAdapter(new TokensAdapter(tokensData,presenter, this));
     }
 

@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.OtherTokens;
 import android.content.Context;
 
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -44,20 +45,20 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
         return view;
     }
 
-    private Observable<List<Contract>> getTokens() {
-        return Observable.fromCallable(new Callable<List<Contract>>() {
+    private Observable<List<Token>> getTokens() {
+        return Observable.fromCallable(new Callable<List<Token>>() {
             @Override
-            public List<Contract> call() throws Exception {
+            public List<Token> call() throws Exception {
                 TinyDB tinyDB = new TinyDB(mContext);
-                List<Contract> contracts = tinyDB.getContractList();
-                List<Contract> tokens = new ArrayList<>();
+                List<Token> tokenList = tinyDB.getTokenList();
+                List<Token> tokens = new ArrayList<>();
 
-                for (Contract contract: contracts) {
-                    if(contract.isToken()){
-                        tokens.add(contract);
+                for (Token token: tokenList) {
+                    if(token.isSubscribe()){
+                        tokens.add(token);
                     }
                 }
-                contracts.clear();
+                tokenList.clear();
                 return tokens;
             }
         });
@@ -67,7 +68,7 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
         getTokens()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Contract>>() {
+                .subscribe(new Subscriber<List<Token>>() {
             @Override
             public void onCompleted() {
 
@@ -79,7 +80,7 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
             }
 
             @Override
-            public void onNext(List<Contract> tokens) {
+            public void onNext(List<Token> tokens) {
                 if(tokens != null && tokens.size() > 0) {
                     getView().setTokensData(tokens);
                 }

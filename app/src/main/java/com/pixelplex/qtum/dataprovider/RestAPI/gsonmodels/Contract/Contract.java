@@ -8,52 +8,22 @@ import java.io.Serializable;
 
 public class Contract implements Serializable {
 
-    private String contractAddress;
-    private String templateName;
-    private String contractName;
-    private Boolean hasBeenCreated;
-    private Long date;
-    private Boolean isToken;
-    private float lastBalance = 0;
+    protected String contractAddress;
+    protected String templateName;
+    protected String contractName;
+    protected Boolean hasBeenCreated;
+    protected Long date;
+    protected String senderAddress;
 
-    public String getSenderAddress() {
-        return senderAddress;
-    }
-
-    String senderAddress;
-
-    public Contract(String contractAddress, String templateName, Boolean hasBeenCreated, Long date){
-        this.contractAddress = contractAddress;
-        this.templateName = templateName;
-        this.hasBeenCreated = hasBeenCreated;
-        this.date = date;
-    }
-
-    public Contract(String contractAddress, String templateName, Boolean hasBeenCreated, Long date, Boolean isToken, String senderAddress, String contractName){
+    public Contract(String contractAddress, String templateName, Boolean hasBeenCreated, Long date, String senderAddress, String contractName){
         this.contractAddress = contractAddress;
         this.templateName = templateName;
         this.hasBeenCreated = hasBeenCreated;
         this.contractName = contractName;
         this.date = date;
-        this.isToken = isToken;
         this.senderAddress = senderAddress;
     }
 
-    public void setLastBalance(float balance){
-        this.lastBalance = balance;
-    }
-
-    public float getLastBalance(){
-        return lastBalance;
-    }
-
-    public void markSmartContractAsToken(Boolean isToken) {
-        this.isToken = isToken;
-    }
-
-    public Boolean isToken() {
-        return this.isToken;
-    }
 
     public String getContractAddress() {
         return contractAddress;
@@ -93,5 +63,13 @@ public class Contract implements Serializable {
 
     public void setContractName(String contractName) {
         this.contractName = contractName;
+    }
+
+    public String getSenderAddress() {
+        return senderAddress;
+    }
+
+    public void setSenderAddress(String senderAddress) {
+        this.senderAddress = senderAddress;
     }
 }

@@ -5,16 +5,15 @@ import android.content.Context;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.RestAPI.NetworkStateListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.Vin;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import com.pixelplex.qtum.dataprovider.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
-import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -26,9 +25,6 @@ import org.bitcoinj.script.Script;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import rx.Subscriber;
@@ -44,7 +40,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     private Context mContext;
     private NetworkStateReceiver mNetworkStateReceiver;
     private boolean mNetworkConnectedFlag = false;
-    private List<Contract> mContractList;
+    private List<Token> mTokenList;
 
 
     SendBaseFragmentPresenterImpl(SendBaseFragmentView sendBaseFragmentView) {
@@ -139,12 +135,9 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
         super.initializeViews();
         updateAvailableBalance();
         String currency = "";
-        mContractList = getInteractor ().getContractList();
-        for(Contract contract : mContractList){
-            if(contract.isToken()){
-                currency = "Qtum";
-                break;
-            }
+        mTokenList = getInteractor().getTokenList();
+        if(!mTokenList.isEmpty()) {
+            currency = "Qtum";
         }
         getView().setUpCurrencyField(currency);
     }
@@ -212,7 +205,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                     }
                 });
             } else {
-                for(Contract contract : mContractList){
+                for(Contract contract : mTokenList){
                     if(contract.getContractName().equals(currency)){
                         ContractBuilder contractBuilder = new ContractBuilder();
                         List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
@@ -238,6 +231,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
                             }
                         });
+                        return;
                     }
                 }
             }

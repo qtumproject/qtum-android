@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalanceChangeListener;
 import com.pixelplex.qtum.utils.FontTextView;
@@ -33,7 +34,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
     @BindView(R.id.spinner)
     ProgressBar spinner;
 
-    Contract token;
+    Token token;
 
     UpdateSocketInstance socketInstance;
 
@@ -50,7 +51,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
         });
     }
 
-    public void bind (Contract token) {
+    public void bind (Token token) {
 
         if(this.token != null) {
             socketInstance.getSocketInstance().removeTokenBalanceChangeListener(token.getContractAddress());

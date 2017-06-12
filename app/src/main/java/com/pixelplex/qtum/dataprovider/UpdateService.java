@@ -43,6 +43,7 @@ import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -122,7 +123,7 @@ public class UpdateService extends Service {
                 if(((QtumApplication)getApplication()).isContractAwait()){
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
 
-                    ArrayList<Contract> contractList = tinyDB.getContractList();
+                    List<Contract> contractList = tinyDB.getContractList();
                     for(Contract contract : contractList){
                         if(contract.getContractAddress()==null){
                             contract.setContractAddress(generateContractAddress(history.getTxHash()));
@@ -138,7 +139,7 @@ public class UpdateService extends Service {
                     String contractAddress = generateContractAddress(txHash);
 
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
-                    ArrayList<Contract> contractList = tinyDB.getContractList();
+                    List<Contract> contractList = tinyDB.getContractList();
                     for(Contract contract : contractList){
                         if(contract.getContractAddress().equals(contractAddress)){
                             contract.setHasBeenCreated(true);

@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 
@@ -34,10 +36,8 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
     private SubscribeTokensFragmentPresenter mSubscribeTokensFragmentPresenter;
     private TokenAdapter mTokenAdapter;
     private String mSearchString;
-    private List<String> mCurrentList;
+    private List<Token> mCurrentList;
 
-    //TODO: remove
-    String currentCurrency = "one";
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -107,9 +107,9 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
                     mTokenAdapter.setFilter(mCurrentList);
                 } else {
                     mSearchString = editable.toString().toLowerCase();
-                    List<String> newList = new ArrayList<>();
-                    for(String currency: mCurrentList){
-                        if(currency.contains(mSearchString))
+                    List<Token> newList = new ArrayList<>();
+                    for(Token currency: mCurrentList){
+                        if(currency.getContractName().contains(mSearchString))
                             newList.add(currency);
                     }
                     mTokenAdapter.setFilter(newList);
@@ -139,10 +139,15 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
     }
 
     @Override
-    public void setTokenList(List<String> tokenList) {
+    public void setTokenList(List<Token> tokenList) {
         mTokenAdapter = new TokenAdapter(tokenList);
         mCurrentList = tokenList;
         mRecyclerView.setAdapter(mTokenAdapter);
+    }
+
+    @Override
+    public List<Token> getTokenList() {
+        return mTokenAdapter.getTokenList();
     }
 
     public class TokenHolder extends RecyclerView.ViewHolder{
@@ -154,6 +159,8 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
         @BindView(R.id.ll_single_item)
         LinearLayout mLinearLayoutCurrency;
 
+        Token mToken;
+
         TokenHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -162,7 +169,8 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
                     @Override
                     public void onClick(View view) {
                         if(getAdapterPosition()>=0) {
-                            currentCurrency = mTokenAdapter.getTokenList().get(getAdapterPosition());
+                            mTokenAdapter.getTokenList().get(getAdapterPosition()).setSubscribe(!mToken.isSubscribe());
+                            //TODO notifyItemSetChanged
                             mTokenAdapter.notifyDataSetChanged();
                         }
                     }
@@ -170,9 +178,10 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
 
         }
 
-        void bindToken(String currency){
-            mTextViewCurrency.setText(currency);
-            if(currency.equals(currentCurrency)){
+        void bindToken(Token currency){
+            mTextViewCurrency.setText(currency.getContractName());
+            mToken = currency;
+            if(currency.isSubscribe()){
                 mLinearLayoutCurrency.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.grey20));
                 mImageViewCheckIndicator.setVisibility(View.VISIBLE);
             } else {
@@ -184,9 +193,9 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
 
     public class TokenAdapter extends RecyclerView.Adapter<TokenHolder>{
 
-        List<String> mTokenList;
+        List<Token> mTokenList;
 
-        TokenAdapter(List<String> tokenList){
+        TokenAdapter(List<Token> tokenList){
             mTokenList = tokenList;
         }
 
@@ -207,13 +216,13 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
             return mTokenList.size();
         }
 
-        void setFilter(List<String> newList){
+        void setFilter(List<Token> newList){
             mTokenList = new ArrayList<>();
             mTokenList.addAll(newList);
             notifyDataSetChanged();
         }
 
-        List<String> getTokenList() {
+        List<Token> getTokenList() {
             return mTokenList;
         }
     }
