@@ -52,12 +52,45 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/step"
+            android:layout_margin="16dp"
+            android:id="@+id/ll_footer">
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                app:typefaceAsset="@string/euclidFlexMedium"
+                android:layout_weight="1"
+                android:layout_gravity="left"
+                android:text="Address"/>
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                app:typefaceAsset="@string/euclidFlexMedium"
+                android:layout_gravity="end"
+                android:text="Purchase Date"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:id="@+id/divider"
+            android:layout_below="@+id/ll_footer"
+            android:background="@color/colorPrimary"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_above="@+id/buttons"
+            android:layout_below="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
 
     </RelativeLayout>
 

@@ -67,15 +67,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginStart="16dp"
             android:id="@+id/ll_token_field"
             android:layout_below="@+id/step">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 app:srcCompat="@drawable/ic_token2"/>
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_template_name"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center"
+                app:typeface="@string/simplonMonoRegular"/>
         </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

@@ -114,7 +114,7 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
                 mTextViewDate.setText(R.string.not_confirmed);
             }
             mTextViewTitle.setText(contract.getContractAddress().substring(0,8));
-            mTextViewContractType.setText("(token)");
+            mTextViewContractType.setText("TOKEN");
         }
     }
 

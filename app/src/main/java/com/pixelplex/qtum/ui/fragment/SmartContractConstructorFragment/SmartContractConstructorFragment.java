@@ -9,6 +9,7 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.utils.FontTextView;
 
 import java.util.List;
 
@@ -39,6 +40,9 @@ public class SmartContractConstructorFragment extends BaseFragment implements Sm
     @BindView(R.id.recycler_view)
     RecyclerView constructorList;
 
+    @BindView(R.id.tv_template_name)
+    FontTextView mTextViewTemplateName;
+
     @OnClick({R.id.ibt_back, R.id.cancel})
     public void onBackClick() {
         getActivity().onBackPressed();
@@ -47,7 +51,7 @@ public class SmartContractConstructorFragment extends BaseFragment implements Sm
     @OnClick(R.id.confirm)
     public void onConfirmClick(){
         if(adapter != null) {
-            adapter.notifyDataSetChanged();
+           // adapter.notifyDataSetChanged();
             presenter.confirm(adapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_NAME));
         }
     }
@@ -77,7 +81,9 @@ public class SmartContractConstructorFragment extends BaseFragment implements Sm
     public void initializeViews() {
         super.initializeViews();
         constructorList.setLayoutManager(new LinearLayoutManager(getContext()));
-        presenter.getConstructorByName(getArguments().getString(CONTRACT_TEMPLATE_NAME));
+        String templateName = getArguments().getString(CONTRACT_TEMPLATE_NAME);
+        presenter.getConstructorByName(templateName);
+        mTextViewTemplateName.setText(templateName);
     }
 
     @Override

@@ -19,6 +19,7 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontManager;
+import com.pixelplex.qtum.utils.FontTextView;
 
 import java.util.List;
 
@@ -164,6 +165,9 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
         @BindView(R.id.checkbox)
         AppCompatCheckBox checkBox;
 
+        @BindView(R.id.tv_param_field)
+        FontTextView mTextViewParamField;
+
         public ParameterViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -175,6 +179,10 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
 
         public void bind (ContractMethodParameter parameter, boolean isLast) {
             this.parameter = parameter;
+
+            int position = getAdapterPosition()+1;
+            mTextViewParamField.setText("Parameter " + position);
+
             tilParam.setHint(fromCamelCase(parameter.getName()));
             setInputType(parameter.getType());
             if(isLast){

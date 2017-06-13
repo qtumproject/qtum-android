@@ -47,6 +47,6 @@ public class ContractViewHolder extends RecyclerView.ViewHolder {
 
         date.setText(DateCalculator.getDate(contract.getDate()));
 
-        contractType.setText("("+contract.getContractType()+")");
+        contractType.setText(contract.getContractType().toUpperCase());
     }
 }

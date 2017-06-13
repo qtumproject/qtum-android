@@ -6,7 +6,7 @@
                 android:layout_height="wrap_content">
 
     <com.pixelplex.qtum.utils.FontTextView
-        android:id="@+id/tv_toolbar_send"
+        android:id="@+id/tv_param_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

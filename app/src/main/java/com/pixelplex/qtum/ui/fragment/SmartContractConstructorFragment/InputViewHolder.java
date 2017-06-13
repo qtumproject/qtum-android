@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
 import com.pixelplex.qtum.utils.FontManager;
+import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,6 +85,9 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.checkbox)
     AppCompatCheckBox checkBox;
 
+    @BindView(R.id.tv_param_field)
+    FontTextView mTextViewParamField;
+
     public InputViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
@@ -97,7 +101,8 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
         this.parameter = parameter;
 
         //etParam.setText(parameter.value);
-
+        int position = getAdapterPosition()+1;
+        mTextViewParamField.setText("Parameter " + position);
         tilParam.setHint(fromCamelCase(parameter.getName()));
         setInputType(parameter.getType());
         if(isLast){
