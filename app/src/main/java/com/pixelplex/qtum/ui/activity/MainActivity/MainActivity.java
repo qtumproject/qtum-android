@@ -38,12 +38,14 @@ import java.lang.reflect.Field;
 import butterknife.BindView;
 
 
+
 public class MainActivity extends BaseActivity implements MainActivityView{
 
     private static final int LAYOUT = R.layout.activity_main;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
-    private static final int REQUEST_CAMERA = 0;
     private NfcAdapter mNfcAdapter;
+    private ActivityResultListener mActivityResultListener;
+    private PermissionsResultListener mPermissionsResultListener;
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
@@ -62,7 +64,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
-        loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
+
     }
 
     @Override
@@ -83,11 +85,14 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         return getPresenter().getAmountForSendAction();
     }
 
-    private void loadPermissions(String perm, int requestCode) {
+    public boolean loadPermissions(String perm, int requestCode) {
         if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
+           // if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
                 ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
-            }
+          //  }
+            return false;
+        }else {
+            return true;
         }
     }
 
@@ -191,6 +196,22 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(mActivityResultListener!=null){
+            mActivityResultListener.onActivityResult(requestCode,resultCode,data);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(mPermissionsResultListener!=null) {
+            mPermissionsResultListener.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
     }
@@ -210,5 +231,29 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     public QtumApplication getQtumApplication(){
         return (QtumApplication)getApplication();
+    }
+
+    public void addActivityResultListener(ActivityResultListener activityResultListener){
+        mActivityResultListener = activityResultListener;
+    }
+
+    public void removeResultListener(){
+        mActivityResultListener = null;
+    }
+
+    public void addPermissionResultListener(PermissionsResultListener permissionsResultListener){
+        mPermissionsResultListener = permissionsResultListener;
+    }
+
+    public void removePermissionResultListener(){
+        mPermissionsResultListener = null;
+    }
+
+    public interface ActivityResultListener{
+        void onActivityResult(int requestCode, int resultCode, Intent data);
+    }
+
+    public interface PermissionsResultListener{
+        void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults);
     }
 }

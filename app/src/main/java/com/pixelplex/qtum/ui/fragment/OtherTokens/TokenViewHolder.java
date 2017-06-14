@@ -7,7 +7,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalanceChangeListener;
@@ -71,12 +70,12 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
     @Override
     public void onBalanceChange(final TokenBalance tokenBalance) {
         if(token.getContractAddress().equals(tokenBalance.getContractAddress())){
-            token.setLastBalance(tokenBalance.getSummaryBalance());
+            token.setLastBalance(tokenBalance.getTotalBalance());
             rootLayout.post(new Runnable() {
                 @Override
                 public void run() {
                     spinner.setVisibility(View.GONE);
-                    tokenBalanceView.setText(String.format("%f QTUM",tokenBalance.getSummaryBalance()));
+                    tokenBalanceView.setText(String.format("%f QTUM",tokenBalance.getTotalBalance()));
                     tokenBalanceView.setVisibility(View.VISIBLE);
                 }
             });

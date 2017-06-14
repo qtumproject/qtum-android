@@ -48,15 +48,10 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect,view,parent,state);
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount-1; i++) {
-//            if (settings.get(i).sectionNumber != settings.get(i + 1).sectionNumber) {
-//                outRect.top = sectionDivider.getIntrinsicHeight();
-//            } else {
-//                outRect.top = divider.getIntrinsicHeight();
-//            }
-            if (settings.get(i).sectionNumber == settings.get(i + 1).sectionNumber || settings.size() == i) {
-                outRect.top = divider.getIntrinsicHeight();
-            } else {
+            if (settings.get(i).sectionNumber != settings.get(i + 1).sectionNumber) {
                 outRect.top = sectionDivider.getIntrinsicHeight();
+            } else {
+                outRect.top = divider.getIntrinsicHeight();
             }
         }
     }

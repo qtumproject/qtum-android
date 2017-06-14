@@ -115,11 +115,11 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     }
 
-    protected void hideBottomNavView(boolean recolorStatusBar) {
+    public void hideBottomNavView(boolean recolorStatusBar) {
         ((MainActivity) getActivity()).hideBottomNavigationView(recolorStatusBar);
     }
 
-    protected void showBottomNavView(boolean recolorStatusBar) {
+    public void showBottomNavView(boolean recolorStatusBar) {
         ((MainActivity) getActivity()).showBottomNavigationView(recolorStatusBar);
     }
 
@@ -200,7 +200,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
-
+        getActivity().startActivityForResult(intent,requestCode);
     }
 
     @Override
@@ -272,8 +272,8 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
-    public Activity getFragmentActivity() {
-        return getActivity();
+    public MainActivity getFragmentActivity() {
+        return (MainActivity)getActivity();
     }
 
     protected void bindView(View view) {

@@ -1,7 +1,10 @@
 package com.pixelplex.qtum.ui.fragment.WalletFragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
@@ -32,8 +35,10 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     private UpdateService mUpdateService;
     private NetworkStateReceiver mNetworkStateReceiver;
     private boolean mNetworkConnectedFlag = false;
+    private boolean OPEN_QR_CODE_FRAGMENT_FLAG = false;
 
     private final int ONE_PAGE_COUNT = 25;
+    private static final int REQUEST_CAMERA = 3;
 
     WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView) {
         mWalletFragmentView = walletFragmentView;
@@ -45,7 +50,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        mUpdateService = ((MainActivity) getView().getFragmentActivity()).getUpdateService();
+        mUpdateService = getView().getFragmentActivity().getUpdateService();
 
         mUpdateService.starMonitoring();
         mUpdateService.addTransactionListener(new TransactionListener() {
@@ -95,7 +100,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         });
 
 
-        mNetworkStateReceiver  = ((MainActivity) getView().getFragmentActivity()).getNetworkReceiver();
+        mNetworkStateReceiver  = getView().getFragmentActivity().getNetworkReceiver();
         mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
 
             @Override
@@ -103,6 +108,17 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
                 mNetworkConnectedFlag = networkConnectedFlag;
                 if(networkConnectedFlag){
                     loadAndUpdateData();
+                }
+            }
+        });
+
+        getView().getFragmentActivity().addPermissionResultListener(new MainActivity.PermissionsResultListener() {
+            @Override
+            public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+                if(requestCode == REQUEST_CAMERA) {
+                    if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                        OPEN_QR_CODE_FRAGMENT_FLAG = true;
+                    }
                 }
             }
         });
@@ -115,7 +131,9 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         if(mUpdateService!=null) {
             mUpdateService.clearNotification();
         }
-
+        if(OPEN_QR_CODE_FRAGMENT_FLAG){
+            openQrCodeFragment();
+        }
     }
 
     public void notifyHeader() {
@@ -142,9 +160,17 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     @Override
     public void onClickQrCode() {
+        boolean isPermissionGranted = getView().getFragmentActivity().loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
+        if(isPermissionGranted){
+            openQrCodeFragment();
+        }
+    }
+
+    private void openQrCodeFragment(){
+        OPEN_QR_CODE_FRAGMENT_FLAG = false;
         SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true,null,null);
         getView().openRootFragment(sendBaseFragment);
-        ((MainActivity) getView().getFragmentActivity()).setRootFragment(sendBaseFragment);
+        getView().getFragmentActivity().setRootFragment(sendBaseFragment);
     }
 
     public void onReceiveClick(){
@@ -230,6 +256,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         mNetworkStateReceiver.removeNetworkStateListener();
         mUpdateService.removeTransactionListener();
         mUpdateService.removeBalanceChangeListener();
+        getView().getFragmentActivity().removePermissionResultListener();
         getInteractor().unSubscribe();
         getView().setAdapterNull();
     }

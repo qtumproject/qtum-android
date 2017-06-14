@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:background="@color/background"
+                                                 android:clickable="true"
+                                                 android:fitsSystemWindows="true">
+
+<android.support.design.widget.AppBarLayout
+    android:id="@+id/app_bar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppTheme.AppBarOverlay"
+    app:elevation="0dp">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <ImageButton
+            android:id="@+id/ibt_back"
+            android:tint="@color/background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_ibtn_back"
+            android:paddingBottom="10dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="10dp"
+            app:srcCompat="@drawable/ic_back_indicator"/>
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/tv_toolbar_restore_contracts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="48dp"
+            android:gravity="center"
+            android:text="Restore Contracts"
+            android:textColor="@color/background"
+            android:textSize="@dimen/toolbar_text_size"
+            app:typefaceAsset="@string/euclidFlexMedium" />
+    </android.support.v7.widget.Toolbar>
+
+</android.support.design.widget.AppBarLayout>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="188dp"
+        android:background="@color/select_file_background"
+        android:id="@+id/fl_back_up_file">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_attach"/>
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingTop="14dp"
+                android:text="Select back-up file"
+                android:textSize="18sp"
+                app:typefaceAsset="@string/simplonMonoRegular"
+                android:textColor="@color/colorPrimary"/>
+        </LinearLayout>
+    </FrameLayout>
+
+        <com.pixelplex.qtum.utils.FontButton
+            android:id="@+id/bt_restore"
+            android:text="Restore"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:background="@color/colorAccent"
+            android:textColor="@color/background"
+            app:typeface="@string/simplonMonoRegular"
+            android:textAllCaps="true"
+            android:layout_width="202dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+
+    <com.pixelplex.qtum.utils.FontCheckBox
+        android:id="@+id/cb_restore_templates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fl_back_up_file"
+        android:layout_marginTop="56dp"
+        app:checkBoxTypeface="@string/simplonMonoRegular"
+        android:textSize="18sp"
+        android:clickable="true"
+        android:button="@null"
+        android:drawablePadding="16dp"
+        android:layout_marginStart="56dp"
+        android:drawableStart="@drawable/checkbox_selector"
+        android:textColor="@color/colorPrimary"
+        android:text="Restore Templates"/>
+
+    <com.pixelplex.qtum.utils.FontCheckBox
+        android:id="@+id/cb_restore_contracts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cb_restore_templates"
+        android:layout_marginTop="28dp"
+        android:layout_marginLeft="56dp"
+        app:checkBoxTypeface="@string/simplonMonoRegular"
+        android:textSize="18sp"
+        android:clickable="true"
+        android:button="@null"
+        android:drawablePadding="16dp"
+        android:drawableStart="@drawable/checkbox_selector"
+        android:textColor="@color/colorPrimary"
+        android:text="Restore Contracts"/>
+
+    <com.pixelplex.qtum.utils.FontCheckBox
+        android:id="@+id/cb_restore_tokens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cb_restore_contracts"
+        android:layout_marginTop="28dp"
+        android:layout_marginLeft="56dp"
+        app:checkBoxTypeface="@string/simplonMonoRegular"
+        android:textSize="18sp"
+        android:clickable="true"
+        android:button="@null"
+        android:drawablePadding="16dp"
+        android:drawableStart="@drawable/checkbox_selector"
+        android:textColor="@color/colorPrimary"
+        android:text="Restore Tokens"/>
+
+    <com.pixelplex.qtum.utils.FontCheckBox
+        android:id="@+id/cb_restore_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cb_restore_tokens"
+        android:layout_marginTop="28dp"
+        android:layout_marginLeft="56dp"
+        app:checkBoxTypeface="@string/simplonMonoRegular"
+        android:textSize="18sp"
+        android:clickable="true"
+        android:button="@null"
+        android:drawablePadding="16dp"
+        android:drawableStart="@drawable/checkbox_selector"
+        android:textColor="@color/colorPrimary"
+        android:text="Restore All"/>
+
+</RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

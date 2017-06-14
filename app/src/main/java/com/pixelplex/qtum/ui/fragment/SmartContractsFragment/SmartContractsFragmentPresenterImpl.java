@@ -4,6 +4,7 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.MyContractsFragment.MyContractsFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.SettingObject;
+import com.pixelplex.qtum.ui.fragment.RestoreContractsFragment.RestoreContractsFragment;
 import com.pixelplex.qtum.ui.fragment.SmartContractListFragment.SmartContractListFragment;
 import com.pixelplex.qtum.ui.fragment.WatchContractFragment.WatchContractFragment;
 
@@ -32,6 +33,8 @@ public class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterIm
         settingsData.add(new SettingObject(R.string.contracts_store,R.drawable.ic_contract_store,0));
         settingsData.add(new SettingObject(R.string.watch_contract,R.drawable.ic_contr_watch,0));
         settingsData.add(new SettingObject(R.string.watch_token,R.drawable.ic_token_watch,0));
+        settingsData.add(new SettingObject(R.string.restore_contracts,R.drawable.ic_contract_restore,0));
+        settingsData.add(new SettingObject(R.string.backup_contracts,R.drawable.ic_contr_backup,0));
     }
 
     public List<SettingObject> getSettingsData () {
@@ -60,6 +63,15 @@ public class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterIm
     public void onWatchTokenClick(){
         WatchContractFragment watchContractFragment = WatchContractFragment.newInstance(true);
         getView().openFragment(watchContractFragment);
+    }
+
+    public void onRestoreContractsClick(){
+        RestoreContractsFragment restoreContractFragment = RestoreContractsFragment.newInstance();
+        getView().openFragment(restoreContractFragment);
+    }
+
+    public void onBackupContractsClick(){
+
     }
 
     @Override
