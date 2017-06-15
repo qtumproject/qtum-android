@@ -3,11 +3,9 @@ package com.pixelplex.qtum.ui.fragment.BackUpWalletFragment;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.widget.Toast;
 
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragment;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
@@ -39,7 +37,7 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
 
     @Override
     public void onCopyBrainCodeClick() {
-        ClipboardManager clipboard = (ClipboardManager) getView().getFragmentActivity().getSystemService(CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) getView().getMainActivity().getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", getInteractor().getSeed());
         clipboard.setPrimaryClip(clip);
         getView().showToast();
@@ -48,7 +46,7 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     @Override
     public void onContinueClick() {
         final WalletMainFragment walletFragment = WalletMainFragment.newInstance();
-        ((MainActivity)getView().getFragmentActivity()).setRootFragment(walletFragment);
+        ((MainActivity)getView().getMainActivity()).setRootFragment(walletFragment);
         getView().openRootFragment(walletFragment);
     }
 }

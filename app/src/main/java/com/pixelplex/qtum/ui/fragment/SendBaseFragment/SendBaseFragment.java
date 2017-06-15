@@ -255,6 +255,6 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 }

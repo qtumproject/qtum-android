@@ -64,7 +64,7 @@ public class SmartContractConstructorFragment extends BaseFragment implements Sm
     @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Override

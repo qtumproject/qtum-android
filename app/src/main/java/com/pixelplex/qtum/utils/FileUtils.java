@@ -35,7 +35,9 @@ import android.webkit.MimeTypeMap;
 import java.io.File;
 import java.io.FileFilter;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 
 public class FileUtils {

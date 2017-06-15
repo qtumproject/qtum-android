@@ -8,7 +8,6 @@ import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import com.pixelplex.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
 import com.pixelplex.qtum.ui.fragment.LanguageFragment.LanguageFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 import com.pixelplex.qtum.ui.fragment.SmartContractsFragment.SmartContractsFragment;
@@ -99,13 +98,13 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void onLogOutYesClick() {
         getInteractor().clearWallet();
-        ((MainActivity) getView().getFragmentActivity()).setAuthenticationFlag(false);
-        mUpdateService = ((MainActivity) getView().getFragmentActivity()).getUpdateService();
+        ((MainActivity) getView().getMainActivity()).setAuthenticationFlag(false);
+        mUpdateService = ((MainActivity) getView().getMainActivity()).getUpdateService();
         mUpdateService.stopMonitoring();
 
         StartPageFragment startPageFragment = StartPageFragment.newInstance();
-        ((MainActivity)getView().getFragmentActivity()).openRootFragment(startPageFragment);
-        ((MainActivity)getView().getFragmentActivity()).setIconChecked(0);
+        ((MainActivity)getView().getMainActivity()).openRootFragment(startPageFragment);
+        ((MainActivity)getView().getMainActivity()).setIconChecked(0);
     }
 
     public void onLanguageClick(){

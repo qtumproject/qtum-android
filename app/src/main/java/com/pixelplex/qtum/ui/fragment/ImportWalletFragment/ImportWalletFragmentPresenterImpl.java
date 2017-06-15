@@ -27,7 +27,7 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
 
     @Override
     public void onCancelClick() {
-        getView().getFragmentActivity().onBackPressed();
+        getView().getMainActivity().onBackPressed();
     }
 
     @Override

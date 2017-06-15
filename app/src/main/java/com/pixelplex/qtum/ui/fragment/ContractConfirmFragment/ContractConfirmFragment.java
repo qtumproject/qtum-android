@@ -88,7 +88,7 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
 
     @Override
     public QtumApplication getApplication() {
-        return ((MainActivity)getFragmentActivity()).getQtumApplication();
+        return ((MainActivity) getMainActivity()).getQtumApplication();
     }
 
 }

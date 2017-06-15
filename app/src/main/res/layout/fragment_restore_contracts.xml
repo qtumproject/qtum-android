@@ -57,28 +57,46 @@
         android:layout_height="188dp"
         android:background="@color/select_file_background"
         android:id="@+id/fl_back_up_file">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center">
+
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:id="@+id/iv_restore_icon"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/ic_attach"/>
 
             <com.pixelplex.qtum.utils.FontTextView
-                android:id="@+id/title"
+                android:id="@+id/tv_select_back_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:paddingTop="14dp"
-                android:text="Select back-up file"
+                android:text="@string/select_back_up_file"
                 android:textSize="18sp"
                 app:typefaceAsset="@string/simplonMonoRegular"
                 android:textColor="@color/colorPrimary"/>
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/tv_file_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_gravity="center"
+                android:paddingTop="14dp"
+                android:visibility="gone"
+                android:text="15 Kb"
+                android:textSize="18sp"
+                app:typefaceAsset="@string/simplonMonoRegular"
+                android:textColor="@color/file_size_color"/>
+
         </LinearLayout>
+
     </FrameLayout>
 
         <com.pixelplex.qtum.utils.FontButton

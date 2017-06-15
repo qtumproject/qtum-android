@@ -1,6 +1,9 @@
 package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
@@ -42,6 +45,9 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     private boolean mNetworkConnectedFlag = false;
     private List<Token> mTokenList;
 
+    private static final int REQUEST_CAMERA = 3;
+    private boolean OPEN_QR_CODE_FRAGMENT_FLAG = false;
+
 
     SendBaseFragmentPresenterImpl(SendBaseFragmentView sendBaseFragmentView) {
         mSendBaseFragmentView = sendBaseFragmentView;
@@ -52,20 +58,20 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        mUpdateService = ((MainActivity) getView().getFragmentActivity()).getUpdateService();
+        mUpdateService = getView().getMainActivity().getUpdateService();
         mUpdateService.addTransactionListener(new TransactionListener() {
             @Override
             public void onNewHistory(History history) {
                 calculateChangeInBalance(history,getInteractor().getAddresses());
                 if(history.getChangeInBalance().doubleValue()<0){
-                    getView().getFragmentActivity().runOnUiThread(new Runnable() {
+                    getView().getMainActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             updateAvailableBalance();
                         }
                     });
                 } else if(history.getBlockTime()!=null){
-                    getView().getFragmentActivity().runOnUiThread(new Runnable() {
+                    getView().getMainActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             updateAvailableBalance();
@@ -80,12 +86,23 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
             }
         });
 
-        mNetworkStateReceiver  = ((MainActivity) getView().getFragmentActivity()).getNetworkReceiver();
+        mNetworkStateReceiver  = getView().getMainActivity().getNetworkReceiver();
         mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
 
             @Override
             public void onNetworkStateChanged(boolean networkConnectedFlag) {
                 mNetworkConnectedFlag = networkConnectedFlag;
+            }
+        });
+
+        getView().getMainActivity().addPermissionResultListener(new MainActivity.PermissionsResultListener() {
+            @Override
+            public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+                if(requestCode == REQUEST_CAMERA) {
+                    if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                        OPEN_QR_CODE_FRAGMENT_FLAG = true;
+                    }
+                }
             }
         });
     }
@@ -97,6 +114,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        getView().getMainActivity().removePermissionResultListener();
         mUpdateService.removeTransactionListener();
         mNetworkStateReceiver.removeNetworkStateListener();
         //TODO:unsubscribe rx
@@ -109,6 +127,22 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
     @Override
     public void onClickQrCode() {
+        boolean isPermissionGranted = getView().getMainActivity().loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
+        if(isPermissionGranted){
+            openQrCodeFragment();
+        }
+    }
+
+    @Override
+    public void onResume(Context context) {
+        super.onResume(context);
+        if(OPEN_QR_CODE_FRAGMENT_FLAG) {
+            openQrCodeFragment();
+        }
+    }
+
+    private void openQrCodeFragment(){
+        OPEN_QR_CODE_FRAGMENT_FLAG = false;
         QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
         getView().hideKeyBoard();
         getView().openInnerFragmentForResult(qrCodeRecognitionFragment);

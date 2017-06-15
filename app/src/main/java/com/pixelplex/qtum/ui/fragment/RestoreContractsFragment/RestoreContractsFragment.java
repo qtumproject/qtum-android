@@ -1,26 +1,19 @@
 package com.pixelplex.qtum.ui.fragment.RestoreContractsFragment;
 
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
+
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.FontCheckBox;
-
-import java.net.URISyntaxException;
+import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -30,6 +23,8 @@ import static android.app.Activity.RESULT_OK;
 public class RestoreContractsFragment extends BaseFragment implements RestoreContractsFragmentView {
 
     RestoreContractsFragmentPresenter mRestoreContractsFragmentPresenter;
+
+    private boolean isSelectedFile = false;
 
     @BindView(R.id.fl_back_up_file)
     FrameLayout mFrameLayoutBackUpFile;
@@ -42,11 +37,22 @@ public class RestoreContractsFragment extends BaseFragment implements RestoreCon
     @BindView(R.id.cb_restore_all)
     FontCheckBox mCheckBoxRestoreAll;
 
-    @OnClick({R.id.fl_back_up_file,R.id.cb_restore_templates,R.id.cb_restore_contracts,R.id.cb_restore_tokens,R.id.cb_restore_all})
+    @BindView(R.id.tv_select_back_up)
+    FontTextView mTextViewFileName;
+    @BindView(R.id.tv_file_size)
+    FontTextView mTextViewFileSize;
+    @BindView(R.id.iv_restore_icon)
+    ImageView mImageViewRestoreIcon;
+
+
+    @OnClick({R.id.fl_back_up_file,R.id.cb_restore_templates,R.id.cb_restore_contracts,R.id.cb_restore_tokens,R.id.cb_restore_all, R.id.iv_restore_icon, R.id.ibt_back})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.fl_back_up_file:
-                getPresenter().checkPermissionAndShow();
+                getPresenter().checkPermissionAndOpenFileDialog();
+                break;
+            case  R.id.iv_restore_icon:
+                getPresenter().onDeleteFileClick();
                 break;
             case R.id.cb_restore_templates:
                 if(mCheckBoxRestoreTemplates.isChecked()){
@@ -86,6 +92,9 @@ public class RestoreContractsFragment extends BaseFragment implements RestoreCon
                     mCheckBoxRestoreTokens.setChecked(false);
                 }
                 break;
+            case R.id.ibt_back:
+                getActivity().onBackPressed();
+                break;
         }
     }
 
@@ -113,4 +122,22 @@ public class RestoreContractsFragment extends BaseFragment implements RestoreCon
         return R.layout.fragment_restore_contracts;
     }
 
+    @Override
+    public void setFile(String name, String size) {
+        mTextViewFileName.setText(name);
+        mTextViewFileSize.setVisibility(View.VISIBLE);
+        mTextViewFileSize.setText(size);
+        mImageViewRestoreIcon.setClickable(true);
+        mFrameLayoutBackUpFile.setClickable(false);
+        mImageViewRestoreIcon.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_delete));
+    }
+
+    @Override
+    public void deleteFile() {
+        mTextViewFileName.setText(R.string.select_back_up_file);
+        mTextViewFileSize.setVisibility(View.GONE);
+        mImageViewRestoreIcon.setClickable(false);
+        mFrameLayoutBackUpFile.setClickable(true);
+        mImageViewRestoreIcon.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_attach));
+    }
 }

@@ -272,7 +272,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
-    public MainActivity getFragmentActivity() {
+    public MainActivity getMainActivity() {
         return (MainActivity)getActivity();
     }
 

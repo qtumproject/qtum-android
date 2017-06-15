@@ -90,6 +90,6 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
 
     @Override
     public UpdateService getSocketInstance() {
-        return ((MainActivity) getView().getFragmentActivity()).getUpdateService();
+        return ((MainActivity) getView().getMainActivity()).getUpdateService();
     }
 }

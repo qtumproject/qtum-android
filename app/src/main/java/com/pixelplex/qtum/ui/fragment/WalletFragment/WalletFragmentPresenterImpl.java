@@ -50,7 +50,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        mUpdateService = getView().getFragmentActivity().getUpdateService();
+        mUpdateService = getView().getMainActivity().getUpdateService();
 
         mUpdateService.starMonitoring();
         mUpdateService.addTransactionListener(new TransactionListener() {
@@ -78,7 +78,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
             @Override
             public void onChangeBalance() {
-                getView().getFragmentActivity().runOnUiThread(new Runnable() {
+                getView().getMainActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         setUpBalance();
@@ -90,7 +90,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         mUpdateService.addTokenListener(new TokenListener() {
             @Override
             public void newToken() {
-                getView().getFragmentActivity().runOnUiThread(new Runnable() {
+                getView().getMainActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         getView().notifyNewToken();
@@ -100,7 +100,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         });
 
 
-        mNetworkStateReceiver  = getView().getFragmentActivity().getNetworkReceiver();
+        mNetworkStateReceiver  = getView().getMainActivity().getNetworkReceiver();
         mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
 
             @Override
@@ -112,7 +112,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
             }
         });
 
-        getView().getFragmentActivity().addPermissionResultListener(new MainActivity.PermissionsResultListener() {
+        getView().getMainActivity().addPermissionResultListener(new MainActivity.PermissionsResultListener() {
             @Override
             public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
                 if(requestCode == REQUEST_CAMERA) {
@@ -160,7 +160,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     @Override
     public void onClickQrCode() {
-        boolean isPermissionGranted = getView().getFragmentActivity().loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
+        boolean isPermissionGranted = getView().getMainActivity().loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
         if(isPermissionGranted){
             openQrCodeFragment();
         }
@@ -170,7 +170,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         OPEN_QR_CODE_FRAGMENT_FLAG = false;
         SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true,null,null);
         getView().openRootFragment(sendBaseFragment);
-        getView().getFragmentActivity().setRootFragment(sendBaseFragment);
+        getView().getMainActivity().setRootFragment(sendBaseFragment);
     }
 
     public void onReceiveClick(){
@@ -193,7 +193,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.putExtra(Intent.EXTRA_TEXT, "My QTUM address: " + getInteractor().getAddress());
         emailIntent.setType("text/plain");
-        getView().getFragmentActivity().startActivity(emailIntent);
+        getView().getMainActivity().startActivity(emailIntent);
     }
 
     @Override
@@ -256,7 +256,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         mNetworkStateReceiver.removeNetworkStateListener();
         mUpdateService.removeTransactionListener();
         mUpdateService.removeBalanceChangeListener();
-        getView().getFragmentActivity().removePermissionResultListener();
+        getView().getMainActivity().removePermissionResultListener();
         getInteractor().unSubscribe();
         getView().setAdapterNull();
     }

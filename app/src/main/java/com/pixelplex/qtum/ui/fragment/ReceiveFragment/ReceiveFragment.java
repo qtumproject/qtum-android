@@ -2,10 +2,8 @@ package com.pixelplex.qtum.ui.fragment.ReceiveFragment;
 
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -67,7 +65,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
                 getPresenter().onChooseAnotherAddressClick();
                 break;
             case R.id.ibt_back:
-                getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 getActivity().onBackPressed();
                 break;
         }
@@ -141,7 +139,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override

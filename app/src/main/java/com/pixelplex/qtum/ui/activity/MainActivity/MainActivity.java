@@ -33,6 +33,7 @@ import com.pixelplex.qtum.ui.activity.BaseActivity.BaseActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
