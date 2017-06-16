@@ -1,22 +1,21 @@
 package com.pixelplex.qtum.ui.fragment.BackupContractsFragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v4.app.ShareCompat;
+import android.support.annotation.NonNull;
 
+import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
-import com.pixelplex.qtum.ui.fragment.OpenFileDialog;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.OutputStreamWriter;
+
+
 
 /**
  * Created by max-v on 6/15/2017.
@@ -30,71 +29,92 @@ public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl 
         mBackupContractsFragmentView = backupContractsFragmentView;
     }
 
+    private final int WRITE_EXTERNAL_STORAGE_CODE = 5;
+
+    private File mBackUpFile;
+
     @Override
     public BackupContractsFragmentView getView() {
         return mBackupContractsFragmentView;
     }
 
     public void onBackUpClick(){
+        checkPermissionAndCreateFile();
+    }
 
-        String path = getView().getContext().getFilesDir().getPath()+ "/tmp";
-        File targetFile = new File(path);
+    @Override
+    public void onViewCreated() {
+        super.onViewCreated();
+
+        if(getView().getMainActivity().checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            createBackUpFile();
+        }
+
+        getView().getMainActivity().addPermissionResultListener(new MainActivity.PermissionsResultListener() {
+            @Override
+            public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+                if(requestCode == WRITE_EXTERNAL_STORAGE_CODE) {
+                    if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                        backupFile();
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mBackUpFile.delete();
+        getView().getMainActivity().removePermissionResultListener();
+    }
+
+    private void checkPermissionAndCreateFile(){
+        if(getView().getMainActivity().checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            backupFile();
+        } else {
+            getView().getMainActivity().loadPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE_CODE);
+        }
+    }
+
+    public void backupFile(){
+
+        if(mBackUpFile==null) {
+            createBackUpFile();
+        }
         Intent intentShareFile = new Intent(Intent.ACTION_SEND);
 
+        if(mBackUpFile.exists()) {
+            intentShareFile.setType("application/txt");
+            intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+mBackUpFile.getAbsolutePath()));
 
-        String dstPath = Environment.getExternalStorageDirectory() + File.separator + "myApp" + File.separator;
-        File dst = new File(dstPath);
+            intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                    "Qtum Backup File");
+            intentShareFile.putExtra(Intent.EXTRA_TEXT, "Qtum Backup File");
+            getView().getMainActivity().startActivity(Intent.createChooser(intentShareFile, "Share File"));
+        }
+    }
+
+    private void createBackUpFile(){
+        String fileName = "qtum_backup_file.txt";
+        String backupData = "Test data";
+        File backupFile = new File(Environment.getExternalStorageDirectory(),fileName);
 
         try {
-            exportFile(targetFile, dst);
+            FileOutputStream fOut = null;
+            fOut = new FileOutputStream(backupFile, true);
+            OutputStreamWriter osw = new OutputStreamWriter(fOut);
+            osw.write(backupData);
+            osw.flush();
+            osw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        String backUpFileSize = String.valueOf((int)Math.ceil(backupFile.length()/1024.0)) + " Kb";
+        getView().setUpFile(backUpFileSize);
 
-        if(dst.exists()) {
-            intentShareFile.setType("application/txt");
-            intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+dstPath+File.separator + "tmp" + ".txt"));
-
-            intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-                    "Sharing File...");
-            intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File...");
-
-            getView().getMainActivity().startActivityForResult(Intent.createChooser(intentShareFile, "Share File"),222);
-        }
-        dst.delete();
-    }
-
-    private File exportFile(File src, File dst) throws IOException {
-
-        //if folder does not exist
-        if (!dst.exists()) {
-            if (!dst.mkdir()) {
-                return null;
-            }
-        }
-
-        File expFile = new File(dst.getPath() + File.separator + "tmp" + ".txt");
-        FileChannel inChannel = null;
-        FileChannel outChannel = null;
-
-        try {
-            inChannel = new FileInputStream(src).getChannel();
-            outChannel = new FileOutputStream(expFile).getChannel();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            inChannel.transferTo(0, inChannel.size(), outChannel);
-        } finally {
-            if (inChannel != null)
-                inChannel.close();
-            if (outChannel != null)
-                outChannel.close();
-        }
-
-        return expFile;
+        mBackUpFile = backupFile;
     }
 
 }

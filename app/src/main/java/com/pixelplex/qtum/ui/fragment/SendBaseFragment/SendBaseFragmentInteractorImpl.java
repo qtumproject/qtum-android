@@ -150,20 +150,6 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
                 String transactionHex = Hex.toHexString(bytes);
 
-                Date date = new Date();
-                long l = date.getTime() / 1000;
-                int i3 = (int) l;
-                byte[] bytesData = ByteBuffer.allocate(4).putInt(i3).array();
-                byte tmp1 = bytesData[3];
-                byte tmp2 = bytesData[2];
-                byte tmp3 = bytesData[1];
-                byte tmp4 = bytesData[0];
-                bytesData[0] = tmp1;
-                bytesData[1] = tmp2;
-                bytesData[2] = tmp3;
-                bytesData[3] = tmp4;
-
-                transactionHex += Hex.toHexString(bytesData);
                 callBack.onSuccess(transactionHex);
             }
         });

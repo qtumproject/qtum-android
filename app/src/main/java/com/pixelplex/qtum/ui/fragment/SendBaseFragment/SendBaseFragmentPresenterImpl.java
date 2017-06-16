@@ -127,9 +127,11 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
     @Override
     public void onClickQrCode() {
-        boolean isPermissionGranted = getView().getMainActivity().loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
-        if(isPermissionGranted){
+
+        if(getView().getMainActivity().checkPermission(Manifest.permission.CAMERA)){
             openQrCodeFragment();
+        } else {
+            getView().getMainActivity().loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
         }
     }
 

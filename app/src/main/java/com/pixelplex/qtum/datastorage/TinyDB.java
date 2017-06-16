@@ -55,6 +55,7 @@ public class TinyDB {
     private String lastImagePath = "";
     private final String CONTRACT_LIST = "contract_list";
     private final String TOKEN_LIST = "token_list";
+    public final String CONTRACT_TEMPLATE_LIST = "contract_template_list";
 
     public TinyDB(Context appContext) {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);

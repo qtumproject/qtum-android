@@ -3,11 +3,13 @@ package com.pixelplex.qtum.ui.fragment.RestoreContractsFragment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
-import com.google.common.io.Files;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.FileUtils;
@@ -15,12 +17,11 @@ import com.pixelplex.qtum.utils.FileUtils;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import static android.app.Activity.RESULT_OK;
 
@@ -31,7 +32,9 @@ import static android.app.Activity.RESULT_OK;
 
 public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl{
 
-    RestoreContractsFragmentView mRestoreContractsFragmentView;
+    private RestoreContractsFragmentView mRestoreContractsFragmentView;
+
+    private File mRestoreFile;
 
     RestoreContractsFragmentPresenter(RestoreContractsFragmentView restoreContractsFragmentView){
         mRestoreContractsFragmentView = restoreContractsFragmentView;
@@ -52,91 +55,64 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
         getView().getMainActivity().addActivityResultListener(new MainActivity.ActivityResultListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                if(requestCode == FILE_SELECT_CODE)
-                    if(resultCode == RESULT_OK) {
+                if(requestCode == FILE_SELECT_CODE) {
+                    if (resultCode == RESULT_OK) {
                         String path = FileUtils.getPath(getView().getContext(), data.getData());
-                        if(path!=null) {
-
-                            ParcelFileDescriptor mInputPFD = null ;
+                        if (path != null) {
+                            File responseFile = new File(path);
+                            mRestoreFile = new File(getView().getContext().getFilesDir(), responseFile.getName());
                             try {
-                                mInputPFD = getView().getMainActivity().getContentResolver().openFileDescriptor(data.getData(), "r");
-                            } catch (FileNotFoundException e) {
+                                copyFileUsingStream(responseFile,mRestoreFile);
+                            } catch (IOException e) {
                                 e.printStackTrace();
-                                System.out.println("File not found...");
-                                return;
                             }
-                            if(mInputPFD!=null){
-                                FileDescriptor fd = mInputPFD.getFileDescriptor();
-                                FileInputStream fis = new FileInputStream(fd);
-                                //process the input stream
-                            }
-                            FileInputStream fis = null ;
+                        } else {
                             try {
-                                fis = (FileInputStream) getView().getMainActivity().getContentResolver().openInputStream(data.getData());
-                            }
-                            catch (FileNotFoundException e1) {
-                                e1.printStackTrace();
-                                System.out.println("File not found...");
-                                return ;
-                            }
-
-
-                            File file = new File(path);
-                            String name = file.getName();
-                            String  fileSize = String.valueOf(file.length()/1024) + " Kb";
-                            getView().setFile(name,fileSize);
-                        }else {
-                            ParcelFileDescriptor mInputPFD = null ;
-                            String result = "";
-                            try {
+                                ParcelFileDescriptor mInputPFD = null;
                                 mInputPFD = getView().getMainActivity().getContentResolver().openFileDescriptor(data.getData(), "r");
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                                System.out.println("File not found...");
-                                return;
-                            }
-                            if(mInputPFD!=null){
-                                FileDescriptor fd = mInputPFD.getFileDescriptor();
-                                FileInputStream fis = new FileInputStream(fd);
-                                File targetFile = new File(getView().getContext().getFilesDir().getPath()+ "/tmp");
-                                byte[] buffer = new byte[0];
-                                try {
+                                if (mInputPFD != null) {
+                                    FileDescriptor fd = mInputPFD.getFileDescriptor();
+                                    FileInputStream fis = new FileInputStream(fd);
+
+                                    Uri uri = data.getData();
+
+                                    String fileName="";
+                                    Cursor cursor = null;
+                                    try {
+                                        cursor = getView().getMainActivity().getContentResolver().query(uri, new String[]{
+                                                MediaStore.Images.ImageColumns.DISPLAY_NAME
+                                        }, null, null, null);
+                                        if (cursor != null && cursor.moveToFirst()) {
+                                            fileName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
+                                        }
+                                    } finally {
+                                        if (cursor != null) {
+                                            cursor.close();
+                                        }
+                                    }
+
+                                    mRestoreFile = new File(getView().getContext().getFilesDir(), fileName);
+
+                                    byte[] buffer;
                                     buffer = new byte[fis.available()];
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                try {
                                     fis.read(buffer);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
 
-
-                                try {
-                                    OutputStream outStream = new FileOutputStream(targetFile);
+                                    OutputStream outStream = new FileOutputStream(mRestoreFile);
                                     outStream.write(buffer);
                                     outStream.flush();
                                     outStream.close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
                                 }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                return;
+                            }
 
-                                String content = String.valueOf(targetFile.length()/1024);
-                                content+=2;
-                                //process the input stream
-                            }
-                            FileInputStream fis = null ;
-                            try {
-                                fis = (FileInputStream) getView().getMainActivity().getContentResolver().openInputStream(data.getData());
-                            }
-                            catch (FileNotFoundException e1) {
-                                e1.printStackTrace();
-                                System.out.println("File not found...");
-                                return ;
-                            }
-                            //TODO
                         }
+                        String name = mRestoreFile.getName();
+                        String fileSize = String.valueOf((int) Math.ceil(mRestoreFile.length() / 1024.0)) + " Kb";
+                        getView().setFile(name, fileSize);
                     }
+                }
             }
         });
 
@@ -153,22 +129,46 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
     }
 
     public void checkPermissionAndOpenFileDialog(){
-        boolean isPermissionGranted = getView().getMainActivity().loadPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE_CODE);
-        if(isPermissionGranted){
+        if(getView().getMainActivity().checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
             showFileChooser();
+        }else{
+            getView().getMainActivity().loadPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE_CODE);
         }
     }
 
     public void onDeleteFileClick(){
         getView().deleteFile();
+        if(mRestoreFile!=null){
+            mRestoreFile.delete();
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if(mRestoreFile!=null){
+            mRestoreFile.delete();
+        }
         getView().showBottomNavView(false);
         getView().getMainActivity().removeResultListener();
         getView().getMainActivity().removePermissionResultListener();
+    }
+
+    private static void copyFileUsingStream(File source, File dest) throws IOException {
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            is = new FileInputStream(source);
+            os = new FileOutputStream(dest);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        } finally {
+            is.close();
+            os.close();
+        }
     }
 
     private void showFileChooser() {

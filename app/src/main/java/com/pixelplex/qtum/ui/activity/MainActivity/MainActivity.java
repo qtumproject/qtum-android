@@ -86,15 +86,12 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         return getPresenter().getAmountForSendAction();
     }
 
-    public boolean loadPermissions(String perm, int requestCode) {
-        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
-           // if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
-                ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
-          //  }
-            return false;
-        }else {
-            return true;
-        }
+    public void loadPermissions(String perm, int requestCode) {
+        ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
+    }
+
+    public boolean checkPermission(String perm){
+        return ContextCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override

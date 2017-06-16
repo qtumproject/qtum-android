@@ -10,6 +10,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.pixelplex.qtum.BuildConfig;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
+import com.pixelplex.qtum.datastorage.TinyDB;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -130,7 +131,8 @@ public class StorageManager {
         return data;
     }
 
-    public String readFromAsset(Context context, String packageName, String fileName) {
+    public String
+    readFromAsset(Context context, String packageName, String fileName) {
 
         String data = "";
         String mLine;
@@ -161,9 +163,19 @@ public class StorageManager {
         ContextWrapper cw = new ContextWrapper(context);
         File contractDir = getPackagePath(cw,CONTRACTS_PACKAGE);
         List<ContractTemplate> list = new ArrayList<>();
-        for(File file :  contractDir.listFiles()){
-            list.add(new ContractTemplate(file.getName(),file.lastModified(),(file.getName().equalsIgnoreCase(CrowdSale)? CrowdSale : "Token")));
+
+        TinyDB tinyDB = new TinyDB(context);
+        ArrayList<String> contractTemplateStringList = tinyDB.getListString(tinyDB.CONTRACT_TEMPLATE_LIST);
+        File contractFolder;
+
+        for (String contractTemplateString : contractTemplateStringList){
+            contractFolder = new File(contractDir.getPath()+"/"+contractTemplateString);
+            list.add(new ContractTemplate(contractFolder.getName(),contractFolder.lastModified(),(contractFolder.getName().equalsIgnoreCase(CrowdSale)? CrowdSale : "Token")));
         }
+
+//        for(File file :  contractDir.listFiles()){
+//            list.add(new ContractTemplate(file.getName(),file.lastModified(),(file.getName().equalsIgnoreCase(CrowdSale)? CrowdSale : "Token")));
+//        }
 
         Collections.sort(list, new Comparator<ContractTemplate>() {
             @Override
@@ -301,11 +313,15 @@ public class StorageManager {
 
     public boolean migrateDefaultContracts(Context context) {
         if(!isDefaultContractsMigrates(context)) {
+            ArrayList<String> contractTemplateList = new ArrayList<>();
             for (String contractPackage : STANDART_CONTRACTS) {
                 if (!migrateContract(context, contractPackage)) {
                     return false;
                 }
+                contractTemplateList.add(contractPackage);
             }
+            TinyDB tinyDB = new TinyDB(context);
+            tinyDB.putListString(tinyDB.CONTRACT_TEMPLATE_LIST, contractTemplateList);
             commitDefaultContractsMigration(context);
             Log.d(TAG, "migrateDefaultContracts: Migration Complete");
             return true;
