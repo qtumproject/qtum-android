@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.SmartContractsManager;
+package com.pixelplex.qtum.datastorage.model;
 
 /**
  * Created by max-v on 5/31/2017.

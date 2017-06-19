@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.ContractFunctionFragment;
 
-        import com.pixelplex.qtum.SmartContractsManager.StorageManager;
+        import com.pixelplex.qtum.datastorage.FileStorageManager;
         import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
         import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
         import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
@@ -44,7 +44,7 @@ public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl
     @Override
     public void initializeViews() {
         super.initializeViews();
-        List<ContractMethod> list = StorageManager.getInstance().getContractMethods(getView().getContext(),getView().getContractTemplateName());
+        List<ContractMethod> list = FileStorageManager.getInstance().getContractMethods(getView().getContext(),getView().getContractTemplateName());
         for(ContractMethod contractMethod : list){
             if(contractMethod.name.equals(getView().getMethodName())){
                 getView().setUpParameterList(contractMethod.inputParams);

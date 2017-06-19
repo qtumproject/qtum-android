@@ -3,13 +3,12 @@ package com.pixelplex.qtum.ui.fragment.TokenFragment;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.pixelplex.qtum.SmartContractsManager.StorageManager;
+import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractRequest;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractResponse.CallSmartContractResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.sha3.sha.Keccak;
@@ -142,7 +141,7 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
         return Observable.fromCallable(new Callable<ContractMethod>() {
             @Override
             public ContractMethod call() throws Exception {
-                List<ContractMethod> methods = StorageManager.getInstance().getContractMethods(getView().getContext(), contractName);
+                List<ContractMethod> methods = FileStorageManager.getInstance().getContractMethods(getView().getContext(), contractName);
                 for (ContractMethod method: methods) {
                     if(method.name.equals(methodName)){
                         return method;

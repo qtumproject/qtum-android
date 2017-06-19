@@ -1,11 +1,11 @@
-package com.pixelplex.qtum.ui.fragment.SmartContractListFragment;
+package com.pixelplex.qtum.ui.fragment.TemplatesFragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.SmartContractsManager.StorageManager;
+import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
@@ -16,18 +16,18 @@ import butterknife.OnClick;
  * Created by kirillvolkov on 25.05.17.
  */
 
-public class SmartContractListFragment extends BaseFragment implements SmartContractListView, ContractSelectListener {
+public class TemplatesFragment extends BaseFragment implements TemplatesFragmentView, TemplateSelectListener {
 
-    public final int LAYOUT = R.layout.lyt_contract_list;
+    public final int LAYOUT = R.layout.fragment_templates;
 
-    public static SmartContractListFragment newInstance() {
+    public static TemplatesFragment newInstance() {
         Bundle args = new Bundle();
-        SmartContractListFragment fragment = new SmartContractListFragment();
+        TemplatesFragment fragment = new TemplatesFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-    SmartContractListPresenterImpl presenter;
+    TemplatesFragmentPresenterImpl presenter;
 
     @BindView(R.id.recycler_view)
     RecyclerView contractList;
@@ -39,7 +39,7 @@ public class SmartContractListFragment extends BaseFragment implements SmartCont
 
     @Override
     protected void createPresenter() {
-        presenter = new SmartContractListPresenterImpl(this);
+        presenter = new TemplatesFragmentPresenterImpl(this);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class SmartContractListFragment extends BaseFragment implements SmartCont
     public void initializeViews() {
         super.initializeViews();
         contractList.setLayoutManager(new LinearLayoutManager(getContext()));
-        contractList.setAdapter(new ContractsRecyclerAdapter(StorageManager.getInstance().getContractTemplateList(getContext()),this));
+        contractList.setAdapter(new TemplatesRecyclerAdapter(FileStorageManager.getInstance().getContractTemplateList(getContext()),this));
     }
 
     @Override

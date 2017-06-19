@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.fragment.SmartContractConstructorFragment;
+package com.pixelplex.qtum.ui.fragment.SetYourTokenFragment;
 
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;

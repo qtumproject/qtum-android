@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.WatchContractFragment;
 
-import com.pixelplex.qtum.SmartContractsManager.StorageManager;
+import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.datastorage.TinyDB;
@@ -30,7 +30,7 @@ public class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
     public void onOkClick(String name, String address, String jsonInterface, boolean isToken){
         getView().setProgressDialog();
         if(isToken){
-            StorageManager.getInstance().writeAbiContract(getView().getContext(), address, jsonInterface);
+            FileStorageManager.getInstance().writeAbiContract(getView().getContext(), address, jsonInterface);
             TinyDB tinyDB = new TinyDB(getView().getContext());
             List<Token> tokenList = tinyDB.getTokenList();
             long date = new Date().getTime() / 1000;
@@ -38,7 +38,7 @@ public class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
             tokenList.add(token);
             tinyDB.putTokenList(tokenList);
         }else {
-            StorageManager.getInstance().writeAbiContract(getView().getContext(), address, jsonInterface);
+            FileStorageManager.getInstance().writeAbiContract(getView().getContext(), address, jsonInterface);
             TinyDB tinyDB = new TinyDB(getView().getContext());
             List<Contract> contractList = tinyDB.getContractListWithoutToken();
             long date = new Date().getTime() / 1000;

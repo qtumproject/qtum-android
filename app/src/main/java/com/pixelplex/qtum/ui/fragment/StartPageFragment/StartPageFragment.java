@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.SmartContractsManager.StorageManager;
+import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 import butterknife.BindView;
@@ -81,6 +81,6 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     @Override
     public void initializeViews() {
         hideBottomNavView(true);
-        StorageManager.getInstance().getContractTemplateList(getContext());
+        FileStorageManager.getInstance().getContractTemplateList(getContext());
     }
 }

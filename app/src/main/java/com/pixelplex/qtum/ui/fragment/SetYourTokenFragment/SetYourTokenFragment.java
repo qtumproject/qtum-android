@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.fragment.SmartContractConstructorFragment;
+package com.pixelplex.qtum.ui.fragment.SetYourTokenFragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,22 +20,22 @@ import butterknife.OnClick;
  * Created by kirillvolkov on 26.05.17.
  */
 
-public class SmartContractConstructorFragment extends BaseFragment implements SmartContractConstructorView {
+public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFragmentView {
 
-    public final int LAYOUT = R.layout.lyt_smart_contract_constructor;
+    public final int LAYOUT = R.layout.fragment_set_your_token;
     public final static String CONTRACT_TEMPLATE_NAME = "contract_template_name";
 
     private ConstructorAdapter adapter;
 
-    public static SmartContractConstructorFragment newInstance(String contractTemplateName) {
+    public static SetYourTokenFragment newInstance(String contractTemplateName) {
         Bundle args = new Bundle();
-        SmartContractConstructorFragment fragment = new SmartContractConstructorFragment();
+        SetYourTokenFragment fragment = new SetYourTokenFragment();
         args.putString(CONTRACT_TEMPLATE_NAME,contractTemplateName);
         fragment.setArguments(args);
         return fragment;
     }
 
-    SmartContractConstructorPresenterImpl presenter;
+    SetYourTokenFragmentPresenterImpl presenter;
 
     @BindView(R.id.recycler_view)
     RecyclerView constructorList;
@@ -58,7 +58,7 @@ public class SmartContractConstructorFragment extends BaseFragment implements Sm
 
     @Override
     protected void createPresenter() {
-        presenter = new SmartContractConstructorPresenterImpl(this);
+        presenter = new SetYourTokenFragmentPresenterImpl(this);
     }
 
     @Override

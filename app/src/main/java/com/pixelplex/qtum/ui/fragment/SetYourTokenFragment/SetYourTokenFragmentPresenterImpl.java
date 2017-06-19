@@ -1,13 +1,13 @@
-package com.pixelplex.qtum.ui.fragment.SmartContractConstructorFragment;
+package com.pixelplex.qtum.ui.fragment.SetYourTokenFragment;
 
 import android.content.Context;
 
-import com.pixelplex.qtum.SmartContractsManager.StorageManager;
+import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ContractConfirmFragment.ContractConfirmFragment;
-import com.pixelplex.qtum.ui.fragment.SmartContractListFragment.SmartContractListInteractorImpl;
+import com.pixelplex.qtum.ui.fragment.TemplatesFragment.TemplatesFragmentInteractorImpl;
 
 import java.util.List;
 
@@ -15,27 +15,27 @@ import java.util.List;
  * Created by kirillvolkov on 26.05.17.
  */
 
-public class SmartContractConstructorPresenterImpl extends BaseFragmentPresenterImpl implements SmartContractConstructorPresenter {
+public class SetYourTokenFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SetYourTokenFragmentPresenter {
 
-    SmartContractConstructorView view;
+    SetYourTokenFragmentView view;
     Context mContext;
-    SmartContractListInteractorImpl interactor;
+    TemplatesFragmentInteractorImpl interactor;
 
     ContractMethod contractMethod;
 
-    public SmartContractConstructorPresenterImpl(SmartContractConstructorView view) {
+    public SetYourTokenFragmentPresenterImpl(SetYourTokenFragmentView view) {
         this.view = view;
         this.mContext = getView().getContext();
-        interactor = new SmartContractListInteractorImpl();
+        interactor = new TemplatesFragmentInteractorImpl();
     }
 
     @Override
-    public SmartContractConstructorView getView() {
+    public SetYourTokenFragmentView getView() {
         return view;
     }
 
     public void getConstructorByName(String name) {
-       contractMethod = StorageManager.getInstance().getContractConstructor(mContext,name);
+       contractMethod = FileStorageManager.getInstance().getContractConstructor(mContext,name);
        getView().onContractConstructorPrepared(contractMethod.inputParams);
     }
 

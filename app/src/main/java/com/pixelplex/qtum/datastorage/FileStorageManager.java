@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.SmartContractsManager;
+package com.pixelplex.qtum.datastorage;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -9,8 +9,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.pixelplex.qtum.BuildConfig;
+import com.pixelplex.qtum.datastorage.model.ContractTemplate;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
-import com.pixelplex.qtum.datastorage.TinyDB;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,9 +32,9 @@ import java.util.List;
  * Created by kirillvolkov on 25.05.17.
  */
 
-public class StorageManager {
+public class FileStorageManager {
 
-    private static StorageManager _instance;
+    private static FileStorageManager _instance;
 
     public final static String TAG = "STORAGE MANAGER: ";
 
@@ -53,9 +53,9 @@ public class StorageManager {
 
     private static String CONTRACTS_PACKAGE = "contracts";
 
-    public static StorageManager getInstance() {
+    public static FileStorageManager getInstance() {
         if(_instance == null){
-            _instance = new StorageManager();
+            _instance = new FileStorageManager();
         }
 
         return _instance;

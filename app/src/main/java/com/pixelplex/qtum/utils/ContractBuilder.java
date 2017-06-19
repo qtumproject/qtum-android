@@ -2,7 +2,7 @@ package com.pixelplex.qtum.utils;
 
 import android.content.Context;
 
-import com.pixelplex.qtum.SmartContractsManager.StorageManager;
+import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import com.pixelplex.qtum.datastorage.KeyStorage;
@@ -27,9 +27,7 @@ import org.spongycastle.util.encoders.Hex;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -205,7 +203,7 @@ public class ContractBuilder {
     }
 
     private String getByteCodeByContractName(String contractName) {
-        return StorageManager.getInstance().readByteCodeContract(mContext, contractName);
+        return FileStorageManager.getInstance().readByteCodeContract(mContext, contractName);
     }
 
     public Script createConstructScript(String abiParams){
