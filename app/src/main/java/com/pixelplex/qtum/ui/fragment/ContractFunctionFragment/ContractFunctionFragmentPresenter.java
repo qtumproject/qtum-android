@@ -44,7 +44,7 @@ public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl
     @Override
     public void initializeViews() {
         super.initializeViews();
-        List<ContractMethod> list = FileStorageManager.getInstance().getContractMethods(getView().getContext(),getView().getContractTemplateName());
+        List<ContractMethod> list = FileStorageManager.getInstance().getContractMethods(getView().getContext(),getView().getContractTemplateUiid());
         for(ContractMethod contractMethod : list){
             if(contractMethod.name.equals(getView().getMethodName())){
                 getView().setUpParameterList(contractMethod.inputParams);

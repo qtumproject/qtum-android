@@ -39,7 +39,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
     Context mContext;
 
 
-    private String mContractTemplateName = "";
+    private long mContractTemplateUiid;
 
 
     private List<ContractMethodParameter> mContractMethodParameterList;
@@ -59,11 +59,11 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
 
-    public void confirmContract(final String contractTemplateName) {
+    public void confirmContract(final long uiid) {
         getView().setProgressDialog();
-        mContractTemplateName = contractTemplateName;
+        mContractTemplateUiid = uiid;
         ContractBuilder contractBuilder = new ContractBuilder();
-        contractBuilder.createAbiConstructParams(mContractMethodParameterList, contractTemplateName,mContext)
+        contractBuilder.createAbiConstructParams(mContractMethodParameterList, uiid ,mContext)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<String>() {
@@ -149,7 +149,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                                 name = contractMethodParameter.getValue();
                             }
                         }
-                        Token token = new Token(null, mContractTemplateName, false, null, senderAddress, name);
+                        Token token = new Token(null, mContractTemplateUiid, false, null, senderAddress, name);
 
                         TinyDB tinyDB = new TinyDB(mContext);
                         List<Token> tokenList = tinyDB.getTokenList();

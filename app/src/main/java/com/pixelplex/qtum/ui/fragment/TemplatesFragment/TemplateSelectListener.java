@@ -5,5 +5,5 @@ package com.pixelplex.qtum.ui.fragment.TemplatesFragment;
  */
 
 public interface TemplateSelectListener {
-    void onSelectContract(String contractName);
+    void onSelectContract(long uiid);
 }

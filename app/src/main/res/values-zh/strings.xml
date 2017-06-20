@@ -127,4 +127,9 @@
     <string name="sender_address">Sender Address</string>
     <string name="smart_contracts">Smart Contracts</string>
     <string name="token_address">Token Address</string>
+    <string name="backup_contracts">Backup Contracts</string>
+    <string name="restore_contracts">Restore Contracts</string>
+    <string name="select_back_up_file">Select back-up file</string>
+    <string name="watch_contract">Watch Contract</string>
+    <string name="watch_token">Watch Token</string>
 </resources>

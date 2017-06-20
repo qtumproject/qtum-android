@@ -1,12 +1,21 @@
 package com.pixelplex.qtum.ui.fragment.BackupContractsFragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.datastorage.FileStorageManager;
+import com.pixelplex.qtum.datastorage.TinyDB;
+import com.pixelplex.qtum.datastorage.backupmodel.Backup;
+import com.pixelplex.qtum.datastorage.backupmodel.ContractJSON;
+import com.pixelplex.qtum.datastorage.backupmodel.Template;
+import com.pixelplex.qtum.datastorage.model.ContractTemplate;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
@@ -14,7 +23,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -24,9 +34,11 @@ import java.io.OutputStreamWriter;
 public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
 
     BackupContractsFragmentView mBackupContractsFragmentView;
+    Context mContext;
 
     public BackupContractsFragmentPresenter(BackupContractsFragmentView backupContractsFragmentView){
         mBackupContractsFragmentView = backupContractsFragmentView;
+        mContext = getView().getContext();
     }
 
     private final int WRITE_EXTERNAL_STORAGE_CODE = 5;
@@ -97,7 +109,7 @@ public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl 
 
     private void createBackUpFile(){
         String fileName = "qtum_backup_file.txt";
-        String backupData = "Test data";
+        String backupData = createBackupData();
         File backupFile = new File(Environment.getExternalStorageDirectory(),fileName);
 
         try {
@@ -115,6 +127,34 @@ public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl 
         getView().setUpFile(backUpFileSize);
 
         mBackUpFile = backupFile;
+    }
+
+    private String createBackupData(){
+        TinyDB tinyDB = new TinyDB(mContext);
+
+        List<Template> templateList = new ArrayList<>();
+
+        List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
+        for(ContractTemplate contractTemplate : contractTemplateList){
+            String source = FileStorageManager.getInstance().readSourceContract(mContext, contractTemplate.getUiid());
+            String bytecode = FileStorageManager.getInstance().readByteCodeContract(mContext,contractTemplate.getUiid());
+            String abi = FileStorageManager.getInstance().readAbiContract(mContext,contractTemplate.getUiid());
+            Template template = new Template(source,bytecode,contractTemplate.getUiid(),"test",abi,contractTemplate.getContractType(),contractTemplate.getName());
+            templateList.add(template);
+        }
+
+
+        List<ContractJSON> contractList1 = new ArrayList<>();
+
+        List<Contract> contractList = tinyDB.getContractList();
+        for(Contract contract : contractList){
+            ContractJSON contract1 = new ContractJSON(contract.getContractName(),contract.getSenderAddress(),contract.getContractAddress(),"test","test",contract.getUiid(),false);
+            contractList1.add(contract1);
+        }
+
+        Backup backup = new Backup("test",templateList,"test","test",contractList1,"android");
+        Gson gson = new Gson();
+        return gson.toJson(backup);
     }
 
 }

@@ -30,19 +30,20 @@ public class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
     public void onOkClick(String name, String address, String jsonInterface, boolean isToken){
         getView().setProgressDialog();
         if(isToken){
-            FileStorageManager.getInstance().writeAbiContract(getView().getContext(), address, jsonInterface);
+            FileStorageManager.getInstance().writeAbiContract(getView().getContext(), jsonInterface);
             TinyDB tinyDB = new TinyDB(getView().getContext());
             List<Token> tokenList = tinyDB.getTokenList();
             long date = new Date().getTime() / 1000;
-            Token token = new Token(address, address, true, date, "asdasd", name);
+            //TODO : create
+            Token token = new Token(address, 0, true, date, "asdasd", name);
             tokenList.add(token);
             tinyDB.putTokenList(tokenList);
         }else {
-            FileStorageManager.getInstance().writeAbiContract(getView().getContext(), address, jsonInterface);
+            FileStorageManager.getInstance().writeAbiContract(getView().getContext(), jsonInterface);
             TinyDB tinyDB = new TinyDB(getView().getContext());
             List<Contract> contractList = tinyDB.getContractListWithoutToken();
             long date = new Date().getTime() / 1000;
-            Contract contract = new Contract(address, address, true, date, "asdasd", name);
+            Contract contract = new Contract(address, 0, true, date, "asdasd", name);
             contractList.add(contract);
             tinyDB.putContractListWithoutToken(contractList);
         }

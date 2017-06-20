@@ -99,7 +99,7 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
                 @Override
                 public void onClick(View v) {
                     if(mContract.isHasBeenCreated()) {
-                        ContractManagementFragment contractManagementFragment = ContractManagementFragment.newInstance(mContract.getTemplateName(), mContract.getContractAddress());
+                        ContractManagementFragment contractManagementFragment = ContractManagementFragment.newInstance(mContract.getUiid(), mContract.getContractAddress());
                         openFragment(contractManagementFragment);
                     }
                 }

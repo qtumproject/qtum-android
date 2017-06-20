@@ -36,7 +36,7 @@ public class ContractManagementFragmentPresenter extends BaseFragmentPresenterIm
     @Override
     public void initializeViews() {
         super.initializeViews();
-        List<ContractMethod> contractMethodList = FileStorageManager.getInstance().getContractMethods(getView().getContext(),getView().getContractTemplateName());
+        List<ContractMethod> contractMethodList = FileStorageManager.getInstance().getContractMethods(getView().getContext(),getView().getContractTemplateUiid());
         getView().setRecyclerView(contractMethodList);
     }
 

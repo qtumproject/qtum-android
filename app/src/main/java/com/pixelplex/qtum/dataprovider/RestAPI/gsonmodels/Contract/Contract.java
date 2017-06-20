@@ -9,15 +9,15 @@ import java.io.Serializable;
 public class Contract implements Serializable {
 
     protected String contractAddress;
-    protected String templateName;
+    protected long uiid;
     protected String contractName;
     protected Boolean hasBeenCreated;
     protected Long date;
     protected String senderAddress;
 
-    public Contract(String contractAddress, String templateName, Boolean hasBeenCreated, Long date, String senderAddress, String contractName){
+    public Contract(String contractAddress, long uiid, Boolean hasBeenCreated, Long date, String senderAddress, String contractName){
         this.contractAddress = contractAddress;
-        this.templateName = templateName;
+        this.uiid = uiid;
         this.hasBeenCreated = hasBeenCreated;
         this.contractName = contractName;
         this.date = date;
@@ -33,12 +33,12 @@ public class Contract implements Serializable {
         this.contractAddress = contractAddress;
     }
 
-    public String getTemplateName() {
-        return templateName;
+    public long getUiid() {
+        return uiid;
     }
 
-    public void setTemplateName(String templateName) {
-        this.templateName = templateName;
+    public void setUiid(long uiid) {
+        this.uiid = uiid;
     }
 
     public Boolean isHasBeenCreated() {

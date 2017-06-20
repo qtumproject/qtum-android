@@ -10,6 +10,7 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalanceChangeListener;
+import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
@@ -58,7 +59,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
 
         this.token = token;
 
-        tokenName.setText(token.getTemplateName());
+        tokenName.setText(token.getContractName());
         tokenBalanceView.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
         socketInstance.getSocketInstance().addTokenBalanceChangeListener(token.getContractAddress(),this);

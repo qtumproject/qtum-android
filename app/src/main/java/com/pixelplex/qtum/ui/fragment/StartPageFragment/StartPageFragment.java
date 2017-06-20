@@ -81,6 +81,5 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     @Override
     public void initializeViews() {
         hideBottomNavView(true);
-        FileStorageManager.getInstance().getContractTemplateList(getContext());
     }
 }

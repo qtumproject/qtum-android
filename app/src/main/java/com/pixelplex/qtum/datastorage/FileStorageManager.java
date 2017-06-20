@@ -23,9 +23,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,17 +44,19 @@ public class FileStorageManager {
     private final static String prefMigrationBuildVersion = "migration_buid_version";
 
     private final static String CrowdSale = "Crowdsale";
-    private static String[] STANDART_CONTRACTS = {"Standart", "Version1", "Version2", "Crowdsale"};
+    private static String[] STANDART_CONTRACTS = {"Standart", "Version1", "Version1", "Crowdsale"};
 
-    private static String abiContractName = "abi-contract";
-    private static String byteCodeContractName = "bitecode-contract";
-    private static String sourceContractName = "source-contract";
+    private static String abiContract = "abi-contract";
+    private static String byteCodeContract = "bitecode-contract";
+    private static String sourceContract = "source-contract";
 
     private static String TYPE = "type";
     private static String CONSTRUCTOR_TYPE = "constructor";
     private static String FUNCTION_TYPE = "function";
 
     private static String CONTRACTS_PACKAGE = "contracts";
+
+    private int currentContractPackageName = 0;
 
     public static FileStorageManager getInstance() {
         if(_instance == null){
@@ -61,23 +66,26 @@ public class FileStorageManager {
         return _instance;
     }
 
-    public boolean writeContract(Context context, String packageName, String fileName, String fileContent) {
-           return writeFile(context, packageName, fileName, fileContent);
+    public boolean writeContract(Context context , String fileName, String fileContent) {
+           return writeFile(context, fileName, fileContent);
     }
 
-    public String readContract(Context context,String packageName, String fileName) {
-            return readFile(context, packageName, fileName);
+    public String readContract(Context context,long uiid, String fileName) {
+            return readFile(context, uiid, fileName);
     }
 
     private File getPackagePath(ContextWrapper cw, String targetPackage) {
         return cw.getDir(targetPackage, Context.MODE_PRIVATE);
     }
 
-    private boolean writeFile(Context context, String packageName, String fileName, String fileContent) {
+    private boolean writeFile(Context context, String fileName, String fileContent) {
+
+        TinyDB tinyDB = new TinyDB(context);
+        currentContractPackageName = tinyDB.getInt(tinyDB.CURRENT_CONTRACT_PACKAGE_NAME);
 
         ContextWrapper cw = new ContextWrapper(context);
         File contractDir = getPackagePath(cw,CONTRACTS_PACKAGE);
-        File mFileDirectory = new File(String.format("%s/%s",contractDir.getAbsolutePath(),packageName));
+        File mFileDirectory = new File(String.format("%s/%s",contractDir.getAbsolutePath(), currentContractPackageName));
 
         boolean v = mFileDirectory.mkdir();
 
@@ -106,7 +114,7 @@ public class FileStorageManager {
         }
     }
 
-    private String readFile(Context context, String packageName, String fileName) {
+    private String readFile(Context context, long uiid, String fileName) {
 
         int i;
         String data = "";
@@ -116,7 +124,7 @@ public class FileStorageManager {
 
         try {
 
-        FileInputStream fIn = new FileInputStream(new File(String.format("%s/%s/%s",contractDir,packageName,fileName)));
+        FileInputStream fIn = new FileInputStream(new File(String.format("%s/%s/%s",contractDir,uiid,fileName)));
 
         InputStreamReader isr = new InputStreamReader(fIn);
 
@@ -159,97 +167,69 @@ public class FileStorageManager {
         return data;
     }
 
-    public List<ContractTemplate> getContractTemplateList(Context context) {
-        ContextWrapper cw = new ContextWrapper(context);
-        File contractDir = getPackagePath(cw,CONTRACTS_PACKAGE);
-        List<ContractTemplate> list = new ArrayList<>();
-
-        TinyDB tinyDB = new TinyDB(context);
-        ArrayList<String> contractTemplateStringList = tinyDB.getListString(tinyDB.CONTRACT_TEMPLATE_LIST);
-        File contractFolder;
-
-        for (String contractTemplateString : contractTemplateStringList){
-            contractFolder = new File(contractDir.getPath()+"/"+contractTemplateString);
-            list.add(new ContractTemplate(contractFolder.getName(),contractFolder.lastModified(),(contractFolder.getName().equalsIgnoreCase(CrowdSale)? CrowdSale : "Token")));
-        }
-
-//        for(File file :  contractDir.listFiles()){
-//            list.add(new ContractTemplate(file.getName(),file.lastModified(),(file.getName().equalsIgnoreCase(CrowdSale)? CrowdSale : "Token")));
-//        }
-
-        Collections.sort(list, new Comparator<ContractTemplate>() {
-            @Override
-            public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
-                return contractInfo.getDate() > t1.getDate() ? 1 : contractInfo.getDate() < t1.getDate() ? -1 : 0;
-            }
-        });
-
-        return list;
+    public boolean writeAbiContract(Context context,String content){
+        return writeContract(context, abiContract,content);
     }
 
-    public boolean writeAbiContract(Context context, String packageName,String content){
-        return writeContract(context,packageName,abiContractName,content);
+    public boolean writeByteCodeContract(Context context,String content){
+        return writeContract(context, byteCodeContract,content);
     }
 
-    public boolean writeByteCodeContract(Context context, String packageName,String content){
-        return writeContract(context,packageName,byteCodeContractName,content);
+    public boolean writeSourceContract(Context context,String content){
+        return writeContract(context, sourceContract,content);
     }
 
-    public boolean writeSourceContract(Context context, String packageName,String content){
-        return writeContract(context,packageName,sourceContractName,content);
+    public String readAbiContract(Context context, long uiid) {
+        return readContract(context,uiid, abiContract);
     }
 
-    public String readAbiContract(Context context, String packageName) {
-        return readContract(context,packageName,abiContractName);
+    public String readByteCodeContract(Context context, long uiid) {
+        return readContract(context,uiid, byteCodeContract);
     }
 
-    public String readByteCodeContract(Context context, String packageName) {
-        return readContract(context,packageName,byteCodeContractName);
-    }
-
-    public String readSourceContract(Context context, String packageName) {
-        return readContract(context,packageName,sourceContractName);
+    public String readSourceContract(Context context, long uiid) {
+        return readContract(context,uiid, sourceContract);
     }
 
 //    READ DEFAULT CONTRACTS
     private String readAbiContractAsset(Context context, String packageName) {
-        return readFromAsset(context,packageName,abiContractName);
+        return readFromAsset(context,packageName, abiContract);
     }
 
     private String readByteCodeContractAsset(Context context, String packageName) {
-        return readFromAsset(context,packageName,byteCodeContractName);
+        return readFromAsset(context,packageName, byteCodeContract);
     }
 
     private String readSourceContractAsset(Context context, String packageName) {
-        return readFromAsset(context,packageName,sourceContractName);
+        return readFromAsset(context,packageName, sourceContract);
     }
 //    READ DEFAULT CONTRACTS
 
-    private boolean migrateContract(Context context, String packageName) {
+    private boolean migrateContract(Context context, String contractName) {
         boolean result = true;
 
-        String readData = readAbiContractAsset(context,packageName);
+        String readData = readAbiContractAsset(context,contractName);
         if(TextUtils.isEmpty(readData)) {
             return false;
         }
-       result =  writeAbiContract(context,packageName,readData);
+       result =  writeAbiContract(context,readData);
 
         if(result) {
-            readData = readByteCodeContractAsset(context, packageName);
+            readData = readByteCodeContractAsset(context, contractName);
             if (TextUtils.isEmpty(readData)) {
                 return false;
             }
-            result = writeByteCodeContract(context, packageName, readData);
+            result = writeByteCodeContract(context, readData);
         }else {
             return false;
         }
 
         if(result) {
-            readData = readSourceContractAsset(context, packageName);
+            readData = readSourceContractAsset(context, contractName);
             if (TextUtils.isEmpty(readData)) {
                 return false;
             }
-            result = writeSourceContract(context, packageName, readData);
+            result = writeSourceContract(context, readData);
         }else {
             return false;
         }
@@ -257,8 +237,8 @@ public class FileStorageManager {
         return result;
     }
 
-    public ContractMethod getContractConstructor(Context context, String contractName) {
-      String abiContent = readAbiContract(context,contractName);
+    public ContractMethod getContractConstructor(Context context, long uiid) {
+      String abiContent = readAbiContract(context,uiid);
         JSONArray array = null;
         try {
             array = new JSONArray(abiContent);
@@ -277,8 +257,8 @@ public class FileStorageManager {
         return null;
     }
 
-    public List<ContractMethod> getContractMethods(final Context context, String contractName) {
-        String abiContent = readAbiContract(context,contractName);
+    public List<ContractMethod> getContractMethods(final Context context, long uiid) {
+        String abiContent = readAbiContract(context,uiid);
         JSONArray array = null;
         List<ContractMethod> contractMethods = new ArrayList<>();
         try {
@@ -313,15 +293,19 @@ public class FileStorageManager {
 
     public boolean migrateDefaultContracts(Context context) {
         if(!isDefaultContractsMigrates(context)) {
-            ArrayList<String> contractTemplateList = new ArrayList<>();
-            for (String contractPackage : STANDART_CONTRACTS) {
-                if (!migrateContract(context, contractPackage)) {
+            TinyDB tinyDB = new TinyDB(context);
+            List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
+
+            for (String contractName : STANDART_CONTRACTS) {
+                if (!migrateContract(context, contractName)) {
                     return false;
                 }
-                contractTemplateList.add(contractPackage);
+                contractTemplateList.add(new ContractTemplate(contractName,(new Date()).getTime(),(contractName.equals(CrowdSale) ? "crowdsale" : "token"),currentContractPackageName));
+                changeCurrentContractPackageName(context);
             }
-            TinyDB tinyDB = new TinyDB(context);
-            tinyDB.putListString(tinyDB.CONTRACT_TEMPLATE_LIST, contractTemplateList);
+
+            tinyDB.putContractTemplate(contractTemplateList);
+
             commitDefaultContractsMigration(context);
             Log.d(TAG, "migrateDefaultContracts: Migration Complete");
             return true;
@@ -339,6 +323,38 @@ public class FileStorageManager {
     private boolean commitDefaultContractsMigration(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.edit().putInt(prefMigrationBuildVersion, BuildConfig.VERSION_CODE).commit();
+    }
+
+    private void changeCurrentContractPackageName(Context context){
+        TinyDB tinyDB = new TinyDB(context);
+        currentContractPackageName++;
+        tinyDB.putInt(tinyDB.CURRENT_CONTRACT_PACKAGE_NAME, currentContractPackageName);
+    }
+
+    public void importTemplate(Context context, String sourceContract, String byteCodeContract, String abiContract, String type, String name, String dateString){
+        TinyDB tinyDB = new TinyDB(context);
+        currentContractPackageName = tinyDB.getInt(tinyDB.CURRENT_CONTRACT_PACKAGE_NAME);
+
+        writeSourceContract(context,sourceContract);
+        writeAbiContract(context,abiContract);
+        writeByteCodeContract(context,byteCodeContract);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = formatter.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long dateLong = date.getTime();
+
+        ContractTemplate contractTemplate = new ContractTemplate(name, dateLong, type, currentContractPackageName);
+
+        List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
+        contractTemplateList.add(contractTemplate);
+        tinyDB.putContractTemplate(contractTemplateList);
+
+        changeCurrentContractPackageName(context);
     }
 
 }

@@ -30,6 +30,8 @@ public class TemplateViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.root_layout)
     RelativeLayout rootLayout;
 
+    ContractTemplate mContractTemplate;
+
     public TemplateViewHolder(View itemView, final TemplateSelectListener listener) {
         super(itemView);
         ButterKnife.bind(this, itemView);
@@ -37,16 +39,19 @@ public class TemplateViewHolder extends RecyclerView.ViewHolder {
         rootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onSelectContract(title.getText().toString());
+                listener.onSelectContract(mContractTemplate.getUiid());
             }
         });
     }
 
-    public void bind(ContractTemplate contract) {
-        title.setText(contract.getName());
+    public void bind(ContractTemplate contractTemplate) {
 
-        date.setText(DateCalculator.getDate(contract.getDate()));
+        mContractTemplate = contractTemplate;
 
-        contractType.setText(contract.getContractType().toUpperCase());
+        title.setText(contractTemplate.getName());
+
+        date.setText(DateCalculator.getDate(contractTemplate.getDate()));
+
+        contractType.setText(contractTemplate.getContractType().toUpperCase());
     }
 }

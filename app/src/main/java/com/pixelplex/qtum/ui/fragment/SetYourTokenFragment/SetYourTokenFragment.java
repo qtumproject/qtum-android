@@ -7,6 +7,8 @@ import android.view.WindowManager;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
+import com.pixelplex.qtum.datastorage.TinyDB;
+import com.pixelplex.qtum.datastorage.model.ContractTemplate;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.FontTextView;
@@ -23,14 +25,14 @@ import butterknife.OnClick;
 public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFragmentView {
 
     public final int LAYOUT = R.layout.fragment_set_your_token;
-    public final static String CONTRACT_TEMPLATE_NAME = "contract_template_name";
+    public final static String CONTRACT_TEMPLATE_UIID = "uiid";
 
     private ConstructorAdapter adapter;
 
-    public static SetYourTokenFragment newInstance(String contractTemplateName) {
+    public static SetYourTokenFragment newInstance(long uiid) {
         Bundle args = new Bundle();
         SetYourTokenFragment fragment = new SetYourTokenFragment();
-        args.putString(CONTRACT_TEMPLATE_NAME,contractTemplateName);
+        args.putLong(CONTRACT_TEMPLATE_UIID,uiid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,7 +54,7 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
     public void onConfirmClick(){
         if(adapter != null) {
            // adapter.notifyDataSetChanged();
-            presenter.confirm(adapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_NAME));
+            presenter.confirm(adapter.getParams(), getArguments().getLong(CONTRACT_TEMPLATE_UIID));
         }
     }
 
@@ -81,8 +83,18 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
     public void initializeViews() {
         super.initializeViews();
         constructorList.setLayoutManager(new LinearLayoutManager(getContext()));
-        String templateName = getArguments().getString(CONTRACT_TEMPLATE_NAME);
-        presenter.getConstructorByName(templateName);
+        long templateUiid = getArguments().getLong(CONTRACT_TEMPLATE_UIID);
+        presenter.getConstructorByUiid(templateUiid);
+        String templateName = "";
+        TinyDB tinyDB = new TinyDB(getContext());
+        List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
+        for(ContractTemplate contractTemplate : contractTemplateList){
+            if(contractTemplate.getUiid()==templateUiid) {
+                templateName = contractTemplate.getName();
+                break;
+            }
+        }
+
         mTextViewTemplateName.setText(templateName);
     }
 

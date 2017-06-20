@@ -25,13 +25,13 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
 
     public final int LAYOUT = R.layout.lyt_contract_confirm;
     public static final String paramsKey = "params";
-    public static final String contractKey = "contract";
+    public static final String CONTRACT_TEMPLATE_UIID = "uiid";
 
-    public static ContractConfirmFragment newInstance(List<ContractMethodParameter> params, String contractName) {
+    public static ContractConfirmFragment newInstance(List<ContractMethodParameter> params, long uiid) {
         Bundle args = new Bundle();
         ContractConfirmFragment fragment = new ContractConfirmFragment();
         args.putSerializable(paramsKey,(ArrayList)params);
-        args.putString(contractKey, contractName);
+        args.putLong(CONTRACT_TEMPLATE_UIID, uiid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,7 +49,7 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
 
     @OnClick(R.id.confirm)
     public void onConfirmClick(){
-        presenter.confirmContract(getArguments().getString(contractKey));
+        presenter.confirmContract(getArguments().getLong(CONTRACT_TEMPLATE_UIID));
     }
 
     @Override

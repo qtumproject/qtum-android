@@ -26,7 +26,7 @@ import butterknife.OnClick;
 public class ContractManagementFragment extends BaseFragment implements ContractManagementFragmentView{
 
     ContractManagementFragmentPresenter mContractManagmentFragmentPresenter;
-    private static final String CONTRACT_TEMPLATE_NAME = "contract_template_name";
+    private static final String CONTRACT_TEMPLATE_UIID = "contract_template_uiid";
     private static final String CONTRACT_ADDRESS = "contract_address";
 
     @BindView(R.id.methods_list)
@@ -44,10 +44,10 @@ public class ContractManagementFragment extends BaseFragment implements Contract
     MethodAdapter mMethodAdapter;
     String mContractAddress;
 
-    public static ContractManagementFragment newInstance(String contractTemplateName, String contractAddress) {
+    public static ContractManagementFragment newInstance(long contractTemplateUiid, String contractAddress) {
         
         Bundle args = new Bundle();
-        args.putString(CONTRACT_TEMPLATE_NAME, contractTemplateName);
+        args.putLong(CONTRACT_TEMPLATE_UIID, contractTemplateUiid);
         args.putString(CONTRACT_ADDRESS, contractAddress);
         ContractManagementFragment fragment = new ContractManagementFragment();
         fragment.setArguments(args);
@@ -84,8 +84,8 @@ public class ContractManagementFragment extends BaseFragment implements Contract
     }
 
     @Override
-    public String getContractTemplateName() {
-        return getArguments().getString(CONTRACT_TEMPLATE_NAME);
+    public long getContractTemplateUiid() {
+        return getArguments().getLong(CONTRACT_TEMPLATE_UIID);
     }
 
     class MethodViewHolder extends RecyclerView.ViewHolder {
@@ -100,7 +100,7 @@ public class ContractManagementFragment extends BaseFragment implements Contract
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ContractFunctionFragment contractFunctionFragment = ContractFunctionFragment.newInstance(mContractMethod.name,getContractTemplateName(),getArguments().getString(CONTRACT_ADDRESS));
+                    ContractFunctionFragment contractFunctionFragment = ContractFunctionFragment.newInstance(mContractMethod.name,getContractTemplateUiid(),getArguments().getString(CONTRACT_ADDRESS));
                     openFragment(contractFunctionFragment);
                 }
             });

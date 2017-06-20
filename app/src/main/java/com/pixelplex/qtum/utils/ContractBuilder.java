@@ -85,7 +85,7 @@ public class ContractBuilder {
         });
     }
 
-    public Observable<String> createAbiConstructParams(final List<ContractMethodParameter> contractMethodParameterList, final String contractTemplateAddress, Context context){
+    public Observable<String> createAbiConstructParams(final List<ContractMethodParameter> contractMethodParameterList, final long uiid, Context context){
         mContext = context;
         return rx.Observable.fromCallable(new Callable<String>() {
             @Override
@@ -97,7 +97,7 @@ public class ContractBuilder {
                         abiParams += convertParameter(parameter, abiParams);
                     }
                 }
-                abiParams = getByteCodeByContractName(contractTemplateAddress) + abiParams;
+                abiParams = getByteCodeByUiid(uiid) + abiParams;
                 return abiParams;
             }
         });
@@ -202,8 +202,8 @@ public class ContractBuilder {
         return hashPattern.substring(0,hashPattern.length()-_value.length()) + _value;
     }
 
-    private String getByteCodeByContractName(String contractName) {
-        return FileStorageManager.getInstance().readByteCodeContract(mContext, contractName);
+    private String getByteCodeByUiid(long uiid) {
+        return FileStorageManager.getInstance().readByteCodeContract(mContext, uiid);
     }
 
     public Script createConstructScript(String abiParams){

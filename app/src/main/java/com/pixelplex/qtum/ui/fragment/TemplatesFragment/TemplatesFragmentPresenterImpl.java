@@ -26,8 +26,8 @@ public class TemplatesFragmentPresenterImpl extends BaseFragmentPresenterImpl im
         return view;
     }
 
-    public void openConstructorByName(String constructorName) {
-        SetYourTokenFragment fragment = SetYourTokenFragment.newInstance(constructorName);
+    public void openConstructorByName(long uiid) {
+        SetYourTokenFragment fragment = SetYourTokenFragment.newInstance(uiid);
         getView().openFragment(fragment);
     }
 }

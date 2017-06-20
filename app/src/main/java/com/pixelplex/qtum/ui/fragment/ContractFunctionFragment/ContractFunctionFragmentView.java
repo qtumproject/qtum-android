@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface ContractFunctionFragmentView extends BaseFragmentView{
     void setUpParameterList(List<ContractMethodParameter> contractMethodParameterList);
-    String getContractTemplateName();
+    long getContractTemplateUiid();
     String getMethodName();
 }

@@ -64,7 +64,7 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
 
     public void getPropertyValue(final String propName) {
 
-        getContractMethod(token.getTemplateName(), propName).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ContractMethod>() {
+        getContractMethod(token.getUiid(), propName).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ContractMethod>() {
             @Override
             public void onCompleted() {}
 
@@ -136,12 +136,12 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
     }
 
 
-    private Observable<ContractMethod> getContractMethod(final String contractName, final String methodName) {
+    private Observable<ContractMethod> getContractMethod(final long contractUiid, final String methodName) {
 
         return Observable.fromCallable(new Callable<ContractMethod>() {
             @Override
             public ContractMethod call() throws Exception {
-                List<ContractMethod> methods = FileStorageManager.getInstance().getContractMethods(getView().getContext(), contractName);
+                List<ContractMethod> methods = FileStorageManager.getInstance().getContractMethods(getView().getContext(), contractUiid);
                 for (ContractMethod method: methods) {
                     if(method.name.equals(methodName)){
                         return method;

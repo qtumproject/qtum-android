@@ -46,6 +46,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
+import com.pixelplex.qtum.datastorage.model.ContractTemplate;
 
 
 public class TinyDB {
@@ -55,7 +56,8 @@ public class TinyDB {
     private String lastImagePath = "";
     private final String CONTRACT_LIST = "contract_list";
     private final String TOKEN_LIST = "token_list";
-    public final String CONTRACT_TEMPLATE_LIST = "contract_template_list";
+    private final String CONTRACT_TEMPLATE_LIST = "contract_template_list";
+    public final String CURRENT_CONTRACT_PACKAGE_NAME = "current_contract_package_name";
 
     public TinyDB(Context appContext) {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
@@ -396,6 +398,20 @@ public class TinyDB {
         return tokenArrayList;
     }
 
+    public List<ContractTemplate> getContractTemplateList(){
+        Gson gson = new Gson();
+
+        ArrayList<String> contractTemplateString = getListString(CONTRACT_TEMPLATE_LIST);
+        ArrayList<ContractTemplate> contractTemplateArrayList = new ArrayList<ContractTemplate>();
+
+        for(String contractInfoString : contractTemplateString){
+            ContractTemplate contractTemplate = gson.fromJson(contractInfoString,ContractTemplate.class);
+            contractTemplateArrayList.add(contractTemplate);
+        }
+
+        return contractTemplateArrayList;
+    }
+
 
     // Put methods
 
@@ -549,6 +565,15 @@ public class TinyDB {
             tokenStrings.add(gson.toJson(token));
         }
         putListString(TOKEN_LIST,tokenStrings);
+    }
+
+    public void putContractTemplate(List<ContractTemplate> contractTemplateList){
+        Gson gson = new Gson();
+        ArrayList<String> contractTemplateListString = new ArrayList<String>();
+        for(ContractTemplate contractTemplate : contractTemplateList){
+            contractTemplateListString.add(gson.toJson(contractTemplate));
+        }
+        putListString(CONTRACT_TEMPLATE_LIST,contractTemplateListString);
     }
 
     /**

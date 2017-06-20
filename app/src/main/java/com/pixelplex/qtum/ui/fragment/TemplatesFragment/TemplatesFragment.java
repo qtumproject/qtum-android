@@ -6,8 +6,14 @@ import android.support.v7.widget.RecyclerView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
+import com.pixelplex.qtum.datastorage.TinyDB;
+import com.pixelplex.qtum.datastorage.model.ContractTemplate;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -56,11 +62,21 @@ public class TemplatesFragment extends BaseFragment implements TemplatesFragment
     public void initializeViews() {
         super.initializeViews();
         contractList.setLayoutManager(new LinearLayoutManager(getContext()));
-        contractList.setAdapter(new TemplatesRecyclerAdapter(FileStorageManager.getInstance().getContractTemplateList(getContext()),this));
+        TinyDB tinyDB = new TinyDB(getContext());
+        List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
+
+        Collections.sort(contractTemplateList, new Comparator<ContractTemplate>() {
+            @Override
+            public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
+                return contractInfo.getDate() > t1.getDate() ? 1 : contractInfo.getDate() < t1.getDate() ? -1 : 0;
+            }
+        });
+
+        contractList.setAdapter(new TemplatesRecyclerAdapter(contractTemplateList,this));
     }
 
     @Override
-    public void onSelectContract(String contractName) {
-        presenter.openConstructorByName(contractName);
+    public void onSelectContract(long uiid) {
+        presenter.openConstructorByName(uiid);
     }
 }

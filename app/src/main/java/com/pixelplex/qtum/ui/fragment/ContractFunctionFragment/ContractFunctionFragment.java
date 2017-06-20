@@ -34,7 +34,7 @@ import butterknife.OnClick;
 public class ContractFunctionFragment extends BaseFragment implements ContractFunctionFragmentView {
 
     ContractFunctionFragmentPresenter mContractFunctionFragmentPresenter;
-    public final static String CONTRACT_TEMPLATE_NAME = "contract_template_name";
+    public final static String CONTRACT_TEMPLATE_UIID = "contract_template_uiid";
     public final static String METHOD_NAME = "method_name";
     public final static String CONTRACT_ADDRESS = "contract_address";
 
@@ -55,10 +55,10 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
         }
     }
 
-    public static ContractFunctionFragment newInstance(String methodName, String contractTemplateName, String contractAddress) {
+    public static ContractFunctionFragment newInstance(String methodName, long uiid, String contractAddress) {
 
         Bundle args = new Bundle();
-        args.putString(CONTRACT_TEMPLATE_NAME,contractTemplateName);
+        args.putLong(CONTRACT_TEMPLATE_UIID,uiid);
         args.putString(METHOD_NAME,methodName);
         args.putString(CONTRACT_ADDRESS,contractAddress);
         ContractFunctionFragment fragment = new ContractFunctionFragment();
@@ -94,8 +94,8 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
     }
 
     @Override
-    public String getContractTemplateName() {
-        return getArguments().getString(CONTRACT_TEMPLATE_NAME);
+    public long getContractTemplateUiid() {
+        return getArguments().getLong(CONTRACT_TEMPLATE_UIID);
     }
 
     @Override

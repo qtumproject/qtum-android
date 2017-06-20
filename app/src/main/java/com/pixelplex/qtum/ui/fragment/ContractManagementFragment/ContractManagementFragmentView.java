@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface ContractManagementFragmentView extends BaseFragmentView{
     void setRecyclerView(List<ContractMethod> contractMethodList);
-    String getContractTemplateName();
+    long getContractTemplateUiid();
 }
