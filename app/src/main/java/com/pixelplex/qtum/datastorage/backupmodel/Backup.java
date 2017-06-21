@@ -16,7 +16,7 @@ public class Backup {
     private String dateCreate;
     @SerializedName("templates")
     @Expose
-    private List<Template> templates = null;
+    private List<TemplateJSON> templates = null;
     @SerializedName("platformVersion")
     @Expose
     private String platformVersion;
@@ -30,7 +30,7 @@ public class Backup {
     @Expose
     private String platform;
 
-    public Backup(String dateCreate, List<Template> templates, String platformVersion, String fileVersion, List<ContractJSON> contracts, String platform) {
+    public Backup(String dateCreate, List<TemplateJSON> templates, String platformVersion, String fileVersion, List<ContractJSON> contracts, String platform) {
         this.dateCreate = dateCreate;
         this.templates = templates;
         this.platformVersion = platformVersion;
@@ -47,11 +47,11 @@ public class Backup {
         this.dateCreate = dateCreate;
     }
 
-    public List<Template> getTemplates() {
+    public List<TemplateJSON> getTemplates() {
         return templates;
     }
 
-    public void setTemplates(List<Template> templates) {
+    public void setTemplates(List<TemplateJSON> templates) {
         this.templates = templates;
     }
 

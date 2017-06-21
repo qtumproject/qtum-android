@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by max-v on 6/20/2017.
  */
 
-public class Template {
+public class TemplateJSON {
 
     @SerializedName("source")
     @Expose
@@ -31,7 +31,7 @@ public class Template {
     @Expose
     private String name;
 
-    public Template(String source, String bitecode, Long uiid, String creationDate, String abi, String type, String name) {
+    public TemplateJSON(String source, String bitecode, Long uiid, String creationDate, String abi, String type, String name) {
         this.source = source;
         this.bitecode = bitecode;
         this.uiid = uiid;

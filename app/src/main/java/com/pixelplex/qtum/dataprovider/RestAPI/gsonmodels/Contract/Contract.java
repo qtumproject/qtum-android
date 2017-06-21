@@ -12,18 +12,19 @@ public class Contract implements Serializable {
     protected long uiid;
     protected String contractName;
     protected Boolean hasBeenCreated;
-    protected Long date;
+    protected String date;
     protected String senderAddress;
+    protected boolean isSubscribe;
 
-    public Contract(String contractAddress, long uiid, Boolean hasBeenCreated, Long date, String senderAddress, String contractName){
+    public Contract(String contractAddress, long uiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName){
         this.contractAddress = contractAddress;
         this.uiid = uiid;
         this.hasBeenCreated = hasBeenCreated;
         this.contractName = contractName;
         this.date = date;
         this.senderAddress = senderAddress;
+        this.isSubscribe = false;
     }
-
 
     public String getContractAddress() {
         return contractAddress;
@@ -49,11 +50,11 @@ public class Contract implements Serializable {
         this.hasBeenCreated = hasBeenCreated;
     }
 
-    public Long getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Long date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -71,5 +72,13 @@ public class Contract implements Serializable {
 
     public void setSenderAddress(String senderAddress) {
         this.senderAddress = senderAddress;
+    }
+
+    public boolean isSubscribe() {
+        return isSubscribe;
+    }
+
+    public void setSubscribe(boolean subscribe) {
+        isSubscribe = subscribe;
     }
 }

@@ -6,11 +6,11 @@ package com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract;
 
 public class Token extends Contract {
 
-    private boolean isSubscribe = true;
     private float lastBalance = 0;
 
-    public Token(String contractAddress, long templateUiid, Boolean hasBeenCreated, Long date, String senderAddress, String contractName) {
+    public Token(String contractAddress, long templateUiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName) {
         super(contractAddress, templateUiid, hasBeenCreated, date, senderAddress, contractName);
+        this.isSubscribe = true;
     }
 
     public void setLastBalance(float balance){
@@ -20,7 +20,6 @@ public class Token extends Contract {
     public float getLastBalance(){
         return lastBalance;
     }
-
 
     public boolean isSubscribe() {
         return isSubscribe;

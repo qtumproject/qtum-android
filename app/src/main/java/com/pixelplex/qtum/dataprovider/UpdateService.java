@@ -33,6 +33,7 @@ import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.QtumIntent;
 import com.pixelplex.qtum.datastorage.TinyDB;
 
@@ -42,6 +43,7 @@ import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -161,7 +163,7 @@ public class UpdateService extends Service {
                     for(Contract contract : contractList){
                         if(contract.getContractAddress()!=null && contract.getContractAddress().equals(contractAddress)){
                             contract.setHasBeenCreated(true);
-                            contract.setDate((long)history.getBlockTime());
+                            contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000));
                             done = true;
                             break;
                         }
@@ -173,7 +175,7 @@ public class UpdateService extends Service {
                         for(Token token : tokenList){
                             if(token.getContractAddress()!=null && token.getContractAddress().equals(contractAddress)){
                                 token.setHasBeenCreated(true);
-                                token.setDate((long)history.getBlockTime());
+                                token.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000));
                                 break;
                             }
                         }

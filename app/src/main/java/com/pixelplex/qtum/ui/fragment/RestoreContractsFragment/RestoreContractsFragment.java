@@ -45,7 +45,7 @@ public class RestoreContractsFragment extends BaseFragment implements RestoreCon
     ImageView mImageViewRestoreIcon;
 
 
-    @OnClick({R.id.fl_back_up_file,R.id.cb_restore_templates,R.id.cb_restore_contracts,R.id.cb_restore_tokens,R.id.cb_restore_all, R.id.iv_restore_icon, R.id.ibt_back})
+    @OnClick({R.id.fl_back_up_file,R.id.cb_restore_templates,R.id.cb_restore_contracts,R.id.cb_restore_tokens,R.id.cb_restore_all, R.id.iv_restore_icon, R.id.ibt_back, R.id.bt_restore})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.fl_back_up_file:
@@ -94,6 +94,9 @@ public class RestoreContractsFragment extends BaseFragment implements RestoreCon
                 break;
             case R.id.ibt_back:
                 getActivity().onBackPressed();
+                break;
+            case R.id.bt_restore:
+                
                 break;
         }
     }

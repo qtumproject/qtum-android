@@ -10,6 +10,7 @@ import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.datastorage.model.ContractTemplate;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.utils.DateCalculator;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -68,7 +69,7 @@ public class TemplatesFragment extends BaseFragment implements TemplatesFragment
         Collections.sort(contractTemplateList, new Comparator<ContractTemplate>() {
             @Override
             public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
-                return contractInfo.getDate() > t1.getDate() ? 1 : contractInfo.getDate() < t1.getDate() ? -1 : 0;
+                return DateCalculator.equals(contractInfo.getDate(),t1.getDate());
             }
         });
 

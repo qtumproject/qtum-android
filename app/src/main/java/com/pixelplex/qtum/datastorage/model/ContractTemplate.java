@@ -6,15 +6,17 @@ package com.pixelplex.qtum.datastorage.model;
 
 public class ContractTemplate {
     private String name;
-    private long date;
+    private String date;
     private String type;
     private long uiid;
+    private boolean isFullContractTemplate;
 
-    public ContractTemplate(String name, long date, String contractType, long uiid){
+    public ContractTemplate(String name, String date, String contractType, long uiid){
         this.name = name;
         this.date = date;
         this.type = contractType;
         this.uiid = uiid;
+        isFullContractTemplate = true;
     }
 
     public String getName() {
@@ -25,11 +27,11 @@ public class ContractTemplate {
         this.name = name;
     }
 
-    public long getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setData(long date) {
+    public void setData(String date) {
         this.date = date;
     }
 
@@ -47,5 +49,13 @@ public class ContractTemplate {
 
     public void setUiid(long uiid) {
         this.uiid = uiid;
+    }
+
+    public boolean isFullContractTemplate() {
+        return isFullContractTemplate;
+    }
+
+    public void setFullContractTemplate(boolean fullContractTemplate) {
+        isFullContractTemplate = fullContractTemplate;
     }
 }

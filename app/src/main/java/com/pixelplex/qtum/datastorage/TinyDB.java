@@ -47,6 +47,7 @@ import com.google.gson.Gson;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.datastorage.model.ContractTemplate;
+import com.pixelplex.qtum.utils.DateCalculator;
 
 
 public class TinyDB {
@@ -362,7 +363,7 @@ public class TinyDB {
                 } else if(t1.getDate()==null) {
                     return 1;
                 } else {
-                    return contract.getDate() > t1.getDate() ? -1 : contract.getDate() < t1.getDate() ? 1 : 0;
+                    return DateCalculator.equals(contract.getDate(),t1.getDate());
                 }
             }
         });
@@ -664,5 +665,14 @@ public class TinyDB {
         if (value == null){
             throw new NullPointerException();
         }
+    }
+
+    public ContractTemplate getContractTemplateByUiid(long uiid){
+        for(ContractTemplate contractTemplate : getContractTemplateList()){
+            if(contractTemplate.getUiid() == uiid){
+                return contractTemplate;
+            }
+        }
+        return null;
     }
 }

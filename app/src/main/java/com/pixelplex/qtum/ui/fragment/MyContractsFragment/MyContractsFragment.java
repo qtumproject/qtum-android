@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragment;
@@ -109,12 +110,14 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
         public void bindContract(Contract contract){
             mContract = contract;
             if(contract.getDate()!=null){
-                mTextViewDate.setText(DateCalculator.getDate(contract.getDate()*1000));
+                mTextViewDate.setText(DateCalculator.getDate(contract.getDate()));
             }else{
                 mTextViewDate.setText(R.string.not_confirmed);
             }
             mTextViewTitle.setText(contract.getContractAddress().substring(0,8));
-            mTextViewContractType.setText("TOKEN");
+            TinyDB tinyDB = new TinyDB(getContext());
+            String contractType = tinyDB.getContractTemplateByUiid(contract.getUiid()).getContractType();
+            mTextViewContractType.setText(contractType);
         }
     }
 

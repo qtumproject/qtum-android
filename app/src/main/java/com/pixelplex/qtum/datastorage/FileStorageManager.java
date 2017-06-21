@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.pixelplex.qtum.BuildConfig;
 import com.pixelplex.qtum.datastorage.model.ContractTemplate;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
+import com.pixelplex.qtum.utils.DateCalculator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -300,7 +301,7 @@ public class FileStorageManager {
                 if (!migrateContract(context, contractName)) {
                     return false;
                 }
-                contractTemplateList.add(new ContractTemplate(contractName,(new Date()).getTime(),(contractName.equals(CrowdSale) ? "crowdsale" : "token"),currentContractPackageName));
+                contractTemplateList.add(new ContractTemplate(contractName, DateCalculator.getDateInFormat(new Date()),(contractName.equals(CrowdSale) ? "crowdsale" : "token"),currentContractPackageName));
                 changeCurrentContractPackageName(context);
             }
 
@@ -335,20 +336,23 @@ public class FileStorageManager {
         TinyDB tinyDB = new TinyDB(context);
         currentContractPackageName = tinyDB.getInt(tinyDB.CURRENT_CONTRACT_PACKAGE_NAME);
 
-        writeSourceContract(context,sourceContract);
-        writeAbiContract(context,abiContract);
-        writeByteCodeContract(context,byteCodeContract);
+        ContractTemplate contractTemplate = new ContractTemplate(name, dateString, type, currentContractPackageName);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = null;
-        try {
-            date = formatter.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(!sourceContract.isEmpty()) {
+            writeSourceContract(context, sourceContract);
+        } else {
+            contractTemplate.setFullContractTemplate(false);
         }
-        long dateLong = date.getTime();
-
-        ContractTemplate contractTemplate = new ContractTemplate(name, dateLong, type, currentContractPackageName);
+        if(!abiContract.isEmpty()) {
+            writeAbiContract(context, abiContract);
+        } else {
+            contractTemplate.setFullContractTemplate(false);
+        }
+        if(!byteCodeContract.isEmpty()) {
+            writeByteCodeContract(context, byteCodeContract);
+        } else{
+            contractTemplate.setFullContractTemplate(false);
+        }
 
         List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
         contractTemplateList.add(contractTemplate);
