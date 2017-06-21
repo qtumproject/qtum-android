@@ -96,7 +96,11 @@ public class RestoreContractsFragment extends BaseFragment implements RestoreCon
                 getActivity().onBackPressed();
                 break;
             case R.id.bt_restore:
-                
+                if(mCheckBoxRestoreAll.isChecked()) {
+                    getPresenter().onRestoreClick(true,true,true);
+                } else {
+                    getPresenter().onRestoreClick(mCheckBoxRestoreTemplates.isChecked(),mCheckBoxRestoreContracts.isChecked(),mCheckBoxRestoreTokens.isChecked());
+                }
                 break;
         }
     }

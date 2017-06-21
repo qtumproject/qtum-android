@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -123,20 +124,19 @@ public class FileStorageManager {
         ContextWrapper cw = new ContextWrapper(context);
         File contractDir = getPackagePath(cw,CONTRACTS_PACKAGE);
 
+        FileReader inputFile = null;
         try {
+            inputFile = new FileReader(new File(String.format("%s/%s/%s",contractDir,uiid,fileName)));
+            BufferedReader bufferReader = new BufferedReader(inputFile);
 
-        FileInputStream fIn = new FileInputStream(new File(String.format("%s/%s/%s",contractDir,uiid,fileName)));
-
-        InputStreamReader isr = new InputStreamReader(fIn);
-
-        while ((i = isr.read())!=-1){
-            data += (char)i;
-        }
-
+            String line;
+            while ((line = bufferReader.readLine()) != null)   {
+                data+=line;
+            }
+            bufferReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.d(TAG, "readFile: "+data);
         return data;
     }
 
@@ -332,23 +332,23 @@ public class FileStorageManager {
         tinyDB.putInt(tinyDB.CURRENT_CONTRACT_PACKAGE_NAME, currentContractPackageName);
     }
 
-    public void importTemplate(Context context, String sourceContract, String byteCodeContract, String abiContract, String type, String name, String dateString){
+    public long importTemplate(Context context, String sourceContract, String byteCodeContract, String abiContract, String type, String name, String dateString){
         TinyDB tinyDB = new TinyDB(context);
         currentContractPackageName = tinyDB.getInt(tinyDB.CURRENT_CONTRACT_PACKAGE_NAME);
 
         ContractTemplate contractTemplate = new ContractTemplate(name, dateString, type, currentContractPackageName);
 
-        if(!sourceContract.isEmpty()) {
+        if(sourceContract!=null && !sourceContract.isEmpty()) {
             writeSourceContract(context, sourceContract);
         } else {
             contractTemplate.setFullContractTemplate(false);
         }
-        if(!abiContract.isEmpty()) {
+        if(abiContract!=null && !abiContract.isEmpty()) {
             writeAbiContract(context, abiContract);
         } else {
             contractTemplate.setFullContractTemplate(false);
         }
-        if(!byteCodeContract.isEmpty()) {
+        if(byteCodeContract!=null && !byteCodeContract.isEmpty()) {
             writeByteCodeContract(context, byteCodeContract);
         } else{
             contractTemplate.setFullContractTemplate(false);
@@ -357,8 +357,9 @@ public class FileStorageManager {
         List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
         contractTemplateList.add(contractTemplate);
         tinyDB.putContractTemplate(contractTemplateList);
-
         changeCurrentContractPackageName(context);
+
+        return currentContractPackageName-1;
     }
 
 }

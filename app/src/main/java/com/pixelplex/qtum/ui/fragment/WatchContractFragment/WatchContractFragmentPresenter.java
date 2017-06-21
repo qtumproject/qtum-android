@@ -31,19 +31,19 @@ public class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
     public void onOkClick(String name, String address, String jsonInterface, boolean isToken){
         getView().setProgressDialog();
         if(isToken){
-            FileStorageManager.getInstance().writeAbiContract(getView().getContext(), jsonInterface);
+            long uiid = FileStorageManager.getInstance().importTemplate(getView().getContext(),null,null,jsonInterface,"token","no_name",DateCalculator.getCurrentDate());
             TinyDB tinyDB = new TinyDB(getView().getContext());
             List<Token> tokenList = tinyDB.getTokenList();
 
             //TODO : create
-            Token token = new Token(address, 0, true, DateCalculator.getCurrentDate(), "asdasd", name);
+            Token token = new Token(address, uiid, true, DateCalculator.getCurrentDate(), "asdasd", name);
             tokenList.add(token);
             tinyDB.putTokenList(tokenList);
         }else {
-            FileStorageManager.getInstance().writeAbiContract(getView().getContext(), jsonInterface);
+            long uiid = FileStorageManager.getInstance().importTemplate(getView().getContext(),null,null,jsonInterface,"token","no_name",DateCalculator.getCurrentDate());
             TinyDB tinyDB = new TinyDB(getView().getContext());
             List<Contract> contractList = tinyDB.getContractListWithoutToken();
-            Contract contract = new Contract(address, 0, true, DateCalculator.getCurrentDate(), "asdasd", name);
+            Contract contract = new Contract(address, uiid, true, DateCalculator.getCurrentDate(), "asdasd", name);
             contractList.add(contract);
             tinyDB.putContractListWithoutToken(contractList);
         }
