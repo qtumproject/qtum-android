@@ -163,7 +163,7 @@ public class UpdateService extends Service {
                     for(Contract contract : contractList){
                         if(contract.getContractAddress()!=null && contract.getContractAddress().equals(contractAddress)){
                             contract.setHasBeenCreated(true);
-                            contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000));
+                            contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
                             done = true;
                             break;
                         }
@@ -175,7 +175,7 @@ public class UpdateService extends Service {
                         for(Token token : tokenList){
                             if(token.getContractAddress()!=null && token.getContractAddress().equals(contractAddress)){
                                 token.setHasBeenCreated(true);
-                                token.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000));
+                                token.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
                                 break;
                             }
                         }

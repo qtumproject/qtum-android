@@ -56,7 +56,7 @@ public class DateCalculator {
         return formatter.format(date);
     }
 
-    public static String getDateInFormat(Integer date){
+    public static String getDateInFormat(Long date){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return formatter.format(new Date(date));
     }

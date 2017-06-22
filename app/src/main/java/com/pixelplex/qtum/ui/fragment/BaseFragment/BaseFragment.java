@@ -82,6 +82,12 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void setAlertDialog(String title, String message, String buttonText, PopUpType popUpType) {
+        setAlertDialog(title,message,buttonText,popUpType,null);
+
+    }
+
+    @Override
+    public void setAlertDialog(String title, String message, String buttonText, PopUpType type, final AlertDialogCallBack callBack) {
         dismissProgressDialog();
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_popup_fragment,null);
         ((FontTextView)view.findViewById(R.id.tv_pop_up_title)).setText(title);
@@ -92,10 +98,13 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
             @Override
             public void onClick(View view) {
                 mAlertDialog.cancel();
+                if(callBack!=null){
+                    callBack.onOkClick();
+                }
             }
         });
 
-        switch (popUpType.name()){
+        switch (type.name()){
             case "error":
                 ((ImageView)view.findViewById(R.id.iv_icon)).setImageResource(R.drawable.ic_error);
                 view.findViewById(R.id.red_line).setVisibility(View.VISIBLE);
@@ -112,7 +121,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
                 .create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.show();
-
     }
 
     public void hideBottomNavView(boolean recolorStatusBar) {
@@ -287,5 +295,14 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void setSoftMode() {
 
+    }
+
+    @Override
+    public Fragment getFragment() {
+        return this;
+    }
+
+    public interface AlertDialogCallBack{
+        void onOkClick();
     }
 }

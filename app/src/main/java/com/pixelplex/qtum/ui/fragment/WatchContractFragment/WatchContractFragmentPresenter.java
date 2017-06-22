@@ -1,5 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.WatchContractFragment;
 
+import android.support.v4.app.FragmentManager;
+
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
@@ -40,13 +42,22 @@ public class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
             tokenList.add(token);
             tinyDB.putTokenList(tokenList);
         }else {
-            long uiid = FileStorageManager.getInstance().importTemplate(getView().getContext(),null,null,jsonInterface,"token","no_name",DateCalculator.getCurrentDate());
+            long uiid = FileStorageManager.getInstance().importTemplate(getView().getContext(),null,null,jsonInterface,"none","no_name",DateCalculator.getCurrentDate());
             TinyDB tinyDB = new TinyDB(getView().getContext());
             List<Contract> contractList = tinyDB.getContractListWithoutToken();
             Contract contract = new Contract(address, uiid, true, DateCalculator.getCurrentDate(), "asdasd", name);
             contractList.add(contract);
             tinyDB.putContractListWithoutToken(contractList);
         }
-        getView().setAlertDialog("Ok","Ok", BaseFragment.PopUpType.confirm);
+        getView().setAlertDialog("Ok", "", "Ok", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
+            @Override
+            public void onOkClick() {
+                FragmentManager fm = getView().getFragment().getFragmentManager();
+                int count = fm.getBackStackEntryCount()-2;
+                for(int i = 0; i < count; ++i) {
+                    fm.popBackStack();
+                }
+            }
+        });
     }
 }

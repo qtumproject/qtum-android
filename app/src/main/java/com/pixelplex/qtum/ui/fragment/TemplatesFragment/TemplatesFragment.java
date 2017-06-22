@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.datastorage.model.ContractTemplate;
@@ -12,6 +13,7 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.DateCalculator;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -66,14 +68,21 @@ public class TemplatesFragment extends BaseFragment implements TemplatesFragment
         TinyDB tinyDB = new TinyDB(getContext());
         List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
 
-        Collections.sort(contractTemplateList, new Comparator<ContractTemplate>() {
+        List<ContractTemplate> contractFullTemplateList = new ArrayList<>();
+        for(ContractTemplate contractTemplate : contractTemplateList){
+            if(contractTemplate.isFullContractTemplate()){
+                contractFullTemplateList.add(contractTemplate);
+            }
+        }
+
+        Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
             @Override
             public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
                 return DateCalculator.equals(contractInfo.getDate(),t1.getDate());
             }
         });
 
-        contractList.setAdapter(new TemplatesRecyclerAdapter(contractTemplateList,this));
+        contractList.setAdapter(new TemplatesRecyclerAdapter(contractFullTemplateList,this));
     }
 
     @Override

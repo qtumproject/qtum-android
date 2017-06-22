@@ -43,6 +43,7 @@ public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl 
 
     BackupContractsFragmentView mBackupContractsFragmentView;
     Context mContext;
+    boolean BACK_UP_FLAG = false;
 
     public BackupContractsFragmentPresenter(BackupContractsFragmentView backupContractsFragmentView){
         mBackupContractsFragmentView = backupContractsFragmentView;
@@ -75,11 +76,20 @@ public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl 
             public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
                 if(requestCode == WRITE_EXTERNAL_STORAGE_CODE) {
                     if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                        backupFile();
+                        BACK_UP_FLAG = true;
                     }
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume(Context context) {
+        super.onResume(context);
+        if(BACK_UP_FLAG){
+            backupFile();
+            BACK_UP_FLAG = false;
+        }
     }
 
     @Override
@@ -165,7 +175,7 @@ public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl 
     }
 
 
-    public Observable<String> createBackupData(){
+    private Observable<String> createBackupData(){
         return rx.Observable.fromCallable(new Callable<String>() {
             @Override
             public String call() throws Exception {

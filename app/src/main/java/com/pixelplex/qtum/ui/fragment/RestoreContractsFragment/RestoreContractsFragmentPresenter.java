@@ -9,9 +9,14 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
@@ -20,8 +25,11 @@ import com.pixelplex.qtum.datastorage.backupmodel.Backup;
 import com.pixelplex.qtum.datastorage.backupmodel.ContractJSON;
 import com.pixelplex.qtum.datastorage.backupmodel.TemplateJSON;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.FileUtils;
+import com.pixelplex.qtum.utils.FontButton;
+import com.pixelplex.qtum.utils.FontTextView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,6 +42,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -48,6 +62,8 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
 
     private File mRestoreFile;
     private Context mContext;
+    private Backup mBackup;
+    private AlertDialog mRestoreDialog;
 
     RestoreContractsFragmentPresenter(RestoreContractsFragmentView restoreContractsFragmentView){
         mRestoreContractsFragmentView = restoreContractsFragmentView;
@@ -154,6 +170,10 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
         getView().deleteFile();
         if(mRestoreFile!=null){
             mRestoreFile.delete();
+            mRestoreFile = null;
+        }
+        if(mBackup!=null){
+            mBackup=null;
         }
     }
 
@@ -201,144 +221,216 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
         }
     }
 
-    public void onRestoreClick(boolean restoreTemplates, boolean restoreContracts, boolean restoreTokens) {
+    public void onRestoreClick(final boolean restoreTemplates, final boolean restoreContracts, final boolean restoreTokens) {
         if (restoreTemplates || restoreContracts || restoreTokens) {
             if (mRestoreFile != null) {
                 Gson gson = new Gson();
-                TinyDB tinyDB = new TinyDB(mContext);
-                Backup backup = gson.fromJson(readFile(mRestoreFile), Backup.class);
-                if (!restoreContracts && !restoreTokens) {
-                    for (TemplateJSON templateJSON : backup.getTemplates()) {
-                        FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBitecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
-                    }
+                mBackup = gson.fromJson(readFile(mRestoreFile), Backup.class);
+                int templatesCountInt = 0;
+                int contractsCountInt = 0;
+                int tokensCountInt = 0;
 
-                } else if (!restoreTemplates && !restoreTokens) {
-                    List<Contract> contractList = new ArrayList<>();
-                    for (ContractJSON contractJSON : backup.getContracts()) {
-                        if (!contractJSON.getType().equals("token")) {
-                            for (TemplateJSON templateJSON : backup.getTemplates()) {
-                                if (contractJSON.getTemplate() == templateJSON.getUiid()) {
-                                    long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBitecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
-                                    Contract contract = new Contract(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
-                                    contractList.add(contract);
-                                }
-                            }
-                        }
-                        List<Contract> tmpContractList = tinyDB.getContractListWithoutToken();
-                        tmpContractList.addAll(contractList);
-                        tinyDB.putContractListWithoutToken(tmpContractList);
-                    }
-
-                } else if (!restoreTemplates && !restoreContracts) {
-                    List<Token> tokenList = new ArrayList<>();
-                    for (ContractJSON contractJSON : backup.getContracts()) {
-                        if (contractJSON.getType().equals("token")) {
-                            for (TemplateJSON templateJSON : backup.getTemplates()) {
-                                if (contractJSON.getTemplate() == templateJSON.getUiid()) {
-                                    long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBitecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
-                                    Token token = new Token(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
-                                    token.setSubscribe(contractJSON.getIsActive());
-                                    tokenList.add(token);
-                                }
-                            }
-                        }
-                        List<Token> tmpTokenList = tinyDB.getTokenList();
-                        tmpTokenList.addAll(tokenList);
-                        tinyDB.putTokenList(tokenList);
-                    }
-
-                } else if (!restoreTemplates) {
-                    List<Token> tokenList = new ArrayList<>();
-                    List<Contract> contractList = new ArrayList<>();
-                    for (ContractJSON contractJSON : backup.getContracts()) {
-                        if (contractJSON.getType().equals("token")) {
-                            for (TemplateJSON templateJSON : backup.getTemplates()) {
-                                if (contractJSON.getTemplate() == templateJSON.getUiid()) {
-                                    long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBitecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
-                                    Token token = new Token(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
-                                    token.setSubscribe(contractJSON.getIsActive());
-                                    tokenList.add(token);
-                                }
-                            }
-                        } else {
-                            for (TemplateJSON templateJSON : backup.getTemplates()) {
-                                if (contractJSON.getTemplate() == templateJSON.getUiid()) {
-                                    long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBitecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
-                                    Contract contract = new Contract(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
-                                    contractList.add(contract);
-                                }
-                            }
-                        }
-                    }
-                    List<Token> tmpTokenList = tinyDB.getTokenList();
-                    tmpTokenList.addAll(tokenList);
-                    tinyDB.putTokenList(tokenList);
-                    List<Contract> tmpContractList = tinyDB.getContractListWithoutToken();
-                    tmpContractList.addAll(contractList);
-                    tinyDB.putContractListWithoutToken(tmpContractList);
-
-                } else if(restoreContracts && restoreTokens){
-                    List<Token> tokenList = new ArrayList<>();
-                    List<Contract> contractList = new ArrayList<>();
-                    for (TemplateJSON templateJSON : backup.getTemplates()) {
-                        long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBitecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
-                        for(ContractJSON contractJSON : backup.getContracts()){
-                            if(contractJSON.getTemplate() == uiid){
-                                if(!contractJSON.getType().equals("token")){
-                                    Contract contract = new Contract(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
-                                    contractList.add(contract);
-                                } else if(contractJSON.getType().equals("token")){
-                                    Token token = new Token(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
-                                    token.setSubscribe(contractJSON.getIsActive());
-                                    tokenList.add(token);
-                                }
-                            }
-                        }
-                    }
-                    List<Token> tmpTokenList = tinyDB.getTokenList();
-                    tmpTokenList.addAll(tokenList);
-                    tinyDB.putTokenList(tokenList);
-                    List<Contract> tmpContractList = tinyDB.getContractListWithoutToken();
-                    tmpContractList.addAll(contractList);
-                    tinyDB.putContractListWithoutToken(tmpContractList);
-
-                }else if(restoreContracts){
-                    List<Contract> contractList = new ArrayList<>();
-                    for (TemplateJSON templateJSON : backup.getTemplates()) {
-                        long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBitecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
-                        for(ContractJSON contractJSON : backup.getContracts()){
-                            if(contractJSON.getTemplate() == uiid){
-                                if(!contractJSON.getType().equals("token")){
-                                    Contract contract = new Contract(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
-                                    contractList.add(contract);
-                                }
-                            }
-                        }
-                    }
-                    List<Contract> tmpContractList = tinyDB.getContractListWithoutToken();
-                    tmpContractList.addAll(contractList);
-                    tinyDB.putContractListWithoutToken(tmpContractList);
-
-                }else{
-                    List<Token> tokenList = new ArrayList<>();
-                    for (TemplateJSON templateJSON : backup.getTemplates()) {
-                        long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBitecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
-                        for(ContractJSON contractJSON : backup.getContracts()){
-                            if(contractJSON.getTemplate() == uiid){
-                                if(contractJSON.getType().equals("token")){
-                                    Token token = new Token(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
-                                    token.setSubscribe(contractJSON.getIsActive());
-                                    tokenList.add(token);
-                                }
-                            }
-                        }
-                    }
-                    List<Token> tmpTokenList = tinyDB.getTokenList();
-                    tmpTokenList.addAll(tokenList);
-                    tinyDB.putTokenList(tokenList);
+                if(restoreTemplates){
+                    templatesCountInt = mBackup.getTemplates().size();
                 }
+                if(restoreContracts) {
+                    for (ContractJSON contractJSON : mBackup.getContracts()) {
+                        if (!contractJSON.getType().equals("token")) {
+                            contractsCountInt++;
+                        }
+                    }
+                }
+                if(restoreTokens) {
+                    for (ContractJSON contractJSON : mBackup.getContracts()) {
+                        if (contractJSON.getType().equals("token")) {
+                            tokensCountInt++;
+                        }
+                    }
+                }
+
+                String templatesCount = String.valueOf(templatesCountInt);
+                String contractsCount = String.valueOf(contractsCountInt);
+                String tokensCount = String.valueOf(tokensCountInt);
+
+                showRestoreDialogFragment(mBackup.getDateCreate(), mBackup.getFileVersion(), templatesCount, contractsCount, tokensCount, new RestoreDialogCallBack() {
+                    @Override
+                    public void onRestoreClick() {
+                        getView().setProgressDialog();
+                        createBackupData(restoreTemplates, restoreContracts, restoreTokens).subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Observer<Boolean>() {
+                                    @Override
+                                    public void onCompleted() {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(Boolean aBoolean) {
+                                        mRestoreDialog.dismiss();
+                                        getView().setAlertDialog("Restored", "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
+                                            @Override
+                                            public void onOkClick() {
+                                                FragmentManager fm = getView().getFragment().getFragmentManager();
+                                                int count = fm.getBackStackEntryCount()-2;
+                                                for(int i = 0; i < count; ++i) {
+                                                    fm.popBackStack();
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                    }
+                });
             }
         }
+    }
+
+    private Observable<Boolean> createBackupData(final boolean restoreTemplates, final boolean restoreContracts, final boolean restoreTokens){
+        return rx.Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+
+                        TinyDB tinyDB = new TinyDB(mContext);
+                        if (!restoreContracts && !restoreTokens) {
+                            for (TemplateJSON templateJSON : mBackup.getTemplates()) {
+                                FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
+                            }
+
+                        } else if (!restoreTemplates && !restoreTokens) {
+                            List<Contract> contractList = new ArrayList<>();
+                            for (ContractJSON contractJSON : mBackup.getContracts()) {
+                                if (!contractJSON.getType().equals("token")) {
+                                    for (TemplateJSON templateJSON : mBackup.getTemplates()) {
+                                        if (contractJSON.getTemplate() == templateJSON.getUiid()) {
+                                            long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
+                                            Contract contract = new Contract(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            contractList.add(contract);
+                                        }
+                                    }
+                                }
+                                List<Contract> tmpContractList = tinyDB.getContractListWithoutToken();
+                                tmpContractList.addAll(contractList);
+                                tinyDB.putContractListWithoutToken(tmpContractList);
+                            }
+
+                        } else if (!restoreTemplates && !restoreContracts) {
+                            List<Token> tokenList = new ArrayList<>();
+                            for (ContractJSON contractJSON : mBackup.getContracts()) {
+                                if (contractJSON.getType().equals("token")) {
+                                    for (TemplateJSON templateJSON : mBackup.getTemplates()) {
+                                        if (contractJSON.getTemplate() == templateJSON.getUiid()) {
+                                            long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
+                                            Token token = new Token(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            token.setSubscribe(contractJSON.getIsActive());
+                                            tokenList.add(token);
+                                        }
+                                    }
+                                }
+                                List<Token> tmpTokenList = tinyDB.getTokenList();
+                                tmpTokenList.addAll(tokenList);
+                                tinyDB.putTokenList(tokenList);
+                            }
+
+                        } else if (!restoreTemplates) {
+                            List<Token> tokenList = new ArrayList<>();
+                            List<Contract> contractList = new ArrayList<>();
+                            for (ContractJSON contractJSON : mBackup.getContracts()) {
+                                if (contractJSON.getType().equals("token")) {
+                                    for (TemplateJSON templateJSON : mBackup.getTemplates()) {
+                                        if (contractJSON.getTemplate() == templateJSON.getUiid()) {
+                                            long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
+                                            Token token = new Token(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            token.setSubscribe(contractJSON.getIsActive());
+                                            tokenList.add(token);
+                                        }
+                                    }
+                                } else {
+                                    for (TemplateJSON templateJSON : mBackup.getTemplates()) {
+                                        if (contractJSON.getTemplate() == templateJSON.getUiid()) {
+                                            long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
+                                            Contract contract = new Contract(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            contractList.add(contract);
+                                        }
+                                    }
+                                }
+                            }
+                            List<Token> tmpTokenList = tinyDB.getTokenList();
+                            tmpTokenList.addAll(tokenList);
+                            tinyDB.putTokenList(tokenList);
+                            List<Contract> tmpContractList = tinyDB.getContractListWithoutToken();
+                            tmpContractList.addAll(contractList);
+                            tinyDB.putContractListWithoutToken(tmpContractList);
+
+                        } else if(restoreContracts && restoreTokens){
+                            List<Token> tokenList = new ArrayList<>();
+                            List<Contract> contractList = new ArrayList<>();
+                            for (TemplateJSON templateJSON : mBackup.getTemplates()) {
+                                long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
+                                for(ContractJSON contractJSON : mBackup.getContracts()){
+                                    if(contractJSON.getTemplate() == templateJSON.getUiid()){
+                                        if(!contractJSON.getType().equals("token")){
+                                            Contract contract = new Contract(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            contractList.add(contract);
+                                        } else if(contractJSON.getType().equals("token")){
+                                            Token token = new Token(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            token.setSubscribe(contractJSON.getIsActive());
+                                            tokenList.add(token);
+                                        }
+                                    }
+                                }
+                            }
+                            List<Token> tmpTokenList = tinyDB.getTokenList();
+                            tmpTokenList.addAll(tokenList);
+                            tinyDB.putTokenList(tokenList);
+                            List<Contract> tmpContractList = tinyDB.getContractListWithoutToken();
+                            tmpContractList.addAll(contractList);
+                            tinyDB.putContractListWithoutToken(tmpContractList);
+
+                        }else if(restoreContracts){
+                            List<Contract> contractList = new ArrayList<>();
+                            for (TemplateJSON templateJSON : mBackup.getTemplates()) {
+                                long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
+                                for(ContractJSON contractJSON : mBackup.getContracts()){
+                                    if(contractJSON.getTemplate() == templateJSON.getUiid()){
+                                        if(!contractJSON.getType().equals("token")){
+                                            Contract contract = new Contract(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            contractList.add(contract);
+                                        }
+                                    }
+                                }
+                            }
+                            List<Contract> tmpContractList = tinyDB.getContractListWithoutToken();
+                            tmpContractList.addAll(contractList);
+                            tinyDB.putContractListWithoutToken(tmpContractList);
+
+                        }else{
+                            List<Token> tokenList = new ArrayList<>();
+                            for (TemplateJSON templateJSON : mBackup.getTemplates()) {
+                                long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
+                                for(ContractJSON contractJSON : mBackup.getContracts()){
+                                    if(contractJSON.getTemplate() == templateJSON.getUiid()){
+                                        if(contractJSON.getType().equals("token")){
+                                            Token token = new Token(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            token.setSubscribe(contractJSON.getIsActive());
+                                            tokenList.add(token);
+                                        }
+                                    }
+                                }
+                            }
+                            List<Token> tmpTokenList = tinyDB.getTokenList();
+                            tmpTokenList.addAll(tokenList);
+                            tinyDB.putTokenList(tokenList);
+                        }
+
+
+                return true;
+            }
+        });
     }
 
     private String readFile(File file){
@@ -358,6 +450,36 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
             e.printStackTrace();
         }
         return data;
+    }
 
+    private void showRestoreDialogFragment(String backupDate, String backupAppVersion, String templatesSum, String contractsSum, String tokensSum, final RestoreDialogCallBack callBack){
+        View view = LayoutInflater.from(getView().getMainActivity()).inflate(R.layout.dialog_restore_contracts_fragment,null);
+        ((FontTextView)view.findViewById(R.id.tv_back_up_date)).setText(backupDate);
+        ((FontTextView)view.findViewById(R.id.tv_back_up_app_version)).setText(backupAppVersion);
+        ((FontTextView)view.findViewById(R.id.tv_templates)).setText(templatesSum);
+        ((FontTextView)view.findViewById(R.id.tv_contracts)).setText(contractsSum);
+        ((FontTextView)view.findViewById(R.id.tv_tokens)).setText(tokensSum);
+        ((FontButton)view.findViewById(R.id.bt_restore)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callBack.onRestoreClick();
+            }
+        });
+        ((FontButton)view.findViewById(R.id.bt_back)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRestoreDialog.dismiss();
+            }
+        });
+        mRestoreDialog = new AlertDialog
+                .Builder(mContext)
+                .setView(view)
+                .create();
+        mRestoreDialog.setCanceledOnTouchOutside(false);
+        mRestoreDialog.show();
+    }
+
+    interface RestoreDialogCallBack{
+        void onRestoreClick();
     }
 }

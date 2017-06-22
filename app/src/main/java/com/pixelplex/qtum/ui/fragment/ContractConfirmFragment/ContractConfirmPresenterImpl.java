@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.ContractConfirmFragment;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 
 import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
@@ -10,6 +11,7 @@ import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequ
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
 import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
 import com.pixelplex.qtum.datastorage.KeyStorage;
+import com.pixelplex.qtum.datastorage.model.ContractTemplate;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.ContractBuilder;
@@ -130,7 +132,16 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                     @Override
                     public void onCompleted() {
                         getView().dismissProgressDialog();
-                        getView().setAlertDialog("Contract created successfully","OK", BaseFragment.PopUpType.confirm);
+                        getView().setAlertDialog("Contract created successfully", "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
+                            @Override
+                            public void onOkClick() {
+                                FragmentManager fm = getView().getFragment().getFragmentManager();
+                                int count = fm.getBackStackEntryCount()-2;
+                                for(int i = 0; i < count; ++i) {
+                                    fm.popBackStack();
+                                }
+                            }
+                        });
                     }
 
                     @Override
@@ -149,12 +160,23 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                                 name = contractMethodParameter.getValue();
                             }
                         }
-                        Token token = new Token(null, mContractTemplateUiid, false, null, senderAddress, name);
-
                         TinyDB tinyDB = new TinyDB(mContext);
-                        List<Token> tokenList = tinyDB.getTokenList();
-                        tokenList.add(token);
-                        tinyDB.putTokenList(tokenList);
+                        for(ContractTemplate contractTemplate : tinyDB.getContractTemplateList()){
+                            if(contractTemplate.getUiid() == mContractTemplateUiid){
+                                if(contractTemplate.getContractType().equals("token")){
+                                    Token token = new Token(null, mContractTemplateUiid, false, null, senderAddress, name);
+                                    List<Token> tokenList = tinyDB.getTokenList();
+                                    tokenList.add(token);
+                                    tinyDB.putTokenList(tokenList);
+                                }else{
+                                    Contract contract = new Contract(null, mContractTemplateUiid, false, null, senderAddress, "test_name");
+                                    List<Contract> contractList = tinyDB.getContractListWithoutToken();
+                                    contractList.add(contract);
+                                    tinyDB.putContractListWithoutToken(contractList);
+                                }
+                            }
+                        }
+
                     }
                 });
     }

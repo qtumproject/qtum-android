@@ -46,7 +46,7 @@ public class FileStorageManager {
     private final static String prefMigrationBuildVersion = "migration_buid_version";
 
     private final static String CrowdSale = "Crowdsale";
-    private static String[] STANDART_CONTRACTS = {"Standart", "Version1", "Version1", "Crowdsale"};
+    private static String[] STANDART_CONTRACTS = {"Standart", "Version1", "Version2", "Crowdsale"};
 
     private static String abiContract = "abi-contract";
     private static String byteCodeContract = "bitecode-contract";
