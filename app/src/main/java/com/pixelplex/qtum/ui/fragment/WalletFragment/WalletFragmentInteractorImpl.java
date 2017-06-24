@@ -1,11 +1,11 @@
 package com.pixelplex.qtum.ui.fragment.WalletFragment;
 
 
-import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.HistoryResponse;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.Vin;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
+import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.model.gson.history.History;
+import com.pixelplex.qtum.model.gson.history.HistoryResponse;
+import com.pixelplex.qtum.model.gson.history.Vin;
+import com.pixelplex.qtum.model.gson.history.Vout;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 

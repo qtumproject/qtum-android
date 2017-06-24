@@ -7,15 +7,15 @@ import android.support.annotation.NonNull;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
-import com.pixelplex.qtum.dataprovider.RestAPI.NetworkStateListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.Vin;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
-import com.pixelplex.qtum.dataprovider.TransactionListener;
+import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
+import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.model.gson.history.History;
+import com.pixelplex.qtum.model.gson.history.Vin;
+import com.pixelplex.qtum.model.gson.history.Vout;
+import com.pixelplex.qtum.model.gson.UnspentOutput;
+import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -170,7 +170,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     public void initializeViews() {
         super.initializeViews();
         updateAvailableBalance();
-        String currency = "";
+        String currency;
         mTokenList = new ArrayList<>();
         for(Token token : getInteractor().getTokenList()){
             if(token.isSubscribe()){
@@ -283,7 +283,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
         }
     }
 
-    public void createTx(final String abiParams, final String contractAddress) {
+    private void createTx(final String abiParams, final String contractAddress) {
         getInteractor().getUnspentOutputs(new SendBaseFragmentInteractorImpl.GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {

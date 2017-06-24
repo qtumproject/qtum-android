@@ -1,7 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.SubscribeTokensFragment;
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -18,8 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
+import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 
@@ -166,7 +164,7 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
         return mTokenAdapter.getTokenList();
     }
 
-    public class TokenHolder extends RecyclerView.ViewHolder{
+    class TokenHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.tv_single_string)
         TextView mTextViewCurrency;
@@ -186,9 +184,7 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
                     public void onClick(View view) {
                         if(getAdapterPosition()>=0) {
                             mTokenAdapter.getTokenList().get(getAdapterPosition()).setSubscribe(!mToken.isSubscribe());
-                            //TODO notifyItemSetChanged
                             mTokenAdapter.notifyItemChanged(getAdapterPosition());
-                           // mTokenAdapter.notifyDataSetChanged();
                         }
                     }
                 });
@@ -205,7 +201,7 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
         }
     }
 
-    public class TokenAdapter extends RecyclerView.Adapter<TokenHolder>{
+    private class TokenAdapter extends RecyclerView.Adapter<TokenHolder>{
 
         List<Token> mTokenList;
 

@@ -135,7 +135,6 @@ public class KeyStorage {
                 DeterministicSeed seed = null;
                 try {
                     seed = new DeterministicSeed(seedString, null, passphrase, DeterministicHierarchy.BIP32_STANDARDISATION_TIME_SECS);
-                    Log.d("test", Hex.toHexString(seed.getSeedBytes()));
 
                 } catch (UnreadableWalletException e) {
                     e.printStackTrace();

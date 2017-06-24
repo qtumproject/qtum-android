@@ -3,8 +3,8 @@ package com.pixelplex.qtum.utils;
 import android.content.Context;
 
 import com.pixelplex.qtum.datastorage.FileStorageManager;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
+import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.utils.sha3.sha.Keccak;
 import com.pixelplex.qtum.utils.sha3.sha.Parameters;
@@ -290,7 +290,6 @@ public class ContractBuilder {
             throw new RuntimeException("Not enough money");
         }
 
-        //TODO:test
         BigDecimal bitcoin = new BigDecimal(100000000);
         ECKey myKey = KeyStorage.getInstance().getCurrentKey();
         transaction.addOutput(Coin.valueOf((long)(unspentOutput.getAmount().multiply(bitcoin).subtract(new BigDecimal("10000000")).doubleValue())),

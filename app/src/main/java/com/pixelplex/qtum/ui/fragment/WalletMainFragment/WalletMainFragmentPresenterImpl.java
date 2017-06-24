@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.WalletMainFragment;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
+import android.content.Context;
+
+import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 import com.pixelplex.qtum.datastorage.TinyDB;
@@ -14,11 +15,8 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by kirillvolkov on 25.05.17.
- */
 
-public class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
+class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
 
     private WalletMainFragmentInteractorImpl mWalletMainFragmentInteractor;
     private WalletMainFragmentView mWalletMainFragmentView;
@@ -29,8 +27,14 @@ public class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
     }
 
     @Override
-    public BaseFragmentView getView() {
+    public WalletMainFragmentView getView() {
         return mWalletMainFragmentView;
+    }
+
+    @Override
+    public void onResume(Context context) {
+        super.onResume(context);
+        checkOtherTokens();
     }
 
     public void checkOtherTokens() {
@@ -50,7 +54,7 @@ public class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
 
                     @Override
                     public void onNext(List<Token> tokens) {
-                        mWalletMainFragmentView.showOtherTokens(tokens != null && tokens.size() > 0);
+                        getView().showOtherTokens(tokens != null && tokens.size() > 0);
                     }
                 });
     }

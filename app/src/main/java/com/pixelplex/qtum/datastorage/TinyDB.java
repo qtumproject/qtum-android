@@ -44,9 +44,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
-import com.pixelplex.qtum.datastorage.model.ContractTemplate;
+import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.utils.DateCalculator;
 
 

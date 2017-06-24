@@ -1,12 +1,12 @@
 package com.pixelplex.qtum.ui.fragment.ContractFunctionFragment;
 
         import com.pixelplex.qtum.datastorage.FileStorageManager;
-        import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
-        import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
-        import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
-        import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
-        import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
-        import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
+        import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+        import com.pixelplex.qtum.model.contract.ContractMethod;
+        import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+        import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
+        import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
+        import com.pixelplex.qtum.model.gson.UnspentOutput;
         import com.pixelplex.qtum.datastorage.KeyStorage;
         import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
         import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;

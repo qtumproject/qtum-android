@@ -23,12 +23,14 @@ import org.json.JSONObject;
 
 import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.TokenListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalanceChangeListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
+import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
+import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
+import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
+import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
+import com.pixelplex.qtum.model.gson.history.History;
+import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
@@ -43,7 +45,6 @@ import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -356,11 +357,7 @@ public class UpdateService extends Service {
         } else {
             builder.setSmallIcon(R.drawable.logo);
         }
-        if (android.os.Build.VERSION.SDK_INT <= 15) {
-            notification = builder.getNotification();
-        } else {
-            notification = builder.build();
-        }
+        notification = builder.build();
 
         startForeground(DEFAULT_NOTIFICATION_ID, notification);
     }

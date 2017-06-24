@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.UpdateService;
-import com.pixelplex.qtum.datastorage.LanguageChangeListener;
+import com.pixelplex.qtum.utils.LanguageChangeListener;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.BaseActivity.BasePresenterImpl;
 import com.pixelplex.qtum.ui.fragment.NewsFragment.NewsFragment;
@@ -23,7 +23,6 @@ import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
-import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragment;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 import com.pixelplex.qtum.utils.QtumIntent;
 

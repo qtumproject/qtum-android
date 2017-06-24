@@ -3,15 +3,15 @@ package com.pixelplex.qtum.ui.fragment.ContractConfirmFragment;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
+import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
+import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
+import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.datastorage.KeyStorage;
-import com.pixelplex.qtum.datastorage.model.ContractTemplate;
+import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.ContractBuilder;
@@ -19,7 +19,6 @@ import com.pixelplex.qtum.datastorage.TinyDB;
 
 import org.bitcoinj.script.Script;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;

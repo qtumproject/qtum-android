@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 
 import com.pixelplex.qtum.R;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
+import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.ContractFunctionFragment.ContractFunctionFragment;
 import com.pixelplex.qtum.utils.FontTextView;

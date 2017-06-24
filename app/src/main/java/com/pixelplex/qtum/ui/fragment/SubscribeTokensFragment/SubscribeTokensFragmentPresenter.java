@@ -2,12 +2,7 @@ package com.pixelplex.qtum.ui.fragment.SubscribeTokensFragment;
 
 import android.content.Context;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class SubscribeTokensFragmentPresenter extends BaseFragmentPresenterImpl {

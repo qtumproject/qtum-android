@@ -17,9 +17,6 @@ import com.transitionseverywhere.TransitionManager;
 
 import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 16.05.17.
- */
 
 public class SplashActivity extends BaseActivity implements SplashActivityView, Transition.TransitionListener {
 

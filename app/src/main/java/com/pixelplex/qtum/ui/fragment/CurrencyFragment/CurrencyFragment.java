@@ -2,7 +2,6 @@ package com.pixelplex.qtum.ui.fragment.CurrencyFragment;
 
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -35,9 +34,6 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
     private TokenAdapter mTokenAdapter;
     private String mSearchString;
     private List<String> mCurrentList;
-
-    //TODO: remove
-    String currentCurrency = "one";
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -146,7 +142,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
         mRecyclerView.setAdapter(mTokenAdapter);
     }
 
-    public class CurrencyHolder extends RecyclerView.ViewHolder{
+    class CurrencyHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.tv_single_string)
         TextView mTextViewCurrency;
@@ -176,7 +172,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
         }
     }
 
-    public class TokenAdapter extends RecyclerView.Adapter<CurrencyHolder>{
+    private class TokenAdapter extends RecyclerView.Adapter<CurrencyHolder>{
 
         List<String> mTokenList;
 

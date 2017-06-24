@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.datastorage.model.ContractTemplate;
+import com.pixelplex.qtum.model.ContractTemplate;
 
 import java.util.List;
 

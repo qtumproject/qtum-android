@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
@@ -248,8 +247,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     }
 
     public void onResponseError() {
-        //TODO : change notification type
-        Toast.makeText(getContext(), "Invalid QR Code", Toast.LENGTH_SHORT).show();
+        setAlertDialog("Invalid QR Code","OK", PopUpType.error);
     }
 
     @Override

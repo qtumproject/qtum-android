@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.MyContractsFragment;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 import java.util.List;

@@ -1,7 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.SubscribeTokensFragment;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
+import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 import java.util.List;

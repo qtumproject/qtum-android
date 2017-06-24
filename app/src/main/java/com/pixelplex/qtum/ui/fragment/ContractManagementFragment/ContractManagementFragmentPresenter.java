@@ -1,11 +1,11 @@
 package com.pixelplex.qtum.ui.fragment.ContractManagementFragment;
 
 import com.pixelplex.qtum.datastorage.FileStorageManager;
-import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractRequest;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractResponse.CallSmartContractResponse;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
+import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
+import com.pixelplex.qtum.model.gson.callSmartContractResponse.CallSmartContractResponse;
+import com.pixelplex.qtum.model.contract.ContractMethod;
+import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.sha3.sha.Keccak;
 import com.pixelplex.qtum.utils.sha3.sha.Parameters;

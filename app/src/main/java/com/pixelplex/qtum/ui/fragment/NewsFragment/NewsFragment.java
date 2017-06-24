@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.News;
+import com.pixelplex.qtum.model.gson.News;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 import java.util.List;

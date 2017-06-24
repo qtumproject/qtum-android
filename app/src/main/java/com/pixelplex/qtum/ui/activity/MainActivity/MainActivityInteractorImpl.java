@@ -10,7 +10,7 @@ import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 
 class MainActivityInteractorImpl implements MainActivityInteractor {
 
-    Context mContext;
+    private Context mContext;
 
     MainActivityInteractorImpl(Context context){
         mContext = context;

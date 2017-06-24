@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
+import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.utils.FontManager;
 import com.pixelplex.qtum.utils.FontTextView;
 

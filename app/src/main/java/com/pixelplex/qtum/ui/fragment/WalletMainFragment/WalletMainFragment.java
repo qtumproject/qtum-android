@@ -16,9 +16,6 @@ import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragment;
 
 import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 25.05.17.
- */
 
 public class WalletMainFragment extends BaseFragment implements WalletMainFragmentView {
 
@@ -50,14 +47,6 @@ public class WalletMainFragment extends BaseFragment implements WalletMainFragme
     public void initializeViews() {
         super.initializeViews();
         pager.setAdapter(new FragmentAdapter(getFragmentManager()));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(mWalletMainFragmentPresenter != null){
-            mWalletMainFragmentPresenter.checkOtherTokens();
-        }
     }
 
     @Override

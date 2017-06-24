@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.NetworkStateListener;
+import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
 
 
 public class NetworkStateReceiver extends BroadcastReceiver {
@@ -22,7 +22,8 @@ public class NetworkStateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getExtras() != null) {
-            NetworkInfo ni = (NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
             if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
                 mInitialState = true;
                 Log.i("app", "Network " + ni.getTypeName() + " connected");

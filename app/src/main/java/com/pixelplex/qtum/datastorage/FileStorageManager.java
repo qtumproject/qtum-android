@@ -9,8 +9,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.pixelplex.qtum.BuildConfig;
-import com.pixelplex.qtum.datastorage.model.ContractTemplate;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
+import com.pixelplex.qtum.model.ContractTemplate;
+import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.utils.DateCalculator;
 
 import org.json.JSONArray;
@@ -19,29 +19,23 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 25.05.17.
- */
 
 public class FileStorageManager {
 
     private static FileStorageManager _instance;
 
-    public final static String TAG = "STORAGE MANAGER: ";
+    private final static String TAG = "STORAGE MANAGER: ";
 
     private final static String prefMigrationBuildVersion = "migration_buid_version";
 
@@ -68,11 +62,11 @@ public class FileStorageManager {
         return _instance;
     }
 
-    public boolean writeContract(Context context , String fileName, String fileContent) {
+    private boolean writeContract(Context context, String fileName, String fileContent) {
            return writeFile(context, fileName, fileContent);
     }
 
-    public String readContract(Context context,long uiid, String fileName) {
+    private String readContract(Context context, long uiid, String fileName) {
             return readFile(context, uiid, fileName);
     }
 
@@ -118,13 +112,12 @@ public class FileStorageManager {
 
     private String readFile(Context context, long uiid, String fileName) {
 
-        int i;
         String data = "";
 
         ContextWrapper cw = new ContextWrapper(context);
         File contractDir = getPackagePath(cw,CONTRACTS_PACKAGE);
 
-        FileReader inputFile = null;
+        FileReader inputFile;
         try {
             inputFile = new FileReader(new File(String.format("%s/%s/%s",contractDir,uiid,fileName)));
             BufferedReader bufferReader = new BufferedReader(inputFile);
@@ -140,8 +133,7 @@ public class FileStorageManager {
         return data;
     }
 
-    public String
-    readFromAsset(Context context, String packageName, String fileName) {
+    private String readFromAsset(Context context, String packageName, String fileName) {
 
         String data = "";
         String mLine;
@@ -168,15 +160,15 @@ public class FileStorageManager {
         return data;
     }
 
-    public boolean writeAbiContract(Context context,String content){
+    private boolean writeAbiContract(Context context, String content){
         return writeContract(context, abiContract,content);
     }
 
-    public boolean writeByteCodeContract(Context context,String content){
+    private boolean writeByteCodeContract(Context context, String content){
         return writeContract(context, byteCodeContract,content);
     }
 
-    public boolean writeSourceContract(Context context,String content){
+    private boolean writeSourceContract(Context context, String content){
         return writeContract(context, sourceContract,content);
     }
 
@@ -207,7 +199,7 @@ public class FileStorageManager {
 //    READ DEFAULT CONTRACTS
 
     private boolean migrateContract(Context context, String contractName) {
-        boolean result = true;
+        boolean result;
 
         String readData = readAbiContractAsset(context,contractName);
         if(TextUtils.isEmpty(readData)) {
@@ -240,12 +232,12 @@ public class FileStorageManager {
 
     public ContractMethod getContractConstructor(Context context, long uiid) {
       String abiContent = readAbiContract(context,uiid);
-        JSONArray array = null;
+        JSONArray array;
         try {
             array = new JSONArray(abiContent);
 
             for (int i = 0; i < array.length(); i++) {
-                JSONObject jb = (JSONObject)array.getJSONObject(i);
+                JSONObject jb = array.getJSONObject(i);
                 if(CONSTRUCTOR_TYPE.equals(jb.getString(TYPE))){
                     Gson gson = new Gson();
                     return gson.fromJson(jb.toString(), ContractMethod.class);
@@ -260,13 +252,13 @@ public class FileStorageManager {
 
     public List<ContractMethod> getContractMethods(final Context context, long uiid) {
         String abiContent = readAbiContract(context,uiid);
-        JSONArray array = null;
+        JSONArray array;
         List<ContractMethod> contractMethods = new ArrayList<>();
         try {
             array = new JSONArray(abiContent);
 
             for (int i = 0; i < array.length(); i++) {
-                JSONObject jb = (JSONObject)array.getJSONObject(i);
+                JSONObject jb = array.getJSONObject(i);
                 if(FUNCTION_TYPE.equals(jb.getString(TYPE))){
                     Gson gson = new Gson();
                     contractMethods.add(gson.fromJson(jb.toString(), ContractMethod.class));

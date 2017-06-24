@@ -13,12 +13,11 @@ import org.bitcoinj.core.TransactionOutPoint;
 import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
-import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Token;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
+import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
+import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
+import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
@@ -28,10 +27,8 @@ import com.pixelplex.qtum.datastorage.TinyDB;
 import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -114,7 +111,6 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     }
                 }
                 if (overFlow.doubleValue() < amount.doubleValue()) {
-                    //TODO: throw exception
                     callBack.onError("Not enough money");
                     return;
                 }

@@ -9,15 +9,14 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.Contract;
+import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.datastorage.TinyDB;
-import com.pixelplex.qtum.datastorage.backupmodel.Backup;
-import com.pixelplex.qtum.datastorage.backupmodel.ContractJSON;
-import com.pixelplex.qtum.datastorage.backupmodel.TemplateJSON;
-import com.pixelplex.qtum.datastorage.model.ContractTemplate;
+import com.pixelplex.qtum.model.backup.Backup;
+import com.pixelplex.qtum.model.backup.ContractJSON;
+import com.pixelplex.qtum.model.backup.TemplateJSON;
+import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.DateCalculator;
 

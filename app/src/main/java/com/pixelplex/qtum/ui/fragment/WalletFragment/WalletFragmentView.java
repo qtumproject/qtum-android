@@ -2,7 +2,7 @@ package com.pixelplex.qtum.ui.fragment.WalletFragment;
 
 
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
+import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 import java.util.List;
@@ -18,7 +18,6 @@ interface WalletFragmentView extends BaseFragmentView {
     void loadNewHistory();
     void notifyNewHistory();
     void notifyConfirmHistory(int notifyPosition);
-    void setWalletName(String walletName);
     void notifyNewToken();
 
 }

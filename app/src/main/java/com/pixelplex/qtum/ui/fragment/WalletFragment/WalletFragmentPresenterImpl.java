@@ -8,12 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
-import com.pixelplex.qtum.dataprovider.BalanceChangeListener;
+import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
-import com.pixelplex.qtum.dataprovider.RestAPI.NetworkStateListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.TokenListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import com.pixelplex.qtum.dataprovider.TransactionListener;
+import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
+import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
+import com.pixelplex.qtum.model.gson.history.History;
+import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -201,28 +201,6 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     public void openTransactionFragment(int position) {
         Fragment fragment = TransactionFragment.newInstance(position);
         getView().openFragment(fragment);
-    }
-
-    @Override
-    public void onInitialInitialize() {
-
-    }
-
-    @Override
-    public void changePage(int position) {
-//        getInteractor().unSubscribe();
-//        //TODO: delete
-//        getView().setAdapterNull();
-//        if(position==0){
-//            getView().setWalletName("QTUM");
-//        } else {
-//            getView().setWalletName(getInteractor().getTokenList().get(position-1).getName());
-//        }
-//        String pubKey = getInteractor().getAddress();
-//        getView().updatePubKey(pubKey);
-//
-//        loadAndUpdateData();
-//        setUpBalance();
     }
 
     @Override

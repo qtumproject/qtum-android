@@ -1,7 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.WalletFragment;
 
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
+import com.pixelplex.qtum.model.gson.history.History;
 
 import java.util.List;
 
