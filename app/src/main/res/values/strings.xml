@@ -65,17 +65,14 @@
     <string name="create_token">Create Token</string>
     <string name="subscribe_tokens">Subscribe Tokens</string>
     <string name="set_your_token_name">Set Your Token Name</string>
-    <string name="step_1_of_3">Step 1 of 3</string>
     <string name="token_symbol">Token Symbol</string>
     <string name="set_your_token_features">Set Your Token Features</string>
-    <string name="step_2_of_3">Step 2 of 3</string>
     <string name="next">Next</string>
     <string name="freezing_of_assets">Freezing of Assets</string>
     <string name="automatic_selling_and_buying">Automatic Selling and Buying</string>
     <string name="autorefill">Autorefill</string>
     <string name="proof_of_work">Proof of Work</string>
     <string name="set_your_token_parameters">Set Your Token Parameters</string>
-    <string name="step_3_of_3">Step 3 of 3</string>
     <string name="initial_supply">Initial Supply</string>
     <string name="decimal_units">Decimal Units</string>
     <string name="back">Back</string>
@@ -96,10 +93,6 @@
     <string name="no">No</string>
     <string name="coped">Copied</string>
     <string name="are_you_sure">Are you sure?</string>
-    <string name="please_wait">Please wait...</string>
-    <string name="please_wait_a_few_seconds">Please wait a few seconds</string>
-    <string name="loading">Loading</string>
-    <string name="cpy_brain_code_descr">Your deputy nothing occasional objection ally aesthetic swing mad have stay objective consumption</string>
     <string name="skip">Skip</string>
     <string name="not_confirmed_balance">Not Confirmed Balance</string>
     <string name="not_confirmed_trans">Transaction Not Confirmed Yet</string>
@@ -107,7 +100,6 @@
     <string name="set_your_token">Set Your Token</string>
     <string name="step_1_2">Step 1 of 2</string>
     <string name="step_2_2">Step 2 of 2</string>
-    <string name="free">Free</string>
     <string name="complete">Complete</string>
     <string name="ok">Ok</string>
     <string name="other_tokens">Other Tokens</string>
@@ -135,6 +127,14 @@
     <string name="restore_contracts">Restore Contracts</string>
     <string name="backup_contracts">Backup Contracts</string>
     <string name="select_back_up_file">Select back-up file</string>
+    <string name="please_wait_a_few_seconds">Please wait a few seconds</string>
+    <string name="payment_completed_successfully">Payment completed successfully</string>
+    <string name="default_currency">(default currency)</string>
+    <string name="error">Error</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="please_check_your_network_settings">Please check your network settings</string>
+    <string name="contract_created_successfully">Contract created successfully</string>
+    <string name="restored_successfully">Restored successfully</string>
 
 
 </resources>

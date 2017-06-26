@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.ContractFunctionFragment;
 
+import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
 import com.pixelplex.qtum.model.contract.ContractMethod;
@@ -88,7 +89,7 @@ public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl
 
                     @Override
                     public void onError(Throwable e) {
-                        getView().setAlertDialog("Error",e.getMessage(),"Ok", BaseFragment.PopUpType.error);
+                        getView().setAlertDialog(getView().getContext().getString(R.string.error),e.getMessage(),"Ok", BaseFragment.PopUpType.error);
                     }
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {

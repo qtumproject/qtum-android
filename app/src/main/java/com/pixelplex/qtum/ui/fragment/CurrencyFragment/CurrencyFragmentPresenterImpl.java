@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.CurrencyFragment;
 
 
+import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
@@ -27,7 +28,7 @@ class CurrencyFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     public void onViewCreated() {
         super.onViewCreated();
         List<String> contractTokenList = new ArrayList<>();
-        contractTokenList.add("Qtum (default currency)");
+        contractTokenList.add("Qtum " + getView().getContext().getString(R.string.default_currency));
         for(Token token : getInteractor().getTokenList()){
             if(token.isSubscribe()){
                 contractTokenList.add(token.getContractName());

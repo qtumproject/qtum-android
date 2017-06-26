@@ -178,7 +178,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
             }
         }
         if(!mTokenList.isEmpty()) {
-            currency = "Qtum (default currency)";
+            currency = "Qtum "+mContext.getString(R.string.default_currency);
             getView().setUpCurrencyField(currency);
         }else {
             getView().hideCurrencyField();
@@ -234,17 +234,17 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
             }
             getView().clearError();
             getView().setProgressDialog();
-            if(currency.equals("Qtum (default currency)")) {
+            if(currency.equals("Qtum "+mContext.getString(R.string.default_currency))) {
                 getInteractor().sendTx(address, amount, new SendBaseFragmentInteractorImpl.SendTxCallBack() {
                     @Override
                     public void onSuccess() {
-                        getView().setAlertDialog("Payment completed successfully", "Ok", BaseFragment.PopUpType.confirm);
+                        getView().setAlertDialog(mContext.getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
                     }
 
                     @Override
                     public void onError(String error) {
                         getView().dismissProgressDialog();
-                        getView().setAlertDialog("Error", error, "Ok", BaseFragment.PopUpType.error);
+                        getView().setAlertDialog(mContext.getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
                     }
                 });
             } else {
@@ -279,7 +279,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                 }
             }
         } else {
-            getView().setAlertDialog("No Internet Connection","Please check your network settings","Ok", BaseFragment.PopUpType.error);
+            getView().setAlertDialog(mContext.getString(R.string.no_internet_connection),mContext.getString(R.string.please_check_your_network_settings),"Ok", BaseFragment.PopUpType.error);
         }
     }
 

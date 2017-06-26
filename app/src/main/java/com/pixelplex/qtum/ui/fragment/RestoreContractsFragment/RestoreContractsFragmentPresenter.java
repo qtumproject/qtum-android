@@ -268,7 +268,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                                     @Override
                                     public void onNext(Boolean aBoolean) {
                                         mRestoreDialog.dismiss();
-                                        getView().setAlertDialog("Restored", "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
+                                        getView().setAlertDialog(mContext.getString(R.string.restored_successfully), "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
                                             @Override
                                             public void onOkClick() {
                                                 FragmentManager fm = getView().getFragment().getFragmentManager();
