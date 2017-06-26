@@ -86,7 +86,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
             mUpdateService.clearNotification();
-
         }
 
         @Override

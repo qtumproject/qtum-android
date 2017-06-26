@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -90,7 +91,6 @@ public class UpdateService extends Service {
             public void call(Object... args) {
 
                 socket.emit("subscribe", "balance_subscribe", mAddresses);
-                sendNotification("Default", "QTUM monitoring", "Touch to open application", null);
 
             }
         }).on("balance_changed", new Emitter.Listener() {
@@ -193,8 +193,6 @@ public class UpdateService extends Service {
                             sendNotification("New confirmed transaction", totalTransaction + " new confirmed transaction",
                                     "Touch to open transaction history", RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                         }
-                    } else {
-                        sendNotification("Default", "QTUM monitoring", "Touch to open application", RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                     }
                 } else {
                     if (history.getBlockTime() != null) {
@@ -343,9 +341,8 @@ public class UpdateService extends Service {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentIntent(contentIntent)
-                .setOngoing(true)
-
                 //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
+                .setAutoCancel(true)
                 .setTicker(Ticker)
                 .setContentTitle(Title)
                 .setContentText(Text)
@@ -359,7 +356,8 @@ public class UpdateService extends Service {
         }
         notification = builder.build();
 
-        startForeground(DEFAULT_NOTIFICATION_ID, notification);
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(DEFAULT_NOTIFICATION_ID, notification);
     }
 
     @Nullable
@@ -415,11 +413,11 @@ public class UpdateService extends Service {
     }
 
     public void clearNotification() {
-        if (totalTransaction != 0) {
-            sendNotification("Default", "QTUM monitoring", "Touch to open application", null);
-            totalTransaction = 0;
-        }
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancelAll();
+        totalTransaction = 0;
     }
+
 
     public class UpdateBinder extends Binder {
         public UpdateService getService() {
