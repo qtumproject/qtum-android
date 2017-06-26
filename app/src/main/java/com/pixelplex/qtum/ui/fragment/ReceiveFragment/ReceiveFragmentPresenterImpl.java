@@ -4,13 +4,9 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.AsyncTask;
-import android.support.v4.graphics.ColorUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 
 import com.google.zxing.BarcodeFormat;
@@ -85,7 +81,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     @Override
     public void onCopyWalletAddressClick() {
-        ClipboardManager clipboard = (ClipboardManager) getView().getFragmentActivity().getSystemService(CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) getView().getMainActivity().getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", getInteractor().getCurrentReceiveAddress());
         clipboard.setPrimaryClip(clip);
         getView().showToast();
@@ -161,7 +157,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     private Bitmap textToImageEncode(String Value) throws WriterException {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        Display display = getView().getFragmentActivity().getWindowManager().getDefaultDisplay();
+        Display display = getView().getMainActivity().getWindowManager().getDefaultDisplay();
         display.getMetrics(displayMetrics);
         int QRCodeWidth = displayMetrics.heightPixels / 3;
         moduleWidth = QRCodeWidth;

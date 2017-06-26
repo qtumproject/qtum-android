@@ -23,17 +23,21 @@ import org.json.JSONObject;
 
 import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.TokenListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalanceChangeListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
+import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
+import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
+import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
+import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
+import com.pixelplex.qtum.model.gson.history.History;
+import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.QtumIntent;
-import com.pixelplex.qtum.utils.TinyDB;
+import com.pixelplex.qtum.datastorage.TinyDB;
 
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 import org.spongycastle.crypto.digests.SHA256Digest;
@@ -41,8 +45,8 @@ import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -122,14 +126,29 @@ public class UpdateService extends Service {
                 if(((QtumApplication)getApplication()).isContractAwait()){
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
 
-                    ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
-                    for(ContractInfo contractInfo : contractInfoList){
-                        if(contractInfo.getContractAddress()==null){
-                            contractInfo.setContractAddress(generateContractAddress(history.getTxHash()));
+                    boolean done = false;
+
+                    List<Contract> contractListWithoutToken = tinyDB.getContractListWithoutToken();
+                    for(Contract contract : contractListWithoutToken){
+                        if(contract.getContractAddress()==null){
+                            contract.setContractAddress(generateContractAddress(history.getTxHash()));
+                            done = true;
                             break;
                         }
                     }
-                    tinyDB.putListContractInfo(contractInfoList);
+                    tinyDB.putContractListWithoutToken(contractListWithoutToken);
+
+                    if(!done) {
+                        List<Token> tokenList = tinyDB.getTokenList();
+                        for (Token token : tokenList) {
+                            if (token.getContractAddress() == null) {
+                                token.setContractAddress(generateContractAddress(history.getTxHash()));
+                                break;
+                            }
+                        }
+                        tinyDB.putTokenList(tokenList);
+                    }
+
                     ((QtumApplication)getApplication()).setContractAwait(false);
                 }
                 if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
@@ -138,15 +157,31 @@ public class UpdateService extends Service {
                     String contractAddress = generateContractAddress(txHash);
 
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
-                    ArrayList<ContractInfo> contractInfoList = tinyDB.getListContractInfo();
-                    for(ContractInfo contractInfo : contractInfoList){
-                        if(contractInfo.getContractAddress().equals(contractAddress)){
-                            contractInfo.setHasBeenCreated(true);
-                            contractInfo.setDate((long)history.getBlockTime());
+
+                    boolean done = false;
+
+                    List<Contract> contractList = tinyDB.getContractListWithoutToken();
+                    for(Contract contract : contractList){
+                        if(contract.getContractAddress()!=null && contract.getContractAddress().equals(contractAddress)){
+                            contract.setHasBeenCreated(true);
+                            contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
+                            done = true;
                             break;
                         }
                     }
-                    tinyDB.putListContractInfo(contractInfoList);
+                    tinyDB.putContractListWithoutToken(contractList);
+
+                    if(!done){
+                        List<Token> tokenList = tinyDB.getTokenList();
+                        for(Token token : tokenList){
+                            if(token.getContractAddress()!=null && token.getContractAddress().equals(contractAddress)){
+                                token.setHasBeenCreated(true);
+                                token.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
+                                break;
+                            }
+                        }
+                        tinyDB.putTokenList(tokenList);
+                    }
 
                     subscribeTokenBalanceChange(contractAddress);
                 }
@@ -322,11 +357,7 @@ public class UpdateService extends Service {
         } else {
             builder.setSmallIcon(R.drawable.logo);
         }
-        if (android.os.Build.VERSION.SDK_INT <= 15) {
-            notification = builder.getNotification();
-        } else {
-            notification = builder.build();
-        }
+        notification = builder.build();
 
         startForeground(DEFAULT_NOTIFICATION_ID, notification);
     }

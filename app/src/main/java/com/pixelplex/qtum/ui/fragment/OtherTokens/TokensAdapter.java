@@ -5,27 +5,25 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.model.contract.Token;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 06.06.17.
- */
 
 public class TokensAdapter extends RecyclerView.Adapter<TokenViewHolder> {
 
     private final UpdateSocketInstance socketInstace;
-    List<ContractInfo> tokens;
+    List<Token> tokens;
     OnTokenClickListener listener;
 
-    public TokensAdapter(List<ContractInfo> tokens, UpdateSocketInstance socketInstance, OnTokenClickListener listener) {
+    public TokensAdapter(List<Token> tokens, UpdateSocketInstance socketInstance, OnTokenClickListener listener) {
         this.tokens = tokens;
         this.socketInstace = socketInstance;
         this.listener = listener;
     }
 
-    public ContractInfo get(int adapterPosition) {
+    public Contract get(int adapterPosition) {
         return tokens.get(adapterPosition);
     }
 

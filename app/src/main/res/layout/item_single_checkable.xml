@@ -22,7 +22,7 @@
             android:gravity="center_vertical"
             android:text="asdas12312kmddm7m12312mfvf6"
             android:textColor="@color/colorPrimary"
-            android:textSize="14sp"/>
+            android:textSize="16sp"/>
 
         <ImageView
             android:id="@+id/iv_check_indicator"
@@ -32,5 +32,19 @@
             android:visibility="gone"
             app:srcCompat="@drawable/ic_check"/>
 
+        <ImageView
+            android:id="@+id/iv_check_indicator_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/colorPrimary"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_check"/>
+
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"/>
+
 </LinearLayout>

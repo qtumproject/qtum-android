@@ -16,9 +16,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
+import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontManager;
+import com.pixelplex.qtum.utils.FontTextView;
 
 import java.util.List;
 
@@ -26,14 +27,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by max-v on 6/2/2017.
- */
 
 public class ContractFunctionFragment extends BaseFragment implements ContractFunctionFragmentView {
 
     ContractFunctionFragmentPresenter mContractFunctionFragmentPresenter;
-    public final static String CONTRACT_TEMPLATE_NAME = "contract_template_name";
+    public final static String CONTRACT_TEMPLATE_UIID = "contract_template_uiid";
     public final static String METHOD_NAME = "method_name";
     public final static String CONTRACT_ADDRESS = "contract_address";
 
@@ -49,15 +47,15 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
                 getActivity().onBackPressed();
                 break;
             case R.id.call:
-                getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_NAME),getArguments().getString(CONTRACT_ADDRESS),getArguments().getString(METHOD_NAME));
+                getPresenter().onCallClick(mParameterAdapter.getParams(),getArguments().getString(CONTRACT_ADDRESS),getArguments().getString(METHOD_NAME));
                 break;
         }
     }
 
-    public static ContractFunctionFragment newInstance(String methodName, String contractTemplateName, String contractAddress) {
+    public static ContractFunctionFragment newInstance(String methodName, long uiid, String contractAddress) {
 
         Bundle args = new Bundle();
-        args.putString(CONTRACT_TEMPLATE_NAME,contractTemplateName);
+        args.putLong(CONTRACT_TEMPLATE_UIID,uiid);
         args.putString(METHOD_NAME,methodName);
         args.putString(CONTRACT_ADDRESS,contractAddress);
         ContractFunctionFragment fragment = new ContractFunctionFragment();
@@ -93,8 +91,8 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
     }
 
     @Override
-    public String getContractTemplateName() {
-        return getArguments().getString(CONTRACT_TEMPLATE_NAME);
+    public long getContractTemplateUiid() {
+        return getArguments().getLong(CONTRACT_TEMPLATE_UIID);
     }
 
     @Override
@@ -131,7 +129,7 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
                 String content = etParam.getText().toString() + source;
                 if (!TextUtils.isEmpty(content)) {
-                    switch (parameter.type) {
+                    switch (parameter.getType()) {
                         case TYPE_INT:
                             return validateINT(content);
                         case TYPE_UINT8:
@@ -146,7 +144,7 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
                             return validateUINT(content, uint64);
 
                         default:
-                            parameter.value = content;
+                            parameter.setValue(content);
                             return ALLOW;
                     }
                 } else {
@@ -164,6 +162,9 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
         @BindView(R.id.checkbox)
         AppCompatCheckBox checkBox;
 
+        @BindView(R.id.tv_param_field)
+        FontTextView mTextViewParamField;
+
         public ParameterViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -175,8 +176,12 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
 
         public void bind (ContractMethodParameter parameter, boolean isLast) {
             this.parameter = parameter;
-            tilParam.setHint(fromCamelCase(parameter.name));
-            setInputType(parameter.type);
+
+            int position = getAdapterPosition()+1;
+            mTextViewParamField.setText("Parameter " + position);
+
+            tilParam.setHint(fromCamelCase(parameter.getName()));
+            setInputType(parameter.getType());
             if(isLast){
                 etParam.setImeOptions(EditorInfo.IME_ACTION_DONE);
             }else {
@@ -185,7 +190,7 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
         }
 
         private String fromCamelCase(String cCase) {
-            if(TextUtils.isEmpty(parameter.displayName)) {
+            if(TextUtils.isEmpty(parameter.getDisplayName())) {
                 StringBuilder builder = new StringBuilder(cCase);
                 for (int i = builder.length() - 1; i > 0; i--) {
                     char ch = builder.charAt(i);
@@ -195,9 +200,9 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
                 }
 
                 String value = builder.toString().replace("_", "");
-                parameter.displayName = value.substring(0, 1).toUpperCase() + value.substring(1);
+                parameter.setDisplayName(value.substring(0, 1).toUpperCase() + value.substring(1));
             }
-            return parameter.displayName;
+            return parameter.getDisplayName();
         }
 
         private void setInputType(String type){
@@ -232,7 +237,7 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
             try {
                 int num = Integer.parseInt(content);
                 if (num > Integer.MIN_VALUE && num < Integer.MAX_VALUE) {
-                    parameter.value = String.valueOf(num);
+                    parameter.setValue(String.valueOf(num));
                     return ALLOW;
                 }
             } catch (Exception e) {
@@ -245,7 +250,7 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
             try {
                 long num = Long.parseLong(content);
                 if (num > 0 && num < uint) {
-                    parameter.value = String.valueOf(num);
+                    parameter.setValue(String.valueOf(num));
                     return ALLOW;
                 }
             } catch (Exception e) {

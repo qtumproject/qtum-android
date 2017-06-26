@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 
+import com.pixelplex.qtum.utils.LanguageChangeListener;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,6 @@ public class QtumSharedPreference {
     private final String QTUM_KEY_IDENTIFIER = "qtum_key_identifier";
     private final String QTUM_LANGUAGE = "qtum_language";
     private final String QTUM_SEED = "qtum_seed";
-    private final String QTUM_EXCHANGE_RATES = "qtum_exchange_rates";
 
     private List<LanguageChangeListener> mLanguageChangeListeners;
 
@@ -57,17 +58,6 @@ public class QtumSharedPreference {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getInt(QTUM_WALLET_PASSWORD, 0);
     }
 
-    public void saveExchangeRates(Context context, double exchangeRates) {
-        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putString(QTUM_EXCHANGE_RATES, String.valueOf(exchangeRates));
-        mEditor.apply();
-    }
-
-    public double getExchangeRates(Context context) {
-        return Double.parseDouble(context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_EXCHANGE_RATES, "1"));
-    }
-
     public void setKeyGeneratedInstance(Context context, boolean isKeyGenerated) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
@@ -77,17 +67,6 @@ public class QtumSharedPreference {
 
     public boolean getKeyGeneratedInstance(Context context) {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getBoolean(QTUM_IS_KEY_GENERATED, false);
-    }
-
-    public String getIdentifier(Context context) {
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_KEY_IDENTIFIER, "");
-    }
-
-    public void saveIdentifier(Context context, String identifier) {
-        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putString(QTUM_KEY_IDENTIFIER, identifier);
-        mEditor.apply();
     }
 
     public String getLanguage(Context context) {

@@ -1,6 +1,5 @@
 package com.pixelplex.qtum;
 
-import android.app.Application;
 import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;

@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.datastorage;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.News;
+import com.pixelplex.qtum.model.gson.News;
 
 import java.util.ArrayList;
 import java.util.List;

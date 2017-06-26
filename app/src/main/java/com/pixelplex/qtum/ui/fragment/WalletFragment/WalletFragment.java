@@ -3,31 +3,19 @@ package com.pixelplex.qtum.ui.fragment.WalletFragment;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -36,18 +24,13 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.baoyz.widget.PullRefreshLayout;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 import com.pixelplex.qtum.utils.FontTextView;
 import com.pixelplex.qtum.utils.ResizeWidthAnimation;
-import com.transitionseverywhere.ChangeClipBounds;
-import com.transitionseverywhere.TransitionManager;
 
-import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -223,11 +206,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                 mTransactionAdapter.notifyItemChanged(notifyPosition);
             }
         });
-    }
-
-    @Override
-    public void setWalletName(String walletName) {
-        //TODO WALLET NAME
     }
 
     @Override

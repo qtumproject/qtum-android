@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
@@ -16,9 +16,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * Created by kirillvolkov on 01.06.17.
- */
 
 public class OtherTokensFragment extends BaseFragment implements OtherTokensView, OnTokenClickListener {
 
@@ -83,7 +80,7 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
     }
 
     @Override
-    public void setTokensData(List<ContractInfo> tokensData) {
+    public void setTokensData(List<Token> tokensData) {
         tokensList.setAdapter(new TokensAdapter(tokensData,presenter, this));
     }
 

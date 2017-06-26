@@ -1,15 +1,9 @@
 package com.pixelplex.qtum.ui.fragment.TransactionFragment;
 
 
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
-
-import com.pixelplex.qtum.R;
-
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.Vin;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
-import com.pixelplex.qtum.datastorage.QtumSharedPreference;
+import com.pixelplex.qtum.model.gson.history.History;
+import com.pixelplex.qtum.model.gson.history.Vin;
+import com.pixelplex.qtum.model.gson.history.Vout;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 import java.text.SimpleDateFormat;

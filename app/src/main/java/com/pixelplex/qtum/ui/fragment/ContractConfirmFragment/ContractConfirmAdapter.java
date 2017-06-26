@@ -6,13 +6,10 @@ import android.view.ViewGroup;
 
 import com.mikhaellopez.hfrecyclerview.HFRecyclerView;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
+import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 26.05.17.
- */
 
 public class ContractConfirmAdapter extends HFRecyclerView<ContractMethodParameter> {
 

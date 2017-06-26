@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.DividerItemDecoration;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.OnSettingClickListener;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.PrefAdapter;
@@ -26,7 +25,7 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
     @OnClick(R.id.ibt_back)
 
     public void onClick() {
-        
+
         getActivity().onBackPressed();
     }
 
@@ -53,13 +52,25 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
     public void onSettingClick(int key) {
         switch (key){
             case R.string.create_contract:
-                presenter.onCreateContractClick();
+                getPresenter().onCreateContractClick();
                 break;
             case R.string.my_contracts:
-                presenter.onMyContractsClick();
+                getPresenter().onMyContractsClick();
                 break;
             case R.string.contracts_store:
-                presenter.onContractsStoreClick();
+                getPresenter().onContractsStoreClick();
+                break;
+            case R.string.watch_contract:
+                getPresenter().onWatchContractClick();
+                break;
+            case R.string.watch_token:
+                getPresenter().onWatchTokenClick();
+                break;
+            case R.string.restore_contracts:
+                getPresenter().onRestoreContractsClick();
+                break;
+            case R.string.backup_contracts:
+                getPresenter().onBackupContractsClick();
                 break;
 
         }
@@ -72,7 +83,7 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected SmartContractsFragmentPresenterImpl getPresenter() {
         return presenter;
     }
 

@@ -37,7 +37,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 2
-        versionName "0.1.0"
+        versionName "0.1.1"
         //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled  true
@@ -101,3 +101,5 @@ dependencies {
 
     compile 'com.mikhaellopez:hfrecyclerview:1.0.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

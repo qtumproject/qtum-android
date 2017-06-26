@@ -1,7 +1,6 @@
 package com.pixelplex.qtum.ui.activity.MainActivity;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,20 +31,22 @@ import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.BaseActivity.BaseActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.ContractConfirmFragment.CompleteDialogFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
 
 
-public class MainActivity extends BaseActivity implements MainActivityView {
+
+public class MainActivity extends BaseActivity implements MainActivityView{
 
     private static final int LAYOUT = R.layout.activity_main;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
-    private static final int REQUEST_CAMERA = 0;
     private NfcAdapter mNfcAdapter;
+    private ActivityResultListener mActivityResultListener;
+    private PermissionsResultListener mPermissionsResultListener;
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
@@ -64,7 +65,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
-        loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
+
     }
 
     @Override
@@ -85,12 +86,12 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         return getPresenter().getAmountForSendAction();
     }
 
-    private void loadPermissions(String perm, int requestCode) {
-        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
-                ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
-            }
-        }
+    public void loadPermissions(String perm, int requestCode) {
+        ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
+    }
+
+    public boolean checkPermission(String perm){
+        return ContextCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -192,28 +193,25 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         getPresenter().processIntent(getIntent());
     }
 
-    Dialog processingDialog;
-
-    public void showProcessing() {
-        if(processingDialog == null) {
-            processingDialog = new Dialog(this);
-            processingDialog.setContentView(R.layout.lyt_processing_dialog);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(mActivityResultListener!=null){
+            mActivityResultListener.onActivityResult(requestCode,resultCode,data);
         }
-        processingDialog.show();
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void hideProcessing() {
-        if(processingDialog != null && processingDialog.isShowing()) {
-            processingDialog.hide();
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(mPermissionsResultListener!=null) {
+            mPermissionsResultListener.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(processingDialog != null) {
-            processingDialog.dismiss();
-        }
     }
 
     public void setRootFragment(Fragment rootFragment) {
@@ -231,5 +229,29 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
     public QtumApplication getQtumApplication(){
         return (QtumApplication)getApplication();
+    }
+
+    public void addActivityResultListener(ActivityResultListener activityResultListener){
+        mActivityResultListener = activityResultListener;
+    }
+
+    public void removeResultListener(){
+        mActivityResultListener = null;
+    }
+
+    public void addPermissionResultListener(PermissionsResultListener permissionsResultListener){
+        mPermissionsResultListener = permissionsResultListener;
+    }
+
+    public void removePermissionResultListener(){
+        mPermissionsResultListener = null;
+    }
+
+    public interface ActivityResultListener{
+        void onActivityResult(int requestCode, int resultCode, Intent data);
+    }
+
+    public interface PermissionsResultListener{
+        void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults);
     }
 }

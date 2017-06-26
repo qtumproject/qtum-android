@@ -1,21 +1,15 @@
 package com.pixelplex.qtum.ui.fragment.ContractManagementFragment;
 
-import android.view.View;
-
-import com.pixelplex.qtum.SmartContractsManager.StorageManager;
-import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractRequest;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractResponse.CallSmartContractResponse;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.CallSmartContractResponse.Item;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethod;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
+import com.pixelplex.qtum.datastorage.FileStorageManager;
+import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
+import com.pixelplex.qtum.model.gson.callSmartContractResponse.CallSmartContractResponse;
+import com.pixelplex.qtum.model.contract.ContractMethod;
+import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 import com.pixelplex.qtum.utils.sha3.sha.Keccak;
 import com.pixelplex.qtum.utils.sha3.sha.Parameters;
-import com.pixelplex.qtum.utils.sha3.utils.HexUtils;
 
-import org.spongycastle.util.BigIntegers;
 import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigInteger;
@@ -27,9 +21,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by max-v on 6/2/2017.
- */
 
 public class ContractManagementFragmentPresenter extends BaseFragmentPresenterImpl {
 
@@ -42,7 +33,7 @@ public class ContractManagementFragmentPresenter extends BaseFragmentPresenterIm
     @Override
     public void initializeViews() {
         super.initializeViews();
-        List<ContractMethod> contractMethodList = StorageManager.getInstance().getContractMethods(getView().getContext(),getView().getContractTemplateName());
+        List<ContractMethod> contractMethodList = FileStorageManager.getInstance().getContractMethods(getView().getContext(),getView().getContractTemplateUiid());
         getView().setRecyclerView(contractMethodList);
     }
 
@@ -104,7 +95,7 @@ public class ContractManagementFragmentPresenter extends BaseFragmentPresenterIm
     }
 
     private String processResponse(List<ContractMethodParameter> contractMethodOutputParameterList, String output){
-        String type = contractMethodOutputParameterList.get(0).type;
+        String type = contractMethodOutputParameterList.get(0).getType();
         if(type.contains("int")){
             if(output.isEmpty()){
                 return "0";

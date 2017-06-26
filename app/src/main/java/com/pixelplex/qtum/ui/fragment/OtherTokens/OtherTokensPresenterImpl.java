@@ -2,13 +2,13 @@ package com.pixelplex.qtum.ui.fragment.OtherTokens;
 
 import android.content.Context;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.TokenFragment.TokenFragment;
-import com.pixelplex.qtum.utils.TinyDB;
+import com.pixelplex.qtum.datastorage.TinyDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +19,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by kirillvolkov on 01.06.17.
- */
 
 public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implements OtherTokensPresenter, UpdateSocketInstance {
 
@@ -35,7 +32,7 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
         this.interactor = new OtherTokensInteractorImpl();
     }
 
-    public void openTokenDetails(ContractInfo token) {
+    public void openTokenDetails(Contract token) {
         TokenFragment tokenFragment = TokenFragment.newInstance(token);
         getView().openFragment(tokenFragment);
     }
@@ -45,20 +42,20 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
         return view;
     }
 
-    private Observable<List<ContractInfo>> getTokens() {
-        return Observable.fromCallable(new Callable<List<ContractInfo>>() {
+    private Observable<List<Token>> getTokens() {
+        return Observable.fromCallable(new Callable<List<Token>>() {
             @Override
-            public List<ContractInfo> call() throws Exception {
+            public List<Token> call() throws Exception {
                 TinyDB tinyDB = new TinyDB(mContext);
-                List<ContractInfo> contracts = tinyDB.getListContractInfo();
-                List<ContractInfo> tokens = new ArrayList<>();
+                List<Token> tokenList = tinyDB.getTokenList();
+                List<Token> tokens = new ArrayList<>();
 
-                for (ContractInfo contract: contracts) {
-                    if(contract.isToken()){
-                        tokens.add(contract);
+                for (Token token: tokenList) {
+                    if(token.isSubscribe()){
+                        tokens.add(token);
                     }
                 }
-                contracts.clear();
+                tokenList.clear();
                 return tokens;
             }
         });
@@ -68,7 +65,7 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
         getTokens()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<ContractInfo>>() {
+                .subscribe(new Subscriber<List<Token>>() {
             @Override
             public void onCompleted() {
 
@@ -80,7 +77,7 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
             }
 
             @Override
-            public void onNext(List<ContractInfo> tokens) {
+            public void onNext(List<Token> tokens) {
                 if(tokens != null && tokens.size() > 0) {
                     getView().setTokensData(tokens);
                 }
@@ -90,6 +87,6 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
 
     @Override
     public UpdateService getSocketInstance() {
-        return ((MainActivity) getView().getFragmentActivity()).getUpdateService();
+        return ((MainActivity) getView().getMainActivity()).getUpdateService();
     }
 }

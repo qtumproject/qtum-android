@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragment;
@@ -21,9 +22,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by max-v on 6/2/2017.
- */
 
 public class MyContractsFragment extends BaseFragment implements MyContractsFragmentView {
 
@@ -74,8 +72,8 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
     }
 
     @Override
-    public void updateRecyclerView(List<ContractInfo> contractInfoList) {
-        mContractAdapter = new ContractAdapter(contractInfoList);
+    public void updateRecyclerView(List<Contract> contractList) {
+        mContractAdapter = new ContractAdapter(contractList);
         mRecyclerView.setAdapter(mContractAdapter);
     }
 
@@ -90,7 +88,7 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
         @BindView(R.id.contract_type)
         FontTextView mTextViewContractType;
 
-        ContractInfo mContractInfo;
+        Contract mContract;
 
         public ContractViewHolder(View itemView) {
             super(itemView);
@@ -98,32 +96,34 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mContractInfo.isHasBeenCreated()) {
-                        ContractManagementFragment contractManagementFragment = ContractManagementFragment.newInstance(mContractInfo.getTemplateName(), mContractInfo.getContractAddress());
+                    if(mContract.isHasBeenCreated()) {
+                        ContractManagementFragment contractManagementFragment = ContractManagementFragment.newInstance(mContract.getUiid(), mContract.getContractAddress());
                         openFragment(contractManagementFragment);
                     }
                 }
             });
         }
 
-        public void bindContract(ContractInfo contractInfo){
-            mContractInfo = contractInfo;
-            if(contractInfo.getDate()!=null){
-                mTextViewDate.setText(DateCalculator.getDate(contractInfo.getDate()*1000));
+        public void bindContract(Contract contract){
+            mContract = contract;
+            if(contract.getDate()!=null){
+                mTextViewDate.setText(DateCalculator.getDate(contract.getDate()));
             }else{
                 mTextViewDate.setText(R.string.not_confirmed);
             }
-            mTextViewTitle.setText(contractInfo.getContractAddress().substring(0,8));
-            mTextViewContractType.setText("(token)");
+            mTextViewTitle.setText(contract.getContractAddress().substring(0,8));
+            TinyDB tinyDB = new TinyDB(getContext());
+            String contractType = tinyDB.getContractTemplateByUiid(contract.getUiid()).getContractType();
+            mTextViewContractType.setText(contractType);
         }
     }
 
     class ContractAdapter extends RecyclerView.Adapter<ContractViewHolder>{
 
-        List<ContractInfo> mContractInfoList;
+        List<Contract> mContractList;
 
-        ContractAdapter(List<ContractInfo> contractInfoList){
-            mContractInfoList = contractInfoList;
+        ContractAdapter(List<Contract> contractList){
+            mContractList = contractList;
         }
 
         @Override
@@ -135,12 +135,12 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
 
         @Override
         public void onBindViewHolder(ContractViewHolder holder, int position) {
-            holder.bindContract(mContractInfoList.get(position));
+            holder.bindContract(mContractList.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return mContractInfoList.size();
+            return mContractList.size();
         }
     }
 

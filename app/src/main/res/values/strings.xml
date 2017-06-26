@@ -130,6 +130,11 @@
     <string name="sender_address">Sender Address</string>
     <string name="contract_address">Contract Address</string>
     <string name="not_confirmed">Not Confirmed</string>
+    <string name="watch_contract">Watch Contract</string>
+    <string name="watch_token">Watch Token</string>
+    <string name="restore_contracts">Restore Contracts</string>
+    <string name="backup_contracts">Backup Contracts</string>
+    <string name="select_back_up_file">Select back-up file</string>
 
 
 </resources>

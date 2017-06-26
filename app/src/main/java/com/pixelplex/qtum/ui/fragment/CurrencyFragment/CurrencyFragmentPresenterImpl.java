@@ -1,9 +1,11 @@
 package com.pixelplex.qtum.ui.fragment.CurrencyFragment;
 
 
-import android.content.Context;
-
+import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 class CurrencyFragmentPresenterImpl extends BaseFragmentPresenterImpl implements CurrencyFragmentPresenter{
@@ -13,7 +15,7 @@ class CurrencyFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
     CurrencyFragmentPresenterImpl(CurrencyFragmentView currencyFragmentView){
         mCurrencyFragmentView = currencyFragmentView;
-        mCurrencyFragmentInteractor = new CurrencyFragmentInteractorImpl();
+        mCurrencyFragmentInteractor = new CurrencyFragmentInteractorImpl(getView().getContext());
     }
 
     @Override
@@ -24,7 +26,14 @@ class CurrencyFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        getView().setTokenList(getInteractor().getTokenList());
+        List<String> contractTokenList = new ArrayList<>();
+        contractTokenList.add("Qtum (default currency)");
+        for(Token token : getInteractor().getTokenList()){
+            if(token.isSubscribe()){
+                contractTokenList.add(token.getContractName());
+            }
+        }
+        getView().setTokenList(contractTokenList);
     }
 
     public CurrencyFragmentInteractorImpl getInteractor() {

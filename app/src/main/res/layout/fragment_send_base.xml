@@ -147,7 +147,7 @@
 
 
             <LinearLayout
-                android:id="@+id/fl_currency"
+                android:id="@+id/ll_currency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/til_receivers_address"
@@ -191,7 +191,7 @@
                 android:id="@+id/til_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fl_currency"
+                android:layout_below="@+id/ll_currency"
                 android:layout_marginBottom="16dp"
                 android:textColorHint="@color/colorPrimary">
 

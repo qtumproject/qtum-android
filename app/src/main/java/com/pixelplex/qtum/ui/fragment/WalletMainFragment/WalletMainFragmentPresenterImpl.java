@@ -1,8 +1,10 @@
 package com.pixelplex.qtum.ui.fragment.WalletMainFragment;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
+import android.content.Context;
+
+import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
-import com.pixelplex.qtum.utils.TinyDB;
+import com.pixelplex.qtum.datastorage.TinyDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +15,8 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by kirillvolkov on 25.05.17.
- */
 
-public class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
+class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
 
     private WalletMainFragmentInteractorImpl mWalletMainFragmentInteractor;
     private WalletMainFragmentView mWalletMainFragmentView;
@@ -28,15 +27,21 @@ public class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
     }
 
     @Override
-    public BaseFragmentView getView() {
+    public WalletMainFragmentView getView() {
         return mWalletMainFragmentView;
+    }
+
+    @Override
+    public void onResume(Context context) {
+        super.onResume(context);
+        checkOtherTokens();
     }
 
     public void checkOtherTokens() {
         getTokens()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<ContractInfo>>() {
+                .subscribe(new Subscriber<List<Token>>() {
                     @Override
                     public void onCompleted() {
 
@@ -48,26 +53,26 @@ public class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
                     }
 
                     @Override
-                    public void onNext(List<ContractInfo> tokens) {
-                        mWalletMainFragmentView.showOtherTokens(tokens != null && tokens.size() > 0);
+                    public void onNext(List<Token> tokens) {
+                        getView().showOtherTokens(tokens != null && tokens.size() > 0);
                     }
                 });
     }
 
-    private Observable<List<ContractInfo>> getTokens() {
-        return Observable.fromCallable(new Callable<List<ContractInfo>>() {
+    private Observable<List<Token>> getTokens() {
+        return Observable.fromCallable(new Callable<List<Token>>() {
             @Override
-            public List<ContractInfo> call() throws Exception {
+            public List<Token> call() throws Exception {
                 TinyDB tinyDB = new TinyDB(getView().getContext());
-                List<ContractInfo> contracts = tinyDB.getListContractInfo();
-                List<ContractInfo> tokens = new ArrayList<>();
+                List<Token> tokenList = tinyDB.getTokenList();
+                List<Token> tokens = new ArrayList<>();
 
-                for (ContractInfo contract: contracts) {
-                    if(contract.isToken()){
-                        tokens.add(contract);
+                for (Token token: tokenList) {
+                    if(token.isSubscribe()){
+                        tokens.add(token);
                     }
                 }
-                contracts.clear();
+                tokenList.clear();
                 return tokens;
             }
         });

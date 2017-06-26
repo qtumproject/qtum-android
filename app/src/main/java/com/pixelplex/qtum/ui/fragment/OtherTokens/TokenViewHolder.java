@@ -7,17 +7,14 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.ContractInfo;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalanceChangeListener;
+import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
+import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by kirillvolkov on 06.06.17.
- */
 
 public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBalanceChangeListener {
 
@@ -33,7 +30,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
     @BindView(R.id.spinner)
     ProgressBar spinner;
 
-    ContractInfo token;
+    Token token;
 
     UpdateSocketInstance socketInstance;
 
@@ -50,7 +47,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
         });
     }
 
-    public void bind (ContractInfo token) {
+    public void bind (Token token) {
 
         if(this.token != null) {
             socketInstance.getSocketInstance().removeTokenBalanceChangeListener(token.getContractAddress());
@@ -58,7 +55,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
 
         this.token = token;
 
-        tokenName.setText(token.getTemplateName());
+        tokenName.setText(token.getContractName());
         tokenBalanceView.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
         socketInstance.getSocketInstance().addTokenBalanceChangeListener(token.getContractAddress(),this);
@@ -70,12 +67,12 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
     @Override
     public void onBalanceChange(final TokenBalance tokenBalance) {
         if(token.getContractAddress().equals(tokenBalance.getContractAddress())){
-            token.setLastBalance(tokenBalance.getSummaryBalance());
+            token.setLastBalance(tokenBalance.getTotalBalance());
             rootLayout.post(new Runnable() {
                 @Override
                 public void run() {
                     spinner.setVisibility(View.GONE);
-                    tokenBalanceView.setText(String.format("%f QTUM",tokenBalance.getSummaryBalance()));
+                    tokenBalanceView.setText(String.format("%f QTUM",tokenBalance.getTotalBalance()));
                     tokenBalanceView.setVisibility(View.VISIBLE);
                 }
             });

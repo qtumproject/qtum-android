@@ -52,7 +52,7 @@ class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl im
 
     @Override
     public void onCancelClick() {
-        getView().getFragmentActivity().onBackPressed();
+        getView().getMainActivity().onBackPressed();
     }
 
     @Override

@@ -1,20 +1,18 @@
 package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
@@ -58,6 +56,10 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     TextView mTextViewTotalBalanceNumber;
     @BindView(R.id.rl_send)
     RelativeLayout mRelativeLayoutBase;
+    @BindView(R.id.ll_currency)
+    LinearLayout mLinearLayoutCurrency;
+    @BindView(R.id.tv_currency)
+    TextView mTextViewCurrency;
 
     SendBaseFragmentPresenterImpl sendBaseFragmentPresenter;
 
@@ -66,23 +68,28 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @OnClick({R.id.bt_qr_code, R.id.bt_send, R.id.ibt_back, R.id.fl_currency})
+    @OnClick({R.id.bt_qr_code, R.id.bt_send, R.id.ibt_back, R.id.ll_currency})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_qr_code:
                 getPresenter().onClickQrCode();
                 break;
             case R.id.bt_send:
-                String[] sendInfo = new String[3];
+                String[] sendInfo = new String[4];
                 sendInfo[0] = mTextInputEditTextAddress.getText().toString();
                 sendInfo[1] = mTextInputEditTextAmount.getText().toString();
-                sendInfo[2] = mTextInputEditTextPin.getText().toString();
+                sendInfo[3] = mTextInputEditTextPin.getText().toString();
+                if(mLinearLayoutCurrency.getVisibility()==View.VISIBLE){
+                    sendInfo[2] = mTextViewCurrency.getText().toString();
+                } else {
+                    sendInfo[2] = "Qtum (default currency)";
+                }
                 getPresenter().send(sendInfo);
                 break;
             case R.id.ibt_back:
                 getActivity().onBackPressed();
                 break;
-            case R.id.fl_currency:
+            case R.id.ll_currency:
                 getPresenter().onCurrencyClick();
                 break;
         }
@@ -121,7 +128,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     }
 
     @Override
-    public void openFragmentForResult(Fragment fragment) {
+    public void openInnerFragmentForResult(Fragment fragment) {
         int code_response = 200;
         fragment.setTargetFragment(this, code_response);
         getFragmentManager()
@@ -214,19 +221,38 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         mTextViewTotalBalanceNumber.setText(balance);
     }
 
+    @Override
+    public void setUpCurrencyField(String currency) {
+        mLinearLayoutCurrency.setVisibility(View.VISIBLE);
+        mTextViewCurrency.setText(currency);
+    }
+
+    @Override
+    public Fragment getFragment() {
+        return this;
+    }
+
+    @Override
+    public void hideCurrencyField() {
+        mLinearLayoutCurrency.setVisibility(View.GONE);
+    }
+
 
     public void onResponse(String pubAddress, Double amount) {
         getPresenter().onResponse(pubAddress, amount);
     }
 
+    public void onCurrencyChoose(String currency){
+        getPresenter().onCurrencyChoose(currency);
+    }
+
     public void onResponseError() {
-        //TODO : change notification type
-        Toast.makeText(getContext(), "Invalid QR Code", Toast.LENGTH_SHORT).show();
+        setAlertDialog("Invalid QR Code","OK", PopUpType.error);
     }
 
     @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 }

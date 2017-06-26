@@ -2,7 +2,6 @@ package com.pixelplex.qtum.ui.fragment.BaseFragment;
 
 import android.app.Activity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,10 +17,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.pixelplex.qtum.R;
+
+import com.pixelplex.qtum.ui.fragment.ProcessingDialogFragment;
+
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
 
@@ -41,8 +44,9 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     public static final String BACK_STACK_ROOT_TAG = "root_fragment";
 
     private Unbinder mUnbinder;
-    ProgressDialog mProgressDialog;
+
     AlertDialog mAlertDialog;
+    ProcessingDialogFragment mProcessingDialog;
 
     @Nullable
     @BindView(R.id.toolbar)
@@ -55,21 +59,36 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
-    public void setProgressDialog(String message) {
-        mProgressDialog =  new ProgressDialog(getActivity());
-        mProgressDialog.setTitle(message);
-        mProgressDialog.setMessage(getString(R.string.please_wait));
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
+    public void setProgressDialog() {
+        mProcessingDialog = new ProcessingDialogFragment();
+        mProcessingDialog.show(getFragmentManager(), mProcessingDialog.getClass().getCanonicalName());
     }
 
     @Override
     public void dismissProgressDialog() {
-        mProgressDialog.dismiss();
+        if(mProcessingDialog !=null){
+            mProcessingDialog.dismiss();
+        }
+    }
+
+    public enum PopUpType{
+        error, confirm
     }
 
     @Override
-    public void setAlertDialog(String title, String message, String buttonText) {
+    public void setAlertDialog(String title, String buttonText, PopUpType type) {
+        setAlertDialog(title,"",buttonText,type);
+    }
+
+    @Override
+    public void setAlertDialog(String title, String message, String buttonText, PopUpType popUpType) {
+        setAlertDialog(title,message,buttonText,popUpType,null);
+
+    }
+
+    @Override
+    public void setAlertDialog(String title, String message, String buttonText, PopUpType type, final AlertDialogCallBack callBack) {
+        dismissProgressDialog();
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_popup_fragment,null);
         ((FontTextView)view.findViewById(R.id.tv_pop_up_title)).setText(title);
         ((FontTextView)view.findViewById(R.id.tv_pop_up_message)).setText(message);
@@ -79,8 +98,22 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
             @Override
             public void onClick(View view) {
                 mAlertDialog.cancel();
+                if(callBack!=null){
+                    callBack.onOkClick();
+                }
             }
         });
+
+        switch (type.name()){
+            case "error":
+                ((ImageView)view.findViewById(R.id.iv_icon)).setImageResource(R.drawable.ic_error);
+                view.findViewById(R.id.red_line).setVisibility(View.VISIBLE);
+                break;
+            case "confirm":
+                ((ImageView)view.findViewById(R.id.iv_icon)).setImageResource(R.drawable.ic_confirm);
+                view.findViewById(R.id.red_line).setVisibility(View.GONE);
+                break;
+        }
 
         mAlertDialog = new AlertDialog
                 .Builder(getContext())
@@ -88,14 +121,13 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
                 .create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.show();
-
     }
 
-    protected void hideBottomNavView(boolean recolorStatusBar) {
+    public void hideBottomNavView(boolean recolorStatusBar) {
         ((MainActivity) getActivity()).hideBottomNavigationView(recolorStatusBar);
     }
 
-    protected void showBottomNavView(boolean recolorStatusBar) {
+    public void showBottomNavView(boolean recolorStatusBar) {
         ((MainActivity) getActivity()).showBottomNavigationView(recolorStatusBar);
     }
 
@@ -176,7 +208,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
-
+        getActivity().startActivityForResult(intent,requestCode);
     }
 
     @Override
@@ -223,6 +255,19 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
+    public void openFragmentForResult(Fragment targetFragment, Fragment fragment) {
+        hideKeyBoard();
+        int code_response = 200;
+        fragment.setTargetFragment(targetFragment, code_response);
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                .add(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
     public void initializeViews() {
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (null != mToolbar) {
@@ -235,8 +280,8 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
-    public Activity getFragmentActivity() {
-        return getActivity();
+    public MainActivity getMainActivity() {
+        return (MainActivity)getActivity();
     }
 
     protected void bindView(View view) {
@@ -250,5 +295,14 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void setSoftMode() {
 
+    }
+
+    @Override
+    public Fragment getFragment() {
+        return this;
+    }
+
+    public interface AlertDialogCallBack{
+        void onOkClick();
     }
 }

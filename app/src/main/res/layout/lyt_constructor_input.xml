@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root_layout"
-    android:layout_width="match_parent"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:layout_height="60dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/root_layout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/tv_param_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="Param 1"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/toolbar_text_size"
+        app:typefaceAsset="@string/euclidFlexMedium" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_height="60dp">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/til_param"
         android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
         android:textColorHint="@color/colorPrimary"
         android:theme="@style/InputText">
@@ -29,5 +46,6 @@
         app:buttonTint="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

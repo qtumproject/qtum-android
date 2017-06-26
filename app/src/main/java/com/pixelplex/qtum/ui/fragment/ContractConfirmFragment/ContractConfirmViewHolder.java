@@ -5,15 +5,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
+import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by kirillvolkov on 26.05.17.
- */
 
 public class ContractConfirmViewHolder extends RecyclerView.ViewHolder {
 
@@ -41,7 +38,7 @@ public class ContractConfirmViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(ContractMethodParameter parameter) {
-        name.setText(parameter.displayName);
-        value.setText(parameter.value);
+        name.setText(parameter.getDisplayName());
+        value.setText(parameter.getValue());
     }
 }
