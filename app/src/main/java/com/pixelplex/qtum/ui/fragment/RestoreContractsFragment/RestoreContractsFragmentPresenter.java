@@ -52,10 +52,6 @@ import rx.schedulers.Schedulers;
 import static android.app.Activity.RESULT_OK;
 
 
-/**
- * Created by max-v on 6/14/2017.
- */
-
 public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl{
 
     private RestoreContractsFragmentView mRestoreContractsFragmentView;

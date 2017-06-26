@@ -27,9 +27,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by max-v on 6/2/2017.
- */
 
 public class ContractFunctionFragment extends BaseFragment implements ContractFunctionFragmentView {
 

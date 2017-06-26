@@ -33,9 +33,6 @@ import butterknife.OnClick;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
-/**
- * Created by kirillvolkov on 01.06.17.
- */
 
 public class TokenFragment extends BaseFragment implements TokenFragmentView {
 

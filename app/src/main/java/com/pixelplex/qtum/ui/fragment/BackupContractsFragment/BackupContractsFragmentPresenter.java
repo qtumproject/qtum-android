@@ -34,10 +34,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-/**
- * Created by max-v on 6/15/2017.
- */
-
 public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
 
     BackupContractsFragmentView mBackupContractsFragmentView;
@@ -65,10 +61,6 @@ public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl 
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-
-//        if(getView().getMainActivity().checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-//            createBackUpFile();
-//        }
 
         getView().getMainActivity().addPermissionResultListener(new MainActivity.PermissionsResultListener() {
             @Override

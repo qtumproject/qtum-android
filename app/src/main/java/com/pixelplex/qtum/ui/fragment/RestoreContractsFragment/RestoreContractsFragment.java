@@ -16,10 +16,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-/**
- * Created by max-v on 6/14/2017.
- */
-
 public class RestoreContractsFragment extends BaseFragment implements RestoreContractsFragmentView {
 
     RestoreContractsFragmentPresenter mRestoreContractsFragmentPresenter;

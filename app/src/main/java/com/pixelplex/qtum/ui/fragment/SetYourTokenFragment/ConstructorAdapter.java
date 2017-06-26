@@ -9,9 +9,6 @@ import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 26.05.17.
- */
 
 public class ConstructorAdapter extends RecyclerView.Adapter<InputViewHolder> {
 

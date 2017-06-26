@@ -16,9 +16,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * Created by kirillvolkov on 01.06.17.
- */
 
 public class OtherTokensFragment extends BaseFragment implements OtherTokensView, OnTokenClickListener {
 

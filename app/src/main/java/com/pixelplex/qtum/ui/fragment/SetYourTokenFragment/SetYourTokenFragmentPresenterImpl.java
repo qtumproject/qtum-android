@@ -11,9 +11,6 @@ import com.pixelplex.qtum.ui.fragment.TemplatesFragment.TemplatesFragmentInterac
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 26.05.17.
- */
 
 public class SetYourTokenFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SetYourTokenFragmentPresenter {
 

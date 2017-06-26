@@ -11,9 +11,6 @@ import com.pixelplex.qtum.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by kirillvolkov on 26.05.17.
- */
 
 public class ContractConfirmViewHolder extends RecyclerView.ViewHolder {
 

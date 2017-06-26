@@ -15,9 +15,6 @@ import com.pixelplex.qtum.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by kirillvolkov on 06.06.17.
- */
 
 public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBalanceChangeListener {
 

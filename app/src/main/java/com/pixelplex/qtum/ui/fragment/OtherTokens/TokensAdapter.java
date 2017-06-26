@@ -10,9 +10,6 @@ import com.pixelplex.qtum.model.contract.Token;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 06.06.17.
- */
 
 public class TokensAdapter extends RecyclerView.Adapter<TokenViewHolder> {
 

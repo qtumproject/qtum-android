@@ -12,9 +12,6 @@ import com.pixelplex.qtum.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by kirillvolkov on 25.05.17.
- */
 
 public class TemplateViewHolder extends RecyclerView.ViewHolder {
 

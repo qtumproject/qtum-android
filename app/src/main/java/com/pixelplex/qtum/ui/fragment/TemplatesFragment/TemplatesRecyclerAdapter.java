@@ -9,9 +9,6 @@ import com.pixelplex.qtum.model.ContractTemplate;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 25.05.17.
- */
 
 public class TemplatesRecyclerAdapter extends RecyclerView.Adapter<TemplateViewHolder> {
 

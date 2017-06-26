@@ -19,9 +19,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * Created by kirillvolkov on 25.05.17.
- */
 
 public class TemplatesFragment extends BaseFragment implements TemplatesFragmentView, TemplateSelectListener {
 

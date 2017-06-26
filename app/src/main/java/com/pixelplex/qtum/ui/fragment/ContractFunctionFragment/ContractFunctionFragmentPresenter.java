@@ -1,32 +1,29 @@
 package com.pixelplex.qtum.ui.fragment.ContractFunctionFragment;
 
-        import com.pixelplex.qtum.datastorage.FileStorageManager;
-        import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
-        import com.pixelplex.qtum.model.contract.ContractMethod;
-        import com.pixelplex.qtum.model.contract.ContractMethodParameter;
-        import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
-        import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
-        import com.pixelplex.qtum.model.gson.UnspentOutput;
-        import com.pixelplex.qtum.datastorage.KeyStorage;
-        import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-        import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-        import com.pixelplex.qtum.utils.ContractBuilder;
+import com.pixelplex.qtum.datastorage.FileStorageManager;
+import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.model.contract.ContractMethod;
+import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
+import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
+import com.pixelplex.qtum.model.gson.UnspentOutput;
+import com.pixelplex.qtum.datastorage.KeyStorage;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.utils.ContractBuilder;
 
-        import org.bitcoinj.script.Script;
+import org.bitcoinj.script.Script;
 
-        import java.util.Collections;
-        import java.util.Comparator;
-        import java.util.Iterator;
-        import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
-        import rx.Observer;
-        import rx.Subscriber;
-        import rx.android.schedulers.AndroidSchedulers;
-        import rx.schedulers.Schedulers;
+import rx.Observer;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-/**
- * Created by max-v on 6/2/2017.
- */
 
 public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl {
 

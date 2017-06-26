@@ -21,9 +21,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by max-v on 6/2/2017.
- */
 
 public class ContractManagementFragmentPresenter extends BaseFragmentPresenterImpl {
 

@@ -17,9 +17,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * Created by kirillvolkov on 26.05.17.
- */
 
 public class ContractConfirmFragment extends BaseFragment implements  ContractConfirmView, OnValueClick{
 

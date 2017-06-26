@@ -5,9 +5,6 @@ import android.content.Context;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.SetYourTokenFragment.SetYourTokenFragment;
 
-/**
- * Created by kirillvolkov on 25.05.17.
- */
 
 public class TemplatesFragmentPresenterImpl extends BaseFragmentPresenterImpl implements TemplatesFragmentPresenter {
 
