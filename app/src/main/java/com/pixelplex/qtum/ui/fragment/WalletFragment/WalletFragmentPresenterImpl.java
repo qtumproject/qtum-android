@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
+import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
@@ -184,7 +185,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         if(mNetworkConnectedFlag) {
             loadAndUpdateData();
         }else{
-            getView().setAlertDialog("No Internet Connection","Please check your network settings","Ok", BaseFragment.PopUpType.error);
+            getView().setAlertDialog(mContext.getString(R.string.no_internet_connection),mContext.getString(R.string.please_check_your_network_settings), BaseFragment.PopUpType.error);
             getView().stopRefreshRecyclerAnimation();
         }
     }

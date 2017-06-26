@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.ContractConfirmFragment;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
+import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.contract.Contract;
@@ -73,7 +74,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                     @Override
                     public void onError(Throwable e) {
                         getView().dismissProgressDialog();
-                        getView().setAlertDialog("Error", e.getMessage(),"Ok", BaseFragment.PopUpType.error);
+                        getView().setAlertDialog(mContext.getString(R.string.error), e.getMessage(),"Ok", BaseFragment.PopUpType.error);
                     }
 
                     @Override
@@ -96,7 +97,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onError(Throwable e) {
-                        getView().setAlertDialog("Error",e.getMessage(),"Ok", BaseFragment.PopUpType.error);
+                        getView().setAlertDialog(mContext.getString(R.string.error),e.getMessage(),"Ok", BaseFragment.PopUpType.error);
                     }
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
@@ -128,7 +129,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                     @Override
                     public void onCompleted() {
                         getView().dismissProgressDialog();
-                        getView().setAlertDialog("Contract created successfully", "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
+                        getView().setAlertDialog(mContext.getString(R.string.contract_created_successfully), "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
                             @Override
                             public void onOkClick() {
                                 FragmentManager fm = getView().getFragment().getFragmentManager();
@@ -143,7 +144,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                     @Override
                     public void onError(Throwable e) {
                         getView().dismissProgressDialog();
-                        getView().setAlertDialog("Error",e.getMessage(),"OK", BaseFragment.PopUpType.error);
+                        getView().setAlertDialog(mContext.getString(R.string.error),e.getMessage(),"OK", BaseFragment.PopUpType.error);
                     }
 
                     @Override

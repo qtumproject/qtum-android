@@ -82,7 +82,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
                 if(mLinearLayoutCurrency.getVisibility()==View.VISIBLE){
                     sendInfo[2] = mTextViewCurrency.getText().toString();
                 } else {
-                    sendInfo[2] = "Qtum (default currency)";
+                    sendInfo[2] = "Qtum "+getString(R.string.default_currency);
                 }
                 getPresenter().send(sendInfo);
                 break;

@@ -83,7 +83,6 @@
             android:background="@drawable/background_et_import_wallet"
             android:gravity="center"
             android:textSize="16sp"
-            android:text="@string/cpy_brain_code_descr"
             android:padding="6dp"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"/>
