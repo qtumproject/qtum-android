@@ -24,6 +24,7 @@ public class QtumSharedPreference {
     private final String QTUM_SEED = "qtum_seed";
     private final String PREV_TOKEN = "prev_token";
     private final String CURRENT_TOKEN = "current_token";
+    private final String TOUCH_ID_ENABLE = "touch_id_enable";
 
     private List<LanguageChangeListener> mLanguageChangeListeners;
     private FireBaseTokenRefreshListener mFireBaseTokenRefreshListener;
@@ -48,6 +49,17 @@ public class QtumSharedPreference {
 
     public String getWalletName(Context context) {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_WALLET_NAME, "");
+    }
+
+    public void saveTouchIdEnable(Context context, boolean isEnable) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putBoolean(TOUCH_ID_ENABLE, isEnable);
+        mEditor.apply();
+    }
+
+    public boolean isTouchIdEnable(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getBoolean(TOUCH_ID_ENABLE, false);
     }
 
     public void saveFirebaseToken(Context context, String token){
