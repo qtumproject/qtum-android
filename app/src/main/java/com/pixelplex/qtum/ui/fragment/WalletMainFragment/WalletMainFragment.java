@@ -20,6 +20,8 @@ import butterknife.BindView;
 public class WalletMainFragment extends BaseFragment implements WalletMainFragmentView {
 
     public final int LAYOUT = R.layout.fragment_wallet_main;
+    WalletFragment mWalletFragment;
+    OtherTokensFragment mOtherTokensFragment;
 
     public static WalletMainFragment newInstance() {
         Bundle args = new Bundle();
@@ -78,9 +80,11 @@ public class WalletMainFragment extends BaseFragment implements WalletMainFragme
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return WalletFragment.newInstance();
+                    mWalletFragment = WalletFragment.newInstance();
+                    return mWalletFragment;
                 case 1:
-                    return OtherTokensFragment.newInstance();
+                    mOtherTokensFragment = OtherTokensFragment.newInstance();
+                    return mOtherTokensFragment;
                 default:
                     return null;
             }
@@ -89,6 +93,17 @@ public class WalletMainFragment extends BaseFragment implements WalletMainFragme
         @Override
         public int getCount() {
             return NUM_ITEMS;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mWalletFragment!=null){
+            mWalletFragment.dismiss();
+        }
+        if(mOtherTokensFragment !=null){
+            mOtherTokensFragment.dismiss();
         }
     }
 }

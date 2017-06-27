@@ -53,7 +53,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         super.onViewCreated();
         mUpdateService = getView().getMainActivity().getUpdateService();
 
-        mUpdateService.starMonitoring();
+        mUpdateService.startMonitoring();
         mUpdateService.addTransactionListener(new TransactionListener() {
             @Override
             public void onNewHistory(History history) {

@@ -28,6 +28,8 @@ import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -231,10 +233,20 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     }
 
+    public void dismiss(){
+        if(!getMainActivity().isFinishing()) {
+            getFragmentManager().beginTransaction().remove(this).commit();
+        }
+    }
+
     @Override
     public void openRootFragment(Fragment fragment) {
+        //getMainActivity().openRootFragment(fragment);
         getFragmentManager().popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         hideKeyBoard();
+        FragmentManager fm = getFragmentManager();
+        List<Fragment> fmList = fm.getFragments();
+        int count = fm.getBackStackEntryCount();
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())

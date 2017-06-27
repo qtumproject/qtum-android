@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.LanguageFragment;
 
-import com.pixelplex.qtum.utils.LanguageChangeListener;
+import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
