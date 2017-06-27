@@ -233,6 +233,12 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     }
 
+    public void dismiss(){
+        if(!getMainActivity().isFinishing()) {
+            getFragmentManager().beginTransaction().remove(this).commit();
+        }
+    }
+
     @Override
     public void openRootFragment(Fragment fragment) {
         //getMainActivity().openRootFragment(fragment);

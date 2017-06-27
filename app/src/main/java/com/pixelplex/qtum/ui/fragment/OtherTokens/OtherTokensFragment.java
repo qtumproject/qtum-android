@@ -41,10 +41,6 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
         //TODO SHARE
     }
 
-    public void dismiss(){
-        getFragmentManager().beginTransaction().remove(this).commit();
-    }
-
     @Override
     protected void createPresenter() {
         presenter = new OtherTokensPresenterImpl(this);

@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
+import com.pixelplex.qtum.dataprovider.listeners.FireBaseTokenRefreshListener;
 import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
 import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
 import com.pixelplex.qtum.model.contract.Contract;
@@ -71,6 +72,9 @@ public class UpdateService extends Service {
     private int totalTransaction = 0;
     private JSONArray mAddresses;
 
+    String mFirebasePrevToken;
+    String mFirebaseCurrentToken;
+
     private String mBalance = null;
     private String mUnconfirmedBalance = null;
 
@@ -86,11 +90,24 @@ public class UpdateService extends Service {
             e.printStackTrace();
         }
 
+        String[] firebaseTokens = QtumSharedPreference.getInstance().getFirebaseTokens(getApplicationContext());
+        mFirebasePrevToken = firebaseTokens[0];
+        mFirebaseCurrentToken = firebaseTokens[1];
+
+        QtumSharedPreference.getInstance().addFirebaseTokenRefreshListener(new FireBaseTokenRefreshListener() {
+            @Override
+            public void onRefresh(String prevToken, String currentToken) {
+                mFirebasePrevToken = prevToken;
+                mFirebaseCurrentToken = currentToken;
+                subscribeSocket();
+            }
+        });
+
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
 
-                socket.emit("subscribe", "balance_subscribe", mAddresses);
+            subscribeSocket();
 
             }
         }).on("balance_changed", new Emitter.Listener() {
@@ -183,7 +200,7 @@ public class UpdateService extends Service {
                         tinyDB.putTokenList(tokenList);
                     }
 
-                    subscribeTokenBalanceChange(contractAddress);
+                    subscribeTokenBalanceChange(contractAddress, mFirebasePrevToken, mFirebaseCurrentToken);
                 }
                 if (mTransactionListener != null) {
                     mTransactionListener.onNewHistory(history);
@@ -233,22 +250,44 @@ public class UpdateService extends Service {
         stopSelf();
     }
 
-    public void subscribeTokenBalanceChange(String tokenAddress){
+    public void subscribeSocket(){
+        subscribeBalanceChange(mFirebasePrevToken,mFirebaseCurrentToken);
+        for(Contract contract : (new TinyDB(getApplicationContext())).getContractList()){
+            subscribeTokenBalanceChange(contract.getContractAddress(),mFirebasePrevToken,mFirebaseCurrentToken);
+        }
+    }
+
+    public void subscribeTokenBalanceChange(String tokenAddress, String prevToken, String currentToken){
         JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObjectToken = new JSONObject();
         try {
             jsonObject.put("contract_address",tokenAddress);
             jsonObject.put("addresses",mAddresses);
+
+            jsonObjectToken.put("notificationToken",currentToken);
+            jsonObjectToken.put("prevToken",prevToken);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        socket.emit("subscribe","token_balance_change",jsonObject);
+        socket.emit("subscribe","token_balance_change",jsonObject, jsonObjectToken);
+    }
+
+    public void subscribeBalanceChange(String prevToken, String currentToken){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("notificationToken",currentToken);
+            jsonObject.put("prevToken",prevToken);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        socket.emit("subscribe", "balance_subscribe", mAddresses, jsonObject);
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(QtumSharedPreference.getInstance().getKeyGeneratedInstance(getBaseContext())){
-            starMonitoring();
+            startMonitoring();
         }
         return START_REDELIVER_INTENT;
     }
@@ -303,7 +342,7 @@ public class UpdateService extends Service {
         void onSuccess();
     }
 
-    public void starMonitoring() {
+    public void startMonitoring() {
         if (!monitoringFlag) {
             if (mAddresses != null) {
                 socket.connect();
@@ -316,7 +355,7 @@ public class UpdateService extends Service {
                         for (String address : KeyStorage.getInstance().getAddresses()) {
                             mAddresses.put(address);
                         }
-                        starMonitoring();
+                        startMonitoring();
                     }
                 });
             }

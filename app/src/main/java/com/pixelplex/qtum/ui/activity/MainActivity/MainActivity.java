@@ -102,14 +102,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     @Override
     public void openRootFragment(Fragment fragment) {
-        FragmentManager fm = getSupportFragmentManager();
-        List<Fragment> fmList = fm.getFragments();
-        int count = fm.getBackStackEntryCount();
         getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-        fmList = fm.getFragments();
-        count = fm.getBackStackEntryCount();
-
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())

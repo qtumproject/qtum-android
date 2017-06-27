@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.utils;
+package com.pixelplex.qtum.dataprovider.listeners;
 
 
 public interface LanguageChangeListener {

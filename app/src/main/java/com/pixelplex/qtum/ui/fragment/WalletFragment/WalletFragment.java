@@ -108,10 +108,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         }
     }
 
-    public void dismiss(){
-        getFragmentManager().beginTransaction().remove(this).commit();
-    }
-
     public static WalletFragment newInstance() {
 
         Bundle args = new Bundle();

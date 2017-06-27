@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 
-import com.pixelplex.qtum.utils.LanguageChangeListener;
+import com.pixelplex.qtum.dataprovider.listeners.FireBaseTokenRefreshListener;
+import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,11 +20,13 @@ public class QtumSharedPreference {
     private final String QTUM_WALLET_NAME = "qtum_wallet_name";
     private final String QTUM_WALLET_PASSWORD = "qtum_wallet_password";
     private final String QTUM_IS_KEY_GENERATED = "qtum_is_key_generated";
-    private final String QTUM_KEY_IDENTIFIER = "qtum_key_identifier";
     private final String QTUM_LANGUAGE = "qtum_language";
     private final String QTUM_SEED = "qtum_seed";
+    private final String PREV_TOKEN = "prev_token";
+    private final String CURRENT_TOKEN = "current_token";
 
     private List<LanguageChangeListener> mLanguageChangeListeners;
+    private FireBaseTokenRefreshListener mFireBaseTokenRefreshListener;
 
     private QtumSharedPreference() {
         mLanguageChangeListeners = new ArrayList<>();
@@ -45,6 +48,24 @@ public class QtumSharedPreference {
 
     public String getWalletName(Context context) {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_WALLET_NAME, "");
+    }
+
+    public void saveFirebaseToken(Context context, String token){
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        String prevToken = mSharedPreferences.getString(CURRENT_TOKEN,null);
+        mEditor.putString(PREV_TOKEN,prevToken);
+        mEditor.putString(CURRENT_TOKEN, token);
+        mEditor.apply();
+        mFireBaseTokenRefreshListener.onRefresh(prevToken,token);
+    }
+
+    public String[] getFirebaseTokens(Context context){
+        String[] firebaseTokens = new String[2];
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        firebaseTokens[0] = mSharedPreferences.getString(PREV_TOKEN,null);
+        firebaseTokens[1] = mSharedPreferences.getString(CURRENT_TOKEN,null);
+        return firebaseTokens;
     }
 
     public void saveWalletPassword(Context context, int password) {
@@ -114,5 +135,13 @@ public class QtumSharedPreference {
 
     public void removeLanguageListener(LanguageChangeListener languageChangeListener){
         mLanguageChangeListeners.remove(languageChangeListener);
+    }
+
+    public void addFirebaseTokenRefreshListener(FireBaseTokenRefreshListener fireBaseTokenRefreshListener){
+        mFireBaseTokenRefreshListener = fireBaseTokenRefreshListener;
+    }
+
+    public void removeFirebaseTokenRefreshListener(){
+        mFireBaseTokenRefreshListener = null;
     }
 }

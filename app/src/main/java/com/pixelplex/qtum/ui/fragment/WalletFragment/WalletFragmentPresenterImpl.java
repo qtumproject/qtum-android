@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
 import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
@@ -24,7 +23,6 @@ import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.ui.fragment.TransactionFragment.TransactionFragment;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
 
@@ -54,7 +52,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         super.onViewCreated();
         mUpdateService = getView().getMainActivity().getUpdateService();
 
-        mUpdateService.starMonitoring();
+        mUpdateService.startMonitoring();
         mUpdateService.addTransactionListener(new TransactionListener() {
             @Override
             public void onNewHistory(History history) {
@@ -129,9 +127,6 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onResume(Context context) {
         super.onResume(context);
-        FragmentManager fm = getView().getFragment().getFragmentManager();
-        List<Fragment> fmList = fm.getFragments();
-        int count = fm.getBackStackEntryCount();
         mVisibility = true;
         if(mUpdateService!=null) {
             mUpdateService.clearNotification();
