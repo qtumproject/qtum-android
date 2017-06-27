@@ -27,7 +27,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
     private PinFragmentInteractorImpl mPinFragmentInteractor;
     private int pinForRepeat;
     private String mAction;
-    
+
     private String[] CREATING_STATE;
     private String[] AUTHENTICATION_STATE;
     private String[] CHANGING_STATE;
@@ -68,7 +68,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                                 @Override
                                 public void onSuccess() {
                                     Fragment fragment;
-                                    if(checkTouchId()) {
+                                    if(getView().getMainActivity().checkTouchId()) {
                                         fragment = TouchIDPreferenceFragment.newInstance(false);
                                     } else {
                                         fragment = BackUpWalletFragment.newInstance(true);
@@ -102,7 +102,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                             getInteractor().savePassword(pinForRepeat);
                             getInteractor().setKeyGeneratedInstance(true);
                             Fragment fragment;
-                            if(checkTouchId()) {
+                            if(getView().getMainActivity().checkTouchId()) {
                                 fragment = TouchIDPreferenceFragment.newInstance(true);
                             } else {
                                 fragment = WalletMainFragment.newInstance();
@@ -321,19 +321,5 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
         getView().updateState(state);
     }
 
-    private boolean checkTouchId() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            FingerprintManager fingerprintManager = (FingerprintManager) getView().getMainActivity().getSystemService(FINGERPRINT_SERVICE);
 
-            if(getView().getMainActivity().checkPermission(Manifest.permission.USE_FINGERPRINT)){
-                return fingerprintManager.isHardwareDetected();
-            } else {
-                //getView().getMainActivity().loadPermissions(Manifest.permission.USE_FINGERPRINT, REQUEST_FINGERPRINT);
-                return false;
-            }
-
-        } else {
-            return false;
-        }
-    }
 }

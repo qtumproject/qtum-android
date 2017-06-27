@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
+import android.hardware.fingerprint.FingerprintManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.nfc.NfcAdapter;
@@ -142,6 +143,21 @@ public class MainActivity extends BaseActivity implements MainActivityView{
             return true;
         }
         return false;
+    }
+
+    public boolean checkTouchId() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+
+            if(checkPermission(Manifest.permission.USE_FINGERPRINT)){
+                return fingerprintManager.isHardwareDetected();
+            } else {
+                //getView().getMainActivity().loadPermissions(Manifest.permission.USE_FINGERPRINT, REQUEST_FINGERPRINT);
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
 

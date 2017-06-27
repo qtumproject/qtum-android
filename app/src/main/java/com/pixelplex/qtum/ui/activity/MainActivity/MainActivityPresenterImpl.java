@@ -129,11 +129,11 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                 fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
                 getView().openRootFragment(fragment);
             } else {
-                fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION);
+                fragment = StartPageFragment.newInstance(true);
                 getView().openRootFragment(fragment);
             }
         } else {
-            fragment = StartPageFragment.newInstance();
+            fragment = StartPageFragment.newInstance(false);
             getView().openRootFragment(fragment);
         }
     }

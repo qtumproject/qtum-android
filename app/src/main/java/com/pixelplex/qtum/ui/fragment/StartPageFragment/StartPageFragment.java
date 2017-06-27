@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
+import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -18,6 +20,8 @@ import butterknife.OnClick;
 public class StartPageFragment extends BaseFragment implements StartPageFragmentView {
 
     private StartPageFragmentPresenterImpl mStartPageFragmentPresenter;
+
+    private static final String IS_LOGIN = "is_login";
 
     @BindView(R.id.bt_create_new)
     Button mButtonCreateNew;
@@ -36,7 +40,7 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     @BindView(R.id.root_layout)
     RelativeLayout rootLayout;
 
-    @OnClick({R.id.bt_import_wallet, R.id.bt_create_new})
+    @OnClick({R.id.bt_import_wallet, R.id.bt_create_new, R.id.bt_login})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.bt_create_new:
@@ -45,13 +49,19 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
             case R.id.bt_import_wallet:
                 getPresenter().importWallet();
                 break;
+            case R.id.bt_login:
+                if (QtumSharedPreference.getInstance().getKeyGeneratedInstance(getContext())){
+                    PinFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION);
+                    openFragment(fragment);
+                }
+                break;
         }
     }
 
-    public static StartPageFragment newInstance() {
+    public static StartPageFragment newInstance(boolean isLogin) {
 
         Bundle args = new Bundle();
-
+        args.putBoolean(IS_LOGIN, isLogin);
         StartPageFragment fragment = new StartPageFragment();
         fragment.setArguments(args);
         return fragment;
@@ -81,5 +91,9 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     @Override
     public void initializeViews() {
         hideBottomNavView(true);
+        if(getArguments().getBoolean(IS_LOGIN,false)){
+            PinFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION);
+            openFragment(fragment);
+        }
     }
 }
