@@ -111,6 +111,17 @@ public class MainActivity extends BaseActivity implements MainActivityView{
                 .commit();
     }
 
+    @Override
+    public void openFragment(Fragment fragment) {
+        hideKeyBoard();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                .add(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                .addToBackStack(null)
+                .commit();
+    }
+
     public UpdateService getUpdateService(){
         return getPresenter().getUpdateService();
     }
@@ -270,5 +281,18 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     public interface PermissionsResultListener{
         void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1 || getPresenter().isCheckAuthenticationShowFlag()) {
+            ActivityCompat.finishAffinity(this);
+        }else {
+            super.onBackPressed();
+        }
+    }
+
+    public void setCheckAuthenticationShowFlag(boolean flag){
+        getPresenter().setCheckAuthenticationShowFlag(flag);
     }
 }

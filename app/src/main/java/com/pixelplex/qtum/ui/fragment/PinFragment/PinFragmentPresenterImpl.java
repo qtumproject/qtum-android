@@ -141,6 +141,19 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
             }
             break;
 
+            case PinFragment.CHECK_AUTHENTICATION: {
+                int intPassword = Integer.parseInt(pin);
+                if (intPassword == getInteractor().getPassword()) {
+                    getView().clearError();
+                    getView().hideKeyBoard();
+                    getView().getMainActivity().setCheckAuthenticationShowFlag(false);
+                    getView().dismiss();
+                } else {
+                    getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
+                }
+            }
+            break;
+
             case PinFragment.AUTHENTICATION_AND_SEND: {
                 int intPassword = Integer.parseInt(pin);
                 if (intPassword == getInteractor().getPassword()) {
@@ -205,7 +218,8 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
         switch (mAction) {
 
             case PinFragment.AUTHENTICATION:
-            case PinFragment.AUTHENTICATION_AND_SEND: {
+            case PinFragment.AUTHENTICATION_AND_SEND:
+            case PinFragment.CHECK_AUTHENTICATION:{
                 getView().finish();
                 break;
             }
@@ -234,6 +248,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                 break;
             case PinFragment.AUTHENTICATION_AND_SEND:
             case PinFragment.AUTHENTICATION:
+            case PinFragment.CHECK_AUTHENTICATION:
                 titleID = R.string.enter_pin;
                 break;
             case PinFragment.CHANGING:
@@ -289,7 +304,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mAction.equals(PinFragment.CHANGING)) {
+        if (mAction.equals(PinFragment.CHANGING) || mAction.equals(PinFragment.CHECK_AUTHENTICATION)) {
             getView().getMainActivity().showBottomNavigationView(true);
         }
     }
@@ -312,6 +327,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                 break;
             case PinFragment.AUTHENTICATION:
             case PinFragment.AUTHENTICATION_AND_SEND:
+            case PinFragment.CHECK_AUTHENTICATION:
                 state = AUTHENTICATION_STATE[currentState];
                 break;
             case PinFragment.CHANGING:

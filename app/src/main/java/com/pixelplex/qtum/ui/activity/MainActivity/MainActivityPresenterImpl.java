@@ -35,6 +35,8 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     private Context mContext;
 
     private boolean mAuthenticationFlag = false;
+    private boolean mCheckAuthenticationFlag = false;
+    private boolean mCheckAuthenticationShowFlag = false;
     private boolean mSendFromSdkFlag = false;
 
     private Intent mIntent;
@@ -70,6 +72,32 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
         QtumSharedPreference.getInstance().addLanguageListener(mLanguageChangeListener);
 
+    }
+
+    @Override
+    public void onPause(Context context) {
+        super.onPause(context);
+        if(mAuthenticationFlag && !mCheckAuthenticationShowFlag){
+            mCheckAuthenticationFlag = true;
+        }
+    }
+
+    @Override
+    public void onResume(Context context) {
+        super.onResume(context);
+        if(mCheckAuthenticationFlag && !mCheckAuthenticationShowFlag){
+            PinFragment pinFragment = PinFragment.newInstance(PinFragment.CHECK_AUTHENTICATION);
+            getView().openFragment(pinFragment);
+            mCheckAuthenticationShowFlag = true;
+        }
+    }
+
+    public boolean isCheckAuthenticationShowFlag() {
+        return mCheckAuthenticationShowFlag;
+    }
+
+    public void setCheckAuthenticationShowFlag(boolean checkAuthenticationShowFlag) {
+        mCheckAuthenticationShowFlag = checkAuthenticationShowFlag;
     }
 
     @Override

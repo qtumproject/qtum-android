@@ -107,7 +107,7 @@ public class UpdateService extends Service {
             @Override
             public void call(Object... args) {
 
-            subscribeSocket();
+            //subscribeSocket();
 
             }
         }).on("balance_changed", new Emitter.Listener() {

@@ -25,4 +25,5 @@ public interface BaseFragmentView extends BaseContextView {
     void setFocusTextInput(View textInputEditText, View textInputLayout);
     void hideBottomNavView(boolean recolorStatusBar);
     void showBottomNavView(boolean recolorStatusBar);
+    void dismiss();
 }
