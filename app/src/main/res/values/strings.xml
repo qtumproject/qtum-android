@@ -36,6 +36,7 @@
     <string name="news">News</string>
     <string name="create_pin">Create PIN</string>
     <string name="enter_pin">Enter PIN</string>
+    <string name="confirm_fingerprint_or_pin">Confirm fingerprint or PIN</string>
     <string name="incorrect_pin">Incorrect PIN</string>
     <string name="pin_is_not_long_enough">PIN is not long enough</string>
     <string name="received">Received</string>

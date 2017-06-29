@@ -25,6 +25,7 @@ public class QtumSharedPreference {
     private final String PREV_TOKEN = "prev_token";
     private final String CURRENT_TOKEN = "current_token";
     private final String TOUCH_ID_ENABLE = "touch_id_enable";
+    private final String TOUCH_ID_PASSWORD = "touch_id_password";
 
     private List<LanguageChangeListener> mLanguageChangeListeners;
     private FireBaseTokenRefreshListener mFireBaseTokenRefreshListener;
@@ -59,7 +60,7 @@ public class QtumSharedPreference {
     }
 
     public boolean isTouchIdEnable(Context context) {
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getBoolean(TOUCH_ID_ENABLE, false);
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getBoolean(TOUCH_ID_ENABLE, true);
     }
 
     public void saveFirebaseToken(Context context, String token){
@@ -69,7 +70,9 @@ public class QtumSharedPreference {
         mEditor.putString(PREV_TOKEN,prevToken);
         mEditor.putString(CURRENT_TOKEN, token);
         mEditor.apply();
-        mFireBaseTokenRefreshListener.onRefresh(prevToken,token);
+        if(mFireBaseTokenRefreshListener!=null) {
+            mFireBaseTokenRefreshListener.onRefresh(prevToken, token);
+        }
     }
 
     public String[] getFirebaseTokens(Context context){
@@ -80,15 +83,26 @@ public class QtumSharedPreference {
         return firebaseTokens;
     }
 
-    public void saveWalletPassword(Context context, int password) {
+    public void saveWalletPassword(Context context, String password) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putInt(QTUM_WALLET_PASSWORD, password);
+        mEditor.putString(QTUM_WALLET_PASSWORD, password);
         mEditor.apply();
     }
 
-    public int getWalletPassword(Context context) {
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getInt(QTUM_WALLET_PASSWORD, 0);
+    public String getWalletPassword(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_WALLET_PASSWORD, "");
+    }
+
+    public void saveTouchIdPassword(Context context, String password) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putString(TOUCH_ID_PASSWORD, password);
+        mEditor.apply();
+    }
+
+    public String getTouchIdPassword(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(TOUCH_ID_PASSWORD, "");
     }
 
     public void setKeyGeneratedInstance(Context context, boolean isKeyGenerated) {

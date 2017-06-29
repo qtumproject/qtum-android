@@ -13,20 +13,13 @@ public final class FingerprintUtils {
     }
 
     public enum mSensorState {
-        NOT_SUPPORTED,
         NOT_BLOCKED,
         NO_FINGERPRINTS,
         READY
     }
 
-    public static boolean checkFingerprintCompatibility(@NonNull Context context) {
-        return FingerprintManagerCompat.from(context).isHardwareDetected();
-    }
-
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static mSensorState checkSensorState(@NonNull Context context) {
-        if (checkFingerprintCompatibility(context)) {
-
             KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
             if (!keyguardManager.isKeyguardSecure()) {
                 return mSensorState.NOT_BLOCKED;
@@ -37,11 +30,6 @@ public final class FingerprintUtils {
             }
 
             return mSensorState.READY;
-
-        } else {
-            return mSensorState.NOT_SUPPORTED;
-        }
-
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

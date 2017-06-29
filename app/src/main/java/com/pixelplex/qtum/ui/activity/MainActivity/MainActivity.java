@@ -158,12 +158,10 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     public boolean checkTouchId() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
-
-            if(checkPermission(Manifest.permission.USE_FINGERPRINT)){
-                return fingerprintManager.isHardwareDetected();
+            if(QtumSharedPreference.getInstance().isTouchIdEnable(getContext())) {
+                FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+                return checkPermission(Manifest.permission.USE_FINGERPRINT) && fingerprintManager.isHardwareDetected();
             } else {
-                //getView().getMainActivity().loadPermissions(Manifest.permission.USE_FINGERPRINT, REQUEST_FINGERPRINT);
                 return false;
             }
         } else {

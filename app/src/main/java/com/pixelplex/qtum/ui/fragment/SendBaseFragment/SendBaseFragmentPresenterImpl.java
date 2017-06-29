@@ -226,8 +226,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                 getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
                 return;
             } else {
-                int intPassword = Integer.parseInt(pin);
-                if (intPassword != getInteractor().getPassword()) {
+                if (!pin.equals(getInteractor().getPassword())) {
                     getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
                     return;
                 }

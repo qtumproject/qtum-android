@@ -90,6 +90,11 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     }
 
     @Override
+    public void setPin(String pin) {
+        mWalletPin.setText(pin);
+    }
+
+    @Override
     public void setSoftMode() {
         super.setSoftMode();
         getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
