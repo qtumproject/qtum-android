@@ -100,6 +100,25 @@
     <string name="step_1_2">Step 1 of 2</string>
     <string name="step_2_2">Step 2 of 2</string>
 
+    <string name="qstore">Qstore</string>
+
+    <string name="search_by_name">Search by Name</string>
+    <string name="search_by_tag">Search by Hashtag</string>
+
+    <string name="view_details">View Details</string>
+    <string name="view_source_code">View Source Code</string>
+    <string name="description">Description:</string>
+    <string name="tags">Tags:</string>
+
+    <string name="published_date">Published Date:</string>
+    <string name="size">Size:</string>
+    <string name="compiled_on">Compiled On:</string>
+    <string name="source_code">Source Code:</string>
+    <string name="published_by">Published By:</string>
+    <string name="downloads">Downloads:</string>
+
+    <string name="purchase">Purchase</string>
+
     <!--FONT PATHS-->
     <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
@@ -125,4 +144,13 @@
     <string name="watch_contract">Watch Contract</string>
     <string name="watch_token">Watch Token</string>
     <string name="please_wait_a_few_seconds">Please wait a few seconds</string>
+
+    <string name="contract_name">Contract Name:</string>
+    <string name="contract_type">Contract Type:</string>
+    <string name="price">Price:</string>
+    <string name="miner_address">Miner Address:</string>
+    <string name="Fee">Fee:</string>
+    <string name="Source_code">Source Code</string>
+    <string name="store_categories">Qstore Categories</string>
+
 </resources>
