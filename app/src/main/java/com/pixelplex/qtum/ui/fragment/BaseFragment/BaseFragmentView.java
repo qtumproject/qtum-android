@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.BaseFragment;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import com.pixelplex.qtum.ui.activity.BaseActivity.BaseContextView;
@@ -26,4 +27,5 @@ public interface BaseFragmentView extends BaseContextView {
     void hideBottomNavView(boolean recolorStatusBar);
     void showBottomNavView(boolean recolorStatusBar);
     void dismiss();
+    FragmentManager getFragmentManager();
 }

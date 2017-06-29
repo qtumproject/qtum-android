@@ -64,10 +64,12 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
 
     @Override
     public void confirmError(String errorText) {
-        mWalletPin.setText("");
-        tooltip.setText(errorText);
-        tooltip.setTextColor(getResources().getColor(R.color.accent_red_color));
-        tooltip.setVisibility(View.VISIBLE);
+        if(mWalletPin!=null) {
+            mWalletPin.setText("");
+            tooltip.setText(errorText);
+            tooltip.setTextColor(getResources().getColor(R.color.accent_red_color));
+            tooltip.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

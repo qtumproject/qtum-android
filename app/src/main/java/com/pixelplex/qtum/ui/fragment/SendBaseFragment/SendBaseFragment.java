@@ -34,11 +34,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     TextInputEditText mTextInputEditTextAddress;
     @BindView(R.id.et_amount)
     TextInputEditText mTextInputEditTextAmount;
-    @BindView(R.id.et_pin)
-    PinTextInputEditText mTextInputEditTextPin;
 
-    @BindView(R.id.til_pin)
-    TextInputLayout mTextInputLayoutPin;
     @BindView(R.id.til_receivers_address)
     TextInputLayout tilAdress;
     @BindView(R.id.til_amount)
@@ -75,10 +71,9 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
                 getPresenter().onClickQrCode();
                 break;
             case R.id.bt_send:
-                String[] sendInfo = new String[4];
+                String[] sendInfo = new String[3];
                 sendInfo[0] = mTextInputEditTextAddress.getText().toString();
                 sendInfo[1] = mTextInputEditTextAmount.getText().toString();
-                sendInfo[3] = mTextInputEditTextPin.getText().toString();
                 if(mLinearLayoutCurrency.getVisibility()==View.VISIBLE){
                     sendInfo[2] = mTextViewCurrency.getText().toString();
                 } else {
@@ -177,9 +172,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
 
         mTextInputEditTextAddress.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
         mTextInputEditTextAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
-        mTextInputEditTextPin.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
 
-        mTextInputLayoutPin.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
         tilAdress.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
         tilAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
 
@@ -194,18 +187,6 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @Override
     public void errorRecognition() {
 
-    }
-
-    @Override
-    public void confirmError(String errorText) {
-        mTextInputEditTextPin.setText("");
-        mTextInputLayoutPin.setErrorEnabled(true);
-        mTextInputLayoutPin.setError(errorText);
-    }
-
-    @Override
-    public void clearError() {
-        mTextInputLayoutPin.setErrorEnabled(false);
     }
 
     @Override

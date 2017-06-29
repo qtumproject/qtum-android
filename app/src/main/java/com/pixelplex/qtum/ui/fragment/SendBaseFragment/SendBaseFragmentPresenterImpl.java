@@ -21,6 +21,7 @@ import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
+import com.pixelplex.qtum.ui.fragment.PinFragment.PinDialogFragment;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
 import com.pixelplex.qtum.utils.ContractBuilder;
 
@@ -217,66 +218,71 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
     @Override
     public void send(String[] sendInfo) {
+
         if(mNetworkConnectedFlag) {
-            String address = sendInfo[0];
-            String amount = sendInfo[1];
-            String currency = sendInfo[2];
-            String pin = sendInfo[3];
-            if (pin.length() < 4) {
-                getView().confirmError(getView().getContext().getString(R.string.pin_is_not_long_enough));
-                return;
-            } else {
-                if (!pin.equals(getInteractor().getPassword())) {
-                    getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
-                    return;
-                }
-            }
-            getView().clearError();
-            getView().setProgressDialog();
-            if(currency.equals("Qtum "+mContext.getString(R.string.default_currency))) {
-                getInteractor().sendTx(address, amount, new SendBaseFragmentInteractorImpl.SendTxCallBack() {
-                    @Override
-                    public void onSuccess() {
-                        getView().setAlertDialog(mContext.getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
-                    }
+            final String address = sendInfo[0];
+            final String amount = sendInfo[1];
+            final String currency = sendInfo[2];
 
-                    @Override
-                    public void onError(String error) {
-                        getView().dismissProgressDialog();
-                        getView().setAlertDialog(mContext.getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
-                    }
-                });
-            } else {
-                for(final Contract contract : mTokenList){
-                    if(contract.getContractName().equals(currency)){
-                        ContractBuilder contractBuilder = new ContractBuilder();
-                        List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
-                        ContractMethodParameter contractMethodParameterAddress = new ContractMethodParameter("_to","address",address);
-                        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value","uint256",amount);
-                        contractMethodParameterList.add(contractMethodParameterAddress);
-                        contractMethodParameterList.add(contractMethodParameterAmount);
-                        contractBuilder.createAbiMethodParams("transfer",contractMethodParameterList).subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Subscriber<String>() {
+            PinDialogFragment pinDialogFragment = new PinDialogFragment();
+            pinDialogFragment.setTouchIdFlag(getView().getMainActivity().checkTouchId());
+            pinDialogFragment.addPinCallBack(new PinDialogFragment.PinCallBack() {
+                @Override
+                public void onSuccess() {
+                    getView().setProgressDialog();
+                    if(currency.equals("Qtum "+mContext.getString(R.string.default_currency))) {
+                        getInteractor().sendTx(address, amount, new SendBaseFragmentInteractorImpl.SendTxCallBack() {
                             @Override
-                            public void onCompleted() {
-
+                            public void onSuccess() {
+                                getView().setAlertDialog(mContext.getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
                             }
 
                             @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onNext(String s) {
-                                createTx(s,contract.getContractAddress());
+                            public void onError(String error) {
+                                getView().dismissProgressDialog();
+                                getView().setAlertDialog(mContext.getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
                             }
                         });
-                        return;
+                    } else {
+                        for(final Contract contract : mTokenList){
+                            if(contract.getContractName().equals(currency)){
+                                ContractBuilder contractBuilder = new ContractBuilder();
+                                List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
+                                ContractMethodParameter contractMethodParameterAddress = new ContractMethodParameter("_to","address",address);
+                                ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value","uint256",amount);
+                                contractMethodParameterList.add(contractMethodParameterAddress);
+                                contractMethodParameterList.add(contractMethodParameterAmount);
+                                contractBuilder.createAbiMethodParams("transfer",contractMethodParameterList).subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Subscriber<String>() {
+                                            @Override
+                                            public void onCompleted() {
+
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+
+                                            }
+
+                                            @Override
+                                            public void onNext(String s) {
+                                                createTx(s,contract.getContractAddress());
+                                            }
+                                        });
+                                return;
+                            }
+                        }
                     }
                 }
-            }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+            pinDialogFragment.show(getView().getFragmentManager(), pinDialogFragment.getClass().getCanonicalName());
+
         } else {
             getView().setAlertDialog(mContext.getString(R.string.no_internet_connection),mContext.getString(R.string.please_check_your_network_settings),"Ok", BaseFragment.PopUpType.error);
         }
