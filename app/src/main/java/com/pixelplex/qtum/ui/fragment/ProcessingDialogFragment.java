@@ -21,9 +21,6 @@ import com.transitionseverywhere.TransitionManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by max-v on 6/7/2017.
- */
 
 public class ProcessingDialogFragment extends DialogFragment implements Transition.TransitionListener, Animation.AnimationListener{
 

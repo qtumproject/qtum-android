@@ -11,8 +11,6 @@ interface SendBaseFragmentView extends BaseFragmentView{
     void sendToolBar();
     void updateData(String publicAddress, double amount);
     void errorRecognition();
-    void confirmError(String errorText);
-    void clearError();
     void setProgressBar();
     void updateAvailableBalance(String balance);
     void setUpCurrencyField(String currency);

@@ -36,6 +36,7 @@
     <string name="news">News</string>
     <string name="create_pin">Create PIN</string>
     <string name="enter_pin">Enter PIN</string>
+    <string name="confirm_fingerprint_or_pin">Confirm fingerprint or PIN</string>
     <string name="incorrect_pin">Incorrect PIN</string>
     <string name="pin_is_not_long_enough">PIN is not long enough</string>
     <string name="received">Received</string>
@@ -154,6 +155,14 @@
     <string name="please_check_your_network_settings">Please check your network settings</string>
     <string name="contract_created_successfully">Contract created successfully</string>
     <string name="restored_successfully">Restored successfully</string>
+
+    <string name="login_to_qtum_using_touch_id">Login to QTUM using Touch ID</string>
+    <string name="touch_id">Touch ID</string>
+    <string name="enable_touch_id">Enable touch id</string>
+    <string name="not_now">Not now</string>
+    <string name="login">Login</string>
+
+
     <string name="contract_name">Contract Name:</string>
     <string name="contract_type">Contract Type:</string>
     <string name="price">Price:</string>
@@ -161,5 +170,6 @@
     <string name="Fee">Fee:</string>
     <string name="Source_code">Source Code</string>
     <string name="store_categories">Qstore Categories</string>
+
 
 </resources>

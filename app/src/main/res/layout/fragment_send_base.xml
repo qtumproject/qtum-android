@@ -204,24 +204,6 @@
                     android:textColor="@color/colorPrimary"/>
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_pin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary"
-                android:layout_below="@+id/til_amount"
-                android:layout_alignParentStart="true">
-
-                <com.pixelplex.qtum.utils.PinTextInputEditText
-                    android:id="@+id/et_pin"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/pin"
-                    android:inputType="number"
-                    android:maxLength="4"
-                    android:textColor="@color/colorPrimary"/>
-            </android.support.design.widget.TextInputLayout>
-
             <com.pixelplex.qtum.utils.FontButton
                 android:id="@+id/bt_send"
                 android:layout_width="200dp"

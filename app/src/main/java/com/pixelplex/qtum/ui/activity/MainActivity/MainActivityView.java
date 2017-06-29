@@ -11,4 +11,5 @@ interface MainActivityView extends BaseContextView {
     void setIconChecked(int position);
     void resetMenuText();
     boolean getNetworkConnectedFlag();
+    void openFragment(Fragment fragment);
 }

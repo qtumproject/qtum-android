@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+
+                                             android:layout_width="match_parent"
+                                                 android:layout_height="wrap_content"
+                                                 android:clickable="true"
+                                                 android:background="@color/background"
+                                                 android:fitsSystemWindows="true">
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/tv_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                app:typefaceAsset="@string/euclidFlexMedium"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/toolbar_text_size"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="32dp"
+                android:text="asdasdasd"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginRight="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_bias="0.504"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
+
+
+    <com.alimuzaffar.lib.pin.PinEntryEditText
+        android:id="@+id/til_wallet_pin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/tv_toolbar_title"
+        android:cursorVisible="true"
+        android:digits="1234567890"
+        android:inputType="number"
+        android:maxLength="4"
+        android:textIsSelectable="false"
+        android:textSize="20sp"
+        app:pinAnimationType="fromBottom"
+        app:pinCharacterMask="■"
+        app:pinTextBottomPadding="8dp"
+        app:pinLineStroke="1dp"
+        app:pinLineStrokeSelected="4dp"
+        app:pinBackgroundIsSquare="false"
+        app:pinLineColors="@color/colorPrimary"
+        android:textColor="@color/colorPrimary"/>
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/tooltip"
+            android:text="error"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/background_bt_alpha"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal = "true"
+            app:typefaceAsset="@string/euclidFlexMedium"
+            android:layout_below="@+id/til_wallet_pin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"/>
+
+
+</RelativeLayout>

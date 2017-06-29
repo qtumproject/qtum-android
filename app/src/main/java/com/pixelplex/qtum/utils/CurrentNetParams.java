@@ -10,6 +10,6 @@ public class CurrentNetParams {
     public  CurrentNetParams(){}
 
     public static NetworkParameters getNetParams(){
-        return QtumTestNetParams.get();
+        return QtumMainNetParams.get();
     }
 }

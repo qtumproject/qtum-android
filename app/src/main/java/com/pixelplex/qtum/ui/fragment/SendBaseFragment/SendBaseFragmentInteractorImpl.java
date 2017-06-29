@@ -207,7 +207,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
     }
 
     @Override
-    public int getPassword() {
+    public String getPassword() {
         return QtumSharedPreference.getInstance().getWalletPassword(mContext);
     }
 

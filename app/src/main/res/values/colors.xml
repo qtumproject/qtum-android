@@ -32,4 +32,5 @@
     <color name="section_divider_color">#0d2e9ad0</color>
     <color name="select_file_background">#0d2e9ad0</color>
     <color name="file_size_color">#4d2e9ad0</color>
+    <color name="switch_non_checked">#656569</color>
 </resources>

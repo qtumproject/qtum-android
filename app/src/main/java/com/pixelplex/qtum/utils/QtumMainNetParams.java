@@ -13,9 +13,6 @@ import static org.bitcoinj.params.MainNetParams.MAINNET_MAJORITY_ENFORCE_BLOCK_U
 import static org.bitcoinj.params.MainNetParams.MAINNET_MAJORITY_REJECT_BLOCK_OUTDATED;
 import static org.bitcoinj.params.MainNetParams.MAINNET_MAJORITY_WINDOW;
 
-/**
- * Created by max-v on 6/16/2017.
- */
 
 public class QtumMainNetParams extends AbstractBitcoinNetParams {
 
