@@ -1,9 +1,13 @@
 package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
 
+import android.Manifest;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,8 +24,12 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontManager;
 import com.pixelplex.qtum.utils.PinTextInputEditText;
 
+import java.security.Permission;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static org.spongycastle.asn1.cmp.PKIStatus.GRANTED;
 
 
 public class SendBaseFragment extends BaseFragment implements SendBaseFragmentView {
@@ -182,7 +190,6 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         mTextInputLayoutPin.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
         tilAdress.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
         tilAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
-
     }
 
     @Override
@@ -235,6 +242,17 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @Override
     public void hideCurrencyField() {
         mLinearLayoutCurrency.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setAdressAndAmount(final String address, final String anount) {
+        mTextInputEditTextAddress.post(new Runnable() {
+            @Override
+            public void run() {
+                mTextInputEditTextAddress.setText(address);
+                mTextInputEditTextAmount.setText(anount);
+            }
+        });
     }
 
 
