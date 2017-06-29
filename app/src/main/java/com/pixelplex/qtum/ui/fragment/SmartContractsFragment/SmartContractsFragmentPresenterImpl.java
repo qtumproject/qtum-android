@@ -5,6 +5,7 @@ import com.pixelplex.qtum.ui.fragment.BackupContractsFragment.BackupContractsFra
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.MyContractsFragment.MyContractsFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.SettingObject;
+import com.pixelplex.qtum.ui.fragment.QStore.QStoreFragment;
 import com.pixelplex.qtum.ui.fragment.RestoreContractsFragment.RestoreContractsFragment;
 import com.pixelplex.qtum.ui.fragment.TemplatesFragment.TemplatesFragment;
 import com.pixelplex.qtum.ui.fragment.WatchContractFragment.WatchContractFragment;
@@ -53,7 +54,8 @@ public class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterIm
     }
 
     public void onContractsStoreClick(){
-
+        QStoreFragment qStroreFragment = QStoreFragment.newInstance();
+        getView().openFragment(qStroreFragment);
     }
 
     public void onWatchContractClick(){

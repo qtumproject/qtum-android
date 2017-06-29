@@ -47,6 +47,25 @@
     <string name="to">To</string>
     <string name="import_button">Import</string>
     <string name="language">Language</string>
+    <string name="description">Description:</string>
+
+    <string name="published_date">Published Date:</string>
+    <string name="size">Size:</string>
+    <string name="compiled_on">Compiled On:</string>
+    <string name="source_code">Source Code:</string>
+    <string name="published_by">Published By:</string>
+    <string name="downloads">Downloads:</string>
+
+    <string name="purchase">Purchase</string>
+
+    <string name="confirm_purchase">Confirm Purchase</string>
+
+    <string name="tags">Tags:</string>
+    <string name="qstore">Qstore</string>
+    <string name="search_by_name">Search by Name</string>
+    <string name="search_by_tag">Search by Hashtag</string>
+    <string name="view_details">View Details</string>
+    <string name="view_source_code">View Source Code</string>
     <string name="change_pin">Change PIN</string>
     <string name="wallet_back_up">Wallet Back Up</string>
     <string name="about">About</string>
@@ -136,11 +155,21 @@
     <string name="please_check_your_network_settings">Please check your network settings</string>
     <string name="contract_created_successfully">Contract created successfully</string>
     <string name="restored_successfully">Restored successfully</string>
+
     <string name="login_to_qtum_using_touch_id">Login to QTUM using Touch ID</string>
     <string name="touch_id">Touch ID</string>
     <string name="enable_touch_id">Enable touch id</string>
     <string name="not_now">Not now</string>
     <string name="login">Login</string>
+
+
+    <string name="contract_name">Contract Name:</string>
+    <string name="contract_type">Contract Type:</string>
+    <string name="price">Price:</string>
+    <string name="miner_address">Miner Address:</string>
+    <string name="Fee">Fee:</string>
+    <string name="Source_code">Source Code</string>
+    <string name="store_categories">Qstore Categories</string>
 
 
 </resources>

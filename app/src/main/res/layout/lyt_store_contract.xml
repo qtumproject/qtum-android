@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:clickable="true"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:contentInsetLeft="0dp"
+            android:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:contentInsetRight="0dp"
+            android:contentInsetEnd="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetEnd="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/ibt_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_ibtn_back"
+                    android:paddingBottom="10dp"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="10dp"
+                    app:srcCompat="@drawable/ic_back_indicator"/>
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:id="@+id/tv_toolbar_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="Qstore Super Contract"
+                    android:textColor="@color/background"
+                    android:textSize="20sp"
+                    app:typefaceAsset="@string/euclidFlexMedium" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="@color/colorPrimary"
+            android:padding="16dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/tv_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="0.023"
+                android:textColor="@color/background"
+                android:textSize="24sp"
+                app:typefaceAsset="@string/simplonMonoMedium" />
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/tv_qtum"
+                android:layout_marginStart="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/qtum"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/background"
+                android:textSize="14sp"
+                app:typefaceAsset="@string/simplonMonoMedium" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/tv_view_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/view_details"
+                android:textAllCaps="true"
+                android:textColor="@color/background"
+                android:textSize="16sp"
+                app:typefaceAsset="@string/simplonMonoRegular" />
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:layout_alignParentEnd="true"
+                android:id="@+id/tv_view_source_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/view_source_code"
+                android:textAllCaps="true"
+                android:textColor="@color/background"
+                android:textSize="16sp"
+                app:typefaceAsset="@string/simplonMonoRegular" />
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    style="@style/qstore_text_title_style"
+                    app:typefaceAsset="@string/euclidFlexMedium"
+                    android:text="@string/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:id="@+id/tv_description"
+                    style="@style/qstore_text_subtitle_style"
+                    app:typefaceAsset="@string/simplonMonoRegular"
+                    android:text="Smart Contract creates lottery tickets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    style="@style/qstore_text_title_style"
+                    app:typefaceAsset="@string/euclidFlexMedium"
+                    android:text="@string/tags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:id="@+id/tv_tags"
+                    style="@style/qstore_text_subtitle_style"
+                    app:typefaceAsset="@string/simplonMonoRegular"
+                    android:text="#smartcontract #lottery #createticket"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <RelativeLayout
+                    android:layout_marginTop="32dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        style="@style/qstore_text_oneline_title_style"
+                        app:typefaceAsset="@string/euclidFlexMedium"
+                        android:text="@string/published_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        android:id="@+id/tv_pub_date"
+                        style="@style/qstore_text_oneline_subtitle_style"
+                        app:typefaceAsset="@string/simplonMonoRegular"
+                        android:text="12-Jun-2017"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        style="@style/qstore_text_oneline_title_style"
+                        app:typefaceAsset="@string/euclidFlexMedium"
+                        android:text="@string/size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        android:id="@+id/tv_size"
+                        style="@style/qstore_text_oneline_subtitle_style"
+                        app:typefaceAsset="@string/simplonMonoRegular"
+                        android:text="54Mb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        style="@style/qstore_text_oneline_title_style"
+                        app:typefaceAsset="@string/euclidFlexMedium"
+                        android:text="@string/compiled_on"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        android:id="@+id/tv_compiled_on"
+                        style="@style/qstore_text_oneline_subtitle_style"
+                        app:typefaceAsset="@string/simplonMonoRegular"
+                        android:text="1/0/5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        style="@style/qstore_text_oneline_title_style"
+                        app:typefaceAsset="@string/euclidFlexMedium"
+                        android:text="@string/source_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        android:id="@+id/tv_source_code"
+                        style="@style/qstore_text_oneline_subtitle_style"
+                        app:typefaceAsset="@string/simplonMonoRegular"
+                        android:text="Yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        android:id="@+id/tv_pub_by_title"
+                        style="@style/qstore_text_oneline_title_style"
+                        app:typefaceAsset="@string/euclidFlexMedium"
+                        android:text="@string/published_by"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        android:id="@+id/tv_pub_by"
+                        android:gravity="end"
+                        android:layout_marginStart="16dp"
+                        android:layout_toEndOf="@+id/tv_pub_by_title"
+                        style="@style/qstore_text_oneline_subtitle_style"
+                        app:typefaceAsset="@string/simplonMonoRegular"
+                        android:text="kwf90weckw0vwkvw0vjw0vwjvw0vsq6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        style="@style/qstore_text_oneline_title_style"
+                        app:typefaceAsset="@string/euclidFlexMedium"
+                        android:text="@string/downloads"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        android:id="@+id/tv_downloads"
+                        style="@style/qstore_text_oneline_subtitle_style"
+                        app:typefaceAsset="@string/simplonMonoRegular"
+                        android:text="346"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+                <com.pixelplex.qtum.utils.FontButton
+                    android:id="@+id/btn_purchase"
+                    app:typeface="@string/simplonMonoRegular"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:background="@color/accent_red_color"
+                    android:drawableStart="@drawable/ic_purchase"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:drawablePadding="4dp"
+                    android:textAllCaps="true"
+                    android:text="@string/purchase"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="32dp"
+                    android:paddingEnd="32dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
