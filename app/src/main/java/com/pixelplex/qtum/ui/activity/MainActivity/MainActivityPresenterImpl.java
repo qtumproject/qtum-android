@@ -33,10 +33,9 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
     private MainActivityView mMainActivityView;
     private MainActivityInteractorImpl mMainActivityInteractor;
-    private Fragment mRootFragment;
+    public Fragment mRootFragment;
     private Context mContext;
-
-    private boolean mAuthenticationFlag = false;
+    public boolean mAuthenticationFlag = false;
     private boolean mCheckAuthenticationFlag = false;
     private boolean mCheckAuthenticationShowFlag = false;
     private boolean mSendFromSdkFlag = false;

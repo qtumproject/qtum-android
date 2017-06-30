@@ -36,6 +36,10 @@ import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.BaseActivity.BaseActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.ui.fragment.CreateWalletNameFragment.CreateWalletNameFragment;
+import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
+import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendIBeaconPresenter;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 
 import java.io.IOException;
@@ -45,10 +49,12 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static org.spongycastle.asn1.cmp.PKIStatus.GRANTED;
 
 
 public class MainActivity extends BaseActivity implements MainActivityView{
 
+    private static final int REQV_PERM_CODE = 1488;
     private static final int LAYOUT = R.layout.activity_main;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
     private NfcAdapter mNfcAdapter;
@@ -58,9 +64,12 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
 
+    SendIBeaconPresenter iBeaconPresenter;
+
     @Override
     protected void createPresenter() {
         mMainActivityPresenterImpl = new MainActivityPresenterImpl(this);
+        iBeaconPresenter = new SendIBeaconPresenter(this);
     }
 
     @Override
@@ -75,7 +84,6 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         //TODO: NFC
             mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
             boolean b = mNfcAdapter.isEnabled();
-
 
         String s = getIntent().getAction();
 
@@ -142,6 +150,17 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         super.onPause();
 
         mNfcAdapter.disableForegroundDispatch(this);
+
+        if(Build.VERSION.SDK_INT >= 23){
+            if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != GRANTED || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != GRANTED){
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},REQV_PERM_CODE);
+            } else {
+                iBeaconPresenter.initMonitoring();
+            }
+        } else {
+            iBeaconPresenter.initMonitoring();
+        }
+
     }
     //TODO: NFC END
 
@@ -231,6 +250,14 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         return false;
     }
 
+
+    @Override
+    public void setAdressAndAmount(String defineMinerAddress, String defineAmount) {
+        if(getSupportFragmentManager().findFragmentByTag(SendBaseFragment.class.getCanonicalName()) == null && getPresenter().mAuthenticationFlag) {
+            openRootFragment(SendBaseFragment.newInstance(false, defineMinerAddress, defineAmount));
+        }
+    }
+
     public boolean checkTouchId() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(QtumSharedPreference.getInstance().isTouchIdEnable(getContext())) {
@@ -307,6 +334,12 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(mPermissionsResultListener!=null) {
             mPermissionsResultListener.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        if(requestCode == REQV_PERM_CODE){
+            if(grantResults[0] >= 0 && grantResults[1] >= 0){
+                iBeaconPresenter.initMonitoring();
+            }
         }
     }
 
