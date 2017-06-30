@@ -100,4 +100,13 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
                 break;
         }
     }
+
+    @Override
+    public void onSwitchChange(int key, boolean isChecked) {
+        switch (key){
+            case R.string.touch_id:{
+                getPresenter().onTouchIdSwitched(isChecked);
+            }
+        }
+    }
 }

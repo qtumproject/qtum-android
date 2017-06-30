@@ -21,6 +21,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     final static String ACTION = "action";
 
     public final static String CREATING = "creating";
+    public final static String CHECK_AUTHENTICATION = "check_authentication";
     public final static String AUTHENTICATION = "authentication";
     public final static String AUTHENTICATION_AND_SEND = "authentication_and_send";
     public final static String CHANGING = "changing";
@@ -63,10 +64,12 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
 
     @Override
     public void confirmError(String errorText) {
-        mWalletPin.setText("");
-        tooltip.setText(errorText);
-        tooltip.setTextColor(getResources().getColor(R.color.accent_red_color));
-        tooltip.setVisibility(View.VISIBLE);
+        if(mWalletPin!=null) {
+            mWalletPin.setText("");
+            tooltip.setText(errorText);
+            tooltip.setTextColor(getResources().getColor(R.color.accent_red_color));
+            tooltip.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -86,6 +89,11 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     @Override
     public void setToolBarTitle(int titleID) {
         mTextViewToolBarTitle.setText(titleID);
+    }
+
+    @Override
+    public void setPin(String pin) {
+        mWalletPin.setText(pin);
     }
 
     @Override

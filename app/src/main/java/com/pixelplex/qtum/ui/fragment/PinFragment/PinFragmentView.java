@@ -8,4 +8,5 @@ interface PinFragmentView extends BaseFragmentView {
     void updateState(String state);
     void clearError();
     void setToolBarTitle(int titleID);
+    void setPin(String pin);
 }

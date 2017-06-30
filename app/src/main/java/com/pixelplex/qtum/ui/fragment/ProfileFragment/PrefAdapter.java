@@ -8,9 +8,6 @@ import com.pixelplex.qtum.R;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 22.05.17.
- */
 
 public class PrefAdapter extends RecyclerView.Adapter<PrefViewHolder> {
 

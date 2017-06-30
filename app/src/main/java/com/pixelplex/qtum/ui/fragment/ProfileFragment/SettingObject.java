@@ -1,31 +1,40 @@
 package com.pixelplex.qtum.ui.fragment.ProfileFragment;
 
-/**
- * Created by kirillvolkov on 22.05.17.
- */
 
 public class SettingObject {
 
     public SettingObject(int title, int image, int section) {
-        this.titleRes = title;
-        this.imageRes = image;
-        this.sectionNumber = section;
+        mTitleRes = title;
+        mImageRes = image;
+        mSectionNumber = section;
     }
 
-    int titleRes;
-    int imageRes;
-    int sectionNumber;
+    int mTitleRes;
+    int mImageRes;
+    int mSectionNumber;
 
-    public int getTitleRes(){
-        return titleRes;
+
+    public int getTitleRes() {
+        return mTitleRes;
+    }
+
+    public void setTitleRes(int titleRes) {
+        mTitleRes = titleRes;
     }
 
     public int getImageRes() {
-        return imageRes;
+        return mImageRes;
+    }
+
+    public void setImageRes(int imageRes) {
+        mImageRes = imageRes;
     }
 
     public int getSectionNumber() {
-        return sectionNumber;
+        return mSectionNumber;
     }
 
+    public void setSectionNumber(int sectionNumber) {
+        mSectionNumber = sectionNumber;
+    }
 }

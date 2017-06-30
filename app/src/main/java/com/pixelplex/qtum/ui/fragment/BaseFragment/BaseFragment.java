@@ -233,20 +233,18 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     }
 
+    @Override
     public void dismiss(){
         if(!getMainActivity().isFinishing()) {
+            getMainActivity().popBackStack();
             getFragmentManager().beginTransaction().remove(this).commit();
         }
     }
 
     @Override
     public void openRootFragment(Fragment fragment) {
-        //getMainActivity().openRootFragment(fragment);
         getFragmentManager().popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         hideKeyBoard();
-        FragmentManager fm = getFragmentManager();
-        List<Fragment> fmList = fm.getFragments();
-        int count = fm.getBackStackEntryCount();
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())

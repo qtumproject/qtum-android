@@ -39,6 +39,9 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         settingsData.add(new SettingObject(R.string.language, R.drawable.ic_language, 0));
         settingsData.add(new SettingObject(R.string.change_pin, R.drawable.ic_changepin, 1));
         settingsData.add(new SettingObject(R.string.wallet_back_up, R.drawable.ic_backup, 1));
+        if(getView().getMainActivity().checkTouchId()) {
+            settingsData.add(new SettingSwitchObject(R.string.touch_id, R.drawable.ic_touchid, 1, QtumSharedPreference.getInstance().isTouchIdEnable(getView().getContext())));
+        }
         settingsData.add(new SettingObject(R.string.subscribe_tokens,R.drawable.ic_tokensubscribe,2));
         settingsData.add(new SettingObject(R.string.smart_contracts,R.drawable.ic_token,2));
         settingsData.add(new SettingObject(R.string.about,R.drawable.ic_about,3));
@@ -98,13 +101,13 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void onLogOutYesClick() {
         getInteractor().clearWallet();
-        ((MainActivity) getView().getMainActivity()).setAuthenticationFlag(false);
-        mUpdateService = ((MainActivity) getView().getMainActivity()).getUpdateService();
+        getView().getMainActivity().setAuthenticationFlag(false);
+        mUpdateService = getView().getMainActivity().getUpdateService();
         mUpdateService.stopMonitoring();
 
-        StartPageFragment startPageFragment = StartPageFragment.newInstance();
-        ((MainActivity)getView().getMainActivity()).openRootFragment(startPageFragment);
-        ((MainActivity)getView().getMainActivity()).setIconChecked(0);
+        StartPageFragment startPageFragment = StartPageFragment.newInstance(false);
+        getView().getMainActivity().openRootFragment(startPageFragment);
+        getView().getMainActivity().setIconChecked(0);
     }
 
     public void onLanguageClick(){
@@ -124,4 +127,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         getView().openFragment(subscribeTokensFragment);
     }
 
+    public void onTouchIdSwitched(boolean isChecked){
+        QtumSharedPreference.getInstance().saveTouchIdEnable(getView().getContext(),isChecked);
+    }
 }

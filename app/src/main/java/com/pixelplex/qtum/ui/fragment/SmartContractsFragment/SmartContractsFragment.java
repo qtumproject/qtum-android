@@ -76,6 +76,11 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
         }
     }
 
+    @Override
+    public void onSwitchChange(int key, boolean isChecked) {
+
+    }
+
 
     @Override
     protected void createPresenter() {
