@@ -11,7 +11,6 @@ import android.nfc.NfcAdapter;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.pixelplex.qtum.R;
@@ -38,7 +37,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     public boolean mAuthenticationFlag = false;
     private boolean mCheckAuthenticationFlag = false;
     private boolean mCheckAuthenticationShowFlag = false;
-    private boolean mSendFromSdkFlag = false;
+    private boolean mSendFromIntent = false;
 
     private Intent mIntent;
     private UpdateService mUpdateService;
@@ -149,12 +148,13 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         mContext.bindService(mIntent,mServiceConnection,0);
 
         openStartFragment();
+
     }
 
     private void openStartFragment() {
         Fragment fragment;
         if (getInteractor().getKeyGeneratedInstance(mContext)) {
-            if(mSendFromSdkFlag){
+            if(mSendFromIntent){
                 fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
                 getView().openRootFragment(fragment);
             } else {
@@ -214,9 +214,22 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     public void processIntent(Intent intent) {
         switch (intent.getAction()){
             case QtumIntent.SEND_FROM_SDK:
-                mSendFromSdkFlag = true;
+                mSendFromIntent = true;
                 mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
                 mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
+                break;
+            case NfcAdapter.ACTION_NDEF_DISCOVERED:
+                mSendFromIntent = true;
+                mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
+                mAmountForSendAction = "1.431";
+//                if(mAuthenticationFlag) {
+//                    mRootFragment = SendBaseFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction);
+//                    getView().setIconChecked(3);
+//                } else{
+//                    mRootFragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
+//
+//                }
+//                getView().openRootFragment(mRootFragment);
                 break;
             default:
                 break;
@@ -225,7 +238,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
     @Override
     public void processNewIntent(Intent intent) {
-        Log.d("test123",intent.getAction());
         switch (intent.getAction()) {
             case QtumIntent.OPEN_FROM_NOTIFICATION:
                 mRootFragment = WalletMainFragment.newInstance();
@@ -245,7 +257,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                 }
                 break;
             case NfcAdapter.ACTION_NDEF_DISCOVERED:
-                mAddressForSendAction = "test";
+                mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
                 mAmountForSendAction = "0.253";
                 if(mAuthenticationFlag) {
                     mRootFragment = SendBaseFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction);
