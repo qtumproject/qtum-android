@@ -27,5 +27,6 @@ public interface BaseFragmentView extends BaseContextView {
     void hideBottomNavView(boolean recolorStatusBar);
     void showBottomNavView(boolean recolorStatusBar);
     void dismiss();
+    void dismissPinFragment();
     FragmentManager getFragmentManager();
 }
