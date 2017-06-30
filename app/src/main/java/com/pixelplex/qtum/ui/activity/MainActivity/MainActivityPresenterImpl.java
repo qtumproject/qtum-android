@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
+import android.nfc.NfcAdapter;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.pixelplex.qtum.R;
@@ -224,6 +226,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
     @Override
     public void processNewIntent(Intent intent) {
+        Log.d("test123",intent.getAction());
         switch (intent.getAction()) {
             case QtumIntent.OPEN_FROM_NOTIFICATION:
                 mRootFragment = WalletMainFragment.newInstance();
@@ -241,6 +244,18 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                     Fragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
                     getView().openRootFragment(fragment);
                 }
+                break;
+            case NfcAdapter.ACTION_NDEF_DISCOVERED:
+                mAddressForSendAction = "test";
+                mAmountForSendAction = "0.253";
+                if(mAuthenticationFlag) {
+                    mRootFragment = SendBaseFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction);
+                    getView().setIconChecked(3);
+                } else{
+                    mRootFragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
+
+                }
+                getView().openRootFragment(mRootFragment);
                 break;
             default:
                 break;
