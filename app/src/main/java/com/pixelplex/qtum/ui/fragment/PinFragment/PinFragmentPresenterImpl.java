@@ -157,7 +157,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     getView().clearError();
                     getView().hideKeyBoard();
                     getView().getMainActivity().setCheckAuthenticationShowFlag(false);
-                    getView().dismiss();
+                    getView().dismissPinFragment();
                 } else {
                     getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
                 }

@@ -236,8 +236,15 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void dismiss(){
         if(!getMainActivity().isFinishing()) {
-            getMainActivity().popBackStack();
             getFragmentManager().beginTransaction().remove(this).commit();
+        }
+    }
+
+    @Override
+    public void dismissPinFragment(){
+        if(!getMainActivity().isFinishing()) {
+            getFragmentManager().beginTransaction().remove(this).commit();
+            getMainActivity().onBackPressed();
         }
     }
 

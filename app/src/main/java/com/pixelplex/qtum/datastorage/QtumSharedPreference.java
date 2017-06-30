@@ -70,7 +70,7 @@ public class QtumSharedPreference {
         mEditor.putString(PREV_TOKEN,prevToken);
         mEditor.putString(CURRENT_TOKEN, token);
         mEditor.apply();
-        if(mFireBaseTokenRefreshListener!=null) {
+        if(mFireBaseTokenRefreshListener != null) {
             mFireBaseTokenRefreshListener.onRefresh(prevToken, token);
         }
     }
