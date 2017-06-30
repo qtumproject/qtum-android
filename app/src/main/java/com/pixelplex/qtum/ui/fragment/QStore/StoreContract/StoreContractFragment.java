@@ -16,9 +16,6 @@ import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.OnClick;
 
-/**
- * Created by kirillvolkov on 29.06.17.
- */
 
 public class StoreContractFragment extends BaseFragment implements StoreContractView {
 

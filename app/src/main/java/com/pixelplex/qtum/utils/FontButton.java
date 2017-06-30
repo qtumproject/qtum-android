@@ -9,9 +9,6 @@ import android.util.Log;
 
 import com.pixelplex.qtum.R;
 
-/**
- * Created by kirillvolkov on 18.05.17.
- */
 
 public class FontButton extends android.support.v7.widget.AppCompatButton {
     public FontButton(Context context) {

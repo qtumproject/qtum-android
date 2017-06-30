@@ -11,9 +11,6 @@ import com.pixelplex.qtum.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by kirillvolkov on 28.06.17.
- */
 
 public class StoreViewHolder extends RecyclerView.ViewHolder {
 

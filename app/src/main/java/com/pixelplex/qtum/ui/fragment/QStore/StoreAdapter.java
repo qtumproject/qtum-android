@@ -9,9 +9,6 @@ import com.pixelplex.qtum.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 28.06.17.
- */
 
 public class StoreAdapter extends RecyclerView.Adapter<StoreViewHolder> {
 

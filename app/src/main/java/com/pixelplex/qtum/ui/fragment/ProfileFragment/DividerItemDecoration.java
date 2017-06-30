@@ -13,9 +13,6 @@ import android.view.View;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by kirillvolkov on 22.05.17.
- */
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 

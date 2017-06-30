@@ -34,7 +34,7 @@ public class TouchIDPreferenceFragment extends BaseFragment implements TouchIDPr
         return fragment;
     }
 
-    TouchIDPreferenceFragmentPresenter mTouchIDPreferenceFragmentPresenter;
+    private TouchIDPreferenceFragmentPresenter mTouchIDPreferenceFragmentPresenter;
 
     @Override
     public void initializeViews() {

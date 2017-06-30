@@ -7,9 +7,6 @@ import android.text.TextUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by kirillvolkov on 16.05.17.
- */
 
 public class FontManager {
     private static FontManager instance;

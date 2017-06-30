@@ -152,5 +152,19 @@
     <string name="Fee">Fee:</string>
     <string name="Source_code">Source Code</string>
     <string name="store_categories">Qstore Categories</string>
+    <string name="confirm_fingerprint_or_pin">Confirm fingerprint or PIN</string>
+    <string name="confirm_purchase">Confirm fingerprint or PIN</string>
+    <string name="contract_created_successfully">Contract created successfully</string>
+    <string name="default_currency">(default currency)</string>
+    <string name="enable_touch_id">Enable touch id</string>
+    <string name="error">Error</string>
+    <string name="login">Login</string>
+    <string name="login_to_qtum_using_touch_id">Login to QTUM using Touch ID</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="not_now">Not now</string>
+    <string name="payment_completed_successfully">Payment completed successfully</string>
+    <string name="please_check_your_network_settings">Please check your network settings</string>
+    <string name="restored_successfully">Restored successfully</string>
+    <string name="touch_id">Touch ID</string>
 
 </resources>

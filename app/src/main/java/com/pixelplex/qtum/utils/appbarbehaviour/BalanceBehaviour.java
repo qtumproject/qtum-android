@@ -6,9 +6,6 @@ import android.view.View;
 
 import com.pixelplex.qtum.utils.FontTextView;
 
-/**
- * Created by kirillvolkov on 29.05.17.
- */
 
 public class BalanceBehaviour extends CoordinatorLayout.Behavior<FontTextView> {
 

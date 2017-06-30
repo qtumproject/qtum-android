@@ -7,9 +7,6 @@ import com.pixelplex.qtum.datastorage.TinyDB;
 
 import java.util.List;
 
-/**
- * Created by max-v on 6/8/2017.
- */
 
 public class SubscribeTokensFragmentInteractor {
 

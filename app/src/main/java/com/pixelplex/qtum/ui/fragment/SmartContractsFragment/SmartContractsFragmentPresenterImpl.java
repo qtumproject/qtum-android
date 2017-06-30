@@ -13,15 +13,12 @@ import com.pixelplex.qtum.ui.fragment.WatchContractFragment.WatchContractFragmen
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by max-v on 5/31/2017.
- */
 
-public class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SmartContractsFragmentPresenter {
+class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SmartContractsFragmentPresenter {
 
-    SmartContractsFragmentView mSmartContractsFragmentView;
+    private SmartContractsFragmentView mSmartContractsFragmentView;
 
-    List<SettingObject> settingsData;
+    private List<SettingObject> settingsData;
 
     SmartContractsFragmentPresenterImpl(SmartContractsFragmentView smartContractsFragmentView){
         mSmartContractsFragmentView = smartContractsFragmentView;
@@ -39,41 +36,41 @@ public class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterIm
         settingsData.add(new SettingObject(R.string.backup_contracts,R.drawable.ic_contr_backup,0));
     }
 
-    public List<SettingObject> getSettingsData () {
+    List<SettingObject> getSettingsData() {
         return settingsData;
     }
 
-    public void onCreateContractClick(){
+    void onCreateContractClick(){
         TemplatesFragment smartContractListFragment = TemplatesFragment.newInstance();
         getView().openFragment(smartContractListFragment);
     }
 
-    public void onMyContractsClick(){
+    void onMyContractsClick(){
         MyContractsFragment myContractsFragment = MyContractsFragment.newInstance();
         getView().openFragment(myContractsFragment);
     }
 
-    public void onContractsStoreClick(){
+    void onContractsStoreClick(){
         QStoreFragment qStroreFragment = QStoreFragment.newInstance();
         getView().openFragment(qStroreFragment);
     }
 
-    public void onWatchContractClick(){
+    void onWatchContractClick(){
         WatchContractFragment watchContractFragment = WatchContractFragment.newInstance(false);
         getView().openFragment(watchContractFragment);
     }
 
-    public void onWatchTokenClick(){
+    void onWatchTokenClick(){
         WatchContractFragment watchContractFragment = WatchContractFragment.newInstance(true);
         getView().openFragment(watchContractFragment);
     }
 
-    public void onRestoreContractsClick(){
+    void onRestoreContractsClick(){
         RestoreContractsFragment restoreContractFragment = RestoreContractsFragment.newInstance();
         getView().openFragment(restoreContractFragment);
     }
 
-    public void onBackupContractsClick(){
+    void onBackupContractsClick(){
         BackupContractsFragment backupContractsFragment = BackupContractsFragment.newInstance();
         getView().openFragment(backupContractsFragment);
     }

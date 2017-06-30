@@ -24,9 +24,6 @@ import rx.Observer;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by kirillvolkov on 29.06.17.
- */
 
 public class SendIBeaconPresenter extends BasePresenterImpl {
 

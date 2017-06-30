@@ -12,9 +12,6 @@ import com.pixelplex.qtum.utils.SearchBarListener;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * Created by kirillvolkov on 29.06.17.
- */
 
 public class StoreCategoriesFragment extends BaseFragment implements StoreCategoriesView, SearchBarListener {
 

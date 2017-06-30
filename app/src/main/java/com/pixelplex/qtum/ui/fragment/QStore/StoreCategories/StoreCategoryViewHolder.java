@@ -11,9 +11,6 @@ import com.pixelplex.qtum.ui.fragment.QStore.TestTokenObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by kirillvolkov on 29.06.17.
- */
 
 public class StoreCategoryViewHolder extends RecyclerView.ViewHolder {
 

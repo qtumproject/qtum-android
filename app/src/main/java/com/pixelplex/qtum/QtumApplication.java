@@ -7,10 +7,6 @@ import com.pixelplex.qtum.utils.FontManager;
 
 import io.fabric.sdk.android.*;
 
-/**
- * Created by kirillvolkov on 16.05.17.
- */
-
 public class QtumApplication extends MultiDexApplication {
 
     private boolean contractAwait = false;

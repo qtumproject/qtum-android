@@ -7,9 +7,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-/**
- * Created by max-v on 6/5/2017.
- */
 
 public class DateCalculator {
 
