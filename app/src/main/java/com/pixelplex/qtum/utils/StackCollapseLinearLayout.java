@@ -6,14 +6,10 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-/**
- * Created by kirillvolkov on 02.06.17.
- */
 
 public class StackCollapseLinearLayout extends LinearLayout {
 

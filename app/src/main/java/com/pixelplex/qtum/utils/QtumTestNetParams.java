@@ -6,9 +6,6 @@ import org.bitcoinj.params.TestNet3Params;
 
 import static com.google.common.base.Preconditions.checkState;
 
-/**
- * Created by max-v on 6/16/2017.
- */
 
 public class QtumTestNetParams extends AbstractBitcoinNetParams {
 

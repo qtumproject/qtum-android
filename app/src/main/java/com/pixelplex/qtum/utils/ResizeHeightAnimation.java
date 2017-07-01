@@ -4,9 +4,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-/**
- * Created by max-v on 6/8/2017.
- */
 
 public class ResizeHeightAnimation extends Animation{
 

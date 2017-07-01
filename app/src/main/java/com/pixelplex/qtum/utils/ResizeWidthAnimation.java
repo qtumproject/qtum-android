@@ -4,9 +4,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-/**
- * Created by kirillvolkov on 07.06.17.
- */
 
 public class ResizeWidthAnimation extends Animation
 {

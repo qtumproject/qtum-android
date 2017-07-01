@@ -33,13 +33,10 @@ import java.util.concurrent.Callable;
 
 import rx.Observable;
 
-/**
- * Created by max-v on 6/9/2017.
- */
 
 public class ContractBuilder {
 
-    boolean isStringChainNow = false;
+    private boolean isStringChainNow = false;
     private String hashPattern = "0000000000000000000000000000000000000000000000000000000000000000";
     private final int radix = 16;
     private final String TYPE_INT = "int";

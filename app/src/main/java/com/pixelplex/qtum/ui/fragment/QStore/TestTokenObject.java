@@ -4,9 +4,6 @@ import com.pixelplex.qtum.R;
 
 import java.util.Random;
 
-/**
- * Created by kirillvolkov on 29.06.17.
- */
 
 public class TestTokenObject {
 

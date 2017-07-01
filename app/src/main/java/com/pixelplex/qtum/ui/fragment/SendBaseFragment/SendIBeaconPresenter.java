@@ -24,9 +24,6 @@ import rx.Observer;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by kirillvolkov on 29.06.17.
- */
 
 public class SendIBeaconPresenter extends BasePresenterImpl {
 
@@ -54,7 +51,7 @@ public class SendIBeaconPresenter extends BasePresenterImpl {
     public static final String DEFINE_AMOUNT = "100";
 
     private static final String BEACON_LAYOUT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"; //estimote
-    private static double MAX_DISTANCE = 0.002d;
+    private static double MAX_DISTANCE = 0.1d;
     private List<MyBeacon> allBeaconsList = new ArrayList<>();
     private List<MyBeacon> sortedBeaconList = new ArrayList<>();
 
@@ -136,7 +133,7 @@ public class SendIBeaconPresenter extends BasePresenterImpl {
                 if(beacons.size() > 0) {
                     if(beacons.get(0).getBeacon().getId1().toString().equals("b9407f30-f5f8-466e-aff9-25556b57fe6d") &&
                             beacons.get(0).getBeacon().getId2().toString().equals("11757")  &&
-                            beacons.get(0).getBeacon().getId3().toString().equals("6633") && calculateAccuracy(beacons.get(0).getBeacon().getTxPower(), beacons.get(0).getBeacon().getRssi()) < 0.002d) {
+                            beacons.get(0).getBeacon().getId3().toString().equals("6633") && calculateAccuracy(beacons.get(0).getBeacon().getTxPower(), beacons.get(0).getBeacon().getRssi()) < MAX_DISTANCE) {
                         getView().setAdressAndAmount(DEFINE_MINER_ADDRESS, DEFINE_AMOUNT);
                     }
                 }

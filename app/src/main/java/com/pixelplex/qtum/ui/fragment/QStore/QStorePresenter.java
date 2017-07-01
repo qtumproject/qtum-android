@@ -5,9 +5,6 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 28.06.17.
- */
 
 public class QStorePresenter extends BaseFragmentPresenterImpl {
 

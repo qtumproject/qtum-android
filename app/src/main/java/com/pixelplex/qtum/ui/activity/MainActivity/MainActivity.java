@@ -98,6 +98,17 @@ public class MainActivity extends BaseActivity implements MainActivityView{
             }
         buildTagViews(msgs);
         }
+
+//        if(Build.VERSION.SDK_INT >= 23){
+//            if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != GRANTED || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != GRANTED){
+//                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},REQV_PERM_CODE);
+//            } else {
+//                iBeaconPresenter.initMonitoring();
+//            }
+//        } else {
+//            iBeaconPresenter.initMonitoring();
+//        }
+
     }
     private void buildTagViews(NdefMessage[] msgs) {
         if (msgs == null || msgs.length == 0) return;
@@ -150,16 +161,6 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         super.onPause();
 
         mNfcAdapter.disableForegroundDispatch(this);
-
-        if(Build.VERSION.SDK_INT >= 23){
-            if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != GRANTED || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != GRANTED){
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},REQV_PERM_CODE);
-            } else {
-                iBeaconPresenter.initMonitoring();
-            }
-        } else {
-            iBeaconPresenter.initMonitoring();
-        }
 
     }
     //TODO: NFC END

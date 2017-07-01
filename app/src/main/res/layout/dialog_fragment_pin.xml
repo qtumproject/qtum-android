@@ -56,7 +56,7 @@
 
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/tooltip"
-            android:text="error"
+            android:text="enter pin"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:paddingStart="16dp"

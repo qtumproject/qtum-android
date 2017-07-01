@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
-public interface BasePresenter {
+interface BasePresenter {
 
     void onCreate(Context context);
 

@@ -18,9 +18,6 @@ import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
 
-/**
- * Created by kirillvolkov on 28.06.17.
- */
 
 public class SearchBar extends RelativeLayout implements View.OnClickListener{
 

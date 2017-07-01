@@ -12,9 +12,6 @@ import com.pixelplex.qtum.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * Created by max-v on 6/13/2017.
- */
 
 public class WatchContractFragment extends BaseFragment implements WatchContractFragmentView {
 
@@ -63,9 +60,9 @@ public class WatchContractFragment extends BaseFragment implements WatchContract
         super.initializeViews();
         mIsToken = getArguments().getBoolean(IS_TOKEN);
         if(mIsToken){
-            mTextViewToolbar.setText("Watch Token");
+            mTextViewToolbar.setText(getString(R.string.watch_token));
         } else {
-            mTextViewToolbar.setText("Watch Contract");
+            mTextViewToolbar.setText(getString(R.string.watch_contract));
         }
     }
 

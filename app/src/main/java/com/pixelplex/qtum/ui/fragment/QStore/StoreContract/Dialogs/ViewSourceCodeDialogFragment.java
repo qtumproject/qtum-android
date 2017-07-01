@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs;
 
-        import android.app.Dialog;
+import android.app.Dialog;
         import android.graphics.drawable.ColorDrawable;
         import android.os.Bundle;
         import android.support.annotation.Nullable;
@@ -14,9 +14,6 @@ package com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs;
         import butterknife.ButterKnife;
         import butterknife.OnClick;
 
-/**
- * Created by kirillvolkov on 29.06.17.
- */
 
 public class ViewSourceCodeDialogFragment extends AppCompatDialogFragment {
 

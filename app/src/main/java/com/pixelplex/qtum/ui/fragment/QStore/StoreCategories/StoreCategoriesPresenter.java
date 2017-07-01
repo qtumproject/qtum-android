@@ -6,9 +6,6 @@ import com.pixelplex.qtum.ui.fragment.QStore.TestTokenObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 29.06.17.
- */
 
 public class StoreCategoriesPresenter extends BaseFragmentPresenterImpl {
 

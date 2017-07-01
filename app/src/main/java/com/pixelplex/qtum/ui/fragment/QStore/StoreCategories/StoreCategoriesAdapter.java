@@ -7,9 +7,6 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.QStore.TestTokenObject;
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 29.06.17.
- */
 
 public class StoreCategoriesAdapter extends RecyclerView.Adapter<StoreCategoryViewHolder> {
 

@@ -14,9 +14,6 @@ import com.pixelplex.qtum.R;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by kirillvolkov on 29.06.17.
- */
 
 public class ConfirmPurchaseDialogFragment extends AppCompatDialogFragment {
 

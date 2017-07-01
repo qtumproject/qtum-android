@@ -8,9 +8,6 @@ import org.altbeacon.beacon.Beacon;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 29.06.17.
- */
 
 public class MyBeacon implements Parcelable {
 

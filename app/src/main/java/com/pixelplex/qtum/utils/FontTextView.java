@@ -9,9 +9,6 @@ import android.util.Log;
 
 import com.pixelplex.qtum.R;
 
-/**
- * Created by kirillvolkov on 16.05.17.
- */
 
 public class FontTextView extends android.support.v7.widget.AppCompatTextView {
     public FontTextView(Context context) {

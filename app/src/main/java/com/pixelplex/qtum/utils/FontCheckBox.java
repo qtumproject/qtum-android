@@ -10,9 +10,6 @@ import android.util.Log;
 
 import com.pixelplex.qtum.R;
 
-/**
- * Created by max-v on 6/14/2017.
- */
 
 public class FontCheckBox extends AppCompatCheckBox {
     public FontCheckBox(Context context) {

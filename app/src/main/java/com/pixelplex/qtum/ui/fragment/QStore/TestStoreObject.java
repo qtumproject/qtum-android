@@ -1,8 +1,5 @@
 package com.pixelplex.qtum.ui.fragment.QStore;
 
-/**
- * Created by kirillvolkov on 28.06.17.
- */
 
 public class TestStoreObject {
 
