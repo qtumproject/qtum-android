@@ -3,7 +3,6 @@ import android.content.Context;
 
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 import com.pixelplex.qtum.datastorage.TinyDB;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
         checkOtherTokens();
     }
 
-    public void checkOtherTokens() {
+    private void checkOtherTokens() {
         getTokens()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

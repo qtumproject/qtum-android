@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class StoreAdapter extends RecyclerView.Adapter<StoreViewHolder> {
+class StoreAdapter extends RecyclerView.Adapter<StoreViewHolder> {
 
-    List<TestStoreObject> items;
+    private List<TestStoreObject> items;
 
-    StoreItemClickListener listener;
+    private StoreItemClickListener listener;
 
     public StoreAdapter(StoreItemClickListener listener){
         items = new ArrayList<>();

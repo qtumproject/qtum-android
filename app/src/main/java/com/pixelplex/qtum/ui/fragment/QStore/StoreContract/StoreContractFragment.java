@@ -1,28 +1,22 @@
 package com.pixelplex.qtum.ui.fragment.QStore.StoreContract;
 
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ConfirmPurchaseDialogFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ViewSourceCodeDialogFragment;
-import com.pixelplex.qtum.utils.FontButton;
-import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.OnClick;
 
 
 public class StoreContractFragment extends BaseFragment implements StoreContractView {
 
-    StoreContractPresenter presenter;
+    private StoreContractPresenter presenter;
 
-    ConfirmPurchaseDialogFragment confirmPurchase;
-    ViewSourceCodeDialogFragment sourceCodeDialogFragment;
+    private ConfirmPurchaseDialogFragment confirmPurchase;
+    private ViewSourceCodeDialogFragment sourceCodeDialogFragment;
 
     public static StoreContractFragment newInstance() {
         Bundle args = new Bundle();

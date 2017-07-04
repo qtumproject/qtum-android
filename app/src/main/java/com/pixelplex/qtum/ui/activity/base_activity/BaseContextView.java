@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.activity.BaseActivity;
+package com.pixelplex.qtum.ui.activity.base_activity;
 
 import android.content.Context;
 import android.content.Intent;

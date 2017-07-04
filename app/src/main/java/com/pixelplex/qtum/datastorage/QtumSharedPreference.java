@@ -7,7 +7,6 @@ import android.content.res.Configuration;
 import com.pixelplex.qtum.dataprovider.listeners.FireBaseTokenRefreshListener;
 import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -151,8 +150,6 @@ public class QtumSharedPreference {
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
         mEditor.clear();
         mEditor.apply();
-        File file = new File(context.getFilesDir().getPath() + "/key_storage");
-        file.delete();
     }
 
     public void addLanguageListener(LanguageChangeListener languageChangeListener){

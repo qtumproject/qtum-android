@@ -9,21 +9,21 @@ public class BlockChainInfo {
     @SerializedName("version")
     @Expose
     private Integer version;
-    @SerializedName("protocolversion")
+    @SerializedName("protocolVersion")
     @Expose
-    private Integer protocolversion;
-    @SerializedName("walletversion")
+    private Integer protocolVersion;
+    @SerializedName("walletVersion")
     @Expose
-    private Integer walletversion;
+    private Integer walletVersion;
     @SerializedName("balance")
     @Expose
     private Double balance;
     @SerializedName("blocks")
     @Expose
     private Integer blocks;
-    @SerializedName("timeoffset")
+    @SerializedName("timeOffset")
     @Expose
-    private Integer timeoffset;
+    private Integer timeOffset;
     @SerializedName("connections")
     @Expose
     private Integer connections;
@@ -33,21 +33,21 @@ public class BlockChainInfo {
     @SerializedName("difficulty")
     @Expose
     private Double difficulty;
-    @SerializedName("testnet")
+    @SerializedName("testNet")
     @Expose
-    private Boolean testnet;
-    @SerializedName("keypoololdest")
+    private Boolean testNet;
+    @SerializedName("keyPoolOldest")
     @Expose
-    private Integer keypoololdest;
-    @SerializedName("keypoolsize")
+    private Integer keyPoolOldest;
+    @SerializedName("keyPoolSize")
     @Expose
-    private Integer keypoolsize;
-    @SerializedName("paytxfee")
+    private Integer keyPoolSize;
+    @SerializedName("payTxFee")
     @Expose
-    private Integer paytxfee;
-    @SerializedName("relayfee")
+    private Integer payTxFee;
+    @SerializedName("relayFee")
     @Expose
-    private Double relayfee;
+    private Double relayFee;
     @SerializedName("errors")
     @Expose
     private String errors;
@@ -60,20 +60,20 @@ public class BlockChainInfo {
         this.version = version;
     }
 
-    public Integer getProtocolversion() {
-        return protocolversion;
+    public Integer getProtocolVersion() {
+        return protocolVersion;
     }
 
-    public void setProtocolversion(Integer protocolversion) {
-        this.protocolversion = protocolversion;
+    public void setProtocolVersion(Integer protocolVersion) {
+        this.protocolVersion = protocolVersion;
     }
 
-    public Integer getWalletversion() {
-        return walletversion;
+    public Integer getWalletVersion() {
+        return walletVersion;
     }
 
-    public void setWalletversion(Integer walletversion) {
-        this.walletversion = walletversion;
+    public void setWalletVersion(Integer walletVersion) {
+        this.walletVersion = walletVersion;
     }
 
     public Double getBalance() {
@@ -92,12 +92,12 @@ public class BlockChainInfo {
         this.blocks = blocks;
     }
 
-    public Integer getTimeoffset() {
-        return timeoffset;
+    public Integer getTimeOffset() {
+        return timeOffset;
     }
 
-    public void setTimeoffset(Integer timeoffset) {
-        this.timeoffset = timeoffset;
+    public void setTimeOffset(Integer timeOffset) {
+        this.timeOffset = timeOffset;
     }
 
     public Integer getConnections() {
@@ -124,44 +124,44 @@ public class BlockChainInfo {
         this.difficulty = difficulty;
     }
 
-    public Boolean getTestnet() {
-        return testnet;
+    public Boolean getTestNet() {
+        return testNet;
     }
 
-    public void setTestnet(Boolean testnet) {
-        this.testnet = testnet;
+    public void setTestNet(Boolean testNet) {
+        this.testNet = testNet;
     }
 
-    public Integer getKeypoololdest() {
-        return keypoololdest;
+    public Integer getKeyPoolOldest() {
+        return keyPoolOldest;
     }
 
-    public void setKeypoololdest(Integer keypoololdest) {
-        this.keypoololdest = keypoololdest;
+    public void setKeyPoolOldest(Integer keyPoolOldest) {
+        this.keyPoolOldest = keyPoolOldest;
     }
 
-    public Integer getKeypoolsize() {
-        return keypoolsize;
+    public Integer getKeyPoolSize() {
+        return keyPoolSize;
     }
 
-    public void setKeypoolsize(Integer keypoolsize) {
-        this.keypoolsize = keypoolsize;
+    public void setKeyPoolSize(Integer keyPoolSize) {
+        this.keyPoolSize = keyPoolSize;
     }
 
-    public Integer getPaytxfee() {
-        return paytxfee;
+    public Integer getPayTxFee() {
+        return payTxFee;
     }
 
-    public void setPaytxfee(Integer paytxfee) {
-        this.paytxfee = paytxfee;
+    public void setPayTxFee(Integer payTxFee) {
+        this.payTxFee = payTxFee;
     }
 
-    public Double getRelayfee() {
-        return relayfee;
+    public Double getRelayFee() {
+        return relayFee;
     }
 
-    public void setRelayfee(Double relayfee) {
-        this.relayfee = relayfee;
+    public void setRelayFee(Double relayFee) {
+        this.relayFee = relayFee;
     }
 
     public String getErrors() {

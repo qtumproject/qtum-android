@@ -11,9 +11,9 @@ import java.util.List;
 
 public class PrefAdapter extends RecyclerView.Adapter<PrefViewHolder> {
 
-    List<SettingObject> settings;
+    private List<SettingObject> settings;
 
-    OnSettingClickListener listener;
+    private OnSettingClickListener listener;
 
     public PrefAdapter(final List<SettingObject> settings, OnSettingClickListener listener){
         this.settings = settings;

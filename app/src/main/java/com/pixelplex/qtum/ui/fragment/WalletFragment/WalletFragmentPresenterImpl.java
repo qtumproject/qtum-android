@@ -16,7 +16,7 @@ import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
 import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
@@ -155,7 +155,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         return mWalletFragmentView;
     }
 
-    public WalletFragmentInteractorImpl getInteractor() {
+    private WalletFragmentInteractorImpl getInteractor() {
         return mWalletFragmentInteractor;
     }
 

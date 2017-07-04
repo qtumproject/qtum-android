@@ -4,7 +4,6 @@ package com.pixelplex.qtum.ui.fragment.BackUpWalletFragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 
@@ -20,7 +19,7 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
         mBackUpWalletInteractor = new BackUpWalletInteractorImpl(getView().getContext());
     }
 
-    public BackUpWalletInteractorImpl getInteractor() {
+    private BackUpWalletInteractorImpl getInteractor() {
         return mBackUpWalletInteractor;
     }
 

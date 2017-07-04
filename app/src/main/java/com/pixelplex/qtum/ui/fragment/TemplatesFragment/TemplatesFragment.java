@@ -22,7 +22,7 @@ import butterknife.OnClick;
 
 public class TemplatesFragment extends BaseFragment implements TemplatesFragmentView, TemplateSelectListener {
 
-    public final int LAYOUT = R.layout.fragment_templates;
+    private final int LAYOUT = R.layout.fragment_templates;
 
     public static TemplatesFragment newInstance() {
         Bundle args = new Bundle();
@@ -31,7 +31,7 @@ public class TemplatesFragment extends BaseFragment implements TemplatesFragment
         return fragment;
     }
 
-    TemplatesFragmentPresenterImpl presenter;
+    private TemplatesFragmentPresenterImpl presenter;
 
     @BindView(R.id.recycler_view)
     RecyclerView contractList;

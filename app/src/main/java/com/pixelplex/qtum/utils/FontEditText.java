@@ -33,7 +33,6 @@ public class FontEditText extends android.support.v7.widget.AppCompatEditText {
             if (!TextUtils.isEmpty(fontAsset)) {
                 Typeface tf = FontManager.getInstance().getFont(fontAsset);
                 int style = Typeface.NORMAL;
-                float size = getTextSize();
 
                 if (getTypeface() != null)
                     style = getTypeface().getStyle();

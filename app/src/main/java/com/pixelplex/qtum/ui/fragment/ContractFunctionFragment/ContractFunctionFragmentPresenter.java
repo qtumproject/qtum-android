@@ -26,9 +26,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl {
+class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl {
 
-    ContractFunctionFragmentView mContractMethodFragmentView;
+    private ContractFunctionFragmentView mContractMethodFragmentView;
 
     ContractFunctionFragmentPresenter(ContractFunctionFragmentView contractMethodFragmentView){
         mContractMethodFragmentView = contractMethodFragmentView;
@@ -51,7 +51,7 @@ public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl
         }
     }
 
-    public void onCallClick(List<ContractMethodParameter> contractMethodParameterList, final String contractAddress, String methodName){
+    void onCallClick(List<ContractMethodParameter> contractMethodParameterList, final String contractAddress, String methodName){
 
         getView().setProgressDialog();
         ContractBuilder contractBuilder = new ContractBuilder();
@@ -77,7 +77,7 @@ public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl
     }
 
 
-    public void createTx(final String abiParams, final String contractAddress) {
+    private void createTx(final String abiParams, final String contractAddress) {
         QtumService.newInstance().getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -113,7 +113,7 @@ public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl
                 });
     }
 
-    public void sendTx(String code) {
+    private void sendTx(String code) {
         QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(code, 1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -125,12 +125,11 @@ public class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl
 
                     @Override
                     public void onError(Throwable e) {
-                        String s = e.getLocalizedMessage();
+                        getView().setAlertDialog(getView().getContext().getResources().getString(R.string.error),e.getLocalizedMessage(),getView().getContext().getResources().getString(R.string.ok), BaseFragment.PopUpType.error);
                     }
 
                     @Override
                     public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
-                        String s = sendRawTransactionResponse.getResult();
                         getView().dismissProgressDialog();
                     }
                 });

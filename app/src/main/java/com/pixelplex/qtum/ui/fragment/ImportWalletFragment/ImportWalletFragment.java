@@ -15,9 +15,9 @@ import butterknife.OnClick;
 
 public class ImportWalletFragment extends BaseFragment implements ImportWalletFragmentView {
 
-    public final int LAYOUT = R.layout.fragment_import_wallet;
+    private final int LAYOUT = R.layout.fragment_import_wallet;
 
-    ImportWalletFragmentPresenterImpl mImportWalletFragmentPresenter;
+    private ImportWalletFragmentPresenterImpl mImportWalletFragmentPresenter;
 
     @BindView(R.id.bt_cancel)
     FontButton mButtonCancel;

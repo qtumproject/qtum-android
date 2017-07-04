@@ -33,7 +33,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     private ReceiveFragmentInteractorImpl mReceiveFragmentInteractor;
     private String mAmount;
 
-    DrawQRTask drawQRTask;
+    private DrawQRTask drawQRTask;
 
     private int qrCodeColor = Color.BLACK;
     private int qrBackColor = Color.WHITE;
@@ -53,7 +53,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         return mReceiveFragmentView;
     }
 
-    public ReceiveFragmentInteractorImpl getInteractor() {
+    private ReceiveFragmentInteractorImpl getInteractor() {
         return mReceiveFragmentInteractor;
     }
 
@@ -124,8 +124,8 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         super.onPause(context);
     }
 
-    int moduleWidth = 0;
-    boolean withCrossQR = true;
+    private int moduleWidth = 0;
+    private boolean withCrossQR = true;
 
     public void setQRCrossing(boolean crossing) {
         withCrossQR = crossing;
@@ -163,7 +163,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         moduleWidth = QRCodeWidth;
         BitMatrix bitMatrix;
         try {
-            Map<EncodeHintType, Object> hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+            Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
             hints.put(EncodeHintType.MARGIN,0);
 
             bitMatrix = new MultiFormatWriter().encode(

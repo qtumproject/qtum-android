@@ -56,12 +56,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@+id/step"
             android:layout_margin="16dp"
             android:id="@+id/ll_footer">
 
             <com.pixelplex.qtum.utils.FontTextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 app:typefaceAsset="@string/euclidFlexMedium"

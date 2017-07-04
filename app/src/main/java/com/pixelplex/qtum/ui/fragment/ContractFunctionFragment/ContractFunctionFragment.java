@@ -30,14 +30,14 @@ import butterknife.OnClick;
 
 public class ContractFunctionFragment extends BaseFragment implements ContractFunctionFragmentView {
 
-    ContractFunctionFragmentPresenter mContractFunctionFragmentPresenter;
-    public final static String CONTRACT_TEMPLATE_UIID = "contract_template_uiid";
-    public final static String METHOD_NAME = "method_name";
-    public final static String CONTRACT_ADDRESS = "contract_address";
+    private ContractFunctionFragmentPresenter mContractFunctionFragmentPresenter;
+    private final static String CONTRACT_TEMPLATE_UIID = "contract_template_uiid";
+    private final static String METHOD_NAME = "method_name";
+    private final static String CONTRACT_ADDRESS = "contract_address";
 
     @BindView(R.id.recycler_view)
     RecyclerView mParameterList;
-    ParameterAdapter mParameterAdapter;
+    private ParameterAdapter mParameterAdapter;
 
     @OnClick({R.id.ibt_back,R.id.cancel,R.id.call})
     public void onClick(View view){

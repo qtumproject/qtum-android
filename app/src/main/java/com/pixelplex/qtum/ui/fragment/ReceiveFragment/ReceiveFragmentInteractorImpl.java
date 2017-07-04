@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
-import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 
 class ReceiveFragmentInteractorImpl implements ReceiveFragmentInteractor{
 

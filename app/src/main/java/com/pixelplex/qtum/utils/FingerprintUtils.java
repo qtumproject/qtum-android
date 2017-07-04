@@ -19,7 +19,7 @@ public final class FingerprintUtils {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public static mSensorState checkSensorState(@NonNull Context context) {
+    private static mSensorState checkSensorState(@NonNull Context context) {
             KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
             if (!keyguardManager.isKeyguardSecure()) {
                 return mSensorState.NOT_BLOCKED;

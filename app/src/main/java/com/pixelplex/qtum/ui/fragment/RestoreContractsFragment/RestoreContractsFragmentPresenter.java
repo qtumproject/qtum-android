@@ -24,11 +24,10 @@ import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.model.backup.Backup;
 import com.pixelplex.qtum.model.backup.ContractJSON;
 import com.pixelplex.qtum.model.backup.TemplateJSON;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.FileUtils;
-import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import java.io.BufferedReader;
@@ -94,7 +93,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                             }
                         } else {
                             try {
-                                ParcelFileDescriptor mInputPFD = null;
+                                ParcelFileDescriptor mInputPFD;
                                 mInputPFD = getView().getMainActivity().getContentResolver().openFileDescriptor(data.getData(), "r");
                                 if (mInputPFD != null) {
                                     FileDescriptor fd = mInputPFD.getFileDescriptor();
@@ -196,8 +195,12 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                 os.write(buffer, 0, length);
             }
         } finally {
-            is.close();
-            os.close();
+            if(is!=null) {
+                is.close();
+            }
+            if(os!=null) {
+                os.close();
+            }
         }
     }
 

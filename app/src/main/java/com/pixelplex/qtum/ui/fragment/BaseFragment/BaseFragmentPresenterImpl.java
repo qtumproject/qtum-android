@@ -1,7 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.BaseFragment;
 
 
-import com.pixelplex.qtum.ui.activity.BaseActivity.BasePresenterImpl;
+import com.pixelplex.qtum.ui.activity.base_activity.BasePresenterImpl;
 
 
 public class BaseFragmentPresenterImpl extends BasePresenterImpl implements BaseFragmentPresenter {

@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="188dp"
         android:background="@color/select_file_background"
-        android:id="@+id/fl_back_up_file">
+        android:id="@+id/rl_back_up_file">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -119,7 +119,7 @@
         android:id="@+id/cb_restore_templates"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fl_back_up_file"
+        android:layout_below="@+id/rl_back_up_file"
         android:layout_marginTop="56dp"
         app:checkBoxTypeface="@string/simplonMonoRegular"
         android:textSize="18sp"

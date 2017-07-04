@@ -31,13 +31,13 @@ public class ProcessingDialogFragment extends DialogFragment implements Transiti
     @BindView(R.id.root_layout)
     RelativeLayout mRootLayout;
 
-    ResizeHeightAnimation mAnimForward;
-    ResizeHeightAnimation mAnimBackward;
-    Rotate mRotateTransition;
-    int appLogoHeight = 0;
+    private ResizeHeightAnimation mAnimForward;
+    private ResizeHeightAnimation mAnimBackward;
+    private Rotate mRotateTransition;
+    private int appLogoHeight = 0;
 
-    boolean forward_rotate = true;
-    boolean forward_clip = true;
+    private boolean forward_rotate = true;
+    private boolean forward_clip = true;
 
     @NonNull
     @Override
@@ -47,7 +47,9 @@ public class ProcessingDialogFragment extends DialogFragment implements Transiti
         Dialog dialog = new Dialog(getContext());
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        if(dialog.getWindow()!=null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
         return dialog;
     }
 

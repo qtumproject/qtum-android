@@ -23,12 +23,10 @@ import com.pixelplex.qtum.R;
 
 import com.pixelplex.qtum.ui.fragment.ProcessingDialogFragment;
 
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,8 +45,8 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     private Unbinder mUnbinder;
 
-    AlertDialog mAlertDialog;
-    ProcessingDialogFragment mProcessingDialog;
+    private AlertDialog mAlertDialog;
+    private ProcessingDialogFragment mProcessingDialog;
 
     @Nullable
     @BindView(R.id.toolbar)

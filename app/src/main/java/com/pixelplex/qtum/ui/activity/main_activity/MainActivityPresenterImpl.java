@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.activity.MainActivity;
+package com.pixelplex.qtum.ui.activity.main_activity;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -18,7 +18,7 @@ import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.ui.activity.BaseActivity.BasePresenterImpl;
+import com.pixelplex.qtum.ui.activity.base_activity.BasePresenterImpl;
 import com.pixelplex.qtum.ui.fragment.NewsFragment.NewsFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
@@ -32,7 +32,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
     private MainActivityView mMainActivityView;
     private MainActivityInteractorImpl mMainActivityInteractor;
-    public Fragment mRootFragment;
+    private Fragment mRootFragment;
     private Context mContext;
     public boolean mAuthenticationFlag = false;
     private boolean mCheckAuthenticationFlag = false;

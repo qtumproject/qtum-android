@@ -168,7 +168,6 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorPrimary"
                         android:layout_weight="1"
-                        android:text="Stub!"
                         android:textSize="16sp"/>
 
                     <ImageView

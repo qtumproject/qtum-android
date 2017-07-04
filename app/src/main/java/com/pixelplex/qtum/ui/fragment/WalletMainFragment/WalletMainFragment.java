@@ -3,7 +3,6 @@ package com.pixelplex.qtum.ui.fragment.WalletMainFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
@@ -11,7 +10,6 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.OtherTokens.OtherTokensFragment;
-import com.pixelplex.qtum.ui.fragment.TokenFragment.TokenFragment;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragment;
 
 import butterknife.BindView;
@@ -19,9 +17,9 @@ import butterknife.BindView;
 
 public class WalletMainFragment extends BaseFragment implements WalletMainFragmentView {
 
-    public final int LAYOUT = R.layout.fragment_wallet_main;
-    WalletFragment mWalletFragment;
-    OtherTokensFragment mOtherTokensFragment;
+    private final int LAYOUT = R.layout.fragment_wallet_main;
+    private WalletFragment mWalletFragment;
+    private OtherTokensFragment mOtherTokensFragment;
 
     public static WalletMainFragment newInstance() {
         Bundle args = new Bundle();

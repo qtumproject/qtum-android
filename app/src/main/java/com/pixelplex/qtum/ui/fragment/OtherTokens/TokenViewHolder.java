@@ -30,9 +30,9 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
     @BindView(R.id.spinner)
     ProgressBar spinner;
 
-    Token token;
+    private Token token;
 
-    UpdateSocketInstance socketInstance;
+    private UpdateSocketInstance socketInstance;
 
     public TokenViewHolder(View itemView, UpdateSocketInstance socketInstance, final OnTokenClickListener listener) {
         super(itemView);

@@ -24,7 +24,7 @@ import rx.schedulers.Schedulers;
 
 public class ContractManagementFragmentPresenter extends BaseFragmentPresenterImpl {
 
-    ContractManagementFragmentView mContractManagementFragmentView;
+    private ContractManagementFragmentView mContractManagementFragmentView;
 
     ContractManagementFragmentPresenter(ContractManagementFragmentView contractManagementFragmentView){
         mContractManagementFragmentView = contractManagementFragmentView;

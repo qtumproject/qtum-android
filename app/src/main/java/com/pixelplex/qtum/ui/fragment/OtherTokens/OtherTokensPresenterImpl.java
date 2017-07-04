@@ -5,7 +5,6 @@ import android.content.Context;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.dataprovider.UpdateService;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.TokenFragment.TokenFragment;
 import com.pixelplex.qtum.datastorage.TinyDB;
@@ -23,8 +22,8 @@ import rx.schedulers.Schedulers;
 public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implements OtherTokensPresenter, UpdateSocketInstance {
 
     private Context mContext;
-    OtherTokensView view;
-    OtherTokensInteractorImpl interactor;
+    private OtherTokensView view;
+    private OtherTokensInteractorImpl interactor;
 
     public OtherTokensPresenterImpl (OtherTokensView view) {
         this.view = view;

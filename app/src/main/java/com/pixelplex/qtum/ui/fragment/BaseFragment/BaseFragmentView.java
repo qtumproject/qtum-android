@@ -1,13 +1,12 @@
 package com.pixelplex.qtum.ui.fragment.BaseFragment;
 
 
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 
-import com.pixelplex.qtum.ui.activity.BaseActivity.BaseContextView;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.activity.base_activity.BaseContextView;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 
 
 public interface BaseFragmentView extends BaseContextView {

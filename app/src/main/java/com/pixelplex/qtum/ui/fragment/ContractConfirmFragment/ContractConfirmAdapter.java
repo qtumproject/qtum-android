@@ -11,14 +11,14 @@ import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import java.util.List;
 
 
-public class ContractConfirmAdapter extends HFRecyclerView<ContractMethodParameter> {
+class ContractConfirmAdapter extends HFRecyclerView<ContractMethodParameter> {
 
-    String mineAddress;
-    String fee;
+    private String mineAddress;
+    private String fee;
 
-    OnValueClick clickListener;
+    private OnValueClick clickListener;
 
-    public ContractConfirmAdapter(List<ContractMethodParameter> params, String mineAddress, String fee, OnValueClick clickListener){
+    ContractConfirmAdapter(List<ContractMethodParameter> params, String mineAddress, String fee, OnValueClick clickListener){
         super(params,false, true);
         this.mineAddress = mineAddress;
         this.fee = fee;

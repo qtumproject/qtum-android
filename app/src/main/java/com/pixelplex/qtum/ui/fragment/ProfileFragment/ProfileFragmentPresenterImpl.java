@@ -5,7 +5,6 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.LanguageFragment.LanguageFragment;
@@ -26,7 +25,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     private ProfileFragmentInteractorImpl mProfileFragmentInteractor;
     private LanguageChangeListener mLanguageChangeListener;
 
-    List<SettingObject> settingsData;
+    private List<SettingObject> settingsData;
 
     ProfileFragmentPresenterImpl(ProfileFragmentView profileFragmentView) {
         mProfileFragmentView = profileFragmentView;
@@ -75,7 +74,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         return mProfileFragmentView;
     }
 
-    public ProfileFragmentInteractorImpl getInteractor() {
+    private ProfileFragmentInteractorImpl getInteractor() {
         return mProfileFragmentInteractor;
     }
 

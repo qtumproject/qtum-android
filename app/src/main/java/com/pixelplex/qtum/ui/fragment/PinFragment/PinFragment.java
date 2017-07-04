@@ -2,6 +2,7 @@ package com.pixelplex.qtum.ui.fragment.PinFragment;
 
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,7 +19,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
 
     private PinFragmentPresenterImpl mPinFragmentPresenter;
 
-    final static String ACTION = "action";
+    private final static String ACTION = "action";
 
     public final static String CREATING = "creating";
     public final static String CHECK_AUTHENTICATION = "check_authentication";
@@ -67,7 +68,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         if(mWalletPin!=null) {
             mWalletPin.setText("");
             tooltip.setText(errorText);
-            tooltip.setTextColor(getResources().getColor(R.color.accent_red_color));
+            tooltip.setTextColor(ContextCompat.getColor(getContext(),R.color.accent_red_color));
             tooltip.setVisibility(View.VISIBLE);
         }
     }
@@ -76,7 +77,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     public void updateState(String state) {
         mWalletPin.setText("");
         tooltip.setText(state);
-        tooltip.setTextColor(getResources().getColor(android.R.color.white));
+        tooltip.setTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
         tooltip.setVisibility(View.VISIBLE);
     }
 

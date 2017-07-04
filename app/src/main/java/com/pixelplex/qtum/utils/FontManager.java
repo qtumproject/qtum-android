@@ -17,7 +17,7 @@ public class FontManager {
 
     private FontManager(AssetManager _mgr) {
         mgr = _mgr;
-        fonts = new HashMap<String, Typeface>();
+        fonts = new HashMap<>();
     }
 
     public static void init(AssetManager mgr) {

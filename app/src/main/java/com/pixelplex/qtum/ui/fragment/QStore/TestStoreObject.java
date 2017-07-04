@@ -1,7 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.QStore;
 
 
-public class TestStoreObject {
+class TestStoreObject {
 
     public int rowCount;
     public String title;

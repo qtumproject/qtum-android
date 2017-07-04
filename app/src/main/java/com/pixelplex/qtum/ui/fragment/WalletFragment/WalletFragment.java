@@ -45,7 +45,7 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
-    public final int LAYOUT = R.layout.fragment_wallet;
+    private final int LAYOUT = R.layout.fragment_wallet;
 
     private WalletFragmentPresenterImpl mWalletFragmentPresenter;
     private TransactionAdapter mTransactionAdapter;
@@ -213,11 +213,11 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
        //TODO NOTIFY TOKEN
     }
 
-    final DisplayMetrics dm = new DisplayMetrics();
+    private final DisplayMetrics dm = new DisplayMetrics();
 
-    boolean expanded = false;
+    private boolean expanded = false;
 
-    public void doDividerExpand() {
+    private void doDividerExpand() {
         if(!expanded) {
             expanded = true;
             fadeDivider.clearAnimation();
@@ -230,7 +230,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         }
     }
 
-    public void doDividerCollapse() {
+    private void doDividerCollapse() {
         if(expanded) {
             fadeDivider.clearAnimation();
             fadeDivider.setVisibility(View.INVISIBLE);
@@ -241,9 +241,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         }
     }
 
-    float headerPAdding = 0;
-    float percents = 1;
-    float prevPercents = 1;
+    private float headerPAdding = 0;
+    private float percents = 1;
+    private float prevPercents = 1;
 
     @Override
     public void initializeViews() {
@@ -371,14 +371,13 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         }
     }
 
-    public static float convertDpToPixel(float dp, Context context){
+    private static float convertDpToPixel(float dp, Context context){
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-        return px;
+        return dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
-    public int getTotalRange() {
+    private int getTotalRange() {
         return mAppBarLayout.getTotalScrollRange();
     }
 

@@ -1,8 +1,8 @@
-package com.pixelplex.qtum.ui.activity.MainActivity;
+package com.pixelplex.qtum.ui.activity.main_activity;
 
 import android.support.v4.app.Fragment;
 
-import com.pixelplex.qtum.ui.activity.BaseActivity.BaseContextView;
+import com.pixelplex.qtum.ui.activity.base_activity.BaseContextView;
 
 
 public interface MainActivityView extends BaseContextView {

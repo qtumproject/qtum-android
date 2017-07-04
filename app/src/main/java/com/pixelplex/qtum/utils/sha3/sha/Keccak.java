@@ -12,7 +12,7 @@ import static com.pixelplex.qtum.utils.sha3.utils.HexUtils.getReverseHex;
  */
 public class Keccak {
 
-    public static final int DEFAULT_PERMUTATION_WIDTH = 1600;
+    private static final int DEFAULT_PERMUTATION_WIDTH = 1600;
 
     /**
      * max unsigned long

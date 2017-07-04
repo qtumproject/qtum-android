@@ -21,10 +21,10 @@ import butterknife.OnClick;
 
 public class QStoreFragment extends BaseFragment implements QStoreView, SearchBarListener, StoreItemClickListener{
 
-    QStorePresenter presenter;
+    private QStorePresenter presenter;
 
-    StoreAdapter storeAdapter;
-    StoreSearchAdapter searchAdapter;
+    private StoreAdapter storeAdapter;
+    private StoreSearchAdapter searchAdapter;
 
     @OnClick(R.id.ibt_back)
     public void onBackClick(){
@@ -32,8 +32,8 @@ public class QStoreFragment extends BaseFragment implements QStoreView, SearchBa
     }
 
     @BindView(R.id.search_bar)
-    SearchBar searchBar;
 
+    SearchBar searchBar;
     @BindView(R.id.content_list)
     RecyclerView contentList;
 

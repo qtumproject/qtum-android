@@ -82,7 +82,7 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
         mAddressAdapter = null;
     }
 
-    public class AddressHolder extends RecyclerView.ViewHolder {
+    class AddressHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_single_string)
         TextView mTextViewAddress;
@@ -119,13 +119,13 @@ public class AddressesFragment extends BaseFragment implements AddressesFragment
             } else {
                 mImageViewCheckIndicator.setVisibility(View.GONE);
                 mTextViewAddress.setTextColor(defaultTextColor);
-                mLinearLayoutAddress.setBackgroundColor(mLinearLayoutAddress.getResources().getColor(android.R.color.transparent));
+                mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(getContext(),android.R.color.transparent));
             }
             mTextViewAddress.setText(address);
         }
     }
 
-    public class AddressAdapter extends RecyclerView.Adapter<AddressHolder> {
+    private class AddressAdapter extends RecyclerView.Adapter<AddressHolder> {
 
         private List<DeterministicKey> mDeterministicKeys;
         private String mAddress;

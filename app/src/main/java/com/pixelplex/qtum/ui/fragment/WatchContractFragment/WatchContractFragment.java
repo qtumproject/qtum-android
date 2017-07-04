@@ -17,7 +17,7 @@ public class WatchContractFragment extends BaseFragment implements WatchContract
 
     private static final String IS_TOKEN = "is_token";
 
-    WatchContractFragmentPresenter mWatchContractFragmentPresenter;
+    private WatchContractFragmentPresenter mWatchContractFragmentPresenter;
 
     private boolean mIsToken;
 

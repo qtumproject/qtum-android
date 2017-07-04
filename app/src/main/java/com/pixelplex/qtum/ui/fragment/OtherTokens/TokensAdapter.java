@@ -11,11 +11,11 @@ import com.pixelplex.qtum.model.contract.Token;
 import java.util.List;
 
 
-public class TokensAdapter extends RecyclerView.Adapter<TokenViewHolder> {
+class TokensAdapter extends RecyclerView.Adapter<TokenViewHolder> {
 
     private final UpdateSocketInstance socketInstace;
-    List<Token> tokens;
-    OnTokenClickListener listener;
+    private List<Token> tokens;
+    private OnTokenClickListener listener;
 
     public TokensAdapter(List<Token> tokens, UpdateSocketInstance socketInstance, OnTokenClickListener listener) {
         this.tokens = tokens;

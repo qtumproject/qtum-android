@@ -8,9 +8,9 @@ import com.pixelplex.qtum.ui.fragment.QStore.TestTokenObject;
 import java.util.List;
 
 
-public class StoreCategoriesAdapter extends RecyclerView.Adapter<StoreCategoryViewHolder> {
+class StoreCategoriesAdapter extends RecyclerView.Adapter<StoreCategoryViewHolder> {
 
-    List<TestTokenObject> items;
+    private List<TestTokenObject> items;
 
     public StoreCategoriesAdapter(List<TestTokenObject> items) {
         this.items = items;

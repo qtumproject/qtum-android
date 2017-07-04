@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.RemoteException;
 
-import com.pixelplex.qtum.ui.activity.BaseActivity.BasePresenterImpl;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivityView;
+import com.pixelplex.qtum.ui.activity.base_activity.BasePresenterImpl;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivityView;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -27,7 +27,7 @@ import rx.schedulers.Schedulers;
 
 public class SendIBeaconPresenter extends BasePresenterImpl {
 
-    MainActivityView view;
+    private MainActivityView view;
 
     public SendIBeaconPresenter(MainActivityView view) {
         this.view = view;
@@ -47,8 +47,8 @@ public class SendIBeaconPresenter extends BasePresenterImpl {
 
     private static final String TAG = "pixelplexservices";
 
-    public static final String DEFINE_MINER_ADDRESS = "b5d8dn3n5b5dfgjju2i2n34hiudciwn2n32zxci";
-    public static final String DEFINE_AMOUNT = "100";
+    private static final String DEFINE_MINER_ADDRESS = "b5d8dn3n5b5dfgjju2i2n34hiudciwn2n32zxci";
+    private static final String DEFINE_AMOUNT = "100";
 
     private static final String BEACON_LAYOUT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"; //estimote
     private static double MAX_DISTANCE = 0.1d;
@@ -56,8 +56,8 @@ public class SendIBeaconPresenter extends BasePresenterImpl {
     private List<MyBeacon> sortedBeaconList = new ArrayList<>();
 
 
-    BeaconManager beaconManager = null;
-    Region rangingRegion = new Region("My Region", null, null, null);
+    private BeaconManager beaconManager = null;
+    private Region rangingRegion = new Region("My Region", null, null, null);
 
     private BeaconConsumer beaconConsumer = new BeaconConsumer() {
         @Override

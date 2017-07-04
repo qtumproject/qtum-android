@@ -14,11 +14,11 @@ import java.util.List;
 
 public class SetYourTokenFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SetYourTokenFragmentPresenter {
 
-    SetYourTokenFragmentView view;
-    Context mContext;
-    TemplatesFragmentInteractorImpl interactor;
+    private SetYourTokenFragmentView view;
+    private Context mContext;
+    private TemplatesFragmentInteractorImpl interactor;
 
-    ContractMethod contractMethod;
+    private ContractMethod contractMethod;
 
     public SetYourTokenFragmentPresenterImpl(SetYourTokenFragmentView view) {
         this.view = view;
