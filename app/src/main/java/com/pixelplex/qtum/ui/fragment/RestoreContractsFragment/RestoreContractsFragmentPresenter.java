@@ -455,13 +455,13 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
         ((FontTextView)view.findViewById(R.id.tv_templates)).setText(templatesSum);
         ((FontTextView)view.findViewById(R.id.tv_contracts)).setText(contractsSum);
         ((FontTextView)view.findViewById(R.id.tv_tokens)).setText(tokensSum);
-        ((FontButton)view.findViewById(R.id.bt_restore)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.bt_restore).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 callBack.onRestoreClick();
             }
         });
-        ((FontButton)view.findViewById(R.id.bt_back)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.bt_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mRestoreDialog.dismiss();

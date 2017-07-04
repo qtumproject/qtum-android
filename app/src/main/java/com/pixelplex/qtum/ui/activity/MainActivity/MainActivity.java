@@ -244,11 +244,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     public boolean getNetworkConnectedFlag() {
         ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting())
-        {
-            return true;
-        }
-        return false;
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
 
