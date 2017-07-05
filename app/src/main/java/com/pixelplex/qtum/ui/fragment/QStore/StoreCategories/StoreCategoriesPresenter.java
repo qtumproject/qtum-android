@@ -9,7 +9,7 @@ import java.util.List;
 
 public class StoreCategoriesPresenter extends BaseFragmentPresenterImpl {
 
-    StoreCategoriesView view;
+    private StoreCategoriesView view;
 
     public StoreCategoriesPresenter(StoreCategoriesView view) {
         this.view = view;
@@ -20,7 +20,7 @@ public class StoreCategoriesPresenter extends BaseFragmentPresenterImpl {
         return view;
     }
 
-    List<TestTokenObject> items;
+    private List<TestTokenObject> items;
 
     public List<TestTokenObject> getSearchItems(){
         items = new ArrayList<>();

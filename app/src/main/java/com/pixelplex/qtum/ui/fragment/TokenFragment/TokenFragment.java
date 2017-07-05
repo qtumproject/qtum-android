@@ -36,11 +36,11 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 public class TokenFragment extends BaseFragment implements TokenFragmentView {
 
-    public final int LAYOUT = R.layout.lyt_token_fragment;
-    public static final String tokenKey = "tokenInfo";
+    private final int LAYOUT = R.layout.lyt_token_fragment;
+    private static final String tokenKey = "tokenInfo";
 
-    public static final String totalSupply = "totalSupply";
-    public static final String decimals = "decimals";
+    private static final String totalSupply = "totalSupply";
+    private static final String decimals = "decimals";
 
     public static TokenFragment newInstance(Contract token) {
         Bundle args = new Bundle();
@@ -50,7 +50,7 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         return fragment;
     }
 
-    TokenFragmentPresenter presenter;
+    private TokenFragmentPresenter presenter;
 
     @OnClick(R.id.bt_back)
     public void onBackClick(){
@@ -121,9 +121,9 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         return LAYOUT;
     }
 
-    float headerPAdding = 0;
-    float percents = 1;
-    float prevPercents = 1;
+    private float headerPAdding = 0;
+    private float percents = 1;
+    private float prevPercents = 1;
 
     @Override
     public void initializeViews() {
@@ -228,9 +228,9 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         doDividerCollapse();
     }
 
-    boolean expanded = false;
+    private boolean expanded = false;
 
-    public void doDividerExpand() {
+    private void doDividerExpand() {
         if(!expanded) {
             expanded = true;
             fadeDivider.clearAnimation();
@@ -242,7 +242,7 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         }
     }
 
-    public void doDividerCollapse() {
+    private void doDividerCollapse() {
         if(expanded) {
             fadeDivider.clearAnimation();
             fadeDivider.setVisibility(View.INVISIBLE);
@@ -261,14 +261,13 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         }
     }
 
-    public static float convertDpToPixel(float dp, Context context){
+    private static float convertDpToPixel(float dp, Context context){
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-        return px;
+        return dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
-    public int getTotalRange() {
+    private int getTotalRange() {
         return mAppBarLayout.getTotalScrollRange();
     }
 

@@ -170,6 +170,7 @@
     <string name="Fee">Fee:</string>
     <string name="Source_code">Source Code</string>
     <string name="store_categories">Qstore Categories</string>
+    <string name="tap_to_save_the_file">Tap to save the file</string>
 
 
 </resources>

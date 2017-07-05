@@ -16,10 +16,10 @@ import butterknife.OnClick;
 
 public class CreateWalletNameFragment extends BaseFragment implements CreateWalletNameFragmentView {
 
-    public static final String IS_CREATE_NEW = "is_create_new";
+    private static final String IS_CREATE_NEW = "is_create_new";
     public static boolean mIsCreateNew;
 
-    CreateWalletNameFragmentPresenterImpl mCreateWalletFragmentPresenter;
+    private CreateWalletNameFragmentPresenterImpl mCreateWalletFragmentPresenter;
 
     @BindView(R.id.bt_confirm)
     Button mButtonConfirm;

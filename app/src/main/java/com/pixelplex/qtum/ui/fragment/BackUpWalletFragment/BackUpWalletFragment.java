@@ -5,13 +5,10 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontButton;
-import com.pixelplex.qtum.utils.FontEditText;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
@@ -21,7 +18,7 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
 
     private BackUpWalletFragmentPresenterImpl mBackUpWalletFragmentPresenter;
 
-    public static final String IS_WALLET_CREATING = "is_wallet_creating";
+    private static final String IS_WALLET_CREATING = "is_wallet_creating";
 
     @BindView(R.id.bt_copy)
     FontButton mButtonCopy;

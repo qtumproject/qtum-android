@@ -32,7 +32,7 @@ public class SubscribeTokensFragmentPresenter extends BaseFragmentPresenterImpl 
         getInteractor().saveTokenList(getView().getTokenList());
     }
 
-    public SubscribeTokensFragmentInteractor getInteractor() {
+    private SubscribeTokensFragmentInteractor getInteractor() {
         return mSubscribeTokensFragmentInteractor;
     }
 }

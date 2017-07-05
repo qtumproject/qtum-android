@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.activity.MainActivity;
+package com.pixelplex.qtum.ui.activity.main_activity;
 
 import android.Manifest;
 import android.app.PendingIntent;
@@ -34,22 +34,16 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.ui.activity.BaseActivity.BaseActivity;
+import com.pixelplex.qtum.ui.activity.base_activity.BaseActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.CreateWalletNameFragment.CreateWalletNameFragment;
-import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendIBeaconPresenter;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
-import java.util.List;
 
 import butterknife.BindView;
-
-import static org.spongycastle.asn1.cmp.PKIStatus.GRANTED;
 
 
 public class MainActivity extends BaseActivity implements MainActivityView{
@@ -64,7 +58,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
 
-    SendIBeaconPresenter iBeaconPresenter;
+    private SendIBeaconPresenter iBeaconPresenter;
 
     @Override
     protected void createPresenter() {

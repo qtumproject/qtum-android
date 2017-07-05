@@ -7,7 +7,7 @@ import android.view.View;
 import com.pixelplex.qtum.utils.FontTextView;
 
 
-public class BalanceBehaviour extends CoordinatorLayout.Behavior<FontTextView> {
+class BalanceBehaviour extends CoordinatorLayout.Behavior<FontTextView> {
 
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, FontTextView child, View dependency) {

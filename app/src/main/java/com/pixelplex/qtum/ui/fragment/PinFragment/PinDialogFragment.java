@@ -5,9 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -36,7 +36,7 @@ public class PinDialogFragment extends DialogFragment {
     @BindView(R.id.tooltip)
     FontTextView tooltip;
 
-    PinCallBack mPinCallBack;
+    private PinCallBack mPinCallBack;
     private boolean mTouchIdFlag;
     private FingerprintHelper mFingerprintHelper;
 
@@ -74,20 +74,20 @@ public class PinDialogFragment extends DialogFragment {
         mWalletPin.requestFocus();
     }
 
-    public void setPin(String pin) {
+    private void setPin(String pin) {
         mWalletPin.setText(pin);
     }
 
-    public void clearError() {
+    private void clearError() {
         tooltip.setText("");
         tooltip.setVisibility(View.INVISIBLE);
     }
 
-    public void confirmError(String errorText) {
+    private void confirmError(String errorText) {
         if(getDialog()!=null) {
             mWalletPin.setText("");
             tooltip.setText(errorText);
-            tooltip.setTextColor(getResources().getColor(R.color.accent_red_color));
+            tooltip.setTextColor(ContextCompat.getColor(getContext(),R.color.accent_red_color));
             tooltip.setVisibility(View.VISIBLE);
         }
     }
@@ -106,7 +106,7 @@ public class PinDialogFragment extends DialogFragment {
         }
     }
 
-    public class FingerprintHelper extends FingerprintManagerCompat.AuthenticationCallback {
+    private class FingerprintHelper extends FingerprintManagerCompat.AuthenticationCallback {
         private Context mContext;
         private CancellationSignal mCancellationSignal;
 
@@ -151,7 +151,7 @@ public class PinDialogFragment extends DialogFragment {
 
     }
 
-    public void confirm(String pin){
+    private void confirm(String pin){
         if (pin.equals(QtumSharedPreference.getInstance().getWalletPassword(getContext()))) {
             clearError();
             mPinCallBack.onSuccess();

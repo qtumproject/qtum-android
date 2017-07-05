@@ -33,7 +33,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.pixelplex.qtum.ui.activity.MainActivity.MainActivity"
+            android:name="com.pixelplex.qtum.ui.activity.main_activity.MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -47,7 +47,7 @@
         </activity>
 
         <activity
-            android:name="com.pixelplex.qtum.ui.activity.SplashActivity.SplashActivity"
+            android:name="com.pixelplex.qtum.ui.activity.splash_activity.SplashActivity"
             android:theme="@style/SplashTheme"
             android:noHistory="true"
             android:screenOrientation="portrait">
@@ -75,19 +75,6 @@
             android:enabled="true"
             android:exported="true">
         </service>
-
-        <receiver
-            android:name=".dataprovider.BootReceiver"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
-            android:exported="true"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="android.intent.action.REBOOT"/>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
 
         <service android:name=".dataprovider.firebase.QtumFirebaseMessagingService">
             <intent-filter>

@@ -12,7 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ContractConfirmViewHolder extends RecyclerView.ViewHolder {
+class ContractConfirmViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.name)
     FontTextView name;

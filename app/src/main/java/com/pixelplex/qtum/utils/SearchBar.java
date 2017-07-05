@@ -21,19 +21,19 @@ import com.pixelplex.qtum.R;
 
 public class SearchBar extends RelativeLayout implements View.OnClickListener{
 
-    View view;
-    LinearLayout placeholder;
-    ImageView placeholderIcon;
-    TextView placeholderText;
-    EditText input;
-    Button cancel;
+    private View view;
+    private LinearLayout placeholder;
+    private ImageView placeholderIcon;
+    private TextView placeholderText;
+    private EditText input;
+    private Button cancel;
 
-    SearchBarListener listener;
+    private SearchBarListener listener;
 
-    boolean isActive;
-    int initialInputWidth;
+    private boolean isActive;
+    private int initialInputWidth;
 
-    ResizeAnimation resizeAnimation;
+    private ResizeAnimation resizeAnimation;
 
     public SearchBar(Context context) {
         super(context);

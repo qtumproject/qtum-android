@@ -1,10 +1,10 @@
-package com.pixelplex.qtum.ui.activity.SplashActivity;
+package com.pixelplex.qtum.ui.activity.splash_activity;
 
 import android.content.Context;
 import android.os.Handler;
 
 import com.pixelplex.qtum.datastorage.FileStorageManager;
-import com.pixelplex.qtum.ui.activity.BaseActivity.BasePresenterImpl;
+import com.pixelplex.qtum.ui.activity.base_activity.BasePresenterImpl;
 
 
 class SplashActivityPresenterImpl extends BasePresenterImpl implements SplashActivityPresenter {

@@ -27,7 +27,7 @@ public class TemplateViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.root_layout)
     RelativeLayout rootLayout;
 
-    ContractTemplate mContractTemplate;
+    private ContractTemplate mContractTemplate;
 
     public TemplateViewHolder(View itemView, final TemplateSelectListener listener) {
         super(itemView);

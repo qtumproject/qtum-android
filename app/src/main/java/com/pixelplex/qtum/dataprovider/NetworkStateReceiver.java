@@ -12,7 +12,7 @@ import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
 
 public class NetworkStateReceiver extends BroadcastReceiver {
 
-    NetworkStateListener mNetworkStateListener;
+    private NetworkStateListener mNetworkStateListener;
     private boolean mInitialState;
 
     public NetworkStateReceiver(boolean initialState){

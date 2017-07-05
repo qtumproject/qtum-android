@@ -5,7 +5,7 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 public class StoreContractPresenter extends BaseFragmentPresenterImpl {
 
-    StoreContractView view;
+    private StoreContractView view;
 
     public StoreContractPresenter(StoreContractView view) {
         this.view = view;

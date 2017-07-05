@@ -1,9 +1,9 @@
 package com.pixelplex.qtum.ui.fragment.ProfileFragment;
 
 
-public class SettingSwitchObject extends SettingObject {
+class SettingSwitchObject extends SettingObject {
 
-    boolean mIsChecked;
+    private boolean mIsChecked;
 
     public SettingSwitchObject(int title, int image, int section) {
         super(title, image, section);

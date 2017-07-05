@@ -215,8 +215,8 @@ public class TinyDB {
      */
     public ArrayList<Integer> getListInt(String key) {
         String[] myList = TextUtils.split(preferences.getString(key, ""), "‚‗‚");
-        ArrayList<String> arrayToList = new ArrayList<String>(Arrays.asList(myList));
-        ArrayList<Integer> newList = new ArrayList<Integer>();
+        ArrayList<String> arrayToList = new ArrayList<>(Arrays.asList(myList));
+        ArrayList<Integer> newList = new ArrayList<>();
 
         for (String item : arrayToList)
             newList.add(Integer.parseInt(item));
@@ -267,8 +267,8 @@ public class TinyDB {
      */
     public ArrayList<Double> getListDouble(String key) {
         String[] myList = TextUtils.split(preferences.getString(key, ""), "‚‗‚");
-        ArrayList<String> arrayToList = new ArrayList<String>(Arrays.asList(myList));
-        ArrayList<Double> newList = new ArrayList<Double>();
+        ArrayList<String> arrayToList = new ArrayList<>(Arrays.asList(myList));
+        ArrayList<Double> newList = new ArrayList<>();
 
         for (String item : arrayToList)
             newList.add(Double.parseDouble(item));
@@ -291,7 +291,7 @@ public class TinyDB {
      * @return ArrayList of String
      */
     public ArrayList<String> getListString(String key) {
-        return new ArrayList<String>(Arrays.asList(TextUtils.split(preferences.getString(key, ""), "‚‗‚")));
+        return new ArrayList<>(Arrays.asList(TextUtils.split(preferences.getString(key, ""), "‚‗‚")));
     }
 
     /**
@@ -310,7 +310,7 @@ public class TinyDB {
      */
     public ArrayList<Boolean> getListBoolean(String key) {
         ArrayList<String> myList = getListString(key);
-        ArrayList<Boolean> newList = new ArrayList<Boolean>();
+        ArrayList<Boolean> newList = new ArrayList<>();
 
         for (String item : myList) {
             if (item.equals("true")) {
@@ -328,7 +328,7 @@ public class TinyDB {
     	Gson gson = new Gson();
 
     	ArrayList<String> objStrings = getListString(key);
-    	ArrayList<Object> objects =  new ArrayList<Object>();
+    	ArrayList<Object> objects = new ArrayList<>();
 
     	for(String jObjString : objStrings){
     		Object value  = gson.fromJson(jObjString,  mClass);
@@ -350,7 +350,7 @@ public class TinyDB {
 
     public List<Contract> getContractList(){
 
-        ArrayList<Contract> contractArrayList = new ArrayList<Contract>();
+        ArrayList<Contract> contractArrayList = new ArrayList<>();
 
         contractArrayList.addAll(getContractListWithoutToken());
         contractArrayList.addAll(getTokenList());
@@ -375,7 +375,7 @@ public class TinyDB {
         Gson gson = new Gson();
 
         ArrayList<String> contractInfoStrings = getListString(CONTRACT_LIST);
-        ArrayList<Contract> contractArrayList = new ArrayList<Contract>();
+        ArrayList<Contract> contractArrayList = new ArrayList<>();
 
         for(String contractInfoString : contractInfoStrings){
             Contract contract = gson.fromJson(contractInfoString,Contract.class);
@@ -389,7 +389,7 @@ public class TinyDB {
         Gson gson = new Gson();
 
         ArrayList<String> tokenStrings = getListString(TOKEN_LIST);
-        ArrayList<Token> tokenArrayList = new ArrayList<Token>();
+        ArrayList<Token> tokenArrayList = new ArrayList<>();
 
         for(String contractInfoString : tokenStrings){
             Token token = gson.fromJson(contractInfoString,Token.class);
@@ -403,7 +403,7 @@ public class TinyDB {
         Gson gson = new Gson();
 
         ArrayList<String> contractTemplateString = getListString(CONTRACT_TEMPLATE_LIST);
-        ArrayList<ContractTemplate> contractTemplateArrayList = new ArrayList<ContractTemplate>();
+        ArrayList<ContractTemplate> contractTemplateArrayList = new ArrayList<>();
 
         for(String contractInfoString : contractTemplateString){
             ContractTemplate contractTemplate = gson.fromJson(contractInfoString,ContractTemplate.class);
@@ -516,7 +516,7 @@ public class TinyDB {
      */
     public void putListBoolean(String key, ArrayList<Boolean> boolList) {
         checkForNullKey(key);
-        ArrayList<String> newList = new ArrayList<String>();
+        ArrayList<String> newList = new ArrayList<>();
 
         for (Boolean item : boolList) {
             if (item) {
@@ -543,7 +543,7 @@ public class TinyDB {
     public void putListObject(String key, ArrayList<Object> objArray){
     	checkForNullKey(key);
     	Gson gson = new Gson();
-    	ArrayList<String> objStrings = new ArrayList<String>();
+    	ArrayList<String> objStrings = new ArrayList<>();
     	for(Object obj : objArray){
     		objStrings.add(gson.toJson(obj));
     	}
@@ -552,7 +552,7 @@ public class TinyDB {
 
     public void putContractListWithoutToken(List<Contract> contractArrayList){
         Gson gson = new Gson();
-        ArrayList<String> contractInfoStrings = new ArrayList<String>();
+        ArrayList<String> contractInfoStrings = new ArrayList<>();
         for(Contract contract : contractArrayList){
             contractInfoStrings.add(gson.toJson(contract));
         }
@@ -561,7 +561,7 @@ public class TinyDB {
 
     public void putTokenList(List<Token> tokenArrayList){
         Gson gson = new Gson();
-        ArrayList<String> tokenStrings = new ArrayList<String>();
+        ArrayList<String> tokenStrings = new ArrayList<>();
         for(Token token : tokenArrayList){
             tokenStrings.add(gson.toJson(token));
         }
@@ -570,7 +570,7 @@ public class TinyDB {
 
     public void putContractTemplate(List<ContractTemplate> contractTemplateList){
         Gson gson = new Gson();
-        ArrayList<String> contractTemplateListString = new ArrayList<String>();
+        ArrayList<String> contractTemplateListString = new ArrayList<>();
         for(ContractTemplate contractTemplate : contractTemplateList){
             contractTemplateListString.add(gson.toJson(contractTemplate));
         }

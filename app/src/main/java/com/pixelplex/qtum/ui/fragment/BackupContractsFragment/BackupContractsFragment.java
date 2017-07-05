@@ -13,18 +13,18 @@ import butterknife.OnClick;
 
 public class BackupContractsFragment extends BaseFragment implements BackupContractsFragmentView {
     
-    BackupContractsFragmentPresenter mBackupContractsFragmentPresenter;
+    private BackupContractsFragmentPresenter mBackupContractsFragmentPresenter;
 
     @BindView(R.id.tv_file_size)
     FontTextView mTextViewFileSize;
 
-    @OnClick({R.id.ibt_back, R.id.fl_back_up_file})
+    @OnClick({R.id.ibt_back, R.id.rl_back_up_file})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.ibt_back:
                 getActivity().onBackPressed();
                 break;
-            case R.id.fl_back_up_file:
+            case R.id.rl_back_up_file:
                 getPresenter().onBackUpClick();
         }
     }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class QStorePresenter extends BaseFragmentPresenterImpl {
 
-    QStoreView view;
+    private QStoreView view;
 
     public QStorePresenter(QStoreView view){
         this.view = view;
@@ -19,7 +19,7 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
         return view;
     }
 
-    List<TestTokenObject> items;
+    private List<TestTokenObject> items;
 
     public List<TestTokenObject> getSearchItems(){
         items = new ArrayList<>();

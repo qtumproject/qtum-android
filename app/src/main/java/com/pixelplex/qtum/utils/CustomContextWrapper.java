@@ -17,7 +17,7 @@ public class CustomContextWrapper extends ContextWrapper {
     @SuppressWarnings("deprecation")
     public static ContextWrapper wrap(Context context, String language) {
         Configuration config = context.getResources().getConfiguration();
-        Locale sysLocale = null;
+        Locale sysLocale;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             sysLocale = getSystemLocale(config);
         } else {
@@ -31,11 +31,7 @@ public class CustomContextWrapper extends ContextWrapper {
             } else {
                 setSystemLocaleLegacy(config, locale);
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                context = context.createConfigurationContext(config);
-            } else {
-                context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-            }
+            context = context.createConfigurationContext(config);
         }
         return new CustomContextWrapper(context);
     }

@@ -1,13 +1,9 @@
 package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
 
-import android.Manifest;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,17 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontManager;
-import com.pixelplex.qtum.utils.PinTextInputEditText;
-
-import java.security.Permission;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static org.spongycastle.asn1.cmp.PKIStatus.GRANTED;
 
 
 public class SendBaseFragment extends BaseFragment implements SendBaseFragmentView {
@@ -65,7 +56,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @BindView(R.id.tv_currency)
     TextView mTextViewCurrency;
 
-    SendBaseFragmentPresenterImpl sendBaseFragmentPresenter;
+    private SendBaseFragmentPresenterImpl sendBaseFragmentPresenter;
 
     @BindView(R.id.bt_qr_code)
     ImageButton mButtonQrCode;

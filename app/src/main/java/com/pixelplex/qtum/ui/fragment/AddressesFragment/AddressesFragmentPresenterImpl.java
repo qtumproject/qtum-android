@@ -21,7 +21,7 @@ class AddressesFragmentPresenterImpl extends BaseFragmentPresenterImpl implement
         return mAddressesFragmentView;
     }
 
-    public AddressesFragmentInteractorImpl getInteractor() {
+    private AddressesFragmentInteractorImpl getInteractor() {
         return mAddressesFragmentInteractor;
     }
 

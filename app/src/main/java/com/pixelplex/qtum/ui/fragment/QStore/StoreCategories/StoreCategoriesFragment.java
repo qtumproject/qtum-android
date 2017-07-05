@@ -15,9 +15,9 @@ import butterknife.OnClick;
 
 public class StoreCategoriesFragment extends BaseFragment implements StoreCategoriesView, SearchBarListener {
 
-    StoreCategoriesPresenter presenter;
+    private StoreCategoriesPresenter presenter;
 
-    StoreCategoriesAdapter adapter;
+    private StoreCategoriesAdapter adapter;
 
     @OnClick(R.id.ibt_back)
     public void onBackClick(){

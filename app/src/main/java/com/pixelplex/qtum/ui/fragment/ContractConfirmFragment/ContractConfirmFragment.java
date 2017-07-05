@@ -8,7 +8,6 @@ import android.widget.Toast;
 import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import java.util.ArrayList;
@@ -21,8 +20,8 @@ import butterknife.OnClick;
 public class ContractConfirmFragment extends BaseFragment implements  ContractConfirmView, OnValueClick{
 
     public final int LAYOUT = R.layout.lyt_contract_confirm;
-    public static final String paramsKey = "params";
-    public static final String CONTRACT_TEMPLATE_UIID = "uiid";
+    private static final String paramsKey = "params";
+    private static final String CONTRACT_TEMPLATE_UIID = "uiid";
 
     public static ContractConfirmFragment newInstance(List<ContractMethodParameter> params, long uiid) {
         Bundle args = new Bundle();
@@ -33,8 +32,8 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
         return fragment;
     }
 
-    ContractConfirmPresenterImpl presenter;
-    ContractConfirmAdapter adapter;
+    private ContractConfirmPresenterImpl presenter;
+    private ContractConfirmAdapter adapter;
 
     @BindView(R.id.recycler_view)
     RecyclerView confirmList;

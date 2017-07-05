@@ -44,7 +44,7 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
 
     private ContractMethodParameter parameter;
 
-    public InputFilter filter = new InputFilter() {
+    private InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             String content = etParam.getText().toString() + source;

@@ -17,7 +17,7 @@ import butterknife.OnClick;
 
 public class SmartContractsFragment extends BaseFragment implements OnSettingClickListener, SmartContractsFragmentView{
 
-    SmartContractsFragmentPresenterImpl presenter;
+    private SmartContractsFragmentPresenterImpl presenter;
 
     @BindView(R.id.smart_contracts_list)
     RecyclerView smartContractsList;
@@ -29,7 +29,7 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
         getActivity().onBackPressed();
     }
 
-    PrefAdapter adapter;
+    private PrefAdapter adapter;
 
     public static SmartContractsFragment newInstance() {
         

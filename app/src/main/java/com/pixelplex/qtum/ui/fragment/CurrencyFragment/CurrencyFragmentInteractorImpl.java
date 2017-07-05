@@ -10,7 +10,7 @@ import java.util.List;
 
 class CurrencyFragmentInteractorImpl implements CurrencyFragmentInteractor{
 
-    Context mContext;
+    private Context mContext;
 
     public CurrencyFragmentInteractorImpl(Context context){
         mContext = context;
@@ -18,8 +18,7 @@ class CurrencyFragmentInteractorImpl implements CurrencyFragmentInteractor{
 
     @Override
     public List<Token> getTokenList() {
-        List<Token> tokenList = (new TinyDB(mContext)).getTokenList();
-        return tokenList;
+        return (new TinyDB(mContext)).getTokenList();
     }
 
 }

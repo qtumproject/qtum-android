@@ -155,10 +155,9 @@ public class ContractBuilder {
     private static String convertToByteCode(String _value)
     {
         char[] chars = _value.toCharArray();
-        StringBuffer hex = new StringBuffer();
-        for (int i = 0; i < chars.length; i++)
-        {
-            hex.append(Integer.toHexString((int) chars[i]));
+        StringBuilder hex = new StringBuilder();
+        for (char aChar : chars) {
+            hex.append(Integer.toHexString((int) aChar));
         }
         return hex.toString();
     }

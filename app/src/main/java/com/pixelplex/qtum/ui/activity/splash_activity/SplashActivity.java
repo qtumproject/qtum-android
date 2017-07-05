@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.activity.SplashActivity;
+package com.pixelplex.qtum.ui.activity.splash_activity;
 
 import android.content.Intent;
 import android.graphics.Rect;
@@ -8,8 +8,8 @@ import android.support.v7.widget.AppCompatImageView;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.ui.activity.BaseActivity.BaseActivity;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.activity.base_activity.BaseActivity;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.utils.QtumIntent;
 import com.transitionseverywhere.ChangeClipBounds;
 import com.transitionseverywhere.Transition;
@@ -20,7 +20,7 @@ import butterknife.BindView;
 
 public class SplashActivity extends BaseActivity implements SplashActivityView, Transition.TransitionListener {
 
-    SplashActivityPresenterImpl presenter;
+    private SplashActivityPresenterImpl presenter;
     private static final int LAYOUT = R.layout.lyt_splash;
 
     @BindView(R.id.ic_app_logo)
@@ -29,9 +29,9 @@ public class SplashActivity extends BaseActivity implements SplashActivityView, 
     @BindView(R.id.root_layout)
     RelativeLayout rootLayout;
 
-    ChangeClipBounds clip;
+    private ChangeClipBounds clip;
 
-    int appLogoHeight = 0;
+    private int appLogoHeight = 0;
 
     @Override
     public void initializeViews() {

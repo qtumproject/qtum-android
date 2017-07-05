@@ -7,9 +7,9 @@ import java.util.Random;
 
 public class TestTokenObject {
 
-    public static String[] names = {"My Super Token", "Smart Contract", "Crowdsale", "Awesome Name","My Token"};
-    public static String[] types = {"Standart Token", "Smart Contract", "Crowdsale"};
-    public static float[] costs = {1000000, 0.2f, 230, 0.01f, 400, 500, 10.3f, 45.5f};
+    private static String[] names = {"My Super Token", "Smart Contract", "Crowdsale", "Awesome Name","My Token"};
+    private static String[] types = {"Standart Token", "Smart Contract", "Crowdsale"};
+    private static float[] costs = {1000000, 0.2f, 230, 0.01f, 400, 500, 10.3f, 45.5f};
 
     public int icon;
     public String name;
@@ -51,7 +51,7 @@ public class TestTokenObject {
         }
     }
 
-    public int getRandom(int min, int max){
+    private int getRandom(int min, int max){
         Random r = new Random();
         return r.nextInt(max - min) + min;
     }

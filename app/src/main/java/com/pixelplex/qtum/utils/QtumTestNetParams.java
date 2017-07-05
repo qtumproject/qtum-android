@@ -2,7 +2,6 @@ package com.pixelplex.qtum.utils;
 
 import org.bitcoinj.core.Utils;
 import org.bitcoinj.params.AbstractBitcoinNetParams;
-import org.bitcoinj.params.TestNet3Params;
 
 import static com.google.common.base.Preconditions.checkState;
 

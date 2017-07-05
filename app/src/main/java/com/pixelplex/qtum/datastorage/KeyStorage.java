@@ -2,7 +2,6 @@ package com.pixelplex.qtum.datastorage;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
 
@@ -16,7 +15,6 @@ import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.WalletExtension;
 import com.pixelplex.qtum.utils.CurrentNetParams;
 import com.pixelplex.qtum.utils.DictionaryWords;
-import org.spongycastle.util.encoders.Hex;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +48,11 @@ public class KeyStorage {
 
     public void clearKeyStorage() {
         sKeyStorage = null;
+    }
+
+    public void clearKeyFile(Context context){
+        File file = new File(context.getFilesDir().getPath() + "/key_storage");
+        file.delete();
     }
 
     public Observable<Wallet> loadWalletFromFile(Context context) {
@@ -95,10 +98,8 @@ public class KeyStorage {
             public void call(Subscriber<? super Wallet> subscriber) {
 
                 String seedString = "";
-                List<String> seedList = new ArrayList<>();
                 for (int i = 0; i < 11; i++) {
                     seedString += DictionaryWords.getRandomWord() + " ";
-                    seedList.add(DictionaryWords.getRandomWord());
                 }
                 seedString += DictionaryWords.getRandomWord();
 

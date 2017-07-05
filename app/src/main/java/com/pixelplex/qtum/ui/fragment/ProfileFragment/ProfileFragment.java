@@ -3,27 +3,22 @@ package com.pixelplex.qtum.ui.fragment.ProfileFragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
-import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 
 public class ProfileFragment extends BaseFragment implements ProfileFragmentView, LogOutDialogFragment.OnYesClickListener, OnSettingClickListener {
 
-    ProfileFragmentPresenterImpl mProfileFragmentPresenter;
+    private ProfileFragmentPresenterImpl mProfileFragmentPresenter;
 
     @BindView(R.id.pref_list)
     RecyclerView prefList;
 
-    PrefAdapter adapter;
+    private PrefAdapter adapter;
 
     public static ProfileFragment newInstance() {
 

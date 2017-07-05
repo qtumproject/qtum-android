@@ -5,7 +5,7 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 
-public class ResizeAnimation extends Animation {
+class ResizeAnimation extends Animation {
 
     private int startWidth;
     private int deltaWidth; // distance between start and end height

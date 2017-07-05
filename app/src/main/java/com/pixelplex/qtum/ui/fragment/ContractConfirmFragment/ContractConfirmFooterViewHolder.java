@@ -10,7 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ContractConfirmFooterViewHolder extends RecyclerView.ViewHolder {
+class ContractConfirmFooterViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.miner_value)
     FontTextView minerValue;

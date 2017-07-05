@@ -25,8 +25,8 @@ import butterknife.ButterKnife;
 
 public class NewsFragment extends BaseFragment implements NewsFragmentView {
 
-    NewsFragmentPresenterImpl mNewsFragmentPresenter;
-    NewsAdapter mNewsAdapter;
+    private NewsFragmentPresenterImpl mNewsFragmentPresenter;
+    private NewsAdapter mNewsAdapter;
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
