@@ -9,7 +9,7 @@ import io.fabric.sdk.android.*;
 
 public class QtumApplication extends MultiDexApplication {
 
-    private boolean contractAwait = false;
+    private int contractAwaitCount = 0;
 
     @Override
     public void onCreate() {
@@ -22,11 +22,19 @@ public class QtumApplication extends MultiDexApplication {
         FontManager.init(getAssets());
     }
 
-    public boolean isContractAwait() {
-        return contractAwait;
+    public int getContractAwaitCount() {
+        return contractAwaitCount;
     }
 
-    public void setContractAwait(boolean contractAwait) {
-        this.contractAwait = contractAwait;
+    public void setContractAwaitCount(int contractAwaitCount) {
+        this.contractAwaitCount = contractAwaitCount;
+    }
+
+    public void setContractAwaitCountPlus() {
+        this.contractAwaitCount++;
+    }
+
+    public void setContractAwaitCountMinus() {
+        this.contractAwaitCount--;
     }
 }

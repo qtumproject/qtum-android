@@ -149,7 +149,7 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
 
                     @Override
                     public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
-                        getView().getApplication().setContractAwait(true);
+                        getView().getApplication().setContractAwaitCountPlus();
                         String name = "";
                         for(ContractMethodParameter contractMethodParameter : mContractMethodParameterList){
                             if(contractMethodParameter.getName().equals("_name")){

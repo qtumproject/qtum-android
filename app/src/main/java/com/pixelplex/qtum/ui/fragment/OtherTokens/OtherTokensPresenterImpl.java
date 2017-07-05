@@ -50,7 +50,7 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
                 List<Token> tokens = new ArrayList<>();
 
                 for (Token token: tokenList) {
-                    if(token.isSubscribe()){
+                    if(token.isHasBeenCreated() && token.isSubscribe()){
                         tokens.add(token);
                     }
                 }

@@ -140,7 +140,7 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(), History.class);
-                if(((QtumApplication)getApplication()).isContractAwait()){
+                if(((QtumApplication)getApplication()).getContractAwaitCount()>0){
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
 
                     boolean done = false;
@@ -166,7 +166,7 @@ public class UpdateService extends Service {
                         tinyDB.putTokenList(tokenList);
                     }
 
-                    ((QtumApplication)getApplication()).setContractAwait(false);
+                    ((QtumApplication)getApplication()).setContractAwaitCountMinus();
                 }
                 if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
 
@@ -300,7 +300,7 @@ public class UpdateService extends Service {
         }
 
         String reverse_tx_hash = sb.toString();
-        reverse_tx_hash = reverse_tx_hash.concat("00");
+        reverse_tx_hash = reverse_tx_hash.concat("00000000");
 
 
         byte[] test5 = Hex.decode(reverse_tx_hash);
