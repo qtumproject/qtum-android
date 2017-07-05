@@ -140,7 +140,7 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(), History.class);
-                if(((QtumApplication)getApplication()).isContractAwait()){
+                if(((QtumApplication)getApplication()).getContractAwaitCount()>0){
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
 
                     boolean done = false;
@@ -166,7 +166,7 @@ public class UpdateService extends Service {
                         tinyDB.putTokenList(tokenList);
                     }
 
-                    ((QtumApplication)getApplication()).setContractAwait(false);
+                    ((QtumApplication)getApplication()).setContractAwaitCountMinus();
                 }
                 if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
 
