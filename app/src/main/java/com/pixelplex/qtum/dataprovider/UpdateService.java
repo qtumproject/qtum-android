@@ -300,7 +300,7 @@ public class UpdateService extends Service {
         }
 
         String reverse_tx_hash = sb.toString();
-        reverse_tx_hash = reverse_tx_hash.concat("00");
+        reverse_tx_hash = reverse_tx_hash.concat("00000000");
 
 
         byte[] test5 = Hex.decode(reverse_tx_hash);

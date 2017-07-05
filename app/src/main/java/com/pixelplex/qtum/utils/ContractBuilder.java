@@ -44,6 +44,7 @@ public class ContractBuilder {
     private final String TYPE_ADDRESS = "address";
 
     final int OP_PUSHDATA_1 = 1;
+    final int OP_PUSHDATA_4 = 0x4e;
     final int OP_PUSHDATA_8 = 8;
     final int OP_EXEC = 193;
     final int OP_EXEC_ASSIGN = 194;
@@ -210,7 +211,7 @@ public class ContractBuilder {
         byte[] data = Hex.decode(abiParams);
         byte[] program;
 
-        ScriptChunk versionChunk = new ScriptChunk(OP_PUSHDATA_1,version);
+        ScriptChunk versionChunk = new ScriptChunk(OP_PUSHDATA_4,version);
         ScriptChunk gasLimitChunk = new ScriptChunk(OP_PUSHDATA_8,gasLimit);
         ScriptChunk gasPriceChunk = new ScriptChunk(OP_PUSHDATA_8,gasPrice);
         ScriptChunk dataChunk = new ScriptChunk(ScriptOpCodes.OP_PUSHDATA2,data);
@@ -243,7 +244,7 @@ public class ContractBuilder {
         byte[] contractAddress = Hex.decode(_contractAddress);
         byte[] program;
 
-        ScriptChunk versionChunk = new ScriptChunk(OP_PUSHDATA_1,version);
+        ScriptChunk versionChunk = new ScriptChunk(OP_PUSHDATA_4,version);
         ScriptChunk gasLimitChunk = new ScriptChunk(OP_PUSHDATA_8,gasLimit);
         ScriptChunk gasPriceChunk = new ScriptChunk(OP_PUSHDATA_8,gasPrice);
         ScriptChunk dataChunk = new ScriptChunk(ScriptOpCodes.OP_PUSHDATA2,data);
