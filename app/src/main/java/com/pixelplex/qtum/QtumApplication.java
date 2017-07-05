@@ -1,8 +1,10 @@
 package com.pixelplex.qtum;
 
 import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.pixelplex.qtum.utils.ContractBuilder;
 import com.pixelplex.qtum.utils.FontManager;
 
 import io.fabric.sdk.android.*;
@@ -18,7 +20,6 @@ public class QtumApplication extends MultiDexApplication {
         if(!BuildConfig.DEBUG) {
             Fabric.with(this, new Crashlytics());
         }
-
         FontManager.init(getAssets());
     }
 
