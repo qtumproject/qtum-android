@@ -6,6 +6,7 @@ import com.crashlytics.android.Crashlytics;
 import com.pixelplex.qtum.utils.FontManager;
 
 import io.fabric.sdk.android.*;
+import io.fabric.sdk.android.Fabric;
 
 public class QtumApplication extends MultiDexApplication {
 
