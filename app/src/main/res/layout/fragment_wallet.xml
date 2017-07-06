@@ -7,104 +7,202 @@
     android:background="@color/background"
     android:fitsSystemWindows="true">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background" />
+
+        <LinearLayout
+            android:id="@+id/ll_receive"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:paddingEnd="6dp"
+                android:tint="@color/background"
+                app:srcCompat="@drawable/ic_createnew" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:weightSum="2"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:text="@string/public_key"
+                    android:textColor="@color/background"
+                    app:typefaceAsset="@string/simplonMonoRegular" />
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:id="@+id/tv_public_key"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:gravity="top"
+                    android:paddingEnd="16dp"
+                    android:textColor="@color/background"
+                    app:typefaceAsset="@string/simplonMonoMedium" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bottom_vav_view_tab_selected_drawable"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/activity"
+            android:textColor="@color/colorPrimary" />
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
+        android:layout_height="200dp"
         android:background="@color/colorPrimary"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:contentScrim="@android:color/transparent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:statusBarScrim="?attr/colorPrimaryDark"
+            app:titleEnabled="false">
+
+            <FrameLayout
+                android:id="@+id/balance_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="56dp"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax">
+
+                <include layout="@layout/fragment_wallet_appbar"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/page_indicator"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/tab_indicator_selected_inverse"/>
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@drawable/tab_indicator_default_inverse"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
+                android:layout_height="112dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:elevation="0dp"
+                app:layout_collapseMode="pin">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <RelativeLayout
+                        android:id="@+id/fade_divider_root"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:orientation="horizontal">
+                        android:background="@color/colorPrimary">
 
-                        <TextView
+                        <com.pixelplex.qtum.utils.FontTextView
                             android:id="@+id/tv_wallet_name"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:gravity="center"
-                            android:layout_marginStart="32dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
                             android:text="@string/my_wallet"
                             android:textColor="@color/background"
-                            android:textSize="@dimen/toolbar_text_size"/>
+                            android:textSize="@dimen/toolbar_text_size"
+                            app:typefaceAsset="@string/euclidFlexMedium"/>
 
                         <ImageButton
                             android:id="@+id/bt_qr_code"
                             android:layout_width="36dp"
-                            android:padding="8dp"
                             android:layout_height="36dp"
+                            android:layout_alignParentEnd="true"
                             android:layout_margin="9dp"
-                            android:tint="@color/background"
                             android:background="@drawable/background_pressed_alpha_white"
+                            android:padding="8dp"
                             android:scaleType="centerInside"
+                            android:tint="@color/background"
                             app:srcCompat="@drawable/ic_qrcode"/>
 
-                    </LinearLayout>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true">
+
+                            <View
+                                android:id="@+id/fade_divider"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/background"
+                                android:visibility="invisible"/>
+
+                        </FrameLayout>
+
+                    </RelativeLayout>
 
                 </LinearLayout>
 
             </android.support.v7.widget.Toolbar>
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center_vertical"
-        android:padding="8dp"
-        android:textColor="@color/colorPrimary"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="@drawable/bottom_vav_view_tab_selected_drawable"
-        android:text="@string/activity"
-        />
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="40dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:splitMotionEvents="false"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>

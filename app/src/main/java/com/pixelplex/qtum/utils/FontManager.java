@@ -7,9 +7,6 @@ import android.text.TextUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by kirillvolkov on 16.05.17.
- */
 
 public class FontManager {
     private static FontManager instance;
@@ -65,7 +62,7 @@ public class FontManager {
             return asset;
 
         // Make sure that the font ends in '.ttf' or '.ttc'
-        if ((!asset.endsWith(".ttf")) && (!asset.endsWith(".ttc")))
+        if (!asset.endsWith(".ttf") && !asset.endsWith(".ttc") && !asset.endsWith(".otf"))
             asset = String.format("%s.ttf", asset);
 
         return asset;

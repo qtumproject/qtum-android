@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -19,20 +21,26 @@ import org.bitcoinj.wallet.Wallet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
-import com.pixelplex.qtum.dataprovider.RestAPI.TokenListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalanceChangeListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenParams;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenBalance.TokenBalance;
+import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
+import com.pixelplex.qtum.dataprovider.listeners.FireBaseTokenRefreshListener;
+import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
+import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
+import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
+import com.pixelplex.qtum.model.gson.history.History;
+import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.datastorage.TokenList;
-import com.pixelplex.qtum.datastorage.TokenSharedPreference;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.QtumIntent;
+import com.pixelplex.qtum.datastorage.TinyDB;
+
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 import org.spongycastle.crypto.digests.SHA256Digest;
 import org.spongycastle.util.encoders.Hex;
@@ -40,6 +48,7 @@ import org.spongycastle.util.encoders.Hex;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.List;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -63,6 +72,9 @@ public class UpdateService extends Service {
     private int totalTransaction = 0;
     private JSONArray mAddresses;
 
+    String mFirebasePrevToken;
+    String mFirebaseCurrentToken;
+
     private String mBalance = null;
     private String mUnconfirmedBalance = null;
 
@@ -78,32 +90,48 @@ public class UpdateService extends Service {
             e.printStackTrace();
         }
 
+        String[] firebaseTokens = QtumSharedPreference.getInstance().getFirebaseTokens(getApplicationContext());
+        mFirebasePrevToken = firebaseTokens[0];
+        mFirebaseCurrentToken = firebaseTokens[1];
+
+        QtumSharedPreference.getInstance().addFirebaseTokenRefreshListener(new FireBaseTokenRefreshListener() {
+            @Override
+            public void onRefresh(String prevToken, String currentToken) {
+                mFirebasePrevToken = prevToken;
+                mFirebaseCurrentToken = currentToken;
+                subscribeSocket();
+            }
+        });
+
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
 
-                socket.emit("subscribe", "balance_subscribe", mAddresses);
-                sendNotification("Default", "QTUM monitoring", "Touch to open application", null);
+            subscribeSocket();
 
             }
         }).on("balance_changed", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                JSONObject data = (JSONObject) args[0];
-                BigDecimal unconfirmedBalance = null;
-                BigDecimal balance = null;
                 try {
-                    unconfirmedBalance = (new BigDecimal(data.getString("unconfirmedBalance"))).divide(new BigDecimal("100000000"));
-                    balance = (new BigDecimal(data.getString("balance"))).divide(new BigDecimal("100000000"));
-                    mBalance = balance.toString();
-                    mUnconfirmedBalance = unconfirmedBalance.toString();
-                    HistoryList.getInstance().setBalance(balance.toString());
-                    HistoryList.getInstance().setUnconfirmedBalance(unconfirmedBalance.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (mBalanceChangeListener != null) {
-                    mBalanceChangeListener.onChangeBalance();
+                    JSONObject data = (JSONObject) args[0];
+                    BigDecimal unconfirmedBalance = null;
+                    BigDecimal balance = null;
+                    try {
+                        unconfirmedBalance = (new BigDecimal(data.getString("unconfirmedBalance"))).divide(new BigDecimal("100000000"));
+                        balance = (new BigDecimal(data.getString("balance"))).divide(new BigDecimal("100000000"));
+                        mBalance = balance.toString();
+                        mUnconfirmedBalance = unconfirmedBalance.toString();
+                        HistoryList.getInstance().setBalance(balance.toString());
+                        HistoryList.getInstance().setUnconfirmedBalance(unconfirmedBalance.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (mBalanceChangeListener != null) {
+                        mBalanceChangeListener.onChangeBalance();
+                    }
+                } catch (ClassCastException e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         }).on("new_transaction", new Emitter.Listener() {
@@ -112,55 +140,67 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(), History.class);
-                if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
-                    String txHash = history.getTxHash();
-                    char[] ca = txHash.toCharArray();
-                    StringBuilder sb = new StringBuilder(txHash.length());
-                    for (int i = 0; i < txHash.length(); i += 2) {
-                        sb.insert(0, ca, i, 2);
+                if(((QtumApplication)getApplication()).isContractAwait()){
+                    TinyDB tinyDB = new TinyDB(getApplicationContext());
+
+                    boolean done = false;
+
+                    List<Contract> contractListWithoutToken = tinyDB.getContractListWithoutToken();
+                    for(Contract contract : contractListWithoutToken){
+                        if(contract.getContractAddress()==null){
+                            contract.setContractAddress(generateContractAddress(history.getTxHash()));
+                            done = true;
+                            break;
+                        }
+                    }
+                    tinyDB.putContractListWithoutToken(contractListWithoutToken);
+
+                    if(!done) {
+                        List<Token> tokenList = tinyDB.getTokenList();
+                        for (Token token : tokenList) {
+                            if (token.getContractAddress() == null) {
+                                token.setContractAddress(generateContractAddress(history.getTxHash()));
+                                break;
+                            }
+                        }
+                        tinyDB.putTokenList(tokenList);
                     }
 
-                    String reverse_tx_hash = sb.toString();
-                    reverse_tx_hash = reverse_tx_hash.concat("00");
+                    ((QtumApplication)getApplication()).setContractAwait(false);
+                }
+                if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
 
+                    String txHash = history.getTxHash();
+                    String contractAddress = generateContractAddress(txHash);
 
-                    byte[] test5 = Hex.decode(reverse_tx_hash);
+                    TinyDB tinyDB = new TinyDB(getApplicationContext());
 
-                    SHA256Digest sha256Digest = new SHA256Digest();
-                    sha256Digest.update(test5, 0, test5.length);
-                    byte[] out = new byte[sha256Digest.getDigestSize()];
-                    sha256Digest.doFinal(out, 0);
+                    boolean done = false;
 
-                    RIPEMD160Digest ripemd160Digest = new RIPEMD160Digest();
-                    ripemd160Digest.update(out, 0, out.length);
-                    byte[] out2 = new byte[ripemd160Digest.getDigestSize()];
-                    ripemd160Digest.doFinal(out2, 0);
+                    List<Contract> contractList = tinyDB.getContractListWithoutToken();
+                    for(Contract contract : contractList){
+                        if(contract.getContractAddress()!=null && contract.getContractAddress().equals(contractAddress)){
+                            contract.setHasBeenCreated(true);
+                            contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
+                            done = true;
+                            break;
+                        }
+                    }
+                    tinyDB.putContractListWithoutToken(contractList);
 
-                    final String tokenAddress = Hex.toHexString(out2);
+                    if(!done){
+                        List<Token> tokenList = tinyDB.getTokenList();
+                        for(Token token : tokenList){
+                            if(token.getContractAddress()!=null && token.getContractAddress().equals(contractAddress)){
+                                token.setHasBeenCreated(true);
+                                token.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
+                                break;
+                            }
+                        }
+                        tinyDB.putTokenList(tokenList);
+                    }
 
-                    QtumService.newInstance().getContractsParams(tokenAddress)
-                            .subscribe(new Subscriber<TokenParams>() {
-                                @Override
-                                public void onCompleted() {
-                                }
-                                @Override
-                                public void onError(Throwable e) {
-
-                                }
-                                @Override
-                                public void onNext(TokenParams tokenParams) {
-                                    tokenParams.setAddress(tokenAddress);
-                                    addToTokenList(tokenParams);
-                                    if(mTokenListener != null){
-                                        mTokenListener.newToken();
-                                    }
-                                }
-                            });
-
-
-                    subscribeTokenBalanceChange(tokenAddress);
-                    TokenSharedPreference.getInstance().addToTokenList(getApplicationContext(), tokenAddress);
-
+                    subscribeTokenBalanceChange(contractAddress, mFirebasePrevToken, mFirebaseCurrentToken);
                 }
                 if (mTransactionListener != null) {
                     mTransactionListener.onNewHistory(history);
@@ -170,8 +210,6 @@ public class UpdateService extends Service {
                             sendNotification("New confirmed transaction", totalTransaction + " new confirmed transaction",
                                     "Touch to open transaction history", RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                         }
-                    } else {
-                        sendNotification("Default", "QTUM monitoring", "Touch to open application", RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                     }
                 } else {
                     if (history.getBlockTime() != null) {
@@ -188,10 +226,10 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 TokenBalance tokenBalance = gson.fromJson(data.toString(), TokenBalance.class);
-                TokenList.getTokenList().setTokenBalance(tokenBalance);
+
                 TokenBalanceChangeListener tokenBalanceChangeListener = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
                 if(tokenBalanceChangeListener!=null){
-                    tokenBalanceChangeListener.onBalanceChange();
+                    tokenBalanceChangeListener.onBalanceChange(tokenBalance);
                 }
             }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
@@ -212,28 +250,72 @@ public class UpdateService extends Service {
         stopSelf();
     }
 
-    private void subscribeTokenBalanceChange(String tokenAddress){
+    public void subscribeSocket(){
+        subscribeBalanceChange(mFirebasePrevToken,mFirebaseCurrentToken);
+        for(Contract contract : (new TinyDB(getApplicationContext())).getContractList()){
+            subscribeTokenBalanceChange(contract.getContractAddress(),mFirebasePrevToken,mFirebaseCurrentToken);
+        }
+    }
+
+    public void subscribeTokenBalanceChange(String tokenAddress, String prevToken, String currentToken){
         JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObjectToken = new JSONObject();
         try {
             jsonObject.put("contract_address",tokenAddress);
             jsonObject.put("addresses",mAddresses);
+
+            jsonObjectToken.put("notificationToken",currentToken);
+            jsonObjectToken.put("prevToken",prevToken);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        socket.emit("subscribe","token_balance_change",jsonObject);
+        socket.emit("subscribe","token_balance_change",jsonObject, jsonObjectToken);
     }
 
-    private void addToTokenList(TokenParams tokenParams){
-        TokenList.getTokenList().addToTokenList(tokenParams);
+    public void subscribeBalanceChange(String prevToken, String currentToken){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("notificationToken",currentToken);
+            jsonObject.put("prevToken",prevToken);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        socket.emit("subscribe", "balance_subscribe", mAddresses, jsonObject);
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(QtumSharedPreference.getInstance().getKeyGeneratedInstance(getBaseContext())){
-            starMonitoring();
+            startMonitoring();
         }
         return START_REDELIVER_INTENT;
+    }
+
+    private String generateContractAddress(String txHash){
+        char[] ca = txHash.toCharArray();
+        StringBuilder sb = new StringBuilder(txHash.length());
+        for (int i = 0; i < txHash.length(); i += 2) {
+            sb.insert(0, ca, i, 2);
+        }
+
+        String reverse_tx_hash = sb.toString();
+        reverse_tx_hash = reverse_tx_hash.concat("00");
+
+
+        byte[] test5 = Hex.decode(reverse_tx_hash);
+
+        SHA256Digest sha256Digest = new SHA256Digest();
+        sha256Digest.update(test5, 0, test5.length);
+        byte[] out = new byte[sha256Digest.getDigestSize()];
+        sha256Digest.doFinal(out, 0);
+
+        RIPEMD160Digest ripemd160Digest = new RIPEMD160Digest();
+        ripemd160Digest.update(out, 0, out.length);
+        byte[] out2 = new byte[ripemd160Digest.getDigestSize()];
+        ripemd160Digest.doFinal(out2, 0);
+
+        return Hex.toHexString(out2);
     }
 
     private void loadWalletFromFile(final LoadWalletFromFileCallBack callback) {
@@ -260,7 +342,7 @@ public class UpdateService extends Service {
         void onSuccess();
     }
 
-    public void starMonitoring() {
+    public void startMonitoring() {
         if (!monitoringFlag) {
             if (mAddresses != null) {
                 socket.connect();
@@ -273,7 +355,7 @@ public class UpdateService extends Service {
                         for (String address : KeyStorage.getInstance().getAddresses()) {
                             mAddresses.put(address);
                         }
-                        starMonitoring();
+                        startMonitoring();
                     }
                 });
             }
@@ -298,9 +380,8 @@ public class UpdateService extends Service {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentIntent(contentIntent)
-                .setOngoing(true)
-
                 //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
+                .setAutoCancel(true)
                 .setTicker(Ticker)
                 .setContentTitle(Title)
                 .setContentText(Text)
@@ -312,13 +393,10 @@ public class UpdateService extends Service {
         } else {
             builder.setSmallIcon(R.drawable.logo);
         }
-        if (android.os.Build.VERSION.SDK_INT <= 15) {
-            notification = builder.getNotification();
-        } else {
-            notification = builder.build();
-        }
+        notification = builder.build();
 
-        startForeground(DEFAULT_NOTIFICATION_ID, notification);
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(DEFAULT_NOTIFICATION_ID, notification);
     }
 
     @Nullable
@@ -363,12 +441,10 @@ public class UpdateService extends Service {
 
     public void addTokenBalanceChangeListener(String address, TokenBalanceChangeListener tokenBalanceChangeListener){
         mStringTokenBalanceChangeListenerHashMap.put(address,tokenBalanceChangeListener);
-        int i =0;
     }
 
     public void removeTokenBalanceChangeListener(String address){
         mStringTokenBalanceChangeListenerHashMap.remove(address);
-        int i=0;
     }
 
     public void removeBalanceChangeListener() {
@@ -376,11 +452,11 @@ public class UpdateService extends Service {
     }
 
     public void clearNotification() {
-        if (totalTransaction != 0) {
-            sendNotification("Default", "QTUM monitoring", "Touch to open application", null);
-            totalTransaction = 0;
-        }
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancelAll();
+        totalTransaction = 0;
     }
+
 
     public class UpdateBinder extends Binder {
         public UpdateService getService() {

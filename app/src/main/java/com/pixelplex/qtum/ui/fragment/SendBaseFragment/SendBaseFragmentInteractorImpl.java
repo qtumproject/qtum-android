@@ -13,21 +13,22 @@ import org.bitcoinj.core.TransactionOutPoint;
 import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
-import com.pixelplex.qtum.dataprovider.RestAPI.QtumService;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionRequest;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.SendRawTransactionResponse;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.UnspentOutput;
+import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
+import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
+import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.utils.CurrentNetParams;
+import com.pixelplex.qtum.datastorage.TinyDB;
+
 import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -110,7 +111,6 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     }
                 }
                 if (overFlow.doubleValue() < amount.doubleValue()) {
-                    //TODO: throw exception
                     callBack.onError("Not enough money");
                     return;
                 }
@@ -146,20 +146,6 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
                 String transactionHex = Hex.toHexString(bytes);
 
-                Date date = new Date();
-                long l = date.getTime() / 1000;
-                int i3 = (int) l;
-                byte[] bytesData = ByteBuffer.allocate(4).putInt(i3).array();
-                byte tmp1 = bytesData[3];
-                byte tmp2 = bytesData[2];
-                byte tmp3 = bytesData[1];
-                byte tmp4 = bytesData[0];
-                bytesData[0] = tmp1;
-                bytesData[1] = tmp2;
-                bytesData[2] = tmp3;
-                bytesData[3] = tmp4;
-
-                transactionHex += Hex.toHexString(bytesData);
                 callBack.onSuccess(transactionHex);
             }
         });
@@ -170,25 +156,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
         createTx(address, amount, new CreateTxCallBack() {
             @Override
             public void onSuccess(String txHex) {
-                QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(txHex, 1))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<SendRawTransactionResponse>() {
-                            @Override
-                            public void onCompleted() {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
-                                callBack.onSuccess();
-                            }
-                        });
+                sendTx(txHex, callBack);
             }
 
             @Override
@@ -197,6 +165,30 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
             }
         });
     }
+
+    @Override
+    public void sendTx(String txHex, final SendTxCallBack callBack){
+        QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(txHex, 1))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<SendRawTransactionResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callBack.onError(e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
+                        callBack.onSuccess();
+                    }
+                });
+    }
+
 
     interface GetUnspentListCallBack {
         void onSuccess(List<UnspentOutput> unspentOutputs);
@@ -215,7 +207,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
     }
 
     @Override
-    public int getPassword() {
+    public String getPassword() {
         return QtumSharedPreference.getInstance().getWalletPassword(mContext);
     }
 
@@ -227,5 +219,10 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
     @Override
     public List<String> getAddresses() {
         return KeyStorage.getInstance().getAddresses();
+    }
+
+    @Override
+    public List<Token> getTokenList() {
+        return (new TinyDB(mContext).getTokenList());
     }
 }

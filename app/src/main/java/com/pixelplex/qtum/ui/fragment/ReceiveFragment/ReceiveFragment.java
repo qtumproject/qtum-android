@@ -2,10 +2,8 @@ package com.pixelplex.qtum.ui.fragment.ReceiveFragment;
 
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -20,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -66,7 +65,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
                 getPresenter().onChooseAnotherAddressClick();
                 break;
             case R.id.ibt_back:
-                getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 getActivity().onBackPressed();
                 break;
         }
@@ -140,7 +139,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
@@ -168,12 +167,12 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
     @Override
     public void setBalance(String balance) {
-        mTextViewTotalBalanceNumber.setText(String.valueOf(balance)+" QTUM");
+        mTextViewTotalBalanceNumber.setText((balance != null)? String.format("%s QTUM",balance) : "N/A");
     }
 
     @Override
     public void showToast() {
-        Snackbar.make(mCoordinatorLayout, R.string.coped, Snackbar.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),R.string.coped,Toast.LENGTH_SHORT).show();
     }
 
     public void onChangeAddress(){

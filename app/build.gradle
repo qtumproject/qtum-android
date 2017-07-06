@@ -36,8 +36,8 @@ android {
         applicationId "com.pixelplex.qtum"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "0.0.9"
+        versionCode 2
+        versionName "0.1.2"
         //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled  true
@@ -100,4 +100,11 @@ dependencies {
     compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
 
     compile 'com.mikhaellopez:hfrecyclerview:1.0.0'
+
+    compile 'com.google.firebase:firebase-core:9.2.0'
+    compile 'com.google.firebase:firebase-messaging:9.2.0'
+
+    compile 'com.google.auto.value:auto-value:1.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

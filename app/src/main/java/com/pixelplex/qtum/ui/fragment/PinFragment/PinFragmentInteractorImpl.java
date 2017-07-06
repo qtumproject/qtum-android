@@ -21,14 +21,25 @@ class PinFragmentInteractorImpl implements PinFragmentInteractor {
     }
 
     @Override
-    public int getPassword() {
+    public String getPassword() {
         return QtumSharedPreference.getInstance().getWalletPassword(mContext);
     }
 
     @Override
-    public void savePassword(int password) {
+    public void savePassword(String password) {
         QtumSharedPreference.getInstance().saveWalletPassword(mContext, password);
     }
+
+    @Override
+    public String getTouchIdPassword() {
+        return QtumSharedPreference.getInstance().getTouchIdPassword(mContext);
+    }
+
+    @Override
+    public void saveTouchIdPassword(String password) {
+        QtumSharedPreference.getInstance().saveTouchIdPassword(mContext, password);
+    }
+
 
     @Override
     public void loadWalletFromFile(final LoadWalletFromFileCallBack callBack) {

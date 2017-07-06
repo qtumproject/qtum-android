@@ -4,7 +4,7 @@
                                                  android:clickable="true"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
-                                                 android:background="@color/grey_lite"
+                                                 android:background="@color/background"
                                                  android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -32,13 +32,16 @@
                 android:paddingRight="16dp"
                 app:srcCompat="@drawable/ic_back_indicator"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <com.pixelplex.qtum.utils.FontTextView
                 android:id="@+id/tv_currency_title"
-                android:text="@string/currency"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/toolbar_text_size"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="48dp"
+                android:gravity="center"
+                android:text="@string/chose_to_subscribe"
+                android:textColor="@color/background"
+                android:textSize="@dimen/toolbar_text_size"
+                app:typefaceAsset="@string/euclidFlexMedium" />
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
@@ -48,40 +51,48 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true"
-        android:id="@+id/fl_currency"
+        android:id="@+id/ll_currency"
         android:focusableInTouchMode="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_margin="16dp"
-            android:orientation="horizontal"
-            android:background="@drawable/background_edit_text_search">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                app:srcCompat="@drawable/ic_zoom"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="16dp"
+                android:orientation="horizontal"
+                android:background="@color/background">
 
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:hint="@string/search"
-                android:id="@+id/et_search_currency"
-                android:imeOptions="actionSearch"
-                android:singleLine="true"
-                android:textSize="18sp"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    app:srcCompat="@drawable/ic_search"/>
 
-        </LinearLayout>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:hint="@string/search"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@color/colorPrimary"
+                    android:id="@+id/et_search_currency"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
+                    android:textSize="18sp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+        </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="72dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/recycler_view">
 

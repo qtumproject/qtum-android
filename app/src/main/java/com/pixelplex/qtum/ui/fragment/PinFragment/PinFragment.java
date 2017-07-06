@@ -2,15 +2,9 @@ package com.pixelplex.qtum.ui.fragment.PinFragment;
 
 
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.pixelplex.qtum.R;
@@ -18,7 +12,6 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 
 public class PinFragment extends BaseFragment implements PinFragmentView {
@@ -28,6 +21,7 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     final static String ACTION = "action";
 
     public final static String CREATING = "creating";
+    public final static String CHECK_AUTHENTICATION = "check_authentication";
     public final static String AUTHENTICATION = "authentication";
     public final static String AUTHENTICATION_AND_SEND = "authentication_and_send";
     public final static String CHANGING = "changing";
@@ -70,10 +64,12 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
 
     @Override
     public void confirmError(String errorText) {
-        mWalletPin.setText("");
-        tooltip.setText(errorText);
-        tooltip.setTextColor(getResources().getColor(R.color.accent_red_color));
-        tooltip.setVisibility(View.VISIBLE);
+        if(mWalletPin!=null) {
+            mWalletPin.setText("");
+            tooltip.setText(errorText);
+            tooltip.setTextColor(getResources().getColor(R.color.accent_red_color));
+            tooltip.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -96,9 +92,14 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     }
 
     @Override
+    public void setPin(String pin) {
+        mWalletPin.setText(pin);
+    }
+
+    @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Override

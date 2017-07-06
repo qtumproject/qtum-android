@@ -1,25 +1,31 @@
 package com.pixelplex.qtum.ui.fragment.WalletFragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
-import com.pixelplex.qtum.dataprovider.BalanceChangeListener;
+import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
-import com.pixelplex.qtum.dataprovider.RestAPI.NetworkStateListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.TokenListener;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import com.pixelplex.qtum.dataprovider.TransactionListener;
+import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
+import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
+import com.pixelplex.qtum.model.gson.history.History;
+import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.ui.fragment.TransactionFragment.TransactionFragment;
 
 import java.math.BigDecimal;
 
-class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
+public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
 
 
     private Context mContext;
@@ -29,10 +35,13 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     private boolean mVisibility = false;
     private UpdateService mUpdateService;
     private NetworkStateReceiver mNetworkStateReceiver;
+    private boolean mNetworkConnectedFlag = false;
+    private boolean OPEN_QR_CODE_FRAGMENT_FLAG = false;
 
     private final int ONE_PAGE_COUNT = 25;
+    private static final int REQUEST_CAMERA = 3;
 
-    WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView) {
+    public WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView) {
         mWalletFragmentView = walletFragmentView;
         mContext = getView().getContext();
         mWalletFragmentInteractor = new WalletFragmentInteractorImpl();
@@ -42,9 +51,9 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        mUpdateService = ((MainActivity) getView().getFragmentActivity()).getUpdateService();
+        mUpdateService = getView().getMainActivity().getUpdateService();
 
-        mUpdateService.starMonitoring();
+        mUpdateService.startMonitoring();
         mUpdateService.addTransactionListener(new TransactionListener() {
             @Override
             public void onNewHistory(History history) {
@@ -70,7 +79,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
             @Override
             public void onChangeBalance() {
-                getView().getFragmentActivity().runOnUiThread(new Runnable() {
+                getView().getMainActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         setUpBalance();
@@ -82,7 +91,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         mUpdateService.addTokenListener(new TokenListener() {
             @Override
             public void newToken() {
-                getView().getFragmentActivity().runOnUiThread(new Runnable() {
+                getView().getMainActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         getView().notifyNewToken();
@@ -92,16 +101,26 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         });
 
 
-        mNetworkStateReceiver  = ((MainActivity) getView().getFragmentActivity()).getNetworkReceiver();
+        mNetworkStateReceiver  = getView().getMainActivity().getNetworkReceiver();
         mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
+
             @Override
-            public void onNetworkConnected() {
-                loadAndUpdateData();
+            public void onNetworkStateChanged(boolean networkConnectedFlag) {
+                mNetworkConnectedFlag = networkConnectedFlag;
+                if(networkConnectedFlag){
+                    loadAndUpdateData();
+                }
             }
+        });
 
+        getView().getMainActivity().addPermissionResultListener(new MainActivity.PermissionsResultListener() {
             @Override
-            public void onNetworkDisconnected() {
-
+            public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+                if(requestCode == REQUEST_CAMERA) {
+                    if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                        OPEN_QR_CODE_FRAGMENT_FLAG = true;
+                    }
+                }
             }
         });
     }
@@ -113,7 +132,16 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         if(mUpdateService!=null) {
             mUpdateService.clearNotification();
         }
+        if(OPEN_QR_CODE_FRAGMENT_FLAG){
+            openQrCodeFragment();
+        }
+    }
 
+    public void notifyHeader() {
+        String pubKey = getInteractor().getAddress();
+        getView().updatePubKey(pubKey);
+        loadAndUpdateData();
+        setUpBalance();
     }
 
     @Override
@@ -133,14 +161,33 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     @Override
     public void onClickQrCode() {
+        if(getView().getMainActivity().checkPermission(Manifest.permission.CAMERA)){
+            openQrCodeFragment();
+        } else {
+            getView().getMainActivity().loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
+        }
+    }
+
+    private void openQrCodeFragment(){
+        OPEN_QR_CODE_FRAGMENT_FLAG = false;
         SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true,null,null);
         getView().openRootFragment(sendBaseFragment);
-        ((MainActivity) getView().getFragmentActivity()).setRootFragment(sendBaseFragment);
+        getView().getMainActivity().setRootFragment(sendBaseFragment);
+    }
+
+    public void onReceiveClick(){
+        ReceiveFragment receiveFragment = ReceiveFragment.newInstance();
+        getView().openFragment(receiveFragment);
     }
 
     @Override
     public void onRefresh() {
-        loadAndUpdateData();
+        if(mNetworkConnectedFlag) {
+            loadAndUpdateData();
+        }else{
+            getView().setAlertDialog(mContext.getString(R.string.no_internet_connection),mContext.getString(R.string.please_check_your_network_settings), BaseFragment.PopUpType.error);
+            getView().stopRefreshRecyclerAnimation();
+        }
     }
 
     @Override
@@ -148,36 +195,13 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.putExtra(Intent.EXTRA_TEXT, "My QTUM address: " + getInteractor().getAddress());
         emailIntent.setType("text/plain");
-        getView().getFragmentActivity().startActivity(emailIntent);
+        getView().getMainActivity().startActivity(emailIntent);
     }
 
     @Override
     public void openTransactionFragment(int position) {
         Fragment fragment = TransactionFragment.newInstance(position);
         getView().openFragment(fragment);
-    }
-
-    @Override
-    public void onInitialInitialize() {
-
-    }
-
-    @Override
-    public void changePage(int position) {
-        getInteractor().unSubscribe();
-        //TODO: delete
-        getView().setAdapterNull();
-        if(position==0){
-            getView().setWalletName("QTUM");
-        } else {
-            getView().setWalletName(getInteractor().getTokenList().get(position-1).getName());
-        }
-        String pubKey = getInteractor().getAddress();
-        getView().updatePubKey(pubKey);
-        if(getView().getPosition()==0) {
-            loadAndUpdateData();
-            setUpBalance();
-        }
     }
 
     @Override
@@ -212,6 +236,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         mNetworkStateReceiver.removeNetworkStateListener();
         mUpdateService.removeTransactionListener();
         mUpdateService.removeBalanceChangeListener();
+        getView().getMainActivity().removePermissionResultListener();
         getInteractor().unSubscribe();
         getView().setAdapterNull();
     }

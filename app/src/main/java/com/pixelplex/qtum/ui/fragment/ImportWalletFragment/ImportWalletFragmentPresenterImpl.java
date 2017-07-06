@@ -27,12 +27,12 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
 
     @Override
     public void onCancelClick() {
-        getView().getFragmentActivity().onBackPressed();
+        getView().getMainActivity().onBackPressed();
     }
 
     @Override
     public void onImportClick(String brainCode) {
-        getView().setProgressDialog("Importing wallet");
+        getView().setProgressDialog();
         getView().hideKeyBoard();
         getInteractor().importWallet(brainCode, new ImportWalletFragmentInteractorImpl.ImportWalletCallBack() {
             @Override

@@ -6,9 +6,6 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
 import android.view.View;
 
-/**
- * Created by kirillvolkov on 22.05.17.
- */
 
 public class PinTextInputEditText extends TextInputEditText {
 
@@ -49,5 +46,5 @@ public class PinTextInputEditText extends TextInputEditText {
                 return mSource.subSequence(start, end); // Return default
             }
         }
-    };
+    }
 }

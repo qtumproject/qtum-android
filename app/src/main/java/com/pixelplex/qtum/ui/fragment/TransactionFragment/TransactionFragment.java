@@ -31,6 +31,9 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
 
+    @BindView(R.id.tab_name)
+    FontTextView tabName;
+
     @BindView(R.id.tab_indicator)
     TabLayout tabIndicator;
 
@@ -91,10 +94,6 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
         mTextViewReceivedTime.setText(receivedTime);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getFragmentActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
-        }
-
         TransactionPagerAdapter transactionPagerAdapter = new TransactionPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(transactionPagerAdapter);
         tabIndicator.setupWithViewPager(mViewPager,true);
@@ -106,7 +105,11 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
             @Override
             public void onPageSelected(int position) {
-
+                if(position == 0){
+                    tabName.setText(getString(R.string.from));
+                } else {
+                    tabName.setText(getString(R.string.to));
+                }
             }
 
             @Override

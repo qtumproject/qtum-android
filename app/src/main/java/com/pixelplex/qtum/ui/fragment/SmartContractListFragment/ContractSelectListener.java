@@ -1,9 +1,0 @@
-package com.pixelplex.qtum.ui.fragment.SmartContractListFragment;
-
-/**
- * Created by kirillvolkov on 25.05.17.
- */
-
-public interface ContractSelectListener {
-    void onSelectContract(String contractName);
-}

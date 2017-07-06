@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 
+import com.pixelplex.qtum.dataprovider.listeners.FireBaseTokenRefreshListener;
+import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +20,15 @@ public class QtumSharedPreference {
     private final String QTUM_WALLET_NAME = "qtum_wallet_name";
     private final String QTUM_WALLET_PASSWORD = "qtum_wallet_password";
     private final String QTUM_IS_KEY_GENERATED = "qtum_is_key_generated";
-    private final String QTUM_KEY_IDENTIFIER = "qtum_key_identifier";
     private final String QTUM_LANGUAGE = "qtum_language";
     private final String QTUM_SEED = "qtum_seed";
-    private final String QTUM_EXCHANGE_RATES = "qtum_exchange_rates";
+    private final String PREV_TOKEN = "prev_token";
+    private final String CURRENT_TOKEN = "current_token";
+    private final String TOUCH_ID_ENABLE = "touch_id_enable";
+    private final String TOUCH_ID_PASSWORD = "touch_id_password";
 
     private List<LanguageChangeListener> mLanguageChangeListeners;
+    private FireBaseTokenRefreshListener mFireBaseTokenRefreshListener;
 
     private QtumSharedPreference() {
         mLanguageChangeListeners = new ArrayList<>();
@@ -46,26 +52,57 @@ public class QtumSharedPreference {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_WALLET_NAME, "");
     }
 
-    public void saveWalletPassword(Context context, int password) {
+    public void saveTouchIdEnable(Context context, boolean isEnable) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putInt(QTUM_WALLET_PASSWORD, password);
+        mEditor.putBoolean(TOUCH_ID_ENABLE, isEnable);
         mEditor.apply();
     }
 
-    public int getWalletPassword(Context context) {
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getInt(QTUM_WALLET_PASSWORD, 0);
+    public boolean isTouchIdEnable(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getBoolean(TOUCH_ID_ENABLE, true);
     }
 
-    public void saveExchangeRates(Context context, double exchangeRates) {
+    public void saveFirebaseToken(Context context, String token){
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putString(QTUM_EXCHANGE_RATES, String.valueOf(exchangeRates));
+        String prevToken = mSharedPreferences.getString(CURRENT_TOKEN,null);
+        mEditor.putString(PREV_TOKEN,prevToken);
+        mEditor.putString(CURRENT_TOKEN, token);
+        mEditor.apply();
+        if(mFireBaseTokenRefreshListener != null) {
+            mFireBaseTokenRefreshListener.onRefresh(prevToken, token);
+        }
+    }
+
+    public String[] getFirebaseTokens(Context context){
+        String[] firebaseTokens = new String[2];
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        firebaseTokens[0] = mSharedPreferences.getString(PREV_TOKEN,null);
+        firebaseTokens[1] = mSharedPreferences.getString(CURRENT_TOKEN,null);
+        return firebaseTokens;
+    }
+
+    public void saveWalletPassword(Context context, String password) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putString(QTUM_WALLET_PASSWORD, password);
         mEditor.apply();
     }
 
-    public double getExchangeRates(Context context) {
-        return Double.parseDouble(context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_EXCHANGE_RATES, "1"));
+    public String getWalletPassword(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_WALLET_PASSWORD, "");
+    }
+
+    public void saveTouchIdPassword(Context context, String password) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putString(TOUCH_ID_PASSWORD, password);
+        mEditor.apply();
+    }
+
+    public String getTouchIdPassword(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(TOUCH_ID_PASSWORD, "");
     }
 
     public void setKeyGeneratedInstance(Context context, boolean isKeyGenerated) {
@@ -77,17 +114,6 @@ public class QtumSharedPreference {
 
     public boolean getKeyGeneratedInstance(Context context) {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getBoolean(QTUM_IS_KEY_GENERATED, false);
-    }
-
-    public String getIdentifier(Context context) {
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_KEY_IDENTIFIER, "");
-    }
-
-    public void saveIdentifier(Context context, String identifier) {
-        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putString(QTUM_KEY_IDENTIFIER, identifier);
-        mEditor.apply();
     }
 
     public String getLanguage(Context context) {
@@ -135,5 +161,13 @@ public class QtumSharedPreference {
 
     public void removeLanguageListener(LanguageChangeListener languageChangeListener){
         mLanguageChangeListeners.remove(languageChangeListener);
+    }
+
+    public void addFirebaseTokenRefreshListener(FireBaseTokenRefreshListener fireBaseTokenRefreshListener){
+        mFireBaseTokenRefreshListener = fireBaseTokenRefreshListener;
+    }
+
+    public void removeFirebaseTokenRefreshListener(){
+        mFireBaseTokenRefreshListener = null;
     }
 }

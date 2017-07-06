@@ -10,9 +10,6 @@ import android.util.Log;
 
 import com.pixelplex.qtum.R;
 
-/**
- * Created by kirillvolkov on 18.05.17.
- */
 
 public class FontTextInputEditText extends TextInputEditText {
     public FontTextInputEditText(Context context) {

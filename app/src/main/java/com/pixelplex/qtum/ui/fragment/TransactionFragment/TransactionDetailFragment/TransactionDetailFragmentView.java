@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.TransactionFragment.TransactionDetailFragment;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.TransactionInfo;
+import com.pixelplex.qtum.model.gson.history.TransactionInfo;
 
 import java.util.List;
 

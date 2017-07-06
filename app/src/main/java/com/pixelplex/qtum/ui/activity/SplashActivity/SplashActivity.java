@@ -17,9 +17,6 @@ import com.transitionseverywhere.TransitionManager;
 
 import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 16.05.17.
- */
 
 public class SplashActivity extends BaseActivity implements SplashActivityView, Transition.TransitionListener {
 
@@ -60,7 +57,6 @@ public class SplashActivity extends BaseActivity implements SplashActivityView, 
         appLogo.setClipBounds(new Rect(0,0,appLogoHeight,appLogoHeight));
         TransitionManager.beginDelayedTransition(rootLayout, clip);
         appLogo.setClipBounds(new Rect(0,0,appLogoHeight,0));
-
     }
 
     @Override
@@ -71,6 +67,11 @@ public class SplashActivity extends BaseActivity implements SplashActivityView, 
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void updateTheme() {
+
     }
 
     @Override

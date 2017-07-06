@@ -20,6 +20,7 @@ import org.spongycastle.util.encoders.Hex;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ import rx.Observable;
 import rx.Subscriber;
 
 
-public class KeyStorage {
+public class KeyStorage implements Serializable {
 
     private static KeyStorage sKeyStorage;
     private List<DeterministicKey> mDeterministicKeyList;
@@ -36,6 +37,10 @@ public class KeyStorage {
     private int sCurrentKeyPosition = 0;
     private File mFile;
     private final int ADDRESSES_COUNT = 100;
+
+    public static void setUpKeyStorage(KeyStorage kStorage){
+        sKeyStorage = kStorage;
+    }
 
     public static KeyStorage getInstance() {
         if (sKeyStorage == null) {
@@ -46,6 +51,10 @@ public class KeyStorage {
 
     private KeyStorage() {
 
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.sWallet = wallet;
     }
 
     public void clearKeyStorage() {
@@ -135,7 +144,6 @@ public class KeyStorage {
                 DeterministicSeed seed = null;
                 try {
                     seed = new DeterministicSeed(seedString, null, passphrase, DeterministicHierarchy.BIP32_STANDARDISATION_TIME_SECS);
-                    Log.d("test", Hex.toHexString(seed.getSeedBytes()));
 
                 } catch (UnreadableWalletException e) {
                     e.printStackTrace();
@@ -147,6 +155,7 @@ public class KeyStorage {
                     sWallet.saveToFile(mFile);
                     getKeyList(ADDRESSES_COUNT);
                     subscriber.onNext(sWallet);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

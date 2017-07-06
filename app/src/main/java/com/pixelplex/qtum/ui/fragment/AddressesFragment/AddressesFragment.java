@@ -1,7 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.AddressesFragment;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;

@@ -4,8 +4,11 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-
-import android.nfc.NfcAdapter;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.hardware.fingerprint.FingerprintManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,26 +24,30 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
+import android.widget.Toast;
+import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.BaseActivity.BaseActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
+import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
+import com.pixelplex.qtum.utils.ThemeUtils;
 
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
 
-
-public class MainActivity extends BaseActivity implements MainActivityView {
+public class MainActivity extends BaseActivity implements MainActivityView{
 
     private static final int LAYOUT = R.layout.activity_main;
+    private static final int LAYOUT_LIGHT = R.layout.activity_main_light;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
-    private static final int REQUEST_CAMERA = 0;
-    private NfcAdapter mNfcAdapter;
+    private ActivityResultListener mActivityResultListener;
+    private PermissionsResultListener mPermissionsResultListener;
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
@@ -58,8 +65,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(LAYOUT);
-        loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
+        setContentView((ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)? LAYOUT : LAYOUT_LIGHT));
     }
 
     @Override
@@ -80,12 +86,12 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         return getPresenter().getAmountForSendAction();
     }
 
-    private void loadPermissions(String perm, int requestCode) {
-        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
-                ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
-            }
-        }
+    public void loadPermissions(String perm, int requestCode) {
+        ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
+    }
+
+    public boolean checkPermission(String perm){
+        return ContextCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -101,6 +107,30 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                 .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
                 .addToBackStack(BaseFragment.BACK_STACK_ROOT_TAG)
                 .commit();
+    }
+
+    @Override
+    public void openFragment(Fragment fragment) {
+        hideKeyBoard();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                .add(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public String getQtumAction() {
+        if(getIntent() != null){
+            return getIntent().getAction();
+        }
+        return null;
+    }
+
+    @Override
+    public void showToast(String s) {
+        Toast.makeText(this,s,Toast.LENGTH_SHORT).show();
     }
 
     public UpdateService getUpdateService(){
@@ -126,20 +156,76 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         }
     }
 
+    @Override
+    public boolean getNetworkConnectedFlag() {
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting())
+        {
+            return true;
+        }
+        return false;
+    }
 
-    public void showBottomNavigationView() {
-        mBottomNavigationView.setVisibility(View.VISIBLE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
+    @Override
+    public void setAdressAndAmount(String defineMinerAddress, String defineAmount) {
+        if(getSupportFragmentManager().findFragmentByTag(SendBaseFragment.class.getCanonicalName()) == null && getPresenter().mAuthenticationFlag) {
+            openRootFragment(SendBaseFragment.newInstance(false, defineMinerAddress, defineAmount));
         }
     }
 
-    public void hideBottomNavigationView() {
+    public boolean checkTouchId() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(QtumSharedPreference.getInstance().isTouchIdEnable(getContext())) {
+                FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+                return checkPermission(Manifest.permission.USE_FINGERPRINT) && fingerprintManager.isHardwareDetected();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+
+    public void showBottomNavigationView(boolean recolorStatusBar) {
+        mBottomNavigationView.setVisibility(View.VISIBLE);
+
+        if(recolorStatusBar) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+            }
+        }
+    }
+
+    public void hideBottomNavigationView(boolean recolorStatusBar) {
         mBottomNavigationView.setVisibility(View.GONE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),R.color.background));
+        if(recolorStatusBar) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.background));
+            }
+        }
+    }
+
+    public void showBottomNavigationView(int resColorId) {
+        mBottomNavigationView.setVisibility(View.VISIBLE);
+
+        if(resColorId > 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
+            }
+        }
+    }
+
+    public void hideBottomNavigationView(int resColorId) {
+        mBottomNavigationView.setVisibility(View.GONE);
+
+        if(resColorId > 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
+            }
         }
     }
 
@@ -172,6 +258,27 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         getPresenter().processIntent(getIntent());
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(mActivityResultListener!=null){
+            mActivityResultListener.onActivityResult(requestCode,resultCode,data);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(mPermissionsResultListener!=null) {
+            mPermissionsResultListener.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     public void setRootFragment(Fragment rootFragment) {
         getPresenter().setRootFragment(rootFragment);
     }
@@ -183,5 +290,85 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CustomContextWrapper.wrap(newBase, QtumSharedPreference.getInstance().getLanguage(newBase)));
+    }
+
+    public QtumApplication getQtumApplication(){
+        return (QtumApplication)getApplication();
+    }
+
+    public void addActivityResultListener(ActivityResultListener activityResultListener){
+        mActivityResultListener = activityResultListener;
+    }
+
+    public void removeResultListener(){
+        mActivityResultListener = null;
+    }
+
+    public void addPermissionResultListener(PermissionsResultListener permissionsResultListener){
+        mPermissionsResultListener = permissionsResultListener;
+    }
+
+    public void removePermissionResultListener(){
+        mPermissionsResultListener = null;
+    }
+
+    public interface ActivityResultListener{
+        void onActivityResult(int requestCode, int resultCode, Intent data);
+    }
+
+    public interface PermissionsResultListener{
+        void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1 || getPresenter().isCheckAuthenticationShowFlag()) {
+            ActivityCompat.finishAffinity(this);
+        }else {
+            super.onBackPressed();
+        }
+    }
+
+    public void setCheckAuthenticationShowFlag(boolean flag){
+        getPresenter().setCheckAuthenticationShowFlag(flag);
+    }
+
+    private int[] blackThemeIcons = {R.drawable.ic_wallet,R.drawable.ic_profile,R.drawable.ic_news,R.drawable.ic_send};
+    private int[] lightThemeIcons = {R.drawable.ic_wallet_light,R.drawable.ic_profile_light,R.drawable.ic_news_light,R.drawable.ic_send_light};
+
+    @Override
+    protected void updateTheme() {
+
+        if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)){
+            mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
+            mBottomNavigationView.setItemBackgroundResource(R.drawable.bottom_nav_view_background_drawable);
+            mBottomNavigationView.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
+            mBottomNavigationView.setItemIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
+            resetNavBarIconsWithTheme(blackThemeIcons);
+            recolorStatusBar(R.color.colorPrimary);
+        } else {
+            mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.bottom_nav_bar_color_light));
+            mBottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
+            mBottomNavigationView.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bottom_nav_bar_text_color_light)));
+            mBottomNavigationView.setItemIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bottom_nav_bar_text_color_light)));
+            recolorStatusBar(R.color.title_color_light);
+            resetNavBarIconsWithTheme(lightThemeIcons);
+        }
+        setRootFragment(ProfileFragment.newInstance(this));
+        openRootFragment(getPresenter().mRootFragment);
+    }
+
+    public void resetNavBarIconsWithTheme(int[] icons) {
+        Menu menu = mBottomNavigationView.getMenu();
+        menu.findItem(R.id.item_wallet).setIcon(icons[0]);
+        menu.findItem(R.id.item_profile).setIcon(icons[1]);
+        menu.findItem(R.id.item_news).setIcon(icons[2]);
+        menu.findItem(R.id.item_send).setIcon(icons[3]);
+    }
+
+    public void recolorStatusBar(int color){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), color));
+        }
     }
 }

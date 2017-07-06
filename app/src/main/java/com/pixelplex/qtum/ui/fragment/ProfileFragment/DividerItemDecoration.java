@@ -13,9 +13,6 @@ import android.view.View;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by kirillvolkov on 22.05.17.
- */
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -48,7 +45,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect,view,parent,state);
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount-1; i++) {
-            if (settings.get(i).sectionNumber != settings.get(i + 1).sectionNumber) {
+            if (settings.get(i).getSectionNumber() != settings.get(i + 1).getSectionNumber()) {
                 outRect.top = sectionDivider.getIntrinsicHeight();
             } else {
                 outRect.top = divider.getIntrinsicHeight();
@@ -68,7 +65,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
             try {
-                if (settings.get(i).sectionNumber == settings.get(i + 1).sectionNumber) {
+                if (settings.get(i).getSectionNumber() == settings.get(i + 1).getSectionNumber()) {
                     int top = child.getBottom() + params.bottomMargin;
                     int bottom = top + divider.getIntrinsicHeight();
 

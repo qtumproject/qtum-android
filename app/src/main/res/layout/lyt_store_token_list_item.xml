@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="150dp"
+    android:padding="2dp"
+    android:layout_height="170dp">
+
+<LinearLayout
+    android:background="#0d2e9ad0"
+    android:padding="8dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/icon"
+        app:srcCompat="@drawable/ic_about"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/token_name"
+        android:maxLines="1"
+        android:textSize="14sp"
+        android:layout_marginTop="16dp"
+        android:text = "My Super Token"
+        android:textColor="@color/colorPrimary"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:ellipsize="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/token_type"
+        android:maxLines="1"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"
+        android:text = "Standart Token"
+        android:alpha=".3"
+        android:textColor="@color/colorPrimary"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:ellipsize="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/token_cost"
+        android:maxLines="1"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:text = "100 000 000"
+        android:textColor="@color/colorPrimary"
+        app:typefaceAsset="@string/simplonMonoMedium"
+        android:ellipsize="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:maxLines="1"
+        android:textSize="12sp"
+        android:layout_marginTop="2dp"
+        android:text="@string/qtum"
+        android:textColor="@color/colorPrimary"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:ellipsize="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
+</FrameLayout>

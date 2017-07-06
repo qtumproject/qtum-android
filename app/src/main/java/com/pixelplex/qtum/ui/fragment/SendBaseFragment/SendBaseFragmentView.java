@@ -6,15 +6,16 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 
 interface SendBaseFragmentView extends BaseFragmentView{
-    void openFragmentForResult(Fragment fragment);
+    void openInnerFragmentForResult(Fragment fragment);
     void qrCodeRecognitionToolBar();
     void sendToolBar();
     void updateData(String publicAddress, double amount);
     void errorRecognition();
-    void confirmError(String errorText);
-    void clearError();
     void setProgressBar();
     void updateAvailableBalance(String balance);
-    void enableSendButton();
-    void disableSendButton();
+    void setUpCurrencyField(String currency);
+    Fragment getFragment();
+    void hideCurrencyField();
+
+    void setAdressAndAmount(String address, String anount);
 }

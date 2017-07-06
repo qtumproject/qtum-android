@@ -1,22 +1,17 @@
 package com.pixelplex.qtum.ui.fragment.StartPageFragment;
 
 import android.os.Bundle;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.SmartContractsManager.StorageManager;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.datastorage.FileStorageManager;
+import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.transitionseverywhere.Fade;
-import com.transitionseverywhere.TransitionManager;
-import com.transitionseverywhere.TransitionSet;
-import com.transitionseverywhere.extra.Scale;
+import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -25,6 +20,8 @@ import butterknife.OnClick;
 public class StartPageFragment extends BaseFragment implements StartPageFragmentView {
 
     private StartPageFragmentPresenterImpl mStartPageFragmentPresenter;
+
+    private static final String IS_LOGIN = "is_login";
 
     @BindView(R.id.bt_create_new)
     Button mButtonCreateNew;
@@ -43,7 +40,7 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
     @BindView(R.id.root_layout)
     RelativeLayout rootLayout;
 
-    @OnClick({R.id.bt_import_wallet, R.id.bt_create_new})
+    @OnClick({R.id.bt_import_wallet, R.id.bt_create_new, R.id.bt_login})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.bt_create_new:
@@ -52,13 +49,19 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
             case R.id.bt_import_wallet:
                 getPresenter().importWallet();
                 break;
+            case R.id.bt_login:
+                if (QtumSharedPreference.getInstance().getKeyGeneratedInstance(getContext())){
+                    PinFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION);
+                    openFragment(fragment);
+                }
+                break;
         }
     }
 
-    public static StartPageFragment newInstance() {
+    public static StartPageFragment newInstance(boolean isLogin) {
 
         Bundle args = new Bundle();
-
+        args.putBoolean(IS_LOGIN, isLogin);
         StartPageFragment fragment = new StartPageFragment();
         fragment.setArguments(args);
         return fragment;
@@ -87,7 +90,10 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
 
     @Override
     public void initializeViews() {
-        ((MainActivity) getActivity()).hideBottomNavigationView();
-        StorageManager.getInstance().getContracts(getContext());
+        hideBottomNavView(true);
+        if(getArguments().getBoolean(IS_LOGIN,false)){
+            PinFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION);
+            openFragment(fragment);
+        }
     }
 }

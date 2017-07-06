@@ -25,7 +25,7 @@
     <string name="receiver_s_address">Receiver\'s Address</string>
     <string name="amount">Amount</string>
     <string name="pin">PIN</string>
-    <string name="available_balance">"Available Balance: "</string>
+    <string name="available_balance">"Available Balance:"</string>
     <string name="total_balance">"Total Balance: "</string>
     <string name="copy_wallet_address">Copy Wallet Address</string>
     <string name="confirm">Confirm</string>
@@ -36,6 +36,7 @@
     <string name="news">News</string>
     <string name="create_pin">Create PIN</string>
     <string name="enter_pin">Enter PIN</string>
+    <string name="confirm_fingerprint_or_pin">Confirm fingerprint or PIN</string>
     <string name="incorrect_pin">Incorrect PIN</string>
     <string name="pin_is_not_long_enough">PIN is not long enough</string>
     <string name="received">Received</string>
@@ -46,6 +47,25 @@
     <string name="to">To</string>
     <string name="import_button">Import</string>
     <string name="language">Language</string>
+    <string name="description">Description:</string>
+
+    <string name="published_date">Published Date:</string>
+    <string name="size">Size:</string>
+    <string name="compiled_on">Compiled On:</string>
+    <string name="source_code">Source Code:</string>
+    <string name="published_by">Published By:</string>
+    <string name="downloads">Downloads:</string>
+
+    <string name="purchase">Purchase</string>
+
+    <string name="confirm_purchase">Confirm Purchase</string>
+
+    <string name="tags">Tags:</string>
+    <string name="qstore">Qstore</string>
+    <string name="search_by_name">Search by Name</string>
+    <string name="search_by_tag">Search by Hashtag</string>
+    <string name="view_details">View Details</string>
+    <string name="view_source_code">View Source Code</string>
     <string name="change_pin">Change PIN</string>
     <string name="wallet_back_up">Wallet Back Up</string>
     <string name="about">About</string>
@@ -65,17 +85,14 @@
     <string name="create_token">Create Token</string>
     <string name="subscribe_tokens">Subscribe Tokens</string>
     <string name="set_your_token_name">Set Your Token Name</string>
-    <string name="step_1_of_3">Step 1 of 3</string>
     <string name="token_symbol">Token Symbol</string>
     <string name="set_your_token_features">Set Your Token Features</string>
-    <string name="step_2_of_3">Step 2 of 3</string>
     <string name="next">Next</string>
     <string name="freezing_of_assets">Freezing of Assets</string>
     <string name="automatic_selling_and_buying">Automatic Selling and Buying</string>
     <string name="autorefill">Autorefill</string>
     <string name="proof_of_work">Proof of Work</string>
     <string name="set_your_token_parameters">Set Your Token Parameters</string>
-    <string name="step_3_of_3">Step 3 of 3</string>
     <string name="initial_supply">Initial Supply</string>
     <string name="decimal_units">Decimal Units</string>
     <string name="back">Back</string>
@@ -96,10 +113,6 @@
     <string name="no">No</string>
     <string name="coped">Copied</string>
     <string name="are_you_sure">Are you sure?</string>
-    <string name="please_wait">Please wait...</string>
-    <string name="please_wait_a_few_seconds">Please wait a few seconds</string>
-    <string name="loading">Loading</string>
-    <string name="cpy_brain_code_descr">Your deputy nothing occasional objection ally aesthetic swing mad have stay objective consumption</string>
     <string name="skip">Skip</string>
     <string name="not_confirmed_balance">Not Confirmed Balance</string>
     <string name="not_confirmed_trans">Transaction Not Confirmed Yet</string>
@@ -107,11 +120,64 @@
     <string name="set_your_token">Set Your Token</string>
     <string name="step_1_2">Step 1 of 2</string>
     <string name="step_2_2">Step 2 of 2</string>
-    <string name="free">Free</string>
+    <string name="complete">Complete</string>
+    <string name="ok">OK</string>
+    <string name="other_tokens">Other Tokens</string>
+    <string name="token_address">Token Address</string>
 
     <!--FONT PATHS-->
     <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
     <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
+    <string name="proximaNovaBold">proximanovabold.otf</string>
+    <string name="proximaNovaLight">proximanovalight.otf</string>
+    <string name="proximaNovaRegular">proximanovaregular.otf</string>
+    <string name="proximaNovaSemibold">proximanovasemibold.otf</string>
+
+    <string name="retry">RETRY</string>
+
+    <string name="smart_contracts">Smart Contracts</string>
+    <string name="create_contract">Create Contract</string>
+    <string name="my_contracts">My Contracts</string>
+    <string name="contracts_store">Contracts Store</string>
+    <string name="call">Call</string>
+    <string name="function_detail">Function Detail</string>
+    <string name="contracts">Contracts</string>
+
+    <string name="sender_address">Sender Address</string>
+    <string name="contract_address">Contract Address</string>
+    <string name="not_confirmed">Not Confirmed</string>
+    <string name="watch_contract">Watch Contract</string>
+    <string name="watch_token">Watch Token</string>
+    <string name="restore_contracts">Restore Contracts</string>
+    <string name="backup_contracts">Backup Contracts</string>
+    <string name="select_back_up_file">Select back-up file</string>
+    <string name="please_wait_a_few_seconds">Please wait a few seconds</string>
+    <string name="payment_completed_successfully">Payment completed successfully</string>
+    <string name="default_currency">(default currency)</string>
+    <string name="error">Error</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="please_check_your_network_settings">Please check your network settings</string>
+    <string name="contract_created_successfully">Contract created successfully</string>
+    <string name="restored_successfully">Restored successfully</string>
+
+    <string name="login_to_qtum_using_touch_id">Login to QTUM using Touch ID</string>
+    <string name="touch_id">Touch ID</string>
+    <string name="enable_touch_id">Enable touch id</string>
+    <string name="not_now">Not now</string>
+    <string name="login">Login</string>
+
+
+    <string name="contract_name">Contract Name:</string>
+    <string name="contract_type">Contract Type:</string>
+    <string name="price">Price:</string>
+    <string name="miner_address">Miner Address:</string>
+    <string name="Fee">Fee:</string>
+    <string name="Source_code">Source Code</string>
+    <string name="store_categories">Qstore Categories</string>
+
+    <string name="switch_theme">Swith Application Theme</string>
+    <string name="confirmation">Confirmation…</string>
+
 
 </resources>

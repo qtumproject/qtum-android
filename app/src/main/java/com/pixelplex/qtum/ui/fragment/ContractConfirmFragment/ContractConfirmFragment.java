@@ -3,31 +3,32 @@ package com.pixelplex.qtum.ui.fragment.ContractConfirmFragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
+import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
+import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * Created by kirillvolkov on 26.05.17.
- */
 
-public class ContractConfirmFragment extends BaseFragment implements  ContractConfirmView{
+public class ContractConfirmFragment extends BaseFragment implements  ContractConfirmView, OnValueClick{
 
     public final int LAYOUT = R.layout.lyt_contract_confirm;
     public static final String paramsKey = "params";
+    public static final String CONTRACT_TEMPLATE_UIID = "uiid";
 
-    public static ContractConfirmFragment newInstance(List<ContractMethodParameter> params) {
+    public static ContractConfirmFragment newInstance(List<ContractMethodParameter> params, long uiid) {
         Bundle args = new Bundle();
         ContractConfirmFragment fragment = new ContractConfirmFragment();
         args.putSerializable(paramsKey,(ArrayList)params);
+        args.putLong(CONTRACT_TEMPLATE_UIID, uiid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,7 +46,7 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
 
     @OnClick(R.id.confirm)
     public void onConfirmClick(){
-
+        presenter.confirmContract(getArguments().getLong(CONTRACT_TEMPLATE_UIID));
     }
 
     @Override
@@ -66,10 +67,25 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
     @Override
     public void initializeViews() {
         super.initializeViews();
-        presenter.setParams((List<ContractMethodParameter>) getArguments().getSerializable(paramsKey));
+        presenter.setContractMethodParameterList((List<ContractMethodParameter>) getArguments().getSerializable(paramsKey));
         confirmList.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ContractConfirmAdapter(presenter.getParams(),"4jhbr4hjb4l23342i4bn2kl4b2352l342k35bv235rl23","0.100");
+        adapter = new ContractConfirmAdapter(presenter.getContractMethodParameterList(),"4jhbr4hjb4l23342i4bn2kl4b2352l342k35bv235rl23","0.100", this);
         confirmList.setAdapter(adapter);
 
     }
+
+    @Override
+    public void onClick(int adapterPosition) {
+    }
+
+    @Override
+    public void makeToast(String s) {
+        Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public QtumApplication getApplication() {
+        return ((MainActivity) getMainActivity()).getQtumApplication();
+    }
+
 }

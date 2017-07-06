@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.NewsFragment;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.News;
+import com.pixelplex.qtum.model.gson.News;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 import java.util.List;

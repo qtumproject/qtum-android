@@ -1,7 +1,9 @@
 package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
 
-import android.graphics.Typeface;
+import android.Manifest;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -11,10 +13,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
@@ -22,8 +24,12 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontManager;
 import com.pixelplex.qtum.utils.PinTextInputEditText;
 
+import java.security.Permission;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static org.spongycastle.asn1.cmp.PKIStatus.GRANTED;
 
 
 public class SendBaseFragment extends BaseFragment implements SendBaseFragmentView {
@@ -36,11 +42,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     TextInputEditText mTextInputEditTextAddress;
     @BindView(R.id.et_amount)
     TextInputEditText mTextInputEditTextAmount;
-    @BindView(R.id.et_pin)
-    PinTextInputEditText mTextInputEditTextPin;
 
-    @BindView(R.id.til_pin)
-    TextInputLayout mTextInputLayoutPin;
     @BindView(R.id.til_receivers_address)
     TextInputLayout tilAdress;
     @BindView(R.id.til_amount)
@@ -58,6 +60,10 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     TextView mTextViewTotalBalanceNumber;
     @BindView(R.id.rl_send)
     RelativeLayout mRelativeLayoutBase;
+    @BindView(R.id.ll_currency)
+    LinearLayout mLinearLayoutCurrency;
+    @BindView(R.id.tv_currency)
+    TextView mTextViewCurrency;
 
     SendBaseFragmentPresenterImpl sendBaseFragmentPresenter;
 
@@ -66,7 +72,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @OnClick({R.id.bt_qr_code, R.id.bt_send, R.id.ibt_back, R.id.fl_currency})
+    @OnClick({R.id.bt_qr_code, R.id.bt_send, R.id.ibt_back, R.id.ll_currency})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_qr_code:
@@ -76,13 +82,17 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
                 String[] sendInfo = new String[3];
                 sendInfo[0] = mTextInputEditTextAddress.getText().toString();
                 sendInfo[1] = mTextInputEditTextAmount.getText().toString();
-                sendInfo[2] = mTextInputEditTextPin.getText().toString();
+                if(mLinearLayoutCurrency.getVisibility()==View.VISIBLE){
+                    sendInfo[2] = mTextViewCurrency.getText().toString();
+                } else {
+                    sendInfo[2] = "Qtum "+getString(R.string.default_currency);
+                }
                 getPresenter().send(sendInfo);
                 break;
             case R.id.ibt_back:
                 getActivity().onBackPressed();
                 break;
-            case R.id.fl_currency:
+            case R.id.ll_currency:
                 getPresenter().onCurrencyClick();
                 break;
         }
@@ -121,7 +131,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     }
 
     @Override
-    public void openFragmentForResult(Fragment fragment) {
+    public void openInnerFragmentForResult(Fragment fragment) {
         int code_response = 200;
         fragment.setTargetFragment(this, code_response);
         getFragmentManager()
@@ -151,7 +161,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @Override
     public void initializeViews() {
         super.initializeViews();
-        ((MainActivity) getActivity()).showBottomNavigationView();
+        showBottomNavView(true);
         ((MainActivity) getActivity()).setIconChecked(3);
         mImageButtonBack.setVisibility(View.GONE);
         mRelativeLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -170,12 +180,9 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
 
         mTextInputEditTextAddress.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
         mTextInputEditTextAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
-        mTextInputEditTextPin.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
 
-        mTextInputLayoutPin.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
         tilAdress.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
         tilAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
-
     }
 
     @Override
@@ -187,18 +194,6 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @Override
     public void errorRecognition() {
 
-    }
-
-    @Override
-    public void confirmError(String errorText) {
-        mTextInputEditTextPin.setText("");
-        mTextInputLayoutPin.setErrorEnabled(true);
-        mTextInputLayoutPin.setError(errorText);
-    }
-
-    @Override
-    public void clearError() {
-        mTextInputLayoutPin.setErrorEnabled(false);
     }
 
     @Override
@@ -215,27 +210,48 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     }
 
     @Override
-    public void enableSendButton() {
-        mButtonSend.setEnabled(true);
+    public void setUpCurrencyField(String currency) {
+        mLinearLayoutCurrency.setVisibility(View.VISIBLE);
+        mTextViewCurrency.setText(currency);
     }
 
     @Override
-    public void disableSendButton() {
-        mButtonSend.setEnabled(false);
+    public Fragment getFragment() {
+        return this;
     }
+
+    @Override
+    public void hideCurrencyField() {
+        mLinearLayoutCurrency.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setAdressAndAmount(final String address, final String anount) {
+        mTextInputEditTextAddress.post(new Runnable() {
+            @Override
+            public void run() {
+                mTextInputEditTextAddress.setText(address);
+                mTextInputEditTextAmount.setText(anount);
+            }
+        });
+    }
+
 
     public void onResponse(String pubAddress, Double amount) {
         getPresenter().onResponse(pubAddress, amount);
     }
 
+    public void onCurrencyChoose(String currency){
+        getPresenter().onCurrencyChoose(currency);
+    }
+
     public void onResponseError() {
-        //TODO : change notification type
-        Toast.makeText(getContext(), "Invalid QR Code", Toast.LENGTH_SHORT).show();
+        setAlertDialog("Invalid QR Code","OK", PopUpType.error);
     }
 
     @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getFragmentActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 }

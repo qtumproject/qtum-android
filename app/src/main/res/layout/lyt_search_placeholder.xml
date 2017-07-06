@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:gravity="center"
+    android:background="@color/background"
+    android:layout_height="30dp">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_marginEnd="4dp"
+        app:srcCompat="@drawable/ic_search"
+        android:layout_width="16dp"
+        android:layout_height="16dp" />
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/text"
+        android:textSize="16sp"
+        android:text="@string/search"
+        android:textColor="@color/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:typefaceAsset="@string/simplonMonoRegular"/>
+
+</LinearLayout>

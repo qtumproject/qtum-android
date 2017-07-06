@@ -6,28 +6,28 @@ import android.view.ViewGroup;
 
 import com.mikhaellopez.hfrecyclerview.HFRecyclerView;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.Contract.ContractMethodParameter;
+import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 26.05.17.
- */
 
 public class ContractConfirmAdapter extends HFRecyclerView<ContractMethodParameter> {
 
-    String minerAddress;
-    String free;
+    String mineAddress;
+    String fee;
 
-    public ContractConfirmAdapter(List<ContractMethodParameter> params, String minerAddress, String free){
+    OnValueClick clickListener;
+
+    public ContractConfirmAdapter(List<ContractMethodParameter> params, String mineAddress, String fee, OnValueClick clickListener){
         super(params,false, true);
-        this.minerAddress = minerAddress;
-        this.free = free;
+        this.mineAddress = mineAddress;
+        this.fee = fee;
+        this.clickListener = clickListener;
     }
 
     @Override
     protected RecyclerView.ViewHolder getItemView(LayoutInflater inflater, ViewGroup parent) {
-        return new ContractConfirmViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_confirm_list_item, parent, false));
+        return new ContractConfirmViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_confirm_list_item, parent, false), clickListener);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ContractConfirmAdapter extends HFRecyclerView<ContractMethodParamet
         if(holder instanceof ContractConfirmViewHolder) {
             ((ContractConfirmViewHolder) holder).bind(getItem(position));
         } else if(holder instanceof ContractConfirmFooterViewHolder) {
-            ((ContractConfirmFooterViewHolder)holder).bind(minerAddress, free);
+            ((ContractConfirmFooterViewHolder)holder).bind(mineAddress, fee);
         }
     }
 }

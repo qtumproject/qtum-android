@@ -3,10 +3,10 @@ package com.pixelplex.qtum.ui.fragment.TransactionFragment.TransactionDetailFrag
 
 import android.os.Bundle;
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.TransactionInfo;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.Vin;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.Vout;
+import com.pixelplex.qtum.model.gson.history.History;
+import com.pixelplex.qtum.model.gson.history.TransactionInfo;
+import com.pixelplex.qtum.model.gson.history.Vin;
+import com.pixelplex.qtum.model.gson.history.Vout;
 
 import java.util.ArrayList;
 import java.util.List;

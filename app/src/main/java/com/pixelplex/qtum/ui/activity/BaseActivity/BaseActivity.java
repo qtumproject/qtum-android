@@ -2,14 +2,20 @@ package com.pixelplex.qtum.ui.activity.BaseActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import com.pixelplex.qtum.datastorage.KeyStorage;
+import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.utils.QtumIntent;
+import com.pixelplex.qtum.utils.ThemeUtils;
 
 import butterknife.ButterKnife;
 
@@ -21,7 +27,17 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     protected abstract BasePresenterImpl getPresenter();
 
     @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        theme.applyStyle(ThemeUtils.getThemeIdByName(ThemeUtils.getCurrentTheme(this)), true);
+        return theme;
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        ThemeUtils.setAppTheme(this,ThemeUtils.getCurrentTheme(this));
+
         super.onCreate(savedInstanceState);
         createPresenter();
         getPresenter().onCreate(this);
@@ -120,14 +136,24 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            ActivityCompat.finishAffinity(this);
-        }else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
     @Override
     public void setSoftMode() {
+    }
+
+    protected abstract void updateTheme();
+
+    public void reloadActivity(){
+
+        updateTheme();
+
+//        finish();
+//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//        intent.setAction(QtumIntent.CHANGE_THEME);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
+
     }
 }

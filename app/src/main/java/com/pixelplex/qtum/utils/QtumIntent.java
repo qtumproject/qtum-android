@@ -7,4 +7,5 @@ public class QtumIntent {
     public static final String SEND_ADDRESS = "qtum.intent.extra.SEND_ADDRESS";
     public static final String SEND_AMOUNT = "qtum.intent.extra.SEND_AMOUNT";
     public static final String USER_START_APP = "qtum.intent.extra.USER_START_APP";
+    public static final String CHANGE_THEME = "qtum.intent.action.CHANGE_THEME";
 }

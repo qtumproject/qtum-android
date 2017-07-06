@@ -1,24 +1,25 @@
 package com.pixelplex.qtum.ui.fragment.CurrencyFragment;
 
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.TokenParams;
-import com.pixelplex.qtum.datastorage.TokenList;
+import android.content.Context;
 
-import java.util.ArrayList;
+import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.datastorage.TinyDB;
+
 import java.util.List;
 
 class CurrencyFragmentInteractorImpl implements CurrencyFragmentInteractor{
 
-    public CurrencyFragmentInteractorImpl(){
+    Context mContext;
 
+    public CurrencyFragmentInteractorImpl(Context context){
+        mContext = context;
     }
 
     @Override
-    public List<String> getTokenList() {
-        List<String> tokenList = new ArrayList<>();
-        for(TokenParams tokenParams : TokenList.getTokenList().getList()){
-            tokenList.add(tokenParams.getName());
-        }
+    public List<Token> getTokenList() {
+        List<Token> tokenList = (new TinyDB(mContext)).getTokenList();
         return tokenList;
     }
+
 }

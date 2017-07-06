@@ -1,7 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.TransactionFragment.TransactionDetailFragment;
 
 
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.History.History;
+import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.datastorage.HistoryList;
 
 public class TransactionDetailFragmentInteractor {

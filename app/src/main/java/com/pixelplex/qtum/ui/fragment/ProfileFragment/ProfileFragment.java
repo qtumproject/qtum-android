@@ -1,38 +1,35 @@
 package com.pixelplex.qtum.ui.fragment.ProfileFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
-import java.util.HashMap;
-
 import butterknife.BindView;
-import butterknife.OnClick;
 
+/**
+ * Created by kirillvolkov on 05.07.17.
+ */
 
-public class ProfileFragment extends BaseFragment implements ProfileFragmentView, LogOutDialogFragment.OnYesClickListener, OnSettingClickListener {
+public abstract class ProfileFragment extends BaseFragment implements ProfileFragmentView, LogOutDialogFragment.OnYesClickListener, OnSettingClickListener {
 
-    ProfileFragmentPresenterImpl mProfileFragmentPresenter;
-
-    @BindView(R.id.pref_list)
-    RecyclerView prefList;
-
-    PrefAdapter adapter;
-
-    public static ProfileFragment newInstance() {
-
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-
-        ProfileFragment fragment = new ProfileFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, ProfileFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
+
+    protected ProfileFragmentPresenterImpl mProfileFragmentPresenter;
+
+    @BindView(R.id.pref_list)
+    protected RecyclerView prefList;
+
+    PrefAdapter adapter;
 
     @Override
     protected void createPresenter() {
@@ -42,36 +39,6 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
     @Override
     protected ProfileFragmentPresenterImpl getPresenter() {
         return mProfileFragmentPresenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.lyt_profile_preference;
-    }
-
-    @Override
-    public void initializeViews() {
-        prefList.setLayoutManager(new LinearLayoutManager(getContext()));
-        prefList.addItemDecoration(new DividerItemDecoration(getContext(), R.drawable.color_primary_divider, R.drawable.section_setting_divider, mProfileFragmentPresenter.getSettingsData()));
-        adapter = new PrefAdapter(mProfileFragmentPresenter.getSettingsData(), this);
-        prefList.setAdapter(adapter);
-    }
-
-    @Override
-    public void startDialogFragmentForResult() {
-        LogOutDialogFragment logOutDialogFragment = new LogOutDialogFragment();
-        logOutDialogFragment.setTargetFragment(this, 200);
-        logOutDialogFragment.show(getFragmentManager(), LogOutDialogFragment.class.getCanonicalName());
-    }
-
-    @Override
-    public void resetText() {
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onClick() {
-        getPresenter().onLogOutYesClick();
     }
 
     @Override
@@ -86,18 +53,58 @@ public class ProfileFragment extends BaseFragment implements ProfileFragmentView
             case R.string.wallet_back_up:
                 getPresenter().onWalletBackUpClick();
                 break;
-            case R.string.create_token:
-                getPresenter().onCreateTokenClick();
+            case R.string.smart_contracts:
+                getPresenter().onSmartContractsClick();
                 break;
             case R.string.subscribe_tokens:
                 getPresenter().onSubscribeTokensClick();
                 break;
             case R.string.about:
-               // getPresenter().onAboutClick();
+                // getPresenter().onAboutClick();
                 break;
             case R.string.log_out:
                 getPresenter().onLogOutClick();
                 break;
+            case R.string.switch_theme:
+                getPresenter().switchTheme();
         }
+    }
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        prefList.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    protected void initializeList(int resId, int resDividerDecoration, int resSectionDecoration){
+        adapter = new PrefAdapter(getPresenter().getSettingsData(), this, resId);
+        prefList.addItemDecoration(new DividerItemDecoration(getContext(),resDividerDecoration,resSectionDecoration,getPresenter().getSettingsData()));
+        prefList.setAdapter(adapter);
+    }
+
+    @Override
+    public void onSwitchChange(int key, boolean isChecked) {
+        switch (key){
+            case R.string.touch_id:{
+                getPresenter().onTouchIdSwitched(isChecked);
+            }
+        }
+    }
+
+    @Override
+    public void onClick() {
+        getPresenter().onLogOutYesClick();
+    }
+
+    @Override
+    public void startDialogFragmentForResult() {
+        LogOutDialogFragment logOutDialogFragment = new LogOutDialogFragment();
+        logOutDialogFragment.setTargetFragment(this, 200);
+        logOutDialogFragment.show(getFragmentManager(), LogOutDialogFragment.class.getCanonicalName());
+    }
+
+    @Override
+    public void resetText() {
+        adapter.notifyDataSetChanged();
     }
 }

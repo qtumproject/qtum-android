@@ -12,6 +12,7 @@
     <color name="grey20">#334e5d6f</color>
     <color name="grey_devider">#c9c9c9</color>
     <color name="black">#1a1b1e</color>
+    <color name="white">#fff</color>
     <color name="grey_lite">#f8f8f8</color>
     <color name="grey_data">#d6dae2</color>
     <color name="grey_input_text">#bdc6cf</color>
@@ -30,4 +31,16 @@
     <color name="primary_text_color">#2e9ad0</color>
     <color name="accent_red_color">#e75647</color>
     <color name="section_divider_color">#0d2e9ad0</color>
+    <color name="select_file_background">#0d2e9ad0</color>
+    <color name="file_size_color">#4d2e9ad0</color>
+    <color name="switch_non_checked">#656569</color>
+
+    <color name="bottom_nav_bar_color_light">#edf6f8</color>
+    <color name="bottom_nav_bar_text_color_light">#4e5d6f</color>
+    <color name="title_color_light">#3f38c4</color>
+    <color name="light_blue">#38b0c5</color>
+
+    <color name="selected_paginator_light">#99536173</color>
+    <color name="default_paginator_light">#4d536173</color>
+
 </resources>

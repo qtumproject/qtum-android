@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.RestAPI.gsonmodels.News;
+import com.pixelplex.qtum.model.gson.News;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 import java.util.List;
@@ -98,7 +98,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
         mSwipeRefreshLayout.setRefreshing(true);
     }
 
-    public class NewsHolder extends RecyclerView.ViewHolder {
+    class NewsHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_image)
         ImageView mImageViewImage;
@@ -125,7 +125,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
         }
     }
 
-    public class NewsHeaderHolder extends RecyclerView.ViewHolder {
+    class NewsHeaderHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_news_header)
         ImageView mImageViewImage;
