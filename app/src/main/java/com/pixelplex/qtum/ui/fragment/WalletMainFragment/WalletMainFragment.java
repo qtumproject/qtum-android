@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -65,7 +67,29 @@ public class WalletMainFragment extends BaseFragment implements WalletMainFragme
 
         int NUM_ITEMS = 1;
 
-        public void showOtherTokens(boolean show){
+        private SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            registeredFragments.put(position, fragment);
+            return fragment;
+        }
+
+        WalletFragment getWalletFragment(){
+            return (WalletFragment) registeredFragments.get(0);
+        }
+
+        OtherTokensFragment getOtherTokensFragment(){
+            return (OtherTokensFragment) registeredFragments.get(1);
+        }
+
+        void showOtherTokens(boolean show){
+            if(show){
+                getWalletFragment().showPageIndicator();
+            }else{
+                getWalletFragment().hidePageIndicator();
+            }
             NUM_ITEMS = (show)? 2 : 1;
             notifyDataSetChanged();
         }

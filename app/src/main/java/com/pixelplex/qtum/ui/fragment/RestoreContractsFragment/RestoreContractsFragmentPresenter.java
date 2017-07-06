@@ -332,7 +332,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                                 }
                                 List<Token> tmpTokenList = tinyDB.getTokenList();
                                 tmpTokenList.addAll(tokenList);
-                                tinyDB.putTokenList(tokenList);
+                                tinyDB.putTokenList(tmpTokenList);
                             }
 
                         } else if (!restoreTemplates) {
@@ -360,7 +360,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                             }
                             List<Token> tmpTokenList = tinyDB.getTokenList();
                             tmpTokenList.addAll(tokenList);
-                            tinyDB.putTokenList(tokenList);
+                            tinyDB.putTokenList(tmpTokenList);
                             List<Contract> tmpContractList = tinyDB.getContractListWithoutToken();
                             tmpContractList.addAll(contractList);
                             tinyDB.putContractListWithoutToken(tmpContractList);
@@ -385,7 +385,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                             }
                             List<Token> tmpTokenList = tinyDB.getTokenList();
                             tmpTokenList.addAll(tokenList);
-                            tinyDB.putTokenList(tokenList);
+                            tinyDB.putTokenList(tmpTokenList);
                             List<Contract> tmpContractList = tinyDB.getContractListWithoutToken();
                             tmpContractList.addAll(contractList);
                             tinyDB.putContractListWithoutToken(tmpContractList);
@@ -423,7 +423,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                             }
                             List<Token> tmpTokenList = tinyDB.getTokenList();
                             tmpTokenList.addAll(tokenList);
-                            tinyDB.putTokenList(tokenList);
+                            tinyDB.putTokenList(tmpTokenList);
                         }
 
 

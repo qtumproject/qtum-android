@@ -68,7 +68,7 @@ public class DateCalculator {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return date1long > date2long ? 1 : date1long < date2long ? -1 : 0;
+        return date1long > date2long ? -1 : date1long < date2long ? 1 : 0;
     }
 
     public static String getCurrentDate(){

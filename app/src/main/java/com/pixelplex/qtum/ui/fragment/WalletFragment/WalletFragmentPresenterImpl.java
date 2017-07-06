@@ -88,19 +88,6 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
             }
         });
 
-        mUpdateService.addTokenListener(new TokenListener() {
-            @Override
-            public void newToken() {
-                getView().getMainActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getView().notifyNewToken();
-                    }
-                });
-            }
-        });
-
-
         mNetworkStateReceiver  = getView().getMainActivity().getNetworkReceiver();
         mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
 

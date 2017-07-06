@@ -93,6 +93,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     FontTextView uncomfirmedBalanceTitle;
     //HEADER
 
+    @BindView(R.id.page_indicator)
+    LinearLayout mPageIndicator;
+
     @BindView(R.id.balance_view)
     FrameLayout balanceView;
 
@@ -206,11 +209,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                 mTransactionAdapter.notifyItemChanged(notifyPosition);
             }
         });
-    }
-
-    @Override
-    public void notifyNewToken() {
-       //TODO NOTIFY TOKEN
     }
 
     private final DisplayMetrics dm = new DisplayMetrics();
@@ -536,5 +534,13 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             }
             mTextViewValue.setText(history.getChangeInBalance().toString() + " QTUM");
         }
+    }
+
+    public void showPageIndicator(){
+        mPageIndicator.setVisibility(View.VISIBLE);
+    }
+
+    public void hidePageIndicator(){
+        mPageIndicator.setVisibility(View.GONE);
     }
 }
