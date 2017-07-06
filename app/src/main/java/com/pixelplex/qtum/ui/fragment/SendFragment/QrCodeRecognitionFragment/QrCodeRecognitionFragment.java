@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment;
+package com.pixelplex.qtum.ui.fragment.SendFragment.QrCodeRecognitionFragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +13,7 @@ import com.google.zxing.Result;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,14 +65,14 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
     @Override
     public void onResume() {
         super.onResume();
-        ((SendBaseFragment) getTargetFragment()).qrCodeRecognitionToolBar();
+        ((SendFragment) getTargetFragment()).qrCodeRecognitionToolBar();
         mZXingScannerView.startCamera();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        ((SendBaseFragment) getTargetFragment()).sendToolBar();
+        ((SendFragment) getTargetFragment()).sendToolBar();
         mZXingScannerView.stopCamera();
     }
 
@@ -81,18 +81,18 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(result.getText());
-            ((SendBaseFragment) getTargetFragment()).onResponse(jsonObject.getString("publicAddress"),
+            ((SendFragment) getTargetFragment()).onResponse(jsonObject.getString("publicAddress"),
                     jsonObject.getDouble("amount"));
             getActivity().onBackPressed();
         } catch (JSONException e) {
             try {
                 if (jsonObject != null) {
-                    ((SendBaseFragment) getTargetFragment()).onResponse(jsonObject.getString("publicAddress"),
+                    ((SendFragment) getTargetFragment()).onResponse(jsonObject.getString("publicAddress"),
                             0.0);
                 }
                 getActivity().onBackPressed();
             } catch (JSONException e1) {
-                ((SendBaseFragment) getTargetFragment()).onResponseError();
+                ((SendFragment) getTargetFragment()).onResponseError();
                 getActivity().onBackPressed();
             }
         }

@@ -1,13 +1,16 @@
-package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
+package com.pixelplex.qtum.ui.fragment.SendFragment;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
+import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.contract.Token;
@@ -22,7 +25,7 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinDialogFragment;
-import com.pixelplex.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
+import com.pixelplex.qtum.ui.fragment.SendFragment.QrCodeRecognitionFragment.QrCodeRecognitionFragment;
 import com.pixelplex.qtum.utils.ContractBuilder;
 
 import org.bitcoinj.script.Script;
@@ -36,10 +39,10 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SendBaseFragmentPresenter {
+public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl implements SendFragmentPresenter {
 
-    private SendBaseFragmentView mSendBaseFragmentView;
-    private SendBaseFragmentInteractorImpl mSendBaseFragmentInteractor;
+    private SendFragmentView mSendFragmentView;
+    private SendFragmentInteractorImpl mSendBaseFragmentInteractor;
     private UpdateService mUpdateService;
     private Context mContext;
     private NetworkStateReceiver mNetworkStateReceiver;
@@ -50,10 +53,10 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     private boolean OPEN_QR_CODE_FRAGMENT_FLAG = false;
 
 
-    SendBaseFragmentPresenterImpl(SendBaseFragmentView sendBaseFragmentView) {
-        mSendBaseFragmentView = sendBaseFragmentView;
+    SendFragmentPresenterImpl(SendFragmentView sendFragmentView) {
+        mSendFragmentView = sendFragmentView;
         mContext = getView().getContext();
-        mSendBaseFragmentInteractor = new SendBaseFragmentInteractorImpl(mContext);
+        mSendBaseFragmentInteractor = new SendFragmentInteractorImpl(mContext);
     }
 
     @Override
@@ -122,8 +125,8 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     }
 
     @Override
-    public SendBaseFragmentView getView() {
-        return mSendBaseFragmentView;
+    public SendFragmentView getView() {
+        return mSendFragmentView;
     }
 
     @Override
@@ -153,7 +156,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
     private void updateAvailableBalance(){
         getView().setProgressBar();
-        getInteractor().getUnspentOutputs(new SendBaseFragmentInteractorImpl.GetUnspentListCallBack() {
+        getInteractor().getUnspentOutputs(new SendFragmentInteractorImpl.GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
                 BigDecimal balance = new BigDecimal("0");
@@ -186,7 +189,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
         }
     }
 
-    private SendBaseFragmentInteractorImpl getInteractor() {
+    private SendFragmentInteractorImpl getInteractor() {
         return mSendBaseFragmentInteractor;
     }
 
@@ -231,7 +234,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                 public void onSuccess() {
                     getView().setProgressDialog();
                     if(currency.equals("Qtum "+mContext.getString(R.string.default_currency))) {
-                        getInteractor().sendTx(address, amount, new SendBaseFragmentInteractorImpl.SendTxCallBack() {
+                        getInteractor().sendTx(address, amount, new SendFragmentInteractorImpl.SendTxCallBack() {
                             @Override
                             public void onSuccess() {
                                 getView().setAlertDialog(mContext.getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
@@ -288,13 +291,76 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
         }
     }
 
+    @Override
+    public void send(String[] sendInfo, String pin) {
+        if(mNetworkConnectedFlag) {
+        if(pin.equals(QtumSharedPreference.getInstance().getWalletPassword(getView().getContext()))){
+
+            final String address = sendInfo[0];
+            final String amount = sendInfo[1];
+            final String currency = sendInfo[2];
+
+            getView().setProgressDialog();
+            if (currency.equals("Qtum " + mContext.getString(R.string.default_currency))) {
+                getInteractor().sendTx(address, amount, new SendFragmentInteractorImpl.SendTxCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        getView().setAlertDialog(mContext.getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        getView().dismissProgressDialog();
+                        getView().setAlertDialog(mContext.getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
+                    }
+                });
+            } else {
+                for (final Contract contract : mTokenList) {
+                    if (contract.getContractName().equals(currency)) {
+                        ContractBuilder contractBuilder = new ContractBuilder();
+                        List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
+                        ContractMethodParameter contractMethodParameterAddress = new ContractMethodParameter("_to", "address", address);
+                        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", amount);
+                        contractMethodParameterList.add(contractMethodParameterAddress);
+                        contractMethodParameterList.add(contractMethodParameterAmount);
+                        contractBuilder.createAbiMethodParams("transfer", contractMethodParameterList).subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Subscriber<String>() {
+                                    @Override
+                                    public void onCompleted() {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(String s) {
+                                        createTx(s, contract.getContractAddress());
+                                    }
+                                });
+                        return;
+                    }
+                }
+            }
+        } else {
+            getView().setAlertDialog(mContext.getString(R.string.error), getView().getContext().getString(R.string.incorrect_pin), "Ok", BaseFragment.PopUpType.error);
+        }
+
+        } else {
+            getView().setAlertDialog(mContext.getString(R.string.no_internet_connection),mContext.getString(R.string.please_check_your_network_settings),"Ok", BaseFragment.PopUpType.error);
+        }
+    }
+
     private void createTx(final String abiParams, final String contractAddress) {
-        getInteractor().getUnspentOutputs(new SendBaseFragmentInteractorImpl.GetUnspentListCallBack() {
+        getInteractor().getUnspentOutputs(new SendFragmentInteractorImpl.GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
                 ContractBuilder contractBuilder = new ContractBuilder();
                 Script script = contractBuilder.createMethodScript(abiParams, contractAddress);
-                getInteractor().sendTx(contractBuilder.createTransactionHash(script, unspentOutputs), new SendBaseFragmentInteractorImpl.SendTxCallBack() {
+                getInteractor().sendTx(contractBuilder.createTransactionHash(script, unspentOutputs), new SendFragmentInteractorImpl.SendTxCallBack() {
                     @Override
                     public void onSuccess() {
                         getView().dismissProgressDialog();

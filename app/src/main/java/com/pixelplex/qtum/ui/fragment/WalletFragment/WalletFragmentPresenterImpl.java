@@ -20,7 +20,7 @@ import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
-import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 import com.pixelplex.qtum.ui.fragment.TransactionFragment.TransactionFragment;
 
 import java.math.BigDecimal;
@@ -170,13 +170,13 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 
     private void openQrCodeFragment(){
         OPEN_QR_CODE_FRAGMENT_FLAG = false;
-        SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true,null,null);
-        getView().openRootFragment(sendBaseFragment);
-        getView().getMainActivity().setRootFragment(sendBaseFragment);
+        SendFragment sendFragment = (SendFragment) SendFragment.newInstance(true,null,null,getView().getContext());
+        getView().openRootFragment(sendFragment);
+        getView().getMainActivity().setRootFragment(sendFragment);
     }
 
     public void onReceiveClick(){
-        ReceiveFragment receiveFragment = ReceiveFragment.newInstance();
+        BaseFragment receiveFragment = ReceiveFragment.newInstance(getView().getContext());
         getView().openFragment(receiveFragment);
     }
 

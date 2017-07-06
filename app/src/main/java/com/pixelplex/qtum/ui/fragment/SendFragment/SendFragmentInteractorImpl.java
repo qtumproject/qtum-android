@@ -1,7 +1,6 @@
-package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
+package com.pixelplex.qtum.ui.fragment.SendFragment;
 
 import android.content.Context;
-
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.AddressFormatException;
 import org.bitcoinj.core.Coin;
@@ -23,25 +22,21 @@ import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.utils.CurrentNetParams;
 import com.pixelplex.qtum.datastorage.TinyDB;
-
 import org.spongycastle.util.encoders.Hex;
-
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-
-class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
+class SendFragmentInteractorImpl implements SendFragmentInteractor {
 
     private Context mContext;
 
-    SendBaseFragmentInteractorImpl(Context context) {
+    SendFragmentInteractorImpl(Context context) {
         mContext = context;
     }
 

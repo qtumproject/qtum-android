@@ -20,10 +20,11 @@ import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.base_activity.BasePresenterImpl;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.NewsFragment.NewsFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
-import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 import com.pixelplex.qtum.utils.QtumIntent;
@@ -93,7 +94,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     public void onResume(Context context) {
         super.onResume(context);
         if(mCheckAuthenticationFlag && !mCheckAuthenticationShowFlag){
-            PinFragment pinFragment = PinFragment.newInstance(PinFragment.CHECK_AUTHENTICATION);
+            BaseFragment pinFragment = PinFragment.newInstance(PinFragment.CHECK_AUTHENTICATION, getView().getContext());
             getView().openFragment(pinFragment);
             mCheckAuthenticationShowFlag = true;
         }
@@ -164,14 +165,14 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         Fragment fragment;
         if (getInteractor().getKeyGeneratedInstance(mContext)) {
             if(mSendFromIntent){
-                fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
+                fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND, getView().getContext());
                 getView().openRootFragment(fragment);
             } else if(!mAuthenticationFlag){
-                fragment = StartPageFragment.newInstance(true);
+                fragment = StartPageFragment.newInstance(true,getView().getContext());
                 getView().openRootFragment(fragment);
             }
         } else {
-            fragment = StartPageFragment.newInstance(false);
+            fragment = StartPageFragment.newInstance(false,getView().getContext());
             getView().openRootFragment(fragment);
         }
     }
@@ -184,7 +185,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                     getView().popBackStack();
                     return true;
                 }
-                mRootFragment = WalletMainFragment.newInstance();
+                mRootFragment = WalletMainFragment.newInstance(getView().getContext());
                 break;
             case R.id.item_profile:
                 if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(ProfileFragment.class.getCanonicalName())) {
@@ -198,14 +199,14 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                     getView().popBackStack();
                     return true;
                 }
-                mRootFragment = NewsFragment.newInstance();
+                mRootFragment = NewsFragment.newInstance(getView().getContext());
                 break;
             case R.id.item_send:
-                if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(SendBaseFragment.class.getCanonicalName())) {
+                if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(SendFragment.class.getCanonicalName())) {
                     getView().popBackStack();
                     return true;
                 }
-                mRootFragment = SendBaseFragment.newInstance(false,null,null);
+                mRootFragment = SendFragment.newInstance(false,null,null,getView().getContext());
                 break;
             default:
                 return false;
@@ -232,7 +233,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                 mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
                 mAmountForSendAction = "1.431";
 //                if(mAuthenticationFlag) {
-//                    mRootFragment = SendBaseFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction);
+//                    mRootFragment = SendFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction);
 //                    getView().setIconChecked(3);
 //                } else{
 //                    mRootFragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
@@ -253,7 +254,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                 getWalletFromFile();
                 break;
             case QtumIntent.OPEN_FROM_NOTIFICATION:
-                mRootFragment = WalletMainFragment.newInstance();
+                mRootFragment = WalletMainFragment.newInstance(getView().getContext());
                 getView().openRootFragment(mRootFragment);
                 getView().setIconChecked(0);
                 break;
@@ -261,11 +262,11 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                 mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
                 mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
                 if(mAuthenticationFlag){
-                    mRootFragment = SendBaseFragment.newInstance(false,mAddressForSendAction,mAmountForSendAction);
+                    mRootFragment = SendFragment.newInstance(false,mAddressForSendAction,mAmountForSendAction,getView().getContext());
                     getView().openRootFragment(mRootFragment);
                     getView().setIconChecked(3);
                 } else {
-                    Fragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
+                    Fragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND, getView().getContext());
                     getView().openRootFragment(fragment);
                 }
                 break;
@@ -273,10 +274,10 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                 mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
                 mAmountForSendAction = "0.253";
                 if(mAuthenticationFlag) {
-                    mRootFragment = SendBaseFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction);
+                    mRootFragment = SendFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction,getView().getContext());
                     getView().setIconChecked(3);
                 } else{
-                    mRootFragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
+                    mRootFragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND, getView().getContext());
 
                 }
                 getView().openRootFragment(mRootFragment);
@@ -297,7 +298,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                     public void onCompleted() {
                         mCheckAuthenticationShowFlag = true;
                         setAuthenticationFlag(true);
-                        mRootFragment = WalletMainFragment.newInstance();
+                        mRootFragment = WalletMainFragment.newInstance(getView().getContext());
                         getView().openRootFragment(mRootFragment);
                         getView().setIconChecked(0);
 

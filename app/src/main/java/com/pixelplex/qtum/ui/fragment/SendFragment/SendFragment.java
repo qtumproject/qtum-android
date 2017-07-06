@@ -1,5 +1,6 @@
-package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
+package com.pixelplex.qtum.ui.fragment.SendFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontManager;
@@ -23,62 +25,38 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class SendBaseFragment extends BaseFragment implements SendBaseFragmentView {
+public abstract class SendFragment extends BaseFragment implements SendFragmentView {
 
     private static final String IS_QR_CODE_RECOGNITION = "is_qr_code_recognition";
     private static final String ADDRESS = "address";
     private static final String AMOUNT = "amount";
 
     @BindView(R.id.et_receivers_address)
-    TextInputEditText mTextInputEditTextAddress;
+    protected TextInputEditText mTextInputEditTextAddress;
     @BindView(R.id.et_amount)
-    TextInputEditText mTextInputEditTextAmount;
-
+    protected TextInputEditText mTextInputEditTextAmount;
     @BindView(R.id.til_receivers_address)
-    TextInputLayout tilAdress;
+    protected TextInputLayout tilAdress;
     @BindView(R.id.til_amount)
-    TextInputLayout tilAmount;
-
-    @BindView(R.id.bt_send)
-    Button mButtonSend;
-    @BindView(R.id.ibt_back)
-    ImageButton mImageButtonBack;
-    @BindView(R.id.tv_toolbar_send)
-    TextView mTextViewToolBar;
-    @BindView(R.id.progress_bar)
-    ProgressBar mProgressBar;
-    @BindView(R.id.tv_total_balance_number)
-    TextView mTextViewTotalBalanceNumber;
-    @BindView(R.id.rl_send)
-    RelativeLayout mRelativeLayoutBase;
+    protected TextInputLayout tilAmount;
+    @BindView(R.id.bt_send) Button mButtonSend;
+    @BindView(R.id.ibt_back) ImageButton mImageButtonBack;
+    @BindView(R.id.tv_toolbar_send) TextView mTextViewToolBar;
+    @BindView(R.id.rl_send) RelativeLayout mRelativeLayoutBase;
     @BindView(R.id.ll_currency)
-    LinearLayout mLinearLayoutCurrency;
+    protected LinearLayout mLinearLayoutCurrency;
     @BindView(R.id.tv_currency)
-    TextView mTextViewCurrency;
+    protected TextView mTextViewCurrency;
+    @BindView(R.id.bt_qr_code) ImageButton mButtonQrCode;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
-    private SendBaseFragmentPresenterImpl sendBaseFragmentPresenter;
+    protected SendFragmentPresenterImpl sendBaseFragmentPresenter;
 
-    @BindView(R.id.bt_qr_code)
-    ImageButton mButtonQrCode;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-
-    @OnClick({R.id.bt_qr_code, R.id.bt_send, R.id.ibt_back, R.id.ll_currency})
+    @OnClick({R.id.bt_qr_code,R.id.ibt_back, R.id.ll_currency})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_qr_code:
                 getPresenter().onClickQrCode();
-                break;
-            case R.id.bt_send:
-                String[] sendInfo = new String[3];
-                sendInfo[0] = mTextInputEditTextAddress.getText().toString();
-                sendInfo[1] = mTextInputEditTextAmount.getText().toString();
-                if(mLinearLayoutCurrency.getVisibility()==View.VISIBLE){
-                    sendInfo[2] = mTextViewCurrency.getText().toString();
-                } else {
-                    sendInfo[2] = "Qtum "+getString(R.string.default_currency);
-                }
-                getPresenter().send(sendInfo);
                 break;
             case R.id.ibt_back:
                 getActivity().onBackPressed();
@@ -89,14 +67,14 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         }
     }
 
-    public static SendBaseFragment newInstance(boolean qrCodeRecognition, String address, String amount) {
-        SendBaseFragment sendBaseFragment = new SendBaseFragment();
+    public static BaseFragment newInstance(boolean qrCodeRecognition, String address, String amount, Context context) {
+        BaseFragment sendFragment = Factory.instantiateFragment(context, SendFragment.class);
         Bundle args = new Bundle();
         args.putBoolean(IS_QR_CODE_RECOGNITION, qrCodeRecognition);
         args.putString(ADDRESS,address);
         args.putString(AMOUNT,amount);
-        sendBaseFragment.setArguments(args);
-        return sendBaseFragment;
+        sendFragment.setArguments(args);
+        return sendFragment;
     }
 
     @Override
@@ -108,17 +86,12 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
 
     @Override
     protected void createPresenter() {
-        sendBaseFragmentPresenter = new SendBaseFragmentPresenterImpl(this);
+        sendBaseFragmentPresenter = new SendFragmentPresenterImpl(this);
     }
 
     @Override
-    protected SendBaseFragmentPresenterImpl getPresenter() {
+    protected SendFragmentPresenterImpl getPresenter() {
         return sendBaseFragmentPresenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_send_base;
     }
 
     @Override
@@ -167,13 +140,6 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         String amount = getArguments().getString(AMOUNT, "");
         mTextInputEditTextAmount.setText(amount);
         mTextInputEditTextAddress.setText(address);
-
-
-        mTextInputEditTextAddress.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
-        mTextInputEditTextAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
-
-        tilAdress.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
-        tilAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
     }
 
     @Override
@@ -185,19 +151,6 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @Override
     public void errorRecognition() {
 
-    }
-
-    @Override
-    public void setProgressBar() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mTextViewTotalBalanceNumber.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void updateAvailableBalance(String balance) {
-        mProgressBar.setVisibility(View.GONE);
-        mTextViewTotalBalanceNumber.setVisibility(View.VISIBLE);
-        mTextViewTotalBalanceNumber.setText(balance);
     }
 
     @Override

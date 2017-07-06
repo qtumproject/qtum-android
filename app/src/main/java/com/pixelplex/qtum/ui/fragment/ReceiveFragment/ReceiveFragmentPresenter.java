@@ -1,7 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.ReceiveFragment;
 
 
-interface ReceiveFragmentPresenter {
+public interface ReceiveFragmentPresenter {
     void changeAmount(String s);
     void onCopyWalletAddressClick();
     void onChooseAnotherAddressClick();

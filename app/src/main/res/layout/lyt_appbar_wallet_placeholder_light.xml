@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/title_color_light"
     android:layout_width="match_parent"
     android:weightSum="2"
@@ -21,6 +22,7 @@
             android:id="@+id/tv_placeholder_balance_title"
             android:text="@string/available_balance"
             android:layout_width="wrap_content"
+            app:typefaceAsset="@string/proximaNovaRegular"
             android:gravity="center"
             android:layout_height="match_parent" />
 
@@ -29,6 +31,7 @@
             android:textSize="12sp"
             android:layout_alignParentRight="true"
             android:id="@+id/tv_placeholder_balance_value"
+            app:typefaceAsset="@string/proximaNovaRegular"
             android:text="0.007 QTUM"
             android:layout_width="wrap_content"
             android:gravity="center"
@@ -48,6 +51,7 @@
             android:textColor="@color/white"
             android:textSize="12sp"
             android:id="@+id/tv_placeholder_not_confirmed_balance_title"
+            app:typefaceAsset="@string/proximaNovaRegular"
             android:text="@string/not_confirmed_balance"
             android:layout_width="wrap_content"
             android:gravity="center"
@@ -58,6 +62,7 @@
             android:textSize="12sp"
             android:layout_alignParentRight="true"
             android:id="@+id/tv_placeholder_not_confirmed_balance_value"
+            app:typefaceAsset="@string/proximaNovaRegular"
             android:text="1.2234565 QTUM"
             android:layout_width="wrap_content"
             android:gravity="center"

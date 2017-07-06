@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import com.pixelplex.qtum.R;
@@ -161,14 +162,18 @@ public class WalletFragmentDark extends WalletFragment {
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
-        balanceValue.setText(String.format("%s QTUM",balance));
-        if(unconfirmedBalance != null) {
-            uncomfirmedBalanceValue.setVisibility(View.VISIBLE);
-            uncomfirmedBalanceTitle.setVisibility(View.VISIBLE);
-            uncomfirmedBalanceValue.setText(String.format("%s QTUM", unconfirmedBalance));
-        } else {
-            uncomfirmedBalanceValue.setVisibility(View.GONE);
-            uncomfirmedBalanceTitle.setVisibility(View.GONE);
+        try {
+            balanceValue.setText(String.format("%s QTUM",balance));
+            if(unconfirmedBalance != null) {
+                uncomfirmedBalanceValue.setVisibility(View.VISIBLE);
+                uncomfirmedBalanceTitle.setVisibility(View.VISIBLE);
+                uncomfirmedBalanceValue.setText(String.format("%s QTUM", unconfirmedBalance));
+            } else {
+                uncomfirmedBalanceValue.setVisibility(View.GONE);
+                uncomfirmedBalanceTitle.setVisibility(View.GONE);
+            }
+        } catch (NullPointerException e){
+            Log.d("WalletFragmentDark", "updateBalance: " + e.getMessage());
         }
     }
 

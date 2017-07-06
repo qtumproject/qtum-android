@@ -22,7 +22,4 @@
             android:background="@drawable/spinner_full"/>
 
     </FrameLayout>
-
-
-
 </RelativeLayout>

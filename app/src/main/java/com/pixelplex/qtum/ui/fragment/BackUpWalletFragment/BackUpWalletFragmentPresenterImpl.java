@@ -44,7 +44,7 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
 
     @Override
     public void onContinueClick() {
-        final WalletMainFragment walletFragment = WalletMainFragment.newInstance();
+        final WalletMainFragment walletFragment = WalletMainFragment.newInstance(getView().getContext());
         getView().getMainActivity().setRootFragment(walletFragment);
         getView().openRootFragment(walletFragment);
     }

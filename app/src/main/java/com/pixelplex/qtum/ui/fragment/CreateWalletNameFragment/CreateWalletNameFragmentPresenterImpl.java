@@ -2,6 +2,7 @@ package com.pixelplex.qtum.ui.fragment.CreateWalletNameFragment;
 
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 
@@ -39,11 +40,11 @@ class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl im
         } else {
             getInteractor().saveWalletName(name);
             getView().clearError();
-            PinFragment pinFragment;
+            BaseFragment pinFragment;
             if(CreateWalletNameFragment.mIsCreateNew) {
-                pinFragment = PinFragment.newInstance(PinFragment.CREATING);
+                pinFragment = PinFragment.newInstance(PinFragment.CREATING, getView().getContext());
             } else {
-                pinFragment = PinFragment.newInstance(PinFragment.IMPORTING);
+                pinFragment = PinFragment.newInstance(PinFragment.IMPORTING, getView().getContext());
 
             }
             getView().openFragment(pinFragment);

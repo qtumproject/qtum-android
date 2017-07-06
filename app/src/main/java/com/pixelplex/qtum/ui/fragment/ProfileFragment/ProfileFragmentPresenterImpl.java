@@ -5,6 +5,7 @@ import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.LanguageFragment.LanguageFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
@@ -79,7 +80,7 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
 
     @Override
     public void onChangePinClick() {
-        PinFragment pinFragment = PinFragment.newInstance(PinFragment.CHANGING);
+        BaseFragment pinFragment = PinFragment.newInstance(PinFragment.CHANGING, getView().getContext());
         getView().openFragment(pinFragment);
     }
 
@@ -102,8 +103,7 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
         getView().getMainActivity().setAuthenticationFlag(false);
         mUpdateService = getView().getMainActivity().getUpdateService();
         mUpdateService.stopMonitoring();
-
-        StartPageFragment startPageFragment = StartPageFragment.newInstance(false);
+        BaseFragment startPageFragment = StartPageFragment.newInstance(false, getView().getContext());
         getView().getMainActivity().openRootFragment(startPageFragment);
         getView().getMainActivity().setIconChecked(0);
     }

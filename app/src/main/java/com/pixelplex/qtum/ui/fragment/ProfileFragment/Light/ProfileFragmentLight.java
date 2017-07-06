@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.ProfileFragment.Light;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.DividerItemDecoration;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragmentPresenterImpl;
@@ -29,6 +30,7 @@ public class ProfileFragmentLight extends ProfileFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
+        ((MainActivity)getActivity()).showBottomNavigationView(R.color.title_color_light);
         initializeList(R.layout.lyt_profile_pref_list_item_light,R.drawable.color_primary_divider_light,R.drawable.section_setting_divider_light);
     }
 }

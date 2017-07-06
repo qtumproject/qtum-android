@@ -167,5 +167,6 @@
 
     <string name="switch_theme">Swith Application Theme</string>
     <string name="confirmation">Confirmation…</string>
+    <string name="qtum_address">QTUM Address</string>
 
 </resources>

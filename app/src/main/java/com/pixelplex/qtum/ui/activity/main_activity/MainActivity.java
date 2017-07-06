@@ -32,7 +32,7 @@ import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.base_activity.BaseActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
-import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 import com.pixelplex.qtum.utils.ThemeUtils;
 import java.lang.reflect.Field;
@@ -69,6 +69,12 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         getPresenter().processNewIntent(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+       // recolorStatusBar(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)? R.color.colorPrimary : R.color.title_color_light);
     }
 
     public void setAuthenticationFlag(boolean authenticationFlag){
@@ -163,8 +169,8 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     @Override
     public void setAdressAndAmount(String defineMinerAddress, String defineAmount) {
-        if(getSupportFragmentManager().findFragmentByTag(SendBaseFragment.class.getCanonicalName()) == null && getPresenter().mAuthenticationFlag) {
-            openRootFragment(SendBaseFragment.newInstance(false, defineMinerAddress, defineAmount));
+        if(getSupportFragmentManager().findFragmentByTag(SendFragment.class.getCanonicalName()) == null && getPresenter().mAuthenticationFlag) {
+            openRootFragment(SendFragment.newInstance(false, defineMinerAddress, defineAmount, getContext()));
         }
     }
 

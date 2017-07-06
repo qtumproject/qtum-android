@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.WalletFragment.Light;
 
 import android.support.design.widget.AppBarLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import com.pixelplex.qtum.R;
@@ -62,6 +63,7 @@ public class WalletFragmentLight extends WalletFragment {
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
+        try {
         balanceValue.setText(String.format("%s QTUM",balance));
         placeHolderBalance.setText(String.format("%s QTUM",balance));
         if(unconfirmedBalance != null) {
@@ -74,6 +76,9 @@ public class WalletFragmentLight extends WalletFragment {
             notConfirmedBalancePlaceholder.setVisibility(View.GONE);
             uncomfirmedBalanceValue.setVisibility(View.GONE);
             uncomfirmedBalanceTitle.setVisibility(View.GONE);
+        }
+        } catch (NullPointerException e){
+            Log.d("WalletFragmentLight", "updateBalance: " + e.getMessage());
         }
     }
 }

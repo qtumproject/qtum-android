@@ -11,11 +11,11 @@ import com.pixelplex.qtum.model.contract.Token;
 import java.util.List;
 
 
-class TokensAdapter extends RecyclerView.Adapter<TokenViewHolder> {
+public abstract class TokensAdapter extends RecyclerView.Adapter<TokenViewHolder> {
 
-    private final UpdateSocketInstance socketInstace;
-    private List<Token> tokens;
-    private OnTokenClickListener listener;
+    protected final UpdateSocketInstance socketInstace;
+    protected List<Token> tokens;
+    protected OnTokenClickListener listener;
 
     public TokensAdapter(List<Token> tokens, UpdateSocketInstance socketInstance, OnTokenClickListener listener) {
         this.tokens = tokens;
@@ -25,16 +25,6 @@ class TokensAdapter extends RecyclerView.Adapter<TokenViewHolder> {
 
     public Contract get(int adapterPosition) {
         return tokens.get(adapterPosition);
-    }
-
-    @Override
-    public TokenViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TokenViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_token_list_item, parent, false), socketInstace, listener);
-    }
-
-    @Override
-    public void onBindViewHolder(TokenViewHolder holder, int position) {
-        holder.bind(tokens.get(position));
     }
 
     @Override

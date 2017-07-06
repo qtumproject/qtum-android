@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.OtherTokens;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
@@ -17,20 +19,19 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class OtherTokensFragment extends BaseFragment implements OtherTokensView, OnTokenClickListener {
+public abstract class OtherTokensFragment extends BaseFragment implements OtherTokensView, OnTokenClickListener {
 
-    private final int LAYOUT = R.layout.fragment_other_tokens;
-
-    public static OtherTokensFragment newInstance() {
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        OtherTokensFragment fragment = new OtherTokensFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, OtherTokensFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
 
-    private OtherTokensPresenterImpl presenter;
+    protected OtherTokensPresenterImpl presenter;
 
     @BindView(R.id.recycler_view)
+    protected
     RecyclerView tokensList;
 
     @BindView(R.id.swipe_refresh)
@@ -49,11 +50,6 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
     @Override
     protected BaseFragmentPresenterImpl getPresenter() {
         return presenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return LAYOUT;
     }
 
     @Override
@@ -77,11 +73,6 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
                 }
             }
         });
-    }
-
-    @Override
-    public void setTokensData(List<Token> tokensData) {
-        tokensList.setAdapter(new TokensAdapter(tokensData,presenter, this));
     }
 
     @Override

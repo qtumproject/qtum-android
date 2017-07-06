@@ -18,10 +18,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.ui.fragment.ProcessingDialogFragment;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
+import com.pixelplex.qtum.ui.fragment.ProcessingDialog.ProcessingDialogFragment;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
+import com.pixelplex.qtum.utils.ThemeUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -53,7 +56,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void setProgressDialog() {
-        mProcessingDialog = new ProcessingDialogFragment();
+        mProcessingDialog = Factory.getProcessingDialog(getContext());
         mProcessingDialog.show(getFragmentManager(), mProcessingDialog.getClass().getCanonicalName());
     }
 
@@ -122,6 +125,14 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     public void showBottomNavView(boolean recolorStatusBar) {
         ((MainActivity) getActivity()).showBottomNavigationView(recolorStatusBar);
+    }
+
+    public void hideBottomNavView(int colorRes) {
+        ((MainActivity) getActivity()).hideBottomNavigationView(colorRes);
+    }
+
+    public void showBottomNavView(int colorRes) {
+        ((MainActivity) getActivity()).showBottomNavigationView(colorRes);
     }
 
     @Override

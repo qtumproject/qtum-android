@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.StartPageFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 
@@ -16,7 +18,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class StartPageFragment extends BaseFragment implements StartPageFragmentView {
+public abstract class StartPageFragment extends BaseFragment implements StartPageFragmentView {
 
     private StartPageFragmentPresenterImpl mStartPageFragmentPresenter;
 
@@ -50,18 +52,17 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
                 break;
             case R.id.bt_login:
                 if (QtumSharedPreference.getInstance().getKeyGeneratedInstance(getContext())){
-                    PinFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION);
+                    BaseFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION, getContext());
                     openFragment(fragment);
                 }
                 break;
         }
     }
 
-    public static StartPageFragment newInstance(boolean isLogin) {
-
+    public static BaseFragment newInstance(boolean isLogin, Context context) {
         Bundle args = new Bundle();
         args.putBoolean(IS_LOGIN, isLogin);
-        StartPageFragment fragment = new StartPageFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, StartPageFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,9 +90,8 @@ public class StartPageFragment extends BaseFragment implements StartPageFragment
 
     @Override
     public void initializeViews() {
-        hideBottomNavView(true);
         if(getArguments().getBoolean(IS_LOGIN,false)){
-            PinFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION);
+            BaseFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION, getContext());
             openFragment(fragment);
         }
     }

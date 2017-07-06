@@ -129,10 +129,10 @@
     <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
     <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
-    <string name="proximaNovaBold">proximanovabold.otf</string>
-    <string name="proximaNovaLight">proximanovalight.otf</string>
-    <string name="proximaNovaRegular">proximanovaregular.otf</string>
-    <string name="proximaNovaSemibold">proximanovasemibold.otf</string>
+    <string name="proximaNovaBold">fonts/proximanovabold.ttf</string>
+    <string name="proximaNovaLight">fonts/proximanovalight.ttf</string>
+    <string name="proximaNovaRegular">fonts/proximanovaregular.ttf</string>
+    <string name="proximaNovaSemibold">fonts/proximanovasemibold.ttf</string>
 
     <string name="retry">RETRY</string>
 
@@ -179,6 +179,7 @@
 
     <string name="switch_theme">Swith Application Theme</string>
     <string name="confirmation">Confirmation…</string>
+    <string name="qtum_address">QTUM Address</string>
 
 
 </resources>

@@ -1,11 +1,11 @@
-package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
+package com.pixelplex.qtum.ui.fragment.SendFragment;
 
 import android.support.v4.app.Fragment;
 
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 
-interface SendBaseFragmentView extends BaseFragmentView{
+interface SendFragmentView extends BaseFragmentView{
     void openInnerFragmentForResult(Fragment fragment);
     void qrCodeRecognitionToolBar();
     void sendToolBar();

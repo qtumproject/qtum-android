@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.pixelplex.qtum.ui.fragment.AddressesFragment.AddressesFragment;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 import java.util.EnumMap;
@@ -27,7 +28,7 @@ import java.util.Map;
 import static android.content.Context.CLIPBOARD_SERVICE;
 
 
-class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ReceiveFragmentPresenter {
+public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ReceiveFragmentPresenter {
 
     private ReceiveFragmentView mReceiveFragmentView;
     private ReceiveFragmentInteractorImpl mReceiveFragmentInteractor;
@@ -89,7 +90,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     @Override
     public void onChooseAnotherAddressClick() {
-        AddressesFragment addressesFragment = AddressesFragment.newInstance();
+        BaseFragment addressesFragment = AddressesFragment.newInstance(getView().getContext());
         getView().openFragmentForResult(addressesFragment);
     }
 

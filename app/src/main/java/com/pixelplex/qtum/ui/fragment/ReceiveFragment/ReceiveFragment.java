@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.ReceiveFragment;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -21,13 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontManager;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView {
+public abstract class ReceiveFragment extends BaseFragment implements ReceiveFragmentView {
 
     private ReceiveFragmentPresenterImpl mReceiveFragmentPresenter;
 
@@ -45,11 +47,10 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     Button mButtonChooseAnotherAddress;
     @BindView(R.id.ibt_back)
     ImageButton mImageButtonBack;
-    @BindView(R.id.tv_total_balance_number)
-    TextView mTextViewTotalBalanceNumber;
     @BindView(R.id.rl_receive)
     RelativeLayout mRelativeLayoutBase;
     @BindView(R.id.cl_receive)
+    protected
     CoordinatorLayout mCoordinatorLayout;
 
     @BindView(R.id.qr_progress_bar)
@@ -71,11 +72,9 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
         }
     }
 
-    public static ReceiveFragment newInstance() {
-
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-
-        ReceiveFragment fragment = new ReceiveFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, ReceiveFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -91,13 +90,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     }
 
     @Override
-    protected int getLayout() {
-        return R.layout.fragment_receive;
-    }
-
-    @Override
     public void initializeViews() {
-        getPresenter().setQrColors(mCoordinatorLayout.getDrawingCacheBackgroundColor(), ContextCompat.getColor(getContext(),R.color.colorPrimary));
         mTextInputEditTextAmount.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -163,11 +156,6 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     @Override
     public void setUpAddress(String s) {
         mTextViewAddress.setText(s);
-    }
-
-    @Override
-    public void setBalance(String balance) {
-        mTextViewTotalBalanceNumber.setText((balance != null)? String.format("%s QTUM",balance) : "N/A");
     }
 
     @Override

@@ -54,9 +54,9 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
         mLinearLayoutTransaction.setBackgroundResource(android.R.color.transparent);
 
         if (history.getChangeInBalance().doubleValue() > 0) {
-            mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
-        } else {
             mImageViewIcon.setImageResource(R.drawable.ic_received_light);
+        } else {
+            mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
         }
 
         if(history.getBlockTime() != null) {

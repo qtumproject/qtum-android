@@ -30,7 +30,7 @@
                 android:text="@string/profile"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/toolbar_text_size"
-                app:typefaceAsset="@string/euclidFlexMedium" />
+                app:typefaceAsset="@string/proximaNovaSemibold" />
 
         </android.support.v7.widget.Toolbar>
 

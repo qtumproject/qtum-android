@@ -16,7 +16,7 @@ class TouchIDPreferenceFragmentPresenter extends BaseFragmentPresenterImpl{
 
     void onNextScreen(boolean isImporting){
         if(isImporting){
-            WalletMainFragment walletFragment = WalletMainFragment.newInstance();
+            WalletMainFragment walletFragment = WalletMainFragment.newInstance(getView().getContext());
             getView().getMainActivity().setRootFragment(walletFragment);
             getView().openRootFragment(walletFragment);
         }else{

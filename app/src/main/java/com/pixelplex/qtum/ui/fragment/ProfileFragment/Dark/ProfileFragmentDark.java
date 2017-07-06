@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.ProfileFragment.Dark;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragmentPresenterImpl;
 
@@ -28,6 +29,7 @@ public class ProfileFragmentDark extends ProfileFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
+        ((MainActivity)getActivity()).showBottomNavigationView(R.color.colorPrimary);
         initializeList(R.layout.lyt_profile_pref_list_item,R.drawable.color_primary_divider, R.drawable.section_setting_divider);
     }
 }

@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,7 +159,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((SendBaseFragment) getTargetFragment()).onCurrencyChoose(mCurrency);
+                    ((SendFragment) getTargetFragment()).onCurrencyChoose(mCurrency);
                     getActivity().onBackPressed();
                 }
             });

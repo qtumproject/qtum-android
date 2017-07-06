@@ -1,27 +1,22 @@
 package com.pixelplex.qtum.ui.fragment.PinFragment;
 
-
-
 import android.content.Context;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
 import android.widget.Toast;
-
 import com.pixelplex.qtum.R;
-
 import com.pixelplex.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 import com.pixelplex.qtum.ui.fragment.TouchIDPreferenceFragment.TouchIDPreferenceFragment;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 import com.pixelplex.qtum.utils.CryptoUtils;
 import com.pixelplex.qtum.utils.FingerprintUtils;
+import com.pixelplex.qtum.utils.ThemeUtils;
 
 import javax.crypto.Cipher;
-
-
 
 class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinFragmentPresenter {
 
@@ -117,7 +112,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                             if(getView().getMainActivity().checkTouchId()) {
                                 fragment = TouchIDPreferenceFragment.newInstance(true);
                             } else {
-                                fragment = WalletMainFragment.newInstance();
+                                fragment = WalletMainFragment.newInstance(getView().getContext());
                                 getView().getMainActivity().setRootFragment(fragment);
                             }
                             getView().getMainActivity().setAuthenticationFlag(true);
@@ -133,7 +128,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
             case PinFragment.AUTHENTICATION: {
                 if (pin.equals(getInteractor().getPassword())) {
                     getView().clearError();
-                    final WalletMainFragment walletFragment = WalletMainFragment.newInstance();
+                    final WalletMainFragment walletFragment = WalletMainFragment.newInstance(getView().getContext());
                     getView().setProgressDialog();
                     getView().hideKeyBoard();
                     getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
@@ -169,15 +164,15 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     getView().clearError();
                     String address = getView().getMainActivity().getAddressForSendAction();
                     String amount = getView().getMainActivity().getAmountForSendAction();
-                    final SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(false, address, amount);
+                    final BaseFragment sendFragment = SendFragment.newInstance(false, address, amount,getView().getContext());
                     getView().setProgressDialog();
                     getView().hideKeyBoard();
                     getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
                         @Override
                         public void onSuccess() {
-                            getView().getMainActivity().setRootFragment(sendBaseFragment);
+                            getView().getMainActivity().setRootFragment(sendFragment);
                             getView().getMainActivity().setAuthenticationFlag(true);
-                            getView().openRootFragment(sendBaseFragment);
+                            getView().openRootFragment(sendFragment);
                             getView().dismissProgressDialog();
                             PinFragmentInteractorImpl.isDataLoaded = false;
                         }
@@ -285,7 +280,6 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
     public void onResume(Context context) {
         super.onResume(context);
         updateState();
-        getView().getMainActivity().hideBottomNavigationView(true);
         if (PinFragmentInteractorImpl.isDataLoaded) {
             switch (mAction) {
                 case PinFragment.CREATING: {
@@ -296,7 +290,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     break;
                 }
                 case PinFragment.AUTHENTICATION: {
-                    WalletMainFragment walletFragment = WalletMainFragment.newInstance();
+                    WalletMainFragment walletFragment = WalletMainFragment.newInstance(getView().getContext());
                     getView().getMainActivity().setRootFragment(walletFragment);
                     getView().openRootFragment(walletFragment);
                     getView().dismissProgressDialog();
@@ -305,9 +299,9 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                 case PinFragment.AUTHENTICATION_AND_SEND: {
                     String address = getView().getMainActivity().getAddressForSendAction();
                     String amount = getView().getMainActivity().getAmountForSendAction();
-                    final SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(false, address, amount);
-                    getView().getMainActivity().setRootFragment(sendBaseFragment);
-                    getView().openRootFragment(sendBaseFragment);
+                    final BaseFragment sendFragment = SendFragment.newInstance(false, address, amount,getView().getContext());
+                    getView().getMainActivity().setRootFragment(sendFragment);
+                    getView().openRootFragment(sendFragment);
                     getView().dismissProgressDialog();
                     break;
                 }
@@ -385,19 +379,13 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
         public void onAuthenticationFailed() {
             getView().confirmError("try again");
         }
-
     }
-
-
-
-
-
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (mAction.equals(PinFragment.CHANGING) || mAction.equals(PinFragment.CHECK_AUTHENTICATION)) {
-            getView().getMainActivity().showBottomNavigationView(true);
+            getView().getMainActivity().showBottomNavigationView(ThemeUtils.getCurrentTheme(getView().getContext()).equals(ThemeUtils.THEME_DARK)? R.color.colorPrimary : R.color.title_color_light);
         }
     }
 
