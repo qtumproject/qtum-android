@@ -21,7 +21,7 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
         return mImportWalletFragmentView;
     }
 
-    public ImportWalletFragmentInteractorImpl getInteractor() {
+    private ImportWalletFragmentInteractorImpl getInteractor() {
         return mImportWalletFragmentInteractor;
     }
 

@@ -17,7 +17,7 @@ import com.pixelplex.qtum.model.gson.history.Vout;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.CurrencyFragment.CurrencyFragment;
@@ -186,7 +186,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
         }
     }
 
-    public SendBaseFragmentInteractorImpl getInteractor() {
+    private SendBaseFragmentInteractorImpl getInteractor() {
         return mSendBaseFragmentInteractor;
     }
 

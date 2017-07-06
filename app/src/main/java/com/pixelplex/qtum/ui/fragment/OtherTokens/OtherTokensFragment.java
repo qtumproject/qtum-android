@@ -19,7 +19,7 @@ import butterknife.OnClick;
 
 public class OtherTokensFragment extends BaseFragment implements OtherTokensView, OnTokenClickListener {
 
-    public final int LAYOUT = R.layout.fragment_other_tokens;
+    private final int LAYOUT = R.layout.fragment_other_tokens;
 
     public static OtherTokensFragment newInstance() {
         Bundle args = new Bundle();
@@ -28,7 +28,7 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
         return fragment;
     }
 
-    OtherTokensPresenterImpl presenter;
+    private OtherTokensPresenterImpl presenter;
 
     @BindView(R.id.recycler_view)
     RecyclerView tokensList;

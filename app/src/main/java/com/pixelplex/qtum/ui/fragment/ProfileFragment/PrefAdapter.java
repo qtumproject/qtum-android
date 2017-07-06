@@ -12,9 +12,9 @@ import java.util.List;
 
 public class PrefAdapter extends RecyclerView.Adapter<PrefViewHolder> {
 
-    List<SettingObject> settings;
+    private List<SettingObject> settings;
 
-    OnSettingClickListener listener;
+    private OnSettingClickListener listener;
 
     int resId;
 

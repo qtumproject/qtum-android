@@ -31,11 +31,11 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements ContractConfirmPresenter {
+class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements ContractConfirmPresenter {
 
-    ContractConfirmView view;
-    ContractConfirmInteractorImpl interactor;
-    Context mContext;
+    private ContractConfirmView view;
+    private ContractConfirmInteractorImpl interactor;
+    private Context mContext;
 
 
     private long mContractTemplateUiid;
@@ -43,22 +43,22 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
     private List<ContractMethodParameter> mContractMethodParameterList;
 
-    public void setContractMethodParameterList(List<ContractMethodParameter> contractMethodParameterList) {
+    void setContractMethodParameterList(List<ContractMethodParameter> contractMethodParameterList) {
         this.mContractMethodParameterList = contractMethodParameterList;
     }
 
-    public List<ContractMethodParameter> getContractMethodParameterList() {
+    List<ContractMethodParameter> getContractMethodParameterList() {
         return mContractMethodParameterList;
     }
 
-    public ContractConfirmPresenterImpl(ContractConfirmView view) {
+    ContractConfirmPresenterImpl(ContractConfirmView view) {
         this.view = view;
         mContext = getView().getContext();
         interactor = new ContractConfirmInteractorImpl();
     }
 
 
-    public void confirmContract(final long uiid) {
+    void confirmContract(final long uiid) {
         getView().setProgressDialog();
         mContractTemplateUiid = uiid;
         ContractBuilder contractBuilder = new ContractBuilder();
@@ -85,7 +85,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
 
-    public void createTx(final String abiParams) {
+    private void createTx(final String abiParams) {
         QtumService.newInstance().getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -121,7 +121,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                 });
     }
 
-    public void sendTx(final String code, final String senderAddress) {
+    private void sendTx(final String code, final String senderAddress) {
         QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(code, 1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -149,8 +149,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
-                        String s = sendRawTransactionResponse.getResult();
-                        getView().getApplication().setContractAwait(true);
+                        getView().getApplication().setContractAwaitCountPlus();
                         String name = "";
                         for(ContractMethodParameter contractMethodParameter : mContractMethodParameterList){
                             if(contractMethodParameter.getName().equals("_name")){

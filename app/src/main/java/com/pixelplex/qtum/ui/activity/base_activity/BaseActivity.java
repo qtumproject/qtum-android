@@ -1,24 +1,16 @@
-package com.pixelplex.qtum.ui.activity.BaseActivity;
+package com.pixelplex.qtum.ui.activity.base_activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-
-import com.pixelplex.qtum.datastorage.KeyStorage;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
-import com.pixelplex.qtum.utils.QtumIntent;
 import com.pixelplex.qtum.utils.ThemeUtils;
-
 import butterknife.ButterKnife;
-
 
 public abstract class BaseActivity extends AppCompatActivity implements BaseContextView {
 
@@ -146,14 +138,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     protected abstract void updateTheme();
 
     public void reloadActivity(){
-
         updateTheme();
-
-//        finish();
-//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//        intent.setAction(QtumIntent.CHANGE_THEME);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(intent);
-
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SubscribeTokensFragmentInteractor {
 
-    Context mContext;
+    private Context mContext;
 
     public SubscribeTokensFragmentInteractor(Context context){
         mContext = context;
@@ -18,8 +18,7 @@ public class SubscribeTokensFragmentInteractor {
 
 
     public List<Token> getTokenList() {
-        List<Token> tokenList = (new TinyDB(mContext)).getTokenList();
-        return tokenList;
+        return (new TinyDB(mContext)).getTokenList();
     }
 
 

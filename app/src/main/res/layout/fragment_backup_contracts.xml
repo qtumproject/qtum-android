@@ -23,7 +23,6 @@
 
             <ImageButton
                 android:id="@+id/ibt_back"
-                android:tint="@color/background"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_ibtn_back"
@@ -31,6 +30,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="10dp"
+                android:tint="@color/background"
                 app:srcCompat="@drawable/ic_back_indicator"/>
 
             <com.pixelplex.qtum.utils.FontTextView
@@ -39,63 +39,59 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="48dp"
                 android:gravity="center"
-                android:text="Backup Contracts"
+                android:text="@string/backup_contracts"
                 android:textColor="@color/background"
                 android:textSize="@dimen/toolbar_text_size"
-                app:typefaceAsset="@string/euclidFlexMedium" />
+                app:typefaceAsset="@string/euclidFlexMedium"/>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_back_up_file"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/select_file_background"
+        android:gravity="center"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/select_file_background"
-            android:id="@+id/fl_back_up_file">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/iv_restore_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_attach"/>
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/tv_select_back_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center">
+                android:maxLines="1"
+                android:paddingTop="14dp"
+                android:text="@string/tap_to_save_the_file"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                app:typefaceAsset="@string/simplonMonoRegular"/>
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:id="@+id/iv_restore_icon"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_attach"/>
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/tv_file_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:paddingTop="14dp"
+                android:textColor="@color/file_size_color"
+                android:textSize="18sp"
+                app:typefaceAsset="@string/simplonMonoRegular"/>
 
-                <com.pixelplex.qtum.utils.FontTextView
-                    android:id="@+id/tv_select_back_up"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:paddingTop="14dp"
-                    android:text="Tap to save the file"
-                    android:textSize="18sp"
-                    app:typefaceAsset="@string/simplonMonoRegular"
-                    android:textColor="@color/colorPrimary"/>
+        </LinearLayout>
 
-                <com.pixelplex.qtum.utils.FontTextView
-                    android:id="@+id/tv_file_size"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:layout_gravity="center"
-                    android:paddingTop="14dp"
-                    android:textSize="18sp"
-                    app:typefaceAsset="@string/simplonMonoRegular"
-                    android:textColor="@color/file_size_color"/>
-
-            </LinearLayout>
-
-        </FrameLayout>
 
     </RelativeLayout>
 

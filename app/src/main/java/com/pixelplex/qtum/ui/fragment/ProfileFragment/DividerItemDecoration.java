@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
@@ -20,7 +19,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private Drawable divider;
     private Drawable sectionDivider;
-    List<SettingObject> settings;
+    private List<SettingObject> settings;
 
     /**
      * Default divider will be used

@@ -1,18 +1,13 @@
 package com.pixelplex.qtum.ui.fragment.WalletFragment.Light;
 
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.history.History;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragment;
-
 import java.util.List;
-
 import butterknife.BindView;
 
 /**
@@ -21,17 +16,10 @@ import butterknife.BindView;
 
 public class WalletFragmentLight extends WalletFragment {
 
-    @BindView(R.id.app_bar_placeholder)
-    View appbarPlaceholder;
-
-    @BindView(R.id.not_confirmed_balance_view)
-    View notConfirmedBalancePlaceholder;
-
-    @BindView(R.id.tv_placeholder_balance_value)
-    TextView placeHolderBalance;
-
-    @BindView(R.id.tv_placeholder_not_confirmed_balance_value)
-    TextView placeHolderBalanceNotConfirmed;
+    @BindView(R.id.app_bar_placeholder) View appbarPlaceholder;
+    @BindView(R.id.not_confirmed_balance_view) View notConfirmedBalancePlaceholder;
+    @BindView(R.id.tv_placeholder_balance_value) TextView placeHolderBalance;
+    @BindView(R.id.tv_placeholder_not_confirmed_balance_value) TextView placeHolderBalanceNotConfirmed;
 
     @Override
     protected int getLayout() {

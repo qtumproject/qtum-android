@@ -25,7 +25,7 @@ import butterknife.OnClick;
 
 public class ContractManagementFragment extends BaseFragment implements ContractManagementFragmentView{
 
-    ContractManagementFragmentPresenter mContractManagmentFragmentPresenter;
+    private ContractManagementFragmentPresenter mContractManagmentFragmentPresenter;
     private static final String CONTRACT_TEMPLATE_UIID = "contract_template_uiid";
     private static final String CONTRACT_ADDRESS = "contract_address";
 
@@ -41,8 +41,8 @@ public class ContractManagementFragment extends BaseFragment implements Contract
         }
     }
 
-    MethodAdapter mMethodAdapter;
-    String mContractAddress;
+    private MethodAdapter mMethodAdapter;
+    private String mContractAddress;
 
     public static ContractManagementFragment newInstance(long contractTemplateUiid, String contractAddress) {
         

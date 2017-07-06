@@ -25,12 +25,12 @@ import butterknife.OnClick;
 
 public class MyContractsFragment extends BaseFragment implements MyContractsFragmentView {
 
-    MyContractsFragmentPresenter mMyContractsFragmentPresenter;
+    private MyContractsFragmentPresenter mMyContractsFragmentPresenter;
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
-    ContractAdapter mContractAdapter;
+    private ContractAdapter mContractAdapter;
 
     @OnClick({R.id.ibt_back})
     public void onClick(View view){

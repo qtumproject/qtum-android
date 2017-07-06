@@ -6,7 +6,7 @@ import com.pixelplex.qtum.datastorage.TinyDB;
 
 public class MyContractsFragmentPresenter extends BaseFragmentPresenterImpl {
 
-    MyContractsFragmentView mMyContractsFragmentView;
+    private MyContractsFragmentView mMyContractsFragmentView;
 
     MyContractsFragmentPresenter(MyContractsFragmentView myContractsFragmentView){
         mMyContractsFragmentView = myContractsFragmentView;

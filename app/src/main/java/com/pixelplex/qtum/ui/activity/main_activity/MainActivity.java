@@ -1,11 +1,10 @@
-package com.pixelplex.qtum.ui.activity.MainActivity;
+package com.pixelplex.qtum.ui.activity.main_activity;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -30,15 +29,13 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.ui.activity.BaseActivity.BaseActivity;
+import com.pixelplex.qtum.ui.activity.base_activity.BaseActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 import com.pixelplex.qtum.utils.ThemeUtils;
-
 import java.lang.reflect.Field;
-
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements MainActivityView{
@@ -160,11 +157,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     public boolean getNetworkConnectedFlag() {
         ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting())
-        {
-            return true;
-        }
-        return false;
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
 

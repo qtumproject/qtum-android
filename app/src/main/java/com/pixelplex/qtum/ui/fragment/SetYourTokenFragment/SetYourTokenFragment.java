@@ -21,8 +21,8 @@ import butterknife.OnClick;
 
 public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFragmentView {
 
-    public final int LAYOUT = R.layout.fragment_set_your_token;
-    public final static String CONTRACT_TEMPLATE_UIID = "uiid";
+    private final int LAYOUT = R.layout.fragment_set_your_token;
+    private final static String CONTRACT_TEMPLATE_UIID = "uiid";
 
     private ConstructorAdapter adapter;
 
@@ -34,7 +34,7 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
         return fragment;
     }
 
-    SetYourTokenFragmentPresenterImpl presenter;
+    private SetYourTokenFragmentPresenterImpl presenter;
 
     @BindView(R.id.recycler_view)
     RecyclerView constructorList;

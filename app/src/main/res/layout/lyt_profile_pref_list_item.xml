@@ -44,12 +44,9 @@
         android:id="@+id/pref_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:thumb="@drawable/customswitchselector"
         android:track="@drawable/custom_track"
-
         android:layout_marginEnd="16dp"
-        app:track="@color/colorPrimary"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"/>
 

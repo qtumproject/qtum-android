@@ -36,7 +36,7 @@ import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.QtumIntent;
 import com.pixelplex.qtum.datastorage.TinyDB;
@@ -60,7 +60,7 @@ import rx.schedulers.Schedulers;
 
 public class UpdateService extends Service {
 
-    public final int DEFAULT_NOTIFICATION_ID = 101;
+    private final int DEFAULT_NOTIFICATION_ID = 101;
     private NotificationManager notificationManager;
     private TransactionListener mTransactionListener = null;
     private BalanceChangeListener mBalanceChangeListener;
@@ -72,13 +72,13 @@ public class UpdateService extends Service {
     private int totalTransaction = 0;
     private JSONArray mAddresses;
 
-    String mFirebasePrevToken;
-    String mFirebaseCurrentToken;
+    private String mFirebasePrevToken;
+    private String mFirebaseCurrentToken;
 
     private String mBalance = null;
     private String mUnconfirmedBalance = null;
 
-    UpdateBinder mUpdateBinder = new UpdateBinder();
+    private UpdateBinder mUpdateBinder = new UpdateBinder();
 
     @Override
     public void onCreate() {
@@ -115,8 +115,8 @@ public class UpdateService extends Service {
             public void call(Object... args) {
                 try {
                     JSONObject data = (JSONObject) args[0];
-                    BigDecimal unconfirmedBalance = null;
-                    BigDecimal balance = null;
+                    BigDecimal unconfirmedBalance;
+                    BigDecimal balance;
                     try {
                         unconfirmedBalance = (new BigDecimal(data.getString("unconfirmedBalance"))).divide(new BigDecimal("100000000"));
                         balance = (new BigDecimal(data.getString("balance"))).divide(new BigDecimal("100000000"));
@@ -140,7 +140,7 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(), History.class);
-                if(((QtumApplication)getApplication()).isContractAwait()){
+                if(((QtumApplication)getApplication()).getContractAwaitCount()>0){
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
 
                     boolean done = false;
@@ -166,7 +166,7 @@ public class UpdateService extends Service {
                         tinyDB.putTokenList(tokenList);
                     }
 
-                    ((QtumApplication)getApplication()).setContractAwait(false);
+                    ((QtumApplication)getApplication()).setContractAwaitCountMinus();
                 }
                 if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
 
@@ -250,14 +250,14 @@ public class UpdateService extends Service {
         stopSelf();
     }
 
-    public void subscribeSocket(){
+    private void subscribeSocket(){
         subscribeBalanceChange(mFirebasePrevToken,mFirebaseCurrentToken);
         for(Contract contract : (new TinyDB(getApplicationContext())).getContractList()){
             subscribeTokenBalanceChange(contract.getContractAddress(),mFirebasePrevToken,mFirebaseCurrentToken);
         }
     }
 
-    public void subscribeTokenBalanceChange(String tokenAddress, String prevToken, String currentToken){
+    private void subscribeTokenBalanceChange(String tokenAddress, String prevToken, String currentToken){
         JSONObject jsonObject = new JSONObject();
         JSONObject jsonObjectToken = new JSONObject();
         try {
@@ -272,7 +272,7 @@ public class UpdateService extends Service {
         socket.emit("subscribe","token_balance_change",jsonObject, jsonObjectToken);
     }
 
-    public void subscribeBalanceChange(String prevToken, String currentToken){
+    private void subscribeBalanceChange(String prevToken, String currentToken){
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("notificationToken",currentToken);
@@ -300,7 +300,7 @@ public class UpdateService extends Service {
         }
 
         String reverse_tx_hash = sb.toString();
-        reverse_tx_hash = reverse_tx_hash.concat("00");
+        reverse_tx_hash = reverse_tx_hash.concat("00000000");
 
 
         byte[] test5 = Hex.decode(reverse_tx_hash);
@@ -371,7 +371,7 @@ public class UpdateService extends Service {
         notificationManager.cancel(DEFAULT_NOTIFICATION_ID);
     }
 
-    public void sendNotification(String Ticker, String Title, String Text, Uri sound) {
+    private void sendNotification(String Ticker, String Title, String Text, Uri sound) {
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setAction(QtumIntent.OPEN_FROM_NOTIFICATION);

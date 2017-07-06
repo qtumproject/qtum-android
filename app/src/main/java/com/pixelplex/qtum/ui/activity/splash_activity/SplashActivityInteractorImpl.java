@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.activity.SplashActivity;
+package com.pixelplex.qtum.ui.activity.splash_activity;
 
 import android.content.Context;
 

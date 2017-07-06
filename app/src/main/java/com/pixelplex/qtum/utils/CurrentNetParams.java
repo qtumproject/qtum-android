@@ -1,8 +1,7 @@
 package com.pixelplex.qtum.utils;
 
 import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.params.MainNetParams;
-import org.bitcoinj.params.TestNet3Params;
+import org.bitcoinj.params.QtumMainNetParams;
 
 
 public class CurrentNetParams {

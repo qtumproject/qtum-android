@@ -29,7 +29,7 @@ class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl implements New
         getView().setAdapterNull();
     }
 
-    public NewsFragmentInteractorImpl getInteractor() {
+    private NewsFragmentInteractorImpl getInteractor() {
         return mNewsFragmentInteractor;
     }
 

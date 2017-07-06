@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.ui.activity.BaseActivity.BaseActivity;
+import com.pixelplex.qtum.ui.activity.base_activity.BaseActivity;
 
 /**
  * Created by kirillvolkov on 04.07.17.
@@ -54,5 +53,4 @@ public class ThemeUtils {
                 throw new Resources.NotFoundException("Theme not found");
         }
     }
-
 }

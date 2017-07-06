@@ -1,6 +1,5 @@
 package com.pixelplex.qtum.ui.fragment.WalletFragment;
 
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -16,17 +15,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-
-import com.pixelplex.qtum.ui.fragment.WalletFragment.Dark.TransactionAdapterDark;
 import com.pixelplex.qtum.utils.FontTextView;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -35,56 +29,28 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 public abstract class WalletFragment extends BaseFragment implements WalletFragmentView, TransactionClickListener{
 
     protected WalletFragmentPresenterImpl mWalletFragmentPresenter;
-
     protected TransactionAdapter mTransactionAdapter;
-
     protected LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
     protected int visibleItemCount;
     protected int totalItemCount;
     protected int pastVisibleItems;
     protected boolean mLoadingFlag = false;
 
-    @BindView(R.id.recycler_view)
-    protected RecyclerView mRecyclerView;
-    @BindView(R.id.swipe_refresh)
-    protected
-    SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.app_bar)
-    protected
-    AppBarLayout mAppBarLayout;
-    @BindView(R.id.bt_qr_code)
-    protected ImageButton mButtonQrCode;
-    @BindView(R.id.tv_wallet_name)
-    protected TextView mTextViewWalletName;
-
-    @BindView(R.id.fade_divider_root)
-    RelativeLayout fadeDividerRoot;
-
-    @BindView(R.id.tv_public_key)
-    protected
-    FontTextView publicKeyValue;
-
+    @BindView(R.id.recycler_view) protected RecyclerView mRecyclerView;
+    @BindView(R.id.swipe_refresh) protected SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.app_bar) protected AppBarLayout mAppBarLayout;
+    @BindView(R.id.bt_qr_code) protected ImageButton mButtonQrCode;
+    @BindView(R.id.tv_wallet_name) protected TextView mTextViewWalletName;
+    @BindView(R.id.fade_divider_root) RelativeLayout fadeDividerRoot;
+    @BindView(R.id.tv_public_key) protected FontTextView publicKeyValue;
     //HEADER
-    @BindView(R.id.tv_balance)
-    protected
-    FontTextView balanceValue;
-    @BindView(R.id.available_balance_title)
-    protected
-    FontTextView balanceTitle;
-
-    @BindView(R.id.tv_unconfirmed_balance)
-    protected
-    FontTextView uncomfirmedBalanceValue;
-    @BindView(R.id.unconfirmed_balance_title)
-    protected
-    FontTextView uncomfirmedBalanceTitle;
+    @BindView(R.id.tv_balance) protected FontTextView balanceValue;
+    @BindView(R.id.available_balance_title) protected FontTextView balanceTitle;
+    @BindView(R.id.tv_unconfirmed_balance) protected FontTextView uncomfirmedBalanceValue;
+    @BindView(R.id.unconfirmed_balance_title) protected FontTextView uncomfirmedBalanceTitle;
     //HEADER
-
-    @BindView(R.id.balance_view)
-    protected FrameLayout balanceView;
-
-    @BindView(R.id.toolbar_layout)
-    CollapsingToolbarLayout collapsingToolbar;
+    @BindView(R.id.balance_view) protected FrameLayout balanceView;
+    @BindView(R.id.toolbar_layout) CollapsingToolbarLayout collapsingToolbar;
 
     @OnClick(R.id.ll_receive)
     public void onReceiveClick(){

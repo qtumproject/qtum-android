@@ -1,13 +1,11 @@
 package com.pixelplex.qtum.ui.fragment.TransactionFragment;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
@@ -49,9 +47,9 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
         }
     }
 
-    final static String POSITION = "position";
+    private final static String POSITION = "position";
 
-    TransactionFragmentPresenterImpl mTransactionFragmentPresenter;
+    private TransactionFragmentPresenterImpl mTransactionFragmentPresenter;
 
     public static TransactionFragment newInstance(int position) {
         TransactionFragment transactionFragment = new TransactionFragment();

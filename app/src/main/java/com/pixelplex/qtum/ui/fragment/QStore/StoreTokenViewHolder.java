@@ -40,7 +40,7 @@ public class StoreTokenViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    TestTokenObject item;
+    private TestTokenObject item;
 
     public void bind(TestTokenObject item){
         this.item = item;

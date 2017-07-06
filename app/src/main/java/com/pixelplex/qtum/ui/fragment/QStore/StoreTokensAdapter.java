@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class StoreTokensAdapter extends RecyclerView.Adapter<StoreTokenViewHolder> {
+class StoreTokensAdapter extends RecyclerView.Adapter<StoreTokenViewHolder> {
 
-    int count;
+    private int count;
 
-    List<TestTokenObject> items;
+    private List<TestTokenObject> items;
 
-    StoreItemClickListener listener;
+    private StoreItemClickListener listener;
 
     public StoreTokensAdapter(int count, StoreItemClickListener listener){
         this.count = count;

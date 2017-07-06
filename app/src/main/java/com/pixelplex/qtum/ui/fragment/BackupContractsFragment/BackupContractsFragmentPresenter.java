@@ -16,7 +16,7 @@ import com.pixelplex.qtum.model.backup.Backup;
 import com.pixelplex.qtum.model.backup.ContractJSON;
 import com.pixelplex.qtum.model.backup.TemplateJSON;
 import com.pixelplex.qtum.model.ContractTemplate;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.DateCalculator;
 
@@ -34,13 +34,13 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
+class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
 
-    BackupContractsFragmentView mBackupContractsFragmentView;
-    Context mContext;
-    boolean BACK_UP_FLAG = false;
+    private BackupContractsFragmentView mBackupContractsFragmentView;
+    private Context mContext;
+    private boolean BACK_UP_FLAG = false;
 
-    public BackupContractsFragmentPresenter(BackupContractsFragmentView backupContractsFragmentView){
+    BackupContractsFragmentPresenter(BackupContractsFragmentView backupContractsFragmentView){
         mBackupContractsFragmentView = backupContractsFragmentView;
         mContext = getView().getContext();
     }
@@ -54,7 +54,7 @@ public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl 
         return mBackupContractsFragmentView;
     }
 
-    public void onBackUpClick(){
+    void onBackUpClick(){
         checkPermissionAndCreateFile();
     }
 
@@ -100,7 +100,7 @@ public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl 
         }
     }
 
-    public void backupFile(){
+    private void backupFile(){
 
         if(mBackUpFile==null) {
             createBackUpFile();
@@ -130,7 +130,7 @@ public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl 
                         File backupFile = new File(Environment.getExternalStorageDirectory(),fileName);
 
                         try {
-                            FileOutputStream fOut = null;
+                            FileOutputStream fOut;
                             fOut = new FileOutputStream(backupFile, true);
                             OutputStreamWriter osw = new OutputStreamWriter(fOut);
                             osw.write(backupData);
@@ -151,7 +151,7 @@ public class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl 
 
     }
 
-    public void chooseShareMethod(){
+    private void chooseShareMethod(){
         Intent intentShareFile = new Intent(Intent.ACTION_SEND);
 
         if(mBackUpFile.exists()) {

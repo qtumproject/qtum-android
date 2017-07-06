@@ -34,7 +34,6 @@ public class FontCheckBox extends AppCompatCheckBox {
             if (!TextUtils.isEmpty(fontAsset)) {
                 Typeface tf = FontManager.getInstance().getFont(fontAsset);
                 int style = Typeface.NORMAL;
-                float size = getTextSize();
 
                 if (getTypeface() != null)
                     style = getTypeface().getStyle();

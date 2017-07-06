@@ -1,7 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.BaseFragment;
 
 import android.app.Activity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,22 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-
 import com.pixelplex.qtum.R;
-
 import com.pixelplex.qtum.ui.fragment.ProcessingDialogFragment;
-
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
-
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
-
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
 
 public abstract class BaseFragment extends Fragment implements BaseFragmentView {
 
@@ -46,8 +37,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     public static final String BACK_STACK_ROOT_TAG = "root_fragment";
 
     private Unbinder mUnbinder;
-
-
 
     AlertDialog mAlertDialog;
     ProcessingDialogFragment mProcessingDialog;

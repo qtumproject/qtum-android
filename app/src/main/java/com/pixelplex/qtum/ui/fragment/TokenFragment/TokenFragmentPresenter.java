@@ -29,8 +29,8 @@ import rx.schedulers.Schedulers;
 
 public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
 
-    TokenFragmentView view;
-    Context mContext;
+    private TokenFragmentView view;
+    private Context mContext;
 
     private Token token;
 
@@ -120,7 +120,7 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
         return output;
     }
 
-    public Observable<String[]> getHash(final String name) {
+    private Observable<String[]> getHash(final String name) {
 
         return Observable.fromCallable(new Callable<String[]>() {
             @Override

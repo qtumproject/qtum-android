@@ -3,20 +3,17 @@ package com.pixelplex.qtum.ui.fragment.WalletFragment.Dark;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.history.History;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragment;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.ResizeWidthAnimation;
 import java.util.List;
 import butterknife.BindView;
-
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 /**
  * Created by kirillvolkov on 05.07.17.
@@ -28,10 +25,7 @@ public class WalletFragmentDark extends WalletFragment {
     float percents = 1;
     float prevPercents = 1;
 
-    protected WalletFragmentPresenterImpl mWalletFragmentPresenter;
-
-    @BindView(R.id.fade_divider)
-    View fadeDivider;
+    @BindView(R.id.fade_divider) View fadeDivider;
 
     @Override
     protected int getLayout() {
@@ -69,7 +63,6 @@ public class WalletFragmentDark extends WalletFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        // Disable "Drag" for AppBarLayout (i.e. User can't scroll appBarLayout by directly touching appBarLayout - User can only scroll appBarLayout by only using scrollContent)
 
         ((MainActivity)getActivity()).showBottomNavigationView(R.color.primary_text_color);
 

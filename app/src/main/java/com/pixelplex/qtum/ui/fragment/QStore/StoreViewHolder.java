@@ -20,11 +20,11 @@ public class StoreViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.list)
     RecyclerView list;
 
-    GridLayoutManager manager;
+    private GridLayoutManager manager;
 
-    StoreTokensAdapter adapter;
+    private StoreTokensAdapter adapter;
 
-    StoreItemClickListener listener;
+    private StoreItemClickListener listener;
 
     public StoreViewHolder(View itemView, StoreItemClickListener listener) {
         super(itemView);

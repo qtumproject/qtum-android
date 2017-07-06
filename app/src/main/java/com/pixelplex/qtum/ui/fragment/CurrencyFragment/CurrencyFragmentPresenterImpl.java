@@ -37,7 +37,7 @@ class CurrencyFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
         getView().setTokenList(contractTokenList);
     }
 
-    public CurrencyFragmentInteractorImpl getInteractor() {
+    private CurrencyFragmentInteractorImpl getInteractor() {
         return mCurrencyFragmentInteractor;
     }
 }

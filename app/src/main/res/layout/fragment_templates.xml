@@ -72,7 +72,7 @@
             android:id="@+id/ll_footer">
 
             <com.pixelplex.qtum.utils.FontTextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 app:typefaceAsset="@string/euclidFlexMedium"

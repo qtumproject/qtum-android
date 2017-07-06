@@ -25,7 +25,7 @@ import butterknife.OnClick;
 
 public class LanguageFragment extends BaseFragment implements LanguageFragmentView{
 
-    LanguageFragmentPresenter mLanguageFragmentPresenter;
+    private LanguageFragmentPresenter mLanguageFragmentPresenter;
     private LanguageAdapter mLanguageAdapter;
     private List<Pair<String,String>> mLanguagesList;
 

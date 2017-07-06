@@ -29,7 +29,7 @@ class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         return mTransactionFragmentView;
     }
 
-    public TransactionFragmentInteractorImpl getInteractor() {
+    private TransactionFragmentInteractorImpl getInteractor() {
         return mTransactionFragmentInteractor;
     }
 

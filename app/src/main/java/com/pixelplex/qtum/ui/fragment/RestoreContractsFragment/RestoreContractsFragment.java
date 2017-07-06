@@ -18,11 +18,11 @@ import butterknife.OnClick;
 
 public class RestoreContractsFragment extends BaseFragment implements RestoreContractsFragmentView {
 
-    RestoreContractsFragmentPresenter mRestoreContractsFragmentPresenter;
+    private RestoreContractsFragmentPresenter mRestoreContractsFragmentPresenter;
 
     private boolean isSelectedFile = false;
 
-    @BindView(R.id.fl_back_up_file)
+    @BindView(R.id.rl_back_up_file)
     FrameLayout mFrameLayoutBackUpFile;
     @BindView(R.id.cb_restore_templates)
     FontCheckBox mCheckBoxRestoreTemplates;
@@ -41,10 +41,10 @@ public class RestoreContractsFragment extends BaseFragment implements RestoreCon
     ImageView mImageViewRestoreIcon;
 
 
-    @OnClick({R.id.fl_back_up_file,R.id.cb_restore_templates,R.id.cb_restore_contracts,R.id.cb_restore_tokens,R.id.cb_restore_all, R.id.iv_restore_icon, R.id.ibt_back, R.id.bt_restore})
+    @OnClick({R.id.rl_back_up_file,R.id.cb_restore_templates,R.id.cb_restore_contracts,R.id.cb_restore_tokens,R.id.cb_restore_all, R.id.iv_restore_icon, R.id.ibt_back, R.id.bt_restore})
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.fl_back_up_file:
+            case R.id.rl_back_up_file:
                 getPresenter().checkPermissionAndOpenFileDialog();
                 break;
             case  R.id.iv_restore_icon:

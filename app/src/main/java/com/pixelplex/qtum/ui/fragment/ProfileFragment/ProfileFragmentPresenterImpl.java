@@ -1,15 +1,9 @@
 package com.pixelplex.qtum.ui.fragment.ProfileFragment;
 
-
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.ui.activity.BaseActivity.BaseActivity;
-import com.pixelplex.qtum.ui.activity.MainActivity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.LanguageFragment.LanguageFragment;
@@ -18,10 +12,8 @@ import com.pixelplex.qtum.ui.fragment.SmartContractsFragment.SmartContractsFragm
 import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 import com.pixelplex.qtum.ui.fragment.SubscribeTokensFragment.SubscribeTokensFragment;
 import com.pixelplex.qtum.utils.ThemeUtils;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ProfileFragmentPresenter {
 
@@ -31,7 +23,7 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     private ProfileFragmentInteractorImpl mProfileFragmentInteractor;
     private LanguageChangeListener mLanguageChangeListener;
 
-    List<SettingObject> settingsData;
+    private List<SettingObject> settingsData;
 
     public ProfileFragmentPresenterImpl(ProfileFragmentView profileFragmentView) {
         mProfileFragmentView = profileFragmentView;
@@ -81,7 +73,7 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
         return mProfileFragmentView;
     }
 
-    public ProfileFragmentInteractorImpl getInteractor() {
+    private ProfileFragmentInteractorImpl getInteractor() {
         return mProfileFragmentInteractor;
     }
 

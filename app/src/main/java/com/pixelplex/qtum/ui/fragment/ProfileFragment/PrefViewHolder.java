@@ -32,9 +32,9 @@ public class PrefViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.pref_switch)
     Switch mSwitch;
 
-    OnSettingClickListener listener;
+    private OnSettingClickListener listener;
 
-    SettingObject setting;
+    private SettingObject setting;
 
     public PrefViewHolder(View itemView, final OnSettingClickListener listener) {
         super(itemView);

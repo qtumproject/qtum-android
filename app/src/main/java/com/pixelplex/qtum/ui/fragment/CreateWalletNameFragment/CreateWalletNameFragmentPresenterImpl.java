@@ -16,7 +16,7 @@ class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl im
         mCreateWalletNameFragmentInteractor = new CreateWalletNameFragmentInteractorImpl(getView().getContext());
     }
 
-    public CreateWalletNameFragmentInteractorImpl getInteractor() {
+    private CreateWalletNameFragmentInteractorImpl getInteractor() {
         return mCreateWalletNameFragmentInteractor;
     }
 

@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.activity.BaseActivity;
+package com.pixelplex.qtum.ui.activity.base_activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +19,7 @@ interface BasePresenter {
 
     void onDestroy(Context context);
 
-    void onPostCreate(Context contex);
+    void onPostCreate(Context context);
 
     void initializeViews();
 

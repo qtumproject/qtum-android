@@ -406,7 +406,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
         return mPinFragmentView;
     }
 
-    public PinFragmentInteractorImpl getInteractor() {
+    private PinFragmentInteractorImpl getInteractor() {
         return mPinFragmentInteractor;
     }
 

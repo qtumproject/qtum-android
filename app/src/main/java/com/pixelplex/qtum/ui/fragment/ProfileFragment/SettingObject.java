@@ -9,9 +9,9 @@ public class SettingObject {
         mSectionNumber = section;
     }
 
-    int mTitleRes;
-    int mImageRes;
-    int mSectionNumber;
+    private int mTitleRes;
+    private int mImageRes;
+    private int mSectionNumber;
 
 
     public int getTitleRes() {

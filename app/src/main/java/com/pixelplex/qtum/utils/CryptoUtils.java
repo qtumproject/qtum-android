@@ -190,7 +190,7 @@ public final class CryptoUtils {
         sCipher.init(mode, unrestricted, spec);
     }
 
-    public static void deleteInvalidKey() {
+    private static void deleteInvalidKey() {
         if (getKeyStore()) {
             try {
                 sKeyStore.deleteEntry(KEY_ALIAS);

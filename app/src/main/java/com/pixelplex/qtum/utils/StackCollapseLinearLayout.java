@@ -30,11 +30,11 @@ public class StackCollapseLinearLayout extends LinearLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    float InitialHeight = -1;
-    float prevHeight = 0;
+    private float InitialHeight = -1;
+    private float prevHeight = 0;
 
 
-    ArrayList<Float> childYPositions = new ArrayList<>();
+    private ArrayList<Float> childYPositions = new ArrayList<>();
 
     public void collapseFromPercents(float percents) {
         LayoutParams params = (LayoutParams) getLayoutParams();

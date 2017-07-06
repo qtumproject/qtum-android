@@ -5,6 +5,6 @@ import com.pixelplex.qtum.model.gson.history.TransactionInfo;
 import java.util.List;
 
 
-public interface TransactionDetailFragmentView {
+interface TransactionDetailFragmentView {
     void setUpRecyclerView(List<TransactionInfo> transactionInfoList);
 }

@@ -6,15 +6,14 @@ import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class StoreSearchAdapter extends RecyclerView.Adapter<StoreSearchViewHolder> {
+class StoreSearchAdapter extends RecyclerView.Adapter<StoreSearchViewHolder> {
 
-    List<TestTokenObject> items;
+    private List<TestTokenObject> items;
 
-    StoreItemClickListener listener;
+    private StoreItemClickListener listener;
 
     public StoreSearchAdapter(List<TestTokenObject> items, StoreItemClickListener listener) {
         this.items = items;

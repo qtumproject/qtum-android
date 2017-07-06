@@ -20,6 +20,7 @@ class ProfileFragmentInteractorImpl implements ProfileFragmentInteractor {
     public void clearWallet() {
         QtumSharedPreference.getInstance().clear(mContext);
         KeyStorage.getInstance().clearKeyStorage();
+        KeyStorage.getInstance().clearKeyFile(mContext);
         HistoryList.getInstance().clearHistoryList();
         NewsList.getInstance().clearNewsList();
     }
