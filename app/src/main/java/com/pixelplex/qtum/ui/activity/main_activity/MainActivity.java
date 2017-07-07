@@ -266,9 +266,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         mBottomNavigationView.setVisibility(View.VISIBLE);
 
         if(recolorStatusBar) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-            }
+            recolorStatusBarBlue();
         }
     }
 
@@ -276,9 +274,19 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         mBottomNavigationView.setVisibility(View.GONE);
 
         if(recolorStatusBar) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.background));
-            }
+            recolorStatusBarBlack();
+        }
+    }
+
+    public void recolorStatusBarBlack(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.background));
+        }
+    }
+
+    public void recolorStatusBarBlue(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         }
     }
 

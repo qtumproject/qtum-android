@@ -26,6 +26,7 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     @Override
     public void initializeViews() {
         super.initializeViews();
+        getView().getMainActivity().recolorStatusBarBlue();
         getView().setBrainCode(getInteractor().getSeed());
     }
 
