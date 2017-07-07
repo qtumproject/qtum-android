@@ -85,13 +85,13 @@ public class WalletMainFragment extends BaseFragment implements WalletMainFragme
         }
 
         void showOtherTokens(boolean show){
+            NUM_ITEMS = (show)? 2 : 1;
+            notifyDataSetChanged();
             if(show){
                 getWalletFragment().showPageIndicator();
             }else{
                 getWalletFragment().hidePageIndicator();
             }
-            NUM_ITEMS = (show)? 2 : 1;
-            notifyDataSetChanged();
         }
 
         public FragmentAdapter(FragmentManager fragmentManager) {

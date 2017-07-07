@@ -196,6 +196,7 @@ public class UpdateService extends Service {
                             if(token.getContractAddress()!=null && token.getContractAddress().equals(contractAddress)){
                                 token.setHasBeenCreated(true);
                                 token.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
+                                mTokenListener.newToken();
                                 break;
                             }
                         }

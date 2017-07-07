@@ -46,6 +46,12 @@ class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
         checkOtherTokens();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUpdateService.removeTokenListener();
+    }
+
     private void checkOtherTokens() {
         getTokens()
                 .subscribeOn(Schedulers.io())
@@ -77,7 +83,7 @@ class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
                 List<Token> tokens = new ArrayList<>();
 
                 for (Token token: tokenList) {
-                    if(token.isSubscribe()){
+                    if(token.isHasBeenCreated() && token.isSubscribe()){
                         tokens.add(token);
                     }
                 }

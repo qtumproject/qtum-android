@@ -97,7 +97,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
     @Override
     public void initializeViews() {
-        getPresenter().setQrColors(mCoordinatorLayout.getDrawingCacheBackgroundColor(), ContextCompat.getColor(getContext(),R.color.colorPrimary));
+        getPresenter().setQrColors(ContextCompat.getColor(getContext(),R.color.colorPrimary),mCoordinatorLayout.getDrawingCacheBackgroundColor());
         mTextInputEditTextAmount.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
