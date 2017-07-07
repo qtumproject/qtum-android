@@ -8,6 +8,7 @@ import com.pixelplex.qtum.utils.ContractBuilder;
 import com.pixelplex.qtum.utils.FontManager;
 
 import io.fabric.sdk.android.*;
+import io.fabric.sdk.android.Fabric;
 
 public class QtumApplication extends MultiDexApplication {
 
