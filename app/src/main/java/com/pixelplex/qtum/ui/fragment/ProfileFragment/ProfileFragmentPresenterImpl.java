@@ -115,7 +115,7 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
 
     @Override
     public void onSmartContractsClick() {
-        SmartContractsFragment smartContractsFragment = SmartContractsFragment.newInstance();
+        BaseFragment smartContractsFragment = SmartContractsFragment.newInstance(getView().getContext());
         getView().openFragment(smartContractsFragment);
     }
 

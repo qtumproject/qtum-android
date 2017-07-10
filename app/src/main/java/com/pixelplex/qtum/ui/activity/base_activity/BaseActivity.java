@@ -19,13 +19,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     protected abstract BasePresenterImpl getPresenter();
 
     @Override
-    public Resources.Theme getTheme() {
-        Resources.Theme theme = super.getTheme();
-        theme.applyStyle(ThemeUtils.getThemeIdByName(ThemeUtils.getCurrentTheme(this)), true);
-        return theme;
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         ThemeUtils.setAppTheme(this,ThemeUtils.getCurrentTheme(this));
