@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 android:id="@+id/cl_receive"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
                                                  android:background="@color/background"
                                                  android:clickable="true"
-                                                 android:id="@+id/cl_receive"
                                                  android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -22,46 +22,46 @@
             android:background="@color/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal">
 
-                    <ImageButton
-                        android:id="@+id/ibt_back"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/background_ibtn_back"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingTop="10dp"
-                        app:srcCompat="@drawable/ic_back_indicator"/>
+                <ImageButton
+                    android:id="@+id/ibt_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/background_ibtn_back"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="10dp"
+                    app:srcCompat="@drawable/ic_back_indicator"/>
 
-                    <com.pixelplex.qtum.utils.FontTextView
-                        android:id="@+id/tv_toolbar_send"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="16dp"
-                        android:gravity="center"
-                        android:text="@string/receive"
-                        android:textColor="@color/background"
-                        android:textSize="@dimen/toolbar_text_size"
-                        app:typefaceAsset="@string/euclidFlexMedium" />
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:id="@+id/tv_toolbar_send"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/receive"
+                    android:textColor="@color/background"
+                    android:textSize="@dimen/toolbar_text_size"
+                    app:typefaceAsset="@string/euclidFlexMedium"/>
 
-                    <ImageButton
-                        android:id="@+id/bt_qr_code"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:tint="@color/background"
-                        android:padding="4dp"
-                        android:layout_margin="9dp"
-                        android:background="@drawable/background_pressed_alpha_white"
-                        android:scaleType="centerInside"
-                        app:srcCompat="@drawable/ic_share"/>
-                </LinearLayout>
+                <ImageButton
+                    android:id="@+id/bt_qr_code"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_margin="9dp"
+                    android:background="@drawable/background_pressed_alpha_white"
+                    android:padding="4dp"
+                    android:scaleType="centerInside"
+                    android:tint="@color/background"
+                    app:srcCompat="@drawable/ic_share"/>
+            </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
 
@@ -81,50 +81,40 @@
 
         <LinearLayout
             android:id="@+id/balance"
-            android:padding="16dp"
-            android:layout_below="@+id/divider"
-            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_below="@+id/divider"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
             <com.pixelplex.qtum.utils.FontTextView
                 android:id="@+id/tv_total_balance"
                 android:layout_width="0dp"
-                app:typefaceAsset="@string/simplonMonoRegular"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/available_balance"
-                android:textColor="@color/background"/>
+                android:textColor="@color/background"
+                app:typefaceAsset="@string/simplonMonoRegular"/>
 
             <com.pixelplex.qtum.utils.FontTextView
                 android:id="@+id/tv_total_balance_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:typefaceAsset="@string/simplonMonoRegular"
                 android:layout_marginEnd="12dp"
-                android:textColor="@color/background"/>
+                android:textColor="@color/background"
+                app:typefaceAsset="@string/simplonMonoRegular"/>
 
         </LinearLayout>
 
-
-    <RelativeLayout
-        android:layout_below="@+id/balance"
-        android:layout_above="@+id/buttons"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:id="@+id/rl_receive"
-        android:focusableInTouchMode="true"
-        android:padding="@dimen/activity_horizontal_margin"
-        >
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/balance"
             android:layout_marginBottom="16dp"
+            android:padding="@dimen/activity_horizontal_margin"
             android:textColorHint="@color/colorPrimary"
             android:theme="@style/InputText">
 
@@ -139,35 +129,59 @@
         </android.support.design.widget.TextInputLayout>
 
 
+            <RelativeLayout
 
-        <ImageView
-            android:id="@+id/iv_qr_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/til_amount"
-            android:layout_above="@+id/tv_single_string"
-            android:layout_centerHorizontal="true" />
+                android:id="@+id/rl_receive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
 
-        <TextView
-            android:id="@+id/tv_single_string"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:textColor="@color/colorPrimary"/>
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:padding="@dimen/activity_horizontal_margin">
 
-        <ProgressBar
-            android:id="@+id/qr_progress_bar"
-            android:layout_centerInParent="true"
-            android:indeterminateTint="@color/colorPrimary"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+                <FrameLayout
+                    android:id="@+id/qr_code_boarder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/qr_codeboarder"
+                    android:padding="13dp">
 
-    </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/iv_qr_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        />
+                </FrameLayout>
+
+
+                <ProgressBar
+                    android:id="@+id/qr_progress_bar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:indeterminateTint="@color/colorPrimary"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_single_string"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/rl_receive"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/colorPrimary"/>
+
+
 
         <RelativeLayout
             android:id="@+id/buttons"
@@ -175,54 +189,54 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:paddingTop="8dp"
-            android:paddingBottom="@dimen/activity_horizontal_margin">
+            android:paddingBottom="@dimen/activity_horizontal_margin"
+            android:paddingTop="8dp">
+
             <com.pixelplex.qtum.utils.FontButton
                 android:id="@+id/bt_copy_wallet_address"
                 android:layout_width="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingStart="32dp"
-                android:paddingEnd="32dp"
-                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:background="@color/accent_red_color"
-                app:typeface="@string/simplonMonoRegular"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingEnd="32dp"
+                android:paddingStart="32dp"
+                android:paddingTop="10dp"
                 android:stateListAnimator="@null"
                 android:text="@string/copy_wallet_address"
                 android:textAllCaps="true"
                 android:textColor="@color/background"
-                android:textSize="@dimen/button_text"/>
+                android:textSize="@dimen/button_text"
+                app:typeface="@string/simplonMonoRegular"/>
 
             <com.pixelplex.qtum.utils.FontButton
                 android:id="@+id/bt_choose_another_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingStart="32dp"
-                android:paddingEnd="32dp"
                 android:layout_below="@id/bt_copy_wallet_address"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                app:typeface="@string/simplonMonoRegular"
                 android:layout_marginTop="8dp"
                 android:background="?attr/selectableItemBackground"
+                android:paddingBottom="10dp"
+                android:paddingEnd="32dp"
+                android:paddingStart="32dp"
+                android:paddingTop="10dp"
                 android:stateListAnimator="@null"
                 android:text="@string/choose_another_address"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/button_text"/>
+                android:textSize="@dimen/button_text"
+                app:typeface="@string/simplonMonoRegular"/>
 
         </RelativeLayout>
 
 
     </RelativeLayout>
-
 
 
 </android.support.design.widget.CoordinatorLayout>

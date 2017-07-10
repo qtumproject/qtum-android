@@ -125,7 +125,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     }
 
     private int moduleWidth = 0;
-    private boolean withCrossQR = true;
+    private boolean withCrossQR = false;
 
     public void setQRCrossing(boolean crossing) {
         withCrossQR = crossing;
@@ -159,7 +159,7 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         Display display = getView().getMainActivity().getWindowManager().getDefaultDisplay();
         display.getMetrics(displayMetrics);
-        int QRCodeWidth = displayMetrics.heightPixels / 3;
+        int QRCodeWidth = displayMetrics.heightPixels / 4;
         moduleWidth = QRCodeWidth;
         BitMatrix bitMatrix;
         try {

@@ -1,6 +1,8 @@
 package com.pixelplex.qtum.ui.fragment.WalletMainFragment;
 import android.content.Context;
 
+import com.pixelplex.qtum.dataprovider.UpdateService;
+import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.datastorage.TinyDB;
@@ -19,6 +21,7 @@ class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
 
     private WalletMainFragmentInteractorImpl mWalletMainFragmentInteractor;
     private WalletMainFragmentView mWalletMainFragmentView;
+    private UpdateService mUpdateService;
 
     WalletMainFragmentPresenterImpl(WalletMainFragmentView walletFragmentView) {
         mWalletMainFragmentView = walletFragmentView;
@@ -33,7 +36,20 @@ class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
     @Override
     public void onResume(Context context) {
         super.onResume(context);
+        mUpdateService = getView().getMainActivity().getUpdateService();
+        mUpdateService.addTokenListener(new TokenListener() {
+            @Override
+            public void newToken() {
+                checkOtherTokens();
+            }
+        });
         checkOtherTokens();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUpdateService.removeTokenListener();
     }
 
     private void checkOtherTokens() {
@@ -67,7 +83,7 @@ class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
                 List<Token> tokens = new ArrayList<>();
 
                 for (Token token: tokenList) {
-                    if(token.isSubscribe()){
+                    if(token.isHasBeenCreated() && token.isSubscribe()){
                         tokens.add(token);
                     }
                 }

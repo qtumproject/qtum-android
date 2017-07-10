@@ -76,6 +76,10 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
         mZXingScannerView.stopCamera();
     }
 
+    public void dismiss(){
+        getFragmentManager().beginTransaction().remove(this).commit();
+    }
+
     @Override
     public void handleResult(Result result) {
         JSONObject jsonObject = null;
@@ -83,17 +87,17 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
             jsonObject = new JSONObject(result.getText());
             ((SendBaseFragment) getTargetFragment()).onResponse(jsonObject.getString("publicAddress"),
                     jsonObject.getDouble("amount"));
-            getActivity().onBackPressed();
+            dismiss();
         } catch (JSONException e) {
             try {
                 if (jsonObject != null) {
                     ((SendBaseFragment) getTargetFragment()).onResponse(jsonObject.getString("publicAddress"),
                             0.0);
                 }
-                getActivity().onBackPressed();
+                dismiss();
             } catch (JSONException e1) {
                 ((SendBaseFragment) getTargetFragment()).onResponseError();
-                getActivity().onBackPressed();
+                dismiss();
             }
         }
     }

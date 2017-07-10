@@ -76,21 +76,20 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
         //TODO: NFC
-            mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-            boolean b = mNfcAdapter.isEnabled();
-
-        String s = getIntent().getAction();
-
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(s)) {
-            Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-            NdefMessage[] msgs = null;
-            if (rawMsgs != null) {
-                msgs = new NdefMessage[rawMsgs.length];
-                for (int i = 0; i < rawMsgs.length; i++) {
-                    msgs[i] = (NdefMessage) rawMsgs[i];
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if(mNfcAdapter!=null && mNfcAdapter.isEnabled()) {
+            String s = getIntent().getAction();
+            if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(s)) {
+                Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+                NdefMessage[] msgs = null;
+                if (rawMsgs != null) {
+                    msgs = new NdefMessage[rawMsgs.length];
+                    for (int i = 0; i < rawMsgs.length; i++) {
+                        msgs[i] = (NdefMessage) rawMsgs[i];
+                    }
                 }
+                buildTagViews(msgs);
             }
-        buildTagViews(msgs);
         }
 
 //        if(Build.VERSION.SDK_INT >= 23){
@@ -120,41 +119,41 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         } catch (UnsupportedEncodingException e) {
             Log.e("UnsupportedEncoding", e.toString());
         }
-
-        int i = 2;
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
+        if(mNfcAdapter!=null && mNfcAdapter.isEnabled()) {
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        Intent intent = new Intent(getContext(),MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            final PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        final PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            IntentFilter[] filters = new IntentFilter[1];
+            String[][] techList = new String[][]{};
 
-        IntentFilter[] filters = new IntentFilter[1];
-        String[][] techList = new String[][]{};
+            // Notice that this is the same filter as in our manifest.
+            filters[0] = new IntentFilter();
+            filters[0].addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
+            filters[0].addCategory(Intent.CATEGORY_DEFAULT);
+            try {
+                filters[0].addDataType("text/plain");
+            } catch (IntentFilter.MalformedMimeTypeException e) {
+                throw new RuntimeException("Check your mime type.");
+            }
 
-        // Notice that this is the same filter as in our manifest.
-        filters[0] = new IntentFilter();
-        filters[0].addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        filters[0].addCategory(Intent.CATEGORY_DEFAULT);
-        try {
-            filters[0].addDataType("text/plain");
-        } catch (IntentFilter.MalformedMimeTypeException e) {
-            throw new RuntimeException("Check your mime type.");
+            mNfcAdapter.enableForegroundDispatch(this, pendingIntent, filters, techList);
         }
-
-        mNfcAdapter.enableForegroundDispatch(this,pendingIntent,filters,techList);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        mNfcAdapter.disableForegroundDispatch(this);
+        if(mNfcAdapter!=null && mNfcAdapter.isEnabled()) {
+            mNfcAdapter.disableForegroundDispatch(this);
+        }
 
     }
     //TODO: NFC END
@@ -267,9 +266,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         mBottomNavigationView.setVisibility(View.VISIBLE);
 
         if(recolorStatusBar) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-            }
+            recolorStatusBarBlue();
         }
     }
 
@@ -277,9 +274,19 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         mBottomNavigationView.setVisibility(View.GONE);
 
         if(recolorStatusBar) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.background));
-            }
+            recolorStatusBarBlack();
+        }
+    }
+
+    public void recolorStatusBarBlack(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.background));
+        }
+    }
+
+    public void recolorStatusBarBlue(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         }
     }
 

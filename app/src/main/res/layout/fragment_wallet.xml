@@ -120,6 +120,7 @@
                     android:id="@+id/page_indicator"
                     android:layout_gravity="bottom|center_horizontal"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:orientation="horizontal"
                     android:padding="4dp">
 

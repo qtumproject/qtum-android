@@ -47,6 +47,7 @@ import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,6 +66,7 @@ public class UpdateService extends Service {
     private TransactionListener mTransactionListener = null;
     private BalanceChangeListener mBalanceChangeListener;
     private HashMap<String,TokenBalanceChangeListener> mStringTokenBalanceChangeListenerHashMap = new HashMap<>();
+    private HashMap<String, TokenBalance> mAllTokenBalanceList = new HashMap<>();
     private TokenListener mTokenListener;
     private boolean monitoringFlag = false;
     private Notification notification;
@@ -198,6 +200,9 @@ public class UpdateService extends Service {
                             }
                         }
                         tinyDB.putTokenList(tokenList);
+                        if(mTokenListener!=null) {
+                            mTokenListener.newToken();
+                        }
                     }
 
                     subscribeTokenBalanceChange(contractAddress, mFirebasePrevToken, mFirebaseCurrentToken);
@@ -226,7 +231,7 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 TokenBalance tokenBalance = gson.fromJson(data.toString(), TokenBalance.class);
-
+                mAllTokenBalanceList.put(tokenBalance.getContractAddress(),tokenBalance);
                 TokenBalanceChangeListener tokenBalanceChangeListener = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
                 if(tokenBalanceChangeListener!=null){
                     tokenBalanceChangeListener.onBalanceChange(tokenBalance);
@@ -441,6 +446,10 @@ public class UpdateService extends Service {
 
     public void addTokenBalanceChangeListener(String address, TokenBalanceChangeListener tokenBalanceChangeListener){
         mStringTokenBalanceChangeListenerHashMap.put(address,tokenBalanceChangeListener);
+        TokenBalance tokenBalance = mAllTokenBalanceList.get(address);
+        if(tokenBalance!=null){
+            tokenBalanceChangeListener.onBalanceChange(tokenBalance);
+        }
     }
 
     public void removeTokenBalanceChangeListener(String address){

@@ -41,6 +41,12 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
         //TODO SHARE
     }
 
+    public void notifyTokenChange(){
+        if(tokensList.getAdapter()!=null){
+            tokensList.getAdapter().notifyDataSetChanged();
+        }
+    }
+
     @Override
     protected void createPresenter() {
         presenter = new OtherTokensPresenterImpl(this);
