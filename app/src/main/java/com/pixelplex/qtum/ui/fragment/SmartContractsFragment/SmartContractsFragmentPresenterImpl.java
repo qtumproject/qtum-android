@@ -2,6 +2,7 @@ package com.pixelplex.qtum.ui.fragment.SmartContractsFragment;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BackupContractsFragment.BackupContractsFragment;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.MyContractsFragment.MyContractsFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.SettingObject;
@@ -25,7 +26,7 @@ class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
     void onCreateContractClick(){
-        TemplatesFragment smartContractListFragment = TemplatesFragment.newInstance();
+        BaseFragment smartContractListFragment = TemplatesFragment.newInstance(getView().getContext());
         getView().openFragment(smartContractListFragment);
     }
 

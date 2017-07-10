@@ -41,6 +41,8 @@
     <color name="title_color_light">#3f38c4</color>
     <color name="light_blue">#38b0c5</color>
 
+    <color name="footer_text_color">#80adba</color>
+
     <color name="selected_paginator_light">#99536173</color>
     <color name="default_paginator_light">#4d536173</color>
     <color name="switch_on">#36b9c8</color>
