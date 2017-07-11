@@ -2,6 +2,8 @@ package com.pixelplex.qtum.ui.fragment.ProfileFragment.Dark;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
+import com.pixelplex.qtum.ui.fragment.ProfileFragment.DividerItemDecoration;
+import com.pixelplex.qtum.ui.fragment.ProfileFragment.Light.PrefAdapterLight;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragmentPresenterImpl;
 
@@ -11,15 +13,7 @@ import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragmentPresenterIm
 
 public class ProfileFragmentDark extends ProfileFragment {
 
-    @Override
-    protected void createPresenter() {
-        super.createPresenter();
-    }
-
-    @Override
-    protected ProfileFragmentPresenterImpl getPresenter() {
-        return super.getPresenter();
-    }
+    private PrefAdapterLight adapter;
 
     @Override
     protected int getLayout() {
@@ -29,7 +23,21 @@ public class ProfileFragmentDark extends ProfileFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        ((MainActivity)getActivity()).showBottomNavigationView(R.color.colorPrimary);
-        initializeList(R.layout.lyt_profile_pref_list_item,R.drawable.color_primary_divider, R.drawable.section_setting_divider);
+        dividerItemDecoration = new DividerItemDecoration(getContext(), R.drawable.color_primary_divider, R.drawable.section_setting_divider, getPresenter().getSettingsData());
+        showBottomNavView(R.color.colorPrimary);
+        adapter = new PrefAdapterLight(getPresenter().getSettingsData(), this, R.layout.lyt_profile_pref_list_item);
+        prefList.addItemDecoration(dividerItemDecoration);
+        prefList.setAdapter(adapter);
+    }
+
+    @Override
+    public void resetText() {
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroyView() {
+        //prefList.removeItemDecoration(dividerItemDecoration);
+        super.onDestroyView();
     }
 }

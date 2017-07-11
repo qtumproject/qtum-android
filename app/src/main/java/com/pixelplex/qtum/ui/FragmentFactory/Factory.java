@@ -8,6 +8,9 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.ProcessingDialog.Dark.ProcessingDialogFragmentDark;
 import com.pixelplex.qtum.ui.fragment.ProcessingDialog.Light.ProcessingDialogFragmentLight;
 import com.pixelplex.qtum.ui.fragment.ProcessingDialog.ProcessingDialogFragment;
+import com.pixelplex.qtum.ui.fragment.ProfileFragment.Dark.ProfileFragmentDark;
+import com.pixelplex.qtum.ui.fragment.ProfileFragment.Light.ProfileFragmentLight;
+import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import com.pixelplex.qtum.utils.ThemeUtils;
 
 /**
@@ -23,8 +26,8 @@ public class Factory {
         return (BaseFragment) Fragment.instantiate(context,getThemedFargment(context, fragment));
     }
 
-    public static BaseFragment instantiateFragment(Context context, Class fragment, Bundle bundle){
-        return (BaseFragment) Fragment.instantiate(context,getThemedFargment(context, fragment), bundle);
+    public static Fragment instantiateDefaultFragment(Context context, Class fragment){
+        return Fragment.instantiate(context,getThemedFargment(context, fragment));
     }
 
     private static String getThemedFargment(Context context, Class fragment){

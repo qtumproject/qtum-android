@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.ProfileFragment.Light;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.DividerItemDecoration;
+import com.pixelplex.qtum.ui.fragment.ProfileFragment.PrefAdapter;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragmentPresenterImpl;
 
@@ -12,15 +13,7 @@ import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragmentPresenterIm
 
 public class ProfileFragmentLight extends ProfileFragment {
 
-    @Override
-    protected void createPresenter() {
-        super.createPresenter();
-    }
-
-    @Override
-    protected ProfileFragmentPresenterImpl getPresenter() {
-        return super.getPresenter();
-    }
+    private PrefAdapter adapter;
 
     @Override
     protected int getLayout() {
@@ -30,7 +23,21 @@ public class ProfileFragmentLight extends ProfileFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        ((MainActivity)getActivity()).showBottomNavigationView(R.color.title_color_light);
-        initializeList(R.layout.lyt_profile_pref_list_item_light,R.drawable.color_primary_divider_light,R.drawable.section_setting_divider_light);
+        showBottomNavView(R.color.title_color_light);
+        adapter = new PrefAdapterLight(getPresenter().getSettingsData(), this, R.layout.lyt_profile_pref_list_item_light);
+        dividerItemDecoration = new DividerItemDecoration(getContext(),R.drawable.color_primary_divider_light,R.drawable.section_setting_divider_light,getPresenter().getSettingsData());
+        prefList.addItemDecoration(dividerItemDecoration);
+        prefList.setAdapter(adapter);
+    }
+
+    @Override
+    public void resetText() {
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroyView() {
+        //prefList.removeItemDecoration(dividerItemDecoration);
+        super.onDestroyView();
     }
 }

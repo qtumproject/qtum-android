@@ -17,9 +17,13 @@ public class ThemeUtils {
     public static final String THEME_KEY = "THEME_KEY";
     public static final String THEME_DARK = "THEME_DARK";
     public static final String THEME_LIGHT = "THEME_LIGHT";
+    public static String currentTheme;
 
     public static String getCurrentTheme(Context context){
-        return PreferenceManager.getDefaultSharedPreferences(context).getString(THEME_KEY, THEME_DARK);
+        if(currentTheme == null){
+           currentTheme = PreferenceManager.getDefaultSharedPreferences(context).getString(THEME_KEY, THEME_DARK);
+        }
+        return currentTheme;
     }
 
     public static void setAppTheme(BaseActivity activity, String themeName){
@@ -27,6 +31,7 @@ public class ThemeUtils {
     }
 
     public static void setCurrentPreferencesTheme(Context context, String themeName){
+        currentTheme = themeName;
         SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(context).edit();
         edit.putString(THEME_KEY,themeName);
         edit.apply();

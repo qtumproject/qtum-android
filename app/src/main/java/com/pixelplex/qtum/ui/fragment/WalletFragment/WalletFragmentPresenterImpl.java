@@ -200,7 +200,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 
     @Override
     public void openTransactionFragment(int position) {
-        Fragment fragment = TransactionFragment.newInstance(position);
+        Fragment fragment = TransactionFragment.newInstance(getView().getContext(), position);
         getView().openFragment(fragment);
     }
 

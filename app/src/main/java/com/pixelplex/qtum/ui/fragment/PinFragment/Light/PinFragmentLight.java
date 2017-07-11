@@ -17,6 +17,12 @@ public class PinFragmentLight extends PinFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         ((MainActivity)getActivity()).hideBottomNavigationView(R.color.title_color_light);
     }
 }

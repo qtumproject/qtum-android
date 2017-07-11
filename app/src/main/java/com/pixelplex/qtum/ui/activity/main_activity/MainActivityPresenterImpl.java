@@ -158,7 +158,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         if(!QtumIntent.CHANGE_THEME.equals(getView().getQtumAction())) {
             openStartFragment();
         }
-
     }
 
     private void openStartFragment() {
@@ -181,28 +180,28 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_wallet:
-                if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(WalletMainFragment.class.getCanonicalName())) {
+                if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(WalletMainFragment.class.getSimpleName())) {
                     getView().popBackStack();
                     return true;
                 }
                 mRootFragment = WalletMainFragment.newInstance(getView().getContext());
                 break;
             case R.id.item_profile:
-                if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(ProfileFragment.class.getCanonicalName())) {
+                if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(ProfileFragment.class.getSimpleName())) {
                     getView().popBackStack();
                     return true;
                 }
                 mRootFragment = ProfileFragment.newInstance(getView().getContext());
                 break;
             case R.id.item_news:
-                if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(NewsFragment.class.getCanonicalName())) {
+                if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(NewsFragment.class.getSimpleName())) {
                     getView().popBackStack();
                     return true;
                 }
                 mRootFragment = NewsFragment.newInstance(getView().getContext());
                 break;
             case R.id.item_send:
-                if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(SendFragment.class.getCanonicalName())) {
+                if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(SendFragment.class.getSimpleName())) {
                     getView().popBackStack();
                     return true;
                 }

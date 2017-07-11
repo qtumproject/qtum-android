@@ -1,13 +1,21 @@
 package com.pixelplex.qtum.ui.fragment.WalletFragment.Light;
 
+import android.graphics.Color;
 import android.support.design.widget.AppBarLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragment;
+import com.pixelplex.qtum.ui.wave_visualizer.GLWaveVisualizationView;
+import com.pixelplex.qtum.ui.wave_visualizer.WaveHelper;
+import com.pixelplex.qtum.ui.wave_visualizer.WaveView;
+
 import java.util.List;
 import butterknife.BindView;
 
@@ -21,6 +29,11 @@ public class WalletFragmentLight extends WalletFragment {
     @BindView(R.id.not_confirmed_balance_view) View notConfirmedBalancePlaceholder;
     @BindView(R.id.tv_placeholder_balance_value) TextView placeHolderBalance;
     @BindView(R.id.tv_placeholder_not_confirmed_balance_value) TextView placeHolderBalanceNotConfirmed;
+   // @BindView(R.id.visualizer_view) GLWaveVisualizationView waves;
+    @BindView(R.id.wave_view) WaveView waveView;
+    @BindView(R.id.balance_view) FrameLayout waveContainer;
+
+    private WaveHelper mWaveHelper;
 
     @Override
     protected int getLayout() {
@@ -39,7 +52,9 @@ public class WalletFragmentLight extends WalletFragment {
                 if (!mSwipeRefreshLayout.isActivated()) {
                     if (verticalOffset == 0) {
                         mSwipeRefreshLayout.setEnabled(true);
+                        //waves.setVisibility(View.VISIBLE);
                     } else {
+                       // waves.setVisibility(View.INVISIBLE);
                         mSwipeRefreshLayout.setEnabled(false);
                     }
                 }
@@ -50,10 +65,32 @@ public class WalletFragmentLight extends WalletFragment {
                 mButtonQrCode.setAlpha(percents);
                 mTextViewWalletName.setAlpha(percents);
                 appbarPlaceholder.setAlpha(1-percents);
+
             }
         });
 
         appbarPlaceholder.setVisibility(View.VISIBLE);
+        waveView.setShapeType(WaveView.ShapeType.SQUARE);
+        mWaveHelper = new WaveHelper(waveView);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //waves.onResume();
+        mWaveHelper.start();
+    }
+
+    @Override
+    public void onPause() {
+        //waves.onPause();
+        mWaveHelper.cancel();
+        super.onPause();
     }
 
     @Override

@@ -10,29 +10,18 @@ import com.pixelplex.qtum.utils.ThemeUtils;
 import java.util.List;
 
 
-public class PrefAdapter extends RecyclerView.Adapter<PrefViewHolder> {
+public abstract class PrefAdapter extends RecyclerView.Adapter<PrefViewHolder> {
 
-    private List<SettingObject> settings;
+    protected List<SettingObject> settings;
 
-    private OnSettingClickListener listener;
+    protected OnSettingClickListener listener;
 
-    int resId;
+    protected int resId;
 
     public PrefAdapter(final List<SettingObject> settings, OnSettingClickListener listener, int resId){
         this.settings = settings;
         this.listener = listener;
         this.resId = resId;
-
-    }
-
-    @Override
-    public PrefViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PrefViewHolder(LayoutInflater.from(parent.getContext()).inflate(resId, parent, false), listener);
-    }
-
-    @Override
-    public void onBindViewHolder(PrefViewHolder holder, int position) {
-        holder.bind(settings.get(position));
     }
 
     @Override

@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,9 +37,11 @@ import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 import com.pixelplex.qtum.utils.ThemeUtils;
 import java.lang.reflect.Field;
+import java.util.List;
+
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity implements MainActivityView{
+public class MainActivity extends BaseActivity implements MainActivityView {
 
     private static final int LAYOUT = R.layout.activity_main;
     private static final int LAYOUT_LIGHT = R.layout.activity_main_light;
@@ -69,12 +72,6 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         getPresenter().processNewIntent(intent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-       // recolorStatusBar(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)? R.color.colorPrimary : R.color.title_color_light);
     }
 
     public void setAuthenticationFlag(boolean authenticationFlag){
@@ -338,6 +335,9 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     @Override
     protected void updateTheme() {
 
+        setRootFragment(ProfileFragment.newInstance(this));
+        openRootFragment(getPresenter().mRootFragment);
+
         if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)){
             mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
             mBottomNavigationView.setItemBackgroundResource(R.drawable.bottom_nav_view_background_drawable);
@@ -353,8 +353,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
             recolorStatusBar(R.color.title_color_light);
             resetNavBarIconsWithTheme(lightThemeIcons);
         }
-        setRootFragment(ProfileFragment.newInstance(this));
-        openRootFragment(getPresenter().mRootFragment);
+
     }
 
     public void resetNavBarIconsWithTheme(int[] icons) {

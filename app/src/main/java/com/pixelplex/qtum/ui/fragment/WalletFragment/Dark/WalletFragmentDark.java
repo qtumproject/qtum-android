@@ -23,7 +23,6 @@ import butterknife.BindView;
 public class WalletFragmentDark extends WalletFragment {
 
     float headerPAdding = 0;
-    float percents = 1;
     float prevPercents = 1;
 
     @BindView(R.id.fade_divider) View fadeDivider;

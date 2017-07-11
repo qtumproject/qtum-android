@@ -24,10 +24,10 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileFra
 
     protected ProfileFragmentPresenterImpl mProfileFragmentPresenter;
 
+    protected DividerItemDecoration dividerItemDecoration;
+
     @BindView(R.id.pref_list)
     protected RecyclerView prefList;
-
-    PrefAdapter adapter;
 
     @Override
     protected void createPresenter() {
@@ -74,10 +74,9 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileFra
         prefList.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    protected void initializeList(int resId, int resDividerDecoration, int resSectionDecoration){
-        adapter = new PrefAdapter(getPresenter().getSettingsData(), this, resId);
-        prefList.addItemDecoration(new DividerItemDecoration(getContext(),resDividerDecoration,resSectionDecoration,getPresenter().getSettingsData()));
-        prefList.setAdapter(adapter);
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     @Override
@@ -99,10 +98,5 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileFra
         LogOutDialogFragment logOutDialogFragment = new LogOutDialogFragment();
         logOutDialogFragment.setTargetFragment(this, 200);
         logOutDialogFragment.show(getFragmentManager(), LogOutDialogFragment.class.getCanonicalName());
-    }
-
-    @Override
-    public void resetText() {
-        adapter.notifyDataSetChanged();
     }
 }

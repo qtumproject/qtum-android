@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.TransactionFragment.TransactionDetailFragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.history.TransactionInfo;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class TransactionDetailFragment extends Fragment implements TransactionDetailFragmentView{
+public abstract class TransactionDetailFragment extends Fragment implements TransactionDetailFragmentView{
 
     public static final int ACTION_FROM = 0;
     public static final int ACTION_TO = 1;
@@ -28,17 +30,16 @@ public class TransactionDetailFragment extends Fragment implements TransactionDe
     public static String POSITION = "position";
     private Unbinder mUnbinder;
     private TransactionDetailFragmentPresenter mTransactionFragmentPresenter;
-    private TransactionDetailAdapter mTransactionDetailAdapter;
 
     @BindView(R.id.recycler_view)
+    protected
     RecyclerView mRecyclerView;
 
-    public static TransactionDetailFragment newInstance(int action, int position) {
-
+    public static Fragment newInstance(Context context, int action, int position) {
         Bundle args = new Bundle();
         args.putInt(ACTION,action);
         args.putInt(POSITION,position);
-        TransactionDetailFragment fragment = new TransactionDetailFragment();
+        Fragment fragment = Factory.instantiateDefaultFragment(context, TransactionDetailFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,55 +74,5 @@ public class TransactionDetailFragment extends Fragment implements TransactionDe
 
     private TransactionDetailFragmentPresenter getPresenter(){
         return mTransactionFragmentPresenter;
-    }
-
-    @Override
-    public void setUpRecyclerView(List<TransactionInfo> transactionInfoList) {
-        mTransactionDetailAdapter = new TransactionDetailAdapter(transactionInfoList);
-        mRecyclerView.setAdapter(mTransactionDetailAdapter);
-    }
-
-    class TransactionDetailHolder extends RecyclerView.ViewHolder{
-
-        @BindView(R.id.tv_single_string)
-        TextView mTextViewAddress;
-        @BindView(R.id.tv_value)
-        TextView mTextViewValue;
-
-        TransactionDetailHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this,itemView);
-        }
-
-        void bindTransactionDetail(TransactionInfo transactionInfo){
-            mTextViewAddress.setText(transactionInfo.getAddress());
-            mTextViewValue.setText(String.format("%s QTUM",transactionInfo.getValue().toString()));
-        }
-    }
-
-    private class TransactionDetailAdapter extends RecyclerView.Adapter<TransactionDetailHolder>{
-
-        private List<TransactionInfo> mTransactionInfoList;
-
-        TransactionDetailAdapter(List<TransactionInfo> transactionInfoList){
-            mTransactionInfoList = transactionInfoList;
-        }
-
-        @Override
-        public TransactionDetailHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.item_transaction_detail, parent, false);
-            return new TransactionDetailHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(TransactionDetailHolder holder, int position) {
-            holder.bindTransactionDetail(mTransactionInfoList.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mTransactionInfoList.size();
-        }
     }
 }

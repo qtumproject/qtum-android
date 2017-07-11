@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.ui.fragment.ProfileFragment.Dark.PrefAdapterDark;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.DividerItemDecoration;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.OnSettingClickListener;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.PrefAdapter;
@@ -48,7 +49,7 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
                 ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? R.drawable.color_primary_divider : R.drawable.color_primary_divider_light,
                 ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? R.drawable.section_setting_divider : R.drawable.section_setting_divider_light,
                 presenter.getSettingsData()));
-        adapter = new PrefAdapter(presenter.getSettingsData(), this, R.layout.lyt_profile_pref_list_item);
+        adapter = new PrefAdapterDark(presenter.getSettingsData(), this, R.layout.lyt_profile_pref_list_item);
         smartContractsList.setAdapter(adapter);
     }
 

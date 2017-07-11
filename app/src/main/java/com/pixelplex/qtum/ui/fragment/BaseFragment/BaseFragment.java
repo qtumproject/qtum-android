@@ -67,6 +67,10 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         }
     }
 
+    public void onUserResume(){
+
+    }
+
     public enum PopUpType{
         error, confirm
     }
