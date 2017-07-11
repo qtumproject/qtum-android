@@ -2,12 +2,12 @@ package com.pixelplex.qtum.ui.fragment.OtherTokens;
 
 import android.content.Context;
 
+import com.pixelplex.qtum.dataprovider.UpdateService;
+import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
-import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.TokenFragment.TokenFragment;
-import com.pixelplex.qtum.datastorage.TinyDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
     private OtherTokensView view;
     private OtherTokensInteractorImpl interactor;
 
-    public OtherTokensPresenterImpl (OtherTokensView view) {
+    public OtherTokensPresenterImpl(OtherTokensView view) {
         this.view = view;
         mContext = getView().getContext();
         this.interactor = new OtherTokensInteractorImpl();
@@ -49,8 +49,8 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
                 List<Token> tokenList = tinyDB.getTokenList();
                 List<Token> tokens = new ArrayList<>();
 
-                for (Token token: tokenList) {
-                    if(token.isHasBeenCreated() && token.isSubscribe()){
+                for (Token token : tokenList) {
+                    if (token.isHasBeenCreated() && token.isSubscribe()) {
                         tokens.add(token);
                     }
                 }
@@ -60,28 +60,51 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
         });
     }
 
+    public void notifyNewToken() {
+        getTokens().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Token>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Token> tokens) {
+                        if (tokens != null && tokens.size() > 0) {
+                            getView().setTokensData(tokens);
+                        }
+                    }
+                });
+    }
+
     public void setTokenList() {
         getTokens()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Token>>() {
-            @Override
-            public void onCompleted() {
+                    @Override
+                    public void onCompleted() {
 
-            }
+                    }
 
-            @Override
-            public void onError(Throwable e) {
+                    @Override
+                    public void onError(Throwable e) {
 
-            }
+                    }
 
-            @Override
-            public void onNext(List<Token> tokens) {
-                if(tokens != null && tokens.size() > 0) {
-                    getView().setTokensData(tokens);
-                }
-            }
-        });
+                    @Override
+                    public void onNext(List<Token> tokens) {
+                        if (tokens != null && tokens.size() > 0) {
+                            getView().setTokensData(tokens);
+                        }
+                    }
+                });
     }
 
     @Override

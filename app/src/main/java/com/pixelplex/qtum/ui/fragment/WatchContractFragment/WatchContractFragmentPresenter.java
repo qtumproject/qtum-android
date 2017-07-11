@@ -32,14 +32,14 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
             long uiid = FileStorageManager.getInstance().importTemplate(getView().getContext(),null,null,jsonInterface,"token","no_name",DateCalculator.getCurrentDate());
             TinyDB tinyDB = new TinyDB(getView().getContext());
             List<Token> tokenList = tinyDB.getTokenList();
-            Token token = new Token(address, uiid, true, DateCalculator.getCurrentDate(), "asdasd", name);
+            Token token = new Token(address, uiid, true, DateCalculator.getCurrentDate(), "Stub!", name);
             tokenList.add(token);
             tinyDB.putTokenList(tokenList);
         }else {
             long uiid = FileStorageManager.getInstance().importTemplate(getView().getContext(),null,null,jsonInterface,"none","no_name",DateCalculator.getCurrentDate());
             TinyDB tinyDB = new TinyDB(getView().getContext());
             List<Contract> contractList = tinyDB.getContractListWithoutToken();
-            Contract contract = new Contract(address, uiid, true, DateCalculator.getCurrentDate(), "asdasd", name);
+            Contract contract = new Contract(address, uiid, true, DateCalculator.getCurrentDate(), "Stub!", name);
             contractList.add(contract);
             tinyDB.putContractListWithoutToken(contractList);
         }

@@ -297,7 +297,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                 getInteractor().sendTx(contractBuilder.createTransactionHash(script, unspentOutputs), new SendBaseFragmentInteractorImpl.SendTxCallBack() {
                     @Override
                     public void onSuccess() {
-                        getView().dismissProgressDialog();
+                        getView().setAlertDialog(mContext.getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
                     }
 
                     @Override
