@@ -31,7 +31,7 @@ class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
     void onMyContractsClick(){
-        MyContractsFragment myContractsFragment = MyContractsFragment.newInstance();
+        BaseFragment myContractsFragment = MyContractsFragment.newInstance(getView().getContext());
         getView().openFragment(myContractsFragment);
     }
 

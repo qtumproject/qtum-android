@@ -42,6 +42,7 @@
     <color name="light_blue">#38b0c5</color>
 
     <color name="footer_text_color">#80adba</color>
+    <color name="bt_grey_text_color">#869195</color>
 
     <color name="selected_paginator_light">#99536173</color>
     <color name="default_paginator_light">#4d536173</color>

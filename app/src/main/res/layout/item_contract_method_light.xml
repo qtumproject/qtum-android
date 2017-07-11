@@ -7,7 +7,7 @@
                 android:layout_height="60dp">
 
     <com.pixelplex.qtum.utils.FontTextView
-        android:id="@+id/title"
+        android:id="@+id/method_name"
         android:layout_width="wrap_content"
         android:maxLines="1"
         android:text="@string/about"
@@ -25,40 +25,10 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:scaleType="center"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:tint="@color/bottom_nav_view_item_color"
         android:layout_width="16dp"
         android:layout_height="16dp" />
-
-    <com.pixelplex.qtum.utils.FontTextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:text="@string/about"
-        android:textSize="16sp"
-        app:typefaceAsset="@string/proximaNovaLight"
-        android:textColor="@color/bottom_nav_view_item_color"
-        android:layout_centerVertical="true"
-        android:layout_toStartOf="@+id/arrow"/>
-
-    <com.pixelplex.qtum.utils.FontTextView
-        android:id="@+id/contract_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:padding="2dp"
-        android:text="@string/about"
-        android:background="@color/switch_on"
-        app:typefaceAsset="@string/proximaNovaRegular"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        android:layout_above="@+id/arrow"
-        android:layout_toEndOf="@+id/title"/>
 
     <View
         android:layout_alignParentBottom="true"
