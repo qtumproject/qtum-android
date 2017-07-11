@@ -6,6 +6,7 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 import java.util.List;
 
 
-public interface OtherTokensView extends BaseFragmentView {
+interface OtherTokensView extends BaseFragmentView {
     void setTokensData(List<Token> tokensData);
+    void updateTokensData(List<Token> tokensData);
 }

@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
 import java.util.List;
 
@@ -41,10 +40,8 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
         //TODO SHARE
     }
 
-    public void notifyTokenChange(){
-        if(tokensList.getAdapter()!=null){
-            tokensList.getAdapter().notifyDataSetChanged();
-        }
+    public void notifyTokenChange() {
+        getPresenter().notifyNewToken();
     }
 
     @Override
@@ -53,7 +50,7 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected OtherTokensPresenterImpl getPresenter() {
         return presenter;
     }
 
@@ -68,18 +65,18 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
         tokensList.setLayoutManager(new LinearLayoutManager(getContext()));
         presenter.setTokenList();
 
-        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(),R.color.colorAccent));
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(tokensList.getAdapter() != null){
+                if (tokensList.getAdapter() != null) {
                     tokensList.getAdapter().notifyDataSetChanged();
                     mSwipeRefreshLayout.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                           mSwipeRefreshLayout.setRefreshing(false);
+                            mSwipeRefreshLayout.setRefreshing(false);
                         }
-                    },500);
+                    }, 500);
                 }
             }
         });
@@ -87,12 +84,20 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
 
     @Override
     public void setTokensData(List<Token> tokensData) {
-        tokensList.setAdapter(new TokensAdapter(tokensData,presenter, this));
+        tokensList.setAdapter(new TokensAdapter(tokensData, presenter, this));
+    }
+
+    @Override
+    public void updateTokensData(List<Token> tokensData) {
+        if (tokensList.getAdapter() != null) {
+            ((TokensAdapter) tokensList.getAdapter()).setTokens(tokensData);
+            tokensList.getAdapter().notifyDataSetChanged();
+        }
     }
 
     @Override
     public void onTokenClick(int adapterPosition) {
-        if(tokensList.getAdapter() != null) {
+        if (tokensList.getAdapter() != null) {
             presenter.openTokenDetails(((TokensAdapter) tokensList.getAdapter()).get(adapterPosition));
         }
     }

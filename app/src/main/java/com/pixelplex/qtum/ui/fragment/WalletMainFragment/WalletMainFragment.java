@@ -89,6 +89,7 @@ public class WalletMainFragment extends BaseFragment implements WalletMainFragme
             notifyDataSetChanged();
             if(show){
                 getWalletFragment().showPageIndicator();
+                getOtherTokensFragment().notifyTokenChange();
             }else{
                 getWalletFragment().hidePageIndicator();
             }

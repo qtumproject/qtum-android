@@ -37,6 +37,10 @@ class TokensAdapter extends RecyclerView.Adapter<TokenViewHolder> {
         holder.bind(tokens.get(position));
     }
 
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
+    }
+
     @Override
     public int getItemCount() {
         return tokens.size();

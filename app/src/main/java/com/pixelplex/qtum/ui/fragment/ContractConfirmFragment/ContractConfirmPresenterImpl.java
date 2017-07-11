@@ -116,7 +116,7 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
                         });
                         ContractBuilder contractBuilder = new ContractBuilder();
                         Script script = contractBuilder.createConstructScript(abiParams);
-                        sendTx(contractBuilder.createTransactionHash(script,unspentOutputs),"asdasd");
+                        sendTx(contractBuilder.createTransactionHash(script,unspentOutputs),"Stub!");
                     }
                 });
     }
