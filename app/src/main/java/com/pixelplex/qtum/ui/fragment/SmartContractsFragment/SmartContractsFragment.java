@@ -1,23 +1,28 @@
 package com.pixelplex.qtum.ui.fragment.SmartContractsFragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.Dark.PrefAdapterDark;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.DividerItemDecoration;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.OnSettingClickListener;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.PrefAdapter;
+import com.pixelplex.qtum.ui.fragment.ProfileFragment.SettingObject;
 import com.pixelplex.qtum.utils.ThemeUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class SmartContractsFragment extends BaseFragment implements OnSettingClickListener, SmartContractsFragmentView{
+public abstract class SmartContractsFragment extends BaseFragment implements OnSettingClickListener, SmartContractsFragmentView{
 
     private SmartContractsFragmentPresenterImpl presenter;
 
@@ -33,23 +38,17 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
 
     private PrefAdapter adapter;
 
-    public static SmartContractsFragment newInstance() {
+    public static BaseFragment newInstance(Context context) {
         
         Bundle args = new Bundle();
-        
-        SmartContractsFragment fragment = new SmartContractsFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, SmartContractsFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    public void initializeViews() {
-        smartContractsList.setLayoutManager(new LinearLayoutManager(getContext()));
-        smartContractsList.addItemDecoration(new DividerItemDecoration(getContext(),
-                ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? R.drawable.color_primary_divider : R.drawable.color_primary_divider_light,
-                ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? R.drawable.section_setting_divider : R.drawable.section_setting_divider_light,
-                presenter.getSettingsData()));
-        adapter = new PrefAdapterDark(presenter.getSettingsData(), this, R.layout.lyt_profile_pref_list_item);
+    protected void initializeList(int resId, int resDividerDecoration, int resSectionDecoration, List<SettingObject> settingObjectList){
+        smartContractsList.addItemDecoration(new DividerItemDecoration(getContext(), resDividerDecoration,resSectionDecoration, settingObjectList));
+       // adapter = new PrefAdapter(settingObjectList, this, resId);
         smartContractsList.setAdapter(adapter);
     }
 
@@ -97,8 +96,4 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
         return presenter;
     }
 
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_smart_contracts;
-    }
 }

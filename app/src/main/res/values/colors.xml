@@ -43,6 +43,9 @@
     <color name="title_red_color">#ff7967</color>
     <color name="title_lt_green_color">#53cda3</color>
 
+    <color name="footer_text_color">#80adba</color>
+    <color name="bt_grey_text_color">#869195</color>
+
     <color name="selected_paginator_light">#99536173</color>
     <color name="default_paginator_light">#4d536173</color>
     <color name="switch_on">#36b9c8</color>

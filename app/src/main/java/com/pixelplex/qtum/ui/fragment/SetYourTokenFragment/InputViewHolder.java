@@ -82,9 +82,6 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.checkbox)
     AppCompatCheckBox checkBox;
 
-    @BindView(R.id.tv_param_field)
-    FontTextView mTextViewParamField;
-
     public InputViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
@@ -97,9 +94,6 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
     public void bind (ContractMethodParameter parameter, boolean isLast) {
         this.parameter = parameter;
 
-        //etParam.setText(parameter.value);
-        int position = getAdapterPosition()+1;
-        mTextViewParamField.setText("Parameter " + position);
         tilParam.setHint(fromCamelCase(parameter.getName()));
         setInputType(parameter.getType());
         if(isLast){

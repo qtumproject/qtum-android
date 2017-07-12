@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.TemplatesFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.model.ContractTemplate;
+import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.DateCalculator;
@@ -20,13 +23,11 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class TemplatesFragment extends BaseFragment implements TemplatesFragmentView, TemplateSelectListener {
+public abstract class TemplatesFragment extends BaseFragment implements TemplatesFragmentView, TemplateSelectListener {
 
-    private final int LAYOUT = R.layout.fragment_templates;
-
-    public static TemplatesFragment newInstance() {
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        TemplatesFragment fragment = new TemplatesFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, TemplatesFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,32 +53,13 @@ public class TemplatesFragment extends BaseFragment implements TemplatesFragment
     }
 
     @Override
-    protected int getLayout() {
-        return LAYOUT;
-    }
-
-    @Override
     public void initializeViews() {
         super.initializeViews();
         contractList.setLayoutManager(new LinearLayoutManager(getContext()));
-        TinyDB tinyDB = new TinyDB(getContext());
-        List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
+    }
 
-        List<ContractTemplate> contractFullTemplateList = new ArrayList<>();
-        for(ContractTemplate contractTemplate : contractTemplateList){
-            if(contractTemplate.isFullContractTemplate()){
-                contractFullTemplateList.add(contractTemplate);
-            }
-        }
-
-        Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
-            @Override
-            public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
-                return DateCalculator.equals(contractInfo.getDate(),t1.getDate());
-            }
-        });
-
-        contractList.setAdapter(new TemplatesRecyclerAdapter(contractFullTemplateList,this));
+    protected void initializeRecyclerView(List<ContractTemplate> contractFullTemplateList, int resId){
+        contractList.setAdapter(new TemplatesRecyclerAdapter(contractFullTemplateList,this, resId));
     }
 
     @Override
