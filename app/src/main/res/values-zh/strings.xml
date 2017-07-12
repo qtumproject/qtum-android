@@ -167,5 +167,7 @@
     <string name="restored_successfully">Restored successfully</string>
     <string name="touch_id">Touch ID</string>
     <string name="tap_to_save_the_file">Tap to save the file</string>
+    <string name="my_new_contracts">My New Contracts</string>
+    <string name="my_published_contracts">My Published Contracts</string>
 
 </resources>

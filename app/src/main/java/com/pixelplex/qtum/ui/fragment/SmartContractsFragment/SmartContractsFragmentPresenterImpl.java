@@ -27,13 +27,13 @@ class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
 
     private void initSettingsData() {
         settingsData = new ArrayList<>();
-        settingsData.add(new SettingObject(R.string.create_contract,R.drawable.ic_my_new_contracts,0));
-        settingsData.add(new SettingObject(R.string.my_contracts,R.drawable.ic_my_publiched_contracts,0));
+        settingsData.add(new SettingObject(R.string.my_new_contracts,R.drawable.ic_my_new_contracts,0));
+        settingsData.add(new SettingObject(R.string.my_published_contracts,R.drawable.ic_my_publiched_contracts,0));
         settingsData.add(new SettingObject(R.string.contracts_store,R.drawable.ic_contract_store,0));
         settingsData.add(new SettingObject(R.string.watch_contract,R.drawable.ic_contr_watch,0));
         settingsData.add(new SettingObject(R.string.watch_token,R.drawable.ic_token_watch,0));
-        settingsData.add(new SettingObject(R.string.restore_contracts,R.drawable.ic_contract_restore,0));
         settingsData.add(new SettingObject(R.string.backup_contracts,R.drawable.ic_contr_backup,0));
+        settingsData.add(new SettingObject(R.string.restore_contracts,R.drawable.ic_contract_restore,0));
     }
 
     List<SettingObject> getSettingsData() {

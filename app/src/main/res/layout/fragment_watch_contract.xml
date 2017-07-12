@@ -93,7 +93,7 @@
         <com.pixelplex.qtum.utils.FontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="18dp"
             android:layout_marginRight="16dp"
             android:layout_below="@id/til_contract_address"
             android:layout_marginTop="16dp"

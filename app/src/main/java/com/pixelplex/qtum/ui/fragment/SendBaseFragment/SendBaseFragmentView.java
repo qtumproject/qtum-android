@@ -2,6 +2,7 @@ package com.pixelplex.qtum.ui.fragment.SendBaseFragment;
 
 import android.support.v4.app.Fragment;
 
+import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 
@@ -16,6 +17,7 @@ interface SendBaseFragmentView extends BaseFragmentView{
     void setUpCurrencyField(String currency);
     Fragment getFragment();
     void hideCurrencyField();
+    UpdateService getSocketService();
 
     void setAdressAndAmount(String address, String anount);
 }

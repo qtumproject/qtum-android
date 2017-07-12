@@ -19,6 +19,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            app:contentInsetStart="0dp"
             android:background="@color/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -43,7 +44,7 @@
                     android:id="@+id/tv_toolbar_send"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="48dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/receive"
@@ -52,6 +53,7 @@
                     app:typefaceAsset="@string/euclidFlexMedium"/>
 
                 <ImageButton
+                    android:visibility="gone"
                     android:id="@+id/bt_qr_code"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
@@ -114,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/balance"
             android:layout_marginBottom="16dp"
-            android:padding="@dimen/activity_horizontal_margin"
+            android:padding="8dp"
             android:textColorHint="@color/colorPrimary"
             android:theme="@style/InputText">
 
@@ -134,21 +136,22 @@
                 android:id="@+id/rl_receive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-
+                android:layout_below="@id/til_amount"
+                android:layout_above="@+id/buttons"
                 android:clickable="true"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:padding="@dimen/activity_horizontal_margin">
+                android:padding="8dp">
 
                 <FrameLayout
                     android:id="@+id/qr_code_boarder"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_above="@+id/tv_single_string"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/qr_codeboarder"
-                    android:padding="13dp">
+                    android:padding="16dp">
 
                     <ImageView
                         android:id="@+id/iv_qr_code"
@@ -156,33 +159,31 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         />
+
+                    <ProgressBar
+                        android:id="@+id/qr_progress_bar"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@color/colorPrimary"/>
+
                 </FrameLayout>
 
-
-                <ProgressBar
-                    android:id="@+id/qr_progress_bar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerInParent="true"
-                    android:indeterminateTint="@color/colorPrimary"/>
+                <TextView
+                    android:id="@+id/tv_single_string"
+                    android:layout_width="wrap_content"
+                    android:text="sdfgsevaewrvserfvaevaefvaevadesfvadefbvadef"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textColor="@color/colorPrimary"/>
 
             </RelativeLayout>
-
-            <TextView
-                android:id="@+id/tv_single_string"
-                android:layout_width="wrap_content"
-                android:layout_below="@id/rl_receive"
-                android:layout_centerHorizontal="true"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textColor="@color/colorPrimary"/>
-
-
-
         <RelativeLayout
             android:id="@+id/buttons"
             android:layout_width="wrap_content"

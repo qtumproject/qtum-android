@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
@@ -19,7 +20,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFragmentView {
+public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFragmentView, OnValidateParamsListener {
 
     private final int LAYOUT = R.layout.fragment_set_your_token;
     private final static String CONTRACT_TEMPLATE_UIID = "uiid";
@@ -47,11 +48,15 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
         getActivity().onBackPressed();
     }
 
+    @BindView(R.id.confirm)
+    Button confirmBtn;
+
     @OnClick(R.id.confirm)
     public void onConfirmClick(){
         if(adapter != null) {
-           // adapter.notifyDataSetChanged();
-            presenter.confirm(adapter.getParams(), getArguments().getLong(CONTRACT_TEMPLATE_UIID));
+           if(adapter.validateMethods()) {
+               presenter.confirm(adapter.getParams(), getArguments().getLong(CONTRACT_TEMPLATE_UIID));
+           }
         }
     }
 
@@ -109,7 +114,12 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
 
     @Override
     public void onContractConstructorPrepared(List<ContractMethodParameter> params) {
-        adapter = new ConstructorAdapter(params);
+        adapter = new ConstructorAdapter(params, this);
         constructorList.setAdapter(adapter);
+    }
+
+    @Override
+    public void onValidate() {
+        confirmBtn.setEnabled(adapter.validateMethods());
     }
 }

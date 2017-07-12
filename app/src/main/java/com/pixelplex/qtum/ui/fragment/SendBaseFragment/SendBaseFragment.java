@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontManager;
@@ -214,6 +215,11 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     @Override
     public void hideCurrencyField() {
         mLinearLayoutCurrency.setVisibility(View.GONE);
+    }
+
+    @Override
+    public UpdateService getSocketService() {
+        return getMainActivity().getUpdateService();
     }
 
     @Override

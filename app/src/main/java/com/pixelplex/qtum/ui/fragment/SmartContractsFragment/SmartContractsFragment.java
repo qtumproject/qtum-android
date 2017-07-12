@@ -51,10 +51,10 @@ public class SmartContractsFragment extends BaseFragment implements OnSettingCli
     @Override
     public void onSettingClick(int key) {
         switch (key){
-            case R.string.create_contract:
+            case R.string.my_new_contracts:
                 getPresenter().onCreateContractClick();
                 break;
-            case R.string.my_contracts:
+            case R.string.my_published_contracts:
                 getPresenter().onMyContractsClick();
                 break;
             case R.string.contracts_store:

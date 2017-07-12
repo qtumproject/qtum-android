@@ -88,39 +88,43 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void setAlertDialog(String title, String message, String buttonText, PopUpType type, final AlertDialogCallBack callBack) {
-        dismissProgressDialog();
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_popup_fragment,null);
-        ((FontTextView)view.findViewById(R.id.tv_pop_up_title)).setText(title);
-        ((FontTextView)view.findViewById(R.id.tv_pop_up_message)).setText(message);
-        FontButton popUpButton = ((FontButton)view.findViewById(R.id.bt_pop_up));
-        popUpButton.setText(buttonText);
-        popUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAlertDialog.cancel();
-                if(callBack!=null){
-                    callBack.onOkClick();
+        try {
+            dismissProgressDialog();
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_popup_fragment, null);
+            ((FontTextView) view.findViewById(R.id.tv_pop_up_title)).setText(title);
+            ((FontTextView) view.findViewById(R.id.tv_pop_up_message)).setText(message);
+            FontButton popUpButton = ((FontButton) view.findViewById(R.id.bt_pop_up));
+            popUpButton.setText(buttonText);
+            popUpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mAlertDialog.cancel();
+                    if (callBack != null) {
+                        callBack.onOkClick();
+                    }
                 }
+            });
+
+            switch (type.name()) {
+                case "error":
+                    ((ImageView) view.findViewById(R.id.iv_icon)).setImageResource(R.drawable.ic_error);
+                    view.findViewById(R.id.red_line).setVisibility(View.VISIBLE);
+                    break;
+                case "confirm":
+                    ((ImageView) view.findViewById(R.id.iv_icon)).setImageResource(R.drawable.ic_confirm);
+                    view.findViewById(R.id.red_line).setVisibility(View.GONE);
+                    break;
             }
-        });
 
-        switch (type.name()){
-            case "error":
-                ((ImageView)view.findViewById(R.id.iv_icon)).setImageResource(R.drawable.ic_error);
-                view.findViewById(R.id.red_line).setVisibility(View.VISIBLE);
-                break;
-            case "confirm":
-                ((ImageView)view.findViewById(R.id.iv_icon)).setImageResource(R.drawable.ic_confirm);
-                view.findViewById(R.id.red_line).setVisibility(View.GONE);
-                break;
+            mAlertDialog = new AlertDialog
+                    .Builder(getContext())
+                    .setView(view)
+                    .create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            mAlertDialog.show();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
-
-        mAlertDialog = new AlertDialog
-                .Builder(getContext())
-                .setView(view)
-                .create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        mAlertDialog.show();
     }
 
     public void hideBottomNavView(boolean recolorStatusBar) {

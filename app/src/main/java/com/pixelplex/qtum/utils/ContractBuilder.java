@@ -289,7 +289,7 @@ public class ContractBuilder {
         }
 
         if(unspentOutput == null){
-            throw new RuntimeException("Not enough money");
+            throw new RuntimeException("Sorry, you have insaffiсient funds available");
         }
 
         BigDecimal bitcoin = new BigDecimal(100000000);

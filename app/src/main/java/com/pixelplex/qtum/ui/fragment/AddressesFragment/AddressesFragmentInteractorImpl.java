@@ -15,6 +15,6 @@ class AddressesFragmentInteractorImpl implements AddressesFragmentInteractor {
 
     @Override
     public List<DeterministicKey> getKeyList() {
-        return KeyStorage.getInstance().getKeyList(100);
+        return KeyStorage.getInstance().getKeyList(10);
     }
 }

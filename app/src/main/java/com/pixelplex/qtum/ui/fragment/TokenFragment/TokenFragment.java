@@ -165,12 +165,12 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         uncomfirmedBalanceTitle.setVisibility(View.GONE);
 
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(),R.color.colorAccent));
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.onRefresh();
-            }
-        });
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                presenter.onRefresh();
+//            }
+//        });
 
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override

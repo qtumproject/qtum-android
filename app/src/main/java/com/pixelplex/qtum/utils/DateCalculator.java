@@ -35,12 +35,13 @@ public class DateCalculator {
             calendarNow.set(Calendar.MINUTE, 0);
             calendarNow.set(Calendar.SECOND, 0);
 
-
             Date dateTransaction = new Date(date);
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(dateTransaction);
             if ((date - calendarNow.getTimeInMillis()) > 0) {
-                dateString = calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
+                String hours = (calendar.get(Calendar.HOUR) > 9)? String.valueOf(calendar.get(Calendar.HOUR)) : '0' + String.valueOf(calendar.get(Calendar.HOUR));
+                String mins = (calendar.get(Calendar.MINUTE) > 9)? String.valueOf(calendar.get(Calendar.MINUTE)) : '0' + String.valueOf(calendar.get(Calendar.MINUTE));
+                dateString = hours + ":" + mins;
             } else {
                 dateString = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + ", " + calendar.get(Calendar.DATE);
             }
