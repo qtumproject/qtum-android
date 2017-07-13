@@ -141,7 +141,6 @@ dependencies {
     compile 'com.baoyz.pullrefreshlayout:library:1.2.0'
     compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
     compile 'com.mikhaellopez:hfrecyclerview:1.0.0'
-    compile 'org.altbeacon:android-beacon-library:2.11'
     compile 'com.google.firebase:firebase-core:9.2.0'
     compile 'com.google.firebase:firebase-messaging:9.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

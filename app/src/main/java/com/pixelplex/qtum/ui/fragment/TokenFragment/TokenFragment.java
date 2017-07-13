@@ -99,9 +99,9 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
 
     @BindView(R.id.decimal_units_value)
     FontTextView decimalsValue;
-
-    @BindView(R.id.sender_address_value)
-    FontTextView senderAddrValue;
+//
+//    @BindView(R.id.sender_address_value)
+//    FontTextView senderAddrValue;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -309,8 +309,8 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
 
     @Override
     public void setSenderAddress(String address) {
-        if(!TextUtils.isEmpty(address)) {
-            senderAddrValue.setText(address);
-        }
+        //if(!TextUtils.isEmpty(address)) {
+            //senderAddrValue.setText(address);
+        //}
     }
 }

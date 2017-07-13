@@ -11,16 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import org.bitcoinj.crypto.DeterministicKey;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import com.pixelplex.qtum.utils.CurrentNetParams;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
