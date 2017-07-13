@@ -137,10 +137,12 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void updateHistory(List<History> historyList) {
-        mTransactionAdapter = new TransactionAdapter(historyList);
-        mRecyclerView.setAdapter(mTransactionAdapter);
-        mSwipeRefreshLayout.setRefreshing(false);
-        mLoadingFlag = false;
+        if(mRecyclerView != null) {
+            mTransactionAdapter = new TransactionAdapter(historyList);
+            mRecyclerView.setAdapter(mTransactionAdapter);
+            mSwipeRefreshLayout.setRefreshing(false);
+            mLoadingFlag = false;
+        }
     }
 
     @Override

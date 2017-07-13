@@ -1,7 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.ImportWalletFragment;
 
 import android.content.Context;
-
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.CreateWalletNameFragment.CreateWalletNameFragment;
 

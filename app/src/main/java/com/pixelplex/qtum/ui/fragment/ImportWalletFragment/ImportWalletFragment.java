@@ -33,7 +33,7 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
                 getPresenter().onCancelClick();
                 break;
             case R.id.bt_import:
-                getPresenter().onImportClick(mEditTextYourBrainCode.getText().toString());
+                getPresenter().onImportClick(mEditTextYourBrainCode.getText().toString().trim());
                 break;
         }
     }

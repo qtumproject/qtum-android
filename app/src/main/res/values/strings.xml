@@ -25,8 +25,8 @@
     <string name="receiver_s_address">Receiver\'s Address</string>
     <string name="amount">Amount</string>
     <string name="pin">PIN</string>
-    <string name="available_balance">"Available Balance:"</string>
-    <string name="total_balance">"Total Balance: "</string>
+    <string name="available_balance">"Available Balance"</string>
+    <string name="total_balance">"Total Balance "</string>
     <string name="copy_wallet_address">Copy Wallet Address</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
@@ -72,14 +72,14 @@
     <string name="empty_name">Empty Name</string>
     <string name="new_pin">New PIN</string>
     <string name="incorrect_repeated_pin">Incorrect repeated PIN</string>
-    <string name="your_brain_code">Your Brain-CODE</string>
-    <string name="copy_brain_code">Copy Brain-CODE</string>
-    <string name="copy_brain_code_n_to_use_it_in_another_app">Copy Brain-CODE \n to Use it in Another App</string>
+    <string name="your_brain_code">Your Passphrase</string>
+    <string name="copy_brain_code">Copy Passphrase</string>
+    <string name="copy_brain_code_n_to_use_it_in_another_app">Copy the passphrase to initialize\na different Qtum wallet app</string>
     <string name="choose_another_address">Choose Another Address</string>
     <string name="log_out">Log Out</string>
     <string name="qr_code">QR Code</string>
     <string name="_continue">Continue</string>
-    <string name="you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want">You can skip this step and export your brain-code at any time you want.</string>
+    <string name="you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want">You can skip this step and export your Passphrase at any time you want.</string>
     <string name="copy">Copy</string>
     <string name="addresses">Addresses</string>
     <string name="create_token">Create Token</string>
@@ -171,6 +171,8 @@
     <string name="Source_code">Source Code</string>
     <string name="store_categories">Qstore Categories</string>
     <string name="tap_to_save_the_file">Tap to save the file</string>
+    <string name="my_new_contracts">My New Contracts</string>
+    <string name="my_published_contracts">My Published Contracts</string>
 
 
 </resources>

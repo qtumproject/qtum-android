@@ -4,10 +4,12 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
+import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.contract.Token;
@@ -17,6 +19,7 @@ import com.pixelplex.qtum.model.gson.history.Vout;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
+import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -224,6 +227,12 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
             final String amount = sendInfo[1];
             final String currency = sendInfo[2];
 
+            if((TextUtils.isEmpty(amount)) || Float.valueOf(amount) <= 0){
+                getView().dismissProgressDialog();
+                getView().setAlertDialog(mContext.getString(R.string.error), "Transaction amount can't be zero. Please edit your transaction and try again", "Ok", BaseFragment.PopUpType.error);
+                return;
+            }
+
             PinDialogFragment pinDialogFragment = new PinDialogFragment();
             pinDialogFragment.setTouchIdFlag(getView().getMainActivity().checkTouchId());
             pinDialogFragment.addPinCallBack(new PinDialogFragment.PinCallBack() {
@@ -244,33 +253,48 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                             }
                         });
                     } else {
-                        for(final Contract contract : mTokenList){
-                            if(contract.getContractName().equals(currency)){
-                                ContractBuilder contractBuilder = new ContractBuilder();
-                                List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
-                                ContractMethodParameter contractMethodParameterAddress = new ContractMethodParameter("_to","address",address);
-                                ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value","uint256",amount);
-                                contractMethodParameterList.add(contractMethodParameterAddress);
-                                contractMethodParameterList.add(contractMethodParameterAmount);
-                                contractBuilder.createAbiMethodParams("transfer",contractMethodParameterList).subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(new Subscriber<String>() {
-                                            @Override
-                                            public void onCompleted() {
+                        for(final Token token : mTokenList){
+                            if(token.getContractName().equals(currency)) {
 
-                                            }
+                                getView().getSocketService().addTokenBalanceChangeListener(token.getContractAddress(), new TokenBalanceChangeListener() {
+                                    @Override
+                                    public void onBalanceChange(TokenBalance tokenBalance) {
 
-                                            @Override
-                                            public void onError(Throwable e) {
+                                        if (tokenBalance.getMaxBalance() < Float.valueOf(amount)){
+                                            getView().dismissProgressDialog();
+                                            getView().setAlertDialog(mContext.getString(R.string.error), "Sorry, you have insaffiсient funds available", "Ok", BaseFragment.PopUpType.error);
+                                            return;
+                                        }
 
-                                            }
+                                        ContractBuilder contractBuilder = new ContractBuilder();
+                                        List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
+                                        ContractMethodParameter contractMethodParameterAddress = new ContractMethodParameter("_to", "address", address);
+                                        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", amount);
+                                        contractMethodParameterList.add(contractMethodParameterAddress);
+                                        contractMethodParameterList.add(contractMethodParameterAmount);
+                                        contractBuilder.createAbiMethodParams("transfer", contractMethodParameterList).subscribeOn(Schedulers.io())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(new Subscriber<String>() {
+                                                    @Override
+                                                    public void onCompleted() {
 
-                                            @Override
-                                            public void onNext(String s) {
-                                                createTx(s,contract.getContractAddress());
-                                            }
-                                        });
-                                return;
+                                                    }
+
+                                                    @Override
+                                                    public void onError(Throwable e) {
+                                                        getView().dismissProgressDialog();
+                                                        getView().setAlertDialog(mContext.getString(R.string.error), e.getMessage(), "Ok", BaseFragment.PopUpType.error);
+
+                                                    }
+
+                                                    @Override
+                                                    public void onNext(String s) {
+                                                        createTx(s, token.getContractAddress());
+                                                    }
+                                                });
+                                        return;
+                                    }
+                                });
                             }
                         }
                     }
@@ -302,7 +326,8 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
                     @Override
                     public void onError(String error) {
-
+                        getView().dismissProgressDialog();
+                        getView().setAlertDialog(mContext.getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
                     }
                 });
             }

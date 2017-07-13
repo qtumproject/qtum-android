@@ -33,7 +33,7 @@ public class KeyStorage {
     private Wallet sWallet = null;
     private int sCurrentKeyPosition = 0;
     private File mFile;
-    private final int ADDRESSES_COUNT = 100;
+    private final int ADDRESSES_COUNT = 10;
 
     public static KeyStorage getInstance() {
         if (sKeyStorage == null) {

@@ -1,18 +1,23 @@
 package com.pixelplex.qtum.ui.fragment.SetYourTokenFragment;
 
-import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+import com.pixelplex.qtum.utils.EditTextValidated;
 import com.pixelplex.qtum.utils.FontManager;
 import com.pixelplex.qtum.utils.FontTextView;
 
@@ -20,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class InputViewHolder extends RecyclerView.ViewHolder {
+public class InputViewHolder extends RecyclerView.ViewHolder implements EditTextValidated.EditTextValidateListener{
 
     private static String TYPE_BOOL = "bool";
 
@@ -45,6 +50,7 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
     private ContractMethodParameter parameter;
 
     private InputFilter filter = new InputFilter() {
+
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             String content = etParam.getText().toString() + source;
@@ -64,7 +70,6 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
                         return validateUINT(content, uint64);
 
                     default:
-                        parameter.setValue(content);
                         return ALLOW;
                 }
             } else {
@@ -77,7 +82,7 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
     TextInputLayout tilParam;
 
     @BindView(R.id.et_param)
-    TextInputEditText etParam;
+    EditTextValidated etParam;
 
     @BindView(R.id.checkbox)
     AppCompatCheckBox checkBox;
@@ -85,19 +90,21 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tv_param_field)
     FontTextView mTextViewParamField;
 
-    public InputViewHolder(View itemView) {
+    OnValidateParamsListener listener;
+
+    public InputViewHolder(View itemView, OnValidateParamsListener listener) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+        this.listener = listener;
 
         tilParam.setTypeface(FontManager.getInstance().getFont(tilParam.getContext().getString(R.string.simplonMonoRegular)));
         etParam.setTypeface(FontManager.getInstance().getFont(etParam.getContext().getString(R.string.simplonMonoRegular)));
         etParam.setFilters(new InputFilter[]{filter});
+        etParam.setOnEditTextValidateListener(this);
     }
 
     public void bind (ContractMethodParameter parameter, boolean isLast) {
         this.parameter = parameter;
-
-        //etParam.setText(parameter.value);
         int position = getAdapterPosition()+1;
         mTextViewParamField.setText("Parameter " + position);
         tilParam.setHint(fromCamelCase(parameter.getName()));
@@ -118,7 +125,6 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
                     builder = builder.insert(i, ' ');
                 }
             }
-
             String value = builder.toString().replace("_", "");
             parameter.setDisplayName(value.substring(0, 1).toUpperCase() + value.substring(1));
         }
@@ -126,30 +132,20 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setInputType(String type){
-
         int inputType = InputType.TYPE_CLASS_TEXT;
-
         if(type.contains(TYPE_BOOL)){
-
             tilParam.setVisibility(View.INVISIBLE);
             checkBox.setVisibility(View.VISIBLE);
-
         } else {
-
             tilParam.setVisibility(View.VISIBLE);
             checkBox.setVisibility(View.INVISIBLE);
-
             if (type.contains(TYPE_UINT)) {
-
                 inputType = InputType.TYPE_CLASS_NUMBER;
 
             } else if (type.contains(TYPE_INT)) {
-
                 inputType = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED;
             }
-
             etParam.setInputType(inputType);
-
         }
     }
 
@@ -157,7 +153,6 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
         try {
             int num = Integer.parseInt(content);
             if (num > Integer.MIN_VALUE && num < Integer.MAX_VALUE) {
-                parameter.setValue(String.valueOf(num));
                 return ALLOW;
             }
         } catch (Exception e) {
@@ -170,7 +165,6 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
         try {
             long num = Long.parseLong(content);
             if (num > 0 && num < uint) {
-                parameter.setValue(String.valueOf(num));
                 return ALLOW;
             }
         } catch (Exception e) {
@@ -179,5 +173,9 @@ public class InputViewHolder extends RecyclerView.ViewHolder {
         return DENY;
     }
 
-
+    @Override
+    public void onValidate(String text) {
+        parameter.setValue(text);
+        listener.onValidate();
+    }
 }

@@ -25,6 +25,18 @@ public class TokenBalance {
         return balances;
     }
 
+    public float getMaxBalance() {
+        float maxBalance = 0;
+        if(balances != null && balances.size() > 0){
+            for (Balance balance: balances) {
+                if(maxBalance < balance.getBalance()){
+                    maxBalance = balance.getBalance();
+                }
+            }
+        }
+        return maxBalance;
+    }
+
     public float getTotalBalance() {
         float summaryBalance = 0;
         if(balances != null && balances.size() > 0){

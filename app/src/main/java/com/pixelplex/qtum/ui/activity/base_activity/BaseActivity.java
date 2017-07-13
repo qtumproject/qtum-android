@@ -88,7 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
         imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
 
-    public void setFocusTextInput(View textInputEditText, View textInputLayout){
+    public void setFocusTextInput(View textInputEditText, View textInputLayout) {
         textInputEditText.setFocusableInTouchMode(true);
         textInputEditText.requestFocus();
         textInputLayout.setFocusableInTouchMode(true);

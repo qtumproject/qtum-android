@@ -1,6 +1,5 @@
 package com.pixelplex.qtum.model;
 
-
 public class ContractTemplate {
     private String name;
     private String date;
@@ -14,6 +13,7 @@ public class ContractTemplate {
         this.type = contractType;
         this.uiid = uiid;
         isFullContractTemplate = true;
+
     }
 
     public String getName() {

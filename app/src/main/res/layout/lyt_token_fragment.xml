@@ -82,6 +82,7 @@
                             app:srcCompat="@drawable/ic_back_indicator"/>
 
                         <ImageButton
+                            android:visibility="gone"
                             android:id="@+id/bt_share"
                             android:layout_width="36dp"
                             android:padding="8dp"
@@ -135,7 +136,7 @@
                 <com.pixelplex.qtum.utils.StackCollapseLinearLayout
                     android:id="@+id/collapse_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="150dp"
                     android:orientation="vertical">
 
                     <FrameLayout
@@ -152,12 +153,12 @@
                         <include layout="@layout/lyt_initial_supply_decimal_units"/>
                     </FrameLayout>
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:translationZ=".01dp">
-                        <include layout="@layout/lyt_sender_address"/>
-                    </FrameLayout>
+                    <!--<FrameLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="50dp"-->
+                        <!--android:translationZ=".01dp">-->
+                        <!--<include layout="@layout/lyt_sender_address"/>-->
+                    <!--</FrameLayout>-->
 
                     <FrameLayout
                         android:layout_width="match_parent"

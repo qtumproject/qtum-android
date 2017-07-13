@@ -11,7 +11,7 @@ class Balance {
     private String address;
     @SerializedName("balance")
     @Expose
-    private Integer balance;
+    private Float balance;
 
     public String getAddress() {
         return address;
@@ -21,11 +21,11 @@ class Balance {
         this.address = address;
     }
 
-    public Integer getBalance() {
+    public Float getBalance() {
         return (balance != null)? balance : 0;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(Float balance) {
         this.balance = balance;
     }
 

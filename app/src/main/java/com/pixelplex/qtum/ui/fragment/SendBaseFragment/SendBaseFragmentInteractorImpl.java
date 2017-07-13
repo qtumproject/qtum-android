@@ -111,7 +111,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     }
                 }
                 if (overFlow.doubleValue() < amount.doubleValue()) {
-                    callBack.onError("Not enough money");
+                    callBack.onError("Sorry, you have insaffiсient funds available");
                     return;
                 }
                 BigDecimal delivery = overFlow.subtract(amount);
