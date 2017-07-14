@@ -72,7 +72,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                         Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
                             @Override
                             public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {
-                                return unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? -1 : 0;
+                                return unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? -1 : 0;
                             }
                         });
                         callBack.onSuccess(unspentOutputs);
@@ -111,15 +111,13 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     }
                 }
                 if (overFlow.doubleValue() < amount.doubleValue()) {
-                    callBack.onError("Sorry, you have insaffiсient funds available");
+                    callBack.onError("You have insufficient funds for this transaction");
                     return;
                 }
                 BigDecimal delivery = overFlow.subtract(amount);
                 if (delivery.doubleValue() != 0.0) {
                     transaction.addOutput(Coin.valueOf((long)(delivery.multiply(bitcoin).doubleValue())), myKey.toAddress(CurrentNetParams.getNetParams()));
                 }
-
-
 
                 for (UnspentOutput unspentOutput : unspentOutputs) {
                     if(unspentOutput.getAmount().doubleValue() != 0.0)
@@ -188,7 +186,6 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
                     }
                 });
     }
-
 
     interface GetUnspentListCallBack {
         void onSuccess(List<UnspentOutput> unspentOutputs);

@@ -88,7 +88,7 @@ public class ContractBuilder {
         });
     }
 
-    public Observable<String> createAbiConstructParams(final List<ContractMethodParameter> contractMethodParameterList, final long uiid, Context context){
+    public Observable<String> createAbiConstructParams(final List<ContractMethodParameter> contractMethodParameterList, final String uiid, Context context){
         mContext = context;
         return rx.Observable.fromCallable(new Callable<String>() {
             @Override
@@ -204,7 +204,7 @@ public class ContractBuilder {
         return hashPattern.substring(0,hashPattern.length()-_value.length()) + _value;
     }
 
-    private String getByteCodeByUiid(long uiid) {
+    private String getByteCodeByUiid(String uiid) {
         return FileStorageManager.getInstance().readByteCodeContract(mContext, uiid);
     }
 
@@ -289,7 +289,7 @@ public class ContractBuilder {
         }
 
         if(unspentOutput == null){
-            throw new RuntimeException("Sorry, you have insaffiсient funds available");
+            throw new RuntimeException("You have insufficient funds for this transaction");
         }
 
         BigDecimal bitcoin = new BigDecimal(100000000);

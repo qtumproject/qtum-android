@@ -8,26 +8,26 @@ public class ContractJSON {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("contractCreationAddres")
+    @SerializedName("contract_creation_addres")
     @Expose
     private String contractCreationAddres;
-    @SerializedName("contractAddress")
+    @SerializedName("contract_address")
     @Expose
     private String contractAddress;
     @SerializedName("type")
     @Expose
     private String type;
-    @SerializedName("publishDate")
+    @SerializedName("publish_date")
     @Expose
     private String publishDate;
     @SerializedName("template")
     @Expose
-    private Long template;
-    @SerializedName("isActive")
+    private String template;
+    @SerializedName("is_active")
     @Expose
     private Boolean isActive;
 
-    public ContractJSON(String name, String contractCreationAddres, String contractAddress, String type, String publishDate, Long template, Boolean isActive) {
+    public ContractJSON(String name, String contractCreationAddres, String contractAddress, String type, String publishDate, String template, Boolean isActive) {
         this.name = name;
         this.contractCreationAddres = contractCreationAddres;
         this.contractAddress = contractAddress;
@@ -77,11 +77,11 @@ public class ContractJSON {
         this.publishDate = publishDate;
     }
 
-    public Long getTemplate() {
+    public String getTemplate() {
         return template;
     }
 
-    public void setTemplate(Long template) {
+    public void setTemplate(String template) {
         this.template = template;
     }
 

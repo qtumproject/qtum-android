@@ -77,7 +77,7 @@
                     android:paddingEnd="16dp"
                     android:paddingStart="16dp"
                     android:paddingTop="4dp"
-                    android:text="@string/not_confirmed_balance"
+                    android:text="@string/not_confirmed_transaction"
                     android:textColor="@color/colorPrimary"
                     android:textSize="20sp"
                     app:typefaceAsset="@string/simplonMonoMedium" />

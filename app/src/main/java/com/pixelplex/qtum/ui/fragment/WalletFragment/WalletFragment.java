@@ -151,14 +151,16 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
-       balanceValue.setText(String.format("%s QTUM",balance));
-        if(unconfirmedBalance != null) {
-            uncomfirmedBalanceValue.setVisibility(View.VISIBLE);
-            uncomfirmedBalanceTitle.setVisibility(View.VISIBLE);
-            uncomfirmedBalanceValue.setText(String.format("%s QTUM", unconfirmedBalance));
-        } else {
-            uncomfirmedBalanceValue.setVisibility(View.GONE);
-            uncomfirmedBalanceTitle.setVisibility(View.GONE);
+        if(balanceValue != null) {
+            balanceValue.setText(String.format("%s QTUM", balance));
+            if (unconfirmedBalance != null) {
+                uncomfirmedBalanceValue.setVisibility(View.VISIBLE);
+                uncomfirmedBalanceTitle.setVisibility(View.VISIBLE);
+                uncomfirmedBalanceValue.setText(String.format("%s QTUM", unconfirmedBalance));
+            } else {
+                uncomfirmedBalanceValue.setVisibility(View.GONE);
+                uncomfirmedBalanceTitle.setVisibility(View.GONE);
+            }
         }
     }
 

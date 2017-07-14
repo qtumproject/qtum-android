@@ -12,10 +12,10 @@ public class TemplateJSON {
     @SerializedName("bytecode")
     @Expose
     private String bytecode;
-    @SerializedName("uiid")
+    @SerializedName("uuid")
     @Expose
-    private Long uiid;
-    @SerializedName("creationDate")
+    private String uuid;
+    @SerializedName("date_create")
     @Expose
     private String creationDate;
     @SerializedName("abi")
@@ -28,10 +28,10 @@ public class TemplateJSON {
     @Expose
     private String name;
 
-    public TemplateJSON(String source, String bytecode, Long uiid, String creationDate, String abi, String type, String name) {
+    public TemplateJSON(String source, String bytecode, String uuid, String creationDate, String abi, String type, String name) {
         this.source = source;
         this.bytecode = bytecode;
-        this.uiid = uiid;
+        this.uuid = uuid;
         this.creationDate = creationDate;
         this.abi = abi;
         this.type = type;
@@ -54,12 +54,12 @@ public class TemplateJSON {
         this.bytecode = bytecode;
     }
 
-    public Long getUiid() {
-        return uiid;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setUiid(Long uiid) {
-        this.uiid = uiid;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getCreationDate() {

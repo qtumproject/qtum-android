@@ -52,10 +52,10 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
         }
     }
 
-    public static ContractFunctionFragment newInstance(String methodName, long uiid, String contractAddress) {
+    public static ContractFunctionFragment newInstance(String methodName, String uiid, String contractAddress) {
 
         Bundle args = new Bundle();
-        args.putLong(CONTRACT_TEMPLATE_UIID,uiid);
+        args.putString(CONTRACT_TEMPLATE_UIID,uiid);
         args.putString(METHOD_NAME,methodName);
         args.putString(CONTRACT_ADDRESS,contractAddress);
         ContractFunctionFragment fragment = new ContractFunctionFragment();
@@ -91,8 +91,8 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
     }
 
     @Override
-    public long getContractTemplateUiid() {
-        return getArguments().getLong(CONTRACT_TEMPLATE_UIID);
+    public String getContractTemplateUiid() {
+        return getArguments().getString(CONTRACT_TEMPLATE_UIID);
     }
 
     @Override

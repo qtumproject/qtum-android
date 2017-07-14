@@ -31,7 +31,7 @@ public class SetYourTokenFragmentPresenterImpl extends BaseFragmentPresenterImpl
         return view;
     }
 
-    public void getConstructorByUiid(long uiid) {
+    public void getConstructorByUiid(String uiid) {
        contractMethod = FileStorageManager.getInstance().getContractConstructor(mContext,uiid);
        getView().onContractConstructorPrepared(contractMethod.inputParams);
     }

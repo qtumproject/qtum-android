@@ -51,7 +51,7 @@ public class PrefViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(final SettingObject setting) {
         if(setting instanceof SettingSwitchObject){
-            arrow.setVisibility(View.GONE);
+            arrow.setVisibility(View.INVISIBLE);
             mSwitch.setVisibility(View.VISIBLE);
             mSwitch.setChecked(((SettingSwitchObject) setting).isChecked());
             mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -61,7 +61,7 @@ public class PrefViewHolder extends RecyclerView.ViewHolder {
                 }
             });
         }else{
-            mSwitch.setVisibility(View.GONE);
+            mSwitch.setVisibility(View.INVISIBLE);
             arrow.setVisibility(View.VISIBLE);
         }
         title.setText(setting.getTitleRes());

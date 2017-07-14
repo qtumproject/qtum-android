@@ -36,7 +36,7 @@ public class TemplateViewHolder extends RecyclerView.ViewHolder {
         rootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onSelectContract(mContractTemplate.getUiid());
+                listener.onSelectContract(mContractTemplate.getUuid());
             }
         });
     }

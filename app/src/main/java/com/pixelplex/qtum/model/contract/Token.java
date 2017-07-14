@@ -5,7 +5,7 @@ public class Token extends Contract {
 
     private float lastBalance = 0;
 
-    public Token(String contractAddress, long templateUiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName) {
+    public Token(String contractAddress, String templateUiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName) {
         super(contractAddress, templateUiid, hasBeenCreated, date, senderAddress, contractName);
         this.isSubscribe = true;
     }

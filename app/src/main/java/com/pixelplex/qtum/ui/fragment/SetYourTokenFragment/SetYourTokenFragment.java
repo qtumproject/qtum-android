@@ -27,10 +27,10 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
 
     private ConstructorAdapter adapter;
 
-    public static SetYourTokenFragment newInstance(long uiid) {
+    public static SetYourTokenFragment newInstance(String uiid) {
         Bundle args = new Bundle();
         SetYourTokenFragment fragment = new SetYourTokenFragment();
-        args.putLong(CONTRACT_TEMPLATE_UIID,uiid);
+        args.putString(CONTRACT_TEMPLATE_UIID,uiid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,13 +85,13 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
     public void initializeViews() {
         super.initializeViews();
         constructorList.setLayoutManager(new LinearLayoutManager(getContext()));
-        long templateUiid = getArguments().getLong(CONTRACT_TEMPLATE_UIID);
+        String templateUiid = getArguments().getString(CONTRACT_TEMPLATE_UIID);
         presenter.getConstructorByUiid(templateUiid);
         String templateName = "";
         TinyDB tinyDB = new TinyDB(getContext());
         List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
         for(ContractTemplate contractTemplate : contractTemplateList){
-            if(contractTemplate.getUiid()==templateUiid) {
+            if(contractTemplate.getUuid()==templateUiid) {
                 templateName = contractTemplate.getName();
                 break;
             }

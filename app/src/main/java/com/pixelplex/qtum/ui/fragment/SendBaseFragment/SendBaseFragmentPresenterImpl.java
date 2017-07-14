@@ -262,7 +262,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
 
                                         if (tokenBalance.getMaxBalance() < Float.valueOf(amount)){
                                             getView().dismissProgressDialog();
-                                            getView().setAlertDialog(mContext.getString(R.string.error), "Sorry, you have insaffiсient funds available", "Ok", BaseFragment.PopUpType.error);
+                                            getView().setAlertDialog(mContext.getString(R.string.error), "You have insufficient funds for this transaction", "Ok", BaseFragment.PopUpType.error);
                                             return;
                                         }
 

@@ -45,7 +45,7 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
 
     @OnClick(R.id.confirm)
     public void onConfirmClick(){
-        presenter.confirmContract(getArguments().getLong(CONTRACT_TEMPLATE_UIID));
+        presenter.confirmContract(getArguments().getString(CONTRACT_TEMPLATE_UIID));
     }
 
     @Override

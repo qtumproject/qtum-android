@@ -44,10 +44,10 @@ public class ContractManagementFragment extends BaseFragment implements Contract
     private MethodAdapter mMethodAdapter;
     private String mContractAddress;
 
-    public static ContractManagementFragment newInstance(long contractTemplateUiid, String contractAddress) {
+    public static ContractManagementFragment newInstance(String contractTemplateUiid, String contractAddress) {
         
         Bundle args = new Bundle();
-        args.putLong(CONTRACT_TEMPLATE_UIID, contractTemplateUiid);
+        args.putString(CONTRACT_TEMPLATE_UIID, contractTemplateUiid);
         args.putString(CONTRACT_ADDRESS, contractAddress);
         ContractManagementFragment fragment = new ContractManagementFragment();
         fragment.setArguments(args);
@@ -84,8 +84,8 @@ public class ContractManagementFragment extends BaseFragment implements Contract
     }
 
     @Override
-    public long getContractTemplateUiid() {
-        return getArguments().getLong(CONTRACT_TEMPLATE_UIID);
+    public String getContractTemplateUiid() {
+        return getArguments().getString(CONTRACT_TEMPLATE_UIID);
     }
 
     class MethodViewHolder extends RecyclerView.ViewHolder {

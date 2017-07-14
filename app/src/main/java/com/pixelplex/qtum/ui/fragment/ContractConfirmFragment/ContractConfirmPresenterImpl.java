@@ -38,7 +38,7 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
     private Context mContext;
 
 
-    private long mContractTemplateUiid;
+    private String mContractTemplateUiid;
 
 
     private List<ContractMethodParameter> mContractMethodParameterList;
@@ -58,7 +58,7 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
     }
 
 
-    void confirmContract(final long uiid) {
+    void confirmContract(final String uiid) {
         getView().setProgressDialog();
         mContractTemplateUiid = uiid;
         ContractBuilder contractBuilder = new ContractBuilder();
@@ -158,7 +158,7 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
                         }
                         TinyDB tinyDB = new TinyDB(mContext);
                         for(ContractTemplate contractTemplate : tinyDB.getContractTemplateList()){
-                            if(contractTemplate.getUiid() == mContractTemplateUiid){
+                            if(contractTemplate.getUuid() == mContractTemplateUiid){
                                 if(contractTemplate.getContractType().equals("token")){
                                     Token token = new Token(null, mContractTemplateUiid, false, null, senderAddress, name);
                                     List<Token> tokenList = tinyDB.getTokenList();

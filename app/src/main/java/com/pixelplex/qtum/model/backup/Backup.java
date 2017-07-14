@@ -14,10 +14,10 @@ public class Backup {
     @SerializedName("templates")
     @Expose
     private List<TemplateJSON> templates = null;
-    @SerializedName("platformVersion")
+    @SerializedName("platform_version")
     @Expose
     private String platformVersion;
-    @SerializedName("fileVersion")
+    @SerializedName("file_version")
     @Expose
     private String fileVersion;
     @SerializedName("contracts")

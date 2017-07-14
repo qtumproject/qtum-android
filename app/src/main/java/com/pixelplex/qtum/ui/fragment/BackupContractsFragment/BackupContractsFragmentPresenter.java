@@ -176,10 +176,10 @@ class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
 
                 List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
                 for(ContractTemplate contractTemplate : contractTemplateList){
-                    String source = FileStorageManager.getInstance().readSourceContract(mContext, contractTemplate.getUiid());
-                    String bytecode = FileStorageManager.getInstance().readByteCodeContract(mContext,contractTemplate.getUiid());
-                    String abi = FileStorageManager.getInstance().readAbiContract(mContext,contractTemplate.getUiid());
-                    TemplateJSON templateJSON = new TemplateJSON(source,bytecode,contractTemplate.getUiid(),contractTemplate.getDate(),abi,contractTemplate.getContractType(),contractTemplate.getName());
+                    String source = FileStorageManager.getInstance().readSourceContract(mContext, contractTemplate.getUuid());
+                    String bytecode = FileStorageManager.getInstance().readByteCodeContract(mContext,contractTemplate.getUuid());
+                    String abi = FileStorageManager.getInstance().readAbiContract(mContext,contractTemplate.getUuid());
+                    TemplateJSON templateJSON = new TemplateJSON(source,bytecode,contractTemplate.getUuid(),contractTemplate.getDate(),abi,contractTemplate.getContractType(),contractTemplate.getName());
                     templateJSONList.add(templateJSON);
                 }
 

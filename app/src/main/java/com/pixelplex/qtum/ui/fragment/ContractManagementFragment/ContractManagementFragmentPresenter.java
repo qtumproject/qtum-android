@@ -6,6 +6,7 @@ import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
 import com.pixelplex.qtum.model.gson.callSmartContractResponse.CallSmartContractResponse;
 import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.sha3.sha.Keccak;
 import com.pixelplex.qtum.utils.sha3.sha.Parameters;
@@ -34,7 +35,11 @@ public class ContractManagementFragmentPresenter extends BaseFragmentPresenterIm
     public void initializeViews() {
         super.initializeViews();
         List<ContractMethod> contractMethodList = FileStorageManager.getInstance().getContractMethods(getView().getContext(),getView().getContractTemplateUiid());
-        getView().setRecyclerView(contractMethodList);
+        if(contractMethodList != null) {
+            getView().setRecyclerView(contractMethodList);
+        } else {
+            getView().setAlertDialog("Error","Fail to get contract methods", BaseFragment.PopUpType.error);
+        }
     }
 
     private Observable<String[]> getHash(final String name) {
