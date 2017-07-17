@@ -158,7 +158,7 @@ public class KeyStorage {
 
     public List<DeterministicKey> getKeyList(int numberOfKeys) {
         if (mDeterministicKeyList == null) {
-            mDeterministicKeyList = new ArrayList<>(numberOfKeys);
+            mDeterministicKeyList = new ArrayList<>(ADDRESSES_COUNT);
             mAddressesList = new ArrayList<>();
             List<ChildNumber> pathParent = new ArrayList<>();
             pathParent.add(new ChildNumber(0,true));

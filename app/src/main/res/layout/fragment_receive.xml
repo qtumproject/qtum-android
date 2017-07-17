@@ -95,6 +95,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="left"
                 android:text="@string/available_balance"
                 android:textColor="@color/background"
                 app:typefaceAsset="@string/simplonMonoRegular"/>
@@ -125,6 +126,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/amount"
+                android:gravity="left"
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
                 android:textColor="@color/colorPrimary"/>

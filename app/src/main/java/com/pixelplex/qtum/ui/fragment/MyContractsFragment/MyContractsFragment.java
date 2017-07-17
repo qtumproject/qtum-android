@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -113,7 +114,8 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
             }
             mTextViewTitle.setText(contract.getContractAddress().substring(0,8));
             TinyDB tinyDB = new TinyDB(getContext());
-            String contractType = tinyDB.getContractTemplateByUiid(contract.getUiid()).getContractType();
+            ContractTemplate contractTemplateByUiid = tinyDB.getContractTemplateByUiid(contract.getUiid());
+            String contractType = contractTemplateByUiid.getContractType();
             mTextViewContractType.setText(contractType);
         }
     }

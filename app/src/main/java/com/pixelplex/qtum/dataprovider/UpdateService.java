@@ -28,18 +28,26 @@ import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
 import com.pixelplex.qtum.dataprovider.listeners.FireBaseTokenRefreshListener;
 import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
 import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
+import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
+import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
+import com.pixelplex.qtum.model.gson.callSmartContractResponse.CallSmartContractResponse;
 import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
+import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragmentPresenter;
 import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.QtumIntent;
 import com.pixelplex.qtum.datastorage.TinyDB;
+import com.pixelplex.qtum.utils.sha3.sha.Keccak;
+import com.pixelplex.qtum.utils.sha3.sha.Parameters;
 
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 import org.spongycastle.crypto.digests.SHA256Digest;
@@ -50,10 +58,12 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -246,7 +256,6 @@ public class UpdateService extends Service {
 
         notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
     }
-
 
     @Override
     public void onDestroy() {

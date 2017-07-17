@@ -12,6 +12,7 @@
         android:layout_marginStart="8dp"
         android:textSize="16sp"
         android:layout_marginTop="8dp"
+        android:gravity="left"
         tools:text = "Tranding Now"
         android:textColor="@color/colorPrimary"
         app:typefaceAsset="@string/euclidFlexMedium"

@@ -23,11 +23,11 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
     private static final String paramsKey = "params";
     private static final String CONTRACT_TEMPLATE_UIID = "uiid";
 
-    public static ContractConfirmFragment newInstance(List<ContractMethodParameter> params, long uiid) {
+    public static ContractConfirmFragment newInstance(List<ContractMethodParameter> params, String uiid) {
         Bundle args = new Bundle();
         ContractConfirmFragment fragment = new ContractConfirmFragment();
         args.putSerializable(paramsKey,(ArrayList)params);
-        args.putLong(CONTRACT_TEMPLATE_UIID, uiid);
+        args.putString(CONTRACT_TEMPLATE_UIID, uiid);
         fragment.setArguments(args);
         return fragment;
     }

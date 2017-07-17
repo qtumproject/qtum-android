@@ -55,7 +55,7 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
     public void onConfirmClick(){
         if(adapter != null) {
            if(adapter.validateMethods()) {
-               presenter.confirm(adapter.getParams(), getArguments().getLong(CONTRACT_TEMPLATE_UIID));
+               presenter.confirm(adapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_UIID));
            }
         }
     }

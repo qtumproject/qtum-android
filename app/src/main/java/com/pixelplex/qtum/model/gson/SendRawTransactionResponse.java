@@ -9,6 +9,9 @@ public class SendRawTransactionResponse {
     @Expose
     private String result;
 
+    @SerializedName("txid")
+    public String txid;
+
     public String getResult() {
         return result;
     }

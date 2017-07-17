@@ -18,14 +18,13 @@
 
     <com.pixelplex.qtum.utils.FontTextView
         android:id="@+id/title"
-        android:layoutDirection="ltr"
         android:layout_toStartOf="@+id/pref_switch"
         android:layout_width="wrap_content"
         android:maxLines="1"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:text="@string/about"
-        android:gravity="center_vertical"
+        android:gravity="left|center_vertical"
         android:layout_marginStart="8dp"
         android:textSize="18sp"
         app:typefaceAsset="@string/simplonMonoRegular"

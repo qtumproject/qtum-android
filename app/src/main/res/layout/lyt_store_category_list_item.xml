@@ -21,7 +21,7 @@
         android:maxLines="1"
         android:layout_marginTop="8dp"
         android:text="@string/about"
-        android:gravity="center_vertical"
+        android:gravity="left|center_vertical"
         android:layout_marginStart="8dp"
         android:textSize="18sp"
         app:typefaceAsset="@string/simplonMonoRegular"

@@ -65,7 +65,7 @@
                 android:textColor="@color/colorPrimary"
                 app:typefaceAsset="@string/euclidFlexMedium"
                 android:layout_weight="1"
-                android:layout_gravity="left"
+                android:gravity="left"
                 android:text="Address"/>
 
             <com.pixelplex.qtum.utils.FontTextView

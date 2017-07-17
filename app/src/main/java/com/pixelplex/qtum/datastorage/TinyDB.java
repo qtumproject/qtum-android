@@ -742,7 +742,7 @@ public class TinyDB {
 
     public ContractTemplate getContractTemplateByUiid(String uiid){
         for(ContractTemplate contractTemplate : getContractTemplateList()){
-            if(contractTemplate.getUuid() == uiid){
+            if(contractTemplate.getUuid().equals(uiid)){
                 return contractTemplate;
             }
         }

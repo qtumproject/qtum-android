@@ -79,6 +79,7 @@
                     android:hint="@string/search"
                     android:textColor="@color/colorPrimary"
                     android:textColorHint="@color/colorPrimary"
+                    android:gravity="left"
                     android:id="@+id/et_search_currency"
                     android:imeOptions="actionSearch"
                     android:singleLine="true"
