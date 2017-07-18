@@ -80,7 +80,8 @@
             android:background="?attr/selectableItemBackground"
             android:text="@string/import_button"
             android:textAllCaps="true"
-            android:textColor="@color/colorPrimary"
+            android:enabled="false"
+            android:textColor="@color/primary_text_color_enabled_selector"
             android:textSize="@dimen/button_text"/>
 
     </RelativeLayout>
