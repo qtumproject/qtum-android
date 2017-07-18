@@ -74,7 +74,7 @@
     <string name="incorrect_repeated_pin">Incorrect repeated PIN</string>
     <string name="your_brain_code">Your Passphrase</string>
     <string name="copy_brain_code">Copy Passphrase</string>
-    <string name="copy_brain_code_n_to_use_it_in_another_app">Copy the passphase to restore\nyour wallet on another device</string>
+    <string name="copy_brain_code_n_to_use_it_in_another_app">Copy the passphase to restore your wallet on another device</string>
     <string name="choose_another_address">Choose Another Address</string>
     <string name="log_out">Log Out</string>
     <string name="qr_code">QR Code</string>
@@ -146,7 +146,7 @@
     <string name="watch_token">Watch Token</string>
     <string name="restore_contracts">Restore Contracts</string>
     <string name="backup_contracts">Backup Contracts</string>
-    <string name="select_back_up_file">Select back-up file</string>
+    <string name="select_back_up_file">Select backup file</string>
     <string name="please_wait_a_few_seconds">Please wait</string>
     <string name="payment_completed_successfully">Payment completed successfully</string>
     <string name="default_currency">(default currency)</string>
@@ -174,6 +174,7 @@
     <string name="my_new_contracts">My Contract Templates</string>
     <string name="my_published_contracts">My Published Contracts</string>
     <string name="not_confirmed_transaction">Unconfirmed Transaction</string>
+    <string name="something_went_wrong">Something went wrong</string>
 
 
 </resources>

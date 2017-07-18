@@ -11,7 +11,7 @@ public class History {
 
     @SerializedName("block_time")
     @Expose
-    private Integer blockTime;
+    private Long blockTime;
     @SerializedName("block_height")
     @Expose
     private Integer blockHeight;
@@ -36,11 +36,11 @@ public class History {
 
     private BigDecimal changeInBalance;
 
-    public Integer getBlockTime() {
+    public Long getBlockTime() {
         return blockTime;
     }
 
-    public void setBlockTime(Integer blockTime) {
+    public void setBlockTime(Long blockTime) {
         this.blockTime = blockTime;
     }
 

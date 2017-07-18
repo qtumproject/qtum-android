@@ -28,14 +28,11 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
+import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.FontTextView;
 import com.pixelplex.qtum.utils.ResizeWidthAnimation;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -483,9 +480,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         @BindView(R.id.ll_transaction)
         LinearLayout mLinearLayoutTransaction;
 
-        Date date = new Date();
-        long currentTime = date.getTime() / 1000L;
-
         TransactionHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -500,32 +494,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
         void bindTransactionData(History history) {
 
             if(history.getBlockTime() != null) {
-                long transactionTime = history.getBlockTime();
-                long delay = currentTime - transactionTime;
-                String dateString;
-                if(delay<60){
-                    dateString = delay + " sec ago";
-                }else
-                if (delay < 3600) {
-                    dateString = delay / 60 + " min ago";
-                } else {
-
-                    Calendar calendarNow = Calendar.getInstance();
-                    calendarNow.set(Calendar.HOUR_OF_DAY, 0);
-                    calendarNow.set(Calendar.MINUTE, 0);
-                    calendarNow.set(Calendar.SECOND, 0);
-                    date = calendarNow.getTime();
-
-                    Date dateTransaction = new Date(transactionTime * 1000L);
-                    Calendar calendar = new GregorianCalendar();
-                    calendar.setTime(dateTransaction);
-                    if ((transactionTime - date.getTime() / 1000L) > 0) {
-                        dateString = calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE);
-                    } else {
-                        dateString = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + ", " + calendar.get(Calendar.DATE);
-                    }
-                }
-                mTextViewDate.setText(dateString);
+                mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime()*1000L));
             } else {
                 mTextViewDate.setText("Not confirmed");
             }

@@ -5,6 +5,7 @@ import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.model.gson.history.Vin;
 import com.pixelplex.qtum.model.gson.history.Vout;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.utils.DateCalculator;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,11 +40,7 @@ class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         String dateString;
         History history = getInteractor().getHistory(position);
         if(history.getBlockTime()!=null) {
-            Date date = new Date(history.getBlockTime() * 1000L);
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(date);
-            String time = new SimpleDateFormat("HH:mm:ss").format(date);
-            dateString = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US) + ", " + calendar.get(Calendar.DATE) + " " + time;
+            dateString = DateCalculator.getfullDate(history.getBlockTime() * 1000L);
         } else {
             dateString = "Not confirmed";
         }
