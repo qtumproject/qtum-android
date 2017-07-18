@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -273,16 +274,29 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                                     @Override
                                     public void onNext(Boolean aBoolean) {
                                         mRestoreDialog.dismiss();
-                                        getView().setAlertDialog(mContext.getString(R.string.restored_successfully), "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
-                                            @Override
-                                            public void onOkClick() {
-                                                FragmentManager fm = getView().getFragment().getFragmentManager();
-                                                int count = fm.getBackStackEntryCount()-2;
-                                                for(int i = 0; i < count; ++i) {
-                                                    fm.popBackStack();
+                                        if(aBoolean) {
+                                            getView().setAlertDialog(mContext.getString(R.string.restored_successfully), "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
+                                                @Override
+                                                public void onOkClick() {
+                                                    FragmentManager fm = getView().getFragment().getFragmentManager();
+                                                    int count = fm.getBackStackEntryCount() - 2;
+                                                    for (int i = 0; i < count; ++i) {
+                                                        fm.popBackStack();
+                                                    }
                                                 }
-                                            }
-                                        });
+                                            });
+                                        }else {
+                                            getView().setAlertDialog(mContext.getString(R.string.something_went_wrong), "", "OK", BaseFragment.PopUpType.error, new BaseFragment.AlertDialogCallBack() {
+                                                @Override
+                                                public void onOkClick() {
+                                                    FragmentManager fm = getView().getFragment().getFragmentManager();
+                                                    int count = fm.getBackStackEntryCount() - 2;
+                                                    for (int i = 0; i < count; ++i) {
+                                                        fm.popBackStack();
+                                                    }
+                                                }
+                                            });
+                                        }
                                     }
                                 });
                     }
@@ -295,6 +309,10 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
         return rx.Observable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
+
+                if(!validateBackup()){
+                    return false;
+                }
 
                 TinyDB tinyDB = new TinyDB(mContext);
                 List<SharedTemplate> templates = tinyDB.getTemplates();
@@ -434,6 +452,30 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                 return true;
             }
         });
+    }
+
+    private boolean validateBackup(){
+
+        if(mBackup == null)
+            return false;
+
+        if(mBackup.getContracts() != null) {
+            for (ContractJSON contractJSON : mBackup.getContracts()) {
+                if (!contractJSON.getValidity()) {
+                    return false;
+                }
+            }
+        }
+
+        if(mBackup.getTemplates() != null) {
+            for (TemplateJSON templateJSON : mBackup.getTemplates()) {
+                if (!templateJSON.getValidity()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     private String readFile(File file){

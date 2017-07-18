@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 
+import android.graphics.Typeface;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -28,6 +29,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
@@ -38,6 +40,7 @@ import com.pixelplex.qtum.ui.activity.base_activity.BaseActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
+import com.pixelplex.qtum.utils.FontManager;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
@@ -213,6 +216,10 @@ public class MainActivity extends BaseActivity implements MainActivityView{
             shiftingMode.setAccessible(false);
             for (int i = 0; i < menuView.getChildCount(); i++) {
                 BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
+                TextView mSmallLabel = (TextView) item.findViewById(android.support.design.R.id.smallLabel);
+                TextView mLargeLabel = (TextView) item.findViewById(android.support.design.R.id.largeLabel);
+                mSmallLabel.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
+                mLargeLabel.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
                 item.setShiftingMode(false);
                 item.setChecked(item.getItemData().isChecked());
             }

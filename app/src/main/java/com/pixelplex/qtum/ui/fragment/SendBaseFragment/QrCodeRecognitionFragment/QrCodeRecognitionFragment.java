@@ -1,11 +1,14 @@
 package com.pixelplex.qtum.ui.fragment.SendBaseFragment.QrCodeRecognitionFragment;
 
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.google.zxing.Result;
@@ -25,7 +28,7 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
     private ZXingScannerView mZXingScannerView;
 
     @BindView(R.id.camera_container)
-    LinearLayout mLinearLayout;
+    FrameLayout mLinearLayout;
 
     public static QrCodeRecognitionFragment newInstance() {
 
@@ -35,16 +38,6 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
         fragment.setArguments(args);
         return fragment;
     }
-
-
-//    @Nullable
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        mZXingScannerView = new ZXingScannerView(getContext());
-//        mZXingScannerView.setResultHandler(this);
-//        return mZXingScannerView;
-//    }
-
 
     @Nullable
     @Override
@@ -60,6 +53,17 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
         mZXingScannerView = new ZXingScannerView(getContext());
         mZXingScannerView.setResultHandler(this);
         mLinearLayout.addView(mZXingScannerView);
+
+        mLinearLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mLinearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                ViewGroup.LayoutParams layoutParams = mZXingScannerView.getLayoutParams();
+                layoutParams.width = mLinearLayout.getWidth();
+                layoutParams.height = mLinearLayout.getHeight();
+                mZXingScannerView.setLayoutParams(layoutParams);
+            }
+        });
     }
 
     @Override
@@ -101,4 +105,5 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
             }
         }
     }
+
 }

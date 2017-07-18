@@ -1,5 +1,7 @@
 package com.pixelplex.qtum.model.backup;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -91,6 +93,10 @@ public class ContractJSON {
 
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public boolean getValidity(){
+        return !TextUtils.isEmpty(name) && !TextUtils.isEmpty(contractCreationAddres) && !TextUtils.isEmpty(type) && !TextUtils.isEmpty(contractAddress) && !TextUtils.isEmpty(publishDate) && !TextUtils.isEmpty(template);
     }
 
 }

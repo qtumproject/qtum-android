@@ -47,7 +47,7 @@ public class TemplateViewHolder extends RecyclerView.ViewHolder {
 
         title.setText(contractTemplate.getName());
 
-        date.setText(DateCalculator.getDate(contractTemplate.getDate()));
+        date.setText(DateCalculator.getShortDate(contractTemplate.getDate()));
 
         contractType.setText(contractTemplate.getContractType().toUpperCase());
     }

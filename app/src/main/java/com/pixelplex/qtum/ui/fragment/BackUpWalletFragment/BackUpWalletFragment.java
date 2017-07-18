@@ -26,8 +26,6 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
     FontButton mButtonContinue;
     @BindView(R.id.tv_toolbar_title)
     FontTextView mTextViewToolbarTitle;
-    @BindView(R.id.tv_you_can_skip)
-    FontTextView mTextViewYouCanSkip;
     @BindView(R.id.cl_back_up_wallet)
     CoordinatorLayout mCoordinatorLayout;
     @BindView(R.id.tv_brain_code)
@@ -86,14 +84,12 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
     public void initializeViews() {
         if(getArguments().getBoolean(IS_WALLET_CREATING)){
             mTextViewToolbarTitle.setText(R.string.copy_brain_code);
-            mTextViewYouCanSkip.setVisibility(View.VISIBLE);
             mTextViewCopyBrainCodeToUse.setVisibility(View.GONE);
             mButtonCopyBrainCode.setVisibility(View.GONE);
             mButtonContinue.setVisibility(View.VISIBLE);
             mButtonCopy.setVisibility(View.VISIBLE);
         }else {
             mTextViewToolbarTitle.setText(R.string.wallet_back_up);
-            mTextViewYouCanSkip.setVisibility(View.GONE);
             mButtonCopyBrainCode.setVisibility(View.VISIBLE);
             mTextViewCopyBrainCodeToUse.setVisibility(View.VISIBLE);
             mButtonContinue.setVisibility(View.GONE);

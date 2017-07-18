@@ -271,7 +271,7 @@ public class ContractBuilder {
 
     public Script createMethodScript(String abiParams, String _contractAddress) throws RuntimeException{
 
-        byte[] version = Hex.decode("01");
+        byte[] version = Hex.decode("01000000");
         byte[] gasLimit = Hex.decode("80841e0000000000");
         byte[] gasPrice = Hex.decode("0100000000000000");
         byte[] data = Hex.decode(abiParams);

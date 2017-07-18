@@ -87,36 +87,35 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
     @Override
     public void setUpTransactionData(String value, String receivedTime, List<String> from, List<String> to, boolean confirmed) {
+        if(mViewPager.getAdapter() == null) {
+            mTextViewValue.setText(value);
+            mTextViewReceivedTime.setText(receivedTime);
+            TransactionPagerAdapter transactionPagerAdapter = new TransactionPagerAdapter(getFragmentManager());
+            mViewPager.setAdapter(transactionPagerAdapter);
+            tabIndicator.setupWithViewPager(mViewPager, true);
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        mTextViewValue.setText(value);
-
-        mTextViewReceivedTime.setText(receivedTime);
-
-        TransactionPagerAdapter transactionPagerAdapter = new TransactionPagerAdapter(getFragmentManager());
-        mViewPager.setAdapter(transactionPagerAdapter);
-        tabIndicator.setupWithViewPager(mViewPager,true);
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if(position == 0){
-                    tabName.setText(getString(R.string.from));
-                } else {
-                    tabName.setText(getString(R.string.to));
                 }
-            }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                @Override
+                public void onPageSelected(int position) {
+                    if (position == 0) {
+                        tabName.setText(getString(R.string.from));
+                    } else {
+                        tabName.setText(getString(R.string.to));
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
-        notConfFlag.setVisibility((!confirmed)? View.VISIBLE : View.INVISIBLE);
+                }
+            });
+
+            notConfFlag.setVisibility((!confirmed) ? View.VISIBLE : View.INVISIBLE);
+        }
     }
 
     class TransactionPagerAdapter extends FragmentStatePagerAdapter{
