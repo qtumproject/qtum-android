@@ -167,6 +167,12 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                 }
                 getView().updateAvailableBalance(balance.toString() + " QTUM");
             }
+
+            @Override
+            public void onError(String error) {
+                getView().dismissProgressDialog();
+                getView().setAlertDialog(mContext.getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
+            }
         });
     }
 
@@ -254,7 +260,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                         });
                     } else {
                         for(final Token token : mTokenList){
-                            if(token.getContractName().equals(currency)) {
+                            if(token.getContractAddress().equals(currency)) {
 
                                 getView().getSocketService().addTokenBalanceChangeListener(token.getContractAddress(), new TokenBalanceChangeListener() {
                                     @Override
@@ -330,6 +336,12 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
                         getView().setAlertDialog(mContext.getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
                     }
                 });
+            }
+
+            @Override
+            public void onError(String error) {
+                getView().dismissProgressDialog();
+                getView().setAlertDialog(mContext.getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
             }
         });
 

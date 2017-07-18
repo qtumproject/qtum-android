@@ -42,7 +42,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
             settingsData.add(new SettingSwitchObject(R.string.touch_id, R.drawable.ic_touchid, 1, QtumSharedPreference.getInstance().isTouchIdEnable(getView().getContext())));
         }
         settingsData.add(new SettingObject(R.string.subscribe_tokens,R.drawable.ic_tokensubscribe,2));
-        settingsData.add(new SettingObject(R.string.smart_contracts,R.drawable.ic_my_new_contracts,2));
+        settingsData.add(new SettingObject(R.string.smart_contracts,R.drawable.ic_prof_smart_contr,2));
         settingsData.add(new SettingObject(R.string.about,R.drawable.ic_about,3));
         settingsData.add(new SettingObject(R.string.log_out, R.drawable.ic_logout, 3));
     }

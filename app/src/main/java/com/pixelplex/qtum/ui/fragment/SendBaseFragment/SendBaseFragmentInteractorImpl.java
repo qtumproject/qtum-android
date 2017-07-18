@@ -58,7 +58,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        callBack.onError("Get Unspent Outputs " + e.getMessage());
                     }
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
@@ -146,6 +146,11 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
                 callBack.onSuccess(transactionHex);
             }
+
+            @Override
+            public void onError(String error) {
+                callBack.onError(error);
+            }
         });
     }
 
@@ -189,6 +194,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
     interface GetUnspentListCallBack {
         void onSuccess(List<UnspentOutput> unspentOutputs);
+        void onError(String error);
     }
 
     interface CreateTxCallBack {

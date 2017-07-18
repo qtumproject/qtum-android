@@ -1,5 +1,7 @@
 package com.pixelplex.qtum.model.backup;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -92,6 +94,10 @@ public class TemplateJSON {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean getValidity(){
+        return (!TextUtils.isEmpty(source) || !TextUtils.isEmpty(abi)) && !TextUtils.isEmpty(uuid) && !TextUtils.isEmpty(creationDate) && !TextUtils.isEmpty(type) && !TextUtils.isEmpty(name);
     }
 
 }

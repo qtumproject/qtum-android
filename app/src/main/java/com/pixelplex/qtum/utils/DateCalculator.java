@@ -1,18 +1,22 @@
 package com.pixelplex.qtum.utils;
 
+import android.text.format.DateUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class DateCalculator {
 
-    public static String getDate(String dateInFormat){
+    public static String getShortDate(String dateInFormat){
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-d HH:mm:ss");
+        TimeZone utc = TimeZone.getTimeZone("etc/UTC");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-d HH:mm:ss",Locale.US);
         long date = 0;
         try {
             date = formatter.parse(dateInFormat).getTime();
@@ -39,9 +43,9 @@ public class DateCalculator {
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(dateTransaction);
             if ((date - calendarNow.getTimeInMillis()) > 0) {
-                String hours = (calendar.get(Calendar.HOUR) > 9)? String.valueOf(calendar.get(Calendar.HOUR)) : '0' + String.valueOf(calendar.get(Calendar.HOUR));
-                String mins = (calendar.get(Calendar.MINUTE) > 9)? String.valueOf(calendar.get(Calendar.MINUTE)) : '0' + String.valueOf(calendar.get(Calendar.MINUTE));
-                dateString = hours + ":" + mins;
+                SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
+                timeFormatter.setTimeZone(utc);
+                dateString = timeFormatter.format(dateTransaction);
             } else {
                 dateString = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + ", " + calendar.get(Calendar.DATE);
             }
@@ -49,13 +53,60 @@ public class DateCalculator {
         return dateString;
     }
 
+    public static String getShortDate(long timeInMills){
+        TimeZone utc = TimeZone.getTimeZone("etc/UTC");
+        long currentTime = (new Date()).getTime();
+        long delay = currentTime - timeInMills;
+        String dateString;
+        if (delay < 60000) {
+            dateString = delay / 1000 + " sec ago";
+        } else
+        if (delay < 3600000) {
+            dateString = delay / 60000 + " min ago";
+        } else {
+
+            Calendar calendarNow = Calendar.getInstance();
+            calendarNow.set(Calendar.HOUR_OF_DAY, 0);
+            calendarNow.set(Calendar.MINUTE, 0);
+            calendarNow.set(Calendar.SECOND, 0);
+
+            Date dateTransaction = new Date(timeInMills);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dateTransaction);
+            if ((timeInMills - calendarNow.getTimeInMillis()) > 0) {
+                SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
+                timeFormatter.setTimeZone(utc);
+                dateString = timeFormatter.format(dateTransaction);
+            } else {
+                dateString = String.format(Locale.US, "%s, %d", calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US),calendar.get(Calendar.DAY_OF_MONTH));
+            }
+        }
+        return dateString;
+    }
+
+    public static String getfullDate(long timeInMills){
+        TimeZone utc = TimeZone.getTimeZone("etc/UTC");
+        String dateString;
+        Date dateTransaction = new Date(timeInMills);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateTransaction);
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
+        timeFormatter.setTimeZone(utc);
+        dateString = String.format(Locale.US, "%s, %d %s", calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US),calendar.get(Calendar.DAY_OF_MONTH), timeFormatter.format(dateTransaction));
+        return dateString;
+    }
+
     public static String getDateInFormat(Date date){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        TimeZone utc = TimeZone.getTimeZone("etc/UTC");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        formatter.setTimeZone(utc);
         return formatter.format(date);
     }
 
     public static String getDateInFormat(Long date){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        TimeZone utc = TimeZone.getTimeZone("etc/UTC");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        formatter.setTimeZone(utc);
         return formatter.format(new Date(date));
     }
 

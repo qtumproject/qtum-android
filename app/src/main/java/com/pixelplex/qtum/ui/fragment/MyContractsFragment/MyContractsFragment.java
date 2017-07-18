@@ -108,7 +108,7 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
         public void bindContract(Contract contract){
             mContract = contract;
             if(contract.getDate()!=null){
-                mTextViewDate.setText(DateCalculator.getDate(contract.getDate()));
+                mTextViewDate.setText(DateCalculator.getShortDate(contract.getDate()));
             }else{
                 mTextViewDate.setText(R.string.not_confirmed);
             }
