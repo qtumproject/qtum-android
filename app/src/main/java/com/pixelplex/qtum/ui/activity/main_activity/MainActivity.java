@@ -241,6 +241,11 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(mPermissionsResultListener!=null) {
@@ -305,5 +310,10 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     public void setCheckAuthenticationShowFlag(boolean flag){
         getPresenter().setCheckAuthenticationShowFlag(flag);
+    }
+
+    @Override
+    public MainActivity getActivity(){
+        return this;
     }
 }
