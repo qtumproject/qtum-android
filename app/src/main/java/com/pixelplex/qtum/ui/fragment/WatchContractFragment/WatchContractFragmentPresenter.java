@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.WatchContractFragment;
 import android.support.v4.app.FragmentManager;
 
 import com.pixelplex.qtum.datastorage.FileStorageManager;
+import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.datastorage.TinyDB;
@@ -11,6 +12,7 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.DateCalculator;
 
 import java.util.List;
+import java.util.UUID;
 
 
 class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
@@ -29,17 +31,17 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
     void onOkClick(String name, String address, String jsonInterface, boolean isToken){
         getView().setProgressDialog();
         if(isToken){
-            long uiid = FileStorageManager.getInstance().importTemplate(getView().getContext(),null,null,jsonInterface,"token","no_name",DateCalculator.getCurrentDate());
+            ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(getView().getContext(), null, null, jsonInterface, "token", "no_name", DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
             TinyDB tinyDB = new TinyDB(getView().getContext());
             List<Token> tokenList = tinyDB.getTokenList();
-            Token token = new Token(address, uiid, true, DateCalculator.getCurrentDate(), "Stub!", name);
+            Token token = new Token(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "Stub!", name);
             tokenList.add(token);
             tinyDB.putTokenList(tokenList);
         }else {
-            long uiid = FileStorageManager.getInstance().importTemplate(getView().getContext(),null,null,jsonInterface,"none","no_name",DateCalculator.getCurrentDate());
+            ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(getView().getContext(), null, null, jsonInterface, "none", "no_name", DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
             TinyDB tinyDB = new TinyDB(getView().getContext());
             List<Contract> contractList = tinyDB.getContractListWithoutToken();
-            Contract contract = new Contract(address, uiid, true, DateCalculator.getCurrentDate(), "Stub!", name);
+            Contract contract = new Contract(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "Stub!", name);
             contractList.add(contract);
             tinyDB.putContractListWithoutToken(contractList);
         }

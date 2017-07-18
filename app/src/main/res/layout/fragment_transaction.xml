@@ -77,7 +77,7 @@
                     android:paddingEnd="16dp"
                     android:paddingStart="16dp"
                     android:paddingTop="4dp"
-                    android:text="@string/not_confirmed_balance"
+                    android:text="@string/not_confirmed_transaction"
                     android:textColor="@color/colorPrimary"
                     android:textSize="20sp"
                     app:typefaceAsset="@string/simplonMonoMedium" />
@@ -106,7 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:gravity="end"
+                    android:gravity="right"
                     android:text="Dec 18"
                     android:textColor="@color/background"
                     app:typefaceAsset="@string/simplonMonoRegular" />

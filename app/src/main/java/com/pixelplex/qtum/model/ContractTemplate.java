@@ -1,19 +1,29 @@
 package com.pixelplex.qtum.model;
 
+import com.pixelplex.qtum.model.backup.TemplateJSON;
+
 public class ContractTemplate {
     private String name;
     private String date;
     private String type;
-    private long uiid;
+    private String uuid;
     private boolean isFullContractTemplate;
 
-    public ContractTemplate(String name, String date, String contractType, long uiid){
+    public ContractTemplate(String name, String date, String contractType, String uuid){
         this.name = name;
         this.date = date;
         this.type = contractType;
-        this.uiid = uiid;
+        this.uuid = uuid;
         isFullContractTemplate = true;
 
+    }
+
+    public ContractTemplate(TemplateJSON templateJSON){
+        this.name = templateJSON.getName();
+        this.date = templateJSON.getCreationDate();
+        this.type = templateJSON.getType();
+        this.uuid = templateJSON.getUuid();
+        isFullContractTemplate = true;
     }
 
     public String getName() {
@@ -40,12 +50,12 @@ public class ContractTemplate {
         this.type = contractType;
     }
 
-    public long getUiid() {
-        return uiid;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setUiid(long uiid) {
-        this.uiid = uiid;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public boolean isFullContractTemplate() {

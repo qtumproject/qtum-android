@@ -81,7 +81,7 @@ public class TemplatesFragment extends BaseFragment implements TemplatesFragment
     }
 
     @Override
-    public void onSelectContract(long uiid) {
+    public void onSelectContract(String uiid) {
         presenter.openConstructorByName(uiid);
     }
 }

@@ -24,10 +24,12 @@ package com.pixelplex.qtum.datastorage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,11 +61,13 @@ public class TinyDB {
     private final String TOKEN_LIST = "token_list";
     private final String CONTRACT_TEMPLATE_LIST = "contract_template_list";
     public final String CURRENT_CONTRACT_PACKAGE_NAME = "current_contract_package_name";
+    private final String TEMPLATE_NAME_LIST = "TEMPLATE_NAME_LIST";
+    private final String TEMPLATE_UUID_LIST = "TEMPLATE_UUID_LIST";
+    private final String SHARED_TEMPLATE_LIST = "SHARED_TEMPLATE_LIST";
 
     public TinyDB(Context appContext) {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
     }
-
 
     /**
      * Decodes the Bitmap from 'path' and returns it
@@ -83,6 +87,62 @@ public class TinyDB {
         return bitmapFromPath;
     }
 
+    public static boolean isTemplateUnique(List<SharedTemplate> templates, String uuid){
+        for (SharedTemplate template : templates){
+            if (uuid.equals(template.getUuid())){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public List<SharedTemplate> getTemplates(){
+        Gson gson = new Gson();
+
+        ArrayList<String> objStrings = getListString(SHARED_TEMPLATE_LIST);
+        List<SharedTemplate> objects = new ArrayList<>();
+
+        for(String jObjString : objStrings){
+            SharedTemplate value  = gson.fromJson(jObjString,  SharedTemplate.class);
+            objects.add(value);
+        }
+        return objects;
+    }
+
+    public SharedTemplate addTemplate(String name, String uuid){
+        List<SharedTemplate> templates = getTemplates();
+
+        if(templates == null){
+            templates = new ArrayList<>();
+        }
+        SharedTemplate newTemplate = new SharedTemplate(uuid, name);
+        templates.add(newTemplate);
+        putListTemplates(templates);
+        return newTemplate;
+    }
+
+    public void addTemplates(List<SharedTemplate> templates){
+        List<SharedTemplate> sharedTemplates = getTemplates();
+        if(sharedTemplates == null || sharedTemplates.size() == 0){
+            putListTemplates(templates);
+        } else {
+            sharedTemplates.addAll(templates);
+            putListTemplates(sharedTemplates);
+        }
+    }
+
+    private void putListTemplates(List<SharedTemplate> templates){
+        Gson gson = new Gson();
+        ArrayList<String> objStrings = new ArrayList<>();
+        for(Object obj : templates){
+            objStrings.add(gson.toJson(obj));
+        }
+        putListString(SHARED_TEMPLATE_LIST, objStrings);
+    }
+
+    public void clearTemplateList(){
+        putListString(SHARED_TEMPLATE_LIST, new ArrayList<String>());
+    }
 
     /**
      * Returns the String path of the last saved image
@@ -337,8 +397,6 @@ public class TinyDB {
     	return objects;
     }
 
-
-
     public <T> T getObject(String key, Class<T> classOfT){
 
         String json = getString(key);
@@ -379,7 +437,9 @@ public class TinyDB {
 
         for(String contractInfoString : contractInfoStrings){
             Contract contract = gson.fromJson(contractInfoString,Contract.class);
-            contractArrayList.add(contract);
+            if(contract != null) {
+                contractArrayList.add(contract);
+            }
         }
 
         return contractArrayList;
@@ -393,7 +453,9 @@ public class TinyDB {
 
         for(String contractInfoString : tokenStrings){
             Token token = gson.fromJson(contractInfoString,Token.class);
-            tokenArrayList.add(token);
+            if(token != null) {
+                tokenArrayList.add(token);
+            }
         }
 
         return tokenArrayList;
@@ -411,7 +473,9 @@ public class TinyDB {
 
         for(String contractInfoString : contractTemplateString){
             ContractTemplate contractTemplate = gson.fromJson(contractInfoString,ContractTemplate.class);
-            contractTemplateArrayList.add(contractTemplate);
+            if(contractTemplate != null) {
+                contractTemplateArrayList.add(contractTemplate);
+            }
         }
 
         return contractTemplateArrayList;
@@ -500,6 +564,11 @@ public class TinyDB {
     public void putListString(String key, ArrayList<String> stringList) {
         checkForNullKey(key);
         String[] myStringList = stringList.toArray(new String[stringList.size()]);
+        preferences.edit().putString(key, TextUtils.join("‚‗‚", myStringList)).apply();
+    }
+
+    public void putArrayString(String key, String[] myStringList) {
+        checkForNullKey(key);
         preferences.edit().putString(key, TextUtils.join("‚‗‚", myStringList)).apply();
     }
 
@@ -671,9 +740,9 @@ public class TinyDB {
         }
     }
 
-    public ContractTemplate getContractTemplateByUiid(long uiid){
+    public ContractTemplate getContractTemplateByUiid(String uiid){
         for(ContractTemplate contractTemplate : getContractTemplateList()){
-            if(contractTemplate.getUiid() == uiid){
+            if(contractTemplate.getUuid().equals(uiid)){
                 return contractTemplate;
             }
         }

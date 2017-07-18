@@ -50,10 +50,9 @@
             <com.pixelplex.qtum.utils.FontTextView
                 android:id="@+id/tv_value"
                 android:layout_width="match_parent"
-                android:gravity="end"
+                android:gravity="right"
                 app:typefaceAsset="@string/simplonMonoMedium"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
                 android:textColor="@color/colorPrimary"
                 android:text="-7,450 QTUM"
                 android:textSize="18sp"

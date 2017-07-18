@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.datastorage.SharedTemplate;
+import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
@@ -294,10 +296,12 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
             @Override
             public Boolean call() throws Exception {
 
-                        TinyDB tinyDB = new TinyDB(mContext);
-                        if (!restoreContracts && !restoreTokens) {
+                TinyDB tinyDB = new TinyDB(mContext);
+                List<SharedTemplate> templates = tinyDB.getTemplates();
+
+                if (!restoreContracts && !restoreTokens) {
                             for (TemplateJSON templateJSON : mBackup.getTemplates()) {
-                                FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
+                                FileStorageManager.getInstance().importTemplate(mContext, templateJSON, templates);
                             }
 
                         } else if (!restoreTemplates && !restoreTokens) {
@@ -305,9 +309,9 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                             for (ContractJSON contractJSON : mBackup.getContracts()) {
                                 if (!contractJSON.getType().equals("token")) {
                                     for (TemplateJSON templateJSON : mBackup.getTemplates()) {
-                                        if (contractJSON.getTemplate() == templateJSON.getUiid()) {
-                                            long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
-                                            Contract contract = new Contract(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                        if (contractJSON.getTemplate().equals(templateJSON.getUuid())) {
+                                            ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(mContext, templateJSON, templates);
+                                            Contract contract = new Contract(contractJSON.getContractAddress(), contractTemplate.getUuid(), true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                             contractList.add(contract);
                                         }
                                     }
@@ -322,9 +326,9 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                             for (ContractJSON contractJSON : mBackup.getContracts()) {
                                 if (contractJSON.getType().equals("token")) {
                                     for (TemplateJSON templateJSON : mBackup.getTemplates()) {
-                                        if (contractJSON.getTemplate() == templateJSON.getUiid()) {
-                                            long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
-                                            Token token = new Token(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                        if (contractJSON.getTemplate().equals(templateJSON.getUuid())) {
+                                            ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(mContext, templateJSON, templates);
+                                            Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                             token.setSubscribe(contractJSON.getIsActive());
                                             tokenList.add(token);
                                         }
@@ -341,18 +345,18 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                             for (ContractJSON contractJSON : mBackup.getContracts()) {
                                 if (contractJSON.getType().equals("token")) {
                                     for (TemplateJSON templateJSON : mBackup.getTemplates()) {
-                                        if (contractJSON.getTemplate() == templateJSON.getUiid()) {
-                                            long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
-                                            Token token = new Token(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                        if (contractJSON.getTemplate().equals(templateJSON.getUuid())) {
+                                            ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(mContext, templateJSON, templates);
+                                            Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                             token.setSubscribe(contractJSON.getIsActive());
                                             tokenList.add(token);
                                         }
                                     }
                                 } else {
                                     for (TemplateJSON templateJSON : mBackup.getTemplates()) {
-                                        if (contractJSON.getTemplate() == templateJSON.getUiid()) {
-                                            long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
-                                            Contract contract = new Contract(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                        if (contractJSON.getTemplate().equals(templateJSON.getUuid())) {
+                                            ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(mContext, templateJSON, templates);
+                                            Contract contract = new Contract(contractJSON.getContractAddress(), contractTemplate.getUuid(), true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                             contractList.add(contract);
                                         }
                                     }
@@ -369,14 +373,14 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                             List<Token> tokenList = new ArrayList<>();
                             List<Contract> contractList = new ArrayList<>();
                             for (TemplateJSON templateJSON : mBackup.getTemplates()) {
-                                long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
+                                ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(mContext, templateJSON, templates);
                                 for(ContractJSON contractJSON : mBackup.getContracts()){
-                                    if(contractJSON.getTemplate() == templateJSON.getUiid()){
+                                    if(contractJSON.getTemplate().equals(templateJSON.getUuid())){
                                         if(!contractJSON.getType().equals("token")){
-                                            Contract contract = new Contract(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            Contract contract = new Contract(contractJSON.getContractAddress(), contractTemplate.getUuid(), true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                             contractList.add(contract);
                                         } else if(contractJSON.getType().equals("token")){
-                                            Token token = new Token(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                             token.setSubscribe(contractJSON.getIsActive());
                                             tokenList.add(token);
                                         }
@@ -393,11 +397,11 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                         }else if(restoreContracts){
                             List<Contract> contractList = new ArrayList<>();
                             for (TemplateJSON templateJSON : mBackup.getTemplates()) {
-                                long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
+                                ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(mContext, templateJSON, templates);
                                 for(ContractJSON contractJSON : mBackup.getContracts()){
-                                    if(contractJSON.getTemplate() == templateJSON.getUiid()){
+                                    if(contractJSON.getTemplate().equals(templateJSON.getUuid())){
                                         if(!contractJSON.getType().equals("token")){
-                                            Contract contract = new Contract(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            Contract contract = new Contract(contractJSON.getContractAddress(), contractTemplate.getUuid(), true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                             contractList.add(contract);
                                         }
                                     }
@@ -410,11 +414,11 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                         }else{
                             List<Token> tokenList = new ArrayList<>();
                             for (TemplateJSON templateJSON : mBackup.getTemplates()) {
-                                long uiid = FileStorageManager.getInstance().importTemplate(mContext, templateJSON.getSource(), templateJSON.getBytecode(), templateJSON.getAbi(), templateJSON.getType(), templateJSON.getName(), templateJSON.getCreationDate());
+                                ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(mContext, templateJSON, templates);
                                 for(ContractJSON contractJSON : mBackup.getContracts()){
-                                    if(contractJSON.getTemplate() == templateJSON.getUiid()){
+                                    if(contractJSON.getTemplate().equals(templateJSON.getUuid())){
                                         if(contractJSON.getType().equals("token")){
-                                            Token token = new Token(contractJSON.getContractAddress(), uiid, true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                             token.setSubscribe(contractJSON.getIsActive());
                                             tokenList.add(token);
                                         }

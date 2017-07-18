@@ -6,14 +6,14 @@ import java.io.Serializable;
 public class Contract implements Serializable {
 
     protected String contractAddress;
-    protected long uiid;
+    protected String uiid;
     protected String contractName;
     protected Boolean hasBeenCreated;
     protected String date;
     protected String senderAddress;
     protected boolean isSubscribe;
 
-    public Contract(String contractAddress, long uiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName){
+    public Contract(String contractAddress, String uiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName){
         this.contractAddress = contractAddress;
         this.uiid = uiid;
         this.hasBeenCreated = hasBeenCreated;
@@ -31,11 +31,11 @@ public class Contract implements Serializable {
         this.contractAddress = contractAddress;
     }
 
-    public long getUiid() {
+    public String getUiid() {
         return uiid;
     }
 
-    public void setUiid(long uiid) {
+    public void setUiid(String uiid) {
         this.uiid = uiid;
     }
 

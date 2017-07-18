@@ -158,12 +158,12 @@ public class KeyStorage {
 
     public List<DeterministicKey> getKeyList(int numberOfKeys) {
         if (mDeterministicKeyList == null) {
-            mDeterministicKeyList = new ArrayList<>(numberOfKeys);
+            mDeterministicKeyList = new ArrayList<>(ADDRESSES_COUNT);
             mAddressesList = new ArrayList<>();
             List<ChildNumber> pathParent = new ArrayList<>();
             pathParent.add(new ChildNumber(0,true));
             pathParent.add(new ChildNumber(0,true));
-            for (int i = 0; i < numberOfKeys; i++) {
+            for (int i = 0; i < ADDRESSES_COUNT; i++) {
                 ImmutableList<ChildNumber> path = HDUtils.append(pathParent, new ChildNumber(i, true));
                 DeterministicKey k = sWallet.getActiveKeyChain().getKeyByPath(path,true);
                 mDeterministicKeyList.add(k);

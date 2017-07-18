@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ContractFunctionFragmentView extends BaseFragmentView{
     void setUpParameterList(List<ContractMethodParameter> contractMethodParameterList);
-    long getContractTemplateUiid();
+    String getContractTemplateUiid();
     String getMethodName();
 }

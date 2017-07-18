@@ -18,7 +18,9 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.ContractBuilder;
 import com.pixelplex.qtum.datastorage.TinyDB;
 
+import org.bitcoinj.core.Utils;
 import org.bitcoinj.script.Script;
+import org.bitcoinj.script.ScriptChunk;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,7 +40,7 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
     private Context mContext;
 
 
-    private long mContractTemplateUiid;
+    private String mContractTemplateUiid;
 
 
     private List<ContractMethodParameter> mContractMethodParameterList;
@@ -58,7 +60,7 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
     }
 
 
-    void confirmContract(final long uiid) {
+    void confirmContract(final String uiid) {
         getView().setProgressDialog();
         mContractTemplateUiid = uiid;
         ContractBuilder contractBuilder = new ContractBuilder();
@@ -111,12 +113,14 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
                         Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
                             @Override
                             public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {
-                                return unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? -1 : 0;
+                                return unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? -1 : 0;
                             }
                         });
                         ContractBuilder contractBuilder = new ContractBuilder();
                         Script script = contractBuilder.createConstructScript(abiParams);
-                        sendTx(contractBuilder.createTransactionHash(script,unspentOutputs),"Stub!");
+
+                        String hash = contractBuilder.createTransactionHash(script,unspentOutputs);
+                        sendTx(hash, "Stub!");
                     }
                 });
     }
@@ -152,13 +156,13 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
                         getView().getApplication().setContractAwaitCountPlus();
                         String name = "";
                         for(ContractMethodParameter contractMethodParameter : mContractMethodParameterList){
-                            if(contractMethodParameter.getName().equals("_name")){
+                            if(contractMethodParameter.getName().equals("_tokenName")){
                                 name = contractMethodParameter.getValue();
                             }
                         }
                         TinyDB tinyDB = new TinyDB(mContext);
                         for(ContractTemplate contractTemplate : tinyDB.getContractTemplateList()){
-                            if(contractTemplate.getUiid() == mContractTemplateUiid){
+                            if(contractTemplate.getUuid().equals(mContractTemplateUiid)){
                                 if(contractTemplate.getContractType().equals("token")){
                                     Token token = new Token(null, mContractTemplateUiid, false, null, senderAddress, name);
                                     List<Token> tokenList = tinyDB.getTokenList();

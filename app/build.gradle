@@ -91,7 +91,7 @@ android {
     }
 
     gradle.taskGraph.whenReady {taskGraph ->
-        if (taskGraph.hasTask('assembleRelease')) {
+        if (taskGraph.hasTask(assembleRelease)) {
             autoIncrementVersionCode()
         }
     }

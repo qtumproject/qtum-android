@@ -74,16 +74,16 @@
     <string name="incorrect_repeated_pin">Incorrect repeated PIN</string>
     <string name="your_brain_code">Your Passphrase</string>
     <string name="copy_brain_code">Copy Passphrase</string>
-    <string name="copy_brain_code_n_to_use_it_in_another_app">Copy the passphrase to initialize\na different Qtum wallet app</string>
+    <string name="copy_brain_code_n_to_use_it_in_another_app">Copy the passphase to restore\nyour wallet on another device</string>
     <string name="choose_another_address">Choose Another Address</string>
     <string name="log_out">Log Out</string>
     <string name="qr_code">QR Code</string>
     <string name="_continue">Continue</string>
-    <string name="you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want">You can skip this step and export your Passphrase at any time you want.</string>
+    <string name="you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want">You can skip this step and export your passphrase at any time</string>
     <string name="copy">Copy</string>
     <string name="addresses">Addresses</string>
     <string name="create_token">Create Token</string>
-    <string name="subscribe_tokens">Subscribe Tokens</string>
+    <string name="subscribe_tokens">Token Subscriptions</string>
     <string name="set_your_token_name">Set Your Token Name</string>
     <string name="token_symbol">Token Symbol</string>
     <string name="set_your_token_features">Set Your Token Features</string>
@@ -103,7 +103,7 @@
     <string name="fee">FEE</string>
     <string name="currency">Currency</string>
     <string name="search">Search</string>
-    <string name="chose_to_subscribe">Choose to subscribe</string>
+    <string name="chose_to_subscribe">Token Subscriptions</string>
     <string name="enter_pin_lower_case">enter pin</string>
     <string name="enter_new_pin">enter new pin</string>
     <string name="repeat_pin">repeat pin</string>
@@ -114,7 +114,7 @@
     <string name="coped">Copied</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="skip">Skip</string>
-    <string name="not_confirmed_balance">Not Confirmed Balance</string>
+    <string name="not_confirmed_balance">Unconfirmed Balance</string>
     <string name="not_confirmed_trans">Transaction Not Confirmed Yet</string>
     <string name="templates">Templates</string>
     <string name="set_your_token">Set Your Token</string>
@@ -141,13 +141,13 @@
 
     <string name="sender_address">Sender Address</string>
     <string name="contract_address">Contract Address</string>
-    <string name="not_confirmed">Not Confirmed</string>
+    <string name="not_confirmed">Unconfirmed</string>
     <string name="watch_contract">Watch Contract</string>
     <string name="watch_token">Watch Token</string>
     <string name="restore_contracts">Restore Contracts</string>
     <string name="backup_contracts">Backup Contracts</string>
     <string name="select_back_up_file">Select back-up file</string>
-    <string name="please_wait_a_few_seconds">Please wait a few seconds</string>
+    <string name="please_wait_a_few_seconds">Please wait</string>
     <string name="payment_completed_successfully">Payment completed successfully</string>
     <string name="default_currency">(default currency)</string>
     <string name="error">Error</string>
@@ -171,8 +171,9 @@
     <string name="Source_code">Source Code</string>
     <string name="store_categories">Qstore Categories</string>
     <string name="tap_to_save_the_file">Tap to save the file</string>
-    <string name="my_new_contracts">My New Contracts</string>
+    <string name="my_new_contracts">My Contract Templates</string>
     <string name="my_published_contracts">My Published Contracts</string>
+    <string name="not_confirmed_transaction">Unconfirmed Transaction</string>
 
 
 </resources>

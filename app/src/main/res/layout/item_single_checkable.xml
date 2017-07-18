@@ -17,9 +17,12 @@
             android:id="@+id/tv_single_string"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
             android:layout_weight="1"
+            android:maxLines="1"
+            android:ellipsize="end"
             app:typefaceAsset="@string/simplonMonoRegular"
-            android:gravity="center_vertical"
+            android:gravity="left|center_vertical"
             android:text="asdas12312kmddm7m12312mfvf6"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"/>

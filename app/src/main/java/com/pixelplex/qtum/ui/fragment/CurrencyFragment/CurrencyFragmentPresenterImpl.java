@@ -31,7 +31,7 @@ class CurrencyFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
         contractTokenList.add("Qtum " + getView().getContext().getString(R.string.default_currency));
         for(Token token : getInteractor().getTokenList()){
             if(token.isHasBeenCreated() && token.isSubscribe()){
-                contractTokenList.add(token.getContractName());
+                contractTokenList.add(token.getContractAddress());
             }
         }
         getView().setTokenList(contractTokenList);

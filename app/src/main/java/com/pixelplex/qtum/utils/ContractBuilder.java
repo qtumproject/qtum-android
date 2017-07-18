@@ -41,15 +41,24 @@ import rx.Observable;
 
 public class ContractBuilder {
 
-    private boolean isStringChainNow = false;
     private String hashPattern = "0000000000000000000000000000000000000000000000000000000000000000";
+
+                                //0000000000000000000000000000000000000000000000000000000000000001 //1 первый параметр
+                                //0000000000000000000000000000000000000000000000000000000000000080 //128 оффсет первой строки
+                                //0000000000000000000000000000000000000000000000000000000000000002 //2 третий параметр
+                                //00000000000000000000000000000000000000000000000000000000000000c0 //192 оффсет второй строки
+                                //0000000000000000000000000000000000000000000000000000000000000008 //8 длина первой строки
+                                //6e616d6500000000000000000000000000000000000000000000000000000000 //name первая строка
+                                //000000000000000000000000000000000000000000000000000000000000000c //12 длина второй строки
+                                //73796d626f6c0000000000000000000000000000000000000000000000000000 //symbol вторая строка
+
     private final int radix = 16;
     private final String TYPE_INT = "int";
     private final String TYPE_STRING = "string";
     private final String TYPE_ADDRESS = "address";
 
     final int OP_PUSHDATA_1 = 1;
-    final int OP_PUSHDATA_4 = 0x4e;
+    final int OP_PUSHDATA_4 = 0x04;
     final int OP_PUSHDATA_8 = 8;
     final int OP_EXEC = 193;
     final int OP_EXEC_ASSIGN = 194;
@@ -88,8 +97,13 @@ public class ContractBuilder {
         });
     }
 
-    public Observable<String> createAbiConstructParams(final List<ContractMethodParameter> contractMethodParameterList, final long uiid, Context context){
+    long paramsCount;
+
+    public Observable<String> createAbiConstructParams(final List<ContractMethodParameter> contractMethodParameterList, final String uiid, Context context){
         mContext = context;
+        paramsCount = contractMethodParameterList.size();
+        currStringOffset = 0;
+
         return rx.Observable.fromCallable(new Callable<String>() {
             @Override
             public String call() throws Exception {
@@ -100,7 +114,7 @@ public class ContractBuilder {
                         abiParams += convertParameter(parameter, abiParams);
                     }
                 }
-                abiParams = getByteCodeByUiid(uiid) + abiParams;
+                abiParams = getByteCodeByUiid(uiid) + abiParams + appendStringParameters();
                 return abiParams;
             }
         });
@@ -111,24 +125,23 @@ public class ContractBuilder {
         String _value = parameter.getValue();
 
         if(parameter.getType().contains(TYPE_INT)){
-            isStringChainNow = false;
             return appendNumericPattern(convertToByteCode(Long.valueOf(_value)));
         } else if(parameter.getType().contains(TYPE_STRING)){
-            String offsetToAbi = "";
-            if(!isStringChainNow) {
-                int stringChainSize = getStringsChainSize(parameter);
-                for (int i = 0; i < stringChainSize; i++){
-                    String offset = getStringOffset(abiParams);
-                    offsetToAbi += offset;
-                    abiParams += offset;
-                }
-                isStringChainNow = true;
-            }
-            return  offsetToAbi + appendStringPattern(convertToByteCode(_value));
+            return  getStringOffset(parameter);
         } else if(parameter.getType().contains(TYPE_ADDRESS)){
             return appendAddressPattern(Hex.toHexString(Base58.decode(_value)).substring(2,42));
         }
         return "";
+    }
+
+    private String appendStringParameters(){
+        String stringParams = "";
+        for (ContractMethodParameter parameter : mContractMethodParameterList) {
+            if(parameter.getType().contains(TYPE_STRING)){
+                stringParams += appendStringPattern(convertToByteCode(parameter.getValue()));
+            }
+        }
+        return stringParams;
     }
 
     private int getStringsChainSize(ContractMethodParameter parameter) {
@@ -168,13 +181,29 @@ public class ContractBuilder {
         return hex.toString();
     }
 
-
     private String getStringOffset(String data) {
         return appendNumericPattern(convertToByteCode(data.length()));
     }
 
+    long currStringOffset = 0;
+
+    private String getStringOffset(ContractMethodParameter parameter){
+        long currOffset = ((paramsCount + currStringOffset) * 32);
+        currStringOffset = getStringHash(parameter.getValue()).length() / hashPattern.length() + 1/*string length section*/;
+        return appendNumericPattern(convertToByteCode(currOffset));
+    }
+
     private String getStringLength(String _value) {
-        return appendNumericPattern(convertToByteCode(_value.length()/2));
+        return appendNumericPattern(convertToByteCode(_value.length()));
+    }
+
+    private String getStringHash(String _value){
+        if(_value.length()<=hashPattern.length()) {
+            return formNotFullString(_value);
+        }else {
+            int ost = _value.length() % hashPattern.length();
+            return  _value + hashPattern.substring(0,hashPattern.length()-ost);
+        }
     }
 
     private String appendStringPattern(String _value) {
@@ -204,13 +233,13 @@ public class ContractBuilder {
         return hashPattern.substring(0,hashPattern.length()-_value.length()) + _value;
     }
 
-    private String getByteCodeByUiid(long uiid) {
+    private String getByteCodeByUiid(String uiid) {
         return FileStorageManager.getInstance().readByteCodeContract(mContext, uiid);
     }
 
     public Script createConstructScript(String abiParams){
 
-        byte[] version = Hex.decode("01");
+        byte[] version = Hex.decode("01000000");
         byte[] gasLimit = Hex.decode("80841e0000000000");
         byte[] gasPrice = Hex.decode("0100000000000000");
         byte[] data = Hex.decode(abiParams);
@@ -289,7 +318,7 @@ public class ContractBuilder {
         }
 
         if(unspentOutput == null){
-            throw new RuntimeException("Sorry, you have insaffiсient funds available");
+            throw new RuntimeException("You have insufficient funds for this transaction");
         }
 
         BigDecimal bitcoin = new BigDecimal(100000000);
@@ -297,7 +326,7 @@ public class ContractBuilder {
         transaction.addOutput(Coin.valueOf((long)(unspentOutput.getAmount().multiply(bitcoin).subtract(new BigDecimal("10000000")).doubleValue())),
                 myKey.toAddress(CurrentNetParams.getNetParams()));
 
-        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList(100)) {
+        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList(10)) {
             if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
                 Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
                 TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);

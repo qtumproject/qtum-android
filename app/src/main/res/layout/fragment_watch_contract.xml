@@ -66,6 +66,7 @@
                 android:id="@+id/et_contract_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="left|center_vertical"
                 android:hint="Contract Name"
                 android:imeOptions="actionNext"
                 android:textColor="@color/colorPrimary"/>
@@ -86,6 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Contract Address"
+                android:gravity="left|center_vertical"
                 android:imeOptions="actionNext"
                 android:textColor="@color/colorPrimary"/>
         </android.support.design.widget.TextInputLayout>
@@ -114,7 +116,7 @@
             android:layout_height="128dp"
             android:focusableInTouchMode="true"
             android:background="@drawable/background_et_import_wallet"
-            android:gravity="top"
+            android:gravity="left|top"
             android:padding="6dp"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"/>

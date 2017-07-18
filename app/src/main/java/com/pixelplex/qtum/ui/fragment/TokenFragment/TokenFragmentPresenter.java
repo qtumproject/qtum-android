@@ -133,7 +133,7 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
     }
 
 
-    private Observable<ContractMethod> getContractMethod(final long contractUiid, final String methodName) {
+    private Observable<ContractMethod> getContractMethod(final String contractUiid, final String methodName) {
 
         return Observable.fromCallable(new Callable<ContractMethod>() {
             @Override

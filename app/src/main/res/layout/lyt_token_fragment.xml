@@ -173,7 +173,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:gravity="center_vertical"
+                    android:gravity="left|center_vertical"
                     android:padding="8dp"
                     android:text="@string/activity"
                     android:textColor="@color/colorPrimary" />

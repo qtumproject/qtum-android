@@ -98,6 +98,7 @@
                 app:typefaceAsset="@string/simplonMonoRegular"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="left"
                 android:text="@string/available_balance"
                 android:textColor="@color/background"/>
 
@@ -140,6 +141,7 @@
                     android:id="@+id/et_receivers_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="left"
                     android:hint="@string/receiver_s_address"
                     android:inputType="textPersonName"
                     android:textColor="@color/colorPrimary"/>
@@ -167,6 +169,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorPrimary"
+                        android:gravity="left"
                         android:layout_weight="1"
                         android:textSize="16sp"/>
 
@@ -198,6 +201,7 @@
                     android:id="@+id/et_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="left"
                     android:hint="@string/amount"
                     android:inputType="numberDecimal"
                     android:textColor="@color/colorPrimary"/>

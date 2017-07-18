@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/bottom_vav_view_tab_selected_drawable"
-            android:gravity="center_vertical"
+            android:gravity="left|center_vertical"
             android:padding="8dp"
             android:text="@string/activity"
             android:textColor="@color/colorPrimary" />
