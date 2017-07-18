@@ -1,6 +1,8 @@
 package com.pixelplex.qtum.ui.fragment.ImportWalletFragment;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -63,6 +65,24 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
 
         mEditTextYourBrainCode.setFocusableInTouchMode(true);
         mEditTextYourBrainCode.requestFocus();
+        mButtonImport.setEnabled(false);
+        mEditTextYourBrainCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                getPresenter().onPassphraseChange(editable.toString());
+            }
+        });
+
         showSoftInput();
     }
 
@@ -76,5 +96,15 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
     public void setSoftMode() {
         super.setSoftMode();
         getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+    }
+
+    @Override
+    public void enableImportButton() {
+        mButtonImport.setEnabled(true);
+    }
+
+    @Override
+    public void disableImportButton() {
+        mButtonImport.setEnabled(false);
     }
 }
