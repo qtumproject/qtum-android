@@ -10,7 +10,6 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
 import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
-import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.gson.history.History;
@@ -240,7 +239,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
             }
 
             PinDialogFragment pinDialogFragment = new PinDialogFragment();
-            pinDialogFragment.setTouchIdFlag(getView().getMainActivity().checkTouchId());
+            pinDialogFragment.setTouchIdFlag(getView().getMainActivity().checkTouchIdEnable());
             pinDialogFragment.addPinCallBack(new PinDialogFragment.PinCallBack() {
                 @Override
                 public void onSuccess() {

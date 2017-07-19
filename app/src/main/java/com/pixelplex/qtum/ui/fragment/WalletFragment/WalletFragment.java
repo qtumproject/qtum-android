@@ -79,8 +79,10 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
     }
 
     //HEADER
+    @BindView(R.id.ll_balance)
+    LinearLayout mLinearLayoutBalance;
     @BindView(R.id.tv_balance)
-    FontTextView balanceValue;
+    FontTextView mTextViewBalance;
     @BindView(R.id.available_balance_title)
     FontTextView balanceTitle;
 
@@ -148,8 +150,8 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
-        if(balanceValue != null) {
-            balanceValue.setText(String.format("%s QTUM", balance));
+        if(mLinearLayoutBalance != null) {
+            mTextViewBalance.setText(String.format("%s QTUM", balance));
             if (unconfirmedBalance != null) {
                 uncomfirmedBalanceValue.setVisibility(View.VISIBLE);
                 uncomfirmedBalanceTitle.setVisibility(View.VISIBLE);
@@ -332,9 +334,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                         final float textPercent3f = (percents >= .3f)? percents : .3f;
 
                         if(uncomfirmedBalanceTitle.getVisibility() == View.VISIBLE) {
-                            animateText(percents, balanceValue, .5f);
-                            balanceValue.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (balanceValue.getWidth() * textPercent) / 2) - balanceValue.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
-                            balanceValue.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - balanceValue.getHeight() * percents - balanceValue.getHeight() * (1 - percents));
+                            animateText(percents, mLinearLayoutBalance, .5f);
+                            mLinearLayoutBalance.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (mLinearLayoutBalance.getWidth() * textPercent) / 2) - mLinearLayoutBalance.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
+                            mLinearLayoutBalance.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - mLinearLayoutBalance.getHeight() * percents - mLinearLayoutBalance.getHeight() * (1 - percents));
 
                             animateText(percents, balanceTitle, .7f);
                             balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
@@ -351,9 +353,9 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
                             balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
                             balanceTitle.setY(balanceView.getHeight() / 2 + balanceTitle.getHeight() / 2 * percents - balanceTitle.getHeight() / 2 * (1-percents));
 
-                            animateText(percents, balanceValue, .5f);
-                            balanceValue.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (balanceValue.getWidth() * textPercent) / 2) - balanceValue.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
-                            balanceValue.setY(balanceView.getHeight() / 2 - balanceValue.getHeight() * percents - balanceValue.getHeight() / 2 * (1-percents));
+                            animateText(percents, mLinearLayoutBalance, .5f);
+                            mLinearLayoutBalance.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (mLinearLayoutBalance.getWidth() * textPercent) / 2) - mLinearLayoutBalance.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
+                            mLinearLayoutBalance.setY(balanceView.getHeight() / 2 - mLinearLayoutBalance.getHeight() * percents - mLinearLayoutBalance.getHeight() / 2 * (1-percents));
                         }
                         prevPercents = percents;
                     }

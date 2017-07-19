@@ -4,6 +4,10 @@ import android.content.Context;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.CreateWalletNameFragment.CreateWalletNameFragment;
 
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ImportWalletFragmentPresenter {
 
@@ -31,6 +35,7 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
 
     @Override
     public void onImportClick(String brainCode) {
+
         getView().setProgressDialog();
         getView().hideKeyBoard();
         getInteractor().importWallet(brainCode, new ImportWalletFragmentInteractorImpl.ImportWalletCallBack() {
@@ -42,6 +47,34 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
                 ImportWalletFragmentInteractorImpl.isDataLoaded = false;
             }
         });
+    }
+
+    public void onPassphraseChange(String passphrase){
+        if(validatePassphrase(passphrase)){
+            getView().enableImportButton();
+        }else{
+            getView().disableImportButton();
+        }
+    }
+
+    private boolean validatePassphrase(String passphrase){
+        passphrase = passphrase.trim().replaceAll("[\\s]{2,}", " ");
+        Pattern p = Pattern.compile(" ");
+        Matcher m = p.matcher(passphrase);
+        int counter = 0;
+        while(m.find()) {
+            counter++;
+        }
+        if(counter!=11){
+            return false;
+        }
+        char[] chars = passphrase.replaceAll(" ", "").toCharArray();
+        for (char c : chars) {
+            if(!Character.isLetter(c)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

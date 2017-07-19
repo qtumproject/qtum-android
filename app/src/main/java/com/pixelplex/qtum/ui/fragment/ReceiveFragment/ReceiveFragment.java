@@ -139,7 +139,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
     }
 
     @Override
@@ -178,5 +178,4 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     public void onChangeAddress(){
         getPresenter().changeAddress();
     }
-
 }

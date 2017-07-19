@@ -164,7 +164,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         }
     }
 
-    public boolean checkTouchId() {
+    public boolean checkTouchIdEnable() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(QtumSharedPreference.getInstance().isTouchIdEnable(getContext())) {
                 FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
@@ -177,6 +177,14 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         }
     }
 
+    public boolean checkAvailabilityTouchId(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+                return checkPermission(Manifest.permission.USE_FINGERPRINT) && fingerprintManager.isHardwareDetected();
+        } else {
+            return false;
+        }
+    }
 
     public void showBottomNavigationView(boolean recolorStatusBar) {
         mBottomNavigationView.setVisibility(View.VISIBLE);
@@ -248,6 +256,11 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(mPermissionsResultListener!=null) {
@@ -312,5 +325,10 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     public void setCheckAuthenticationShowFlag(boolean flag){
         getPresenter().setCheckAuthenticationShowFlag(flag);
+    }
+
+    @Override
+    public MainActivity getActivity(){
+        return this;
     }
 }

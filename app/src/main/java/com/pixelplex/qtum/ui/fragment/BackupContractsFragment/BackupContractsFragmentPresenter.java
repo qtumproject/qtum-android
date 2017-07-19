@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.google.zxing.common.StringUtils;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.datastorage.TinyDB;
@@ -61,7 +62,7 @@ class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-
+        createBackUpFile();
         getView().getMainActivity().addPermissionResultListener(new MainActivity.PermissionsResultListener() {
             @Override
             public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -101,12 +102,7 @@ class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
     }
 
     private void backupFile(){
-
-        if(mBackUpFile==null) {
-            createBackUpFile();
-        } else {
-            chooseShareMethod();
-        }
+        chooseShareMethod();
     }
 
     private void createBackUpFile(){
@@ -144,8 +140,6 @@ class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
                         getView().dismissProgressDialog();
                         getView().setUpFile(backUpFileSize);
                         mBackUpFile = backupFile;
-
-                        chooseShareMethod();
                     }
                 });
 

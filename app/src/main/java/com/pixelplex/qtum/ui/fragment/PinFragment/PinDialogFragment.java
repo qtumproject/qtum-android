@@ -10,6 +10,7 @@ import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
@@ -54,7 +55,7 @@ public class PinDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(mTouchIdFlag) {
+        if(mTouchIdFlag && FingerprintUtils.isSensorStateAt(FingerprintUtils.mSensorState.READY, getContext())) {
             mTextViewToolBarTitle.setText(R.string.confirm_fingerprint_or_pin);
             prepareSensor();
         } else {
@@ -72,6 +73,8 @@ public class PinDialogFragment extends DialogFragment {
 
         mWalletPin.setFocusableInTouchMode(true);
         mWalletPin.requestFocus();
+
+        ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     private void setPin(String pin) {
@@ -102,7 +105,6 @@ public class PinDialogFragment extends DialogFragment {
                 //TODO: make
                 Toast.makeText(getContext(), "new fingerprint enrolled. enter pin again", Toast.LENGTH_SHORT).show();
             }
-
         }
     }
 

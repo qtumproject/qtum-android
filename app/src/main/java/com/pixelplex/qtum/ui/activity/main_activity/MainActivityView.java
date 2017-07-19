@@ -13,4 +13,5 @@ public interface MainActivityView extends BaseContextView {
     boolean getNetworkConnectedFlag();
     void setAdressAndAmount(String defineMinerAddress, String defineAmount);
     void openFragment(Fragment fragment);
+    MainActivity getActivity();
 }

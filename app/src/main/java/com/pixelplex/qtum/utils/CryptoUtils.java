@@ -26,6 +26,7 @@ import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.concurrent.Callable;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -33,6 +34,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
+
+import rx.Observable;
 
 
 @TargetApi(Build.VERSION_CODES.M)
@@ -62,6 +65,22 @@ public final class CryptoUtils {
         return null;
     }
 
+    public static Observable<String> encodeInBackground(final String inputString) {
+        return rx.Observable.fromCallable(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                try {
+                    if (prepare() && initCipher(Cipher.ENCRYPT_MODE)) {
+                        byte[] bytes = sCipher.doFinal(inputString.getBytes());
+                        return Base64.encodeToString(bytes, Base64.NO_WRAP);
+                    }
+                } catch (IllegalBlockSizeException | BadPaddingException exception) {
+                    exception.printStackTrace();
+                }
+                return null;
+            }
+        });
+    }
 
     public static String decode(String encodedString, Cipher cipher) {
         try {
