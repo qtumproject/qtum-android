@@ -15,7 +15,6 @@
         android:text="@string/token_name"
         android:gravity="left|center_vertical"
         android:layout_toStartOf="@+id/token_balance"
-        android:padding="16dp"
         android:maxLines="1"
         android:ellipsize="end"
         app:typefaceAsset="@string/simplonMonoRegular"

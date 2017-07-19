@@ -55,7 +55,7 @@ public class PinDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(mTouchIdFlag) {
+        if(mTouchIdFlag && FingerprintUtils.isSensorStateAt(FingerprintUtils.mSensorState.READY, getContext())) {
             mTextViewToolBarTitle.setText(R.string.confirm_fingerprint_or_pin);
             prepareSensor();
         } else {
@@ -105,7 +105,6 @@ public class PinDialogFragment extends DialogFragment {
                 //TODO: make
                 Toast.makeText(getContext(), "new fingerprint enrolled. enter pin again", Toast.LENGTH_SHORT).show();
             }
-
         }
     }
 
