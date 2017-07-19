@@ -89,8 +89,6 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         getView().startDialogFragmentForResult();
     }
 
-
-
     @Override
     public void onWalletBackUpClick() {
         BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(false);

@@ -219,19 +219,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                 mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
                 mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
                 break;
-            case NfcAdapter.ACTION_NDEF_DISCOVERED:
-                mSendFromIntent = true;
-                mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
-                mAmountForSendAction = "1.431";
-//                if(mAuthenticationFlag) {
-//                    mRootFragment = SendBaseFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction);
-//                    getView().setIconChecked(3);
-//                } else{
-//                    mRootFragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
-//
-//                }
-//                getView().openRootFragment(mRootFragment);
-                break;
             default:
                 break;
         }
@@ -257,18 +244,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                     getView().openRootFragment(fragment);
                 }
                 break;
-            case NfcAdapter.ACTION_NDEF_DISCOVERED:
-                mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
-                mAmountForSendAction = "0.253";
-                if(mAuthenticationFlag) {
-                    mRootFragment = SendBaseFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction);
-                    getView().setIconChecked(3);
-                } else{
-                    mRootFragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
-
-                }
-                getView().openRootFragment(mRootFragment);
-                break;
             default:
                 break;
         }
@@ -282,8 +257,12 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     @Override
     public void onDestroy(Context context) {
         super.onDestroy(context);
-        mContext.unbindService(mServiceConnection);
         getInteractor().clearStatic();
+        clearservice();
+    }
+
+    public void clearservice(){
+        mContext.unbindService(mServiceConnection);
         mContext.unregisterReceiver(mNetworkReceiver);
     }
 

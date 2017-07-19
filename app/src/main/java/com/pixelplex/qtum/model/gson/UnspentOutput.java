@@ -26,6 +26,15 @@ public class UnspentOutput {
     @SerializedName("confirmations")
     @Expose
     private Integer confirmations;
+    @SerializedName("is_stake")
+    private boolean isStake;
+
+    public boolean isOutputAvailableToPay(){
+        if(isStake){
+            return confirmations > 500;
+        }
+        return true;
+    }
 
     public BigDecimal getAmount() {
         return amount;
