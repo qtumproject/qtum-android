@@ -65,7 +65,7 @@ class SendBaseFragmentInteractorImpl implements SendBaseFragmentInteractor {
 
                         for(Iterator<UnspentOutput> iterator = unspentOutputs.iterator();iterator.hasNext();){
                             UnspentOutput unspentOutput = iterator.next();
-                            if(unspentOutput.getConfirmations()==0){
+                            if(!unspentOutput.isOutputAvailableToPay()/* || unspentOutput.getConfirmations()==0*/){
                                 iterator.remove();
                             }
                         }

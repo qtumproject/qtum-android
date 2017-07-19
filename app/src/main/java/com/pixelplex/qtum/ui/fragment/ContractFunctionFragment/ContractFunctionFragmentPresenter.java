@@ -96,7 +96,7 @@ class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl {
 
                         for(Iterator<UnspentOutput> iterator = unspentOutputs.iterator(); iterator.hasNext();){
                             UnspentOutput unspentOutput = iterator.next();
-                            if(unspentOutput.getConfirmations()==0){
+                            if(unspentOutput.getConfirmations()==0 || !unspentOutput.isOutputAvailableToPay()){
                                 iterator.remove();
                             }
                         }

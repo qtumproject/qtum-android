@@ -91,6 +91,7 @@ public class UpdateService extends Service {
     private String mUnconfirmedBalance = null;
 
     private UpdateBinder mUpdateBinder = new UpdateBinder();
+    String[] firebaseTokens;
 
     @Override
     public void onCreate() {
@@ -102,7 +103,7 @@ public class UpdateService extends Service {
             e.printStackTrace();
         }
 
-        String[] firebaseTokens = QtumSharedPreference.getInstance().getFirebaseTokens(getApplicationContext());
+        firebaseTokens = QtumSharedPreference.getInstance().getFirebaseTokens(getApplicationContext());
         mFirebasePrevToken = firebaseTokens[0];
         mFirebaseCurrentToken = firebaseTokens[1];
 
@@ -377,7 +378,8 @@ public class UpdateService extends Service {
     }
 
     public void stopMonitoring() {
-        socket.emit("unsubscribe", "quantumd/addressbalance");
+        socket.emit("unsubscribe", "token_balance_change", null, "{notificationToken:"+ mFirebaseCurrentToken +"}");
+        socket.emit("unsubscribe", "balance_subscribe", null, "{notificationToken:"+ mFirebaseCurrentToken +"}");
         socket.disconnect();
         monitoringFlag = false;
         mAddresses = null;

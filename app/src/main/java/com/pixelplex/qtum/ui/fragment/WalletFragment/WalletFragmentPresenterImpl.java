@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
@@ -250,10 +251,9 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         String balance = getInteractor().getBalance();
         if(balance!=null) {
             String unconfirmedBalance = getInteractor().getUnconfirmedBalance();
-            if(!unconfirmedBalance.equals("0")) {
+            if(!TextUtils.isEmpty(unconfirmedBalance) && !unconfirmedBalance.equals("0")) {
                 BigDecimal unconfirmedBalanceDecimal = new BigDecimal(unconfirmedBalance);
-                BigDecimal balanceDecimal = new BigDecimal(balance);
-                getView().updateBalance(getInteractor().getBalance(),balanceDecimal.add(unconfirmedBalanceDecimal).toString());
+                getView().updateBalance(getInteractor().getBalance(),String.valueOf(unconfirmedBalanceDecimal.floatValue()));
             } else {
                 getView().updateBalance(getInteractor().getBalance(),null);
             }
