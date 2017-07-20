@@ -171,5 +171,10 @@
     <string name="my_published_contracts">My Published Contracts</string>
     <string name="not_confirmed_transaction">Unconfirmed Transaction</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="copy_to_share">Copy To Share</string>
+    <string name="copy_address">Copy Address</string>
+    <string name="copy_abi">Copy ABI</string>
+    <string name="abi_interface">ABI Interface</string>
+    <string name="token">Token</string>
 
 </resources>

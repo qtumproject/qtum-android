@@ -3,6 +3,8 @@ package com.pixelplex.qtum.ui.fragment.BackUpWalletFragment;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Intent;
+import android.net.Uri;
 
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
@@ -41,6 +43,16 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
         ClipData clip = ClipData.newPlainText("label", getInteractor().getSeed());
         clipboard.setPrimaryClip(clip);
         getView().showToast();
+    }
+
+    public void chooseShareMethod(){
+        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+        intentShareFile.setType("text/plain");
+        intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                "Qtum Wallet Backup");
+        intentShareFile.putExtra(Intent.EXTRA_TEXT, getView().getBrainCode());
+        getView().getMainActivity().startActivity(Intent.createChooser(intentShareFile, "Qtum Wallet Backup"));
+
     }
 
     @Override

@@ -169,7 +169,8 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     getView().clearError();
                     String address = getView().getMainActivity().getAddressForSendAction();
                     String amount = getView().getMainActivity().getAmountForSendAction();
-                    final SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(false, address, amount);
+                    String token = getView().getMainActivity().getTokenForSendAction();
+                    final SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(false, address, amount, token);
                     getView().setProgressDialog();
                     getView().hideKeyBoard();
                     getInteractor().loadWalletFromFile(new PinFragmentInteractorImpl.LoadWalletFromFileCallBack() {
@@ -305,7 +306,8 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                 case PinFragment.AUTHENTICATION_AND_SEND: {
                     String address = getView().getMainActivity().getAddressForSendAction();
                     String amount = getView().getMainActivity().getAmountForSendAction();
-                    final SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(false, address, amount);
+                    String token = getView().getMainActivity().getTokenForSendAction();
+                    final SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(false, address, amount, token);
                     getView().getMainActivity().setRootFragment(sendBaseFragment);
                     getView().openRootFragment(sendBaseFragment);
                     getView().dismissProgressDialog();

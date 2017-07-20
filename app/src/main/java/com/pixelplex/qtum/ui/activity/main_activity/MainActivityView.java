@@ -11,6 +11,6 @@ public interface MainActivityView extends BaseContextView {
     void setIconChecked(int position);
     void resetMenuText();
     boolean getNetworkConnectedFlag();
-    void setAdressAndAmount(String defineMinerAddress, String defineAmount);
+    void setAdressAndAmount(String defineMinerAddress, String defineAmount, String tokenAddress);
     void openFragment(Fragment fragment);
 }

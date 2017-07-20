@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/copy_to_share"
+            android:textSize="18sp"
+            app:typefaceAsset="@string/simplonMonoMedium" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha=".5"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/contract_address"
+            app:typefaceAsset="@string/simplonMonoRegular" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="N/A"
+            android:textSize="16sp"
+            app:typefaceAsset="@string/simplonMonoRegular" />
+
+        <com.pixelplex.qtum.utils.FontButton
+            android:id="@+id/copy_addr_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="@color/background"
+            android:paddingBottom="8dp"
+            android:paddingEnd="32dp"
+            android:paddingStart="32dp"
+            android:paddingTop="8dp"
+            android:text="@string/copy_address"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:alpha=".5"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/abi_interface"
+            app:typefaceAsset="@string/simplonMonoRegular" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/tv_abi"
+            android:layout_width="match_parent"
+            android:gravity="left"
+            android:maxHeight="100dp"
+            android:scrollbars="vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            app:typefaceAsset="@string/simplonMonoRegular" />
+
+        <com.pixelplex.qtum.utils.FontButton
+            android:id="@+id/copy_abi_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="@color/background"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:paddingEnd="48dp"
+            android:paddingStart="48dp"
+            android:paddingTop="8dp"
+            android:text="@string/copy_abi"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
+
+        <com.pixelplex.qtum.utils.FontButton
+            android:id="@+id/btn_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/ok"
+            android:textAllCaps="true"
+            android:textSize="16sp"
+            app:typeface="@string/simplonMonoRegular" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,6 +1,8 @@
 package com.pixelplex.qtum.ui.fragment.BackUpWalletFragment;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -35,6 +37,10 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
     @BindView(R.id.bt_copy_brain_code)
     FontButton mButtonCopyBrainCode;
 
+    @OnClick(R.id.bt_share)
+    public void onShareClick(){
+        getPresenter().chooseShareMethod();
+    }
 
     @OnClick({R.id.bt_copy,R.id.bt_continue, R.id.ibt_back,R.id.bt_copy_brain_code})
     public void onClick(View view) {
@@ -101,6 +107,12 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
     public void setBrainCode(String seed) {
         mTextViewBrainCode.setText(seed);
     }
+
+    @Override
+    public String getBrainCode() {
+        return mTextViewBrainCode.getText().toString();
+    }
+
 
     @Override
     public void showToast() {

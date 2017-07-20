@@ -147,7 +147,6 @@
                     android:textColor="@color/colorPrimary"/>
             </android.support.design.widget.TextInputLayout>
 
-
             <LinearLayout
                 android:id="@+id/ll_currency"
                 android:layout_width="match_parent"
