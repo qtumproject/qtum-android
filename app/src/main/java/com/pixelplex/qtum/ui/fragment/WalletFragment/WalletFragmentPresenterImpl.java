@@ -158,7 +158,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     private void openQrCodeFragment(){
         OPEN_QR_CODE_FRAGMENT_FLAG = false;
-        SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true,null,null);
+        SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true,null,null, null);
         getView().openRootFragment(sendBaseFragment);
         getView().getMainActivity().setRootFragment(sendBaseFragment);
     }

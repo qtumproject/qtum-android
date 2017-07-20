@@ -67,7 +67,7 @@
                             android:layout_height="match_parent"
                             android:gravity="center"
                             app:typefaceAsset="@string/euclidFlexMedium"
-                            android:text="@string/token_name"
+                            android:text="@string/token"
                             android:textColor="@color/background"
                             android:textSize="@dimen/toolbar_text_size"/>
 
@@ -83,7 +83,6 @@
                             app:srcCompat="@drawable/ic_back_indicator"/>
 
                         <ImageButton
-                            android:visibility="gone"
                             android:id="@+id/bt_share"
                             android:layout_width="36dp"
                             android:padding="8dp"
@@ -141,6 +140,8 @@
                     android:orientation="vertical">
 
                     <FrameLayout
+                        android:id="@+id/token_addr_btn"
+                        android:clickable="true"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:translationZ=".03dp">

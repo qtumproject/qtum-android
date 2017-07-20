@@ -53,8 +53,7 @@
                     app:typefaceAsset="@string/euclidFlexMedium"/>
 
                 <ImageButton
-                    android:visibility="gone"
-                    android:id="@+id/bt_qr_code"
+                    android:id="@+id/bt_share"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_margin="9dp"
@@ -116,7 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/balance"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:padding="8dp"
             android:textColorHint="@color/colorPrimary"
             android:theme="@style/InputText">
@@ -153,7 +152,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_above="@+id/tv_single_string"
                     android:layout_centerInParent="true"
-                    android:padding="16dp">
+                    android:padding="4dp">
 
                     <ImageView
                         android:id="@+id/iv_qr_code"

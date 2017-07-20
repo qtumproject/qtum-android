@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.ui.fragment.TokenFragment.Dialogs.ShareDialogFragment;
 import com.pixelplex.qtum.utils.FontManager;
 
 import butterknife.BindView;
@@ -30,6 +31,8 @@ import butterknife.OnClick;
 public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView {
 
     private ReceiveFragmentPresenterImpl mReceiveFragmentPresenter;
+
+    public static final String TOKEN_ADDRESS = "TOKEN_ADDRESS";
 
     @BindView(R.id.iv_qr_code)
     ImageView mImageViewQrCode;
@@ -55,6 +58,21 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     @BindView(R.id.qr_progress_bar)
     ProgressBar qrProgressBar;
 
+    QrCodePreview zoomDialog;
+
+    @OnClick(R.id.iv_qr_code)
+    public void onQrCodeClick(){
+        if(mImageViewQrCode.getDrawingCache() != null) {
+            zoomDialog = QrCodePreview.newInstance(mImageViewQrCode.getDrawingCache());
+            zoomDialog.show(getFragmentManager(), zoomDialog.getClass().getCanonicalName());
+        }
+    }
+
+    @OnClick(R.id.bt_share)
+    public void onShareClick(){
+        getPresenter().chooseShareMethod();
+    }
+
     @OnClick({R.id.bt_copy_wallet_address,R.id.bt_choose_another_address,R.id.ibt_back})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -72,9 +90,15 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     }
 
     public static ReceiveFragment newInstance() {
-
         Bundle args = new Bundle();
+        ReceiveFragment fragment = new ReceiveFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
+    public static ReceiveFragment newInstance(String tokenAddress) {
+        Bundle args = new Bundle();
+        args.putString(TOKEN_ADDRESS, tokenAddress);
         ReceiveFragment fragment = new ReceiveFragment();
         fragment.setArguments(args);
         return fragment;
@@ -97,6 +121,7 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
     @Override
     public void initializeViews() {
+        mImageViewQrCode.setDrawingCacheEnabled(true);
         getPresenter().setQrColors(ContextCompat.getColor(getContext(),R.color.colorPrimary),mCoordinatorLayout.getDrawingCacheBackgroundColor());
         mTextInputEditTextAmount.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -122,6 +147,13 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
         mTextInputEditTextAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
         mTextInputLayoutAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
+
+        if(getArguments() != null){
+            String tokenAddr = getArguments().getString(TOKEN_ADDRESS,null);
+            if(tokenAddr != null){
+                getPresenter().setTokenAddress(tokenAddr);
+            }
+        }
     }
 
     @Override
@@ -134,6 +166,11 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
                 .add(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public Bitmap getQrCode() {
+        return mImageViewQrCode.getDrawingCache();
     }
 
     @Override

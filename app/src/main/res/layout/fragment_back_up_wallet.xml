@@ -52,7 +52,7 @@
                     app:typefaceAsset="@string/euclidFlexMedium" />
 
                 <ImageButton
-                    android:id="@+id/bt_qr_code"
+                    android:id="@+id/bt_share"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:padding="4dp"

@@ -10,7 +10,7 @@ interface SendBaseFragmentView extends BaseFragmentView{
     void openInnerFragmentForResult(Fragment fragment);
     void qrCodeRecognitionToolBar();
     void sendToolBar();
-    void updateData(String publicAddress, double amount);
+    void updateData(String publicAddress, double amount, String tokenAddress);
     void errorRecognition();
     void setProgressBar();
     void updateAvailableBalance(String balance);

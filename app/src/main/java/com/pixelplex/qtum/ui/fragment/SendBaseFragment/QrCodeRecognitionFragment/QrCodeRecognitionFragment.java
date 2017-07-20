@@ -4,6 +4,8 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,26 +89,34 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
         getFragmentManager().beginTransaction().remove(this).commit();
     }
 
+    //qtum:QYxULw7ppJex4uhHoDQbW4jRjYP1vS2CEc?label=1234&message=mne&tokenAddress=1e6abee8af69f098aa354802164c79333623b252
+
     @Override
     public void handleResult(Result result) {
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(result.getText());
-            ((SendBaseFragment) getTargetFragment()).onResponse(jsonObject.getString("publicAddress"),
-                    jsonObject.getDouble("amount"));
-            dismiss();
-        } catch (JSONException e) {
-            try {
-                if (jsonObject != null) {
-                    ((SendBaseFragment) getTargetFragment()).onResponse(jsonObject.getString("publicAddress"),
-                            0.0);
-                }
-                dismiss();
-            } catch (JSONException e1) {
-                ((SendBaseFragment) getTargetFragment()).onResponseError();
-                dismiss();
-            }
+
+        String receiveAddr = "", tokenAddr = "", amount = "0.0";
+
+        Pattern pattern = Pattern.compile("qtum:(.*?)\\?");
+        Matcher matcher = pattern.matcher(result.getText());
+        if (matcher.find())
+           receiveAddr = matcher.group(1);
+
+        pattern = Pattern.compile("tokenAddress=(.*?)$");
+        matcher = pattern.matcher(result.getText());
+        if (matcher.find())
+            tokenAddr = matcher.group(1);
+
+        pattern = Pattern.compile("amount=(.*?)&");
+        matcher = pattern.matcher(result.getText());
+        if (matcher.find())
+            amount = matcher.group(1);
+
+        if(!TextUtils.isEmpty(receiveAddr)) {
+            ((SendBaseFragment) getTargetFragment()).onResponse(receiveAddr, Double.valueOf(amount), tokenAddr);
+        } else {
+            ((SendBaseFragment) getTargetFragment()).onResponseError();
         }
+        dismiss();
     }
 
 }

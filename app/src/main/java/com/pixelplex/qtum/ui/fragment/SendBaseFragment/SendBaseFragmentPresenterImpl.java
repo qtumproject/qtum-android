@@ -10,6 +10,8 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
 import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
+import com.pixelplex.qtum.datastorage.TinyDB;
+import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.gson.history.History;
@@ -209,8 +211,26 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     }
 
     @Override
-    public void onResponse(String publicAddress, double amount) {
-        getView().updateData(publicAddress, amount);
+    public void onResponse(String publicAddress, double amount, String tokenAddress) {
+        tokenAddress = validateTokenExistance(tokenAddress);
+        getView().updateData(publicAddress, amount, tokenAddress);
+    }
+
+    private String validateTokenExistance(String tokenAddress){
+
+        if(TextUtils.isEmpty(tokenAddress)){
+            return "";
+        }
+
+        TinyDB tdb = new TinyDB(mContext);
+        List<Token> tokenList = tdb.getTokenList();
+        for (Token token : tokenList){
+            if(tokenAddress.equals(token.getContractAddress())){
+                return tokenAddress;
+            }
+        }
+        getView().setAlertDialog("Token not found","Ok", BaseFragment.PopUpType.error);
+        return "";
     }
 
     @Override

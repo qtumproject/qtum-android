@@ -106,7 +106,7 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
 
                         for(Iterator<UnspentOutput> iterator = unspentOutputs.iterator(); iterator.hasNext();){
                             UnspentOutput unspentOutput = iterator.next();
-                            if(unspentOutput.getConfirmations()==0 || !unspentOutput.isOutputAvailableToPay()){
+                            if(!unspentOutput.isOutputAvailableToPay()){
                                 iterator.remove();
                             }
                         }
