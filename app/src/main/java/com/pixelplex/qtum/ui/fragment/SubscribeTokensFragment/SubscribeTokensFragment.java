@@ -112,6 +112,22 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
                         if(currency.getContractName().toLowerCase().contains(mSearchString))
                             newList.add(currency);
                     }
+
+                    final int searchStringSize = mSearchString.length();
+
+                    Collections.sort(newList, new Comparator<Token>() {
+                        @Override
+                        public int compare(Token token, Token token2) {
+                            if (token.getContractName().substring(0,searchStringSize).equals(mSearchString) && !token2.getContractName().substring(0,searchStringSize).equals(mSearchString)) {
+                                return -1;
+                            } else if (!token.getContractName().substring(0,searchStringSize).equals(mSearchString) && token2.getContractName().substring(0,searchStringSize).equals(mSearchString)) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    });
+
                     mTokenAdapter.setFilter(newList);
                 }
             }

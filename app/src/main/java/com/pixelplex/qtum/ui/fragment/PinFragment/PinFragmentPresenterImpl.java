@@ -228,7 +228,6 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     getView().hideKeyBoard();
                     getView().getMainActivity().setCheckAuthenticationShowFlag(false);
                     getView().getMainActivity().onBackPressed();
-                    //getView().dismissPinFragment();
                 } else {
                     getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
                 }
@@ -245,7 +244,6 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     Fragment backUpWalletFragment = BackUpWalletFragment.newInstance(false, pin);
                     getView().getMainActivity().onBackPressed();
                     getView().openFragment(backUpWalletFragment);
-                    //getView().dismissPinFragment();
                 } else {
                     getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
                 }
