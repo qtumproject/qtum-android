@@ -15,12 +15,13 @@ class TouchIDPreferenceFragmentPresenter extends BaseFragmentPresenterImpl{
     }
 
     void onNextScreen(boolean isImporting){
+        QtumSharedPreference.getInstance().saveTouchIdEnable(getView().getContext(), false);
         if(isImporting){
             WalletMainFragment walletFragment = WalletMainFragment.newInstance();
             getView().getMainActivity().setRootFragment(walletFragment);
             getView().openRootFragment(walletFragment);
         }else{
-            BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(true);
+            BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(true, getView().getPin());
             getView().openFragment(backUpWalletFragment);
         }
     }

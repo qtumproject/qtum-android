@@ -20,10 +20,12 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     private PinFragmentPresenterImpl mPinFragmentPresenter;
 
     private final static String ACTION = "action";
+    private final static String PASSPHRASE = "passphrase";
 
     public final static String CREATING = "creating";
     public final static String CHECK_AUTHENTICATION = "check_authentication";
     public final static String AUTHENTICATION = "authentication";
+    public final static String AUTHENTICATION_FOR_PASSPHRASE = "authentication_for_passphrase";
     public final static String AUTHENTICATION_AND_SEND = "authentication_and_send";
     public final static String CHANGING = "changing";
     public final static String IMPORTING = "importing";
@@ -43,6 +45,15 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
         PinFragment pinFragment = new PinFragment();
         Bundle args = new Bundle();
         args.putString(ACTION, action);
+        pinFragment.setArguments(args);
+        return pinFragment;
+    }
+
+    public static PinFragment newInstance(String action, String passphrase) {
+        PinFragment pinFragment = new PinFragment();
+        Bundle args = new Bundle();
+        args.putString(ACTION, action);
+        args.putString(PASSPHRASE, passphrase);
         pinFragment.setArguments(args);
         return pinFragment;
     }
@@ -95,6 +106,11 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     @Override
     public void setPin(String pin) {
         mWalletPin.setText(pin);
+    }
+
+    @Override
+    public String getPassphrase() {
+        return getArguments().getString(PASSPHRASE);
     }
 
     @Override

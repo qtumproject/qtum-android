@@ -6,6 +6,8 @@ import android.content.ClipboardManager;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.pixelplex.qtum.crypto.AESUtil;
+import com.pixelplex.qtum.crypto.KeyStoreHelper;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 
@@ -15,6 +17,9 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
 
     private BackUpWalletFragmentView mBackUpWalletFragmentView;
     private BackUpWalletInteractorImpl mBackUpWalletInteractor;
+    private String passphrase;
+
+    private final String QTUM_PIN_ALIAS = "qtum_alias";
 
     BackUpWalletFragmentPresenterImpl(BackUpWalletFragmentView backUpWalletFragmentView) {
         mBackUpWalletFragmentView = backUpWalletFragmentView;
@@ -29,7 +34,13 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     public void initializeViews() {
         super.initializeViews();
         getView().getMainActivity().recolorStatusBarBlue();
-        getView().setBrainCode(getInteractor().getSeed());
+        String pin = getView().getPin();
+        String cryptoSaltPassphrase = getInteractor().getSeed();
+
+        byte[] saltPassphrase = KeyStoreHelper.decryptToBytes(QTUM_PIN_ALIAS,cryptoSaltPassphrase);
+
+        passphrase = AESUtil.decryptBytes(pin,saltPassphrase);
+        getView().setBrainCode(passphrase);
     }
 
     @Override
@@ -40,7 +51,7 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     @Override
     public void onCopyBrainCodeClick() {
         ClipboardManager clipboard = (ClipboardManager) getView().getMainActivity().getSystemService(CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("label", getInteractor().getSeed());
+        ClipData clip = ClipData.newPlainText("label", passphrase);
         clipboard.setPrimaryClip(clip);
         getView().showToast();
     }

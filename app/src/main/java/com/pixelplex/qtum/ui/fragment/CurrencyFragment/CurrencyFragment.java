@@ -15,11 +15,20 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.dataprovider.UpdateService;
+import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
+import com.pixelplex.qtum.model.Currency;
+import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+import com.pixelplex.qtum.utils.FontTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +40,10 @@ import butterknife.OnClick;
 public class CurrencyFragment extends BaseFragment implements CurrencyFragmentView{
 
     private CurrencyFragmentPresenterImpl mCurrencyFragmentPresenter;
-    private TokenAdapter mTokenAdapter;
+    private CurrencyAdapter mCurrencyAdapter;
     private String mSearchString;
-    private List<String> mCurrentList;
+    private List<Currency> mCurrentList;
+    private UpdateService mUpdateService;
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -80,7 +90,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
     @Override
     public void initializeViews() {
         super.initializeViews();
-
+        mUpdateService = getMainActivity().getUpdateService();
         mTextViewCurrencyTitle.setText(R.string.currency);
 
 
@@ -101,15 +111,15 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
             @Override
             public void afterTextChanged(Editable editable) {
                 if(editable.toString().isEmpty()){
-                    mTokenAdapter.setFilter(mCurrentList);
+                    mCurrencyAdapter.setFilter(mCurrentList);
                 } else {
                     mSearchString = editable.toString().toLowerCase();
-                    List<String> newList = new ArrayList<>();
-                    for(String currency: mCurrentList){
-                        if(currency.toLowerCase().contains(mSearchString))
+                    List<Currency> newList = new ArrayList<>();
+                    for(Currency currency: mCurrentList){
+                        if(currency.getName().toLowerCase().contains(mSearchString))
                             newList.add(currency);
                     }
-                    mTokenAdapter.setFilter(newList);
+                    mCurrencyAdapter.setFilter(newList);
                 }
             }
         });
@@ -136,22 +146,27 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
     }
 
     @Override
-    public void setTokenList(List<String> tokenList) {
-        mTokenAdapter = new TokenAdapter(tokenList);
-        mCurrentList = tokenList;
-        mRecyclerView.setAdapter(mTokenAdapter);
+    public void setCurrencyList(List<Currency> currencyList) {
+        mCurrencyAdapter = new CurrencyAdapter(currencyList);
+        mCurrentList = currencyList;
+        mRecyclerView.setAdapter(mCurrencyAdapter);
     }
 
     class CurrencyHolder extends RecyclerView.ViewHolder{
 
-        @BindView(R.id.tv_single_string)
-        TextView mTextViewCurrency;
-        @BindView(R.id.iv_check_indicator)
-        ImageView mImageViewCheckIndicator;
-        @BindView(R.id.ll_single_item)
-        LinearLayout mLinearLayoutCurrency;
+        @BindView(R.id.root_layout)
+        RelativeLayout rootLayout;
 
-        String mCurrency;
+        @BindView(R.id.token_name)
+        FontTextView mTextViewCurrencyName;
+
+        @BindView(R.id.token_balance)
+        FontTextView mTextViewCurrencyBalance;
+
+        @BindView(R.id.spinner)
+        ProgressBar spinner;
+
+        Currency mCurrency;
 
         CurrencyHolder(View itemView) {
             super(itemView);
@@ -159,52 +174,79 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((SendBaseFragment) getTargetFragment()).onCurrencyChoose(mCurrency);
+                    ((SendBaseFragment) getTargetFragment()).onCurrencyChoose(mCurrency.getName());
                     getActivity().onBackPressed();
                 }
             });
 
         }
 
-        void bindCurrency(String currency){
+        void bindCurrency(Currency currency){
+
+            if(this.mCurrency != null && mCurrency.isToken()) {
+                mUpdateService.removeTokenBalanceChangeListener(mCurrency.getAddress());
+            }
+
             mCurrency = currency;
-            mTextViewCurrency.setText(currency);
+            mTextViewCurrencyName.setText(currency.getName());
+            if(mCurrency.isToken()) {
+                mTextViewCurrencyBalance.setVisibility(View.GONE);
+                spinner.setVisibility(View.VISIBLE);
+                mUpdateService.addTokenBalanceChangeListener(mCurrency.getAddress(), new TokenBalanceChangeListener() {
+                    @Override
+                    public void onBalanceChange(final TokenBalance tokenBalance) {
+                        rootLayout.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                spinner.setVisibility(View.GONE);
+                                mTextViewCurrencyBalance.setText(String.format("%f QTUM", tokenBalance.getTotalBalance()));
+                                mTextViewCurrencyBalance.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
+                });
+            } else {
+                mTextViewCurrencyBalance.setVisibility(View.GONE);
+                spinner.setVisibility(View.GONE);
+            }
         }
     }
 
-    private class TokenAdapter extends RecyclerView.Adapter<CurrencyHolder>{
+    private class CurrencyAdapter extends RecyclerView.Adapter<CurrencyHolder> {
 
-        List<String> mTokenList;
+        private List<Currency> mCurrencyList;
 
-        TokenAdapter(List<String> tokenList){
-            mTokenList = tokenList;
+        public CurrencyAdapter(List<Currency> currencyList) {
+            mCurrencyList = currencyList;
+        }
+
+        public Currency get(int adapterPosition) {
+            return mCurrencyList.get(adapterPosition);
         }
 
         @Override
         public CurrencyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.item_single_checkable, parent, false);
-            return new CurrencyHolder(view);
+            return new CurrencyHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_token_list_item, parent, false));
         }
 
         @Override
         public void onBindViewHolder(CurrencyHolder holder, int position) {
-            holder.bindCurrency(mTokenList.get(position));
+            holder.bindCurrency(mCurrencyList.get(position));
+        }
+
+        void setFilter(List<Currency> currencyListNew){
+            mCurrencyList = new ArrayList<>();
+            mCurrencyList.addAll(currencyListNew);
+            notifyDataSetChanged();
+        }
+
+        public void setTokenList(List<Currency> currencyList) {
+            this.mCurrencyList = currencyList;
         }
 
         @Override
         public int getItemCount() {
-            return mTokenList.size();
-        }
-
-        void setFilter(List<String> newList){
-            mTokenList = new ArrayList<>();
-            mTokenList.addAll(newList);
-            notifyDataSetChanged();
-        }
-
-        List<String> getTokenList() {
-            return mTokenList;
+            return mCurrencyList.size();
         }
     }
 }

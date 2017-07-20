@@ -6,6 +6,7 @@ import android.content.Context;
 interface PinFragmentInteractor {
     String getPassword();
     void savePassword(String password);
+    void saveSaltPassphrase(byte[] saltPassphrase);
     String getTouchIdPassword();
     void saveTouchIdPassword(String password);
     void loadWalletFromFile(PinFragmentInteractorImpl.LoadWalletFromFileCallBack callBack);

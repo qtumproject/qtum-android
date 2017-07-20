@@ -259,7 +259,7 @@ class SendBaseFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
             }
 
             PinDialogFragment pinDialogFragment = new PinDialogFragment();
-            pinDialogFragment.setTouchIdFlag(getView().getMainActivity().checkTouchId());
+            pinDialogFragment.setTouchIdFlag(getView().getMainActivity().checkTouchIdEnable());
             pinDialogFragment.addPinCallBack(new PinDialogFragment.PinCallBack() {
                 @Override
                 public void onSuccess() {

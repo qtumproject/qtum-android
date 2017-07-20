@@ -21,6 +21,7 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
     private BackUpWalletFragmentPresenterImpl mBackUpWalletFragmentPresenter;
 
     private static final String IS_WALLET_CREATING = "is_wallet_creating";
+    private static final String PIN = "pin";
 
     @BindView(R.id.bt_copy)
     FontButton mButtonCopy;
@@ -58,10 +59,11 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
         }
     }
 
-    public static BackUpWalletFragment newInstance(boolean isWalletCreating) {
+    public static BackUpWalletFragment newInstance(boolean isWalletCreating, String pin) {
         BackUpWalletFragment backUpWalletFragment = new BackUpWalletFragment();
         Bundle args = new Bundle();
         args.putBoolean(IS_WALLET_CREATING,isWalletCreating);
+        args.putString(PIN, pin);
         backUpWalletFragment.setArguments(args);
         return backUpWalletFragment;
     }
@@ -117,5 +119,10 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
     @Override
     public void showToast() {
         Snackbar.make(mCoordinatorLayout, getString(R.string.coped), Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public String getPin() {
+        return getArguments().getString(PIN);
     }
 }

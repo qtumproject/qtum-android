@@ -76,8 +76,8 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     }
 
     @Override
-    public void onPause(Context context) {
-        super.onPause(context);
+    public void onStop(Context context) {
+        super.onStop(context);
         if(mAuthenticationFlag && !mCheckAuthenticationShowFlag){
             mCheckAuthenticationFlag = true;
         }
@@ -89,6 +89,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         if(mCheckAuthenticationFlag && !mCheckAuthenticationShowFlag){
             PinFragment pinFragment = PinFragment.newInstance(PinFragment.CHECK_AUTHENTICATION);
             getView().openFragment(pinFragment);
+            mCheckAuthenticationFlag = false;
             mCheckAuthenticationShowFlag = true;
         }
     }

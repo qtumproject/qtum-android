@@ -7,4 +7,5 @@ interface BackUpWalletFragmentView extends BaseFragmentView {
     void setBrainCode(String seed);
     String getBrainCode();
     void showToast();
+    String getPin();
 }

@@ -1,12 +1,9 @@
 package com.pixelplex.qtum.ui.fragment.TokenFragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.pixelplex.qtum.R;
@@ -43,6 +41,7 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
 
     private static final String totalSupply = "totalSupply";
     private static final String decimals = "decimals";
+    private static final String symbol = "symbol";
 
     public static TokenFragment newInstance(Contract token) {
         Bundle args = new Bundle();
@@ -60,8 +59,12 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
     }
 
     //HEADER
+    @BindView(R.id.ll_balance)
+    LinearLayout mLinearLayoutBalance;
     @BindView(R.id.tv_balance)
-    FontTextView balanceValue;
+    FontTextView mTextViewBalance;
+    @BindView(R.id.tv_currency)
+    FontTextView mTextViewCurrency;
     @BindView(R.id.available_balance_title)
     FontTextView balanceTitle;
 
@@ -147,6 +150,7 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         presenter.setToken((Token) getArguments().getSerializable(tokenKey));
         presenter.getPropertyValue(totalSupply);
         presenter.getPropertyValue(decimals);
+        presenter.getPropertyValue(symbol);
 
         collapseLinearLayout.requestLayout();
         headerPAdding = convertDpToPixel(16,getContext());
@@ -199,9 +203,9 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
                 final float textPercent3f = (percents >= .3f)? percents : .3f;
 
                 if(uncomfirmedBalanceTitle.getVisibility() == View.VISIBLE) {
-                    animateText(percents, balanceValue, .5f);
-                    balanceValue.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (balanceValue.getWidth() * textPercent) / 2) - balanceValue.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
-                    balanceValue.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - balanceValue.getHeight() * percents - balanceValue.getHeight() * (1 - percents));
+                    animateText(percents, mLinearLayoutBalance, .5f);
+                    mLinearLayoutBalance.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (mLinearLayoutBalance.getWidth() * textPercent) / 2) - mLinearLayoutBalance.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
+                    mLinearLayoutBalance.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - mLinearLayoutBalance.getHeight() * percents - mLinearLayoutBalance.getHeight() * (1 - percents));
 
                     animateText(percents, balanceTitle, .7f);
                     balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
@@ -218,9 +222,9 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
                     balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
                     balanceTitle.setY(balanceView.getHeight() / 2 + balanceTitle.getHeight() / 2 * percents - balanceTitle.getHeight() / 2 * (1-percents));
 
-                    animateText(percents, balanceValue, .5f);
-                    balanceValue.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (balanceValue.getWidth() * textPercent) / 2) - balanceValue.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
-                    balanceValue.setY(balanceView.getHeight() / 2 - balanceValue.getHeight() * percents - balanceValue.getHeight() / 2 * (1-percents));
+                    animateText(percents, mLinearLayoutBalance, .5f);
+                    mLinearLayoutBalance.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (mLinearLayoutBalance.getWidth() * textPercent) / 2) - mLinearLayoutBalance.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
+                    mLinearLayoutBalance.setY(balanceView.getHeight() / 2 - mLinearLayoutBalance.getHeight() * percents - mLinearLayoutBalance.getHeight() / 2 * (1-percents));
                 }
                 collapseLinearLayout.collapseFromPercents(percents);
                 prevPercents = percents;
@@ -283,10 +287,8 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         }
     }
 
-    @SuppressLint("DefaultLocale")
-    @Override
     public void setBalance(float balance) {
-        balanceValue.setText(String.format("%f QTUM",balance));
+        mTextViewBalance.setText(String.valueOf(balance));
     }
 
     @Override
@@ -305,6 +307,9 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
                 break;
             case decimals:
                 decimalsValue.setText(propValue);
+                break;
+            case symbol:
+                mTextViewCurrency.setText(" " + propValue);
                 break;
         }
     }

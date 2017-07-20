@@ -21,14 +21,14 @@ event Burn(address indexed from, uint256 value);
 
 event Approval(address indexed _owner, address indexed _spender, uint _value);
 
-/* Initializes contract with initial supply tokens to the creator of the contract */
+/* Initializes contract with initial supply tokenList to the creator of the contract */
 function MyToken(
 uint256 initialSupply,
 string tokenName,
 uint8 decimalUnits,
 string tokenSymbol
 ) {
-balanceOf[msg.sender] = initialSupply;              // Give the creator all initial tokens
+balanceOf[msg.sender] = initialSupply;              // Give the creator all initial tokenList
 totalSupply = initialSupply;                        // Update total supply
 name = tokenName;                                   // Set the name for display purposes
 symbol = tokenSymbol;                               // Set the symbol for display purposes
@@ -46,7 +46,7 @@ Transfer(msg.sender, _to, _value);                   // Notify anyone listening 
 return true;
 }
 
-/* Allow another contract to spend some tokens in your behalf */
+/* Allow another contract to spend some tokenList in your behalf */
 function approve(address _spender, uint256 _value)
 returns (bool success) {
 allowance[msg.sender][_spender] = _value;

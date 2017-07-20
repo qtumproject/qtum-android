@@ -6,14 +6,31 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ll_balance"
+        android:orientation="horizontal">
+
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/tv_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:typefaceAsset="@string/simplonMonoMedium"
-            android:text="0 QTUM"
             android:textColor="@color/background"
             android:textSize="24sp" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/tv_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:typefaceAsset="@string/simplonMonoMedium"
+            android:textColor="@color/background"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+
 
     <com.pixelplex.qtum.utils.FontTextView
         android:id="@+id/available_balance_title"

@@ -1,6 +1,8 @@
 package com.pixelplex.qtum.ui.fragment.ProfileFragment;
 
 
+import android.support.v4.app.Fragment;
+
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
@@ -38,7 +40,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         settingsData.add(new SettingObject(R.string.language, R.drawable.ic_language, 0));
         settingsData.add(new SettingObject(R.string.change_pin, R.drawable.ic_changepin, 1));
         settingsData.add(new SettingObject(R.string.wallet_back_up, R.drawable.ic_backup, 1));
-        if(getView().getMainActivity().checkTouchId()) {
+        if(getView().getMainActivity().checkAvailabilityTouchId()) {
             settingsData.add(new SettingSwitchObject(R.string.touch_id, R.drawable.ic_touchid, 1, QtumSharedPreference.getInstance().isTouchIdEnable(getView().getContext())));
         }
         settingsData.add(new SettingObject(R.string.subscribe_tokens,R.drawable.ic_tokensubscribe,2));
@@ -91,8 +93,8 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     @Override
     public void onWalletBackUpClick() {
-        BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(false);
-        getView().openFragment(backUpWalletFragment);
+        Fragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_FOR_PASSPHRASE);
+        getView().openFragment(fragment);
     }
 
     @Override

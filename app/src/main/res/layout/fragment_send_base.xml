@@ -132,7 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="16dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:theme="@style/InputText"
                 android:focusable="true"
                 android:textColorHint="@color/colorPrimary">
@@ -155,15 +155,26 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:orientation="vertical"
-                android:paddingBottom="16dp"
-                android:paddingTop="16dp">
+                android:paddingBottom="16dp">
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:paddingBottom="4dp"
+                    app:typefaceAsset="@string/simplonMonoRegular"
+                    android:textColor="@color/colorPrimary"
+                    android:text="Choose Token"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
+
+                    <com.pixelplex.qtum.utils.FontTextView
+                        android:paddingBottom="4dp"
+                        app:typefaceAsset="@string/simplonMonoRegular"
                         android:id="@+id/tv_currency"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
