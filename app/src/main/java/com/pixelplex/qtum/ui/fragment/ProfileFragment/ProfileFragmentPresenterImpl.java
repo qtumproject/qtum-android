@@ -1,6 +1,8 @@
 package com.pixelplex.qtum.ui.fragment.ProfileFragment;
 
 
+import android.support.v4.app.Fragment;
+
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
@@ -91,8 +93,8 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     @Override
     public void onWalletBackUpClick() {
-        BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(false);
-        getView().openFragment(backUpWalletFragment);
+        Fragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_FOR_PASSPHRASE);
+        getView().openFragment(fragment);
     }
 
     @Override

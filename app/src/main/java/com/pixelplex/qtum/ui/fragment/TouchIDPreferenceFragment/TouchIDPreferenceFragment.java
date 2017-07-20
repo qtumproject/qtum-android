@@ -12,6 +12,7 @@ import butterknife.OnClick;
 public class TouchIDPreferenceFragment extends BaseFragment implements TouchIDPreferenceFragmentView {
 
     private static final String IS_IMPORTING = "is_importing";
+    private static final String PIN = "pin";
     private boolean mIsImporting;
 
     @OnClick({R.id.bt_enable_touch_id, R.id.bt_not_now})
@@ -25,10 +26,11 @@ public class TouchIDPreferenceFragment extends BaseFragment implements TouchIDPr
         }
     }
 
-    public static TouchIDPreferenceFragment newInstance(boolean isImporting) {
+    public static TouchIDPreferenceFragment newInstance(boolean isImporting,String pin) {
         
         Bundle args = new Bundle();
         args.putBoolean(IS_IMPORTING,isImporting);
+        args.putString(PIN,pin);
         TouchIDPreferenceFragment fragment = new TouchIDPreferenceFragment();
         fragment.setArguments(args);
         return fragment;
@@ -55,5 +57,10 @@ public class TouchIDPreferenceFragment extends BaseFragment implements TouchIDPr
     @Override
     protected int getLayout() {
         return R.layout.fragment_touch_id_preference;
+    }
+
+    @Override
+    public String getPin() {
+        return getArguments().getString(PIN);
     }
 }

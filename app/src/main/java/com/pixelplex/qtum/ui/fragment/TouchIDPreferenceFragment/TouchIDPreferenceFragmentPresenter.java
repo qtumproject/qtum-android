@@ -21,7 +21,7 @@ class TouchIDPreferenceFragmentPresenter extends BaseFragmentPresenterImpl{
             getView().getMainActivity().setRootFragment(walletFragment);
             getView().openRootFragment(walletFragment);
         }else{
-            BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(true);
+            BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(true, getView().getPin());
             getView().openFragment(backUpWalletFragment);
         }
     }

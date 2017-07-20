@@ -40,10 +40,10 @@ class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl im
             getInteractor().saveWalletName(name);
             getView().clearError();
             PinFragment pinFragment;
-            if(CreateWalletNameFragment.mIsCreateNew) {
+            if(getView().isCreating()) {
                 pinFragment = PinFragment.newInstance(PinFragment.CREATING);
             } else {
-                pinFragment = PinFragment.newInstance(PinFragment.IMPORTING);
+                pinFragment = PinFragment.newInstance(PinFragment.IMPORTING,getView().getPassphrase());
 
             }
             getView().openFragment(pinFragment);

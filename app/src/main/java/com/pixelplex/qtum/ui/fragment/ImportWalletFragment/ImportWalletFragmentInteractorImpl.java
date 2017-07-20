@@ -2,7 +2,6 @@ package com.pixelplex.qtum.ui.fragment.ImportWalletFragment;
 
 import android.content.Context;
 
-import org.bitcoinj.wallet.Wallet;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 
 import rx.Subscriber;
@@ -14,6 +13,7 @@ class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentInteract
 
     private Context mContext;
     static boolean isDataLoaded = false;
+    static String sPassphrase;
 
     ImportWalletFragmentInteractorImpl(Context context) {
         mContext = context;
@@ -25,7 +25,7 @@ class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentInteract
                 .importWallet(seed, mContext)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Wallet>() {
+                .subscribe(new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
 
@@ -37,8 +37,9 @@ class ImportWalletFragmentInteractorImpl implements ImportWalletFragmentInteract
                     }
 
                     @Override
-                    public void onNext(Wallet wallet) {
+                    public void onNext(String passphrase) {
                         isDataLoaded = true;
+                        sPassphrase = passphrase;
                         callBack.onSuccess();
                     }
                 });

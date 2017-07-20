@@ -243,14 +243,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
-    public void dismissPinFragment(){
-        if(!getMainActivity().isFinishing()) {
-            getFragmentManager().beginTransaction().remove(this).commit();
-            getMainActivity().onBackPressed();
-        }
-    }
-
-    @Override
     public void openRootFragment(Fragment fragment) {
         getFragmentManager().popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         hideKeyBoard();
