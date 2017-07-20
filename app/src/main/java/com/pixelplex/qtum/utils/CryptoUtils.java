@@ -10,6 +10,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.util.Base64;
 
+import org.spongycastle.crypto.digests.SHA256Digest;
+import org.spongycastle.util.encoders.Hex;
+
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -225,6 +228,17 @@ public final class CryptoUtils {
             return new FingerprintManagerCompat.CryptoObject(sCipher);
         }
         return null;
+    }
+
+    public static String generateSHA256String(String inputString){
+        byte[] input = Hex.decode(inputString);
+
+        SHA256Digest sha256Digest = new SHA256Digest();
+        sha256Digest.update(input, 0, input.length);
+        byte[] out = new byte[sha256Digest.getDigestSize()];
+        sha256Digest.doFinal(out, 0);
+
+        return Hex.toHexString(out);
     }
 
 

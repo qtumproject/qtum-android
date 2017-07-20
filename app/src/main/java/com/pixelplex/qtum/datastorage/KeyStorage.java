@@ -91,22 +91,22 @@ public class KeyStorage {
         });
     }
 
-    public Observable<Wallet> createWallet(final Context context) {
+    public Observable<String> createWallet(final Context context) {
         mFile = new File(context.getFilesDir().getPath() + "/key_storage");
-        return Observable.create(new Observable.OnSubscribe<Wallet>() {
+        return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
-            public void call(Subscriber<? super Wallet> subscriber) {
+            public void call(Subscriber<? super String> subscriber) {
 
-                String seedString = "";
+                String mnemonicCode = "";
                 for (int i = 0; i < 11; i++) {
-                    seedString += DictionaryWords.getRandomWord() + " ";
+                    mnemonicCode += DictionaryWords.getRandomWord() + " ";
                 }
-                seedString += DictionaryWords.getRandomWord();
+                mnemonicCode += DictionaryWords.getRandomWord();
 
                 String passphrase = "";
                 DeterministicSeed seed = null;
                 try {
-                    seed = new DeterministicSeed(seedString, null, passphrase, DeterministicHierarchy.BIP32_STANDARDISATION_TIME_SECS);
+                    seed = new DeterministicSeed(mnemonicCode, null, passphrase, DeterministicHierarchy.BIP32_STANDARDISATION_TIME_SECS);
                 } catch (UnreadableWalletException e) {
                     e.printStackTrace();
                 }
@@ -117,20 +117,19 @@ public class KeyStorage {
                 try {
                     sWallet.saveToFile(mFile);
                     getKeyList(ADDRESSES_COUNT);
-                    subscriber.onNext(sWallet);
+                    subscriber.onNext(mnemonicCode);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                QtumSharedPreference.getInstance().saveSeed(context, seedString);
             }
         });
     }
 
-    public Observable<Wallet> importWallet(final String seedString, final Context context) {
+    public Observable<String> importWallet(final String seedString, final Context context) {
         mFile = new File(context.getFilesDir().getPath() + "/key_storage");
-        return Observable.create(new Observable.OnSubscribe<Wallet>() {
+        return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
-            public void call(Subscriber<? super Wallet> subscriber) {
+            public void call(Subscriber<? super String> subscriber) {
 
                 String passphrase = "";
                 DeterministicSeed seed = null;
@@ -146,12 +145,11 @@ public class KeyStorage {
                 try {
                     sWallet.saveToFile(mFile);
                     getKeyList(ADDRESSES_COUNT);
-                    subscriber.onNext(sWallet);
+                    subscriber.onNext(seedString);
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                QtumSharedPreference.getInstance().saveSeed(context, seedString);
             }
         });
     }

@@ -4,7 +4,6 @@ import android.content.Context;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.CreateWalletNameFragment.CreateWalletNameFragment;
 
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,7 +40,7 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
         getInteractor().importWallet(brainCode, new ImportWalletFragmentInteractorImpl.ImportWalletCallBack() {
             @Override
             public void onSuccess() {
-                CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(false);
+                CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(false,ImportWalletFragmentInteractorImpl.sPassphrase);
                 getView().openRootFragment(createWalletNameFragment);
                 getView().dismissProgressDialog();
                 ImportWalletFragmentInteractorImpl.isDataLoaded = false;
@@ -81,7 +80,7 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     public void onResume(Context context) {
         super.onResume(context);
         if (ImportWalletFragmentInteractorImpl.isDataLoaded) {
-            CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(false);
+            CreateWalletNameFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(false,ImportWalletFragmentInteractorImpl.sPassphrase);
             getView().openRootFragment(createWalletNameFragment);
             getView().dismissProgressDialog();
             ImportWalletFragmentInteractorImpl.isDataLoaded = false;

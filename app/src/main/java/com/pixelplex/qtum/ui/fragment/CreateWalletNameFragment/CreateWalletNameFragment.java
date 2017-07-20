@@ -17,7 +17,7 @@ import butterknife.OnClick;
 public class CreateWalletNameFragment extends BaseFragment implements CreateWalletNameFragmentView {
 
     private static final String IS_CREATE_NEW = "is_create_new";
-    public static boolean mIsCreateNew;
+    private static final String PASSPHRASE = "passphrase";
 
     private CreateWalletNameFragmentPresenterImpl mCreateWalletFragmentPresenter;
 
@@ -42,18 +42,21 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
         }
     }
 
+    public static CreateWalletNameFragment newInstance(boolean isCreateNew, String passphrase) {
+        CreateWalletNameFragment createWalletNameFragment = new CreateWalletNameFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(IS_CREATE_NEW, isCreateNew);
+        args.putString(PASSPHRASE,passphrase);
+        createWalletNameFragment.setArguments(args);
+        return createWalletNameFragment;
+    }
+
     public static CreateWalletNameFragment newInstance(boolean isCreateNew) {
         CreateWalletNameFragment createWalletNameFragment = new CreateWalletNameFragment();
         Bundle args = new Bundle();
         args.putBoolean(IS_CREATE_NEW, isCreateNew);
         createWalletNameFragment.setArguments(args);
         return createWalletNameFragment;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mIsCreateNew = getArguments().getBoolean(IS_CREATE_NEW);
     }
 
     @Override
@@ -92,6 +95,16 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
     @Override
     public void clearError() {
         mTextInputLayoutWalletName.setErrorEnabled(false);
+    }
+
+    @Override
+    public String getPassphrase() {
+        return getArguments().getString(PASSPHRASE);
+    }
+
+    @Override
+    public boolean isCreating() {
+        return getArguments().getBoolean(IS_CREATE_NEW);
     }
 
 }
