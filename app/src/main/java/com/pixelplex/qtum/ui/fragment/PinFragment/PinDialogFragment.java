@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.crypto.KeyStoreHelper;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.utils.CryptoUtils;
 import com.pixelplex.qtum.utils.FingerprintUtils;
@@ -36,6 +37,8 @@ public class PinDialogFragment extends DialogFragment {
 
     @BindView(R.id.tooltip)
     FontTextView tooltip;
+
+    private final String QTUM_PIN_ALIAS = "qtum_alias";
 
     private PinCallBack mPinCallBack;
     private boolean mTouchIdFlag;
@@ -154,7 +157,9 @@ public class PinDialogFragment extends DialogFragment {
     }
 
     private void confirm(String pin){
-        if (pin.equals(QtumSharedPreference.getInstance().getWalletPassword(getContext()))) {
+        String pinHashEntered = CryptoUtils.generateSHA256String(pin);
+        String pinHashGenuine = KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, QtumSharedPreference.getInstance().getWalletPassword(getContext()));
+        if (pinHashEntered.equals(pinHashGenuine)) {
             clearError();
             mPinCallBack.onSuccess();
             dismiss();
