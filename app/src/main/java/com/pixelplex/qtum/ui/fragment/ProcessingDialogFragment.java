@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -45,11 +46,15 @@ public class ProcessingDialogFragment extends DialogFragment implements Transiti
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.lyt_processing_dialog,null);
         ButterKnife.bind(this,view);
         Dialog dialog = new Dialog(getContext());
+        if(dialog.getWindow()!=null) {
+            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(false);
         if(dialog.getWindow()!=null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
+
         return dialog;
     }
 
