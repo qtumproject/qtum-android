@@ -1,8 +1,11 @@
 package com.pixelplex.qtum.ui.fragment.ReceiveFragment;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.TokenFragment.Dialogs.ShareDialogFragment;
 import com.pixelplex.qtum.utils.FontManager;
@@ -31,6 +35,8 @@ import butterknife.OnClick;
 public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView {
 
     private ReceiveFragmentPresenterImpl mReceiveFragmentPresenter;
+
+    private final int WRITE_EXTERNAL_STORAGE_CODE = 5;
 
     public static final String TOKEN_ADDRESS = "TOKEN_ADDRESS";
 
@@ -70,7 +76,27 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
 
     @OnClick(R.id.bt_share)
     public void onShareClick(){
-        getPresenter().chooseShareMethod();
+        if(checkPermissionWriteExternalStorage()) {
+            getPresenter().chooseShareMethod();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if(zoomDialog != null){
+            zoomDialog.dismiss();
+        }
+        super.onPause();
+
+    }
+
+    private boolean checkPermissionWriteExternalStorage(){
+        if(getMainActivity().checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            return true;
+        } else {
+            getMainActivity().loadPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE_CODE);
+            return false;
+        }
     }
 
     @OnClick({R.id.bt_copy_wallet_address,R.id.bt_choose_another_address,R.id.ibt_back})
@@ -154,6 +180,17 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
                 getPresenter().setTokenAddress(tokenAddr);
             }
         }
+
+        getMainActivity().addPermissionResultListener(new MainActivity.PermissionsResultListener() {
+            @Override
+            public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+                if(requestCode == WRITE_EXTERNAL_STORAGE_CODE) {
+                    if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                        getPresenter().chooseShareMethod();
+                    }
+                }
+            }
+        });
     }
 
     @Override
