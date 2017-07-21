@@ -29,7 +29,7 @@ public class QtumFirebaseInstanceIdService extends FirebaseInstanceIdService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        QtumSharedPreference.getInstance().saveFirebaseToken(getApplicationContext(),token);
+        FirebaseSharedPreferences.getInstance().saveFirebaseToken(getApplicationContext(),token);
         // Add custom implementation, as needed.
     }
 }

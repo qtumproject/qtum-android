@@ -21,13 +21,11 @@ public class QtumSharedPreference {
     private final String QTUM_IS_KEY_GENERATED = "qtum_is_key_generated";
     private final String QTUM_LANGUAGE = "qtum_language";
     private final String QTUM_SEED = "qtum_seed";
-    private final String PREV_TOKEN = "prev_token";
-    private final String CURRENT_TOKEN = "current_token";
     private final String TOUCH_ID_ENABLE = "touch_id_enable";
     private final String TOUCH_ID_PASSWORD = "touch_id_password";
 
     private List<LanguageChangeListener> mLanguageChangeListeners;
-    private FireBaseTokenRefreshListener mFireBaseTokenRefreshListener;
+
 
     private QtumSharedPreference() {
         mLanguageChangeListeners = new ArrayList<>();
@@ -62,25 +60,7 @@ public class QtumSharedPreference {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getBoolean(TOUCH_ID_ENABLE, true);
     }
 
-    public void saveFirebaseToken(Context context, String token){
-        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        String prevToken = mSharedPreferences.getString(CURRENT_TOKEN,null);
-        mEditor.putString(PREV_TOKEN,prevToken);
-        mEditor.putString(CURRENT_TOKEN, token);
-        mEditor.apply();
-        if(mFireBaseTokenRefreshListener != null) {
-            mFireBaseTokenRefreshListener.onRefresh(prevToken, token);
-        }
-    }
 
-    public String[] getFirebaseTokens(Context context){
-        String[] firebaseTokens = new String[2];
-        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
-        firebaseTokens[0] = mSharedPreferences.getString(PREV_TOKEN,null);
-        firebaseTokens[1] = mSharedPreferences.getString(CURRENT_TOKEN,null);
-        return firebaseTokens;
-    }
 
     public void saveWalletPassword(Context context, String password) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
@@ -158,13 +138,5 @@ public class QtumSharedPreference {
 
     public void removeLanguageListener(LanguageChangeListener languageChangeListener){
         mLanguageChangeListeners.remove(languageChangeListener);
-    }
-
-    public void addFirebaseTokenRefreshListener(FireBaseTokenRefreshListener fireBaseTokenRefreshListener){
-        mFireBaseTokenRefreshListener = fireBaseTokenRefreshListener;
-    }
-
-    public void removeFirebaseTokenRefreshListener(){
-        mFireBaseTokenRefreshListener = null;
     }
 }
