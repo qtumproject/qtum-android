@@ -47,4 +47,7 @@ interface QtumRestService {
     @GET("/history/{limit}/{offset}")
     Observable<HistoryResponse> getHistoryListForSeveralAddresses(@Path("limit") int limit, @Path("offset") int offset, @Query("addresses[]") List<String> addresses);
 
+    @GET("/transactions/{tx_hash}")
+    Observable<History> getTransaction(@Path("tx_hash") String txHash);
+
 }

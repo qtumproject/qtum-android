@@ -22,6 +22,7 @@ import org.bitcoinj.core.Utils;
 import org.bitcoinj.script.Script;
 import org.bitcoinj.script.ScriptChunk;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -153,23 +154,25 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
 
                     @Override
                     public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
-                        getView().getApplication().setContractAwaitCountPlus();
+                        TinyDB tinyDB = new TinyDB(mContext);
+                        ArrayList<String> unconfirmedTokenTxHashList = tinyDB.getUnconfirmedContractTxHasList();
+                        unconfirmedTokenTxHashList.add(sendRawTransactionResponse.getTxid());
+                        tinyDB.putUnconfirmedContractTxHashList(unconfirmedTokenTxHashList);
                         String name = "";
                         for(ContractMethodParameter contractMethodParameter : mContractMethodParameterList){
                             if(contractMethodParameter.getName().equals("_tokenName")){
                                 name = contractMethodParameter.getValue();
                             }
                         }
-                        TinyDB tinyDB = new TinyDB(mContext);
                         for(ContractTemplate contractTemplate : tinyDB.getContractTemplateList()){
                             if(contractTemplate.getUuid().equals(mContractTemplateUiid)){
                                 if(contractTemplate.getContractType().equals("token")){
-                                    Token token = new Token(null, mContractTemplateUiid, false, null, senderAddress, name);
+                                    Token token = new Token(ContractBuilder.generateContractAddress(sendRawTransactionResponse.getTxid()), mContractTemplateUiid, false, null, senderAddress, name);
                                     List<Token> tokenList = tinyDB.getTokenList();
                                     tokenList.add(token);
                                     tinyDB.putTokenList(tokenList);
                                 }else{
-                                    Contract contract = new Contract(null, mContractTemplateUiid, false, null, senderAddress, "test_name");
+                                    Contract contract = new Contract(ContractBuilder.generateContractAddress(sendRawTransactionResponse.getTxid()), mContractTemplateUiid, false, null, senderAddress, "test_name");
                                     List<Contract> contractList = tinyDB.getContractListWithoutToken();
                                     contractList.add(contract);
                                     tinyDB.putContractListWithoutToken(contractList);
