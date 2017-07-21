@@ -22,6 +22,8 @@ import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ViewSourceCodeDialogFragment;
+import com.pixelplex.qtum.ui.fragment.TokenFragment.Dialogs.ShareDialogFragment;
 import com.pixelplex.qtum.utils.FontTextView;
 import com.pixelplex.qtum.utils.ResizeWidthAnimation;
 import com.pixelplex.qtum.utils.StackCollapseLinearLayout;
@@ -109,6 +111,19 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
+    ShareDialogFragment shareDialog;
+
+    @OnClick(R.id.bt_share)
+    public void onShareClick(){
+        shareDialog = ShareDialogFragment.newInstance(presenter.getToken().getContractAddress(),presenter.getAbi());
+        shareDialog.show(getFragmentManager(), shareDialog.getClass().getCanonicalName());
+    }
+
+    @OnClick(R.id.token_addr_btn)
+    public void onTokenAddrClick(){
+        presenter.onReceiveClick();
+    }
+
     @Override
     protected void createPresenter() {
         presenter = new TokenFragmentPresenter(this);
@@ -131,19 +146,6 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
     @Override
     public void initializeViews() {
         super.initializeViews();
-
-//        // Disable "Drag" for AppBarLayout (i.e. User can't scroll appBarLayout by directly touching appBarLayout - User can only scroll appBarLayout by only using scrollContent)
-//        if (mAppBarLayout.getLayoutParams() != null) {
-//            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
-//            AppBarLayout.Behavior appBarLayoutBehaviour = new AppBarLayout.Behavior();
-//            appBarLayoutBehaviour.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
-//                @Override
-//                public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
-//                    return false;
-//                }
-//            });
-//            layoutParams.setBehavior(appBarLayoutBehaviour);
-//        }
 
         presenter.setToken((Token) getArguments().getSerializable(tokenKey));
         presenter.getPropertyValue(totalSupply);

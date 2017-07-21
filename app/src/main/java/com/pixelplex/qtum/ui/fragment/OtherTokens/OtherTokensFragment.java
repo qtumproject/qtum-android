@@ -35,11 +35,6 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @OnClick(R.id.bt_share)
-    public void onShareClick() {
-        //TODO SHARE
-    }
-
     public void notifyTokenChange() {
         getPresenter().notifyNewToken();
     }

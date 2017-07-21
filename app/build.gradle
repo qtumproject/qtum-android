@@ -1,37 +1,28 @@
-
 //fabric.io
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
     }
-
     dependencies {
         // These docs use an open ended version so that our plugin
         // can be updated quickly in response to Android tooling updates
-
         // We recommend changing it to the latest version from our changelog:
         // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
         classpath 'io.fabric.tools:gradle:1.22.1'
     }
 }
 //
-
 apply plugin: 'com.android.application'
-
 //fabric.io
 apply plugin: 'io.fabric'
-
 repositories {
     maven { url 'https://maven.fabric.io/public' }
     maven { url "https://jitpack.io" }
 }
-
 android {
-
     lintOptions {
         disable 'MissingTranslation'
     }
-
     signingConfigs {
         config_test {
             keyAlias 'QTUM'
@@ -40,14 +31,11 @@ android {
             storePassword 'qtum-mobile'
         }
     }
-
     def appName = "QTUM"
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
-
     def versionPropertiesFile = file('version.properties')
     def autoVersionCode
-
     if (versionPropertiesFile.canRead()) {
         def Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(versionPropertiesFile))
@@ -55,9 +43,7 @@ android {
     } else {
         throw new GradleException("Could not read version.properties!")
     }
-
     ext.autoIncrementVersionCode = {
-
         if (versionPropertiesFile.canRead()) {
             def Properties versionProps = new Properties()
             versionProps.load(new FileInputStream(versionPropertiesFile))
@@ -68,7 +54,6 @@ android {
             throw new GradleException("Could not read version.properties!")
         }
     }
-
     defaultConfig {
         applicationId "com.pixelplex.qtum"
         minSdkVersion 19
@@ -79,7 +64,6 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -89,13 +73,11 @@ android {
         debug {
         }
     }
-
     gradle.taskGraph.whenReady {taskGraph ->
         if (taskGraph.hasTask(assembleRelease)) {
             autoIncrementVersionCode()
         }
     }
-
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def apk = output.outputFile;
@@ -104,7 +86,6 @@ android {
         }
     }
 }
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -145,5 +126,4 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:9.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
-
 apply plugin: 'com.google.gms.google-services'

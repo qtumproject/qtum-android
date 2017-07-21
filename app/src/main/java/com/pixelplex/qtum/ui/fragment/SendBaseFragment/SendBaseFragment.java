@@ -5,6 +5,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -28,6 +29,7 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
 
     private static final String IS_QR_CODE_RECOGNITION = "is_qr_code_recognition";
     private static final String ADDRESS = "address";
+    private static final String TOKEN = "tokenAddr";
     private static final String AMOUNT = "amount";
 
     @BindView(R.id.et_receivers_address)
@@ -90,11 +92,12 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
         }
     }
 
-    public static SendBaseFragment newInstance(boolean qrCodeRecognition, String address, String amount) {
+    public static SendBaseFragment newInstance(boolean qrCodeRecognition, String address, String amount, String tokenAddress) {
         SendBaseFragment sendBaseFragment = new SendBaseFragment();
         Bundle args = new Bundle();
         args.putBoolean(IS_QR_CODE_RECOGNITION, qrCodeRecognition);
         args.putString(ADDRESS,address);
+        args.putString(TOKEN,tokenAddress);
         args.putString(AMOUNT,amount);
         sendBaseFragment.setArguments(args);
         return sendBaseFragment;
@@ -178,14 +181,18 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     }
 
     @Override
-    public void updateData(String publicAddress, double amount) {
+    public void updateData(String publicAddress, double amount, String tokenAddress) {
         mTextInputEditTextAddress.setText(publicAddress);
         mTextInputEditTextAmount.setText(String.valueOf(amount));
+        if(!TextUtils.isEmpty(tokenAddress)) {
+            mLinearLayoutCurrency.setVisibility(View.VISIBLE);
+            mTextViewCurrency.setText(tokenAddress);
+        }
     }
 
     @Override
     public void errorRecognition() {
-
+        setAlertDialog("Error QR-code Recognition. Try Again","Ok",PopUpType.error);
     }
 
     @Override
@@ -234,8 +241,8 @@ public class SendBaseFragment extends BaseFragment implements SendBaseFragmentVi
     }
 
 
-    public void onResponse(String pubAddress, Double amount) {
-        getPresenter().onResponse(pubAddress, amount);
+    public void onResponse(String pubAddress, Double amount, String tokenAddress) {
+        getPresenter().onResponse(pubAddress, amount, tokenAddress);
     }
 
     public void onCurrencyChoose(String currency){

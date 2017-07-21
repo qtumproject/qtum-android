@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.TokenFragment;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.pixelplex.qtum.datastorage.FileStorageManager;
@@ -11,6 +12,7 @@ import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import com.pixelplex.qtum.utils.sha3.sha.Keccak;
 import com.pixelplex.qtum.utils.sha3.sha.Parameters;
 
@@ -33,9 +35,15 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
     private Context mContext;
 
     private Token token;
+    private String abi;
 
     public Token getToken() {
         return token;
+    }
+
+    public String getAbi(){
+        abi = (TextUtils.isEmpty(abi))? FileStorageManager.getInstance().readAbiContract(getView().getContext(),token.getUiid()) : abi;
+        return abi;
     }
 
     public void setToken(Token token) {
@@ -100,6 +108,11 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
             }
         });
 
+    }
+
+    public void onReceiveClick(){
+        ReceiveFragment receiveFragment = ReceiveFragment.newInstance(token.getContractAddress());
+        getView().openFragment(receiveFragment);
     }
 
     private String processResponse(List<ContractMethodParameter> contractMethodOutputParameterList, String output){

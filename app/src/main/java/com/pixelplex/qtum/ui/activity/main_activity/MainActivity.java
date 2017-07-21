@@ -92,6 +92,10 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         return getPresenter().getAmountForSendAction();
     }
 
+    public String getTokenForSendAction(){
+        return getPresenter().getTokenForSendAction();
+    }
+
     public void loadPermissions(String perm, int requestCode) {
         ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
     }
@@ -158,9 +162,9 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
 
     @Override
-    public void setAdressAndAmount(String defineMinerAddress, String defineAmount) {
+    public void setAdressAndAmount(String defineMinerAddress, String defineAmount, String tokenAddress) {
         if(getSupportFragmentManager().findFragmentByTag(SendBaseFragment.class.getCanonicalName()) == null && getPresenter().mAuthenticationFlag) {
-            openRootFragment(SendBaseFragment.newInstance(false, defineMinerAddress, defineAmount));
+            openRootFragment(SendBaseFragment.newInstance(false, defineMinerAddress, defineAmount, tokenAddress));
         }
     }
 

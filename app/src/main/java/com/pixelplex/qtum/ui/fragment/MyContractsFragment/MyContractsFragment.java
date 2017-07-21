@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.MyContractsFragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,7 +113,11 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
             }else{
                 mTextViewDate.setText(R.string.not_confirmed);
             }
-            mTextViewTitle.setText(contract.getContractAddress().substring(0,8));
+            if(!TextUtils.isEmpty(contract.getContractAddress())) {
+                mTextViewTitle.setText(contract.getContractAddress().substring(0, 8));
+            } else {
+                mTextViewTitle.setText("N/A");
+            }
             TinyDB tinyDB = new TinyDB(getContext());
             ContractTemplate contractTemplateByUiid = tinyDB.getContractTemplateByUiid(contract.getUiid());
             String contractType = contractTemplateByUiid.getContractType();

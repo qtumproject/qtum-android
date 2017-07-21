@@ -26,9 +26,12 @@
 
             <com.pixelplex.qtum.utils.FontButton
                 android:id="@+id/bt_create_new"
-                android:layout_width="202dp"
+                android:layout_width="wrap_content"
                 android:gravity="center"
-                android:padding="10dp"
+                android:padding="8dp"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:layout_centerHorizontal="true"
                 android:layout_height="wrap_content"
                 android:background="@color/accent_red_color"
                 android:text="@string/create_new"
@@ -39,10 +42,13 @@
 
             <com.pixelplex.qtum.utils.FontButton
                 android:id="@+id/bt_import_wallet"
-                android:layout_width="202dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bt_create_new"
-                android:layout_marginTop="16dp"
+                android:layout_alignStart="@+id/bt_create_new"
+                android:layout_alignEnd="@+id/bt_create_new"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:padding="10dp"
                 app:typeface="@string/simplonMonoRegular"
@@ -54,11 +60,13 @@
 
             <com.pixelplex.qtum.utils.FontButton
                 android:id="@+id/bt_login"
-                android:layout_width="202dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bt_import_wallet"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_alignStart="@+id/bt_create_new"
+                android:layout_alignEnd="@+id/bt_create_new"
+                android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:padding="10dp"
                 app:typeface="@string/simplonMonoRegular"
@@ -69,19 +77,6 @@
                 android:textSize="@dimen/button_text" />
         </RelativeLayout>
 
-        <com.pixelplex.qtum.utils.FontTextView
-            android:id="@+id/tv_start_page_create"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_start_page_you_dont_have"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="@string/create_the_first_one_or_restore_n_the_previous_wallet_key"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
-            app:typefaceAsset="@string/simplonMonoRegular" />
-
         <ImageView
             android:id="@+id/logo_view"
             android:layout_width="140dp"
@@ -90,17 +85,37 @@
             android:layout_centerHorizontal="true"
             app:srcCompat="@drawable/qtum_logo" />
 
-        <com.pixelplex.qtum.utils.FontTextView
-            android:id="@+id/tv_start_page_you_dont_have"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_below="@+id/logo_view"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="48dp"
-            android:text="@string/you_don_t_have_a_wallet_yet"
-            android:textColor="@color/colorPrimary"
-            android:textSize="22sp"
-            app:typefaceAsset="@string/euclidFlexMedium" />
+            android:layout_above="@+id/rl_button_container"
+            android:gravity="center"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/tv_start_page_you_dont_have"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="@string/you_don_t_have_a_wallet_yet"
+                android:textColor="@color/colorPrimary"
+                android:textSize="22sp"
+                app:typefaceAsset="@string/euclidFlexMedium" />
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/tv_start_page_create"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_height="wrap_content"
+                android:text="@string/create_the_first_one_or_restore_n_the_previous_wallet_key"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                app:typefaceAsset="@string/simplonMonoRegular" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

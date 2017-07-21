@@ -3,9 +3,13 @@ package com.pixelplex.qtum.ui.fragment.ReceiveFragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
 
@@ -17,6 +21,7 @@ import com.google.zxing.common.BitMatrix;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import com.pixelplex.qtum.ui.fragment.AddressesFragment.AddressesFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -31,7 +36,8 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     private ReceiveFragmentView mReceiveFragmentView;
     private ReceiveFragmentInteractorImpl mReceiveFragmentInteractor;
-    private String mAmount;
+    private String mAmount = "0.0";
+    private String mTokenAddress;
 
     private DrawQRTask drawQRTask;
 
@@ -57,19 +63,53 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         return mReceiveFragmentInteractor;
     }
 
+    //qtum:qQMKtb8fs82ZTQwB1PWB8LDffoTKrNkK4z?amount=1.00000000&label=1234&message=mne&tokenAddress=....
+    //qtum:QYxULw7ppJex4uhHoDQbW4jRjYP1vS2CEc?amount=2&label=1234&message=mne&tokenAddress=1e6abee8af69f098aa354802164c79333623b252
+
     @Override
     public void changeAmount(String s) {
-        JSONObject json = new JSONObject();
         mAmount = s;
-        try {
-            json.put("amount", s);
-            json.put("publicAddress", getInteractor().getCurrentReceiveAddress());
+        String result = buildFullQrCodeData(getInteractor().getCurrentReceiveAddress(), mAmount, mTokenAddress);
             getView().showSpinner();
             drawQRTask = new DrawQRTask();
-            drawQRTask.execute(json.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
+            drawQRTask.execute(result);
+    }
+
+    @Override
+    public void setTokenAddress(String address) {
+        mTokenAddress = address;
+        String result = buildFullQrCodeData(getInteractor().getCurrentReceiveAddress(), mAmount, mTokenAddress);
+            getView().showSpinner();
+            drawQRTask = new DrawQRTask();
+            drawQRTask.execute(result);
+    }
+
+    String getFormattedReceiveAddr(String addr){
+        return String.format("qtum:%s?",addr);
+    }
+
+    String getFormattedAmount(String amount){
+        if(!TextUtils.isEmpty(amount)) {
+            return String.format("amount=%s&", amount);
+        }else {
+            return "";
         }
+    }
+
+    String getadditionalInfo(){
+        return "label=1234&message=mne";
+    }
+
+    String getFormattedTokenAddr(String addr){
+        if(!TextUtils.isEmpty(addr)) {
+            return String.format("&tokenAddress=%s", addr);
+        } else {
+            return "";
+        }
+    }
+
+    String buildFullQrCodeData(String receiveAddr, String amount, String mTokenAddress){
+        return getFormattedReceiveAddr(receiveAddr) + getFormattedAmount(amount) + getadditionalInfo() + getFormattedTokenAddr(mTokenAddress);
     }
 
     @Override
@@ -105,17 +145,10 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     @Override
     public void changeAddress(){
-        JSONObject json = new JSONObject();
-        try {
-            json.put("amount", mAmount);
-            json.put("publicAddress", getInteractor().getCurrentReceiveAddress());
+        String result = buildFullQrCodeData(getInteractor().getCurrentReceiveAddress(), mAmount, mTokenAddress);
             getView().showSpinner();
             drawQRTask = new DrawQRTask();
-            drawQRTask.execute(json.toString());
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            drawQRTask.execute(result);
         getView().setUpAddress(getInteractor().getCurrentReceiveAddress());
     }
 
@@ -235,6 +268,19 @@ class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
                 moduleWidth = (moduleWidth > patternWidth)? patternWidth : moduleWidth;
                 patternWidth = 0;
             }
+        }
+    }
+
+    public void chooseShareMethod(){
+        if(getView().getQrCode() != null) {
+            String pathofBmp = MediaStore.Images.Media.insertImage(getView().getContext().getContentResolver(), getView().getQrCode(), "QTUM QRCode", null);
+            Uri bmpUri = Uri.parse(pathofBmp);
+            Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+            intentShareFile.setType("image/png");
+            intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                    "Qtum QR-Code");
+            intentShareFile.putExtra(Intent.EXTRA_STREAM, bmpUri);
+            getView().getMainActivity().startActivity(Intent.createChooser(intentShareFile, "Qtum QR-Code"));
         }
     }
 }

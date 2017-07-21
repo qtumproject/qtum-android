@@ -46,6 +46,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
     private String mAddressForSendAction;
     private String mAmountForSendAction;
+    private String mTokenAddressForSendAction;
 
     private LanguageChangeListener mLanguageChangeListener;
 
@@ -197,7 +198,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                     getView().popBackStack();
                     return true;
                 }
-                mRootFragment = SendBaseFragment.newInstance(false,null,null);
+                mRootFragment = SendBaseFragment.newInstance(false,null,null,null);
                 break;
             default:
                 return false;
@@ -218,6 +219,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                 mSendFromIntent = true;
                 mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
                 mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
+                mTokenAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_TOKEN);
                 break;
             default:
                 break;
@@ -235,8 +237,9 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
             case QtumIntent.SEND_FROM_SDK:
                 mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
                 mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
+                mTokenAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_TOKEN);
                 if(mAuthenticationFlag){
-                    mRootFragment = SendBaseFragment.newInstance(false,mAddressForSendAction,mAmountForSendAction);
+                    mRootFragment = SendBaseFragment.newInstance(false,mAddressForSendAction,mAmountForSendAction, mTokenAddressForSendAction);
                     getView().openRootFragment(mRootFragment);
                     getView().setIconChecked(3);
                 } else {
@@ -276,5 +279,9 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
     public String getAmountForSendAction() {
         return mAmountForSendAction;
+    }
+
+    public String getTokenForSendAction() {
+        return mTokenAddressForSendAction;
     }
 }
