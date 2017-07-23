@@ -19,4 +19,8 @@ public class SendRawTransactionResponse {
     public void setResult(String result) {
         this.result = result;
     }
+
+    public String getTxid() {
+        return txid;
+    }
 }

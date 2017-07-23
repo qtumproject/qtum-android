@@ -32,6 +32,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
     private PinFragmentView mPinFragmentView;
     private PinFragmentInteractorImpl mPinFragmentInteractor;
     private String pinRepeat;
+    private String oldPin;
     private String pinHash;
     private String mAction;
     private Context mContext;
@@ -173,7 +174,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
 
                                             @Override
                                             public void onNext(String s) {
-                                                getInteractor().savePassword(s);
+                                                getInteractor().savePassword(pinHash);
                                                 getInteractor().saveTouchIdPassword(s);
                                                 getInteractor().setKeyGeneratedInstance(true);
                                                 getView().dismissProgressDialog();
@@ -280,6 +281,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
             case PinFragment.CHANGING: {
                 switch (currentState) {
                     case 0:
+                        oldPin = pin;
                         String pinHashEntered = CryptoUtils.generateSHA256String(pin);
                         String pinHashGenuine = getInteractor().getPassword();
                         if (pinHashEntered.equals(pinHashGenuine)) {
@@ -299,12 +301,38 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                     case 2:
                         if (pin.equals(pinRepeat)) {
                             getView().clearError();
+
                             final String pinHash = CryptoUtils.generateSHA256String(pinRepeat);
                             getInteractor().savePassword(pinHash);
+                            byte[] oldSaltPassphrase = getInteractor().getSaltPassphrase();
+                            String passphrase = AESUtil.decryptBytes(oldPin, oldSaltPassphrase);
+                            byte[] saltPassphrase = AESUtil.encryptToBytes(pinRepeat,passphrase);
+                            getInteractor().saveSaltPassphrase(saltPassphrase);
+
                             if(mTouchIdFlag){
-                                getInteractor().saveTouchIdPassword(CryptoUtils.encode(pinRepeat));
+                                CryptoUtils.encodeInBackground(pinRepeat)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Subscriber<String>() {
+                                            @Override
+                                            public void onCompleted() {
+
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+
+                                            }
+
+                                            @Override
+                                            public void onNext(String s) {
+                                                getInteractor().saveTouchIdPassword(s);
+                                                getView().getMainActivity().onBackPressed();
+                                            }
+                                        });
+                            } else {
+                                getView().getMainActivity().onBackPressed();
                             }
-                            getView().getMainActivity().onBackPressed();
                         } else {
                             getView().confirmError(getView().getContext().getString(R.string.incorrect_repeated_pin));
                         }

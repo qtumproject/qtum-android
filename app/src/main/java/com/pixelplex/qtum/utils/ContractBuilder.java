@@ -26,6 +26,8 @@ import org.bitcoinj.script.ScriptOpCodes;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.spongycastle.crypto.digests.RIPEMD160Digest;
+import org.spongycastle.crypto.digests.SHA256Digest;
 import org.spongycastle.util.encoders.Hex;
 
 
@@ -458,6 +460,32 @@ public class ContractBuilder {
             standardInterface.add(approve);
             standardInterface.add(allowance);
         }
+    }
+
+    public static String generateContractAddress(String txHash){
+        char[] ca = txHash.toCharArray();
+        StringBuilder sb = new StringBuilder(txHash.length());
+        for (int i = 0; i < txHash.length(); i += 2) {
+            sb.insert(0, ca, i, 2);
+        }
+
+        String reverse_tx_hash = sb.toString();
+        reverse_tx_hash = reverse_tx_hash.concat("00000000");
+
+
+        byte[] test5 = Hex.decode(reverse_tx_hash);
+
+        SHA256Digest sha256Digest = new SHA256Digest();
+        sha256Digest.update(test5, 0, test5.length);
+        byte[] out = new byte[sha256Digest.getDigestSize()];
+        sha256Digest.doFinal(out, 0);
+
+        RIPEMD160Digest ripemd160Digest = new RIPEMD160Digest();
+        ripemd160Digest.update(out, 0, out.length);
+        byte[] out2 = new byte[ripemd160Digest.getDigestSize()];
+        ripemd160Digest.doFinal(out2, 0);
+
+        return Hex.toHexString(out2);
     }
 
 }

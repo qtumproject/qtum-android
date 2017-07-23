@@ -53,6 +53,12 @@ class PinFragmentInteractorImpl implements PinFragmentInteractor {
     }
 
     @Override
+    public byte[] getSaltPassphrase() {
+        String encryptedSaltPassphrase = QtumSharedPreference.getInstance().getSeed(mContext);
+        return KeyStoreHelper.decryptToBytes(QTUM_PIN_ALIAS,encryptedSaltPassphrase);
+    }
+
+    @Override
     public String getTouchIdPassword() {
         return QtumSharedPreference.getInstance().getTouchIdPassword(mContext);
     }

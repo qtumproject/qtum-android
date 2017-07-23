@@ -83,4 +83,8 @@ public class QtumService {
         return mServiceApi.callSmartContract(contractAddress,callSmartContractRequest);
     }
 
+    public Observable<History> getTransaction(final String txHash) {
+        return mServiceApi.getTransaction(txHash);
+    }
+
 }

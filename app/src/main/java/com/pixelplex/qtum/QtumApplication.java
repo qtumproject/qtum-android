@@ -8,9 +8,6 @@ import com.pixelplex.qtum.utils.FontManager;
 import io.fabric.sdk.android.Fabric;
 
 public class QtumApplication extends MultiDexApplication {
-
-    private int contractAwaitCount = 0;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -19,21 +16,5 @@ public class QtumApplication extends MultiDexApplication {
             Fabric.with(this, new Crashlytics());
         }
         FontManager.init(getAssets());
-    }
-
-    public int getContractAwaitCount() {
-        return contractAwaitCount;
-    }
-
-    public void setContractAwaitCount(int contractAwaitCount) {
-        this.contractAwaitCount = contractAwaitCount;
-    }
-
-    public void setContractAwaitCountPlus() {
-        this.contractAwaitCount++;
-    }
-
-    public void setContractAwaitCountMinus() {
-        this.contractAwaitCount--;
     }
 }

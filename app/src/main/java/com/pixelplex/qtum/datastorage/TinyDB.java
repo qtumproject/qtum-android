@@ -64,6 +64,7 @@ public class TinyDB {
     private final String TEMPLATE_NAME_LIST = "TEMPLATE_NAME_LIST";
     private final String TEMPLATE_UUID_LIST = "TEMPLATE_UUID_LIST";
     private final String SHARED_TEMPLATE_LIST = "SHARED_TEMPLATE_LIST";
+    private final String UNCONFIRMED_CONTRACT_TX_HAS_LIST = "unconfirmed_contract_tx_hash_list";
 
     public TinyDB(Context appContext) {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
@@ -461,6 +462,10 @@ public class TinyDB {
         return tokenArrayList;
     }
 
+    public ArrayList<String> getUnconfirmedContractTxHasList(){
+        return getListString(UNCONFIRMED_CONTRACT_TX_HAS_LIST);
+    }
+
     public void clearTokenList(){
         putListString(TOKEN_LIST, new ArrayList<String>());
     }
@@ -565,6 +570,10 @@ public class TinyDB {
         checkForNullKey(key);
         String[] myStringList = stringList.toArray(new String[stringList.size()]);
         preferences.edit().putString(key, TextUtils.join("‚‗‚", myStringList)).apply();
+    }
+
+    public void putUnconfirmedContractTxHashList(ArrayList<String> unconfirmedTokenTxHashList){
+        putListString(UNCONFIRMED_CONTRACT_TX_HAS_LIST,unconfirmedTokenTxHashList);
     }
 
     public void putArrayString(String key, String[] myStringList) {
