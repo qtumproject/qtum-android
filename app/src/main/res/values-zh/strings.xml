@@ -94,22 +94,20 @@
     <string name="not_confirmed_balance">Not Confirmed Balance</string>
 
     <string name="mine_address">Mine Address</string>
+
     <string name="not_confirmed_trans">Transaction Not Confirmed Yet</string>
     <string name="templates">Templates</string>
     <string name="set_your_token">Set Your Token</string>
     <string name="step_1_2">Step 1 of 2</string>
     <string name="step_2_2">Step 2 of 2</string>
-
+    <string name="free">Free</string>
     <string name="qstore">Qstore</string>
-
     <string name="search_by_name">Search by Name</string>
     <string name="search_by_tag">Search by Hashtag</string>
-
     <string name="view_details">View Details</string>
     <string name="view_source_code">View Source Code</string>
     <string name="description">Description:</string>
     <string name="tags">Tags:</string>
-
     <string name="published_date">Published Date:</string>
     <string name="size">Size:</string>
     <string name="compiled_on">Compiled On:</string>
@@ -177,5 +175,11 @@
     <string name="abi_interface">ABI Interface</string>
     <string name="token">Token</string>
     <string name="smart_contract_parameters">Smart Contract Parameters</string>
+
+    <string name="switch_theme">Swith Application Theme</string>
+    <string name="confirmation">Confirmation…</string>
+    <string name="qtum_address">QTUM Address</string>
+    <string name="not_confirmed_yet">Not Confirmed Yet...</string>
+    <string name="confirmed">Confirmed</string>
 
 </resources>

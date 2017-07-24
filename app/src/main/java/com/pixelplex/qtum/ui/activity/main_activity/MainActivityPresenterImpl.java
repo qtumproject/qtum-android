@@ -17,22 +17,30 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
+import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.base_activity.BasePresenterImpl;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.NewsFragment.NewsFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
-import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 import com.pixelplex.qtum.utils.QtumIntent;
+
+import org.bitcoinj.wallet.Wallet;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivityPresenter {
 
     private MainActivityView mMainActivityView;
     private MainActivityInteractorImpl mMainActivityInteractor;
-    private Fragment mRootFragment;
+    protected Fragment mRootFragment;
     private Context mContext;
     public boolean mAuthenticationFlag = false;
     private boolean mCheckAuthenticationFlag = false;
@@ -87,7 +95,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     public void onResume(Context context) {
         super.onResume(context);
         if(mCheckAuthenticationFlag && !mCheckAuthenticationShowFlag){
-            PinFragment pinFragment = PinFragment.newInstance(PinFragment.CHECK_AUTHENTICATION);
+            BaseFragment pinFragment = PinFragment.newInstance(PinFragment.CHECK_AUTHENTICATION, getView().getContext());
             getView().openFragment(pinFragment);
             mCheckAuthenticationFlag = false;
             mCheckAuthenticationShowFlag = true;
@@ -149,22 +157,23 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         }
         mContext.bindService(mIntent,mServiceConnection,0);
 
-        openStartFragment();
-
+        if(!QtumIntent.CHANGE_THEME.equals(getView().getQtumAction())) {
+            openStartFragment();
+        }
     }
 
     private void openStartFragment() {
         Fragment fragment;
         if (getInteractor().getKeyGeneratedInstance(mContext)) {
             if(mSendFromIntent){
-                fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
+                fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND, getView().getContext());
                 getView().openRootFragment(fragment);
-            } else {
-                fragment = StartPageFragment.newInstance(true);
+            } else if(!mAuthenticationFlag){
+                fragment = StartPageFragment.newInstance(true,getView().getContext());
                 getView().openRootFragment(fragment);
             }
         } else {
-            fragment = StartPageFragment.newInstance(false);
+            fragment = StartPageFragment.newInstance(false,getView().getContext());
             getView().openRootFragment(fragment);
         }
     }
@@ -173,32 +182,34 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_wallet:
-                if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(WalletMainFragment.class.getCanonicalName())) {
+                if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(WalletMainFragment.class.getSimpleName())) {
                     getView().popBackStack();
                     return true;
                 }
-                mRootFragment = WalletMainFragment.newInstance();
+                mRootFragment = WalletMainFragment.newInstance(getView().getContext());
                 break;
             case R.id.item_profile:
-                if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(ProfileFragment.class.getCanonicalName())) {
+                if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(ProfileFragment.class.getSimpleName())) {
                     getView().popBackStack();
                     return true;
                 }
-                mRootFragment = ProfileFragment.newInstance();
+                mRootFragment = ProfileFragment.newInstance(getView().getContext());
                 break;
             case R.id.item_news:
-                if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(NewsFragment.class.getCanonicalName())) {
+                if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(NewsFragment.class.getSimpleName())) {
                     getView().popBackStack();
                     return true;
                 }
-                mRootFragment = NewsFragment.newInstance();
+                mRootFragment = NewsFragment.newInstance(getView().getContext());
                 break;
             case R.id.item_send:
-                if (mRootFragment != null && mRootFragment.getClass().getCanonicalName().equals(SendBaseFragment.class.getCanonicalName())) {
+                if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(SendFragment.class.getSimpleName())) {
                     getView().popBackStack();
                     return true;
                 }
-                mRootFragment = SendBaseFragment.newInstance(false,null,null,null);
+
+                mRootFragment = SendFragment.newInstance(false, null, null, null, getView().getContext());
+
                 break;
             default:
                 return false;
@@ -221,6 +232,11 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                 mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
                 mTokenAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_TOKEN);
                 break;
+            case NfcAdapter.ACTION_NDEF_DISCOVERED:
+                mSendFromIntent = true;
+                mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
+                mAmountForSendAction = "1.431";
+                break;
             default:
                 break;
         }
@@ -229,8 +245,12 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     @Override
     public void processNewIntent(Intent intent) {
         switch (intent.getAction()) {
+
+            case QtumIntent.CHANGE_THEME:
+                getWalletFromFile();
+                break;
             case QtumIntent.OPEN_FROM_NOTIFICATION:
-                mRootFragment = WalletMainFragment.newInstance();
+                mRootFragment = WalletMainFragment.newInstance(getView().getContext());
                 getView().openRootFragment(mRootFragment);
                 getView().setIconChecked(0);
                 break;
@@ -239,18 +259,62 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                 mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
                 mTokenAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_TOKEN);
                 if(mAuthenticationFlag){
-                    mRootFragment = SendBaseFragment.newInstance(false,mAddressForSendAction,mAmountForSendAction, mTokenAddressForSendAction);
+                    mRootFragment = SendFragment.newInstance(false,mAddressForSendAction,mAmountForSendAction, mTokenAddressForSendAction, getView().getContext());
                     getView().openRootFragment(mRootFragment);
                     getView().setIconChecked(3);
                 } else {
-                    Fragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND);
+                    Fragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND, getView().getContext());
                     getView().openRootFragment(fragment);
                 }
+                break;
+
+            case NfcAdapter.ACTION_NDEF_DISCOVERED:
+                mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
+                mAmountForSendAction = "0.253";
+                if(mAuthenticationFlag) {
+                    mRootFragment = SendFragment.newInstance(false,mAddressForSendAction,mAmountForSendAction, mTokenAddressForSendAction, getView().getContext());
+                    getView().setIconChecked(3);
+                } else{
+                    mRootFragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND, getView().getContext());
+
+                }
+                getView().openRootFragment(mRootFragment);
                 break;
             default:
                 break;
         }
+
     }
+
+    public void getWalletFromFile(){
+        KeyStorage.getInstance()
+                .loadWalletFromFile(mContext)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Wallet>() {
+                    @Override
+                    public void onCompleted() {
+                        mCheckAuthenticationShowFlag = true;
+                        setAuthenticationFlag(true);
+                        mRootFragment = WalletMainFragment.newInstance(getView().getContext());
+                        getView().openRootFragment(mRootFragment);
+                        getView().setIconChecked(0);
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showToast(e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onNext(Wallet wallet) {
+                        KeyStorage.getInstance().setWallet(wallet);
+                    }
+                });
+    }
+
 
     @Override
     public NetworkStateReceiver getNetworkReceiver() {

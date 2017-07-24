@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.ReceiveFragment;
 
-
+import android.content.Context;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -22,17 +23,14 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.TokenFragment.Dialogs.ShareDialogFragment;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.utils.FontManager;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView {
+public abstract class ReceiveFragment extends BaseFragment implements ReceiveFragmentView {
 
     private ReceiveFragmentPresenterImpl mReceiveFragmentPresenter;
 
@@ -54,11 +52,10 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     Button mButtonChooseAnotherAddress;
     @BindView(R.id.ibt_back)
     ImageButton mImageButtonBack;
-    @BindView(R.id.tv_total_balance_number)
-    TextView mTextViewTotalBalanceNumber;
     @BindView(R.id.rl_receive)
     RelativeLayout mRelativeLayoutBase;
     @BindView(R.id.cl_receive)
+    protected
     CoordinatorLayout mCoordinatorLayout;
 
     @BindView(R.id.qr_progress_bar)
@@ -115,17 +112,9 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
         }
     }
 
-    public static ReceiveFragment newInstance() {
+    public static BaseFragment newInstance(Context context, String tokenAddress) {
         Bundle args = new Bundle();
-        ReceiveFragment fragment = new ReceiveFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static ReceiveFragment newInstance(String tokenAddress) {
-        Bundle args = new Bundle();
-        args.putString(TOKEN_ADDRESS, tokenAddress);
-        ReceiveFragment fragment = new ReceiveFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, ReceiveFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -138,11 +127,6 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     @Override
     protected ReceiveFragmentPresenterImpl getPresenter() {
         return mReceiveFragmentPresenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_receive;
     }
 
     @Override
@@ -237,11 +221,6 @@ public class ReceiveFragment extends BaseFragment implements ReceiveFragmentView
     @Override
     public void setUpAddress(String s) {
         mTextViewAddress.setText(s);
-    }
-
-    @Override
-    public void setBalance(String balance) {
-        mTextViewTotalBalanceNumber.setText((balance != null)? String.format("%s QTUM",balance) : "N/A");
     }
 
     @Override

@@ -62,7 +62,7 @@ public class FontManager {
             return asset;
 
         // Make sure that the font ends in '.ttf' or '.ttc'
-        if ((!asset.endsWith(".ttf")) && (!asset.endsWith(".ttc")))
+        if (!asset.endsWith(".ttf") && !asset.endsWith(".ttc") && !asset.endsWith(".otf"))
             asset = String.format("%s.ttf", asset);
 
         return asset;

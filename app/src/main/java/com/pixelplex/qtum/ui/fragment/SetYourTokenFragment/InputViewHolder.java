@@ -3,27 +3,19 @@ package com.pixelplex.qtum.ui.fragment.SetYourTokenFragment;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
-
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.utils.EditTextValidated;
 import com.pixelplex.qtum.utils.FontManager;
 import com.pixelplex.qtum.utils.FontTextView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class InputViewHolder extends RecyclerView.ViewHolder implements EditTextValidated.EditTextValidateListener{
 
@@ -94,9 +86,6 @@ public class InputViewHolder extends RecyclerView.ViewHolder implements EditText
     @BindView(R.id.checkbox)
     AppCompatCheckBox checkBox;
 
-    @BindView(R.id.tv_param_field)
-    FontTextView mTextViewParamField;
-
     OnValidateParamsListener listener;
 
     public InputViewHolder(View itemView, OnValidateParamsListener listener) {
@@ -112,8 +101,6 @@ public class InputViewHolder extends RecyclerView.ViewHolder implements EditText
 
     public void bind (ContractMethodParameter parameter, boolean isLast) {
         this.parameter = parameter;
-        int position = getAdapterPosition()+1;
-        mTextViewParamField.setText("Parameter " + position);
         tilParam.setHint(fromCamelCase(parameter.getName()));
         setInputType(parameter.getType());
         if(isLast){

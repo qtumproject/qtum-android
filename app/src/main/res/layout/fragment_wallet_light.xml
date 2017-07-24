@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bottom_nav_bar_color_light"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            app:typefaceAsset="@string/proximaNovaSemibold"
+            android:text="@string/activity"
+            android:textColor="@color/bottom_nav_bar_text_color_light" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_main"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@android:color/transparent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:statusBarScrim="?attr/colorPrimaryDark"
+            app:titleEnabled="false">
+
+            <FrameLayout
+                android:id="@+id/balance_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="56dp"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax">
+
+                <!--<com.pixelplex.qtum.ui.wave_visualizer.GLWaveVisualizationView-->
+                    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+                    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                    <!--android:id="@+id/visualizer_view"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--app:av_wavesHeight="400dp"-->
+                    <!--app:av_wavesFooterHeight="0dp"-->
+                    <!--app:av_wavesColors="@array/av_colors"-->
+                    <!--app:av_wavesCount="3"-->
+                    <!--app:av_layersCount="2" />-->
+
+                <com.pixelplex.qtum.ui.wave_visualizer.WaveView
+                    android:id="@+id/wave_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <include layout="@layout/fragment_wallet_appbar_light" />
+
+            </FrameLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:elevation="0dp"
+                app:layout_collapseMode="pin">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/fade_divider_root"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp">
+
+                        <com.pixelplex.qtum.utils.FontTextView
+                            android:id="@+id/tv_wallet_name"
+                            style="@style/appbar_wallet_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/my_wallet"
+                            app:typefaceAsset="@string/proximaNovaSemibold" />
+
+                        <ImageButton
+                            android:id="@+id/bt_qr_code"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_margin="9dp"
+                            android:background="@drawable/background_pressed_alpha_white"
+                            android:padding="4dp"
+                            android:scaleType="centerInside"
+                            android:tint="@color/white"
+                            app:srcCompat="@drawable/ic_qrcode_light" />
+
+                        <include
+                            android:id="@+id/app_bar_placeholder"
+                            layout="@layout/lyt_appbar_wallet_placeholder_light"
+                            android:visibility="invisible" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+</android.support.design.widget.CoordinatorLayout>

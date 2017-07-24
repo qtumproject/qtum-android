@@ -7,7 +7,7 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 import java.util.List;
 
-interface WalletFragmentView extends BaseFragmentView {
+public interface WalletFragmentView extends BaseFragmentView {
     void updateHistory(List<History> historyList);
     void setAdapterNull();
     void updateBalance(String balance, String unconfirmedBalance);

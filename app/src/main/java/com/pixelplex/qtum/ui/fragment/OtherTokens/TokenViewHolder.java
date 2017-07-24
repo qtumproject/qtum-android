@@ -5,16 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
 import com.pixelplex.qtum.utils.FontTextView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBalanceChangeListener {
 
@@ -59,7 +56,6 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
         tokenBalanceView.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
         socketInstance.getSocketInstance().addTokenBalanceChangeListener(token.getContractAddress(),this);
-
     }
 
     @SuppressLint("DefaultLocale")
