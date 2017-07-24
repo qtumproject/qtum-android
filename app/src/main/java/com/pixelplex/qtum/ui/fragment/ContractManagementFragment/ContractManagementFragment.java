@@ -14,6 +14,7 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.ContractFunctionFragment.ContractFunctionFragment;
+import com.pixelplex.qtum.utils.ContractManagementHelper;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import java.util.List;
@@ -132,7 +133,7 @@ public class ContractManagementFragment extends BaseFragment implements Contract
         void bindProperty(ContractMethod contractMethod){
             mTextViewPropertyName.setText(contractMethod.name);
             mContractMethod = contractMethod;
-            getPresenter().getPropertyValue(mContractAddress, mContractMethod, new ContractManagementFragmentPresenter.GetPropertyValueCallBack() {
+            ContractManagementHelper.getPropertyValue(mContractAddress, mContractMethod, new ContractManagementHelper.GetPropertyValueCallBack() {
                 @Override
                 public void onSuccess(String value) {
                     mProgressBar.setVisibility(View.GONE);
