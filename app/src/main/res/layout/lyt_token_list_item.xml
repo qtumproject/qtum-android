@@ -14,7 +14,7 @@
         android:textColor="@color/colorPrimary"
         android:text="@string/token_name"
         android:gravity="left|center_vertical"
-        android:layout_toStartOf="@+id/token_balance"
+        android:layout_toStartOf="@+id/ll_balance"
         android:maxLines="1"
         android:ellipsize="end"
         app:typefaceAsset="@string/simplonMonoRegular"
@@ -30,16 +30,33 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"/>
 
-    <com.pixelplex.qtum.utils.FontTextView
-        android:id="@+id/token_balance"
-        android:textSize="14sp"
-        android:textColor="@color/colorPrimary"
-        app:typefaceAsset="@string/simplonMonoMedium"
+    <LinearLayout
+        android:id="@+id/ll_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:minWidth="30dp"
         android:layout_marginEnd="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:orientation="horizontal">
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/token_balance"
+            android:textSize="14sp"
+            android:textColor="@color/colorPrimary"
+            app:typefaceAsset="@string/simplonMonoMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/token_symbol"
+            android:textSize="14sp"
+            android:textColor="@color/colorPrimary"
+            app:typefaceAsset="@string/simplonMonoMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/spinner"

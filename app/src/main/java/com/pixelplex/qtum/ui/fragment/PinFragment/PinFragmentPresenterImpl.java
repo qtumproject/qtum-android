@@ -84,7 +84,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                                         fragment = BackUpWalletFragment.newInstance(getView().getContext(), true, pinRepeat);
                                     }
                                     pinHash = CryptoUtils.generateSHA256String(pinRepeat);
-                                    if(mTouchIdFlag){
+                                    if(getView().getMainActivity().checkAvailabilityTouchId()){
                                         CryptoUtils.encodeInBackground(pinRepeat)
                                                 .subscribeOn(Schedulers.io())
                                                 .observeOn(AndroidSchedulers.mainThread())
@@ -151,7 +151,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                                 fragment = WalletMainFragment.newInstance(getView().getContext());
                                 getView().getMainActivity().setRootFragment(fragment);
                             }
-                            if(mTouchIdFlag){
+                            if(getView().getMainActivity().checkAvailabilityTouchId()){
                                 CryptoUtils.encodeInBackground(pinRepeat)
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
@@ -305,7 +305,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                             byte[] saltPassphrase = AESUtil.encryptToBytes(pinRepeat,passphrase);
                             getInteractor().saveSaltPassphrase(saltPassphrase);
 
-                            if(mTouchIdFlag){
+                            if(getView().getMainActivity().checkAvailabilityTouchId()){
                                 CryptoUtils.encodeInBackground(pinRepeat)
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
@@ -434,7 +434,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
             PinFragmentInteractorImpl.isDataLoaded = false;
         }
 
-        if(mTouchIdFlag && (mAction.equals(PinFragment.AUTHENTICATION_AND_SEND) || mAction.equals(PinFragment.AUTHENTICATION) || mAction.equals(PinFragment.CHECK_AUTHENTICATION))){
+        if(mTouchIdFlag && (mAction.equals(PinFragment.AUTHENTICATION_AND_SEND) || mAction.equals(PinFragment.AUTHENTICATION) || mAction.equals(PinFragment.CHECK_AUTHENTICATION)) || mAction.equals(PinFragment.AUTHENTICATION_FOR_PASSPHRASE)){
             prepareSensor();
         }
 

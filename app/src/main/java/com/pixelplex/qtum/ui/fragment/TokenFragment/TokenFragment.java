@@ -24,6 +24,7 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ViewSourceCodeDialogFragment;
 import com.pixelplex.qtum.ui.fragment.TokenFragment.Dialogs.ShareDialogFragment;
+import com.pixelplex.qtum.utils.ContractManagementHelper;
 import com.pixelplex.qtum.utils.FontTextView;
 import com.pixelplex.qtum.utils.ResizeWidthAnimation;
 import com.pixelplex.qtum.utils.StackCollapseLinearLayout;
@@ -39,9 +40,9 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
     private final int LAYOUT = R.layout.lyt_token_fragment;
     private static final String tokenKey = "tokenInfo";
 
-    private static final String totalSupply = "totalSupply";
-    private static final String decimals = "decimals";
-    private static final String symbol = "symbol";
+    public static final String totalSupply = "totalSupply";
+    public static final String decimals = "decimals";
+    public static final String symbol = "symbol";
 
     public static TokenFragment newInstance(Contract token) {
         Bundle args = new Bundle();
@@ -148,9 +149,6 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         super.initializeViews();
 
         presenter.setToken((Token) getArguments().getSerializable(tokenKey));
-        presenter.getPropertyValue(totalSupply);
-        presenter.getPropertyValue(decimals);
-        presenter.getPropertyValue(symbol);
 
         collapseLinearLayout.requestLayout();
         headerPAdding = convertDpToPixel(16,getContext());

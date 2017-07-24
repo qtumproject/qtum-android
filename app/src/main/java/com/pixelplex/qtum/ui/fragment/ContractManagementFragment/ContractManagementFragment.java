@@ -1,6 +1,5 @@
 package com.pixelplex.qtum.ui.fragment.ContractManagementFragment;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,22 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import com.pixelplex.qtum.R;
-
 import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.ContractFunctionFragment.ContractFunctionFragment;
-import com.pixelplex.qtum.ui.fragment.MyContractsFragment.MyContractsFragment;
+import com.pixelplex.qtum.utils.ContractManagementHelper;
 import com.pixelplex.qtum.utils.FontTextView;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 
 public abstract class ContractManagementFragment extends BaseFragment implements ContractManagementFragmentView{
 
@@ -123,7 +117,7 @@ public abstract class ContractManagementFragment extends BaseFragment implements
         void bindProperty(ContractMethod contractMethod){
             mTextViewPropertyName.setText(contractMethod.name);
             mContractMethod = contractMethod;
-            getPresenter().getPropertyValue(mContractAddress, mContractMethod, new ContractManagementFragmentPresenter.GetPropertyValueCallBack() {
+            ContractManagementHelper.getPropertyValue(mContractAddress, mContractMethod, new ContractManagementHelper.GetPropertyValueCallBack() {
                 @Override
                 public void onSuccess(String value) {
                     mProgressBar.setVisibility(View.GONE);

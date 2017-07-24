@@ -14,6 +14,7 @@ import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
+import com.pixelplex.qtum.utils.ContractManagementHelper;
 import com.pixelplex.qtum.utils.sha3.sha.Keccak;
 import com.pixelplex.qtum.utils.sha3.sha.Parameters;
 
@@ -68,101 +69,34 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
         Toast.makeText(mContext,"Refreshing...", Toast.LENGTH_SHORT).show();
     }
 
-    public void getPropertyValue(final String propName) {
 
-        getContractMethod(token.getUiid(), propName).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ContractMethod>() {
-            @Override
-            public void onCompleted() {}
-
-            @Override
-            public void onError(Throwable e) {}
-
-            @Override
-            public void onNext(final ContractMethod contractMethod) {
-                getHash(contractMethod.name)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<String[]>() {
-                            @Override
-                            public void onCompleted() {}
-
-                            @Override
-                            public void onError(Throwable e) {}
-
-                            @Override
-                            public void onNext(String[] hashes) {
-                                QtumService.newInstance().callSmartContract(token.getContractAddress(), new CallSmartContractRequest(hashes))
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(new Subscriber<CallSmartContractResponse>() {
-                                            @Override
-                                            public void onCompleted() {}
-                                            @Override
-                                            public void onError(Throwable e) {}
-                                            @Override
-                                            public void onNext(CallSmartContractResponse callSmartContractResponse) {
-                                                getView().onContractPropertyUpdated(propName, processResponse(contractMethod.outputParams, callSmartContractResponse.getItems().get(0).getOutput()));
-                                            }
-                                        });
-                            }
-                        });
-            }
-        });
-
-    }
 
     public void onReceiveClick(){
         BaseFragment receiveFragment = ReceiveFragment.newInstance(getView().getContext(), token.getContractAddress());
         getView().openFragment(receiveFragment);
     }
 
-    private String processResponse(List<ContractMethodParameter> contractMethodOutputParameterList, String output){
-        String type = contractMethodOutputParameterList.get(0).getType();
-        if(type.contains("int")){
-            if(output.isEmpty()){
-                return "0";
-            }
-            return new BigInteger(Hex.decode(output)).toString();
-        }else if(type.contains("string")){
-            int length = new BigInteger(Hex.decode(output.substring(64,128))).intValue();
-            String stringOutput = new String(Hex.decode(output.substring(128,128+length*2)));
-            if(stringOutput.isEmpty()){
-                stringOutput = "N/A";
-            }
-            return stringOutput;
-        }
-        return output;
-    }
-
-    private Observable<String[]> getHash(final String name) {
-
-        return Observable.fromCallable(new Callable<String[]>() {
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        ContractManagementHelper.getPropertyValue(TokenFragment.totalSupply, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
             @Override
-            public String[] call() throws Exception {
-                Keccak keccak = new Keccak();
-                String hashMethod = keccak.getHash(Hex.toHexString((name + "()").getBytes()), Parameters.KECCAK_256).substring(0,8);
-                return new String[]{hashMethod};
+            public void onSuccess(String value) {
+                getView().onContractPropertyUpdated(TokenFragment.totalSupply, value);
+            }
+        });
+        ContractManagementHelper.getPropertyValue(TokenFragment.decimals, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
+            @Override
+            public void onSuccess(String value) {
+                getView().onContractPropertyUpdated(TokenFragment.decimals, value);
+            }
+        });
+        ContractManagementHelper.getPropertyValue(TokenFragment.symbol, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
+            @Override
+            public void onSuccess(String value) {
+                getView().onContractPropertyUpdated(TokenFragment.symbol, value);
             }
         });
     }
-
-
-    private Observable<ContractMethod> getContractMethod(final String contractUiid, final String methodName) {
-
-        return Observable.fromCallable(new Callable<ContractMethod>() {
-            @Override
-            public ContractMethod call() throws Exception {
-                List<ContractMethod> methods = FileStorageManager.getInstance().getContractMethods(getView().getContext(), contractUiid);
-                for (ContractMethod method: methods) {
-                    if(method.name.equals(methodName)){
-                        return method;
-                    }
-                }
-                return null;
-            }
-        });
-    }
-
-
 }
 
