@@ -30,7 +30,6 @@ public class WalletMainFragmentLight extends WalletMainFragment implements ViewP
             ((FragmentAdapter) pager.getAdapter()).showOtherTokens(isShow);
         }
         pageIndicator.setVisibility((isShow)? View.VISIBLE : View.INVISIBLE);
-
     }
 
     @Override
@@ -39,6 +38,7 @@ public class WalletMainFragmentLight extends WalletMainFragment implements ViewP
     @Override
     public void initializeViews() {
         super.initializeViews();
+        pageIndicator.setVisibility(View.INVISIBLE);
         pager.addOnPageChangeListener(this);
     }
 
