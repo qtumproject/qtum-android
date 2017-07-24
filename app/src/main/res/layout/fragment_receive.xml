@@ -23,15 +23,26 @@
             android:background="@color/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:orientation="horizontal">
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:id="@+id/tv_toolbar_send"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/receive"
+                    android:textColor="@color/background"
+                    android:textSize="@dimen/toolbar_text_size"
+                    app:typefaceAsset="@string/euclidFlexMedium"/>
 
                 <ImageButton
                     android:id="@+id/ibt_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:background="@drawable/background_ibtn_back"
                     android:paddingBottom="10dp"
@@ -40,29 +51,19 @@
                     android:paddingTop="10dp"
                     app:srcCompat="@drawable/ic_back_indicator"/>
 
-                <com.pixelplex.qtum.utils.FontTextView
-                    android:id="@+id/tv_toolbar_send"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="48dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/receive"
-                    android:textColor="@color/background"
-                    android:textSize="@dimen/toolbar_text_size"
-                    app:typefaceAsset="@string/euclidFlexMedium"/>
-
                 <ImageButton
                     android:id="@+id/bt_share"
                     android:layout_width="36dp"
+                    android:layout_alignParentEnd="true"
                     android:layout_height="36dp"
-                    android:layout_margin="9dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/background_pressed_alpha_white"
                     android:padding="4dp"
                     android:scaleType="centerInside"
                     android:tint="@color/background"
                     app:srcCompat="@drawable/ic_share"/>
-            </LinearLayout>
+            </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
 

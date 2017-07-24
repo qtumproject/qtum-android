@@ -496,7 +496,7 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             if(history.getBlockTime() != null) {
                 mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime()*1000L));
             } else {
-                mTextViewDate.setText("Not confirmed");
+                mTextViewDate.setText(getString(R.string.not_confirmed));
             }
             if (history.getChangeInBalance().doubleValue() > 0) {
                 mTextViewOperationType.setText(R.string.received);

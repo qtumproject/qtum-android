@@ -14,8 +14,6 @@ import java.util.TimeZone;
 public class DateCalculator {
 
     public static String getShortDate(String dateInFormat){
-
-        TimeZone utc = TimeZone.getTimeZone("etc/UTC");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-d HH:mm:ss",Locale.US);
         long date = 0;
         try {
@@ -44,7 +42,6 @@ public class DateCalculator {
             calendar.setTime(dateTransaction);
             if ((date - calendarNow.getTimeInMillis()) > 0) {
                 SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
-                timeFormatter.setTimeZone(utc);
                 dateString = timeFormatter.format(dateTransaction);
             } else {
                 dateString = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + ", " + calendar.get(Calendar.DATE);
@@ -54,7 +51,6 @@ public class DateCalculator {
     }
 
     public static String getShortDate(long timeInMills){
-        TimeZone utc = TimeZone.getTimeZone("etc/UTC");
         long currentTime = (new Date()).getTime();
         long delay = currentTime - timeInMills;
         String dateString;
@@ -75,7 +71,6 @@ public class DateCalculator {
             calendar.setTime(dateTransaction);
             if ((timeInMills - calendarNow.getTimeInMillis()) > 0) {
                 SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
-                timeFormatter.setTimeZone(utc);
                 dateString = timeFormatter.format(dateTransaction);
             } else {
                 dateString = String.format(Locale.US, "%s, %d", calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US),calendar.get(Calendar.DAY_OF_MONTH));
@@ -85,28 +80,22 @@ public class DateCalculator {
     }
 
     public static String getfullDate(long timeInMills){
-        TimeZone utc = TimeZone.getTimeZone("etc/UTC");
         String dateString;
         Date dateTransaction = new Date(timeInMills);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateTransaction);
         SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
-        timeFormatter.setTimeZone(utc);
         dateString = String.format(Locale.US, "%s, %d %s", calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US),calendar.get(Calendar.DAY_OF_MONTH), timeFormatter.format(dateTransaction));
         return dateString;
     }
 
     public static String getDateInFormat(Date date){
-        TimeZone utc = TimeZone.getTimeZone("etc/UTC");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-        formatter.setTimeZone(utc);
         return formatter.format(date);
     }
 
     public static String getDateInFormat(Long date){
-        TimeZone utc = TimeZone.getTimeZone("etc/UTC");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-        formatter.setTimeZone(utc);
         return formatter.format(new Date(date));
     }
 
