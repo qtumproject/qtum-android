@@ -73,6 +73,7 @@
             android:id="@+id/tv_abi"
             android:layout_width="match_parent"
             android:gravity="left"
+            android:maxLines="5"
             android:maxHeight="100dp"
             android:scrollbars="vertical"
             android:layout_height="wrap_content"

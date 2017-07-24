@@ -180,6 +180,7 @@
     <string name="copy_abi">Copy ABI</string>
     <string name="abi_interface">ABI Interface</string>
     <string name="token">Token</string>
+    <string name="smart_contract_parameters">Smart Contract Parameters</string>
 
 
 </resources>

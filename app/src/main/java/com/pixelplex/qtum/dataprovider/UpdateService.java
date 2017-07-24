@@ -22,8 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.JsonObject;
 import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.dataprovider.firebase.FirebaseSharedPreferences;
 import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
 import com.pixelplex.qtum.dataprovider.listeners.FireBaseTokenRefreshListener;
 import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
@@ -104,13 +106,11 @@ public class UpdateService extends Service {
             e.printStackTrace();
         }
 
-        checkConfirmContract();
-
-        firebaseTokens = QtumSharedPreference.getInstance().getFirebaseTokens(getApplicationContext());
+        firebaseTokens = FirebaseSharedPreferences.getInstance().getFirebaseTokens(getApplicationContext());
         mFirebasePrevToken = firebaseTokens[0];
         mFirebaseCurrentToken = firebaseTokens[1];
 
-        QtumSharedPreference.getInstance().addFirebaseTokenRefreshListener(new FireBaseTokenRefreshListener() {
+        FirebaseSharedPreferences.getInstance().addFirebaseTokenRefreshListener(new FireBaseTokenRefreshListener() {
             @Override
             public void onRefresh(String prevToken, String currentToken) {
                 mFirebasePrevToken = prevToken;
@@ -397,8 +397,14 @@ public class UpdateService extends Service {
     }
 
     public void stopMonitoring() {
-        socket.emit("unsubscribe", "token_balance_change", null, "{notificationToken:"+ mFirebaseCurrentToken +"}");
-        socket.emit("unsubscribe", "balance_subscribe", null, "{notificationToken:"+ mFirebaseCurrentToken +"}");
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("notificationToken", mFirebaseCurrentToken);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        socket.emit("unsubscribe", "token_balance_change", null, obj);
+        socket.emit("unsubscribe", "balance_subscribe", null, obj);
         socket.disconnect();
         monitoringFlag = false;
         mAddresses = null;
