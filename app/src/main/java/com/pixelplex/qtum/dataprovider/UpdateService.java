@@ -45,6 +45,7 @@ import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragmentPresenter;
+import com.pixelplex.qtum.utils.ContractBuilder;
 import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.QtumIntent;
 import com.pixelplex.qtum.datastorage.TinyDB;
@@ -155,38 +156,11 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(), History.class);
-                if(((QtumApplication)getApplication()).getContractAwaitCount()>0){
-                    TinyDB tinyDB = new TinyDB(getApplicationContext());
 
-                    boolean done = false;
-
-                    List<Contract> contractListWithoutToken = tinyDB.getContractListWithoutToken();
-                    for(Contract contract : contractListWithoutToken){
-                        if(contract.getContractAddress()==null){
-                            contract.setContractAddress(generateContractAddress(history.getTxHash()));
-                            done = true;
-                            break;
-                        }
-                    }
-                    tinyDB.putContractListWithoutToken(contractListWithoutToken);
-
-                    if(!done) {
-                        List<Token> tokenList = tinyDB.getTokenList();
-                        for (Token token : tokenList) {
-                            if (token.getContractAddress() == null) {
-                                token.setContractAddress(generateContractAddress(history.getTxHash()));
-                                break;
-                            }
-                        }
-                        tinyDB.putTokenList(tokenList);
-                    }
-
-                    ((QtumApplication)getApplication()).setContractAwaitCountMinus();
-                }
                 if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
 
                     String txHash = history.getTxHash();
-                    String contractAddress = generateContractAddress(txHash);
+                    String contractAddress = ContractBuilder.generateContractAddress(txHash);
 
                     TinyDB tinyDB = new TinyDB(getApplicationContext());
 
@@ -198,6 +172,9 @@ public class UpdateService extends Service {
                             contract.setHasBeenCreated(true);
                             contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
                             done = true;
+                            ArrayList<String> unconfirmedContractTxHashList = tinyDB.getUnconfirmedContractTxHasList();
+                            unconfirmedContractTxHashList.remove(history.getTxHash());
+                            tinyDB.putUnconfirmedContractTxHashList(unconfirmedContractTxHashList);
                             break;
                         }
                     }
@@ -209,6 +186,9 @@ public class UpdateService extends Service {
                             if(token.getContractAddress()!=null && token.getContractAddress().equals(contractAddress)){
                                 token.setHasBeenCreated(true);
                                 token.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
+                                ArrayList<String> unconfirmedContractTxHashList = tinyDB.getUnconfirmedContractTxHasList();
+                                unconfirmedContractTxHashList.remove(history.getTxHash());
+                                tinyDB.putUnconfirmedContractTxHashList(unconfirmedContractTxHashList);
                                 break;
                             }
                         }
@@ -260,6 +240,69 @@ public class UpdateService extends Service {
         notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
     }
 
+    private void checkConfirmContract() {
+        final TinyDB tinyDB = new TinyDB(getApplicationContext());
+        final ArrayList<String> unconfirmedContractTxHashList = tinyDB.getUnconfirmedContractTxHasList();
+        for(final String unconfirmedContractTxHash : unconfirmedContractTxHashList){
+            QtumService.newInstance()
+                    .getTransaction(unconfirmedContractTxHash)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new Subscriber<History>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(History history) {
+                            if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
+
+                                String contractAddress = ContractBuilder.generateContractAddress(unconfirmedContractTxHash);
+
+                                boolean done = false;
+
+                                List<Contract> contractList = tinyDB.getContractListWithoutToken();
+                                for(Contract contract : contractList){
+                                    if(contract.getContractAddress()!=null && contract.getContractAddress().equals(contractAddress)){
+                                        contract.setHasBeenCreated(true);
+                                        contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
+                                        done = true;
+                                        unconfirmedContractTxHashList.remove(history.getTxHash());
+                                        tinyDB.putUnconfirmedContractTxHashList(unconfirmedContractTxHashList);
+                                        break;
+                                    }
+                                }
+                                tinyDB.putContractListWithoutToken(contractList);
+
+                                if(!done){
+                                    List<Token> tokenList = tinyDB.getTokenList();
+                                    for(Token token : tokenList){
+                                        if(token.getContractAddress()!=null && token.getContractAddress().equals(contractAddress)){
+                                            token.setHasBeenCreated(true);
+                                            token.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
+                                            unconfirmedContractTxHashList.remove(history.getTxHash());
+                                            tinyDB.putUnconfirmedContractTxHashList(unconfirmedContractTxHashList);
+                                            break;
+                                        }
+                                    }
+                                    tinyDB.putTokenList(tokenList);
+                                    if(mTokenListener!=null) {
+                                        mTokenListener.newToken();
+                                    }
+                                }
+
+                                subscribeTokenBalanceChange(contractAddress, mFirebasePrevToken, mFirebaseCurrentToken);
+                            }
+                        }
+                    });
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -307,32 +350,6 @@ public class UpdateService extends Service {
             startMonitoring();
         }
         return START_REDELIVER_INTENT;
-    }
-
-    private String generateContractAddress(String txHash){
-        char[] ca = txHash.toCharArray();
-        StringBuilder sb = new StringBuilder(txHash.length());
-        for (int i = 0; i < txHash.length(); i += 2) {
-            sb.insert(0, ca, i, 2);
-        }
-
-        String reverse_tx_hash = sb.toString();
-        reverse_tx_hash = reverse_tx_hash.concat("00000000");
-
-
-        byte[] test5 = Hex.decode(reverse_tx_hash);
-
-        SHA256Digest sha256Digest = new SHA256Digest();
-        sha256Digest.update(test5, 0, test5.length);
-        byte[] out = new byte[sha256Digest.getDigestSize()];
-        sha256Digest.doFinal(out, 0);
-
-        RIPEMD160Digest ripemd160Digest = new RIPEMD160Digest();
-        ripemd160Digest.update(out, 0, out.length);
-        byte[] out2 = new byte[ripemd160Digest.getDigestSize()];
-        ripemd160Digest.doFinal(out2, 0);
-
-        return Hex.toHexString(out2);
     }
 
     private void loadWalletFromFile(final LoadWalletFromFileCallBack callback) {
