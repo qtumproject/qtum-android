@@ -15,7 +15,6 @@ class TouchIDPreferenceFragmentPresenter extends BaseFragmentPresenterImpl{
     }
 
     void onNextScreen(boolean isImporting){
-        QtumSharedPreference.getInstance().saveTouchIdEnable(getView().getContext(), false);
         if(isImporting){
             WalletMainFragment walletFragment = WalletMainFragment.newInstance();
             getView().getMainActivity().setRootFragment(walletFragment);

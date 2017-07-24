@@ -173,7 +173,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
         if(mNetworkConnectedFlag) {
             loadAndUpdateData();
         }else{
-            getView().setAlertDialog(mContext.getString(R.string.no_internet_connection),mContext.getString(R.string.please_check_your_network_settings), BaseFragment.PopUpType.error);
+            getView().setAlertDialog(mContext.getString(R.string.no_internet_connection),mContext.getString(R.string.please_check_your_network_settings), mContext.getString(R.string.ok), BaseFragment.PopUpType.error);
             getView().stopRefreshRecyclerAnimation();
         }
     }
