@@ -244,7 +244,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
 
     private float headerPAdding = 0;
     private float percents = 1;
-    private float prevPercents = 1;
 
     @Override
     public void initializeViews() {
@@ -463,7 +462,6 @@ public class WalletFragment extends BaseFragment implements WalletFragmentView {
             }
         }
     }
-
 
     class TransactionHolder extends RecyclerView.ViewHolder {
 
