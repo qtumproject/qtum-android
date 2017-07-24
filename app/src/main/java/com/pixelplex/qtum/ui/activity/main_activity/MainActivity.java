@@ -1,21 +1,15 @@
 package com.pixelplex.qtum.ui.activity.main_activity;
 
 import android.Manifest;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 
-import android.graphics.Typeface;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.nfc.NdefMessage;
-import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationItemView;
@@ -42,7 +36,6 @@ import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 import com.pixelplex.qtum.utils.FontManager;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
@@ -78,10 +71,6 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         getPresenter().processNewIntent(intent);
-    }
-
-    public void setAuthenticationFlag(boolean authenticationFlag){
-        getPresenter().setAuthenticationFlag(authenticationFlag);
     }
 
     public String getAddressForSendAction(){
@@ -132,6 +121,14 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     public UpdateService getUpdateService(){
         return getPresenter().getUpdateService();
+    }
+
+    public void subscribeServiceConnectionChangeEvent(OnServiceConnectionChangeListener listener){
+        getPresenter().subscribeOnServiceConnectionChangeEvent(listener);
+    }
+
+    public interface OnServiceConnectionChangeListener {
+        void onServiceConnectionChange(boolean isConnecting);
     }
 
     @Override
@@ -334,5 +331,13 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     @Override
     public MainActivity getActivity(){
         return this;
+    }
+
+    public void onLogin(){
+        getPresenter().onLogin();
+    }
+
+    public void onLogout(){
+        getPresenter().onLogout();
     }
 }

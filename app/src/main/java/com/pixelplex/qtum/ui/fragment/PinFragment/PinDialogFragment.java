@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.crypto.KeyStoreHelper;
+import com.pixelplex.qtum.utils.crypto.KeyStoreHelper;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.utils.CryptoUtils;
 import com.pixelplex.qtum.utils.FingerprintUtils;

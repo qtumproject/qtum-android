@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
 
-import com.pixelplex.qtum.crypto.AESUtil;
+import com.pixelplex.qtum.utils.crypto.AESUtil;
 import com.pixelplex.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
@@ -110,7 +110,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
 
                                                                    getInteractor().saveTouchIdPassword(s);
                                                                    getInteractor().savePassword(pinHash);
-                                                                   getView().getMainActivity().setAuthenticationFlag(true);
+                                                                   getView().getMainActivity().onLogin();
                                                                    getView().openRootFragment(fragment);
                                                                    getView().dismissProgressDialog();
                                                                    PinFragmentInteractorImpl.isDataLoaded = false;
@@ -118,7 +118,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                                                            });
                                     } else {
                                         getInteractor().savePassword(pinHash);
-                                        getView().getMainActivity().setAuthenticationFlag(true);
+                                        getView().getMainActivity().onLogin();;
                                         getView().openRootFragment(fragment);
                                         getView().dismissProgressDialog();
                                         PinFragmentInteractorImpl.isDataLoaded = false;
@@ -178,14 +178,14 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                                                 getInteractor().saveTouchIdPassword(s);
                                                 getInteractor().setKeyGeneratedInstance(true);
                                                 getView().dismissProgressDialog();
-                                                getView().getMainActivity().setAuthenticationFlag(true);
+                                                getView().getMainActivity().onLogin();;
                                                 getView().openRootFragment(fragment);
                                             }
                                         });
                             } else {
                                 getInteractor().savePassword(pinHash);
                                 getInteractor().setKeyGeneratedInstance(true);
-                                getView().getMainActivity().setAuthenticationFlag(true);
+                                getView().getMainActivity().onLogin();;
                                 getView().dismissProgressDialog();
                                 getView().openRootFragment(fragment);
                             }
@@ -209,7 +209,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                         @Override
                         public void onSuccess() {
                             getView().getMainActivity().setRootFragment(walletFragment);
-                            getView().getMainActivity().setAuthenticationFlag(true);
+                            getView().getMainActivity().onLogin();;
                             getView().openRootFragment(walletFragment);
                             getView().dismissProgressDialog();
                             PinFragmentInteractorImpl.isDataLoaded = false;
@@ -266,7 +266,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                         @Override
                         public void onSuccess() {
                             getView().getMainActivity().setRootFragment(sendBaseFragment);
-                            getView().getMainActivity().setAuthenticationFlag(true);
+                            getView().getMainActivity().onLogin();
                             getView().openRootFragment(sendBaseFragment);
                             getView().dismissProgressDialog();
                             PinFragmentInteractorImpl.isDataLoaded = false;

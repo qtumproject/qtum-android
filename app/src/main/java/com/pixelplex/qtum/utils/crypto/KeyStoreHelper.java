@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.crypto;
+package com.pixelplex.qtum.utils.crypto;
 
 import android.annotation.TargetApi;
 import android.content.Context;

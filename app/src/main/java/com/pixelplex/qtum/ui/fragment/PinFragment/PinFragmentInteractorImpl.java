@@ -4,7 +4,7 @@ import android.content.Context;
 
 import org.bitcoinj.wallet.Wallet;
 
-import com.pixelplex.qtum.crypto.KeyStoreHelper;
+import com.pixelplex.qtum.utils.crypto.KeyStoreHelper;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 

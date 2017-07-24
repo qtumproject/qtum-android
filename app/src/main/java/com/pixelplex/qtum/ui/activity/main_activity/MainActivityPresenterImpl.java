@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
-import android.nfc.NfcAdapter;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -26,6 +25,9 @@ import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 import com.pixelplex.qtum.utils.QtumIntent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivityPresenter {
@@ -49,6 +51,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     private String mTokenAddressForSendAction;
 
     private LanguageChangeListener mLanguageChangeListener;
+    private List<MainActivity.OnServiceConnectionChangeListener> mServiceConnectionChangeListeners = new ArrayList<>();
 
     MainActivityPresenterImpl(MainActivityView mainActivityView) {
         mMainActivityView = mainActivityView;
@@ -111,11 +114,43 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         return mMainActivityInteractor;
     }
 
+    @Override
+    public void onLogin() {
+        mAuthenticationFlag = true;
+        mIntent = new Intent(mContext, UpdateService.class);
+        if (!isMyServiceRunning(UpdateService.class)) {
+            mContext.startService(mIntent);
+            if(mUpdateService!=null){
+                mUpdateService.startMonitoring();
+            } else {
+                mContext.bindService(mIntent, mServiceConnection, 0);
+            }
+        }
+    }
+
+    @Override
+    public void subscribeOnServiceConnectionChangeEvent(MainActivity.OnServiceConnectionChangeListener listener) {
+        mServiceConnectionChangeListeners.add(listener);
+        listener.onServiceConnectionChange(mUpdateService!=null);
+    }
+
+    @Override
+    public void onLogout() {
+        mAuthenticationFlag = false;
+        if(mUpdateService!=null){
+            mUpdateService.stopMonitoring();
+        }
+    }
+
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
             mUpdateService.clearNotification();
+            mUpdateService.startMonitoring();
+            for(MainActivity.OnServiceConnectionChangeListener listener : mServiceConnectionChangeListeners) {
+                listener.onServiceConnectionChange(true);
+            }
         }
 
         @Override
@@ -142,15 +177,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     @Override
     public void onPostCreate(Context contex) {
         super.onPostCreate(contex);
-
-        mIntent = new Intent(mContext, UpdateService.class);
-        if (!isMyServiceRunning(UpdateService.class)) {
-            mContext.startService(mIntent);
-        }
-        mContext.bindService(mIntent,mServiceConnection,0);
-
         openStartFragment();
-
     }
 
     private void openStartFragment() {
@@ -267,10 +294,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     public void clearservice(){
         mContext.unbindService(mServiceConnection);
         mContext.unregisterReceiver(mNetworkReceiver);
-    }
-
-    public void setAuthenticationFlag(boolean authenticationFlag) {
-        mAuthenticationFlag = authenticationFlag;
     }
 
     public String getAddressForSendAction() {

@@ -90,9 +90,6 @@ public class UpdateService extends Service {
     private String mFirebasePrevToken;
     private String mFirebaseCurrentToken;
 
-    private String mBalance = null;
-    private String mUnconfirmedBalance = null;
-
     private UpdateBinder mUpdateBinder = new UpdateBinder();
     String[] firebaseTokens;
 
@@ -105,6 +102,8 @@ public class UpdateService extends Service {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+
+        checkConfirmContract();
 
         firebaseTokens = FirebaseSharedPreferences.getInstance().getFirebaseTokens(getApplicationContext());
         mFirebasePrevToken = firebaseTokens[0];
@@ -136,8 +135,6 @@ public class UpdateService extends Service {
                     try {
                         unconfirmedBalance = (new BigDecimal(data.getString("unconfirmedBalance"))).divide(new BigDecimal("100000000"));
                         balance = (new BigDecimal(data.getString("balance"))).divide(new BigDecimal("100000000"));
-                        mBalance = balance.toString();
-                        mUnconfirmedBalance = unconfirmedBalance.toString();
                         HistoryList.getInstance().setBalance(balance.toString());
                         HistoryList.getInstance().setUnconfirmedBalance(unconfirmedBalance.toString());
                     } catch (JSONException e) {
@@ -303,13 +300,6 @@ public class UpdateService extends Service {
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        stopMonitoring();
-        stopSelf();
-    }
-
     private void subscribeSocket(){
         subscribeBalanceChange(mFirebasePrevToken,mFirebaseCurrentToken);
         for(Contract contract : (new TinyDB(getApplicationContext())).getContractList()){
@@ -346,10 +336,7 @@ public class UpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(QtumSharedPreference.getInstance().getKeyGeneratedInstance(getBaseContext())){
-            startMonitoring();
-        }
-        return START_REDELIVER_INTENT;
+        return START_NOT_STICKY;
     }
 
     private void loadWalletFromFile(final LoadWalletFromFileCallBack callback) {
@@ -408,7 +395,6 @@ public class UpdateService extends Service {
         socket.disconnect();
         monitoringFlag = false;
         mAddresses = null;
-        stopForeground(false);
         notificationManager.cancel(DEFAULT_NOTIFICATION_ID);
     }
 
@@ -444,15 +430,6 @@ public class UpdateService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return mUpdateBinder;
-    }
-
-    @Override
-    public void onRebind(Intent intent) {
-        super.onRebind(intent);
-        if(mBalance!=null){
-            HistoryList.getInstance().setUnconfirmedBalance(mUnconfirmedBalance);
-            HistoryList.getInstance().setBalance(mBalance);
-        }
     }
 
     @Override
@@ -501,7 +478,6 @@ public class UpdateService extends Service {
         mNotificationManager.cancelAll();
         totalTransaction = 0;
     }
-
 
     public class UpdateBinder extends Binder {
         public UpdateService getService() {
