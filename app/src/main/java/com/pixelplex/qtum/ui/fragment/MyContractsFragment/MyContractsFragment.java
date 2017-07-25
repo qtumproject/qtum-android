@@ -105,11 +105,7 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
             }else{
                 mTextViewDate.setText(R.string.not_confirmed);
             }
-            if(!TextUtils.isEmpty(contract.getContractAddress())) {
-                mTextViewTitle.setText(contract.getContractAddress().substring(0, 8));
-            } else {
-                mTextViewTitle.setText("N/A");
-            }
+            mTextViewTitle.setText(contract.getContractName());
             TinyDB tinyDB = new TinyDB(getContext());
             ContractTemplate contractTemplateByUiid = tinyDB.getContractTemplateByUiid(contract.getUiid());
             String contractType = contractTemplateByUiid.getContractType();

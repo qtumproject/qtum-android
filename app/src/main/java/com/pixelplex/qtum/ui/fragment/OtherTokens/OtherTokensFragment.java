@@ -19,6 +19,8 @@ import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.ui.fragment.OtherTokens.Dark.TokensAdapterDark;
+import com.pixelplex.qtum.ui.fragment.OtherTokens.Light.TokensAdapterLight;
 import com.pixelplex.qtum.utils.ContractManagementHelper;
 import com.pixelplex.qtum.utils.FontTextView;
 import java.util.List;
@@ -92,7 +94,12 @@ public abstract class OtherTokensFragment extends BaseFragment implements OtherT
     @Override
     public void onTokenClick(int adapterPosition) {
         if (tokensList.getAdapter() != null) {
-            presenter.openTokenDetails(((TokensAdapter) tokensList.getAdapter()).get(adapterPosition));
+            if(tokensList.getAdapter() instanceof TokensAdapterDark){
+                presenter.openTokenDetails(((TokensAdapterDark) tokensList.getAdapter()).get(adapterPosition));
+            } else {
+                presenter.openTokenDetails(((TokensAdapterLight) tokensList.getAdapter()).get(adapterPosition));
+            }
+
         }
     }
 

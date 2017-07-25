@@ -158,12 +158,7 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
                         ArrayList<String> unconfirmedTokenTxHashList = tinyDB.getUnconfirmedContractTxHasList();
                         unconfirmedTokenTxHashList.add(sendRawTransactionResponse.getTxid());
                         tinyDB.putUnconfirmedContractTxHashList(unconfirmedTokenTxHashList);
-                        String name = "";
-                        for(ContractMethodParameter contractMethodParameter : mContractMethodParameterList){
-                            if(contractMethodParameter.getName().equals("_tokenName")){
-                                name = contractMethodParameter.getValue();
-                            }
-                        }
+                        String name = getView().getContractName();
                         for(ContractTemplate contractTemplate : tinyDB.getContractTemplateList()){
                             if(contractTemplate.getUuid().equals(mContractTemplateUiid)){
                                 if(contractTemplate.getContractType().equals("token")){
@@ -172,7 +167,7 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
                                     tokenList.add(token);
                                     tinyDB.putTokenList(tokenList);
                                 }else{
-                                    Contract contract = new Contract(ContractBuilder.generateContractAddress(sendRawTransactionResponse.getTxid()), mContractTemplateUiid, false, null, senderAddress, "test_name");
+                                    Contract contract = new Contract(ContractBuilder.generateContractAddress(sendRawTransactionResponse.getTxid()), mContractTemplateUiid, false, null, senderAddress, name);
                                     List<Contract> contractList = tinyDB.getContractListWithoutToken();
                                     contractList.add(contract);
                                     tinyDB.putContractListWithoutToken(contractList);

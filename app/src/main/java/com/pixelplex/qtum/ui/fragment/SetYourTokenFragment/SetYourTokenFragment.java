@@ -12,6 +12,7 @@ import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.utils.FontEditText;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
     RecyclerView constructorList;
 
     @BindView(R.id.tv_template_name)
-    FontTextView mTextViewTemplateName;
+    FontEditText mTextViewTemplateName;
 
     @OnClick({R.id.ibt_back, R.id.cancel})
     public void onBackClick() {
@@ -54,8 +55,9 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
     @OnClick(R.id.confirm)
     public void onConfirmClick(){
         if(adapter != null) {
-           if(adapter.validateMethods()) {
-               presenter.confirm(adapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_UIID));
+            String name = mTextViewTemplateName.getText().toString();
+           if(adapter.validateMethods() && !name.isEmpty()) {
+               presenter.confirm(adapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_UIID), name);
            }
         }
     }
@@ -91,7 +93,7 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
         TinyDB tinyDB = new TinyDB(getContext());
         List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
         for(ContractTemplate contractTemplate : contractTemplateList){
-            if(contractTemplate.getUuid()==templateUiid) {
+            if(contractTemplate.getUuid().equals(templateUiid)) {
                 templateName = contractTemplate.getName();
                 break;
             }
