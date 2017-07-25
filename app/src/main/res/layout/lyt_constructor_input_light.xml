@@ -16,15 +16,15 @@
             android:id="@+id/til_param"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorPrimary"
-            android:theme="@style/InputText">
+            android:textColorHint="@color/bottom_nav_bar_text_color_light_alpha_50"
+            android:theme="@style/InputTextParameter">
 
-            <android.support.design.widget.TextInputEditText
+            <com.pixelplex.qtum.utils.EditTextValidated
                 android:id="@+id/et_param"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/bottom_nav_bar_text_color_light_alpha_50"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatCheckBox
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            app:buttonTint="@color/colorPrimary"/>
+            app:buttonTint="@color/bottom_nav_bar_text_color_light_alpha_50"/>
     </RelativeLayout>
 
 </LinearLayout>

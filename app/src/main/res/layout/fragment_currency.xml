@@ -60,40 +60,17 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary">
 
-            <LinearLayout
+            <com.pixelplex.qtum.utils.SearchBar
+                android:id="@+id/search_bar"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="16dp"
-                android:orientation="horizontal"
-                android:background="@color/background">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    app:srcCompat="@drawable/ic_search"/>
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:hint="@string/search"
-                    android:textColor="@color/colorPrimary"
-                    android:textColorHint="@color/colorPrimary"
-                    android:gravity="left"
-                    android:id="@+id/et_search_currency"
-                    android:imeOptions="actionSearch"
-                    android:singleLine="true"
-                    android:textSize="18sp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="1"/>
-            </LinearLayout>
+                android:layout_height="50dp"/>
 
         </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
+            android:layout_marginTop="50dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/recycler_view">
 

@@ -28,7 +28,7 @@ public class WalletFragmentDark extends WalletFragment {
     @BindView(R.id.fade_divider) View fadeDivider;
 
     @BindView(R.id.page_indicator)
-    View pagerIndicator;
+    public View pagerIndicator;
 
     @Override
     protected int getLayout() {
@@ -177,13 +177,4 @@ public class WalletFragmentDark extends WalletFragment {
             Log.d("WalletFragmentDark", "updateBalance: " + e.getMessage());
         }
     }
-
-    public void showPageIndicator() {
-        pagerIndicator.setVisibility(View.VISIBLE);
-    }
-
-    public void hidePageIndicator() {
-        pagerIndicator.setVisibility(View.INVISIBLE);
-    }
-
 }

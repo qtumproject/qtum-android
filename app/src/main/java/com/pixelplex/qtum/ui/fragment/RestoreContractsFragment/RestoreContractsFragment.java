@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.RestoreContractsFragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontCheckBox;
 import com.pixelplex.qtum.utils.FontTextView;
@@ -16,13 +18,14 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class RestoreContractsFragment extends BaseFragment implements RestoreContractsFragmentView {
+public abstract class RestoreContractsFragment extends BaseFragment implements RestoreContractsFragmentView {
 
     private RestoreContractsFragmentPresenter mRestoreContractsFragmentPresenter;
 
     private boolean isSelectedFile = false;
 
     @BindView(R.id.rl_back_up_file)
+    protected
     FrameLayout mFrameLayoutBackUpFile;
     @BindView(R.id.cb_restore_templates)
     FontCheckBox mCheckBoxRestoreTemplates;
@@ -34,10 +37,13 @@ public class RestoreContractsFragment extends BaseFragment implements RestoreCon
     FontCheckBox mCheckBoxRestoreAll;
 
     @BindView(R.id.tv_select_back_up)
+    protected
     FontTextView mTextViewFileName;
     @BindView(R.id.tv_file_size)
+    protected
     FontTextView mTextViewFileSize;
     @BindView(R.id.iv_restore_icon)
+    protected
     ImageView mImageViewRestoreIcon;
 
 
@@ -101,11 +107,9 @@ public class RestoreContractsFragment extends BaseFragment implements RestoreCon
         }
     }
 
-    public static RestoreContractsFragment newInstance() {
-        
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        
-        RestoreContractsFragment fragment = new RestoreContractsFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, RestoreContractsFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -118,29 +122,5 @@ public class RestoreContractsFragment extends BaseFragment implements RestoreCon
     @Override
     protected RestoreContractsFragmentPresenter getPresenter() {
         return mRestoreContractsFragmentPresenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_restore_contracts;
-    }
-
-    @Override
-    public void setFile(String name, String size) {
-        mTextViewFileName.setText(name);
-        mTextViewFileSize.setVisibility(View.VISIBLE);
-        mTextViewFileSize.setText(size);
-        mImageViewRestoreIcon.setClickable(true);
-        mFrameLayoutBackUpFile.setClickable(false);
-        mImageViewRestoreIcon.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_delete));
-    }
-
-    @Override
-    public void deleteFile() {
-        mTextViewFileName.setText(R.string.select_back_up_file);
-        mTextViewFileSize.setVisibility(View.GONE);
-        mImageViewRestoreIcon.setClickable(false);
-        mFrameLayoutBackUpFile.setClickable(true);
-        mImageViewRestoreIcon.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_attach));
     }
 }

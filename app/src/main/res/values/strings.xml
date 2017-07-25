@@ -161,7 +161,7 @@
     <string name="contract_created_successfully">Contract created successfully</string>
     <string name="restored_successfully">Restored successfully</string>
 
-    <string name="login_to_qtum_using_touch_id">Login to QTUM using Touch ID</string>
+    <string name="login_to_qtum_using_touch_id">Login to QTUM\nusing Touch ID</string>
     <string name="touch_id">Touch ID</string>
     <string name="enable_touch_id">Enable touch id</string>
     <string name="not_now">Not now</string>
@@ -192,6 +192,7 @@
     <string name="qtum_address">QTUM Address</string>
     <string name="not_confirmed_yet">Not Confirmed Yet...</string>
     <string name="confirmed">Confirmed</string>
+    <string name="preview">Preview</string>
 
 
 </resources>

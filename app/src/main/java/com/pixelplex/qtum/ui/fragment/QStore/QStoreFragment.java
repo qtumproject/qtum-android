@@ -32,8 +32,8 @@ public class QStoreFragment extends BaseFragment implements QStoreView, SearchBa
     }
 
     @BindView(R.id.search_bar)
-
     SearchBar searchBar;
+
     @BindView(R.id.content_list)
     RecyclerView contentList;
 
