@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.NewsFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,20 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.squareup.picasso.Picasso;
-
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.News;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
-public class NewsFragment extends BaseFragment implements NewsFragmentView {
+public abstract class NewsFragment extends BaseFragment implements NewsFragmentView {
 
     private NewsFragmentPresenterImpl mNewsFragmentPresenter;
     private NewsAdapter mNewsAdapter;
@@ -33,11 +30,9 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    public static NewsFragment newInstance() {
-
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-
-        NewsFragment fragment = new NewsFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, NewsFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,11 +45,6 @@ public class NewsFragment extends BaseFragment implements NewsFragmentView {
     @Override
     protected NewsFragmentPresenterImpl getPresenter() {
         return mNewsFragmentPresenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_news;
     }
 
     @Override

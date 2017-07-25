@@ -20,12 +20,12 @@ import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
-import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 import com.pixelplex.qtum.ui.fragment.TransactionFragment.TransactionFragment;
 
 import java.math.BigDecimal;
 
-class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
+public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements WalletFragmentPresenter {
 
 
     private Context mContext;
@@ -41,7 +41,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
     private final int ONE_PAGE_COUNT = 25;
     private static final int REQUEST_CAMERA = 3;
 
-    WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView) {
+    public WalletFragmentPresenterImpl(WalletFragmentView walletFragmentView) {
         mWalletFragmentView = walletFragmentView;
         mContext = getView().getContext();
         mWalletFragmentInteractor = new WalletFragmentInteractorImpl();
@@ -163,13 +163,13 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     private void openQrCodeFragment(){
         OPEN_QR_CODE_FRAGMENT_FLAG = false;
-        SendBaseFragment sendBaseFragment = SendBaseFragment.newInstance(true,null,null, null);
-        getView().openRootFragment(sendBaseFragment);
-        getView().getMainActivity().setRootFragment(sendBaseFragment);
+        SendFragment sendFragment = (SendFragment) SendFragment.newInstance(true,null,null, null,getView().getContext());
+        getView().openRootFragment(sendFragment);
+        getView().getMainActivity().setRootFragment(sendFragment);
     }
 
     public void onReceiveClick(){
-        ReceiveFragment receiveFragment = ReceiveFragment.newInstance();
+        BaseFragment receiveFragment = ReceiveFragment.newInstance(getView().getContext(),null);
         getView().openFragment(receiveFragment);
     }
 
@@ -193,7 +193,7 @@ class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements W
 
     @Override
     public void openTransactionFragment(int position) {
-        Fragment fragment = TransactionFragment.newInstance(position);
+        Fragment fragment = TransactionFragment.newInstance(getView().getContext(), position);
         getView().openFragment(fragment);
     }
 

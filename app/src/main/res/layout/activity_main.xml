@@ -5,6 +5,7 @@
                                              android:id="@+id/activity_main"
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
                                              tools:context=".ui.activity.main_activity.MainActivity">
 
     <FrameLayout
@@ -12,7 +13,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/background"
-        android:fitsSystemWindows="true"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

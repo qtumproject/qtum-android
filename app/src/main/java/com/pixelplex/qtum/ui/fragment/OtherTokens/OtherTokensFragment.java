@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.OtherTokens;
 
+import android.content.Context;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -11,36 +12,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.ContractManagementHelper;
 import com.pixelplex.qtum.utils.FontTextView;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class OtherTokensFragment extends BaseFragment implements OtherTokensView, OnTokenClickListener {
+public abstract class OtherTokensFragment extends BaseFragment implements OtherTokensView, OnTokenClickListener {
 
-    private final int LAYOUT = R.layout.fragment_other_tokens;
-
-    public static OtherTokensFragment newInstance() {
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        OtherTokensFragment fragment = new OtherTokensFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, OtherTokensFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
 
-    private OtherTokensPresenterImpl presenter;
+    protected OtherTokensPresenterImpl presenter;
 
     @BindView(R.id.recycler_view)
+    protected
     RecyclerView tokensList;
 
     @BindView(R.id.swipe_refresh)
@@ -58,11 +56,6 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
     @Override
     protected OtherTokensPresenterImpl getPresenter() {
         return presenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return LAYOUT;
     }
 
     @Override
@@ -86,11 +79,6 @@ public class OtherTokensFragment extends BaseFragment implements OtherTokensView
                 }
             }
         });
-    }
-
-    @Override
-    public void setTokensData(List<Token> tokensData) {
-        tokensList.setAdapter(new TokensAdapter(tokensData, presenter, this));
     }
 
     @Override

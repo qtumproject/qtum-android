@@ -2,6 +2,7 @@ package com.pixelplex.qtum.ui.fragment.SmartContractsFragment;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.BackupContractsFragment.BackupContractsFragment;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.MyContractsFragment.MyContractsFragment;
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.SettingObject;
@@ -18,35 +19,17 @@ class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
 
     private SmartContractsFragmentView mSmartContractsFragmentView;
 
-    private List<SettingObject> settingsData;
-
     SmartContractsFragmentPresenterImpl(SmartContractsFragmentView smartContractsFragmentView){
         mSmartContractsFragmentView = smartContractsFragmentView;
-        initSettingsData();
-    }
-
-    private void initSettingsData() {
-        settingsData = new ArrayList<>();
-        settingsData.add(new SettingObject(R.string.my_new_contracts,R.drawable.ic_my_new_contracts,0));
-        settingsData.add(new SettingObject(R.string.my_published_contracts,R.drawable.ic_my_publiched_contracts,0));
-        settingsData.add(new SettingObject(R.string.contracts_store,R.drawable.ic_contract_store,0));
-        settingsData.add(new SettingObject(R.string.watch_contract,R.drawable.ic_contr_watch,0));
-        settingsData.add(new SettingObject(R.string.watch_token,R.drawable.ic_token_watch,0));
-        settingsData.add(new SettingObject(R.string.backup_contracts,R.drawable.ic_contr_backup,0));
-        settingsData.add(new SettingObject(R.string.restore_contracts,R.drawable.ic_contract_restore,0));
-    }
-
-    List<SettingObject> getSettingsData() {
-        return settingsData;
     }
 
     void onCreateContractClick(){
-        TemplatesFragment smartContractListFragment = TemplatesFragment.newInstance();
+        BaseFragment smartContractListFragment = TemplatesFragment.newInstance(getView().getContext());
         getView().openFragment(smartContractListFragment);
     }
 
     void onMyContractsClick(){
-        MyContractsFragment myContractsFragment = MyContractsFragment.newInstance();
+        BaseFragment myContractsFragment = MyContractsFragment.newInstance(getView().getContext());
         getView().openFragment(myContractsFragment);
     }
 

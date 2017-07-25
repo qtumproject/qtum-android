@@ -32,7 +32,7 @@ class SplashActivityPresenterImpl extends BasePresenterImpl implements SplashAct
             public void run() {
                 getView().startApp();
             }
-        },1000);
+        },2000);
     }
 
     @Override

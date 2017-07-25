@@ -2,15 +2,15 @@ package com.pixelplex.qtum.ui.activity.base_activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-
+import com.pixelplex.qtum.utils.ThemeUtils;
 import butterknife.ButterKnife;
-
 
 public abstract class BaseActivity extends AppCompatActivity implements BaseContextView {
 
@@ -20,6 +20,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        ThemeUtils.setAppTheme(this,ThemeUtils.getCurrentTheme(this));
+
         super.onCreate(savedInstanceState);
         createPresenter();
         getPresenter().onCreate(this);
@@ -123,5 +126,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
 
     @Override
     public void setSoftMode() {
+    }
+
+    protected abstract void updateTheme();
+
+    public void reloadActivity(){
+        updateTheme();
     }
 }

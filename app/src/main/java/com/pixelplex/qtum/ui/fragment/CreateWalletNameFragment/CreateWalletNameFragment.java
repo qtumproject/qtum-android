@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.CreateWalletNameFragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -9,15 +10,18 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.model.contract.Contract;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class CreateWalletNameFragment extends BaseFragment implements CreateWalletNameFragmentView {
+public abstract class CreateWalletNameFragment extends BaseFragment implements CreateWalletNameFragmentView {
 
     private static final String IS_CREATE_NEW = "is_create_new";
     private static final String PASSPHRASE = "passphrase";
+    public static boolean mIsCreateNew;
 
     private CreateWalletNameFragmentPresenterImpl mCreateWalletFragmentPresenter;
 
@@ -42,8 +46,14 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
         }
     }
 
-    public static CreateWalletNameFragment newInstance(boolean isCreateNew, String passphrase) {
-        CreateWalletNameFragment createWalletNameFragment = new CreateWalletNameFragment();
+    @Override
+    public void onResume() {
+        super.onResume();
+        mIsCreateNew = getArguments().getBoolean(IS_CREATE_NEW);
+    }
+
+    public static BaseFragment newInstance(Context context, boolean isCreateNew, String passphrase) {
+        BaseFragment createWalletNameFragment = Factory.instantiateFragment(context, CreateWalletNameFragment.class);
         Bundle args = new Bundle();
         args.putBoolean(IS_CREATE_NEW, isCreateNew);
         args.putString(PASSPHRASE,passphrase);
@@ -51,8 +61,8 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
         return createWalletNameFragment;
     }
 
-    public static CreateWalletNameFragment newInstance(boolean isCreateNew) {
-        CreateWalletNameFragment createWalletNameFragment = new CreateWalletNameFragment();
+    public static BaseFragment newInstance(Context context, boolean isCreateNew) {
+        BaseFragment createWalletNameFragment = Factory.instantiateFragment(context, CreateWalletNameFragment.class);
         Bundle args = new Bundle();
         args.putBoolean(IS_CREATE_NEW, isCreateNew);
         createWalletNameFragment.setArguments(args);
@@ -67,11 +77,6 @@ public class CreateWalletNameFragment extends BaseFragment implements CreateWall
     @Override
     protected CreateWalletNameFragmentPresenterImpl getPresenter() {
         return mCreateWalletFragmentPresenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_create_wallet_name;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.BackUpWalletFragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
@@ -16,7 +18,7 @@ import com.pixelplex.qtum.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFragmentView {
+public abstract class BackUpWalletFragment extends BaseFragment implements BackUpWalletFragmentView {
 
     private BackUpWalletFragmentPresenterImpl mBackUpWalletFragmentPresenter;
 
@@ -35,18 +37,15 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
     FontTextView mTextViewBrainCode;
     @BindView(R.id.tv_copy_brain_code_to_use)
     FontTextView mTextViewCopyBrainCodeToUse;
-    @BindView(R.id.bt_copy_brain_code)
-    FontButton mButtonCopyBrainCode;
 
     @OnClick(R.id.bt_share)
     public void onShareClick(){
         getPresenter().chooseShareMethod();
     }
 
-    @OnClick({R.id.bt_copy,R.id.bt_continue, R.id.ibt_back,R.id.bt_copy_brain_code})
+    @OnClick({R.id.bt_copy,R.id.bt_continue, R.id.ibt_back})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.bt_copy_brain_code:
             case R.id.bt_copy:
                 getPresenter().onCopyBrainCodeClick();
                 break;
@@ -59,8 +58,8 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
         }
     }
 
-    public static BackUpWalletFragment newInstance(boolean isWalletCreating, String pin) {
-        BackUpWalletFragment backUpWalletFragment = new BackUpWalletFragment();
+    public static BaseFragment newInstance(Context context, boolean isWalletCreating, String pin) {
+        BaseFragment backUpWalletFragment = Factory.instantiateFragment(context, BackUpWalletFragment.class);
         Bundle args = new Bundle();
         args.putBoolean(IS_WALLET_CREATING,isWalletCreating);
         args.putString(PIN, pin);
@@ -84,21 +83,14 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletFr
     }
 
     @Override
-    protected int getLayout() {
-        return R.layout.fragment_back_up_wallet;
-    }
-
-    @Override
     public void initializeViews() {
         if(getArguments().getBoolean(IS_WALLET_CREATING)){
             mTextViewToolbarTitle.setText(R.string.copy_brain_code);
             mTextViewCopyBrainCodeToUse.setVisibility(View.GONE);
-            mButtonCopyBrainCode.setVisibility(View.GONE);
             mButtonContinue.setVisibility(View.VISIBLE);
             mButtonCopy.setVisibility(View.VISIBLE);
         }else {
             mTextViewToolbarTitle.setText(R.string.wallet_back_up);
-            mButtonCopyBrainCode.setVisibility(View.VISIBLE);
             mTextViewCopyBrainCodeToUse.setVisibility(View.VISIBLE);
             mButtonContinue.setVisibility(View.GONE);
             mButtonCopy.setVisibility(View.GONE);

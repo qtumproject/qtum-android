@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.ImportWalletFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontEditText;
@@ -15,7 +17,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class ImportWalletFragment extends BaseFragment implements ImportWalletFragmentView {
+public abstract class ImportWalletFragment extends BaseFragment implements ImportWalletFragmentView {
 
     private final int LAYOUT = R.layout.fragment_import_wallet;
 
@@ -40,11 +42,9 @@ public class ImportWalletFragment extends BaseFragment implements ImportWalletFr
         }
     }
 
-    public static ImportWalletFragment newInstance() {
-
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-
-        ImportWalletFragment fragment = new ImportWalletFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, ImportWalletFragment.class);
         fragment.setArguments(args);
         return fragment;
     }

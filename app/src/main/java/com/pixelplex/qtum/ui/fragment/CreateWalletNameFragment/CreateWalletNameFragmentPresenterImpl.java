@@ -2,6 +2,7 @@ package com.pixelplex.qtum.ui.fragment.CreateWalletNameFragment;
 
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 
@@ -39,25 +40,28 @@ class CreateWalletNameFragmentPresenterImpl extends BaseFragmentPresenterImpl im
         } else {
             getInteractor().saveWalletName(name);
             getView().clearError();
-            PinFragment pinFragment;
-            if(getView().isCreating()) {
-                pinFragment = PinFragment.newInstance(PinFragment.CREATING);
+            BaseFragment pinFragment;
+            if (getView().isCreating()) {
+                pinFragment = PinFragment.newInstance(PinFragment.CREATING, getView().getContext());
             } else {
-                pinFragment = PinFragment.newInstance(PinFragment.IMPORTING,getView().getPassphrase());
-
+                if (CreateWalletNameFragment.mIsCreateNew) {
+                    pinFragment = PinFragment.newInstance(PinFragment.CREATING, getView().getContext());
+                } else {
+                    pinFragment = PinFragment.newInstance(PinFragment.IMPORTING, getView().getPassphrase(), getView().getContext());
+                }
             }
             getView().openFragment(pinFragment);
         }
     }
 
-    @Override
-    public void onCancelClick() {
-        getView().getMainActivity().onBackPressed();
-    }
+        @Override
+        public void onCancelClick () {
+            getView().getMainActivity().onBackPressed();
+        }
 
-    @Override
-    public CreateWalletNameFragmentView getView() {
-        return mCreateWalletNameFragmentView;
-    }
+        @Override
+        public CreateWalletNameFragmentView getView () {
+            return mCreateWalletNameFragmentView;
+        }
 
-}
+    }

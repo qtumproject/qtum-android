@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
+import android.graphics.Typeface;
+import android.content.res.ColorStateList;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -19,12 +21,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
@@ -32,18 +35,21 @@ import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.base_activity.BaseActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 import com.pixelplex.qtum.utils.FontManager;
+
+import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
+import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
+import com.pixelplex.qtum.utils.ThemeUtils;
 
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
 
-
 public class MainActivity extends BaseActivity implements MainActivityView{
 
     private static final int LAYOUT = R.layout.activity_main;
+    private static final int LAYOUT_LIGHT = R.layout.activity_main_light;
     private MainActivityPresenterImpl mMainActivityPresenterImpl;
     private ActivityResultListener mActivityResultListener;
     private PermissionsResultListener mPermissionsResultListener;
@@ -64,7 +70,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(LAYOUT);
+        setContentView((ThemeUtils.THEME_DARK.equals(ThemeUtils.currentTheme))? LAYOUT : LAYOUT_LIGHT);
     }
 
     @Override
@@ -119,6 +125,19 @@ public class MainActivity extends BaseActivity implements MainActivityView{
                 .commit();
     }
 
+    @Override
+    public String getQtumAction() {
+        if(getIntent() != null){
+            return getIntent().getAction();
+        }
+        return null;
+    }
+
+    @Override
+    public void showToast(String s) {
+        Toast.makeText(this,s,Toast.LENGTH_SHORT).show();
+    }
+
     public UpdateService getUpdateService(){
         return getPresenter().getUpdateService();
     }
@@ -160,8 +179,8 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     @Override
     public void setAdressAndAmount(String defineMinerAddress, String defineAmount, String tokenAddress) {
-        if(getSupportFragmentManager().findFragmentByTag(SendBaseFragment.class.getCanonicalName()) == null && getPresenter().mAuthenticationFlag) {
-            openRootFragment(SendBaseFragment.newInstance(false, defineMinerAddress, defineAmount, tokenAddress));
+        if (getSupportFragmentManager().findFragmentByTag(SendFragment.class.getCanonicalName()) == null && getPresenter().mAuthenticationFlag) {
+            openRootFragment(SendFragment.newInstance(false, defineMinerAddress, defineAmount, tokenAddress, getContext()));
         }
     }
 
@@ -212,6 +231,26 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     public void recolorStatusBarBlue(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        }
+    }
+
+    public void showBottomNavigationView(int resColorId) {
+        mBottomNavigationView.setVisibility(View.VISIBLE);
+
+        if(resColorId > 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
+            }
+        }
+    }
+
+    public void hideBottomNavigationView(int resColorId) {
+        mBottomNavigationView.setVisibility(View.GONE);
+
+        if(resColorId > 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
+            }
         }
     }
 
@@ -329,8 +368,49 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     }
 
     @Override
-    public MainActivity getActivity(){
-        return this;
+    public MainActivity getActivity() {
+            return this;
+    }
+
+    private int[] blackThemeIcons = {R.drawable.ic_wallet,R.drawable.ic_profile,R.drawable.ic_news,R.drawable.ic_send};
+    private int[] lightThemeIcons = {R.drawable.ic_wallet_light,R.drawable.ic_profile_light,R.drawable.ic_news_light,R.drawable.ic_send_light};
+
+    @Override
+    protected void updateTheme() {
+
+        setRootFragment(ProfileFragment.newInstance(this));
+        openRootFragment(getPresenter().mRootFragment);
+
+        if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)){
+            mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
+            mBottomNavigationView.setItemBackgroundResource(R.drawable.bottom_nav_view_background_drawable);
+            mBottomNavigationView.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
+            mBottomNavigationView.setItemIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
+            resetNavBarIconsWithTheme(blackThemeIcons);
+            recolorStatusBar(R.color.colorPrimary);
+        } else {
+            mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.bottom_nav_bar_color_light));
+            mBottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
+            mBottomNavigationView.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bottom_nav_bar_text_color_light)));
+            mBottomNavigationView.setItemIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bottom_nav_bar_text_color_light)));
+            recolorStatusBar(R.color.title_color_light);
+            resetNavBarIconsWithTheme(lightThemeIcons);
+        }
+
+    }
+
+    public void resetNavBarIconsWithTheme(int[] icons) {
+        Menu menu = mBottomNavigationView.getMenu();
+        menu.findItem(R.id.item_wallet).setIcon(icons[0]);
+        menu.findItem(R.id.item_profile).setIcon(icons[1]);
+        menu.findItem(R.id.item_news).setIcon(icons[2]);
+        menu.findItem(R.id.item_send).setIcon(icons[3]);
+    }
+
+    public void recolorStatusBar(int color){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), color));
+        }
     }
 
     public void onLogin(){

@@ -129,6 +129,11 @@
     <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
     <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
+    <string name="proximaNovaBold">fonts/proximanovabold.ttf</string>
+    <string name="proximaNovaLight">fonts/proximanovalight.ttf</string>
+    <string name="proximaNovaRegular">fonts/proximanovaregular.ttf</string>
+    <string name="proximaNovaSemibold">fonts/proximanovasemibold.ttf</string>
+
     <string name="retry">RETRY</string>
 
     <string name="smart_contracts">Smart Contracts</string>
@@ -181,6 +186,12 @@
     <string name="abi_interface">ABI Interface</string>
     <string name="token">Token</string>
     <string name="smart_contract_parameters">Smart Contract Parameters</string>
+
+    <string name="switch_theme">Swith Application Theme</string>
+    <string name="confirmation">Confirmation…</string>
+    <string name="qtum_address">QTUM Address</string>
+    <string name="not_confirmed_yet">Not Confirmed Yet...</string>
+    <string name="confirmed">Confirmed</string>
 
 
 </resources>
