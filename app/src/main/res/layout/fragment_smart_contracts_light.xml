@@ -16,6 +16,7 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
+            app:contentInsetStart="0dp"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/title_color_light"
@@ -37,7 +38,7 @@
                 android:id="@+id/tv_toolbar_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="48dp"
                 android:gravity="center"
                 android:text="@string/smart_contracts"
                 android:textColor="@color/white"

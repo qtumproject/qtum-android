@@ -1,6 +1,9 @@
 package com.pixelplex.qtum.ui.fragment.WalletMainFragment.Dark;
 
+import android.view.View;
+
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.fragment.WalletFragment.Dark.WalletFragmentDark;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 
 /**
@@ -14,9 +17,13 @@ public class WalletMainFragmentDark extends WalletMainFragment {
     }
 
     @Override
-    public void showOtherTokens(boolean isShow) {
-        if(pager.getAdapter() != null) {
-            ((FragmentAdapter) pager.getAdapter()).showOtherTokens(isShow);
-        }
+    public void showPageIndicator() {
+        ((WalletFragmentDark)((FragmentAdapter)pager.getAdapter()).getWalletFragment()).pagerIndicator.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void hidePageIndicator() {
+        ((WalletFragmentDark)((FragmentAdapter)pager.getAdapter()).getWalletFragment()).pagerIndicator.setVisibility(View.INVISIBLE);
+    }
+
 }

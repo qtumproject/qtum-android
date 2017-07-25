@@ -17,19 +17,11 @@ public class WalletMainFragmentLight extends WalletMainFragment implements ViewP
 
     @BindView(R.id.wallet_indicator) ImageView walletIndicator;
     @BindView(R.id.other_tokens_indicator) ImageView otherTokensIndicator;
-    @BindView(R.id.page_indicator) View pageIndicator;
+    @BindView(R.id.page_indicator) public View pagerIndicator;
 
     @Override
     protected int getLayout() {
         return R.layout.fragment_wallet_main_light;
-    }
-
-    @Override
-    public void showOtherTokens(boolean isShow) {
-        if(pager.getAdapter() != null) {
-            ((FragmentAdapter) pager.getAdapter()).showOtherTokens(isShow);
-        }
-        pageIndicator.setVisibility((isShow)? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
@@ -38,16 +30,27 @@ public class WalletMainFragmentLight extends WalletMainFragment implements ViewP
     @Override
     public void initializeViews() {
         super.initializeViews();
-        pageIndicator.setVisibility(View.INVISIBLE);
         pager.addOnPageChangeListener(this);
     }
 
     @Override
     public void onPageSelected(int position) {
-        walletIndicator.setImageResource((position == 0)? R.drawable.tab_indicator_selected_light : R.drawable.tab_indicator_default_light);
-        otherTokensIndicator.setImageResource((position == 0)? R.drawable.tab_indicator_default_light : R.drawable.tab_indicator_selected_light);
+        if(pagerIndicator.getVisibility() == View.VISIBLE) {
+            walletIndicator.setImageResource((position == 0) ? R.drawable.tab_indicator_selected_light : R.drawable.tab_indicator_default_light);
+            otherTokensIndicator.setImageResource((position == 0) ? R.drawable.tab_indicator_default_light : R.drawable.tab_indicator_selected_light);
+        }
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {}
+
+    @Override
+    public void showPageIndicator() {
+        pagerIndicator.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hidePageIndicator() {
+        pagerIndicator.setVisibility(View.INVISIBLE);
+    }
 }

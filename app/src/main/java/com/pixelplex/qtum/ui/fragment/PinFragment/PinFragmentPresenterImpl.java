@@ -81,7 +81,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                                     getInteractor().saveSaltPassphrase(saltPassphrase);
 
                                     if(getView().getMainActivity().checkAvailabilityTouchId()) {
-                                        fragment = TouchIDPreferenceFragment.newInstance(false, pinRepeat);
+                                        fragment = TouchIDPreferenceFragment.newInstance(getView().getContext(), false, pinRepeat);
                                     } else {
                                         fragment = BackUpWalletFragment.newInstance(getView().getContext(), true, pinRepeat);
                                     }
@@ -148,7 +148,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                             pinHash = CryptoUtils.generateSHA256String(pinRepeat);
                             final Fragment fragment;
                             if (getView().getMainActivity().checkAvailabilityTouchId()) {
-                                fragment = TouchIDPreferenceFragment.newInstance(true,pinRepeat);
+                                fragment = TouchIDPreferenceFragment.newInstance(getView().getContext(), true,pinRepeat);
                             } else {
                                 fragment = WalletMainFragment.newInstance(getView().getContext());
                                 getView().getMainActivity().setRootFragment(fragment);

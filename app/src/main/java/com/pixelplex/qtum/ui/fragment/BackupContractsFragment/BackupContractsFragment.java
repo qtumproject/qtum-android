@@ -1,9 +1,11 @@
 package com.pixelplex.qtum.ui.fragment.BackupContractsFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontTextView;
 
@@ -11,7 +13,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class BackupContractsFragment extends BaseFragment implements BackupContractsFragmentView {
+public abstract class BackupContractsFragment extends BaseFragment implements BackupContractsFragmentView {
     
     private BackupContractsFragmentPresenter mBackupContractsFragmentPresenter;
 
@@ -29,11 +31,9 @@ public class BackupContractsFragment extends BaseFragment implements BackupContr
         }
     }
 
-    public static BackupContractsFragment newInstance() {
-        
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        
-        BackupContractsFragment fragment = new BackupContractsFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, BackupContractsFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,11 +46,6 @@ public class BackupContractsFragment extends BaseFragment implements BackupContr
     @Override
     protected BackupContractsFragmentPresenter getPresenter() {
         return mBackupContractsFragmentPresenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_backup_contracts;
     }
 
     @Override

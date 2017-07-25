@@ -89,13 +89,6 @@ public abstract class OtherTokensFragment extends BaseFragment implements OtherT
         }
     }
 
-    @Override
-    public void onTokenClick(int adapterPosition) {
-        if (tokensList.getAdapter() != null) {
-            presenter.openTokenDetails(((TokensAdapter) tokensList.getAdapter()).get(adapterPosition));
-        }
-    }
-
     private class TokensAdapter extends RecyclerView.Adapter<TokenViewHolder> {
 
         private final UpdateSocketInstance socketInstace;

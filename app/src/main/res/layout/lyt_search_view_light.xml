@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_width="match_parent"
+    android:background="@color/title_color_light"
+    android:layout_height="50dp">
+
+    <EditText
+        android:id="@+id/input"
+        android:paddingStart="32dp"
+        android:paddingEnd="48dp"
+        android:textSize="16sp"
+        android:scrollHorizontally="true"
+        android:ellipsize="end"
+        android:gravity="left|center_vertical"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        android:lines="1"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_gray_corner_background_light_alpha_30"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:clickable="true"
+        android:visibility="invisible"
+        android:id="@+id/bt_clear_search"
+        android:background="?attr/selectableItemBackground"
+        android:layout_alignEnd="@+id/input"
+        app:srcCompat="@drawable/ic_search_clear_light"
+        android:layout_alignTop="@+id/input"
+        android:layout_alignBottom="@+id/input"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.pixelplex.qtum.utils.FontButton
+        android:id="@+id/cancel"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:visibility="invisible"
+        android:alpha = "0"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:layout_alignParentEnd="true"
+        android:text="@string/cancel"
+        app:typeface="@string/proximaNovaLight"
+        android:background="?attr/selectableItemBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/placeholder"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_marginEnd="4dp"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_search"
+            android:layout_width="16dp"
+            android:layout_height="16dp" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/text"
+            android:textSize="16sp"
+            android:text="@string/search"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:typefaceAsset="@string/proximaNovaLight"/>
+    </LinearLayout>
+
+</RelativeLayout>

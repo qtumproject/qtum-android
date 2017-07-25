@@ -122,7 +122,7 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
 
     @Override
     public void onSubscribeTokensClick() {
-        SubscribeTokensFragment subscribeTokensFragment = SubscribeTokensFragment.newInstance();
+        BaseFragment subscribeTokensFragment = SubscribeTokensFragment.newInstance(getView().getContext());
         getView().openFragment(subscribeTokensFragment);
     }
 

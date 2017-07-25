@@ -20,7 +20,6 @@ public class FirebaseSharedPreferences {
     private FireBaseTokenRefreshListener mFireBaseTokenRefreshListener;
 
     private FirebaseSharedPreferences(){
-
     }
 
     public static FirebaseSharedPreferences getInstance() {

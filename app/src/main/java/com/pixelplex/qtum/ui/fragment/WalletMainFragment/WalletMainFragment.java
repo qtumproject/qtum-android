@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
@@ -55,6 +56,13 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
         showBottomNavView(false);
     }
 
+    @Override
+    public void showOtherTokens(boolean isShow) {
+        if(pager.getAdapter() != null) {
+            ((FragmentAdapter) pager.getAdapter()).showOtherTokens(isShow);
+        }
+    }
+
     public class FragmentAdapter extends FragmentStatePagerAdapter {
 
         int NUM_ITEMS = 1;
@@ -68,7 +76,7 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
             return fragment;
         }
 
-        WalletFragment getWalletFragment(){
+       public WalletFragment getWalletFragment(){
             return (WalletFragment) registeredFragments.get(0);
         }
 
@@ -79,13 +87,14 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
         public void showOtherTokens(boolean show){
             NUM_ITEMS = (show)? 2 : 1;
             notifyDataSetChanged();
-            if(show && getWalletFragment() instanceof WalletFragmentDark){
-                ((WalletFragmentDark)getWalletFragment()).showPageIndicator();
+            if(show){
+                showPageIndicator();
                 getOtherTokensFragment().notifyTokenChange();
             }else{
-                ((WalletFragmentDark)getWalletFragment()).hidePageIndicator();
+                hidePageIndicator();
             }
         }
+
 
         public FragmentAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);

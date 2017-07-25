@@ -37,6 +37,7 @@
     <color name="bottom_nav_bar_color_light">#edf6f8</color>
     <color name="bottom_nav_bar_text_color_light">#4e5d6f</color>
     <color name="bottom_nav_bar_text_color_light_alpha_60">#994e5d6f</color>
+    <color name="bottom_nav_bar_text_color_light_alpha_50">#804e5d6f</color>
     <color name="title_color_light">#3f38c4</color>
 
     <color name="light_blue">#38b0c5</color>

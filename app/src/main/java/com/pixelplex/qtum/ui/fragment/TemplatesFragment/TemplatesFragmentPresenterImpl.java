@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.model.ContractTemplate;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.SetYourTokenFragment.SetYourTokenFragment;
 import com.pixelplex.qtum.utils.DateCalculator;
@@ -32,7 +33,7 @@ public class TemplatesFragmentPresenterImpl extends BaseFragmentPresenterImpl im
     }
 
     public void openConstructorByName(String uiid) {
-        SetYourTokenFragment fragment = SetYourTokenFragment.newInstance(uiid);
+        BaseFragment fragment = SetYourTokenFragment.newInstance(getView().getContext(), uiid);
         getView().openFragment(fragment);
     }
 

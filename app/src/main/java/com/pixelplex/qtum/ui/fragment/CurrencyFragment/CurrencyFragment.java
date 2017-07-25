@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.CurrencyFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,28 +25,35 @@ import com.pixelplex.qtum.model.Currency;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 import com.pixelplex.qtum.utils.FontTextView;
 import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
+import com.pixelplex.qtum.utils.SearchBar;
+import com.pixelplex.qtum.utils.SearchBarListener;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CurrencyFragment extends BaseFragment implements CurrencyFragmentView{
+public abstract class CurrencyFragment extends BaseFragment implements CurrencyFragmentView, SearchBarListener {
 
     private CurrencyFragmentPresenterImpl mCurrencyFragmentPresenter;
-    private CurrencyAdapter mCurrencyAdapter;
+    protected CurrencyAdapter mCurrencyAdapter;
     private String mSearchString;
-    private List<Currency> mCurrentList;
+    protected List<Currency> mCurrentList;
     private UpdateService mUpdateService;
 
     @BindView(R.id.recycler_view)
+    protected
     RecyclerView mRecyclerView;
-    @BindView(R.id.et_search_currency)
-    EditText mEditTextSearchCurrency;
+
+
     @BindView(R.id.tv_currency_title)
     TextView mTextViewCurrencyTitle;
     @BindView(R.id.ll_currency)
@@ -60,11 +68,9 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
         }
     }
 
-    public static CurrencyFragment newInstance() {
-
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-
-        CurrencyFragment fragment = new CurrencyFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, CurrencyFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,58 +86,12 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
     }
 
     @Override
-    protected int getLayout() {
-        return R.layout.fragment_currency;
-    }
-
-    @Override
     public void initializeViews() {
         super.initializeViews();
         mUpdateService = getMainActivity().getUpdateService();
         mTextViewCurrencyTitle.setText(R.string.currency);
 
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
-        mEditTextSearchCurrency.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if(editable.toString().isEmpty()){
-                    mCurrencyAdapter.setFilter(mCurrentList);
-                } else {
-                    mSearchString = editable.toString().toLowerCase();
-                    List<Currency> newList = new ArrayList<>();
-                    for(Currency currency: mCurrentList){
-                        if(currency.getName().toLowerCase().contains(mSearchString))
-                            newList.add(currency);
-                    }
-                    mCurrencyAdapter.setFilter(newList);
-                }
-            }
-        });
-
-        mEditTextSearchCurrency.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_SEARCH) {
-                    mFrameLayoutBase.requestFocus();
-                    hideKeyBoard();
-                    return false;
-                }
-                return false;
-            }
-        });
 
         mFrameLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -143,10 +103,31 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
     }
 
     @Override
-    public void setCurrencyList(List<Currency> currencyList) {
-        mCurrencyAdapter = new CurrencyAdapter(currencyList);
-        mCurrentList = currencyList;
-        mRecyclerView.setAdapter(mCurrencyAdapter);
+    public void onActivate() {
+
+    }
+
+    @Override
+    public void onDeactivate() {
+        if(mFrameLayoutBase != null) {
+            mFrameLayoutBase.requestFocus();
+        }
+        hideKeyBoard();
+    }
+
+    @Override
+    public void onRequestSearch(String filter) {
+        if(filter.isEmpty()){
+            mCurrencyAdapter.setFilter(mCurrentList);
+        } else {
+            mSearchString = filter.toLowerCase();
+            List<Currency> newList = new ArrayList<>();
+            for(Currency currency: mCurrentList){
+                if(currency.getName().toLowerCase().contains(mSearchString))
+                    newList.add(currency);
+            }
+            mCurrencyAdapter.setFilter(newList);
+        }
     }
 
     class CurrencyHolder extends RecyclerView.ViewHolder{
@@ -210,12 +191,14 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
         }
     }
 
-    private class CurrencyAdapter extends RecyclerView.Adapter<CurrencyHolder> {
+    protected class CurrencyAdapter extends RecyclerView.Adapter<CurrencyHolder> {
 
+        private int resId;
         private List<Currency> mCurrencyList;
 
-        public CurrencyAdapter(List<Currency> currencyList) {
+        public CurrencyAdapter(List<Currency> currencyList, int resId) {
             mCurrencyList = currencyList;
+            this.resId = resId;
         }
 
         public Currency get(int adapterPosition) {
@@ -224,7 +207,7 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
 
         @Override
         public CurrencyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new CurrencyHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_token_list_item, parent, false));
+            return new CurrencyHolder(LayoutInflater.from(parent.getContext()).inflate(resId, parent, false));
         }
 
         @Override

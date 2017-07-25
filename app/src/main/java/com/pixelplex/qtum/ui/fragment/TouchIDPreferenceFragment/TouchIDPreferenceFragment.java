@@ -1,15 +1,17 @@
 package com.pixelplex.qtum.ui.fragment.TouchIDPreferenceFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 
 import butterknife.OnClick;
 
 
-public class TouchIDPreferenceFragment extends BaseFragment implements TouchIDPreferenceFragmentView {
+public abstract class TouchIDPreferenceFragment extends BaseFragment implements TouchIDPreferenceFragmentView {
 
     private static final String IS_IMPORTING = "is_importing";
     private static final String PIN = "pin";
@@ -26,12 +28,12 @@ public class TouchIDPreferenceFragment extends BaseFragment implements TouchIDPr
         }
     }
 
-    public static TouchIDPreferenceFragment newInstance(boolean isImporting,String pin) {
+    public static BaseFragment newInstance(Context context, boolean isImporting, String pin) {
         
         Bundle args = new Bundle();
         args.putBoolean(IS_IMPORTING,isImporting);
         args.putString(PIN,pin);
-        TouchIDPreferenceFragment fragment = new TouchIDPreferenceFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, TouchIDPreferenceFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,11 +54,6 @@ public class TouchIDPreferenceFragment extends BaseFragment implements TouchIDPr
     @Override
     protected TouchIDPreferenceFragmentPresenter getPresenter() {
         return mTouchIDPreferenceFragmentPresenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_touch_id_preference;
     }
 
     @Override

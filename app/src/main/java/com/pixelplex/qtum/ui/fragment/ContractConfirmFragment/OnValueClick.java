@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.ContractConfirmFragment;
 
 
-interface OnValueClick {
+public interface OnValueClick {
     void onClick(int adapterPosition);
 }
