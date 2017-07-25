@@ -10,7 +10,7 @@ import com.pixelplex.qtum.model.ContractTemplate;
 import java.util.List;
 
 
-class TemplatesRecyclerAdapter extends RecyclerView.Adapter<TemplateViewHolder> {
+public class TemplatesRecyclerAdapter extends RecyclerView.Adapter<TemplateViewHolder> {
 
     private List<ContractTemplate> list;
     private TemplateSelectListener listener;
