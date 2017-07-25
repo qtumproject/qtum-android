@@ -34,7 +34,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements ContractConfirmPresenter {
+public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements ContractConfirmPresenter {
 
     private ContractConfirmView view;
     private ContractConfirmInteractorImpl interactor;
@@ -46,11 +46,11 @@ class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     private List<ContractMethodParameter> mContractMethodParameterList;
 
-    void setContractMethodParameterList(List<ContractMethodParameter> contractMethodParameterList) {
+    public void setContractMethodParameterList(List<ContractMethodParameter> contractMethodParameterList) {
         this.mContractMethodParameterList = contractMethodParameterList;
     }
 
-    List<ContractMethodParameter> getContractMethodParameterList() {
+    public List<ContractMethodParameter> getContractMethodParameterList() {
         return mContractMethodParameterList;
     }
 

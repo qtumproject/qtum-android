@@ -1,13 +1,17 @@
 package com.pixelplex.qtum.ui.fragment.ContractConfirmFragment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.pixelplex.qtum.QtumApplication;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import java.util.ArrayList;
@@ -17,16 +21,16 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class ContractConfirmFragment extends BaseFragment implements  ContractConfirmView, OnValueClick{
+public abstract class ContractConfirmFragment extends BaseFragment implements  ContractConfirmView, OnValueClick{
 
-    public final int LAYOUT = R.layout.lyt_contract_confirm;
-    private static final String paramsKey = "params";
+    protected static final String paramsKey = "params";
     private static final String CONTRACT_TEMPLATE_UIID = "uiid";
     private static final String CONTRACT_NAME = "name";
 
-    public static ContractConfirmFragment newInstance(List<ContractMethodParameter> params, String uiid, String name) {
+
+    public static BaseFragment newInstance(Context context, List<ContractMethodParameter> params, String uiid,String name) {
         Bundle args = new Bundle();
-        ContractConfirmFragment fragment = new ContractConfirmFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, ContractConfirmFragment.class);
         args.putSerializable(paramsKey,(ArrayList)params);
         args.putString(CONTRACT_TEMPLATE_UIID, uiid);
         args.putString(CONTRACT_NAME, name);
@@ -34,13 +38,14 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
         return fragment;
     }
 
-    private ContractConfirmPresenterImpl presenter;
-    private ContractConfirmAdapter adapter;
+    protected ContractConfirmPresenterImpl presenter;
+    protected ContractConfirmAdapter adapter;
 
     @BindView(R.id.recycler_view)
+    protected
     RecyclerView confirmList;
 
-    @OnClick({R.id.ibt_back, R.id.cancel})
+    @OnClick(R.id.ibt_back)
     public void onBackClick() {
         getActivity().onBackPressed();
     }
@@ -58,20 +63,6 @@ public class ContractConfirmFragment extends BaseFragment implements  ContractCo
     @Override
     protected BaseFragmentPresenterImpl getPresenter() {
         return presenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return LAYOUT;
-    }
-
-    @Override
-    public void initializeViews() {
-        super.initializeViews();
-        presenter.setContractMethodParameterList((List<ContractMethodParameter>) getArguments().getSerializable(paramsKey));
-        confirmList.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ContractConfirmAdapter(presenter.getContractMethodParameterList(),"4jhbr4hjb4l23342i4bn2kl4b2352l342k35bv235rl23","0.100", this);
-        confirmList.setAdapter(adapter);
     }
 
     @Override

@@ -236,7 +236,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
 
     @Override
     public void onCurrencyClick() {
-        CurrencyFragment currencyFragment = CurrencyFragment.newInstance();
+        BaseFragment currencyFragment = CurrencyFragment.newInstance(getView().getContext());
         getView().openFragmentForResult(getView().getFragment(), currencyFragment);
     }
 

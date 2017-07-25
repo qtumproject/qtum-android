@@ -11,10 +11,10 @@ import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import java.util.List;
 
 
-class ConstructorAdapter extends RecyclerView.Adapter<InputViewHolder> {
+public abstract class ConstructorAdapter extends RecyclerView.Adapter<InputViewHolder> {
 
-    private List<ContractMethodParameter> params;
-    OnValidateParamsListener listener;
+    protected List<ContractMethodParameter> params;
+    protected OnValidateParamsListener listener;
 
     public List<ContractMethodParameter> getParams(){
         return params;
@@ -23,16 +23,6 @@ class ConstructorAdapter extends RecyclerView.Adapter<InputViewHolder> {
     public ConstructorAdapter(List<ContractMethodParameter> params, OnValidateParamsListener listener) {
         this.params = params;
         this.listener = listener;
-    }
-
-    @Override
-    public InputViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new InputViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_constructor_input,parent, false), listener);
-    }
-
-    @Override
-    public void onBindViewHolder(InputViewHolder holder, int position) {
-        holder.bind(params.get(position),position == getItemCount()-1);
     }
 
     public boolean validateMethods(){

@@ -17,7 +17,7 @@ import com.pixelplex.qtum.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class InputViewHolder extends RecyclerView.ViewHolder implements EditTextValidated.EditTextValidateListener{
+public abstract class InputViewHolder extends RecyclerView.ViewHolder implements EditTextValidated.EditTextValidateListener{
 
     private static String TYPE_BOOL = "bool";
 
@@ -78,9 +78,11 @@ public class InputViewHolder extends RecyclerView.ViewHolder implements EditText
     };
 
     @BindView(R.id.til_param)
+    protected
     TextInputLayout tilParam;
 
     @BindView(R.id.et_param)
+    protected
     EditTextValidated etParam;
 
     @BindView(R.id.checkbox)

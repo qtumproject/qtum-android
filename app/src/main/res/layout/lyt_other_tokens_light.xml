@@ -40,6 +40,7 @@
                     app:typefaceAsset="@string/proximaNovaSemibold" />
 
                 <ImageButton
+                    android:visibility="invisible"
                     android:id="@+id/bt_share"
                     android:layout_width="36dp"
                     android:layout_alignParentEnd="true"

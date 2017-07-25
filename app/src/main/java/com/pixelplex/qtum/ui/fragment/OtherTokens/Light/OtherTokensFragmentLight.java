@@ -22,4 +22,11 @@ public class OtherTokensFragmentLight extends OtherTokensFragment {
     public void setTokensData(List<Token> tokensData) {
         tokensList.setAdapter(new TokensAdapterLight(tokensData,presenter, this));
     }
+
+    @Override
+    public void onTokenClick(int adapterPosition) {
+        if (tokensList.getAdapter() != null) {
+            presenter.openTokenDetails(((TokensAdapterLight) tokensList.getAdapter()).get(adapterPosition));
+        }
+    }
 }

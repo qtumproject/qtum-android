@@ -1,50 +1,43 @@
 package com.pixelplex.qtum.ui.fragment.SubscribeTokensFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-
-
+import com.pixelplex.qtum.utils.SearchBarListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
-public class SubscribeTokensFragment extends BaseFragment implements SubscribeTokensFragmentView {
+public abstract class SubscribeTokensFragment extends BaseFragment implements SubscribeTokensFragmentView, SearchBarListener {
 
     private SubscribeTokensFragmentPresenter mSubscribeTokensFragmentPresenter;
-    private TokenAdapter mTokenAdapter;
+    protected TokenAdapter mTokenAdapter;
     private String mSearchString;
-    private List<Token> mCurrentList;
-
+    protected List<Token> mCurrentList;
 
     @BindView(R.id.recycler_view)
+    protected
     RecyclerView mRecyclerView;
-    @BindView(R.id.et_search_currency)
-    EditText mEditTextSearchCurrency;
+
     @BindView(R.id.tv_currency_title)
     TextView mTextViewCurrencyTitle;
+
     @BindView(R.id.ll_currency)
     FrameLayout mFrameLayoutBase;
 
@@ -57,11 +50,9 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
         }
     }
 
-    public static SubscribeTokensFragment newInstance() {
-
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-
-        SubscribeTokensFragment fragment = new SubscribeTokensFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, SubscribeTokensFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,73 +68,12 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
     }
 
     @Override
-    protected int getLayout() {
-        return R.layout.fragment_currency;
-    }
-
-    @Override
     public void initializeViews() {
         super.initializeViews();
+
         mTextViewCurrencyTitle.setText(R.string.chose_to_subscribe);
 
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
-        mEditTextSearchCurrency.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if(editable.toString().isEmpty()){
-                    mTokenAdapter.setFilter(mCurrentList);
-                } else {
-                    mSearchString = editable.toString().toLowerCase();
-                    List<Token> newList = new ArrayList<>();
-                    for(Token currency: mCurrentList){
-                        if(currency.getContractName().toLowerCase().contains(mSearchString))
-                            newList.add(currency);
-                    }
-
-                    final int searchStringSize = mSearchString.length();
-
-                    Collections.sort(newList, new Comparator<Token>() {
-                        @Override
-                        public int compare(Token token, Token token2) {
-                            if (token.getContractName().substring(0,searchStringSize).equals(mSearchString) && !token2.getContractName().substring(0,searchStringSize).equals(mSearchString)) {
-                                return -1;
-                            } else if (!token.getContractName().substring(0,searchStringSize).equals(mSearchString) && token2.getContractName().substring(0,searchStringSize).equals(mSearchString)) {
-                                return 1;
-                            } else {
-                                return 0;
-                            }
-                        }
-                    });
-
-                    mTokenAdapter.setFilter(newList);
-                }
-            }
-        });
-
-        mEditTextSearchCurrency.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_SEARCH) {
-                    mFrameLayoutBase.requestFocus();
-                    hideKeyBoard();
-                    return false;
-                }
-                return false;
-            }
-        });
 
         mFrameLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -155,29 +85,52 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
     }
 
     @Override
-    public void setTokenList(List<Token> tokenList) {
-
-        Collections.sort(tokenList, new Comparator<Token>() {
-            @Override
-            public int compare(Token token, Token t1) {
-                if(token.isSubscribe() && !t1.isSubscribe()){
-                    return -1;
-                } else if(!token.isSubscribe() && t1.isSubscribe()){
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        });
-
-        mTokenAdapter = new TokenAdapter(tokenList);
-        mCurrentList = tokenList;
-        mRecyclerView.setAdapter(mTokenAdapter);
+    public List<Token> getTokenList() {
+        return mTokenAdapter.getTokenList();
     }
 
     @Override
-    public List<Token> getTokenList() {
-        return mTokenAdapter.getTokenList();
+    public void onActivate() {
+
+    }
+
+    @Override
+    public void onDeactivate() {
+        if(mFrameLayoutBase != null) {
+            mFrameLayoutBase.requestFocus();
+        }
+        hideKeyBoard();
+    }
+
+    @Override
+    public void onRequestSearch(String filter) {
+        if(filter.isEmpty()){
+            mTokenAdapter.setFilter(mCurrentList);
+        } else {
+            mSearchString = filter.toLowerCase();
+            List<Token> newList = new ArrayList<>();
+            for(Token currency: mCurrentList){
+                if(currency.getContractName().toLowerCase().contains(mSearchString))
+                    newList.add(currency);
+            }
+
+            final int searchStringSize = mSearchString.length();
+
+            Collections.sort(newList, new Comparator<Token>() {
+                @Override
+                public int compare(Token token, Token token2) {
+                    if (token.getContractName().substring(0,searchStringSize).equals(mSearchString) && !token2.getContractName().substring(0,searchStringSize).equals(mSearchString)) {
+                        return -1;
+                    } else if (!token.getContractName().substring(0,searchStringSize).equals(mSearchString) && token2.getContractName().substring(0,searchStringSize).equals(mSearchString)) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+
+            mTokenAdapter.setFilter(newList);
+        }
     }
 
     class TokenHolder extends RecyclerView.ViewHolder{
@@ -217,18 +170,20 @@ public class SubscribeTokensFragment extends BaseFragment implements SubscribeTo
         }
     }
 
-    private class TokenAdapter extends RecyclerView.Adapter<TokenHolder>{
+    public class TokenAdapter extends RecyclerView.Adapter<TokenHolder>{
 
         List<Token> mTokenList;
+        int resId;
 
-        TokenAdapter(List<Token> tokenList){
+        public TokenAdapter(List<Token> tokenList, int resId){
             mTokenList = tokenList;
+            this.resId = resId;
         }
 
         @Override
         public TokenHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.item_single_checkable, parent, false);
+            View view = layoutInflater.inflate(resId, parent, false);
             return new TokenHolder(view);
         }
 

@@ -22,4 +22,11 @@ public class OtherTokensFragmentDark extends OtherTokensFragment {
     public void setTokensData(List<Token> tokensData) {
         tokensList.setAdapter(new TokensAdapterDark(tokensData,presenter, this));
     }
+
+    @Override
+    public void onTokenClick(int adapterPosition) {
+        if (tokensList.getAdapter() != null) {
+            presenter.openTokenDetails(((TokensAdapterDark) tokensList.getAdapter()).get(adapterPosition));
+        }
+    }
 }

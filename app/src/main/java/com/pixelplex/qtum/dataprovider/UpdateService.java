@@ -333,7 +333,6 @@ public class UpdateService extends Service {
         socket.emit("subscribe", "balance_subscribe", mAddresses, jsonObject);
     }
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return START_NOT_STICKY;

@@ -12,11 +12,7 @@ public class QtumFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
     @Override
     public void onTokenRefresh() {
-        // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refreshed token: " + refreshedToken);
-
-        // TODO: Implement this method to send any registration to your app's servers.
         sendRegistrationToServer(refreshedToken);
     }
 
@@ -30,6 +26,5 @@ public class QtumFirebaseInstanceIdService extends FirebaseInstanceIdService {
      */
     private void sendRegistrationToServer(String token) {
         FirebaseSharedPreferences.getInstance().saveFirebaseToken(getApplicationContext(),token);
-        // Add custom implementation, as needed.
     }
 }

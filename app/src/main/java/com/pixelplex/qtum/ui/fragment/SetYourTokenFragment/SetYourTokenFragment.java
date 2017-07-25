@@ -1,50 +1,53 @@
 package com.pixelplex.qtum.ui.fragment.SetYourTokenFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.WindowManager;
 import android.widget.Button;
-
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.model.ContractTemplate;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+
 import com.pixelplex.qtum.utils.FontEditText;
-import com.pixelplex.qtum.utils.FontTextView;
+
+
 
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
+public abstract class SetYourTokenFragment extends BaseFragment implements SetYourTokenFragmentView, OnValidateParamsListener {
 
-public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFragmentView, OnValidateParamsListener {
+    protected final static String CONTRACT_TEMPLATE_UIID = "uiid";
 
-    private final int LAYOUT = R.layout.fragment_set_your_token;
-    private final static String CONTRACT_TEMPLATE_UIID = "uiid";
+    protected String templateUiid;
 
-    private ConstructorAdapter adapter;
+    protected ConstructorAdapter adapter;
 
-    public static SetYourTokenFragment newInstance(String uiid) {
+    public static BaseFragment newInstance(Context context, String uiid) {
         Bundle args = new Bundle();
-        SetYourTokenFragment fragment = new SetYourTokenFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, SetYourTokenFragment.class);
         args.putString(CONTRACT_TEMPLATE_UIID,uiid);
         fragment.setArguments(args);
         return fragment;
     }
 
-    private SetYourTokenFragmentPresenterImpl presenter;
+    protected SetYourTokenFragmentPresenterImpl presenter;
 
     @BindView(R.id.recycler_view)
+    protected
     RecyclerView constructorList;
+
 
     @BindView(R.id.tv_template_name)
     FontEditText mTextViewTemplateName;
 
-    @OnClick({R.id.ibt_back, R.id.cancel})
+    @OnClick({R.id.ibt_back})
     public void onBackClick() {
         getActivity().onBackPressed();
     }
@@ -79,16 +82,12 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
     }
 
     @Override
-    protected int getLayout() {
-        return LAYOUT;
-    }
-
-    @Override
     public void initializeViews() {
         super.initializeViews();
         constructorList.setLayoutManager(new LinearLayoutManager(getContext()));
-        String templateUiid = getArguments().getString(CONTRACT_TEMPLATE_UIID);
+        templateUiid = getArguments().getString(CONTRACT_TEMPLATE_UIID);
         presenter.getConstructorByUiid(templateUiid);
+
         String templateName = "";
         TinyDB tinyDB = new TinyDB(getContext());
         List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
@@ -112,12 +111,6 @@ public class SetYourTokenFragment extends BaseFragment implements SetYourTokenFr
     public void onPause() {
         super.onPause();
         showBottomNavView(false);
-    }
-
-    @Override
-    public void onContractConstructorPrepared(List<ContractMethodParameter> params) {
-        adapter = new ConstructorAdapter(params, this);
-        constructorList.setAdapter(adapter);
     }
 
     @Override

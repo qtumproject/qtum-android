@@ -27,6 +27,7 @@ public class SearchBar extends RelativeLayout implements View.OnClickListener{
     private TextView placeholderText;
     private EditText input;
     private Button cancel;
+    private ImageView clearSearch;
 
     private SearchBarListener listener;
 
@@ -66,6 +67,17 @@ public class SearchBar extends RelativeLayout implements View.OnClickListener{
         input = (EditText) findViewById(R.id.input);
         placeholder = (LinearLayout) findViewById(R.id.placeholder);
         cancel = (Button) findViewById(R.id.cancel);
+
+        clearSearch = (ImageView) findViewById(R.id.bt_clear_search);
+
+        clearSearch.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!input.getText().toString().equals("")) {
+                    input.setText("");
+                }
+            }
+        });
 
         resizeAnimation = new ResizeAnimation(input);
         resizeAnimation.setDuration(300);
@@ -108,7 +120,10 @@ public class SearchBar extends RelativeLayout implements View.OnClickListener{
                     placeholderText.animate().alpha(0).setDuration(300).start();
                     placeholder.animate().x(input.getX()).setDuration(300).start();
                     cancel.setVisibility(VISIBLE);
+                    clearSearch.setAlpha(0f);
+                    clearSearch.setVisibility(VISIBLE);
                     cancel.animate().alpha(1).setDuration(300).start();
+                    clearSearch.animate().alpha(1).setDuration(300).start();
                     resizeAnimation.setParams(initialInputWidth, initialInputWidth - cancel.getWidth());
                 } else {
                     placeholderText.animate().alpha(1).setDuration(300).start();
@@ -118,6 +133,13 @@ public class SearchBar extends RelativeLayout implements View.OnClickListener{
                         @Override
                         public void run() {
                             cancel.setVisibility(INVISIBLE);
+                        }
+                    }).start();
+
+                    clearSearch.animate().alpha(0).setDuration(100).withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            clearSearch.setVisibility(INVISIBLE);
                         }
                     }).start();
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ContractConfirmFragment.ContractConfirmFragment;
 import com.pixelplex.qtum.ui.fragment.TemplatesFragment.TemplatesFragmentInteractorImpl;
@@ -36,8 +37,9 @@ public class SetYourTokenFragmentPresenterImpl extends BaseFragmentPresenterImpl
        getView().onContractConstructorPrepared(contractMethod.inputParams);
     }
 
-    public void confirm(List<ContractMethodParameter> list, String uiid, String name){
-        ContractConfirmFragment fragment = ContractConfirmFragment.newInstance(list, uiid, name);
+    public void confirm(List<ContractMethodParameter> list, String uiid,String name){
+        BaseFragment fragment = ContractConfirmFragment.newInstance(getView().getContext(), list, uiid, name);
+
         getView().openFragment(fragment);
     }
 

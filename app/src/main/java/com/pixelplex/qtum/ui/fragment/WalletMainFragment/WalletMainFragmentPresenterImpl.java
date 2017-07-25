@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.WalletMainFragment;
 import android.content.Context;
+import android.util.Log;
 
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
@@ -72,7 +73,7 @@ class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.d("TOKENS ERROR", "---------------- "+e.getMessage());
                     }
 
                     @Override

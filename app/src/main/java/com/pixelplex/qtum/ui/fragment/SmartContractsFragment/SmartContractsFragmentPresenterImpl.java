@@ -39,22 +39,22 @@ class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
     void onWatchContractClick(){
-        WatchContractFragment watchContractFragment = WatchContractFragment.newInstance(false);
+        BaseFragment watchContractFragment = WatchContractFragment.newInstance(getView().getContext(), false);
         getView().openFragment(watchContractFragment);
     }
 
     void onWatchTokenClick(){
-        WatchContractFragment watchContractFragment = WatchContractFragment.newInstance(true);
+        BaseFragment watchContractFragment = WatchContractFragment.newInstance(getView().getContext(), true);
         getView().openFragment(watchContractFragment);
     }
 
     void onRestoreContractsClick(){
-        RestoreContractsFragment restoreContractFragment = RestoreContractsFragment.newInstance();
+        BaseFragment restoreContractFragment = RestoreContractsFragment.newInstance(getView().getContext());
         getView().openFragment(restoreContractFragment);
     }
 
     void onBackupContractsClick(){
-        BackupContractsFragment backupContractsFragment = BackupContractsFragment.newInstance();
+        BaseFragment backupContractsFragment = BackupContractsFragment.newInstance(getView().getContext());
         getView().openFragment(backupContractsFragment);
     }
 

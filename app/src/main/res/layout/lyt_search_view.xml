@@ -24,6 +24,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageView
+        android:clickable="true"
+        android:visibility="invisible"
+        android:id="@+id/bt_clear_search"
+        android:background="?attr/selectableItemBackground"
+        android:layout_alignEnd="@+id/input"
+        app:srcCompat="@drawable/ic_search_clear"
+        android:layout_alignTop="@+id/input"
+        android:layout_alignBottom="@+id/input"
+        android:paddingEnd="10dp"
+        android:paddingStart="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <com.pixelplex.qtum.utils.FontButton
         android:id="@+id/cancel"
         android:gravity="center"

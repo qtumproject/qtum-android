@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragment;
+import com.pixelplex.qtum.ui.fragment.WalletMainFragment.Light.WalletMainFragmentLight;
+import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 import com.pixelplex.qtum.ui.wave_visualizer.WaveHelper;
 import com.pixelplex.qtum.ui.wave_visualizer.WaveView;
 
@@ -108,4 +110,5 @@ public class WalletFragmentLight extends WalletFragment {
             Log.d("WalletFragmentLight", "updateBalance: " + e.getMessage());
         }
     }
+
 }

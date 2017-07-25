@@ -4,7 +4,7 @@
                 android:clickable="true"
                 android:background="@drawable/list_item_background_selector_light"
                 android:layout_width="match_parent"
-                android:layout_height="60dp">
+                android:layout_height="65dp">
 
     <com.pixelplex.qtum.utils.FontTextView
         android:id="@+id/title"
@@ -51,9 +51,12 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:padding="2dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         android:text="@string/about"
-        android:background="@color/switch_on"
+        android:background="@drawable/btn_sea_corner_background_light"
         app:typefaceAsset="@string/proximaNovaRegular"
         android:textColor="@color/white"
         android:textSize="12sp"

@@ -23,6 +23,7 @@
 
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/tv_balance"
+            android:text="0.0 QTUM"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:typefaceAsset="@string/simplonMonoMedium"
@@ -54,7 +55,7 @@
         android:textSize="24sp"
         android:textColor="@color/white"
         app:typefaceAsset="@string/proximaNovaSemibold"
-        android:text="0.0000000003 QTUM"
+        android:text="0.0 QTUM"
         android:id="@+id/tv_unconfirmed_balance"/>
 
     <LinearLayout

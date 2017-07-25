@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.WatchContractFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.ContractTemplate;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
@@ -18,8 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
-public class WatchContractFragment extends BaseFragment implements WatchContractFragmentView {
+public abstract class WatchContractFragment extends BaseFragment implements WatchContractFragmentView {
 
     private static final String IS_TOKEN = "is_token";
 
@@ -60,11 +61,10 @@ public class WatchContractFragment extends BaseFragment implements WatchContract
         }
     }
 
-    public static WatchContractFragment newInstance(boolean isToken) {
-        
+    public static BaseFragment newInstance(Context context, boolean isToken) {
         Bundle args = new Bundle();
         args.putBoolean(IS_TOKEN,isToken);
-        WatchContractFragment fragment = new WatchContractFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, WatchContractFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,11 +92,6 @@ public class WatchContractFragment extends BaseFragment implements WatchContract
     @Override
     protected WatchContractFragmentPresenter getPresenter() {
         return mWatchContractFragmentPresenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_watch_contract;
     }
 
     @Override
