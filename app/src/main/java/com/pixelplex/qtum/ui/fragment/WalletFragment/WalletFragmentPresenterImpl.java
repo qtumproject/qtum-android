@@ -13,7 +13,6 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
-import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
 import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
@@ -52,40 +51,46 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        mUpdateService = getView().getMainActivity().getUpdateService();
 
-        mUpdateService.startMonitoring();
-        mUpdateService.addTransactionListener(new TransactionListener() {
+        getView().getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
             @Override
-            public void onNewHistory(History history) {
-                if(history.getBlockTime()!=null){
-                    Integer notifyPosition = getInteractor().setHistory(history);
-                    if(notifyPosition==null){
-                        getView().notifyNewHistory();
-                    } else {
-                        getView().notifyConfirmHistory(notifyPosition);
-                    }
-                }else {
-                    getInteractor().addToHistoryList(history);
-                    getView().notifyNewHistory();
+            public void onServiceConnectionChange(boolean isConnecting) {
+                if(isConnecting){
+                    mUpdateService = getView().getMainActivity().getUpdateService();
+                    mUpdateService.addTransactionListener(new TransactionListener() {
+                        @Override
+                        public void onNewHistory(History history) {
+                            if(history.getBlockTime()!=null){
+                                Integer notifyPosition = getInteractor().setHistory(history);
+                                if(notifyPosition==null){
+                                    getView().notifyNewHistory();
+                                } else {
+                                    getView().notifyConfirmHistory(notifyPosition);
+                                }
+                            }else {
+                                getInteractor().addToHistoryList(history);
+                                getView().notifyNewHistory();
+                            }
+                        }
+
+                        @Override
+                        public boolean getVisibility() {
+                            return mVisibility;
+                        }
+                    });
+
+                    mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
+                        @Override
+                        public void onChangeBalance() {
+                            getView().getMainActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setUpBalance();
+                                }
+                            });
+                        }
+                    });
                 }
-            }
-
-            @Override
-            public boolean getVisibility() {
-                return mVisibility;
-            }
-        });
-
-        mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
-            @Override
-            public void onChangeBalance() {
-                getView().getMainActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setUpBalance();
-                    }
-                });
             }
         });
 

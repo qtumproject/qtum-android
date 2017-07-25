@@ -101,7 +101,7 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     @Override
     public void onLogOutYesClick() {
         getInteractor().clearWallet();
-        getView().getMainActivity().setAuthenticationFlag(false);
+        getView().getMainActivity().onLogout();
         mUpdateService = getView().getMainActivity().getUpdateService();
         mUpdateService.stopMonitoring();
         BaseFragment startPageFragment = StartPageFragment.newInstance(false, getView().getContext());

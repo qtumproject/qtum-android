@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+
 import android.graphics.Typeface;
 import android.content.res.ColorStateList;
 import android.hardware.fingerprint.FingerprintManager;
@@ -36,9 +37,11 @@ import com.pixelplex.qtum.ui.activity.base_activity.BaseActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 import com.pixelplex.qtum.utils.FontManager;
+
 import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
 import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 import com.pixelplex.qtum.utils.ThemeUtils;
+
 import java.lang.reflect.Field;
 
 import butterknife.BindView;
@@ -74,10 +77,6 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         getPresenter().processNewIntent(intent);
-    }
-
-    public void setAuthenticationFlag(boolean authenticationFlag){
-        getPresenter().setAuthenticationFlag(authenticationFlag);
     }
 
     public String getAddressForSendAction(){
@@ -141,6 +140,14 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     public UpdateService getUpdateService(){
         return getPresenter().getUpdateService();
+    }
+
+    public void subscribeServiceConnectionChangeEvent(OnServiceConnectionChangeListener listener){
+        getPresenter().subscribeOnServiceConnectionChangeEvent(listener);
+    }
+
+    public interface OnServiceConnectionChangeListener {
+        void onServiceConnectionChange(boolean isConnecting);
     }
 
     @Override
@@ -404,5 +411,13 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), color));
         }
+    }
+
+    public void onLogin(){
+        getPresenter().onLogin();
+    }
+
+    public void onLogout(){
+        getPresenter().onLogout();
     }
 }

@@ -4,10 +4,9 @@ package com.pixelplex.qtum.ui.fragment.BackUpWalletFragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.net.Uri;
 
-import com.pixelplex.qtum.crypto.AESUtil;
-import com.pixelplex.qtum.crypto.KeyStoreHelper;
+import com.pixelplex.qtum.utils.crypto.AESUtil;
+import com.pixelplex.qtum.utils.crypto.KeyStoreHelper;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 

@@ -14,4 +14,7 @@ interface MainActivityPresenter {
     void processIntent(Intent intent);
     void processNewIntent(Intent intent);
     NetworkStateReceiver getNetworkReceiver();
+    void onLogin();
+    void onLogout();
+    void subscribeOnServiceConnectionChangeEvent(MainActivity.OnServiceConnectionChangeListener listener);
 }

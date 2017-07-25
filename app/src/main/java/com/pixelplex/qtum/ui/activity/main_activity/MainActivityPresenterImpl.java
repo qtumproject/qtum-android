@@ -17,7 +17,6 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
-import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.base_activity.BasePresenterImpl;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -29,11 +28,9 @@ import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 import com.pixelplex.qtum.utils.QtumIntent;
 
-import org.bitcoinj.wallet.Wallet;
 
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.List;
 
 
 class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivityPresenter {
@@ -57,6 +54,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     private String mTokenAddressForSendAction;
 
     private LanguageChangeListener mLanguageChangeListener;
+    private List<MainActivity.OnServiceConnectionChangeListener> mServiceConnectionChangeListeners = new ArrayList<>();
 
     MainActivityPresenterImpl(MainActivityView mainActivityView) {
         mMainActivityView = mainActivityView;
@@ -119,11 +117,45 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         return mMainActivityInteractor;
     }
 
+    @Override
+    public void onLogin() {
+        mAuthenticationFlag = true;
+        mIntent = new Intent(mContext, UpdateService.class);
+        if (!isMyServiceRunning(UpdateService.class)) {
+            mContext.startService(mIntent);
+            if(mUpdateService!=null){
+                mUpdateService.startMonitoring();
+            } else {
+                mContext.bindService(mIntent, mServiceConnection, 0);
+            }
+        } else {
+            mContext.bindService(mIntent, mServiceConnection, 0);
+        }
+    }
+
+    @Override
+    public void subscribeOnServiceConnectionChangeEvent(MainActivity.OnServiceConnectionChangeListener listener) {
+        mServiceConnectionChangeListeners.add(listener);
+        listener.onServiceConnectionChange(mUpdateService!=null);
+    }
+
+    @Override
+    public void onLogout() {
+        mAuthenticationFlag = false;
+        if(mUpdateService!=null){
+            mUpdateService.stopMonitoring();
+        }
+    }
+
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
             mUpdateService.clearNotification();
+            mUpdateService.startMonitoring();
+            for(MainActivity.OnServiceConnectionChangeListener listener : mServiceConnectionChangeListeners) {
+                listener.onServiceConnectionChange(true);
+            }
         }
 
         @Override
@@ -148,18 +180,9 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     }
 
     @Override
-    public void onPostCreate(Context contex) {
-        super.onPostCreate(contex);
-
-        mIntent = new Intent(mContext, UpdateService.class);
-        if (!isMyServiceRunning(UpdateService.class)) {
-            mContext.startService(mIntent);
-        }
-        mContext.bindService(mIntent,mServiceConnection,0);
-
-        if(!QtumIntent.CHANGE_THEME.equals(getView().getQtumAction())) {
-            openStartFragment();
-        }
+    public void onPostCreate(Context context) {
+        super.onPostCreate(context);
+        openStartFragment();
     }
 
     private void openStartFragment() {
@@ -246,9 +269,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     public void processNewIntent(Intent intent) {
         switch (intent.getAction()) {
 
-            case QtumIntent.CHANGE_THEME:
-                getWalletFromFile();
-                break;
             case QtumIntent.OPEN_FROM_NOTIFICATION:
                 mRootFragment = WalletMainFragment.newInstance(getView().getContext());
                 getView().openRootFragment(mRootFragment);
@@ -286,36 +306,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
     }
 
-    public void getWalletFromFile(){
-        KeyStorage.getInstance()
-                .loadWalletFromFile(mContext)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Wallet>() {
-                    @Override
-                    public void onCompleted() {
-                        mCheckAuthenticationShowFlag = true;
-                        setAuthenticationFlag(true);
-                        mRootFragment = WalletMainFragment.newInstance(getView().getContext());
-                        getView().openRootFragment(mRootFragment);
-                        getView().setIconChecked(0);
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().showToast(e.getMessage());
-
-                    }
-
-                    @Override
-                    public void onNext(Wallet wallet) {
-                        KeyStorage.getInstance().setWallet(wallet);
-                    }
-                });
-    }
-
-
     @Override
     public NetworkStateReceiver getNetworkReceiver() {
         return mNetworkReceiver;
@@ -331,10 +321,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     public void clearservice(){
         mContext.unbindService(mServiceConnection);
         mContext.unregisterReceiver(mNetworkReceiver);
-    }
-
-    public void setAuthenticationFlag(boolean authenticationFlag) {
-        mAuthenticationFlag = authenticationFlag;
     }
 
     public String getAddressForSendAction() {
