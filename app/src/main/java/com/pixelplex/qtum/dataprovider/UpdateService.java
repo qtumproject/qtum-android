@@ -447,6 +447,7 @@ public class UpdateService extends Service {
 
     public void addBalanceChangeListener(BalanceChangeListener balanceChangeListener) {
         mBalanceChangeListener = balanceChangeListener;
+        balanceChangeListener.onChangeBalance();
     }
 
     public void addTokenListener(TokenListener tokenListener){
