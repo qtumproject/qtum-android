@@ -125,5 +125,6 @@ dependencies {
     compile 'com.google.firebase:firebase-core:9.2.0'
     compile 'com.google.firebase:firebase-messaging:9.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar'
 }
 apply plugin: 'com.google.gms.google-services'
