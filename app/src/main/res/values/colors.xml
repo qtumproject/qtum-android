@@ -12,6 +12,7 @@
     <color name="grey20">#334e5d6f</color>
     <color name="grey_devider">#c9c9c9</color>
     <color name="black">#1a1b1e</color>
+    <color name="white">#fff</color>
     <color name="grey_lite">#f8f8f8</color>
     <color name="grey_data">#d6dae2</color>
     <color name="grey_input_text">#bdc6cf</color>
@@ -20,7 +21,6 @@
     <color name="white_alpha50">#7affffff</color>
     <color name="white_alpha20">#33ffffff</color>
     <color name="alpha">#00ffffff</color>
-
     <color name="wave_background">#24ffffff</color>
     <color name="wave_stroke">#4058c0dd</color>
 
@@ -33,4 +33,29 @@
     <color name="select_file_background">#0d2e9ad0</color>
     <color name="file_size_color">#4d2e9ad0</color>
     <color name="switch_non_checked">#656569</color>
+
+    <color name="bottom_nav_bar_color_light">#edf6f8</color>
+    <color name="bottom_nav_bar_text_color_light">#4e5d6f</color>
+    <color name="bottom_nav_bar_text_color_light_alpha_60">#994e5d6f</color>
+    <color name="title_color_light">#3f38c4</color>
+
+    <color name="light_blue">#38b0c5</color>
+    <color name="title_red_color">#ff7967</color>
+    <color name="title_lt_green_color">#53cda3</color>
+
+    <color name="footer_text_color">#80adba</color>
+    <color name="bt_grey_text_color">#869195</color>
+
+    <color name="selected_paginator_light">#99536173</color>
+    <color name="default_paginator_light">#4d536173</color>
+    <color name="switch_on">#36b9c8</color>
+    <color name="qr_code_background">#edf6f8</color>
+    <color name="qr_code_tint_color">#3c87b9</color>
+
+    <array name="av_colors">
+        <item>#33ffffff</item>
+        <item>#33ffffff</item>
+        <item>#33ffffff</item>
+    </array>
+
 </resources>

@@ -18,6 +18,7 @@ import com.pixelplex.qtum.utils.DictionaryWords;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ import rx.Observable;
 import rx.Subscriber;
 
 
-public class KeyStorage {
+public class KeyStorage implements Serializable {
 
     private static KeyStorage sKeyStorage;
     private List<DeterministicKey> mDeterministicKeyList;
@@ -34,6 +35,10 @@ public class KeyStorage {
     private int sCurrentKeyPosition = 0;
     private File mFile;
     private final int ADDRESSES_COUNT = 10;
+
+    public static void setUpKeyStorage(KeyStorage kStorage){
+        sKeyStorage = kStorage;
+    }
 
     public static KeyStorage getInstance() {
         if (sKeyStorage == null) {
@@ -44,6 +49,10 @@ public class KeyStorage {
 
     private KeyStorage() {
 
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.sWallet = wallet;
     }
 
     public void clearKeyStorage() {

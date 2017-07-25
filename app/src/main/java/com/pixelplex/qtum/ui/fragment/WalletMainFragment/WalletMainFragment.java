@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.WalletMainFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,23 +10,24 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.OtherTokens.OtherTokensFragment;
+import com.pixelplex.qtum.ui.fragment.WalletFragment.Dark.WalletFragmentDark;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.WalletFragment;
 
 import butterknife.BindView;
 
 
-public class WalletMainFragment extends BaseFragment implements WalletMainFragmentView {
+public abstract class WalletMainFragment extends BaseFragment implements WalletMainFragmentView {
 
-    private final int LAYOUT = R.layout.fragment_wallet_main;
     private WalletFragment mWalletFragment;
     private OtherTokensFragment mOtherTokensFragment;
 
-    public static WalletMainFragment newInstance() {
+    public static WalletMainFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        WalletMainFragment fragment = new WalletMainFragment();
+        WalletMainFragment fragment = (WalletMainFragment) Factory.instantiateFragment(context, WalletMainFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -33,6 +35,7 @@ public class WalletMainFragment extends BaseFragment implements WalletMainFragme
     private WalletMainFragmentPresenterImpl mWalletMainFragmentPresenter;
 
     @BindView(R.id.view_pager)
+    protected
     ViewPager pager;
 
     @Override
@@ -49,18 +52,7 @@ public class WalletMainFragment extends BaseFragment implements WalletMainFragme
     public void initializeViews() {
         super.initializeViews();
         pager.setAdapter(new FragmentAdapter(getFragmentManager()));
-    }
-
-    @Override
-    protected int getLayout() {
-        return LAYOUT;
-    }
-
-    @Override
-    public void showOtherTokens(boolean isShow) {
-        if(pager.getAdapter() != null) {
-            ((FragmentAdapter) pager.getAdapter()).showOtherTokens(isShow);
-        }
+        showBottomNavView(false);
     }
 
     public class FragmentAdapter extends FragmentStatePagerAdapter {
@@ -84,14 +76,14 @@ public class WalletMainFragment extends BaseFragment implements WalletMainFragme
             return (OtherTokensFragment) registeredFragments.get(1);
         }
 
-        void showOtherTokens(boolean show){
+        public void showOtherTokens(boolean show){
             NUM_ITEMS = (show)? 2 : 1;
             notifyDataSetChanged();
-            if(show){
-                getWalletFragment().showPageIndicator();
+            if(show && getWalletFragment() instanceof WalletFragmentDark){
+                ((WalletFragmentDark)getWalletFragment()).showPageIndicator();
                 getOtherTokensFragment().notifyTokenChange();
             }else{
-                getWalletFragment().hidePageIndicator();
+                ((WalletFragmentDark)getWalletFragment()).hidePageIndicator();
             }
         }
 
@@ -103,10 +95,10 @@ public class WalletMainFragment extends BaseFragment implements WalletMainFragme
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    mWalletFragment = WalletFragment.newInstance();
+                    mWalletFragment = (WalletFragment) WalletFragment.newInstance(getContext());
                     return mWalletFragment;
                 case 1:
-                    mOtherTokensFragment = OtherTokensFragment.newInstance();
+                    mOtherTokensFragment = (OtherTokensFragment) OtherTokensFragment.newInstance(getContext());
                     return mOtherTokensFragment;
                 default:
                     return null;

@@ -11,6 +11,7 @@ import com.pixelplex.qtum.model.gson.callSmartContractResponse.CallSmartContract
 import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import com.pixelplex.qtum.utils.ContractManagementHelper;
@@ -71,7 +72,7 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
 
 
     public void onReceiveClick(){
-        ReceiveFragment receiveFragment = ReceiveFragment.newInstance(token.getContractAddress());
+        BaseFragment receiveFragment = ReceiveFragment.newInstance(getView().getContext(), token.getContractAddress());
         getView().openFragment(receiveFragment);
     }
 

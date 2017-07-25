@@ -1,25 +1,22 @@
 package com.pixelplex.qtum.ui.fragment.ProfileFragment;
 
-
 import android.support.v4.app.Fragment;
-
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.LanguageFragment.LanguageFragment;
 import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
 import com.pixelplex.qtum.ui.fragment.SmartContractsFragment.SmartContractsFragment;
 import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
 import com.pixelplex.qtum.ui.fragment.SubscribeTokensFragment.SubscribeTokensFragment;
-
+import com.pixelplex.qtum.utils.ThemeUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-
-class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ProfileFragmentPresenter {
+public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements ProfileFragmentPresenter {
 
     private UpdateService mUpdateService;
 
@@ -27,26 +24,30 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
     private ProfileFragmentInteractorImpl mProfileFragmentInteractor;
     private LanguageChangeListener mLanguageChangeListener;
 
-    private List<SettingObject> settingsData;
+    private static List<SettingObject> settingsData;
 
-    ProfileFragmentPresenterImpl(ProfileFragmentView profileFragmentView) {
+    public ProfileFragmentPresenterImpl(ProfileFragmentView profileFragmentView) {
         mProfileFragmentView = profileFragmentView;
         mProfileFragmentInteractor = new ProfileFragmentInteractorImpl(getView().getContext());
         initSettingsData();
     }
 
     private void initSettingsData() {
-        settingsData = new ArrayList<>();
-        settingsData.add(new SettingObject(R.string.language, R.drawable.ic_language, 0));
-        settingsData.add(new SettingObject(R.string.change_pin, R.drawable.ic_changepin, 1));
-        settingsData.add(new SettingObject(R.string.wallet_back_up, R.drawable.ic_backup, 1));
-        if(getView().getMainActivity().checkAvailabilityTouchId()) {
-            settingsData.add(new SettingSwitchObject(R.string.touch_id, R.drawable.ic_touchid, 1, QtumSharedPreference.getInstance().isTouchIdEnable(getView().getContext())));
+
+        if(settingsData == null) {
+            settingsData = new ArrayList<>();
+            settingsData.add(new SettingObject(R.string.language, R.drawable.ic_language, 0));
+            settingsData.add(new SettingObject(R.string.change_pin, R.drawable.ic_changepin, 1));
+            settingsData.add(new SettingObject(R.string.wallet_back_up, R.drawable.ic_backup, 1));
+            if(getView().getMainActivity().checkAvailabilityTouchId()) {
+                settingsData.add(new SettingSwitchObject(R.string.touch_id, R.drawable.ic_touchid, 1, QtumSharedPreference.getInstance().isTouchIdEnable(getView().getContext())));
+            }
+            settingsData.add(new SettingObject(R.string.subscribe_tokens, R.drawable.ic_tokensubscribe, 2));
+            settingsData.add(new SettingObject(R.string.smart_contracts, R.drawable.ic_token, 2));
+            settingsData.add(new SettingObject(R.string.about, R.drawable.ic_about, 3));
+            settingsData.add(new SettingObject(R.string.log_out, R.drawable.ic_logout, 3));
+            settingsData.add(new SettingObject(R.string.switch_theme, R.drawable.ic_changepin, 4));
         }
-        settingsData.add(new SettingObject(R.string.subscribe_tokens,R.drawable.ic_tokensubscribe,2));
-        settingsData.add(new SettingObject(R.string.smart_contracts,R.drawable.ic_prof_smart_contr,2));
-        settingsData.add(new SettingObject(R.string.about,R.drawable.ic_about,3));
-        settingsData.add(new SettingObject(R.string.log_out, R.drawable.ic_logout, 3));
     }
 
     public List<SettingObject> getSettingsData () {
@@ -82,7 +83,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     @Override
     public void onChangePinClick() {
-        PinFragment pinFragment = PinFragment.newInstance(PinFragment.CHANGING);
+        BaseFragment pinFragment = PinFragment.newInstance(PinFragment.CHANGING, getView().getContext());
         getView().openFragment(pinFragment);
     }
 
@@ -93,7 +94,7 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     @Override
     public void onWalletBackUpClick() {
-        Fragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_FOR_PASSPHRASE);
+        BaseFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_FOR_PASSPHRASE,getView().getContext());
         getView().openFragment(fragment);
     }
 
@@ -103,20 +104,19 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
         getView().getMainActivity().setAuthenticationFlag(false);
         mUpdateService = getView().getMainActivity().getUpdateService();
         mUpdateService.stopMonitoring();
-
-        StartPageFragment startPageFragment = StartPageFragment.newInstance(false);
+        BaseFragment startPageFragment = StartPageFragment.newInstance(false, getView().getContext());
         getView().getMainActivity().openRootFragment(startPageFragment);
         getView().getMainActivity().setIconChecked(0);
     }
 
     public void onLanguageClick(){
-        LanguageFragment languageFragment = LanguageFragment.newInstance();
+        BaseFragment languageFragment = LanguageFragment.newInstance(getView().getContext());
         getView().openFragment(languageFragment);
     }
 
     @Override
     public void onSmartContractsClick() {
-        SmartContractsFragment smartContractsFragment = SmartContractsFragment.newInstance();
+        BaseFragment smartContractsFragment = SmartContractsFragment.newInstance(getView().getContext());
         getView().openFragment(smartContractsFragment);
     }
 
@@ -128,5 +128,10 @@ class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl implements 
 
     public void onTouchIdSwitched(boolean isChecked){
         QtumSharedPreference.getInstance().saveTouchIdEnable(getView().getContext(),isChecked);
+    }
+
+    public void switchTheme() {
+        ThemeUtils.switchPreferencesTheme(getView().getContext());
+        getView().getMainActivity().reloadActivity();
     }
 }

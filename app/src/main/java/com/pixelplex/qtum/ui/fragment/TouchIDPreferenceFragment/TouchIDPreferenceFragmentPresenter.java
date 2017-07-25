@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.TouchIDPreferenceFragment;
 
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.fragment.BackUpWalletFragment.BackUpWalletFragment;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
 
@@ -16,11 +17,11 @@ class TouchIDPreferenceFragmentPresenter extends BaseFragmentPresenterImpl{
 
     void onNextScreen(boolean isImporting){
         if(isImporting){
-            WalletMainFragment walletFragment = WalletMainFragment.newInstance();
+            WalletMainFragment walletFragment = WalletMainFragment.newInstance(getView().getContext());
             getView().getMainActivity().setRootFragment(walletFragment);
             getView().openRootFragment(walletFragment);
         }else{
-            BackUpWalletFragment backUpWalletFragment = BackUpWalletFragment.newInstance(true, getView().getPin());
+            BaseFragment backUpWalletFragment = BackUpWalletFragment.newInstance(getView().getContext(), true, getView().getPin());
             getView().openFragment(backUpWalletFragment);
         }
     }

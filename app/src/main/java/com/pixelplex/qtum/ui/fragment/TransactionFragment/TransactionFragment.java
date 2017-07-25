@@ -1,7 +1,9 @@
 package com.pixelplex.qtum.ui.fragment.TransactionFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.TransactionFragment.TransactionDetailFragment.TransactionDetailFragment;
 import com.pixelplex.qtum.utils.FontTextView;
@@ -18,7 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class TransactionFragment extends BaseFragment implements TransactionFragmentView {
+public abstract class TransactionFragment extends BaseFragment implements TransactionFragmentView {
 
     @BindView(R.id.tv_value)
     TextView mTextViewValue;
@@ -29,6 +32,9 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
 
+    @BindView(R.id.toolbar_layout)
+    protected CollapsingToolbarLayout toolbarLayout;
+
     @BindView(R.id.tab_name)
     FontTextView tabName;
 
@@ -36,6 +42,7 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     TabLayout tabIndicator;
 
     @BindView(R.id.not_confirmed_flag)
+    protected
     FontTextView notConfFlag;
 
     @OnClick({R.id.ibt_back})
@@ -51,8 +58,8 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
     private TransactionFragmentPresenterImpl mTransactionFragmentPresenter;
 
-    public static TransactionFragment newInstance(int position) {
-        TransactionFragment transactionFragment = new TransactionFragment();
+    public static BaseFragment newInstance(Context context, int position) {
+        BaseFragment transactionFragment = Factory.instantiateFragment(context, TransactionFragment.class);
         Bundle args = new Bundle();
         args.putInt(POSITION, position);
         transactionFragment.setArguments(args);
@@ -70,11 +77,6 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
     }
 
     @Override
-    protected int getLayout() {
-        return R.layout.fragment_transaction;
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         getPresenter().openTransactionView(getArguments().getInt(POSITION));
@@ -85,19 +87,19 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
         super.initializeViews();
     }
 
-    @Override
-    public void setUpTransactionData(String value, String receivedTime, List<String> from, List<String> to, boolean confirmed) {
+    protected void setTransactionData(String value, String receivedTime){
         if(mViewPager.getAdapter() == null) {
             mTextViewValue.setText(value);
+
             mTextViewReceivedTime.setText(receivedTime);
             TransactionPagerAdapter transactionPagerAdapter = new TransactionPagerAdapter(getFragmentManager());
             mViewPager.setAdapter(transactionPagerAdapter);
             tabIndicator.setupWithViewPager(mViewPager, true);
             mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                }
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+                @Override
+                public void onPageScrollStateChanged(int state) {}
 
                 @Override
                 public void onPageSelected(int position) {
@@ -107,18 +109,12 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
                         tabName.setText(getString(R.string.to));
                     }
                 }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
             });
-
-            notConfFlag.setVisibility((!confirmed) ? View.VISIBLE : View.INVISIBLE);
         }
     }
 
-    class TransactionPagerAdapter extends FragmentStatePagerAdapter{
+
+    private class TransactionPagerAdapter extends FragmentStatePagerAdapter{
 
         public TransactionPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -126,15 +122,15 @@ public class TransactionFragment extends BaseFragment implements TransactionFrag
 
         @Override
         public Fragment getItem(int position) {
-            TransactionDetailFragment transactionDetailFragment = null;
+            Fragment transactionDetailFragment = null;
             switch (position){
                 case TransactionDetailFragment.ACTION_FROM:{
-                    transactionDetailFragment =  TransactionDetailFragment.newInstance(TransactionDetailFragment.ACTION_FROM,
+                    transactionDetailFragment =  TransactionDetailFragment.newInstance(getContext(), TransactionDetailFragment.ACTION_FROM,
                             getArguments().getInt(POSITION));
                     break;
                 }
                 case TransactionDetailFragment.ACTION_TO:{
-                    transactionDetailFragment = TransactionDetailFragment.newInstance(TransactionDetailFragment.ACTION_TO,
+                    transactionDetailFragment = TransactionDetailFragment.newInstance(getContext(), TransactionDetailFragment.ACTION_TO,
                             getArguments().getInt(POSITION));
                     break;
                 }

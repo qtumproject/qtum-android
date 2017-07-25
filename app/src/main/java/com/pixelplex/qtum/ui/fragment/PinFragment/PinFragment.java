@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.PinFragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
@@ -9,13 +10,14 @@ import android.view.WindowManager;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
 
 
-public class PinFragment extends BaseFragment implements PinFragmentView {
+public abstract class PinFragment extends BaseFragment implements PinFragmentView {
 
     private PinFragmentPresenterImpl mPinFragmentPresenter;
 
@@ -41,19 +43,19 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     @BindView(R.id.tooltip)
     FontTextView tooltip;
 
-    public static PinFragment newInstance(String action) {
-        PinFragment pinFragment = new PinFragment();
+    public static BaseFragment newInstance(String action, String passphrase, Context context) {
+        BaseFragment pinFragment = Factory.instantiateFragment(context,PinFragment.class);
         Bundle args = new Bundle();
         args.putString(ACTION, action);
+        args.putString(PASSPHRASE, passphrase);
         pinFragment.setArguments(args);
         return pinFragment;
     }
 
-    public static PinFragment newInstance(String action, String passphrase) {
-        PinFragment pinFragment = new PinFragment();
+    public static BaseFragment newInstance(String action, Context context) {
+        BaseFragment pinFragment = Factory.instantiateFragment(context,PinFragment.class);
         Bundle args = new Bundle();
         args.putString(ACTION, action);
-        args.putString(PASSPHRASE, passphrase);
         pinFragment.setArguments(args);
         return pinFragment;
     }
@@ -67,12 +69,6 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     protected PinFragmentPresenterImpl getPresenter() {
         return mPinFragmentPresenter;
     }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_pin;
-    }
-
 
     @Override
     public void confirmError(String errorText) {
@@ -122,7 +118,6 @@ public class PinFragment extends BaseFragment implements PinFragmentView {
     @Override
     public void initializeViews() {
         getPresenter().setAction(getArguments().getString(ACTION));
-
         mWalletPin.setOnPinEnteredListener(new PinEntryEditText.OnPinEnteredListener() {
             @Override
             public void onPinEntered(CharSequence str) {

@@ -1,6 +1,5 @@
 package com.pixelplex.qtum.ui.fragment.CurrencyFragment;
 
-
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
@@ -27,12 +25,11 @@ import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.SendBaseFragment.SendBaseFragment;
+import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 import com.pixelplex.qtum.utils.FontTextView;
-
+import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -174,7 +171,8 @@ public class CurrencyFragment extends BaseFragment implements CurrencyFragmentVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((SendBaseFragment) getTargetFragment()).onCurrencyChoose(mCurrency.getName());
+                    ((SendFragment) getTargetFragment()).onCurrencyChoose(mCurrency.getName());
+                    ((SendFragment) getTargetFragment()).onCurrencyChoose(mCurrency.getAddress());
                     getActivity().onBackPressed();
                 }
             });

@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.MyContractsFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,9 +13,11 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.datastorage.TinyDB;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragment;
+import com.pixelplex.qtum.ui.fragment.TemplatesFragment.TemplatesFragment;
 import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.FontTextView;
 
@@ -25,14 +28,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MyContractsFragment extends BaseFragment implements MyContractsFragmentView {
+public abstract class MyContractsFragment extends BaseFragment implements MyContractsFragmentView {
 
     private MyContractsFragmentPresenter mMyContractsFragmentPresenter;
 
     @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    protected RecyclerView mRecyclerView;
 
-    private ContractAdapter mContractAdapter;
+    protected ContractAdapter mContractAdapter;
 
     @OnClick({R.id.ibt_back})
     public void onClick(View view){
@@ -43,11 +46,11 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
         }
     }
 
-    public static MyContractsFragment newInstance() {
+    public static BaseFragment newInstance(Context context) {
 
         Bundle args = new Bundle();
 
-        MyContractsFragment fragment = new MyContractsFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, MyContractsFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,17 +69,6 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
     @Override
     protected BaseFragmentPresenterImpl getPresenter() {
         return mMyContractsFragmentPresenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_my_contracts;
-    }
-
-    @Override
-    public void updateRecyclerView(List<Contract> contractList) {
-        mContractAdapter = new ContractAdapter(contractList);
-        mRecyclerView.setAdapter(mContractAdapter);
     }
 
     class ContractViewHolder extends RecyclerView.ViewHolder{
@@ -99,7 +91,7 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
                 @Override
                 public void onClick(View v) {
                     if(mContract.isHasBeenCreated()) {
-                        ContractManagementFragment contractManagementFragment = ContractManagementFragment.newInstance(mContract.getUiid(), mContract.getContractAddress());
+                        BaseFragment contractManagementFragment = ContractManagementFragment.newInstance(getContext(), mContract.getUiid(), mContract.getContractAddress());
                         openFragment(contractManagementFragment);
                     }
                 }
@@ -125,18 +117,20 @@ public class MyContractsFragment extends BaseFragment implements MyContractsFrag
         }
     }
 
-    class ContractAdapter extends RecyclerView.Adapter<ContractViewHolder>{
+    protected class ContractAdapter extends RecyclerView.Adapter<ContractViewHolder>{
 
         List<Contract> mContractList;
+        int mResId;
 
-        ContractAdapter(List<Contract> contractList){
+        public ContractAdapter(List<Contract> contractList, int resId){
             mContractList = contractList;
+            mResId = resId;
         }
 
         @Override
         public ContractViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.lyt_contract_list_item, parent, false);
+            View view = layoutInflater.inflate(mResId, parent, false);
             return new ContractViewHolder(view);
         }
 

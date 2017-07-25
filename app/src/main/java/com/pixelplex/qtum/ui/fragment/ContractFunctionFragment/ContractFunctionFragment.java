@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.ContractFunctionFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -17,9 +18,9 @@ import android.view.inputmethod.EditorInfo;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontManager;
-import com.pixelplex.qtum.utils.FontTextView;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ContractFunctionFragment extends BaseFragment implements ContractFunctionFragmentView {
+public abstract class ContractFunctionFragment extends BaseFragment implements ContractFunctionFragmentView {
 
     private ContractFunctionFragmentPresenter mContractFunctionFragmentPresenter;
     private final static String CONTRACT_TEMPLATE_UIID = "contract_template_uiid";
@@ -36,8 +37,8 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
     private final static String CONTRACT_ADDRESS = "contract_address";
 
     @BindView(R.id.recycler_view)
-    RecyclerView mParameterList;
-    private ParameterAdapter mParameterAdapter;
+    protected RecyclerView mParameterList;
+    protected ParameterAdapter mParameterAdapter;
 
     @OnClick({R.id.ibt_back,R.id.cancel,R.id.call})
     public void onClick(View view){
@@ -52,13 +53,13 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
         }
     }
 
-    public static ContractFunctionFragment newInstance(String methodName, String uiid, String contractAddress) {
+    public static BaseFragment newInstance(Context context, String methodName, String uiid, String contractAddress) {
 
         Bundle args = new Bundle();
         args.putString(CONTRACT_TEMPLATE_UIID,uiid);
         args.putString(METHOD_NAME,methodName);
         args.putString(CONTRACT_ADDRESS,contractAddress);
-        ContractFunctionFragment fragment = new ContractFunctionFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, ContractFunctionFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,20 +75,9 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
     }
 
     @Override
-    protected int getLayout() {
-        return R.layout.fragment_function_detail;
-    }
-
-    @Override
     public void initializeViews() {
         super.initializeViews();
         mParameterList.setLayoutManager(new LinearLayoutManager(getActivity()));
-    }
-
-    @Override
-    public void setUpParameterList(List<ContractMethodParameter> contractMethodParameterList) {
-        mParameterAdapter = new ParameterAdapter(contractMethodParameterList);
-        mParameterList.setAdapter(mParameterAdapter);
     }
 
     @Override
@@ -162,9 +152,6 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
         @BindView(R.id.checkbox)
         AppCompatCheckBox checkBox;
 
-        @BindView(R.id.tv_param_field)
-        FontTextView mTextViewParamField;
-
         public ParameterViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -176,9 +163,6 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
 
         public void bind (ContractMethodParameter parameter, boolean isLast) {
             this.parameter = parameter;
-
-            int position = getAdapterPosition()+1;
-            mTextViewParamField.setText("Parameter " + position);
 
             tilParam.setHint(fromCamelCase(parameter.getName()));
             setInputType(parameter.getType());
@@ -263,18 +247,20 @@ public class ContractFunctionFragment extends BaseFragment implements ContractFu
     public class ParameterAdapter extends RecyclerView.Adapter<ParameterViewHolder> {
 
         List<ContractMethodParameter> params;
+        int mResId;
 
         public List<ContractMethodParameter> getParams(){
             return params;
         }
 
-        public ParameterAdapter(List<ContractMethodParameter> params) {
+        public ParameterAdapter(List<ContractMethodParameter> params, int resId) {
             this.params = params;
+            mResId = resId;
         }
 
         @Override
         public ParameterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ParameterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_constructor_input,parent, false));
+            return new ParameterViewHolder(LayoutInflater.from(parent.getContext()).inflate(mResId,parent, false));
         }
 
         @Override

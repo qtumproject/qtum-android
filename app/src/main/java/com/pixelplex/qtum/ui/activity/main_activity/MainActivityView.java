@@ -14,4 +14,6 @@ public interface MainActivityView extends BaseContextView {
     void setAdressAndAmount(String defineMinerAddress, String defineAmount, String tokenAddress);
     void openFragment(Fragment fragment);
     MainActivity getActivity();
+    String getQtumAction();
+    void showToast(String s);
 }

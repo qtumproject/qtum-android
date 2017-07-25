@@ -13,17 +13,18 @@ import java.util.List;
 class TemplatesRecyclerAdapter extends RecyclerView.Adapter<TemplateViewHolder> {
 
     private List<ContractTemplate> list;
-
     private TemplateSelectListener listener;
+    private int mResId;
 
-    public TemplatesRecyclerAdapter(List<ContractTemplate> list, TemplateSelectListener listener){
+    public TemplatesRecyclerAdapter(List<ContractTemplate> list, TemplateSelectListener listener, int resId){
         this.list = list;
         this.listener = listener;
+        this.mResId = resId;
     }
 
     @Override
     public TemplateViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TemplateViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_contract_list_item,parent,false),listener);
+        return new TemplateViewHolder(LayoutInflater.from(parent.getContext()).inflate(mResId, parent, false),listener);
     }
 
     @Override
