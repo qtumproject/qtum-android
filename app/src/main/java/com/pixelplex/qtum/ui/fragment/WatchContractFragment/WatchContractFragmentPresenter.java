@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.WatchContractFragment;
 
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
 import com.pixelplex.qtum.datastorage.FileStorageManager;
@@ -9,8 +10,12 @@ import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.ui.fragment.TemplateLibraryFragment.TemplateLibraryFragment;
 import com.pixelplex.qtum.utils.DateCalculator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,9 +23,11 @@ import java.util.UUID;
 class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
 
     private WatchContractFragmentView mWatchContractFragmentView;
+    Context mContext;
 
     WatchContractFragmentPresenter(WatchContractFragmentView watchContractFragmentView){
         mWatchContractFragmentView = watchContractFragmentView;
+        mContext = getView().getContext();
     }
 
     @Override
@@ -53,6 +60,54 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
                 for(int i = 0; i < count; ++i) {
                     fm.popBackStack();
                 }
+            }
+        });
+    }
+
+    public void onChooseFromLibraryClick(boolean isToken){
+        BaseFragment templateLibraryFragment = TemplateLibraryFragment.newInstance(getView().getContext(),isToken);
+        getView().openFragmentForResult(getView().getFragment(),templateLibraryFragment);
+    }
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+
+        List<ContractTemplate> contractFullTemplateList = new ArrayList<>();
+        TinyDB tinyDB = new TinyDB(mContext);
+        List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
+        if(getView().isToken()) {
+            for (ContractTemplate contractTemplate : contractTemplateList) {
+                if (contractTemplate.isFullContractTemplate()&&contractTemplate.getContractType().equals("token")) {
+                    contractFullTemplateList.add(contractTemplate);
+                }
+            }
+
+            Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
+                @Override
+                public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
+                    return DateCalculator.equals(contractInfo.getDate(), t1.getDate());
+                }
+            });
+        } else {
+            for (ContractTemplate contractTemplate : contractTemplateList) {
+                if (contractTemplate.isFullContractTemplate()) {
+                    contractFullTemplateList.add(contractTemplate);
+                }
+            }
+
+            Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
+                @Override
+                public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
+                    return DateCalculator.equals(contractInfo.getDate(), t1.getDate());
+                }
+            });
+        }
+        getView().setUpTemplatesList(contractFullTemplateList, new OnTemplateClickListener() {
+            @Override
+            public void onTemplateClick(ContractTemplate contractTemplate) {
+                String abi = FileStorageManager.getInstance().readAbiContract(mContext, contractTemplate.getUuid());
+                getView().setABIInterface(abi);
             }
         });
     }

@@ -94,25 +94,47 @@
                 android:textColor="@color/colorPrimary"/>
         </android.support.design.widget.TextInputLayout>
 
-        <com.pixelplex.qtum.utils.FontTextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:id="@+id/ll_container"
             android:layout_below="@id/til_contract_address"
-            android:layout_marginTop="16dp"
-            android:textSize="16dp"
-            app:typeface="@string/simplonMonoRegular"
-            android:textColor="@color/colorPrimary"
-            android:id="@+id/tv_json_interface"
-            android:text="Json Interface"/>
+            android:layout_marginTop="16dp">
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                app:typeface="@string/simplonMonoRegular"
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/tv_json_interface"
+                android:layout_weight="1"
+                android:text="ABI Interface"/>
+
+            <com.pixelplex.qtum.utils.FontButton
+                android:id="@+id/bt_choose_from_library"
+                android:text="Choose from library >"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textSize="12sp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/background"
+                app:typeface="@string/simplonMonoRegular"
+                android:textAllCaps="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
 
         <com.pixelplex.qtum.utils.FontEditText
-            android:id="@+id/et_json_interface"
+            android:id="@+id/et_abi_interface"
             android:layout_width="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_below="@+id/tv_json_interface"
+            android:layout_below="@+id/ll_container"
             app:editTextTypeface="@string/simplonMonoMedium"
             android:layout_marginTop="8dp"
             android:layout_height="128dp"
@@ -123,8 +145,20 @@
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"/>
 
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rv_templates"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/et_abi_interface"
+            android:layoutDirection="ltr">
+
+        </android.support.v7.widget.RecyclerView>
+
         <LinearLayout
-            android:layout_below="@+id/et_json_interface"
+            android:layout_below="@+id/et_abi_interface"
             android:id="@+id/buttons"
             android:layout_alignParentBottom="true"
             android:gravity="bottom"

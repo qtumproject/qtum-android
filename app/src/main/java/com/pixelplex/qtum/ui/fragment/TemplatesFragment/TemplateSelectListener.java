@@ -1,6 +1,8 @@
 package com.pixelplex.qtum.ui.fragment.TemplatesFragment;
 
 
-interface TemplateSelectListener {
-    void onSelectContract(String uiid);
+import com.pixelplex.qtum.model.ContractTemplate;
+
+public interface TemplateSelectListener {
+    void onSelectContract(ContractTemplate contractTemplate);
 }
