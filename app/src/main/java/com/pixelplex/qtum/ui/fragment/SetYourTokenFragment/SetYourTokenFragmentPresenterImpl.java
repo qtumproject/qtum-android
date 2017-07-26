@@ -37,8 +37,9 @@ public class SetYourTokenFragmentPresenterImpl extends BaseFragmentPresenterImpl
        getView().onContractConstructorPrepared(contractMethod.inputParams);
     }
 
-    public void confirm(List<ContractMethodParameter> list, String uiid){
-        BaseFragment fragment = ContractConfirmFragment.newInstance(getView().getContext(), list, uiid);
+    public void confirm(List<ContractMethodParameter> list, String uiid,String name){
+        BaseFragment fragment = ContractConfirmFragment.newInstance(getView().getContext(), list, uiid, name);
+
         getView().openFragment(fragment);
     }
 

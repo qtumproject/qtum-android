@@ -25,12 +25,15 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
 
     protected static final String paramsKey = "params";
     private static final String CONTRACT_TEMPLATE_UIID = "uiid";
+    private static final String CONTRACT_NAME = "name";
 
-    public static BaseFragment newInstance(Context context, List<ContractMethodParameter> params, String uiid) {
+
+    public static BaseFragment newInstance(Context context, List<ContractMethodParameter> params, String uiid,String name) {
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, ContractConfirmFragment.class);
         args.putSerializable(paramsKey,(ArrayList)params);
         args.putString(CONTRACT_TEMPLATE_UIID, uiid);
+        args.putString(CONTRACT_NAME, name);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,6 +63,11 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
     @Override
     protected BaseFragmentPresenterImpl getPresenter() {
         return presenter;
+    }
+
+    @Override
+    public String getContractName() {
+        return getArguments().getString(CONTRACT_NAME);
     }
 
     @Override

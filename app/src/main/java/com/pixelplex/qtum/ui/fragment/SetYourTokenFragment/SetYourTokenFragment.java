@@ -7,10 +7,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.WindowManager;
 import android.widget.Button;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+import com.pixelplex.qtum.datastorage.TinyDB;
+import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+
+import com.pixelplex.qtum.utils.FontEditText;
+
+
+
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -37,7 +43,11 @@ public abstract class SetYourTokenFragment extends BaseFragment implements SetYo
     protected
     RecyclerView constructorList;
 
-    @OnClick(R.id.ibt_back)
+
+    @BindView(R.id.tv_template_name)
+    FontEditText mTextViewTemplateName;
+
+    @OnClick({R.id.ibt_back})
     public void onBackClick() {
         getActivity().onBackPressed();
     }
@@ -48,8 +58,9 @@ public abstract class SetYourTokenFragment extends BaseFragment implements SetYo
     @OnClick(R.id.confirm)
     public void onConfirmClick(){
         if(adapter != null) {
-           if(adapter.validateMethods()) {
-               presenter.confirm(adapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_UIID));
+            String name = mTextViewTemplateName.getText().toString();
+           if(adapter.validateMethods() && !name.isEmpty()) {
+               presenter.confirm(adapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_UIID), name);
            }
         }
     }
@@ -76,6 +87,18 @@ public abstract class SetYourTokenFragment extends BaseFragment implements SetYo
         constructorList.setLayoutManager(new LinearLayoutManager(getContext()));
         templateUiid = getArguments().getString(CONTRACT_TEMPLATE_UIID);
         presenter.getConstructorByUiid(templateUiid);
+
+        String templateName = "";
+        TinyDB tinyDB = new TinyDB(getContext());
+        List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
+        for(ContractTemplate contractTemplate : contractTemplateList){
+            if(contractTemplate.getUuid().equals(templateUiid)) {
+                templateName = contractTemplate.getName();
+                break;
+            }
+        }
+
+        mTextViewTemplateName.setText(templateName);
     }
 
     @Override

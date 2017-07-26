@@ -10,4 +10,6 @@ public interface ContractConfirmView extends BaseFragmentView {
 
     QtumApplication getApplication();
 
+    String getContractName();
+
 }

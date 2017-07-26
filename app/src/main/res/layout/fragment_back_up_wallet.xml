@@ -19,6 +19,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            app:contentInsetStart="0dp"
             android:background="@color/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -44,7 +45,6 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
                     android:gravity="center"
                     android:text="@string/copy_brain_code"
                     android:textColor="@color/background"
