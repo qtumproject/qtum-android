@@ -176,11 +176,12 @@
     <string name="token">Token</string>
     <string name="smart_contract_parameters">Smart Contract Parameters</string>
 
-    <string name="switch_theme">Swith Application Theme</string>
+    <string name="switch_theme">Switch Application Theme</string>
     <string name="confirmation">Confirmation…</string>
     <string name="qtum_address">QTUM Address</string>
     <string name="not_confirmed_yet">Not Confirmed Yet...</string>
     <string name="confirmed">Confirmed</string>
     <string name="preview">Preview</string>
+    <string name="restore">Restore</string>
 
 </resources>

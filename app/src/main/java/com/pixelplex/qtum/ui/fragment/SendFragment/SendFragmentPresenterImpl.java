@@ -333,69 +333,6 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         }
     }
 
-    @Override
-    public void send(String[] sendInfo, String pin) {
-        if(mNetworkConnectedFlag) {
-        if(pin.equals(QtumSharedPreference.getInstance().getWalletPassword(getView().getContext()))){
-
-            final String address = sendInfo[0];
-            final String amount = sendInfo[1];
-            final String currency = sendInfo[2];
-
-            getView().setProgressDialog();
-            if (currency.equals("Qtum " + mContext.getString(R.string.default_currency))) {
-                getInteractor().sendTx(address, amount, new SendFragmentInteractorImpl.SendTxCallBack() {
-                    @Override
-                    public void onSuccess() {
-                        getView().setAlertDialog(mContext.getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        getView().dismissProgressDialog();
-                        getView().setAlertDialog(mContext.getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
-                    }
-                });
-            } else {
-                for (final Contract contract : mTokenList) {
-                    if (contract.getContractName().equals(currency)) {
-                        ContractBuilder contractBuilder = new ContractBuilder();
-                        List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
-                        ContractMethodParameter contractMethodParameterAddress = new ContractMethodParameter("_to", "address", address);
-                        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", amount);
-                        contractMethodParameterList.add(contractMethodParameterAddress);
-                        contractMethodParameterList.add(contractMethodParameterAmount);
-                        contractBuilder.createAbiMethodParams("transfer", contractMethodParameterList).subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Subscriber<String>() {
-                                    @Override
-                                    public void onCompleted() {
-
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-
-                                    @Override
-                                    public void onNext(String s) {
-                                        createTx(s, contract.getContractAddress());
-                                    }
-                                });
-                        return;
-                    }
-                }
-            }
-        } else {
-            getView().setAlertDialog(mContext.getString(R.string.error), getView().getContext().getString(R.string.incorrect_pin), "Ok", BaseFragment.PopUpType.error);
-        }
-
-        } else {
-            getView().setAlertDialog(mContext.getString(R.string.no_internet_connection),mContext.getString(R.string.please_check_your_network_settings),"Ok", BaseFragment.PopUpType.error);
-        }
-    }
-
     private void createTx(final String abiParams, final String contractAddress) {
         getInteractor().getUnspentOutputs(new SendFragmentInteractorImpl.GetUnspentListCallBack() {
             @Override

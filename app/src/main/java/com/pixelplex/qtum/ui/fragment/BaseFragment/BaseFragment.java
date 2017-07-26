@@ -3,11 +3,14 @@ package com.pixelplex.qtum.ui.fragment.BaseFragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -56,6 +59,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void setProgressDialog() {
+        hideKeyBoard();
         mProcessingDialog = Factory.getProcessingDialog(getContext());
         mProcessingDialog.show(getFragmentManager(), mProcessingDialog.getClass().getCanonicalName());
     }
@@ -90,11 +94,18 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     public void setAlertDialog(String title, String message, String buttonText, PopUpType type, final AlertDialogCallBack callBack) {
         try {
             dismissProgressDialog();
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_popup_fragment, null);
-            ((FontTextView) view.findViewById(R.id.tv_pop_up_title)).setText(title);
-            ((FontTextView) view.findViewById(R.id.tv_pop_up_message)).setText(message);
+
+            View view = LayoutInflater.from(getContext()).inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? R.layout.dialog_popup_fragment : R.layout.dialog_popup_fragment_light, null);
+
+            FontTextView tvTitle = ((FontTextView) view.findViewById(R.id.tv_pop_up_title));
+            tvTitle.setText(title);
+            FontTextView tvMessage = ((FontTextView) view.findViewById(R.id.tv_pop_up_message));
+            tvMessage.setText(message);
             FontButton popUpButton = ((FontButton) view.findViewById(R.id.bt_pop_up));
+
+            ImageView icon = ((ImageView) view.findViewById(R.id.iv_icon));
             popUpButton.setText(buttonText);
+
             popUpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -105,21 +116,38 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
                 }
             });
 
-            switch (type.name()) {
-                case "error":
-                    ((ImageView) view.findViewById(R.id.iv_icon)).setImageResource(R.drawable.ic_error);
-                    view.findViewById(R.id.red_line).setVisibility(View.VISIBLE);
-                    break;
-                case "confirm":
-                    ((ImageView) view.findViewById(R.id.iv_icon)).setImageResource(R.drawable.ic_confirm);
-                    view.findViewById(R.id.red_line).setVisibility(View.GONE);
-                    break;
+            if(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)) {
+                switch (type.name()) {
+                    case "error":
+                        icon.setImageResource(R.drawable.ic_error);
+                        view.findViewById(R.id.red_line).setVisibility(View.VISIBLE);
+                        break;
+                    case "confirm":
+                        icon.setImageResource(R.drawable.ic_confirm);
+                        view.findViewById(R.id.red_line).setVisibility(View.GONE);
+                        break;
+                }
+            } else {
+                switch (type.name()) {
+                    case "error":
+                        tvTitle.setTextColor(ContextCompat.getColor(getContext(), R.color.title_red_color));
+                        icon.setImageResource(R.drawable.ic_popup_error_light);
+                        break;
+                    case "confirm":
+                        icon.setImageResource(R.drawable.ic_confirmed_light);
+                        break;
+                }
             }
 
             mAlertDialog = new AlertDialog
                     .Builder(getContext())
                     .setView(view)
                     .create();
+
+            if(mAlertDialog.getWindow() != null) {
+                mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            }
+
             mAlertDialog.setCanceledOnTouchOutside(false);
             mAlertDialog.show();
         }catch (Exception e){

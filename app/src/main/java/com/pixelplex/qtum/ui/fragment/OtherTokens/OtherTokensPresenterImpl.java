@@ -6,6 +6,7 @@ import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.TokenFragment.TokenFragment;
 
@@ -32,7 +33,7 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
     }
 
     public void openTokenDetails(Contract token) {
-        TokenFragment tokenFragment = TokenFragment.newInstance(token);
+        BaseFragment tokenFragment = TokenFragment.newInstance(getView().getContext(), token);
         getView().openFragment(tokenFragment);
     }
 

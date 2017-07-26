@@ -15,6 +15,7 @@
         android:textColor="@color/black"
         android:layout_below="@+id/tv_pop_up_title"
         android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:id="@+id/tv_pop_up_message"
         tools:layout_constraintRight_creator="1"
         app:layout_constraintRight_toRightOf="parent"

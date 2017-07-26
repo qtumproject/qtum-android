@@ -157,13 +157,6 @@
                         <include layout="@layout/lyt_initial_supply_decimal_units"/>
                     </FrameLayout>
 
-                    <!--<FrameLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="50dp"-->
-                        <!--android:translationZ=".01dp">-->
-                        <!--<include layout="@layout/lyt_sender_address"/>-->
-                    <!--</FrameLayout>-->
-
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"

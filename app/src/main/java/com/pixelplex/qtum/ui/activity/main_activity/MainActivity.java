@@ -256,6 +256,20 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     @Override
     public void initializeViews() {
+
+        initBottomNavViewWithFont((ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)? R.string.simplonMonoRegular : R.string.proximaNovaRegular));
+
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return getPresenter().onNavigationItemSelected(item);
+            }
+        });
+
+        getPresenter().processIntent(getIntent());
+    }
+
+    private void initBottomNavViewWithFont(int fontId){
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) mBottomNavigationView.getChildAt(0);
         try {
             Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
@@ -266,8 +280,8 @@ public class MainActivity extends BaseActivity implements MainActivityView{
                 BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
                 TextView mSmallLabel = (TextView) item.findViewById(android.support.design.R.id.smallLabel);
                 TextView mLargeLabel = (TextView) item.findViewById(android.support.design.R.id.largeLabel);
-                mSmallLabel.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
-                mLargeLabel.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
+                mSmallLabel.setTypeface(FontManager.getInstance().getFont(getString(fontId)));
+                mLargeLabel.setTypeface(FontManager.getInstance().getFont(getString(fontId)));
                 item.setShiftingMode(false);
                 item.setChecked(item.getItemData().isChecked());
             }
@@ -276,15 +290,6 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         } catch (IllegalAccessException e) {
             Log.e("BNVHelper", "Unable to change value of shift mode", e);
         }
-
-        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return getPresenter().onNavigationItemSelected(item);
-            }
-        });
-
-        getPresenter().processIntent(getIntent());
     }
 
     @Override
@@ -396,6 +401,8 @@ public class MainActivity extends BaseActivity implements MainActivityView{
             recolorStatusBar(R.color.title_color_light);
             resetNavBarIconsWithTheme(lightThemeIcons);
         }
+
+        initBottomNavViewWithFont((ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)? R.string.simplonMonoRegular : R.string.proximaNovaRegular));
 
     }
 

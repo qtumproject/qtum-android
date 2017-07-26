@@ -22,8 +22,6 @@ public class SendFragmentLight extends SendFragment {
     @BindView(R.id.not_confirmed_balance_view) View notConfirmedBalancePlaceholder;
     @BindView(R.id.tv_placeholder_balance_value) TextView placeHolderBalance;
     @BindView(R.id.tv_placeholder_not_confirmed_balance_value) TextView placeHolderBalanceNotConfirmed;
-    @BindView(R.id.til_pin) TextInputLayout tilPin;
-    @BindView(R.id.et_pin) TextInputEditText etPin;
 
     @OnClick(R.id.bt_send)
     public void onSendClick(){
@@ -35,7 +33,7 @@ public class SendFragmentLight extends SendFragment {
         } else {
             sendInfo[2] = "Qtum "+getString(R.string.default_currency);
         }
-        getPresenter().send(sendInfo,etPin.getText().toString());
+        getPresenter().send(sendInfo);
     }
 
     @Override
@@ -53,11 +51,8 @@ public class SendFragmentLight extends SendFragment {
 
         mTextInputEditTextAddress.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaSemibold)));
         mTextInputEditTextAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaSemibold)));
-        etPin.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaSemibold)));
-
         tilAdress.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaRegular)));
         tilAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaRegular)));
-        tilPin.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaRegular)));
     }
 
     @Override

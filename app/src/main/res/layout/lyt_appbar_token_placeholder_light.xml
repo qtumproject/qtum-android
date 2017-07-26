@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/title_color_light"
+    android:layout_width="match_parent"
+    android:weightSum="2"
+    android:gravity="center"
+    android:padding="8dp"
+    android:orientation="vertical"
+    android:layout_height="56dp">
+
+    <RelativeLayout
+        android:id="@+id/available_balance_view"
+        android:layout_weight="1"
+        android:padding="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:id="@+id/tv_placeholder_balance_title"
+            android:text="@string/available_balance"
+            android:layout_width="wrap_content"
+            app:typefaceAsset="@string/proximaNovaRegular"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_toStartOf="@+id/tv_placeholder_currency_value"
+            android:id="@+id/tv_placeholder_balance_value"
+            app:typefaceAsset="@string/proximaNovaRegular"
+            android:text="0.007"
+            android:layout_marginEnd="4dp"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/tv_placeholder_currency_value"
+            app:typefaceAsset="@string/proximaNovaRegular"
+            android:text="QTUM"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+</LinearLayout>
