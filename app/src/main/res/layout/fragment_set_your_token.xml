@@ -77,6 +77,8 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="false"
             android:id="@+id/ll_token_field"
             android:layout_below="@+id/step">
 
@@ -85,9 +87,10 @@
                 android:layout_height="32dp"
                 app:srcCompat="@drawable/ic_token2"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
-                android:layout_width="wrap_content"
+            <com.pixelplex.qtum.utils.FontEditText
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
                 android:id="@+id/tv_template_name"
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimary"

@@ -6,11 +6,17 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
+
+import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 

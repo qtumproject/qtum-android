@@ -129,7 +129,11 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                 mContext.bindService(mIntent, mServiceConnection, 0);
             }
         } else {
-            mContext.bindService(mIntent, mServiceConnection, 0);
+            if(mUpdateService!=null){
+                mUpdateService.startMonitoring();
+            }else {
+                mContext.bindService(mIntent, mServiceConnection, 0);
+            }
         }
     }
 

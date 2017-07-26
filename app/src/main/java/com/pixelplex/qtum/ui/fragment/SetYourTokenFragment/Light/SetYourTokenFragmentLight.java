@@ -7,9 +7,6 @@ import com.pixelplex.qtum.ui.fragment.SetYourTokenFragment.SetYourTokenFragment;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 25.07.17.
- */
 
 public class SetYourTokenFragmentLight extends SetYourTokenFragment {
 

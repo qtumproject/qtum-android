@@ -97,6 +97,9 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
     @BindView(R.id.tv_token_address)
     FontTextView tokenAddress;
 
+    @BindView(R.id.tv_token_name)
+    FontTextView mTextViewTokenName;
+
     @BindView(R.id.contract_address_value)
     FontTextView contractAddress;
 
@@ -147,8 +150,12 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
     @Override
     public void initializeViews() {
         super.initializeViews();
+        Token token = (Token) getArguments().getSerializable(tokenKey);
+        presenter.setToken(token);
 
-        presenter.setToken((Token) getArguments().getSerializable(tokenKey));
+        if (token != null) {
+            mTextViewTokenName.setText(token.getContractName());
+        }
 
         collapseLinearLayout.requestLayout();
         headerPAdding = convertDpToPixel(16,getContext());
