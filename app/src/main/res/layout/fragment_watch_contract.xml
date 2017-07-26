@@ -108,6 +108,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
+                android:gravity="left"
                 app:typeface="@string/simplonMonoRegular"
                 android:textColor="@color/colorPrimary"
                 android:id="@+id/tv_json_interface"

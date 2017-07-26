@@ -68,6 +68,7 @@
                 app:typefaceAsset="@string/proximaNovaSemibold"
                 android:layout_weight="1"
                 android:layout_gravity="left"
+                android:gravity="left"
                 android:text="Address"/>
 
             <com.pixelplex.qtum.utils.FontTextView

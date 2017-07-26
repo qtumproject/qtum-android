@@ -18,6 +18,19 @@ public class PrefAdapter extends RecyclerView.Adapter<PrefViewHolder> {
 
     protected int resId;
 
+    @Override
+    public int getItemViewType(int position) {
+        if(position < settings.size()-1) {
+            if (settings.get(position).getSectionNumber() == settings.get(position + 1).getSectionNumber()) {
+                return 0; //divider
+            } else {
+                return 1; //sectior
+            }
+        } else {
+            return 1; //section
+        }
+    }
+
     public PrefAdapter(final List<SettingObject> settings, OnSettingClickListener listener, int resId){
         this.settings = settings;
         this.listener = listener;

@@ -63,7 +63,9 @@
             app:typefaceAsset="@string/proximaNovaSemibold"
             android:padding="4dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,6 +82,7 @@
                 android:textColor="@color/footer_text_color"
                 app:typefaceAsset="@string/proximaNovaSemibold"
                 android:layout_weight="1"
+                android:gravity="left"
                 android:layout_gravity="left"
                 android:text="Type"/>
 

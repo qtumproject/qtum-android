@@ -105,6 +105,7 @@
                     android:id="@+id/et_receivers_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="left"
                     android:hint="@string/receiver_s_address"
                     android:inputType="textPersonName"/>
             </android.support.design.widget.TextInputLayout>
@@ -130,6 +131,7 @@
                         android:id="@+id/tv_currency"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:gravity="left"
                         android:layout_weight="1"
                         android:textSize="16sp"
                         app:typefaceAsset="@string/proximaNovaSemibold" />
@@ -161,7 +163,7 @@
                     android:id="@+id/et_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
+                    android:gravity="left"
                     android:hint="@string/amount"
                     android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>

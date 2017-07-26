@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/bottom_nav_bar_color_light"
-            android:gravity="center_vertical"
+            android:gravity="left|center_vertical"
             android:padding="8dp"
             app:typefaceAsset="@string/proximaNovaSemibold"
             android:text="@string/activity"
