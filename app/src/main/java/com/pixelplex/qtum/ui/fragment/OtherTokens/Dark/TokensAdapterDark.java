@@ -24,7 +24,7 @@ public class TokensAdapterDark extends TokensAdapter {
 
     @Override
     public TokenViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TokenViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_token_list_item, parent, false), socketInstace, listener);
+        return new TokenViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_token_list_item, parent, false), socketInstace,parent.getContext(), listener);
     }
 
     @Override
