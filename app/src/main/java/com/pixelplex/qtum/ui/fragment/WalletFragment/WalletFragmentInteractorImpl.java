@@ -15,12 +15,12 @@ import java.util.List;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;
 
 class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
-    private Subscription mSubscriptionHistoryList = null;
-    private Subscription mSubscriptionBalance = null;
+    private SubscriptionList mSubscriptionList = new SubscriptionList();
     static final int UPDATE_STATE = 0;
     static final int LOAD_STATE = 1;
     private final List<String> addresses = KeyStorage.getInstance().getAddresses();
@@ -38,7 +38,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
     @Override
     public void getHistoryList(final int STATE, int limit, int offest, final GetHistoryListCallBack callBack) {
 
-        mSubscriptionHistoryList = QtumService.newInstance()
+        mSubscriptionList.add(QtumService.newInstance()
                 .getHistoryListForSeveralAddresses(addresses, limit, offest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -76,7 +76,7 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                         }
 
                     }
-                });
+                }));
     }
 
     private void calculateChangeInBalance(History history, List<String> addresses){
@@ -149,38 +149,9 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
         return null;
     }
 
-//    @Override
-//    public void newToken(String tokenAddress, final AddToListCallBack addToListCallBack) {
-//        QtumService.newInstance().getContractsParams(tokenAddress)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<TokenParams>() {
-//                    @Override
-//                    public void onCompleted() {
-//                    }
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//                    @Override
-//                    public void onNext(TokenParams contractParams) {
-//                        addToTokenList(contractParams);
-//                        addToListCallBack.onSuccess();
-//                    }
-//                });
-//    }
-//
-//    public void addToTokenList(TokenParams contractParams){
-//        TokenList.getTokenList().addToTokenList(contractParams);
-//    }
-
-
     void unSubscribe(){
-        if(mSubscriptionHistoryList != null){
-            mSubscriptionHistoryList.unsubscribe();
-        }
-        if(mSubscriptionBalance != null){
-            mSubscriptionBalance.unsubscribe();
+        if(mSubscriptionList != null){
+            mSubscriptionList.clear();
         }
     }
 
@@ -188,10 +159,6 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
         void onSuccess();
         void onError(Throwable e);
     }
-
-//    interface AddToListCallBack{
-//        void onSuccess();
-//    }
 
     @Override
     public String getAddress() {
