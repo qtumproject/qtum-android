@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.OtherTokens;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -9,6 +10,7 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
+import com.pixelplex.qtum.utils.ContractManagementHelper;
 import com.pixelplex.qtum.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,18 +26,22 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
     @BindView(R.id.token_balance)
     FontTextView tokenBalanceView;
 
+    @BindView(R.id.token_symbol)
+    FontTextView mTextViewSymbol;
+
     @BindView(R.id.spinner)
     ProgressBar spinner;
 
     private Token token;
+    private Context mContext;
 
     private UpdateSocketInstance socketInstance;
 
-    public TokenViewHolder(View itemView, UpdateSocketInstance socketInstance, final OnTokenClickListener listener) {
+    public TokenViewHolder(View itemView, UpdateSocketInstance socketInstance, Context context, final OnTokenClickListener listener) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.socketInstance = socketInstance;
-
+        mContext = context;
         rootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +58,14 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
 
         this.token = token;
 
+        ContractManagementHelper.getPropertyValue("symbol", token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
+            @Override
+            public void onSuccess(String value) {
+                mTextViewSymbol.setVisibility(View.VISIBLE);
+                mTextViewSymbol.setText(value);
+            }
+        });
+
         tokenName.setText(token.getContractName());
         tokenBalanceView.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
@@ -67,7 +81,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
                 @Override
                 public void run() {
                     spinner.setVisibility(View.GONE);
-                    tokenBalanceView.setText(String.format("%f QTUM",tokenBalance.getTotalBalance()));
+                    tokenBalanceView.setText(String.valueOf(tokenBalance.getTotalBalance()));
                     tokenBalanceView.setVisibility(View.VISIBLE);
                 }
             });
