@@ -47,7 +47,7 @@
             app:editTextTypeface="@string/proximaNovaRegular"
             android:layout_height="128dp"
             android:background="@drawable/background_et_import_wallet_light"
-            android:gravity="top"
+            android:gravity="left|top"
             android:hint="@string/your_brain_code"
             android:textSize="16sp"
             android:padding="16dp"

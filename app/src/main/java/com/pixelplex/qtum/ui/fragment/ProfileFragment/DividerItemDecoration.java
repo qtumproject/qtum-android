@@ -44,7 +44,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect,view,parent,state);
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount-1; i++) {
-            if (settings.get(i).getSectionNumber() != settings.get(i + 1).getSectionNumber()) {
+            int pos = parent.getChildAdapterPosition(parent.getChildAt(i));
+            if (settings.get(pos).getSectionNumber() != settings.get(pos + 1).getSectionNumber()) {
                 outRect.top = sectionDivider.getIntrinsicHeight();
             } else {
                 outRect.top = divider.getIntrinsicHeight();
@@ -62,9 +63,10 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             View child = parent.getChildAt(i);
 
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+            int pos = parent.getChildAdapterPosition(parent.getChildAt(i));
 
             try {
-                if (settings.get(i).getSectionNumber() == settings.get(i + 1).getSectionNumber()) {
+                if (settings.get(pos).getSectionNumber() == settings.get(pos + 1).getSectionNumber()) {
                     int top = child.getBottom() + params.bottomMargin;
                     int bottom = top + divider.getIntrinsicHeight();
 
