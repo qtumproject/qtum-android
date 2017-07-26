@@ -11,7 +11,7 @@ public class TemplateLibraryFragmentLight extends TemplateLibraryFragment{
 
     @Override
     protected int getLayout() {
-        return R.layout.fragment_template_library;
+        return R.layout.fragment_template_library_light;
     }
 
     @Override

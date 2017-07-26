@@ -37,6 +37,7 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
     @BindView(R.id.tv_toolbar_watch)
     FontTextView mTextViewToolbar;
     @BindView(R.id.rv_templates)
+    protected
     RecyclerView mRecyclerViewTemplates;
 
     @BindView(R.id.bt_choose_from_library)
@@ -114,10 +115,5 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
     @Override
     public boolean isToken() {
         return getArguments().getBoolean(IS_TOKEN);
-    }
-
-    @Override
-    public void setUpTemplatesList(List<ContractTemplate> contractTemplateList, OnTemplateClickListener listener) {
-        mRecyclerViewTemplates.setAdapter(new TemplatesAdapter(contractTemplateList, listener));
     }
 }

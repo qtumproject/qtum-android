@@ -33,6 +33,7 @@
     <string name="enter_name">Enter Name</string>
     <string name="profile">Profile</string>
     <string name="wallet">Wallet</string>
+    <string name="free">Free</string>
     <string name="news">News</string>
     <string name="create_pin">Create PIN</string>
     <string name="enter_pin">Enter PIN</string>

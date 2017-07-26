@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="4dp"
+    android:paddingRight="4dp">
+    <com.pixelplex.qtum.utils.FontButton
+        android:id="@+id/bt_template"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_sea_corner_background_light"
+        android:gravity="center"
+        android:padding="8dp"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:typeface="@string/proximaNovaLight">
+
+    </com.pixelplex.qtum.utils.FontButton>
+</FrameLayout>

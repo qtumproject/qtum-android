@@ -122,10 +122,9 @@
                 <ImageView
                     android:id="@+id/iv_qr_code"
                     android:layout_marginTop="8dp"
-                    android:layout_alignParentTop="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/tv_single_string"
+                    android:layout_centerInParent="true"
                     android:layout_centerHorizontal="true" />
 
                 <TextView
