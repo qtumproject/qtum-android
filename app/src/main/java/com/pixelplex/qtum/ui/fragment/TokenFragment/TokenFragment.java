@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ViewSourceCodeDialogFragment;
@@ -35,18 +36,17 @@ import butterknife.OnClick;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 
-public class TokenFragment extends BaseFragment implements TokenFragmentView {
+public abstract class TokenFragment extends BaseFragment implements TokenFragmentView {
 
-    private final int LAYOUT = R.layout.lyt_token_fragment;
     private static final String tokenKey = "tokenInfo";
 
     public static final String totalSupply = "totalSupply";
     public static final String decimals = "decimals";
     public static final String symbol = "symbol";
 
-    public static TokenFragment newInstance(Contract token) {
+    public static BaseFragment newInstance(Context context, Contract token) {
         Bundle args = new Bundle();
-        TokenFragment fragment = new TokenFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, TokenFragment.class);
         args.putSerializable(tokenKey,token);
         fragment.setArguments(args);
         return fragment;
@@ -61,25 +61,29 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
 
     //HEADER
     @BindView(R.id.ll_balance)
+    protected
     LinearLayout mLinearLayoutBalance;
     @BindView(R.id.tv_balance)
+    protected
     FontTextView mTextViewBalance;
     @BindView(R.id.tv_currency)
+    protected
     FontTextView mTextViewCurrency;
     @BindView(R.id.available_balance_title)
+    protected
     FontTextView balanceTitle;
 
     @BindView(R.id.tv_unconfirmed_balance)
+    protected
     FontTextView uncomfirmedBalanceValue;
     @BindView(R.id.unconfirmed_balance_title)
+    protected
     FontTextView uncomfirmedBalanceTitle;
     //HEADER
 
     @BindView(R.id.balance_view)
+    protected
     FrameLayout balanceView;
-
-    @BindView(R.id.fade_divider)
-    View fadeDivider;
 
     @BindView(R.id.fade_divider_root)
     RelativeLayout fadeDividerRoot;
@@ -87,11 +91,14 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh)
+    protected
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.app_bar)
+    protected
     AppBarLayout mAppBarLayout;
 
     @BindView(R.id.collapse_layout)
+    protected
     StackCollapseLinearLayout collapseLinearLayout;
 
     @BindView(R.id.tv_token_address)
@@ -104,9 +111,11 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
     FontTextView contractAddress;
 
     @BindView(R.id.initial_supply_value)
+    protected
     FontTextView totalSupplyValue;
 
     @BindView(R.id.decimal_units_value)
+    protected
     FontTextView decimalsValue;
 //
 //    @BindView(R.id.sender_address_value)
@@ -138,18 +147,17 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         return presenter;
     }
 
-    @Override
-    protected int getLayout() {
-        return LAYOUT;
-    }
-
-    private float headerPAdding = 0;
-    private float percents = 1;
-    private float prevPercents = 1;
+    protected float headerPAdding = 0;
+    protected float percents = 1;
+    protected float prevPercents = 1;
 
     @Override
     public void initializeViews() {
         super.initializeViews();
+
+        uncomfirmedBalanceValue.setVisibility(View.GONE);
+        uncomfirmedBalanceTitle.setVisibility(View.GONE);
+
         Token token = (Token) getArguments().getSerializable(tokenKey);
         presenter.setToken(token);
 
@@ -160,109 +168,20 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         collapseLinearLayout.requestLayout();
         headerPAdding = convertDpToPixel(16,getContext());
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(newState == SCROLL_STATE_IDLE){
-                    autodetectAppbar();
-                }
-            }
-        });
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        uncomfirmedBalanceValue.setVisibility(View.GONE);
-        uncomfirmedBalanceTitle.setVisibility(View.GONE);
-
-        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(),R.color.colorAccent));
-//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
-//            public void onRefresh() {
-//                presenter.onRefresh();
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if(newState == SCROLL_STATE_IDLE){
+//                    autodetectAppbar();
+//                }
 //            }
 //        });
 
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (!mSwipeRefreshLayout.isActivated()) {
-                    if (verticalOffset == 0) {
-                        mSwipeRefreshLayout.setEnabled(true);
-                    } else {
-                        mSwipeRefreshLayout.setEnabled(false);
-                    }
-                }
-
-                percents = (((getTotalRange() - Math.abs(verticalOffset))*1.0f)/getTotalRange());
-
-                balanceView.setAlpha((percents>0.5f)? percents : 1 - percents);
-
-                if(percents == 0){
-                    doDividerExpand();
-                } else {
-                    doDividerCollapse();
-                }
-
-                final float textPercent = (percents >= .5f)? percents : .5f;
-                final float textPercent3f = (percents >= .3f)? percents : .3f;
-
-                if(uncomfirmedBalanceTitle.getVisibility() == View.VISIBLE) {
-                    animateText(percents, mLinearLayoutBalance, .5f);
-                    mLinearLayoutBalance.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (mLinearLayoutBalance.getWidth() * textPercent) / 2) - mLinearLayoutBalance.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
-                    mLinearLayoutBalance.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - mLinearLayoutBalance.getHeight() * percents - mLinearLayoutBalance.getHeight() * (1 - percents));
-
-                    animateText(percents, balanceTitle, .7f);
-                    balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
-                    balanceTitle.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - balanceTitle.getHeight() * (1 - percents) );
-
-                    animateText(percents, uncomfirmedBalanceValue, .5f);
-                    uncomfirmedBalanceValue.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (uncomfirmedBalanceValue.getWidth() * textPercent) / 2) - uncomfirmedBalanceValue.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
-
-                    animateText(percents, uncomfirmedBalanceTitle, .7f);
-                    uncomfirmedBalanceTitle.setY(balanceView.getHeight() / 2 + uncomfirmedBalanceValue.getHeight() * percents - (uncomfirmedBalanceTitle.getHeight() * percents * (1 - percents)));
-                    uncomfirmedBalanceTitle.setX(balanceView.getWidth() / 2 * percents - (uncomfirmedBalanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
-                } else {
-                    animateText(percents, balanceTitle, .7f);
-                    balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
-                    balanceTitle.setY(balanceView.getHeight() / 2 + balanceTitle.getHeight() / 2 * percents - balanceTitle.getHeight() / 2 * (1-percents));
-
-                    animateText(percents, mLinearLayoutBalance, .5f);
-                    mLinearLayoutBalance.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (mLinearLayoutBalance.getWidth() * textPercent) / 2) - mLinearLayoutBalance.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
-                    mLinearLayoutBalance.setY(balanceView.getHeight() / 2 - mLinearLayoutBalance.getHeight() * percents - mLinearLayoutBalance.getHeight() / 2 * (1-percents));
-                }
-                collapseLinearLayout.collapseFromPercents(percents);
-                prevPercents = percents;
-            }
-
-        });
-        doDividerCollapse();
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private boolean expanded = false;
-
-    private void doDividerExpand() {
-        if(!expanded) {
-            expanded = true;
-            fadeDivider.clearAnimation();
-            ResizeWidthAnimation anim = new ResizeWidthAnimation(fadeDivider, getResources().getDisplayMetrics().widthPixels);
-            anim.setDuration(300);
-            anim.setFillEnabled(true);
-            anim.setFillAfter(true);
-            fadeDivider.startAnimation(anim);
-        }
-    }
-
-    private void doDividerCollapse() {
-        if(expanded) {
-            fadeDivider.clearAnimation();
-            fadeDivider.setVisibility(View.INVISIBLE);
-            ViewGroup.LayoutParams lp = fadeDivider.getLayoutParams();
-            lp.width = 0;
-            fadeDivider.setLayoutParams(lp);
-            expanded = false;
-        }
-    }
+    protected boolean expanded = false;
 
     private void autodetectAppbar(){
         if(percents >=.5f){
@@ -278,11 +197,11 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         return dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
-    private int getTotalRange() {
+    protected int getTotalRange() {
         return mAppBarLayout.getTotalScrollRange();
     }
 
-    private void animateText(float percents, View view, float fringe) {
+    protected void animateText(float percents, View view, float fringe) {
         if(percents > fringe) {
             view.setScaleX(percents);
             view.setScaleY(percents);
@@ -292,30 +211,11 @@ public class TokenFragment extends BaseFragment implements TokenFragmentView {
         }
     }
 
-    public void setBalance(float balance) {
-        mTextViewBalance.setText(String.valueOf(balance));
-    }
-
     @Override
     public void setTokenAddress(String address) {
         if(!TextUtils.isEmpty(address)) {
             tokenAddress.setText(address);
             contractAddress.setText(address);
-        }
-    }
-
-    @Override
-    public void onContractPropertyUpdated(String propName, String propValue) {
-        switch (propName){
-            case totalSupply:
-                totalSupplyValue.setText(propValue);
-                break;
-            case decimals:
-                decimalsValue.setText(propValue);
-                break;
-            case symbol:
-                mTextViewCurrency.setText(" " + propValue);
-                break;
         }
     }
 

@@ -18,6 +18,7 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.ui.fragment.TokenFragment.TokenFragment;
 import com.pixelplex.qtum.utils.FontTextView;
+import com.pixelplex.qtum.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,7 +78,7 @@ public class ShareDialogFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.lyt_view_share_abi_address, container, false);
+        View view = inflater.inflate((ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? R.layout.lyt_view_share_abi_address : R.layout.lyt_view_share_abi_address_light), container, false);
         ButterKnife.bind(this, view);
         address.setText(getArguments().getString(ADDR));
         abi.setText(getArguments().getString(ABI));

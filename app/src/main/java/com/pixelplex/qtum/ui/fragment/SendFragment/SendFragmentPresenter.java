@@ -7,6 +7,5 @@ public interface SendFragmentPresenter {
     void onResponse(String publicAddress, double amount, String tokenAddress);
     void onResponseError();
     void onCurrencyClick();
-    public void send(String[] sendInfo);
-    public void send(String[] sendinfo, String pin);
+    void send(String[] sendInfo);
 }

@@ -29,6 +29,8 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
     FontButton mButtonCopy;
     @BindView(R.id.bt_continue)
     FontButton mButtonContinue;
+    @BindView(R.id.bt_copy_brain_code)
+    FontButton copyPassphare;
     @BindView(R.id.tv_toolbar_title)
     FontTextView mTextViewToolbarTitle;
     @BindView(R.id.cl_back_up_wallet)
@@ -37,15 +39,18 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
     FontTextView mTextViewBrainCode;
     @BindView(R.id.tv_copy_brain_code_to_use)
     FontTextView mTextViewCopyBrainCodeToUse;
+    @BindView(R.id.tv_you_can_skip)
+    FontTextView youCanSkip;
 
     @OnClick(R.id.bt_share)
     public void onShareClick(){
         getPresenter().chooseShareMethod();
     }
 
-    @OnClick({R.id.bt_copy,R.id.bt_continue, R.id.ibt_back})
+    @OnClick({R.id.bt_copy,R.id.bt_continue, R.id.ibt_back, R.id.bt_copy_brain_code})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.bt_copy_brain_code:
             case R.id.bt_copy:
                 getPresenter().onCopyBrainCodeClick();
                 break;
@@ -87,13 +92,17 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
         if(getArguments().getBoolean(IS_WALLET_CREATING)){
             mTextViewToolbarTitle.setText(R.string.copy_brain_code);
             mTextViewCopyBrainCodeToUse.setVisibility(View.GONE);
+            youCanSkip.setVisibility(View.VISIBLE);
             mButtonContinue.setVisibility(View.VISIBLE);
             mButtonCopy.setVisibility(View.VISIBLE);
+            copyPassphare.setVisibility(View.GONE);
         }else {
             mTextViewToolbarTitle.setText(R.string.wallet_back_up);
             mTextViewCopyBrainCodeToUse.setVisibility(View.VISIBLE);
+            youCanSkip.setVisibility(View.GONE);
             mButtonContinue.setVisibility(View.GONE);
             mButtonCopy.setVisibility(View.GONE);
+            copyPassphare.setVisibility(View.VISIBLE);
         }
     }
 

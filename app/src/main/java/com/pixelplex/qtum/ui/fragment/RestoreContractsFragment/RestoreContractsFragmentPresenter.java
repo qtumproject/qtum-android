@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
@@ -32,6 +34,7 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.FileUtils;
 import com.pixelplex.qtum.utils.FontTextView;
+import com.pixelplex.qtum.utils.ThemeUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -498,7 +501,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
     }
 
     private void showRestoreDialogFragment(String backupDate, String backupAppVersion, String templatesSum, String contractsSum, String tokensSum, final RestoreDialogCallBack callBack){
-        View view = LayoutInflater.from(getView().getMainActivity()).inflate(R.layout.dialog_restore_contracts_fragment,null);
+        View view = LayoutInflater.from(getView().getMainActivity()).inflate(ThemeUtils.getCurrentTheme(getView().getContext()).equals(ThemeUtils.THEME_DARK)? R.layout.dialog_restore_contracts_fragment : R.layout.dialog_restore_contracts_fragment_light,null);
         ((FontTextView)view.findViewById(R.id.tv_back_up_date)).setText(backupDate);
         ((FontTextView)view.findViewById(R.id.tv_back_up_app_version)).setText(backupAppVersion);
         ((FontTextView)view.findViewById(R.id.tv_templates)).setText(templatesSum);
@@ -520,6 +523,11 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                 .Builder(mContext)
                 .setView(view)
                 .create();
+
+        if(mRestoreDialog.getWindow() != null) {
+            mRestoreDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
         mRestoreDialog.setCanceledOnTouchOutside(false);
         mRestoreDialog.show();
     }

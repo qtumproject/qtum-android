@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:background="@drawable/background_progress_bar"
+    android:layout_height="match_parent">
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:layout_margin="16dp"
+        android:text="Restore Contracts"
+        android:textColor="@color/grey"
+        android:textSize="18sp"
+        app:editTextTypeface="@string/proximaNovaSemibold"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:orientation="vertical">
+
+        <com.pixelplex.qtum.utils.FontTextView
+            app:typefaceAsset="@string/proximaNovaSemibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="01 January 2017"
+            android:textColor="@color/grey"
+            android:id="@+id/tv_back_up_date"/>
+
+        <com.pixelplex.qtum.utils.FontTextView
+            app:typefaceAsset="@string/proximaNovaRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="Back-up Date"
+            android:textColor="@color/grey70"/>
+
+    </LinearLayout>
+
+   <LinearLayout
+       android:orientation="horizontal"
+       android:weightSum="2"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+       <LinearLayout
+           android:padding="8dp"
+           android:gravity="center"
+           android:layout_weight="1"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
+
+           <com.pixelplex.qtum.utils.FontTextView
+               app:typefaceAsset="@string/proximaNovaSemibold"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="16sp"
+               android:text="1.0"
+               android:textColor="@color/grey"
+               android:id="@+id/tv_back_up_app_version"/>
+
+           <com.pixelplex.qtum.utils.FontTextView
+               app:typefaceAsset="@string/proximaNovaRegular"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="12sp"
+               android:gravity="center"
+               android:text="Back-up App\nVersion"
+               android:textColor="@color/grey70"/>
+
+       </LinearLayout>
+
+       <LinearLayout
+           android:padding="8dp"
+           android:gravity="center"
+           android:layout_weight="1"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
+
+           <com.pixelplex.qtum.utils.FontTextView
+               app:typefaceAsset="@string/proximaNovaSemibold"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="16sp"
+               android:text="0"
+               android:textColor="@color/grey"
+               android:id="@+id/tv_contracts"/>
+
+           <com.pixelplex.qtum.utils.FontTextView
+               app:typefaceAsset="@string/proximaNovaRegular"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="12sp"
+               android:text="Contracts"
+               android:textColor="@color/grey70"/>
+
+       </LinearLayout>
+
+   </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:padding="8dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.pixelplex.qtum.utils.FontTextView
+            app:typefaceAsset="@string/proximaNovaSemibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="0"
+            android:textColor="@color/grey"
+            android:id="@+id/tv_tokens"/>
+
+        <com.pixelplex.qtum.utils.FontTextView
+            app:typefaceAsset="@string/proximaNovaRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="Tokens"
+            android:textColor="@color/grey70"/>
+
+    </LinearLayout>
+
+
+        <LinearLayout
+            android:padding="8dp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.pixelplex.qtum.utils.FontTextView
+                app:typefaceAsset="@string/proximaNovaSemibold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="0"
+                android:textColor="@color/grey"
+                android:id="@+id/tv_templates"/>
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/fontTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Templates"
+            android:textColor="@color/grey70"
+            android:textSize="12sp"
+            app:typefaceAsset="@string/proximaNovaRegular"/>
+
+    </LinearLayout>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_marginTop="16dp">
+
+        <com.pixelplex.qtum.utils.FontButton
+            app:typeface="@string/proximaNovaSemibold"
+            android:id="@+id/bt_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
+            android:background="@drawable/btn_gray_corner_background_light"
+            android:text="@string/back"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/button_text"/>
+
+        <com.pixelplex.qtum.utils.FontButton
+            app:typeface="@string/proximaNovaSemibold"
+            android:id="@+id/bt_restore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_sea_corner_background_light"
+            android:text="@string/restore"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/button_text"/>
+    </LinearLayout>
+
+</LinearLayout>
+</FrameLayout>

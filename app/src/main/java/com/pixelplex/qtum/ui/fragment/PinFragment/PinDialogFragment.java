@@ -2,6 +2,8 @@ package com.pixelplex.qtum.ui.fragment.PinFragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.utils.ThemeUtils;
 import com.pixelplex.qtum.utils.crypto.KeyStoreHelper;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.utils.CryptoUtils;
@@ -47,11 +50,14 @@ public class PinDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_fragment_pin, null);
+        View view = LayoutInflater.from(getActivity()).inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? R.layout.dialog_fragment_pin : R.layout.dialog_fragment_pin_light, null);
         ButterKnife.bind(this, view);
         Dialog dialog = new Dialog(getContext());
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(false);
+        if(dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
         return dialog;
     }
 

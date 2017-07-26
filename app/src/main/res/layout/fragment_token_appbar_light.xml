@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/available_balance_title"
+        style="@style/appbar_wallet_alpha_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/available_balance"
+        app:typefaceAsset="@string/proximaNovaRegular" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ll_balance"
+        android:orientation="horizontal">
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/tv_balance"
+            android:text="0.0 QTUM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:typefaceAsset="@string/simplonMonoMedium"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/tv_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:typefaceAsset="@string/simplonMonoMedium"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/unconfirmed_balance_title"
+        app:typefaceAsset="@string/proximaNovaRegular"
+        android:text="@string/not_confirmed_balance"
+        style="@style/appbar_wallet_alpha_title"/>
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        app:typefaceAsset="@string/proximaNovaSemibold"
+        android:text="0.0 QTUM"
+        android:id="@+id/tv_unconfirmed_balance"/>
+
+    <LinearLayout
+        android:layout_marginTop="8dp"
+        android:id="@+id/token_addr_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:paddingEnd="6dp"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_plus_light" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:weightSum="2"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:padding="2dp"
+                style="@style/appbar_wallet_alpha_title"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:text="@string/token_address"
+                app:typefaceAsset="@string/proximaNovaRegular" />
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:id="@+id/tv_token_address"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:padding="2dp"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="top"
+                android:paddingEnd="16dp"
+                android:textColor="@color/white"
+                app:typefaceAsset="@string/proximaNovaSemibold"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
