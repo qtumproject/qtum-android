@@ -4,5 +4,5 @@
     android:shape="rectangle">
     <solid android:color="@android:color/transparent" />
     <stroke android:width="16dp"
-            android:color="@color/colorPrimary"/>
+        android:color="@color/qr_code_tint_color"/>
 </shape>

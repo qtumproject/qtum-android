@@ -86,34 +86,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:padding="8dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/tocken_stick_background"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:clickable="false"
             android:id="@+id/ll_token_field"
             android:layout_below="@+id/step">
 
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                app:srcCompat="@drawable/ic_token2"/>
-
             <com.pixelplex.qtum.utils.FontEditText
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/ic_token"
+                android:layout_alignBottom="@+id/ic_token"
+                android:text="@string/token"
                 android:focusableInTouchMode="true"
                 android:id="@+id/tv_template_name"
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:gravity="center"
                 android:layout_marginStart="8dp"
                 android:layout_gravity="center"
-                app:typeface="@string/simplonMonoRegular"/>
-        </LinearLayout>
+                app:typeface="@string/proximaNovaSemibold"/>
+
+            <ImageView
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/tv_template_name"
+                android:id="@+id/ic_token"
+                android:layout_width="20dp"
+                android:tint="@color/white"
+                android:layout_height="20dp"
+                app:srcCompat="@drawable/ic_prof_token_subscribe"/>
+
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="8dp"

@@ -15,16 +15,18 @@ public class TemplatesAdapter extends RecyclerView.Adapter<TemplateHolder> {
 
     List<ContractTemplate> mContractTemplates;
     OnTemplateClickListener mListener;
+    int resId;
 
-    TemplatesAdapter(List<ContractTemplate> contractTemplates, OnTemplateClickListener listener) {
+    public TemplatesAdapter(List<ContractTemplate> contractTemplates, OnTemplateClickListener listener, int resId) {
         mContractTemplates = contractTemplates;
         mListener = listener;
+        this.resId = resId;
     }
 
     @Override
     public TemplateHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.item_template_chips, parent, false);
+        View view = layoutInflater.inflate(resId, parent, false);
         return new TemplateHolder(view, mListener);
     }
 
