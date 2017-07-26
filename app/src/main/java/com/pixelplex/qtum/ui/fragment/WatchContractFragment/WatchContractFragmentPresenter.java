@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.WatchContractFragment;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
+import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.model.contract.Contract;
@@ -11,6 +12,7 @@ import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.TemplateLibraryFragment.TemplateLibraryFragment;
+import com.pixelplex.qtum.utils.ContractBuilder;
 import com.pixelplex.qtum.utils.DateCalculator;
 
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
@@ -35,24 +39,40 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
         return mWatchContractFragmentView;
     }
 
-    void onOkClick(String name, String address, String jsonInterface, boolean isToken){
+    void onOkClick(String name, String address, String ABIInterface, boolean isToken){
         getView().setProgressDialog();
+
+        if(!validateContractAddress(address)){
+            getView().setAlertDialog(mContext.getString(R.string.invalid_token_address),mContext.getString(R.string.ok), BaseFragment.PopUpType.error);
+            return;
+        }
+        TinyDB tinyDB = new TinyDB(getView().getContext());
+        List<Contract> allContractList = tinyDB.getContractList();
+        for(Contract contract : allContractList){
+            if(contract.getContractAddress().equals(address)){
+                getView().setAlertDialog(mContext.getString(R.string.token_with_same_address_already_exists),mContext.getString(R.string.ok), BaseFragment.PopUpType.error);
+                return;
+            }
+        }
         if(isToken){
-            ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(getView().getContext(), null, null, jsonInterface, "token", "no_name", DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
-            TinyDB tinyDB = new TinyDB(getView().getContext());
-            List<Token> tokenList = tinyDB.getTokenList();
-            Token token = new Token(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "Stub!", name);
-            tokenList.add(token);
-            tinyDB.putTokenList(tokenList);
+            if(ContractBuilder.checkForValidityERC20(ABIInterface)) {
+                ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(getView().getContext(), null, null, ABIInterface, "token", "no_name", DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
+                List<Token> tokenList = tinyDB.getTokenList();
+                Token token = new Token(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "Stub!", name);
+                tokenList.add(token);
+                tinyDB.putTokenList(tokenList);
+            } else {
+                getView().setAlertDialog(mContext.getString(R.string.abi_doesnt_match_erc20_standard),mContext.getString(R.string.ok), BaseFragment.PopUpType.error);
+                return;
+            }
         }else {
-            ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(getView().getContext(), null, null, jsonInterface, "none", "no_name", DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
-            TinyDB tinyDB = new TinyDB(getView().getContext());
+            ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(getView().getContext(), null, null, ABIInterface, "none", "no_name", DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
             List<Contract> contractList = tinyDB.getContractListWithoutToken();
             Contract contract = new Contract(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "Stub!", name);
             contractList.add(contract);
             tinyDB.putContractListWithoutToken(contractList);
         }
-        getView().setAlertDialog("Ok", "", "Ok", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
+        getView().setAlertDialog(mContext.getString(R.string.token_was_added_to_your_wallet),"", mContext.getString(R.string.ok), BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
             @Override
             public void onOkClick() {
                 FragmentManager fm = getView().getFragment().getFragmentManager();
@@ -67,6 +87,12 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
     public void onChooseFromLibraryClick(boolean isToken){
         BaseFragment templateLibraryFragment = TemplateLibraryFragment.newInstance(getView().getContext(),isToken);
         getView().openFragmentForResult(getView().getFragment(),templateLibraryFragment);
+    }
+
+    private boolean validateContractAddress(String address){
+        Pattern p = Pattern.compile("^[a-zA-Z0-9]{40,}$");
+        Matcher m = p.matcher(address);
+        return m.matches();
     }
 
     @Override

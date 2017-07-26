@@ -144,7 +144,6 @@
             android:gravity="left|top"
             android:padding="6dp"
             android:hint="@string/abi_interface"
-            android:textColor="@color/grey"
             android:textColorHint="@color/grey70"/>
 
         <android.support.v7.widget.RecyclerView
@@ -191,7 +190,8 @@
                 android:textSize="16sp"
                 android:layout_marginStart="4dp"
                 android:background="@drawable/btn_sea_corner_background_light"
-                android:textColor="@color/white"
+                android:enabled="false"
+                android:textColor="@color/primary_text_color_enabled_selector_light"
                 app:typeface="@string/proximaNovaSemibold"
                 android:textAllCaps="true"
                 android:layout_weight="1"

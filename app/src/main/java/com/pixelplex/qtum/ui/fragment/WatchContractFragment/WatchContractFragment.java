@@ -4,8 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.pixelplex.qtum.R;
@@ -39,6 +43,13 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
     @BindView(R.id.rv_templates)
     protected
     RecyclerView mRecyclerViewTemplates;
+
+    @BindView(R.id.bt_ok)
+    FontButton mButtonConfirm;
+
+    private boolean isEmptyContractName = true;
+    private boolean isEmptyContractAddress = true;
+    private boolean isEmptyABIInterface = true;
 
     @BindView(R.id.bt_choose_from_library)
     FontButton mFontButtonChooseFromLibrary;
@@ -83,6 +94,61 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
         ChipsLayoutManager chipsLayoutManager = ChipsLayoutManager.newBuilder(getContext())
                 .build();
         mRecyclerViewTemplates.setLayoutManager(chipsLayoutManager);
+
+        mEditTextABIInterface.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                isEmptyABIInterface = editable.toString().isEmpty();
+                checkForNoEmpty(isEmptyABIInterface,isEmptyContractAddress,isEmptyContractName);
+            }
+        });
+
+        mEditTextContractAddress.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                isEmptyContractAddress = editable.toString().isEmpty();
+                checkForNoEmpty(isEmptyABIInterface,isEmptyContractAddress,isEmptyContractName);
+            }
+        });
+
+        mEditTextContractName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                isEmptyContractName = editable.toString().isEmpty();
+                checkForNoEmpty(isEmptyABIInterface,isEmptyContractAddress,isEmptyContractName);
+            }
+        });
+
     }
 
     @Override
@@ -115,5 +181,15 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
     @Override
     public boolean isToken() {
         return getArguments().getBoolean(IS_TOKEN);
+    }
+
+    private void checkForNoEmpty(boolean ... isEmptyParams){
+        for(boolean isEmpty : isEmptyParams){
+            if(isEmpty) {
+                mButtonConfirm.setEnabled(false);
+                return;
+            }
+        }
+        mButtonConfirm.setEnabled(true);
     }
 }
