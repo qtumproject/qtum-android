@@ -45,7 +45,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     private boolean mSendFromIntent = false;
 
     private Intent mIntent;
-    private UpdateService mUpdateService;
+    private UpdateService mUpdateService = null;
 
     private NetworkStateReceiver mNetworkReceiver;
 
@@ -323,8 +323,10 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     }
 
     public void clearservice(){
-        mContext.unbindService(mServiceConnection);
-        mContext.unregisterReceiver(mNetworkReceiver);
+        if(mUpdateService != null) {
+            mContext.unbindService(mServiceConnection);
+            mContext.unregisterReceiver(mNetworkReceiver);
+        }
     }
 
     public String getAddressForSendAction() {
