@@ -195,6 +195,9 @@
     <string name="confirmed">Confirmed</string>
     <string name="preview">Preview</string>
     <string name="restore">Restore</string>
-
+    <string name="token_was_added_to_your_wallet">Token was added to your wallet</string>
+    <string name="abi_doesnt_match_erc20_standard">ABI doesn\'t match ERC20 standard</string>
+    <string name="token_with_same_address_already_exists">Token with same address already exists</string>
+    <string name="invalid_token_address">Invalid Token Address</string>
 
 </resources>

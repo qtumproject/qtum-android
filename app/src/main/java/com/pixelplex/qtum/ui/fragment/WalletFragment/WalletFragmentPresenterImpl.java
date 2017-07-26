@@ -226,11 +226,11 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        getInteractor().unSubscribe();
         mNetworkStateReceiver.removeNetworkStateListener();
         mUpdateService.removeTransactionListener();
         mUpdateService.removeBalanceChangeListener();
         getView().getMainActivity().removePermissionResultListener();
-        getInteractor().unSubscribe();
         getView().setAdapterNull();
     }
 

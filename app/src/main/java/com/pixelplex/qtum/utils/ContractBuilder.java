@@ -4,10 +4,10 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
+import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
-import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.utils.sha3.sha.Keccak;
 import com.pixelplex.qtum.utils.sha3.sha.Parameters;
 
@@ -30,11 +30,11 @@ import org.spongycastle.crypto.digests.RIPEMD160Digest;
 import org.spongycastle.crypto.digests.SHA256Digest;
 import org.spongycastle.util.encoders.Hex;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -45,14 +45,14 @@ public class ContractBuilder {
 
     private String hashPattern = "0000000000000000000000000000000000000000000000000000000000000000";
 
-                                //0000000000000000000000000000000000000000000000000000000000000001 //1 первый параметр
-                                //0000000000000000000000000000000000000000000000000000000000000080 //128 оффсет первой строки
-                                //0000000000000000000000000000000000000000000000000000000000000002 //2 третий параметр
-                                //00000000000000000000000000000000000000000000000000000000000000c0 //192 оффсет второй строки
-                                //0000000000000000000000000000000000000000000000000000000000000008 //8 длина первой строки
-                                //6e616d6500000000000000000000000000000000000000000000000000000000 //name первая строка
-                                //000000000000000000000000000000000000000000000000000000000000000c //12 длина второй строки
-                                //73796d626f6c0000000000000000000000000000000000000000000000000000 //symbol вторая строка
+    //0000000000000000000000000000000000000000000000000000000000000001 //1 первый параметр
+    //0000000000000000000000000000000000000000000000000000000000000080 //128 оффсет первой строки
+    //0000000000000000000000000000000000000000000000000000000000000002 //2 третий параметр
+    //00000000000000000000000000000000000000000000000000000000000000c0 //192 оффсет второй строки
+    //0000000000000000000000000000000000000000000000000000000000000008 //8 длина первой строки
+    //6e616d6500000000000000000000000000000000000000000000000000000000 //name первая строка
+    //000000000000000000000000000000000000000000000000000000000000000c //12 длина второй строки
+    //73796d626f6c0000000000000000000000000000000000000000000000000000 //symbol вторая строка
 
     private final int radix = 16;
     private final String TYPE_INT = "int";
@@ -68,13 +68,13 @@ public class ContractBuilder {
 
     private Context mContext;
 
-    public ContractBuilder(){
+    public ContractBuilder() {
 
     }
 
     private List<ContractMethodParameter> mContractMethodParameterList;
 
-    public Observable<String> createAbiMethodParams(final String _methodName, final List<ContractMethodParameter> contractMethodParameterList){
+    public Observable<String> createAbiMethodParams(final String _methodName, final List<ContractMethodParameter> contractMethodParameterList) {
         return rx.Observable.fromCallable(new Callable<String>() {
             @Override
             public String call() throws Exception {
@@ -82,17 +82,17 @@ public class ContractBuilder {
                 String parameters = "";
                 String abiParams = "";
                 mContractMethodParameterList = contractMethodParameterList;
-                if(contractMethodParameterList != null && contractMethodParameterList.size()!=0) {
+                if (contractMethodParameterList != null && contractMethodParameterList.size() != 0) {
                     for (ContractMethodParameter parameter : contractMethodParameterList) {
-                        abiParams += convertParameter(parameter,abiParams);
+                        abiParams += convertParameter(parameter, abiParams);
                         parameters = parameters + parameter.getType() + ",";
                     }
-                    methodName = methodName + "("+parameters.substring(0,parameters.length()-1)+")";
-                } else{
+                    methodName = methodName + "(" + parameters.substring(0, parameters.length() - 1) + ")";
+                } else {
                     methodName = methodName + "()";
                 }
                 Keccak keccak = new Keccak();
-                String hashMethod = keccak.getHash(Hex.toHexString((methodName).getBytes()), Parameters.KECCAK_256).substring(0,8);
+                String hashMethod = keccak.getHash(Hex.toHexString((methodName).getBytes()), Parameters.KECCAK_256).substring(0, 8);
                 abiParams = hashMethod + abiParams;
                 return abiParams;
             }
@@ -101,7 +101,7 @@ public class ContractBuilder {
 
     long paramsCount;
 
-    public Observable<String> createAbiConstructParams(final List<ContractMethodParameter> contractMethodParameterList, final String uiid, Context context){
+    public Observable<String> createAbiConstructParams(final List<ContractMethodParameter> contractMethodParameterList, final String uiid, Context context) {
         mContext = context;
         paramsCount = contractMethodParameterList.size();
         currStringOffset = 0;
@@ -111,7 +111,7 @@ public class ContractBuilder {
             public String call() throws Exception {
                 String abiParams = "";
                 mContractMethodParameterList = contractMethodParameterList;
-                if(mContractMethodParameterList != null) {
+                if (mContractMethodParameterList != null) {
                     for (ContractMethodParameter parameter : mContractMethodParameterList) {
                         abiParams += convertParameter(parameter, abiParams);
                     }
@@ -126,20 +126,20 @@ public class ContractBuilder {
 
         String _value = parameter.getValue();
 
-        if(parameter.getType().contains(TYPE_INT)){
+        if (parameter.getType().contains(TYPE_INT)) {
             return appendNumericPattern(convertToByteCode(Long.valueOf(_value)));
-        } else if(parameter.getType().contains(TYPE_STRING)){
-            return  getStringOffset(parameter);
-        } else if(parameter.getType().contains(TYPE_ADDRESS)){
-            return appendAddressPattern(Hex.toHexString(Base58.decode(_value)).substring(2,42));
+        } else if (parameter.getType().contains(TYPE_STRING)) {
+            return getStringOffset(parameter);
+        } else if (parameter.getType().contains(TYPE_ADDRESS)) {
+            return appendAddressPattern(Hex.toHexString(Base58.decode(_value)).substring(2, 42));
         }
         return "";
     }
 
-    private String appendStringParameters(){
+    private String appendStringParameters() {
         String stringParams = "";
         for (ContractMethodParameter parameter : mContractMethodParameterList) {
-            if(parameter.getType().contains(TYPE_STRING)){
+            if (parameter.getType().contains(TYPE_STRING)) {
                 stringParams += appendStringPattern(convertToByteCode(parameter.getValue()));
             }
         }
@@ -148,20 +148,20 @@ public class ContractBuilder {
 
     private int getStringsChainSize(ContractMethodParameter parameter) {
 
-        if(mContractMethodParameterList == null || mContractMethodParameterList.size() == 0){
+        if (mContractMethodParameterList == null || mContractMethodParameterList.size() == 0) {
             return 0;
         }
 
         int index = mContractMethodParameterList.indexOf(parameter);
 
-        if(index == mContractMethodParameterList.size()-1) {
+        if (index == mContractMethodParameterList.size() - 1) {
             return 1;
         }
 
         int chainSize = 0;
 
-        for (int i = index; i< mContractMethodParameterList.size(); i++){
-            if(mContractMethodParameterList.get(index).getType().contains(TYPE_STRING)){
+        for (int i = index; i < mContractMethodParameterList.size(); i++) {
+            if (mContractMethodParameterList.get(index).getType().contains(TYPE_STRING)) {
                 chainSize++;
             }
         }
@@ -170,11 +170,10 @@ public class ContractBuilder {
     }
 
     private String convertToByteCode(long _value) {
-        return Long.toString(_value,radix);
+        return Long.toString(_value, radix);
     }
 
-    private static String convertToByteCode(String _value)
-    {
+    private static String convertToByteCode(String _value) {
         char[] chars = _value.toCharArray();
         StringBuilder hex = new StringBuilder();
         for (char aChar : chars) {
@@ -189,7 +188,7 @@ public class ContractBuilder {
 
     long currStringOffset = 0;
 
-    private String getStringOffset(ContractMethodParameter parameter){
+    private String getStringOffset(ContractMethodParameter parameter) {
         long currOffset = ((paramsCount + currStringOffset) * 32);
         currStringOffset = getStringHash(parameter.getValue()).length() / hashPattern.length() + 1/*string length section*/;
         return appendNumericPattern(convertToByteCode(currOffset));
@@ -199,12 +198,12 @@ public class ContractBuilder {
         return appendNumericPattern(convertToByteCode(_value.length()));
     }
 
-    private String getStringHash(String _value){
-        if(_value.length()<=hashPattern.length()) {
+    private String getStringHash(String _value) {
+        if (_value.length() <= hashPattern.length()) {
             return formNotFullString(_value);
-        }else {
+        } else {
             int ost = _value.length() % hashPattern.length();
-            return  _value + hashPattern.substring(0,hashPattern.length()-ost);
+            return _value + hashPattern.substring(0, hashPattern.length() - ost);
         }
     }
 
@@ -213,17 +212,17 @@ public class ContractBuilder {
         String fullParameter = "";
         fullParameter += getStringLength(_value);
 
-        if(_value.length()<=hashPattern.length()) {
+        if (_value.length() <= hashPattern.length()) {
             fullParameter += formNotFullString(_value);
-        }else {
+        } else {
             int ost = _value.length() % hashPattern.length();
-            fullParameter += _value + hashPattern.substring(0,hashPattern.length()-ost);
+            fullParameter += _value + hashPattern.substring(0, hashPattern.length() - ost);
         }
 
         return fullParameter;
     }
 
-    private String appendAddressPattern(String _value){
+    private String appendAddressPattern(String _value) {
         return hashPattern.substring(_value.length()) + _value;
     }
 
@@ -231,15 +230,15 @@ public class ContractBuilder {
         return _value + hashPattern.substring(_value.length());
     }
 
-    private String appendNumericPattern(String _value){
-        return hashPattern.substring(0,hashPattern.length()-_value.length()) + _value;
+    private String appendNumericPattern(String _value) {
+        return hashPattern.substring(0, hashPattern.length() - _value.length()) + _value;
     }
 
     private String getByteCodeByUiid(String uiid) {
         return FileStorageManager.getInstance().readByteCodeContract(mContext, uiid);
     }
 
-    public Script createConstructScript(String abiParams){
+    public Script createConstructScript(String abiParams) {
 
         byte[] version = Hex.decode("01000000");
         byte[] gasLimit = Hex.decode("80841e0000000000");
@@ -247,10 +246,10 @@ public class ContractBuilder {
         byte[] data = Hex.decode(abiParams);
         byte[] program;
 
-        ScriptChunk versionChunk = new ScriptChunk(OP_PUSHDATA_4,version);
-        ScriptChunk gasLimitChunk = new ScriptChunk(OP_PUSHDATA_8,gasLimit);
-        ScriptChunk gasPriceChunk = new ScriptChunk(OP_PUSHDATA_8,gasPrice);
-        ScriptChunk dataChunk = new ScriptChunk(ScriptOpCodes.OP_PUSHDATA2,data);
+        ScriptChunk versionChunk = new ScriptChunk(OP_PUSHDATA_4, version);
+        ScriptChunk gasLimitChunk = new ScriptChunk(OP_PUSHDATA_8, gasLimit);
+        ScriptChunk gasPriceChunk = new ScriptChunk(OP_PUSHDATA_8, gasPrice);
+        ScriptChunk dataChunk = new ScriptChunk(ScriptOpCodes.OP_PUSHDATA2, data);
         ScriptChunk opExecChunk = new ScriptChunk(OP_EXEC, null);
         List<ScriptChunk> chunkList = new ArrayList<>();
         chunkList.add(versionChunk);
@@ -271,7 +270,7 @@ public class ContractBuilder {
         return new Script(program);
     }
 
-    public Script createMethodScript(String abiParams, String _contractAddress) throws RuntimeException{
+    public Script createMethodScript(String abiParams, String _contractAddress) throws RuntimeException {
 
         byte[] version = Hex.decode("01000000");
         byte[] gasLimit = Hex.decode("80841e0000000000");
@@ -280,11 +279,11 @@ public class ContractBuilder {
         byte[] contractAddress = Hex.decode(_contractAddress);
         byte[] program;
 
-        ScriptChunk versionChunk = new ScriptChunk(OP_PUSHDATA_4,version);
-        ScriptChunk gasLimitChunk = new ScriptChunk(OP_PUSHDATA_8,gasLimit);
-        ScriptChunk gasPriceChunk = new ScriptChunk(OP_PUSHDATA_8,gasPrice);
-        ScriptChunk dataChunk = new ScriptChunk(ScriptOpCodes.OP_PUSHDATA2,data);
-        ScriptChunk contactAddressChunk = new ScriptChunk(ScriptOpCodes.OP_PUSHDATA2,contractAddress);
+        ScriptChunk versionChunk = new ScriptChunk(OP_PUSHDATA_4, version);
+        ScriptChunk gasLimitChunk = new ScriptChunk(OP_PUSHDATA_8, gasLimit);
+        ScriptChunk gasPriceChunk = new ScriptChunk(OP_PUSHDATA_8, gasPrice);
+        ScriptChunk dataChunk = new ScriptChunk(ScriptOpCodes.OP_PUSHDATA2, data);
+        ScriptChunk contactAddressChunk = new ScriptChunk(ScriptOpCodes.OP_PUSHDATA2, contractAddress);
         ScriptChunk opExecChunk = new ScriptChunk(OP_EXEC_ASSIGN, null);
         List<ScriptChunk> chunkList = new ArrayList<>();
         chunkList.add(versionChunk);
@@ -306,26 +305,26 @@ public class ContractBuilder {
         return new Script(program);
     }
 
-    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs){
+    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs) {
 
         Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
-        transaction.addOutput(Coin.ZERO,script);
+        transaction.addOutput(Coin.ZERO, script);
 
         UnspentOutput unspentOutput = null;
-        for(UnspentOutput unspentOutput1: unspentOutputs) {
-            if(unspentOutput1.getAmount().doubleValue()>1.0) {
+        for (UnspentOutput unspentOutput1 : unspentOutputs) {
+            if (unspentOutput1.getAmount().doubleValue() > 1.0) {
                 unspentOutput = unspentOutput1;
                 break;
             }
         }
 
-        if(unspentOutput == null){
+        if (unspentOutput == null) {
             throw new RuntimeException("You have insufficient funds for this transaction");
         }
 
         BigDecimal bitcoin = new BigDecimal(100000000);
         ECKey myKey = KeyStorage.getInstance().getCurrentKey();
-        transaction.addOutput(Coin.valueOf((long)(unspentOutput.getAmount().multiply(bitcoin).subtract(new BigDecimal("10000000")).doubleValue())),
+        transaction.addOutput(Coin.valueOf((long) (unspentOutput.getAmount().multiply(bitcoin).subtract(new BigDecimal("10000000")).doubleValue())),
                 myKey.toAddress(CurrentNetParams.getNetParams()));
 
         for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList(10)) {
@@ -348,11 +347,10 @@ public class ContractBuilder {
 
     private static String FUNCTION_TYPE = "function";
     private static String TYPE = "type";
-    private List<ContractMethod> standardInterface;
 
-    public boolean checkForValidity(String abiCode) {
+    public static boolean checkForValidityERC20(String abiCode) {
 
-        initStandardInterface();
+        List<ContractMethod> standardInterface = initStandardInterface();
 
         JSONArray array;
         List<ContractMethod> contractMethods = new ArrayList<>();
@@ -370,29 +368,48 @@ public class ContractBuilder {
             boolean validityFlag = true;
             for (ContractMethod contractMethodStandard : standardInterface) {
                 for (ContractMethod contractMethod : contractMethods) {
-                    if (contractMethod.getName().equals(contractMethodStandard.getName()) && contractMethod.getType().contains(contractMethodStandard.getType()) && contractMethod.isConstant()==contractMethodStandard.isConstant()) {
-                        if (contractMethod.getInputParams() != null && contractMethodStandard.getInputParams() != null) {
+                    if (contractMethod.getName().equals(contractMethodStandard.getName()) && contractMethod.getType().contains(contractMethodStandard.getType()) && contractMethod.isConstant() == contractMethodStandard.isConstant()) {
+
+                        if (contractMethodStandard.getInputParams() != null) {
+                            if(contractMethod.getInputParams() == null){
+                                return false;
+                            }
                             for (ContractMethodParameter contractMethodParameterStandard : contractMethodStandard.getInputParams()) {
-                                for (ContractMethodParameter contractMethodParameter : contractMethod.getInputParams()) {
-                                    if (contractMethodParameter.getName().equals(contractMethodParameterStandard.getName()) && contractMethodParameter.getType().contains(contractMethodParameterStandard.getType())) {
+                                Iterator<ContractMethodParameter> contractMethodParameterIterator = contractMethod.getInputParams().iterator();
+                                while (contractMethodParameterIterator.hasNext()) {
+                                    ContractMethodParameter contractMethodParameter = contractMethodParameterIterator.next();
+                                    if (contractMethodParameter.getType().contains(contractMethodParameterStandard.getType())) {
                                         validityFlag = true;
+                                        contractMethodParameterIterator.remove();
                                         break;
                                     }
                                     validityFlag = false;
                                 }
-                                if(!validityFlag) return false;
+                                if (!validityFlag) return false;
+                            }
+                            if (contractMethod.getInputParams().size() != 0) {
+                                return false;
                             }
                         }
-                        if (contractMethod.getOutputParams() != null && contractMethodStandard.getOutputParams() != null) {
+                        if (contractMethodStandard.getOutputParams() != null) {
+                            if(contractMethod.getOutputParams() == null){
+                                return false;
+                            }
                             for (ContractMethodParameter contractMethodParameterStandard : contractMethodStandard.getOutputParams()) {
-                                for (ContractMethodParameter contractMethodParameter : contractMethod.getOutputParams()) {
-                                    if (contractMethodParameter.getName().equals(contractMethodParameterStandard.getName()) && contractMethodParameter.getType().contains(contractMethodParameterStandard.getType())) {
+                                Iterator<ContractMethodParameter> contractMethodParameterIterator = contractMethod.getOutputParams().iterator();
+                                while (contractMethodParameterIterator.hasNext()) {
+                                    ContractMethodParameter contractMethodParameter = contractMethodParameterIterator.next();
+                                    if (contractMethodParameter.getType().contains(contractMethodParameterStandard.getType())) {
                                         validityFlag = true;
+                                        contractMethodParameterIterator.remove();
                                         break;
                                     }
                                     validityFlag = false;
                                 }
-                                if(!validityFlag) return false;
+                                if (!validityFlag) return false;
+                            }
+                            if (contractMethod.getOutputParams().size() != 0) {
+                                return false;
                             }
                         }
                         validityFlag = true;
@@ -400,7 +417,7 @@ public class ContractBuilder {
                     }
                     validityFlag = false;
                 }
-                if(!validityFlag) return false;
+                if (!validityFlag) return false;
             }
             return true;
 
@@ -410,59 +427,60 @@ public class ContractBuilder {
         return false;
     }
 
-    private void initStandardInterface(){
-        if(standardInterface==null){
-            standardInterface = new ArrayList<>();
+    private static List<ContractMethod> initStandardInterface() {
 
-            List<ContractMethodParameter> totalSupplyOutputParams = new ArrayList<>();
-            totalSupplyOutputParams.add(new ContractMethodParameter("totalSupply","uint"));
-            ContractMethod totalSupply = new ContractMethod(true,"function",null,"totalSupply",totalSupplyOutputParams);
+        List<ContractMethod> standardInterface = new ArrayList<>();
 
-            List<ContractMethodParameter> balanceOfInputParams = new ArrayList<>();
-            balanceOfInputParams.add(new ContractMethodParameter("_owner","address"));
-            List<ContractMethodParameter> balanceOfOutputParams = new ArrayList<>();
-            balanceOfOutputParams.add(new ContractMethodParameter("balance","uint"));
-            ContractMethod balanceOfSupply = new ContractMethod(true,"function",balanceOfInputParams,"balanceOf",balanceOfOutputParams);
+        List<ContractMethodParameter> totalSupplyOutputParams = new ArrayList<>();
+        totalSupplyOutputParams.add(new ContractMethodParameter("totalSupply", "uint"));
+        ContractMethod totalSupply = new ContractMethod(true, "function", null, "totalSupply", totalSupplyOutputParams);
 
-            List<ContractMethodParameter> transferInputParams = new ArrayList<>();
-            transferInputParams.add(new ContractMethodParameter("_to","address"));
-            transferInputParams.add(new ContractMethodParameter("_value","uint"));
-            List<ContractMethodParameter> transferOutputParams = new ArrayList<>();
-            transferOutputParams.add(new ContractMethodParameter("success","bool"));
-            ContractMethod transfer = new ContractMethod(false,"function",transferInputParams,"transfer",transferOutputParams);
+        List<ContractMethodParameter> balanceOfInputParams = new ArrayList<>();
+        balanceOfInputParams.add(new ContractMethodParameter("_owner", "address"));
+        List<ContractMethodParameter> balanceOfOutputParams = new ArrayList<>();
+        balanceOfOutputParams.add(new ContractMethodParameter("balance", "uint"));
+        ContractMethod balanceOfSupply = new ContractMethod(true, "function", balanceOfInputParams, "balanceOf", balanceOfOutputParams);
 
-            List<ContractMethodParameter> transferFromInputParams = new ArrayList<>();
-            transferFromInputParams.add(new ContractMethodParameter("_from","address"));
-            transferFromInputParams.add(new ContractMethodParameter("_to","address"));
-            transferFromInputParams.add(new ContractMethodParameter("_value","uint"));
-            List<ContractMethodParameter> transferFromOutputParams = new ArrayList<>();
-            transferFromOutputParams.add(new ContractMethodParameter("success","bool"));
-            ContractMethod transferFrom = new ContractMethod(false,"function",transferFromInputParams,"transferFrom",transferFromOutputParams);
+        List<ContractMethodParameter> transferInputParams = new ArrayList<>();
+        transferInputParams.add(new ContractMethodParameter("_to", "address"));
+        transferInputParams.add(new ContractMethodParameter("_value", "uint"));
+        List<ContractMethodParameter> transferOutputParams = new ArrayList<>();
+        transferOutputParams.add(new ContractMethodParameter("success", "bool"));
+        ContractMethod transfer = new ContractMethod(false, "function", transferInputParams, "transfer", transferOutputParams);
 
-            List<ContractMethodParameter> approveInputParams = new ArrayList<>();
-            approveInputParams.add(new ContractMethodParameter("_spender","address"));
-            approveInputParams.add(new ContractMethodParameter("_value","uint"));
-            List<ContractMethodParameter> approveOutputParams = new ArrayList<>();
-            approveOutputParams.add(new ContractMethodParameter("success","bool"));
-            ContractMethod approve = new ContractMethod(false,"function",approveInputParams,"approve",approveOutputParams);
+        List<ContractMethodParameter> transferFromInputParams = new ArrayList<>();
+        transferFromInputParams.add(new ContractMethodParameter("_from", "address"));
+        transferFromInputParams.add(new ContractMethodParameter("_to", "address"));
+        transferFromInputParams.add(new ContractMethodParameter("_value", "uint"));
+        List<ContractMethodParameter> transferFromOutputParams = new ArrayList<>();
+        transferFromOutputParams.add(new ContractMethodParameter("success", "bool"));
+        ContractMethod transferFrom = new ContractMethod(false, "function", transferFromInputParams, "transferFrom", transferFromOutputParams);
 
-            List<ContractMethodParameter> allowanceInputParams = new ArrayList<>();
-            allowanceInputParams.add(new ContractMethodParameter("_owner","address"));
-            allowanceInputParams.add(new ContractMethodParameter("_spender","address"));
-            List<ContractMethodParameter> allowanceOutputParams = new ArrayList<>();
-            allowanceOutputParams.add(new ContractMethodParameter("remaining","uint"));
-            ContractMethod allowance = new ContractMethod(true,"function",allowanceInputParams,"allowance",allowanceOutputParams);
+        List<ContractMethodParameter> approveInputParams = new ArrayList<>();
+        approveInputParams.add(new ContractMethodParameter("_spender", "address"));
+        approveInputParams.add(new ContractMethodParameter("_value", "uint"));
+        List<ContractMethodParameter> approveOutputParams = new ArrayList<>();
+        approveOutputParams.add(new ContractMethodParameter("success", "bool"));
+        ContractMethod approve = new ContractMethod(false, "function", approveInputParams, "approve", approveOutputParams);
 
-            standardInterface.add(totalSupply);
-            standardInterface.add(balanceOfSupply);
-            standardInterface.add(transfer);
-            standardInterface.add(transferFrom);
-            standardInterface.add(approve);
-            standardInterface.add(allowance);
-        }
+        List<ContractMethodParameter> allowanceInputParams = new ArrayList<>();
+        allowanceInputParams.add(new ContractMethodParameter("_owner", "address"));
+        allowanceInputParams.add(new ContractMethodParameter("_spender", "address"));
+        List<ContractMethodParameter> allowanceOutputParams = new ArrayList<>();
+        allowanceOutputParams.add(new ContractMethodParameter("remaining", "uint"));
+        ContractMethod allowance = new ContractMethod(true, "function", allowanceInputParams, "allowance", allowanceOutputParams);
+
+        standardInterface.add(totalSupply);
+        standardInterface.add(balanceOfSupply);
+        standardInterface.add(transfer);
+        standardInterface.add(transferFrom);
+        standardInterface.add(approve);
+        standardInterface.add(allowance);
+
+        return standardInterface;
     }
 
-    public static String generateContractAddress(String txHash){
+    public static String generateContractAddress(String txHash) {
         char[] ca = txHash.toCharArray();
         StringBuilder sb = new StringBuilder(txHash.length());
         for (int i = 0; i < txHash.length(); i += 2) {
