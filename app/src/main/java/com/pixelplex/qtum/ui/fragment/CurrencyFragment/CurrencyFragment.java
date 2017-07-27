@@ -22,12 +22,14 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
 import com.pixelplex.qtum.model.Currency;
+import com.pixelplex.qtum.model.CurrencyToken;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
+import com.pixelplex.qtum.utils.ContractManagementHelper;
 import com.pixelplex.qtum.utils.FontTextView;
 import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
 import com.pixelplex.qtum.utils.SearchBar;
@@ -144,6 +146,9 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
         @BindView(R.id.spinner)
         ProgressBar spinner;
 
+        @BindView(R.id.token_symbol)
+        FontTextView mTextViewSymbol;
+
         Currency mCurrency;
 
         CurrencyHolder(View itemView) {
@@ -153,7 +158,6 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
                 @Override
                 public void onClick(View view) {
                     ((SendFragment) getTargetFragment()).onCurrencyChoose(mCurrency.getName());
-                    ((SendFragment) getTargetFragment()).onCurrencyChoose(mCurrency.getAddress());
                     getActivity().onBackPressed();
                 }
             });
@@ -162,23 +166,30 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
 
         void bindCurrency(Currency currency){
 
-            if(this.mCurrency != null && mCurrency.isToken()) {
-                mUpdateService.removeTokenBalanceChangeListener(mCurrency.getAddress());
+            if(this.mCurrency != null && mCurrency instanceof CurrencyToken) {
+                mUpdateService.removeTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress());
             }
 
             mCurrency = currency;
             mTextViewCurrencyName.setText(currency.getName());
-            if(mCurrency.isToken()) {
+            if(mCurrency instanceof CurrencyToken) {
+                ContractManagementHelper.getPropertyValue("symbol", ((CurrencyToken) mCurrency).getToken(), getContext(), new ContractManagementHelper.GetPropertyValueCallBack() {
+                    @Override
+                    public void onSuccess(String value) {
+                        mTextViewSymbol.setVisibility(View.VISIBLE);
+                        mTextViewSymbol.setText(value);
+                    }
+                });
                 mTextViewCurrencyBalance.setVisibility(View.GONE);
                 spinner.setVisibility(View.VISIBLE);
-                mUpdateService.addTokenBalanceChangeListener(mCurrency.getAddress(), new TokenBalanceChangeListener() {
+                mUpdateService.addTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(), new TokenBalanceChangeListener() {
                     @Override
                     public void onBalanceChange(final TokenBalance tokenBalance) {
                         rootLayout.post(new Runnable() {
                             @Override
                             public void run() {
                                 spinner.setVisibility(View.GONE);
-                                mTextViewCurrencyBalance.setText(String.format("%f QTUM", tokenBalance.getTotalBalance()));
+                                mTextViewCurrencyBalance.setText(String.valueOf(tokenBalance.getTotalBalance()));
                                 mTextViewCurrencyBalance.setVisibility(View.VISIBLE);
                             }
                         });
