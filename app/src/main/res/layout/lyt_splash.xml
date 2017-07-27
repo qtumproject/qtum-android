@@ -7,6 +7,24 @@
     android:background="@color/background"
     android:layout_height="match_parent">
 
+    <View
+        android:visibility="invisible"
+        android:id="@+id/lyt_light"
+        android:background="@drawable/background_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/txt_app_name_white"
+        android:layout_centerInParent="true"
+        android:text="@string/app_name"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:textSize="28sp"
+        app:typefaceAsset="@string/proximaNovaSemibold"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content" />
+
     <com.pixelplex.qtum.utils.FontTextView
         android:id="@+id/txt_app_name"
         android:layout_centerInParent="true"
@@ -14,7 +32,7 @@
         android:layout_width="wrap_content"
         android:textStyle="bold"
         android:textSize="28sp"
-        app:typefaceAsset="@string/euclidFlexMedium"
+        app:typefaceAsset="@string/proximaNovaSemibold"
         android:textColor="@color/primary_text_color"
         android:layout_height="wrap_content" />
 
@@ -29,10 +47,19 @@
         android:layout_height="140dp" />
 
     <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/ic_app_logo_white"
+        android:layout_above="@+id/txt_app_name"
+        android:layout_centerHorizontal="true"
+        android:tint="@color/white"
+        android:layout_width="140dp"
+        android:layout_marginBottom="32dp"
+        app:srcCompat="@drawable/qtum_logo"
+        android:layout_height="140dp" />
+
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/ic_app_logo"
         android:layout_above="@+id/txt_app_name"
         android:layout_centerHorizontal="true"
-
         android:layout_width="140dp"
         android:layout_marginBottom="32dp"
         app:srcCompat="@drawable/qtum_logo"
@@ -40,10 +67,10 @@
 
     <com.pixelplex.qtum.utils.FontTextView
         android:id="@+id/txt_wait"
-        android:textColor="@color/primary_text_color"
+        android:textColor="@color/white"
         android:text="@string/please_wait_a_few_seconds"
         android:textSize="14sp"
-        app:typefaceAsset="@string/simplonMonoRegular"
+        app:typefaceAsset="@string/proximaNovaLight"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="48dp"

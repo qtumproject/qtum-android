@@ -20,7 +20,7 @@
             android:alpha=".6"
             android:textColor="@color/colorPrimary"
             android:layout_height="wrap_content"
-            android:gravity="end"
+            android:gravity="right"
             android:layout_marginBottom="4dp"
             android:text="Nov 28" />
 

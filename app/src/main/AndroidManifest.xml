@@ -26,6 +26,7 @@
         android:supportsRtl="true">
 
         <activity
+            android:theme="@style/AppTheme"
             android:name="com.pixelplex.qtum.ui.activity.main_activity.MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTask"
@@ -40,6 +41,7 @@
         </activity>
 
         <activity
+            android:theme="@style/SplashTheme"
             android:name="com.pixelplex.qtum.ui.activity.splash_activity.SplashActivity"
             android:noHistory="true"
             android:screenOrientation="portrait">
