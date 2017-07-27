@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+              android:background="@color/colorPrimary"
+              android:layout_height="match_parent">
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:layout_margin="32dp"
+        android:text="@string/transfer_balance"
+        android:textColor="@color/background"
+        android:textSize="18sp"
+        app:editTextTypeface="@string/simplonMonoMedium"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textColorHint="@color/background">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:hint="@string/amount"
+            android:inputType="numberDecimal"
+            android:textColor="@color/background"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:paddingBottom="4dp"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:textColor="@color/background"
+        android:text="Choose Token"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:paddingBottom="4dp"
+            app:typefaceAsset="@string/simplonMonoRegular"
+            android:id="@+id/tv_address_to"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/background"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner">
+
+    </android.support.v7.widget.AppCompatSpinner>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp">
+
+        <com.pixelplex.qtum.utils.FontButton
+            android:id="@+id/bt_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/cancel"
+            android:layout_weight="1"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/button_text"/>
+
+        <com.pixelplex.qtum.utils.FontButton
+            android:id="@+id/bt_restore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/transfer"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/button_text"/>
+    </LinearLayout>
+
+</LinearLayout>

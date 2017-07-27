@@ -49,9 +49,14 @@ public abstract class WalletFragment extends BaseFragment implements WalletFragm
     //HEADER
     @BindView(R.id.balance_view) protected FrameLayout balanceView;
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout collapsingToolbar;
-    @OnClick(R.id.ll_receive)
+    @OnClick({R.id.ll_receive, R.id.iv_receive})
     public void onReceiveClick(){
-        mWalletFragmentPresenter.onReceiveClick();
+        getPresenter().onReceiveClick();
+    }
+
+    @OnClick(R.id.iv_choose_address)
+    public void onChooseAddressClick(){
+        getPresenter().onChooseAddressClick();
     }
 
     @OnClick({R.id.bt_qr_code})

@@ -7,4 +7,5 @@ interface WalletFragmentPresenter {
     void sharePubKey();
     void openTransactionFragment(int position);
     void onLastItem(int currentItemCount);
+    void onChooseAddressClick();
 }

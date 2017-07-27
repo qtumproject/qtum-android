@@ -3,25 +3,18 @@ package com.pixelplex.qtum.ui.fragment.AddressesFragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import org.bitcoinj.crypto.DeterministicKey;
+
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
+import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressesWithBalanceAdapter;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
-import com.pixelplex.qtum.utils.CurrentNetParams;
-import java.util.List;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public abstract class AddressesFragment extends BaseFragment implements AddressesFragmentView, OnAddressClickListener {
@@ -32,6 +25,7 @@ public abstract class AddressesFragment extends BaseFragment implements Addresse
     @BindView(R.id.recycler_view)
     protected
     RecyclerView mRecyclerView;
+
 
     @OnClick({R.id.ibt_back})
     public void onClick(View view) {

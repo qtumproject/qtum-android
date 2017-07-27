@@ -19,7 +19,6 @@
             android:background="@color/background" />
 
         <LinearLayout
-            android:id="@+id/ll_receive"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/colorPrimary"
@@ -29,6 +28,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:id="@+id/iv_receive"
                 android:layout_gravity="center"
                 android:layout_marginStart="8dp"
                 android:paddingEnd="6dp"
@@ -38,6 +38,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:weightSum="2"
+                android:id="@+id/ll_receive"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
@@ -62,6 +63,17 @@
                     android:textColor="@color/background"
                     app:typefaceAsset="@string/simplonMonoMedium" />
             </LinearLayout>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/iv_choose_address"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:paddingEnd="6dp"
+                android:tint="@color/background"
+                app:srcCompat="@drawable/ic_createnew" />
+
         </LinearLayout>
 
         <TextView

@@ -17,6 +17,7 @@ import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
+import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressListFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
@@ -163,14 +164,20 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 
     private void openQrCodeFragment(){
         OPEN_QR_CODE_FRAGMENT_FLAG = false;
-        SendFragment sendFragment = (SendFragment) SendFragment.newInstance(true,null,null, null,getView().getContext());
+        SendFragment sendFragment = (SendFragment) SendFragment.newInstance(true,null,null, null,mContext);
         getView().openRootFragment(sendFragment);
         getView().getMainActivity().setRootFragment(sendFragment);
     }
 
     public void onReceiveClick(){
-        BaseFragment receiveFragment = ReceiveFragment.newInstance(getView().getContext(),null);
+        BaseFragment receiveFragment = ReceiveFragment.newInstance(mContext,null);
         getView().openFragment(receiveFragment);
+    }
+
+    @Override
+    public void onChooseAddressClick() {
+        BaseFragment addressListFragment = AddressListFragment.newInstance(mContext);
+        getView().openFragment(addressListFragment);
     }
 
     @Override

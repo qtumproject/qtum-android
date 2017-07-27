@@ -199,5 +199,8 @@
     <string name="abi_doesnt_match_erc20_standard">ABI doesn\'t match ERC20 standard</string>
     <string name="token_with_same_address_already_exists">Token with same address already exists</string>
     <string name="invalid_token_address">Invalid Token Address</string>
+    <string name="address_list">Address List</string>
+    <string name="transfer_balance">Transfer Balance</string>
+    <string name="transfer">Transfer</string>
 
 </resources>
