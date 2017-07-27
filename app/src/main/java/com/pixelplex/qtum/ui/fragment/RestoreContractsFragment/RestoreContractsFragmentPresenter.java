@@ -140,8 +140,18 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
 
                         }
                         String name = mRestoreFile.getName();
-                        String fileSize = String.valueOf((int) Math.ceil(mRestoreFile.length() / 1024.0)) + " Kb";
-                        getView().setFile(name, fileSize);
+                        if(getFileExtension(name).equals(".json")) {
+                            String fileSize = String.valueOf((int) Math.ceil(mRestoreFile.length() / 1024.0)) + " Kb";
+                            getView().setFile(name, fileSize);
+                        } else {
+                            getView().setAlertDialog(mContext.getString(R.string.something_went_wrong), "", "OK", BaseFragment.PopUpType.error, new BaseFragment.AlertDialogCallBack() {
+                                @Override
+                                public void onOkClick() {
+                                    mRestoreFile.delete();
+                                    mRestoreFile = null;
+                                }
+                            });
+                        }
                     }
                 }
             }
@@ -157,6 +167,11 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                 }
             }
         });
+    }
+
+    private String getFileExtension(String mystr) {
+        int index = mystr.indexOf('.');
+        return index == -1? null : mystr.substring(index);
     }
 
     public void checkPermissionAndOpenFileDialog(){

@@ -9,7 +9,6 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
-import com.google.zxing.common.StringUtils;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.datastorage.TinyDB;
@@ -39,7 +38,11 @@ class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
 
     private BackupContractsFragmentView mBackupContractsFragmentView;
     private Context mContext;
-    private boolean BACK_UP_FLAG = false;
+    private boolean PERMISION_GRANT = false;
+
+    String STATE;
+    private final String CHECK_PERMISSION_AND_BACKUP = "check_permission_and_backup";
+    private final String CHECK_PERMISSION_AND_CREATE = "check_permission_and_create";
 
     BackupContractsFragmentPresenter(BackupContractsFragmentView backupContractsFragmentView){
         mBackupContractsFragmentView = backupContractsFragmentView;
@@ -56,19 +59,19 @@ class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
     }
 
     void onBackUpClick(){
-        checkPermissionAndCreateFile();
+        checkPermissionAndBackupFile();
     }
 
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        createBackUpFile();
+        checkPermissionAndCreateFile();
         getView().getMainActivity().addPermissionResultListener(new MainActivity.PermissionsResultListener() {
             @Override
             public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
                 if(requestCode == WRITE_EXTERNAL_STORAGE_CODE) {
                     if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                        BACK_UP_FLAG = true;
+                        PERMISION_GRANT = true;
                     }
                 }
             }
@@ -78,9 +81,16 @@ class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
     @Override
     public void onResume(Context context) {
         super.onResume(context);
-        if(BACK_UP_FLAG){
-            backupFile();
-            BACK_UP_FLAG = false;
+        if(PERMISION_GRANT){
+            switch (STATE){
+                case CHECK_PERMISSION_AND_BACKUP:
+                    createAndBackUpFile();
+                    break;
+                case CHECK_PERMISSION_AND_CREATE:
+                    createBackUpFile();
+                    break;
+            }
+            PERMISION_GRANT = false;
         }
     }
 
@@ -95,14 +105,20 @@ class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
 
     private void checkPermissionAndCreateFile(){
         if(getView().getMainActivity().checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            backupFile();
+            createBackUpFile();
         } else {
+            STATE = CHECK_PERMISSION_AND_CREATE;
             getView().getMainActivity().loadPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE_CODE);
         }
     }
 
-    private void backupFile(){
-        chooseShareMethod();
+    private void checkPermissionAndBackupFile(){
+        if(getView().getMainActivity().checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            chooseShareMethod();
+        } else {
+            STATE = CHECK_PERMISSION_AND_BACKUP;
+            getView().getMainActivity().loadPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE_CODE);
+        }
     }
 
     private void createBackUpFile(){
@@ -140,6 +156,47 @@ class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
                         getView().dismissProgressDialog();
                         getView().setUpFile(backUpFileSize);
                         mBackUpFile = backupFile;
+                    }
+                });
+
+    }
+
+    private void createAndBackUpFile(){
+        getView().setProgressDialog();
+        createBackupData().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(String backupData) {
+                        String fileName = "qtum_backup_file.json";
+                        File backupFile = new File(Environment.getExternalStorageDirectory(),fileName);
+
+                        try {
+                            FileOutputStream fOut;
+                            fOut = new FileOutputStream(backupFile, true);
+                            OutputStreamWriter osw = new OutputStreamWriter(fOut);
+                            osw.write(backupData);
+                            osw.flush();
+                            osw.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        String backUpFileSize = String.valueOf((int)Math.ceil(backupFile.length()/1024.0)) + " Kb";
+                        getView().dismissProgressDialog();
+                        getView().setUpFile(backUpFileSize);
+                        mBackUpFile = backupFile;
+                        chooseShareMethod();
                     }
                 });
 
