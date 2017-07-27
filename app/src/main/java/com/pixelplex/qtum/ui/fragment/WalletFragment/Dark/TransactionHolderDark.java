@@ -49,8 +49,7 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
     void bindTransactionData(History history) {
 
         if(history.getBlockTime() != null) {
-
-            mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime()));
+            mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime()*1000L));
         } else {
             mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.not_confirmed));
         }
