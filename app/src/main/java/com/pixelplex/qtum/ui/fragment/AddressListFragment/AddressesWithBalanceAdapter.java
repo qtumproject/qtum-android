@@ -5,22 +5,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pixelplex.qtum.model.DeterministicKeyWithBalance;
+import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.utils.CurrentNetParams;
 
 import org.bitcoinj.crypto.DeterministicKey;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 
 public class AddressesWithBalanceAdapter extends RecyclerView.Adapter<AddressWithBalanceHolder> {
 
-    protected List<DeterministicKey> mDeterministicKeys;
-    protected String mAddress;
+    protected List<DeterministicKeyWithBalance> mDeterministicKeyWithBalance;
     protected OnAddressClickListener listener;
     private int mResID;
 
-    public AddressesWithBalanceAdapter(List<DeterministicKey> deterministicKeys, OnAddressClickListener listener, int resId) {
-        mDeterministicKeys = deterministicKeys;
+    public AddressesWithBalanceAdapter(List<DeterministicKeyWithBalance> deterministicKeys, OnAddressClickListener listener, int resId) {
+        mDeterministicKeyWithBalance = deterministicKeys;
         this.listener = listener;
         mResID = resId;
     }
@@ -34,12 +37,11 @@ public class AddressesWithBalanceAdapter extends RecyclerView.Adapter<AddressWit
 
     @Override
     public void onBindViewHolder(AddressWithBalanceHolder holder, int position) {
-        mAddress = mDeterministicKeys.get(position).toAddress(CurrentNetParams.getNetParams()).toString();
-        holder.bindAddress(mAddress);
+        holder.bindDeterministicKeyWithBalance(mDeterministicKeyWithBalance.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mDeterministicKeys.size();
+        return mDeterministicKeyWithBalance.size();
     }
 }

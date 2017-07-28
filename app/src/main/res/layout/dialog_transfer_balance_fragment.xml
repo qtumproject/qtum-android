@@ -3,7 +3,7 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:orientation="vertical"
-              android:background="@color/colorPrimary"
+              android:background="@color/background"
               android:layout_height="match_parent">
 
     <com.pixelplex.qtum.utils.FontTextView
@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:theme="@style/InputText"
         android:textColorHint="@color/background">
 
         <android.support.design.widget.TextInputEditText
@@ -41,7 +42,7 @@
         android:paddingBottom="4dp"
         app:typefaceAsset="@string/simplonMonoRegular"
         android:textColor="@color/background"
-        android:text="Choose Token"/>
+        android:text="@string/to"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,9 +62,9 @@
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatSpinner
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner">
+        android:id="@+id/spinner_transfer">
 
     </android.support.v7.widget.AppCompatSpinner>
 

@@ -2,12 +2,15 @@ package com.pixelplex.qtum.ui.fragment.AddressListFragment.Dark;
 
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.model.DeterministicKeyWithBalance;
+import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressListFragment;
 import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressesWithBalanceAdapter;
 import com.pixelplex.qtum.ui.fragment.AddressListFragment.OnAddressClickListener;
 
 import org.bitcoinj.crypto.DeterministicKey;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class AddressListFragmentDark extends AddressListFragment{
@@ -18,8 +21,8 @@ public class AddressListFragmentDark extends AddressListFragment{
     }
 
     @Override
-    public void updateAddressList(List<DeterministicKey> deterministicKeys, OnAddressClickListener listener) {
-        mAddressesWithBalanceAdapter = new AddressesWithBalanceAdapter(deterministicKeys, listener,R.layout.item_address);
+    public void updateAddressList(List<DeterministicKeyWithBalance> deterministicKeyWithBalance, OnAddressClickListener listener) {
+        mAddressesWithBalanceAdapter = new AddressesWithBalanceAdapter(deterministicKeyWithBalance, listener,R.layout.item_address);
         mRecyclerView.setAdapter(mAddressesWithBalanceAdapter);
     }
 }

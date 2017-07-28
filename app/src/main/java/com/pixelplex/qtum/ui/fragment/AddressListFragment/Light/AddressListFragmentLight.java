@@ -2,6 +2,7 @@ package com.pixelplex.qtum.ui.fragment.AddressListFragment.Light;
 
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.model.DeterministicKeyWithBalance;
 import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressListFragment;
 import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressesWithBalanceAdapter;
 import com.pixelplex.qtum.ui.fragment.AddressListFragment.OnAddressClickListener;
@@ -18,7 +19,7 @@ public class AddressListFragmentLight extends AddressListFragment{
     }
 
     @Override
-    public void updateAddressList(List<DeterministicKey> deterministicKeys, OnAddressClickListener listener) {
+    public void updateAddressList(List<DeterministicKeyWithBalance> deterministicKeys, OnAddressClickListener listener) {
         mAddressesWithBalanceAdapter = new AddressesWithBalanceAdapter(deterministicKeys, listener, R.layout.item_address_light);
         mRecyclerView.setAdapter(mAddressesWithBalanceAdapter);
     }

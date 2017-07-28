@@ -6,7 +6,9 @@ import android.widget.ProgressBar;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.model.DeterministicKeyWithBalance;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
+import com.pixelplex.qtum.utils.CurrentNetParams;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import java.math.BigDecimal;
@@ -36,7 +38,7 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.spinner)
     ProgressBar mSpinner;
 
-    List<UnspentOutput> mUnspentOutputList;
+    DeterministicKeyWithBalance mDeterministicKeyWithBalance;
 
 
     protected AddressWithBalanceHolder(View itemView, final OnAddressClickListener listener) {
@@ -44,19 +46,20 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onAddressClick();
+                listener.onItemClickClick(mDeterministicKeyWithBalance);
             }
         });
         ButterKnife.bind(this, itemView);
     }
 
-    public void bindAddress(String address){
-        mTextViewAddress.setText(address);
+    public void bindDeterministicKeyWithBalance(final DeterministicKeyWithBalance deterministicKeyWithBalance){
+        mDeterministicKeyWithBalance = deterministicKeyWithBalance;;
+        mTextViewAddress.setText(deterministicKeyWithBalance.getAddress());
         mSpinner.setVisibility(View.VISIBLE);
         mTextViewAddressBalance.setVisibility(View.GONE);
         mTextViewSymbol.setVisibility(View.GONE);
 
-        QtumService.newInstance().getUnspentOutputs(address)
+        QtumService.newInstance().getUnspentOutputs(deterministicKeyWithBalance.getAddress())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<UnspentOutput>>() {
@@ -84,9 +87,7 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
                                 return unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? -1 : 0;
                             }
                         });
-
-                        mUnspentOutputList = unspentOutputs;
-
+                        deterministicKeyWithBalance.setUnspentOutputList(unspentOutputs);
                         BigDecimal balance = new BigDecimal("0");
                         BigDecimal amount;
                         for(UnspentOutput unspentOutput : unspentOutputs){
