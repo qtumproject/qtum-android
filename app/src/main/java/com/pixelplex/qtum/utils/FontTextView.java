@@ -3,9 +3,11 @@ package com.pixelplex.qtum.utils;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.support.annotation.IntDef;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 
 import com.pixelplex.qtum.R;
 
@@ -44,4 +46,5 @@ public class FontTextView extends android.support.v7.widget.AppCompatTextView {
             }
         }
     }
+
 }

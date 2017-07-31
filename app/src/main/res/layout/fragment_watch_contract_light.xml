@@ -70,6 +70,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="left|center_vertical"
                 android:hint="Contract Name"
+                android:inputType="text"
+                android:maxLines="1"
                 android:imeOptions="actionNext"
                 android:textColor="@color/bottom_nav_bar_text_color_light_alpha_50"/>
         </android.support.design.widget.TextInputLayout>
@@ -91,6 +93,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Contract Address"
                 android:gravity="left|center_vertical"
+                android:inputType="text"
+                android:maxLines="1"
                 android:imeOptions="actionNext"
                 android:textColor="@color/bottom_nav_bar_text_color_light_alpha_50"/>
         </android.support.design.widget.TextInputLayout>
@@ -141,6 +145,9 @@
             android:layout_marginTop="8dp"
             android:layout_height="128dp"
             android:focusableInTouchMode="true"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:background="@drawable/background_et_import_wallet_light"
             android:gravity="left|top"
             android:padding="6dp"

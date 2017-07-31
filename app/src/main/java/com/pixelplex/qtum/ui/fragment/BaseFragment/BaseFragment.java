@@ -205,6 +205,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         return inflater.inflate(getLayout(), container, false);
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
@@ -274,7 +275,11 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void dismiss(){
         if(!getMainActivity().isFinishing()) {
-            getFragmentManager().beginTransaction().remove(this).commit();
+            try {
+                getFragmentManager().beginTransaction().remove(this).commit();
+            }catch (Exception e){
+
+            }
         }
     }
 

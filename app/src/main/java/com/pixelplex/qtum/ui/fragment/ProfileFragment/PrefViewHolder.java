@@ -1,19 +1,16 @@
 package com.pixelplex.qtum.ui.fragment.ProfileFragment;
 
-
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
-
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.utils.FontTextView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class PrefViewHolder extends RecyclerView.ViewHolder {
 
@@ -60,11 +57,13 @@ public class PrefViewHolder extends RecyclerView.ViewHolder {
                     listener.onSwitchChange(setting.getTitleRes(), b);
                 }
             });
+            mSwitch.setChecked(QtumSharedPreference.getInstance().isTouchIdEnable(title.getContext()));
         }else{
             mSwitch.setVisibility(View.INVISIBLE);
             arrow.setVisibility(View.VISIBLE);
         }
         title.setText(setting.getTitleRes());
+
         icon.setImageResource(setting.getImageRes());
         this.setting = setting;
     }

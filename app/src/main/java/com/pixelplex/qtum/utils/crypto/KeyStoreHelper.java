@@ -43,14 +43,14 @@ public class KeyStoreHelper {
         if (!isSigningKey(alias)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 createKeysM(alias, false);
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            } else {
                 createKeysJBMR2(context, alias);
             }
         }
     }
 
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     static void createKeysJBMR2(Context context, String alias) throws NoSuchProviderException,
             NoSuchAlgorithmException, InvalidAlgorithmParameterException {
 
@@ -109,7 +109,7 @@ public class KeyStoreHelper {
      * on pre-JBMR2 returns true always.
      */
     public static boolean isSigningKey(String alias) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
                 KeyStore keyStore = KeyStore.getInstance(SecurityConstants.KEYSTORE_PROVIDER_ANDROID_KEYSTORE);
                 keyStore.load(null);
@@ -127,7 +127,7 @@ public class KeyStoreHelper {
      * Returns the private key signature on JBMR2+ or else null.
      */
     public static String getSigningKey(String alias) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Certificate cert = getPrivateKeyEntry(alias).getCertificate();
             if (cert == null) {
                 return null;

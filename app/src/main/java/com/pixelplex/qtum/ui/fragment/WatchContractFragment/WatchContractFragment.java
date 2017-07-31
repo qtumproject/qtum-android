@@ -95,6 +95,9 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
                 .build();
         mRecyclerViewTemplates.setLayoutManager(chipsLayoutManager);
 
+        mEditTextABIInterface.setHorizontallyScrolling(false);
+        mEditTextABIInterface.setMaxLines(Integer.MAX_VALUE);
+
         mEditTextABIInterface.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

@@ -16,7 +16,7 @@ class LanguageFragmentInteractor {
     LanguageFragmentInteractor(Context context){
         mContext = context;
         mLanguagesList = new ArrayList<>();
-        mLanguagesList.add(new Pair<>("default", "English"));
+        mLanguagesList.add(new Pair<>("us", "English"));
         mLanguagesList.add(new Pair<>("zh", "Chinese"));
     }
 

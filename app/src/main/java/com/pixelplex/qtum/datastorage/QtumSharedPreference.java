@@ -96,7 +96,7 @@ public class QtumSharedPreference {
     }
 
     public String getLanguage(Context context) {
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_LANGUAGE, "default");
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_LANGUAGE, "us");
     }
 
     public void saveLanguage(Context context, String language) {
