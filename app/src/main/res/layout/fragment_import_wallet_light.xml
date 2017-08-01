@@ -85,7 +85,7 @@
         android:gravity="center"
         android:layout_height="wrap_content"
         app:typeface="@string/proximaNovaSemibold"
-        android:background="@drawable/btn_sea_corner_background_light"
+        android:background="@drawable/btn_sea_corner_background_light_selector"
         android:text="@string/import_button"
         android:textAllCaps="true"
         android:enabled="false"

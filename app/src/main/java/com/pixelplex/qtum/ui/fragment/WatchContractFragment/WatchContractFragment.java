@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.WatchContractFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +18,7 @@ import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontButton;
+import com.pixelplex.qtum.utils.FontManager;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import java.util.List;
@@ -32,17 +34,13 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
 
     private boolean mIsToken;
 
-    @BindView(R.id.et_contract_name)
-    TextInputEditText mEditTextContractName;
-    @BindView(R.id.et_contract_address)
-    TextInputEditText mEditTextContractAddress;
-    @BindView(R.id.et_abi_interface)
-    EditText mEditTextABIInterface;
-    @BindView(R.id.tv_toolbar_watch)
-    FontTextView mTextViewToolbar;
-    @BindView(R.id.rv_templates)
-    protected
-    RecyclerView mRecyclerViewTemplates;
+    @BindView(R.id.et_contract_name) protected TextInputEditText mEditTextContractName;
+    @BindView(R.id.et_contract_address) protected TextInputEditText mEditTextContractAddress;
+    @BindView(R.id.et_abi_interface) protected EditText mEditTextABIInterface;
+    @BindView(R.id.tv_toolbar_watch) protected FontTextView mTextViewToolbar;
+    @BindView(R.id.rv_templates) protected RecyclerView mRecyclerViewTemplates;
+    @BindView(R.id.til_contract_name) protected TextInputLayout mTilContractName;
+    @BindView(R.id.til_contract_address) protected TextInputLayout mTilContractAddress;
 
     @BindView(R.id.bt_ok)
     FontButton mButtonConfirm;

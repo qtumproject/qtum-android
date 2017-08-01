@@ -40,6 +40,7 @@
     <color name="selected_paginator_light">#99536173</color>
     <color name="default_paginator_light">#4d536173</color>
     <color name="switch_on">#36b9c8</color>
+    <color name="switch_on_alpha5">#8036b9c8</color>
     <color name="qr_code_background">#edf6f8</color>
     <color name="qr_code_tint_color">#3c87b9</color>
 

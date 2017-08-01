@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="@color/bottom_nav_bar_color_light"
-            android:padding="16dp"
+            android:padding="8dp"
             android:id="@+id/ll_footer">
 
             <com.pixelplex.qtum.utils.FontTextView

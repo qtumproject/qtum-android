@@ -24,8 +24,7 @@
                 android:layout_width="match_parent"
                 android:gravity="left"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
-                android:textColor="@color/bottom_nav_bar_text_color_light_alpha_50"/>
+                android:imeOptions="actionNext" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatCheckBox
