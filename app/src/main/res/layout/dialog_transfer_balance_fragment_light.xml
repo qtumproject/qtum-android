@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:orientation="vertical"
-              android:background="@color/colorPrimary"
-              android:padding="16dp"
-              android:clickable="true"
-              android:focusableInTouchMode="true"
-              android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_progress_bar"
+    android:padding="16dp"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="match_parent">
 
     <com.pixelplex.qtum.utils.FontTextView
         android:layout_width="wrap_content"
@@ -18,15 +18,14 @@
         android:text="@string/transfer_balance"
         android:textColor="@color/background"
         android:textSize="18sp"
-        app:editTextTypeface="@string/simplonMonoMedium"/>
+        app:typefaceAsset="@string/proximaNovaSemibold"/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/til_amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:theme="@style/InputTextBlack"
-        android:textColorHint="@color/background">
+        android:theme="@style/InputTextParameter">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/et_amount"
@@ -38,7 +37,7 @@
             android:gravity="left"
             android:hint="@string/amount"
             android:inputType="numberDecimal"
-            android:textColor="@color/background"/>
+            android:textColor="@color/black"/>
     </android.support.design.widget.TextInputLayout>
 
     <com.pixelplex.qtum.utils.FontTextView
@@ -46,8 +45,8 @@
         android:layout_height="wrap_content"
         android:textSize="12dp"
         android:paddingBottom="4dp"
-        app:typefaceAsset="@string/simplonMonoRegular"
-        android:textColor="@color/background"
+        app:typefaceAsset="@string/proximaNovaRegular"
+        android:textColor="@color/bottom_nav_bar_text_color_light_alpha_50"
         android:text="@string/to"/>
 
     <LinearLayout
@@ -57,13 +56,13 @@
 
         <com.pixelplex.qtum.utils.FontTextView
             android:paddingBottom="4dp"
-            app:typefaceAsset="@string/simplonMonoRegular"
+            app:typefaceAsset="@string/proximaNovaSemibold"
             android:id="@+id/tv_address_to"
             android:layout_width="0dp"
             android:maxLines="1"
             android:ellipsize="middle"
             android:layout_height="wrap_content"
-            android:textColor="@color/background"
+            android:textColor="@color/black"
             android:gravity="left"
             android:layout_weight="1"
             android:textSize="16sp"/>
@@ -73,13 +72,14 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="4dp"
-        android:background="@color/background"/>
+        android:background="@color/bottom_nav_bar_text_color_light_alpha_50"/>
 
     <android.support.v7.widget.AppCompatSpinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@color/background"
+        android:backgroundTint="@color/bottom_nav_bar_text_color_light_alpha_50"
+        android:theme="@style/LightSpinner"
         android:id="@+id/spinner_transfer">
 
     </android.support.v7.widget.AppCompatSpinner>
@@ -87,40 +87,43 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/background"/>
+        android:background="@color/bottom_nav_bar_text_color_light_alpha_50"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:weightSum="2"
         android:layout_marginBottom="16dp">
 
         <com.pixelplex.qtum.utils.FontButton
             android:id="@+id/bt_back"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:gravity="center"
-            app:typeface="@string/simplonMonoRegular"
-            android:background="?attr/selectableItemBackground"
+            android:layout_marginEnd="4dp"
+            app:typeface="@string/proximaNovaSemibold"
+            android:background="@drawable/btn_gray_corner_background_light"
             android:text="@string/cancel"
             android:layout_weight="1"
-            android:textAllCaps="true"
-            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:textColor="@color/bottom_nav_bar_text_color_light"
             android:textSize="@dimen/button_text"/>
 
         <com.pixelplex.qtum.utils.FontButton
             android:id="@+id/bt_transfer"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:gravity="center"
+            android:layout_marginStart="4dp"
             android:layout_weight="1"
-            app:typeface="@string/simplonMonoRegular"
-            android:background="?attr/selectableItemBackground"
+            app:typeface="@string/proximaNovaSemibold"
+            android:background="@drawable/btn_sea_corner_background_light"
             android:text="@string/transfer"
-            android:textAllCaps="true"
-            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
             android:textSize="@dimen/button_text"/>
     </LinearLayout>
 

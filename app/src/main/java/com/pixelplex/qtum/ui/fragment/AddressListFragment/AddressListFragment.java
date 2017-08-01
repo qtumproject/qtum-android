@@ -1,24 +1,39 @@
 package com.pixelplex.qtum.ui.fragment.AddressListFragment;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.model.DeterministicKeyWithBalance;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.utils.CurrentNetParams;
+import com.pixelplex.qtum.utils.FontTextView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public abstract class AddressListFragment extends BaseFragment implements AddressListFragmentView {
+public abstract class AddressListFragment extends BaseFragment implements AddressListFragmentView, OnAddressClickListener {
 
     @BindView(R.id.recycler_view)
     protected
     RecyclerView mRecyclerView;
+
+    protected AlertDialog mTransferDialog;
+
 
     protected AddressesWithBalanceAdapter mAddressesWithBalanceAdapter;
 
@@ -54,4 +69,5 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
     public void initializeViews() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
+
 }

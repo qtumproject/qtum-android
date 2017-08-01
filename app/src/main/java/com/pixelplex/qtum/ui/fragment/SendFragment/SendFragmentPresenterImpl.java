@@ -250,7 +250,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
 
             if((TextUtils.isEmpty(amount)) || Float.valueOf(amount) <= 0){
                 getView().dismissProgressDialog();
-                getView().setAlertDialog(mContext.getString(R.string.error), "Transaction amount can't be zero. Please edit your transaction and try again", "Ok", BaseFragment.PopUpType.error);
+                getView().setAlertDialog(mContext.getString(R.string.error), mContext.getResources().getString(R.string.transaction_amount_cant_be_zero), "Ok", BaseFragment.PopUpType.error);
                 return;
             }
 
