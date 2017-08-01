@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:id="@+id/root_layout"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:layout_height="56dp">
+
+    <com.pixelplex.qtum.utils.FontTextView
+        android:id="@+id/address_name"
+        android:textSize="16sp"
+        android:textColor="@color/bottom_nav_bar_text_color_light"
+        android:text="@string/token_name"
+        android:gravity="left"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:padding="16dp"
+        app:typefaceAsset="@string/proximaNovaRegular"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toStartOf="@+id/ll_balance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <View
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:alpha=".1"
+        android:background="@color/bottom_nav_bar_text_color_light"/>
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:minWidth="30dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal">
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/address_balance"
+            android:textSize="14sp"
+            android:textColor="@color/bottom_nav_bar_text_color_light"
+            app:typefaceAsset="@string/proximaNovaSemibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/address_symbol"
+            android:textSize="14sp"
+            android:textColor="@color/bottom_nav_bar_text_color_light"
+            app:typefaceAsset="@string/proximaNovaSemibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</RelativeLayout>

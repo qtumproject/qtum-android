@@ -27,6 +27,17 @@
         <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
 
+    <style name="InputTextBlack" parent="Widget.Design.TextInputLayout">
+        <item name="colorControlNormal">@color/background</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">@color/background</item>
+        <item name="colorPrimary">@color/background</item>
+        <item name="colorPrimaryDark">@color/background</item>
+        <item name="colorAccent">@color/background</item>
+        <item name="colorControlActivated">@color/background</item>
+        <item name="colorControlHighlight">@color/background</item>
+    </style>
+
     <style name="LogoutDialogTitle" parent="@android:style/TextAppearance.DialogWindowTitle">
         <item name="android:gravity">left</item>
     </style>

@@ -60,7 +60,6 @@
 
     <LinearLayout
         android:layout_marginTop="8dp"
-        android:id="@+id/ll_receive"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:clickable="true"
@@ -70,6 +69,7 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_gravity="center"
+            android:id="@+id/iv_receive"
             android:paddingEnd="6dp"
             android:tint="@color/white"
             app:srcCompat="@drawable/ic_plus_light" />
@@ -77,6 +77,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:weightSum="2"
+            android:id="@+id/ll_receive"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -103,5 +104,13 @@
                 android:textColor="@color/white"
                 app:typefaceAsset="@string/proximaNovaSemibold"/>
         </LinearLayout>
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:id="@+id/iv_choose_address"
+            android:layout_gravity="center"
+            android:paddingEnd="6dp"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_plus_light" />
     </LinearLayout>
 </LinearLayout>
