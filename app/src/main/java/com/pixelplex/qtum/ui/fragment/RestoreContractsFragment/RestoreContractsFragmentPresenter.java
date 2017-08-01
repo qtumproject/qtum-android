@@ -140,6 +140,18 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
 
                         }
                         String name = mRestoreFile.getName();
+                        if(getFileExtension(name)!=null){
+                            if(!getFileExtension(name).equals(".json")) {
+                                getView().setAlertDialog(mContext.getString(R.string.something_went_wrong), "", "OK", BaseFragment.PopUpType.error, new BaseFragment.AlertDialogCallBack() {
+                                    @Override
+                                    public void onOkClick() {
+                                        mRestoreFile.delete();
+                                        mRestoreFile = null;
+                                    }
+                                });
+                                return;
+                            }
+                        }
                         String fileSize = String.valueOf((int) Math.ceil(mRestoreFile.length() / 1024.0)) + " Kb";
                         getView().setFile(name, fileSize);
                     }
@@ -157,6 +169,11 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                 }
             }
         });
+    }
+
+    private String getFileExtension(String mystr) {
+        int index = mystr.indexOf('.');
+        return index == -1? null : mystr.substring(index);
     }
 
     public void checkPermissionAndOpenFileDialog(){
@@ -229,81 +246,86 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
     public void onRestoreClick(final boolean restoreTemplates, final boolean restoreContracts, final boolean restoreTokens) {
         if (restoreTemplates || restoreContracts || restoreTokens) {
             if (mRestoreFile != null) {
-                Gson gson = new Gson();
-                mBackup = gson.fromJson(readFile(mRestoreFile), Backup.class);
-                int templatesCountInt = 0;
-                int contractsCountInt = 0;
-                int tokensCountInt = 0;
+                try {
+                    Gson gson = new Gson();
+                    mBackup = gson.fromJson(readFile(mRestoreFile), Backup.class);
+                    int templatesCountInt = 0;
+                    int contractsCountInt = 0;
+                    int tokensCountInt = 0;
 
-                if(restoreTemplates){
-                    templatesCountInt = mBackup.getTemplates().size();
-                }
-                if(restoreContracts) {
-                    for (ContractJSON contractJSON : mBackup.getContracts()) {
-                        if (!contractJSON.getType().equals("token")) {
-                            contractsCountInt++;
+                    if (restoreTemplates) {
+                        templatesCountInt = mBackup.getTemplates().size();
+                    }
+                    if (restoreContracts) {
+                        for (ContractJSON contractJSON : mBackup.getContracts()) {
+                            if (!contractJSON.getType().equals("token")) {
+                                contractsCountInt++;
+                            }
                         }
                     }
-                }
-                if(restoreTokens) {
-                    for (ContractJSON contractJSON : mBackup.getContracts()) {
-                        if (contractJSON.getType().equals("token")) {
-                            tokensCountInt++;
+                    if (restoreTokens) {
+                        for (ContractJSON contractJSON : mBackup.getContracts()) {
+                            if (contractJSON.getType().equals("token")) {
+                                tokensCountInt++;
+                            }
                         }
                     }
-                }
 
-                String templatesCount = String.valueOf(templatesCountInt);
-                String contractsCount = String.valueOf(contractsCountInt);
-                String tokensCount = String.valueOf(tokensCountInt);
+                    String templatesCount = String.valueOf(templatesCountInt);
+                    String contractsCount = String.valueOf(contractsCountInt);
+                    String tokensCount = String.valueOf(tokensCountInt);
 
-                showRestoreDialogFragment(mBackup.getDateCreate(), mBackup.getFileVersion(), templatesCount, contractsCount, tokensCount, new RestoreDialogCallBack() {
-                    @Override
-                    public void onRestoreClick() {
-                        getView().setProgressDialog();
-                        createBackupData(restoreTemplates, restoreContracts, restoreTokens).subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Observer<Boolean>() {
-                                    @Override
-                                    public void onCompleted() {
+                    showRestoreDialogFragment(mBackup.getDateCreate(), mBackup.getFileVersion(), templatesCount, contractsCount, tokensCount, new RestoreDialogCallBack() {
+                        @Override
+                        public void onRestoreClick() {
+                            getView().setProgressDialog();
+                            createBackupData(restoreTemplates, restoreContracts, restoreTokens).subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new Observer<Boolean>() {
+                                        @Override
+                                        public void onCompleted() {
 
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-
-                                    @Override
-                                    public void onNext(Boolean aBoolean) {
-                                        mRestoreDialog.dismiss();
-                                        if(aBoolean) {
-                                            getView().setAlertDialog(mContext.getString(R.string.restored_successfully), "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
-                                                @Override
-                                                public void onOkClick() {
-                                                    FragmentManager fm = getView().getFragment().getFragmentManager();
-                                                    int count = fm.getBackStackEntryCount() - 2;
-                                                    for (int i = 0; i < count; ++i) {
-                                                        fm.popBackStack();
-                                                    }
-                                                }
-                                            });
-                                        }else {
-                                            getView().setAlertDialog(mContext.getString(R.string.something_went_wrong), "", "OK", BaseFragment.PopUpType.error, new BaseFragment.AlertDialogCallBack() {
-                                                @Override
-                                                public void onOkClick() {
-                                                    FragmentManager fm = getView().getFragment().getFragmentManager();
-                                                    int count = fm.getBackStackEntryCount() - 2;
-                                                    for (int i = 0; i < count; ++i) {
-                                                        fm.popBackStack();
-                                                    }
-                                                }
-                                            });
                                         }
-                                    }
-                                });
-                    }
-                });
+
+                                        @Override
+                                        public void onError(Throwable e) {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(Boolean aBoolean) {
+                                            mRestoreDialog.dismiss();
+                                            if (aBoolean) {
+                                                getView().setAlertDialog(mContext.getString(R.string.restored_successfully), "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
+                                                    @Override
+                                                    public void onOkClick() {
+                                                        FragmentManager fm = getView().getFragment().getFragmentManager();
+                                                        int count = fm.getBackStackEntryCount() - 2;
+                                                        for (int i = 0; i < count; ++i) {
+                                                            fm.popBackStack();
+                                                        }
+                                                    }
+                                                });
+                                            } else {
+                                                getView().setAlertDialog(mContext.getString(R.string.something_went_wrong), "", "OK", BaseFragment.PopUpType.error, new BaseFragment.AlertDialogCallBack() {
+                                                    @Override
+                                                    public void onOkClick() {
+                                                        onDeleteFileClick();
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                        }
+                    });
+                } catch(Exception e) {
+                    getView().setAlertDialog(mContext.getString(R.string.something_went_wrong), "", "OK", BaseFragment.PopUpType.error, new BaseFragment.AlertDialogCallBack() {
+                        @Override
+                        public void onOkClick() {
+                            onDeleteFileClick();
+                        }
+                    });
+                }
             }
         }
     }

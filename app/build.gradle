@@ -33,7 +33,7 @@ android {
     }
     def appName = "QTUM"
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '25.0.3'
     def versionPropertiesFile = file('version.properties')
     def autoVersionCode
     if (versionPropertiesFile.canRead()) {

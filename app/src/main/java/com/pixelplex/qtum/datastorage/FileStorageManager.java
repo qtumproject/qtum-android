@@ -325,7 +325,7 @@ public class FileStorageManager {
 
     private boolean isDefaultContractsMigrates(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return BuildConfig.VERSION_CODE == prefs.getInt(prefMigrationBuildVersion, 0);
+        return 0 != prefs.getInt(prefMigrationBuildVersion, 0);
     }
 
     private boolean commitDefaultContractsMigration(Context context) {

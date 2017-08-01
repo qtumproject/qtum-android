@@ -8,14 +8,8 @@
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
-    <string name="title_activity_create_wallet">Create Wallet</string>
-    <string name="create_wallet">Create Wallet</string>
     <string name="wallet_name">Wallet Name</string>
-    <string name="password">Password</string>
-    <string name="repeat_password">Repeat Password</string>
-    <string name="title_activity_my_wallet">My wallet</string>
 
-    <string name="action_settings">Settings</string>
     <string name="my_wallet">My wallet</string>
     <string name="public_key">Public Key</string>
     <string name="qtum">QTUM</string>
@@ -24,22 +18,18 @@
     <string name="activity">Activity</string>
     <string name="receiver_s_address">Receiver\'s Address</string>
     <string name="amount">Amount</string>
-    <string name="pin">PIN</string>
     <string name="available_balance">"Available Balance"</string>
-    <string name="total_balance">"Total Balance "</string>
     <string name="copy_wallet_address">Copy Wallet Address</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="enter_name">Enter Name</string>
     <string name="profile">Profile</string>
     <string name="wallet">Wallet</string>
-    <string name="free">Free</string>
     <string name="news">News</string>
     <string name="create_pin">Create PIN</string>
     <string name="enter_pin">Enter PIN</string>
     <string name="confirm_fingerprint_or_pin">Confirm fingerprint or PIN</string>
     <string name="incorrect_pin">Incorrect PIN</string>
-    <string name="pin_is_not_long_enough">PIN is not long enough</string>
     <string name="received">Received</string>
     <string name="sent">Sent</string>
     <string name="received_time">Received Time</string>
@@ -71,7 +61,6 @@
     <string name="wallet_back_up">Wallet Back Up</string>
     <string name="about">About</string>
     <string name="empty_name">Empty Name</string>
-    <string name="new_pin">New PIN</string>
     <string name="incorrect_repeated_pin">Incorrect repeated PIN</string>
     <string name="your_brain_code">Your Passphrase</string>
     <string name="copy_brain_code">Copy Passphrase</string>
@@ -83,23 +72,13 @@
     <string name="you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want">You can skip this step and export your passphrase at any time</string>
     <string name="copy">Copy</string>
     <string name="addresses">Addresses</string>
-    <string name="create_token">Create Token</string>
     <string name="subscribe_tokens">Token Subscriptions</string>
-    <string name="set_your_token_name">Set Your Token Name</string>
-    <string name="token_symbol">Token Symbol</string>
-    <string name="set_your_token_features">Set Your Token Features</string>
     <string name="next">Next</string>
-    <string name="freezing_of_assets">Freezing of Assets</string>
-    <string name="automatic_selling_and_buying">Automatic Selling and Buying</string>
-    <string name="autorefill">Autorefill</string>
-    <string name="proof_of_work">Proof of Work</string>
-    <string name="set_your_token_parameters">Set Your Token Parameters</string>
     <string name="initial_supply">Initial Supply</string>
     <string name="decimal_units">Decimal Units</string>
     <string name="back">Back</string>
     <string name="finish">Finish</string>
     <string name="token_name">Token Name</string>
-    <string name="minter_address">Minter Address</string>
     <string name="mine_address">Mine Address</string>
     <string name="fee">FEE</string>
     <string name="currency">Currency</string>
@@ -109,19 +88,15 @@
     <string name="enter_new_pin">enter new pin</string>
     <string name="repeat_pin">repeat pin</string>
     <string name="enter_old_pin">enter old pin</string>
-    <string name="empty_field">Empty field</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="coped">Copied</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="skip">Skip</string>
     <string name="not_confirmed_balance">Unconfirmed Balance</string>
-    <string name="not_confirmed_trans">Transaction Not Confirmed Yet</string>
     <string name="templates">Templates</string>
-    <string name="set_your_token">Set Your Token</string>
     <string name="step_1_2">Step 1 of 2</string>
     <string name="step_2_2">Step 2 of 2</string>
-    <string name="complete">Complete</string>
     <string name="ok">OK</string>
     <string name="other_tokens">Other Tokens</string>
     <string name="token_address">Token Address</string>
@@ -138,14 +113,11 @@
     <string name="retry">RETRY</string>
 
     <string name="smart_contracts">Smart Contracts</string>
-    <string name="create_contract">Create Contract</string>
-    <string name="my_contracts">My Contracts</string>
     <string name="contracts_store">Contracts Store</string>
     <string name="call">Call</string>
     <string name="function_detail">Function Detail</string>
     <string name="contracts">Contracts</string>
 
-    <string name="sender_address">Sender Address</string>
     <string name="contract_address">Contract Address</string>
     <string name="not_confirmed">Unconfirmed</string>
     <string name="watch_contract">Watch Contract</string>

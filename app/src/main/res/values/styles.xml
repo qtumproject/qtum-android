@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -7,6 +6,10 @@
         <item name="colorPrimaryDark">@color/background</item>
         <item name="colorAccent">@color/accent_red_color</item>
         <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
@@ -33,6 +36,10 @@
         <item name="colorAccent">@color/background</item>
         <item name="colorControlActivated">@color/background</item>
         <item name="colorControlHighlight">@color/background</item>
+    </style>
+
+    <style name="LogoutDialogTitle" parent="@android:style/TextAppearance.DialogWindowTitle">
+        <item name="android:gravity">left</item>
     </style>
 
     <style name="InputTextLight" parent="Widget.Design.TextInputLayout">

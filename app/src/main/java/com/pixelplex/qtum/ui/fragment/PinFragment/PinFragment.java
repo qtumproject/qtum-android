@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.PinFragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -17,7 +18,7 @@ import com.pixelplex.qtum.utils.FontTextView;
 import butterknife.BindView;
 
 
-public abstract class PinFragment extends BaseFragment implements PinFragmentView {
+public abstract class PinFragment extends BaseFragment implements PinFragmentView, Runnable {
 
     private PinFragmentPresenterImpl mPinFragmentPresenter;
 
@@ -112,11 +113,33 @@ public abstract class PinFragment extends BaseFragment implements PinFragmentVie
     @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+    }
+
+    @Override
+    public void onPause() {
+        if(softHandler != null) {
+            softHandler.removeCallbacks(this);
+        }
+        super.onPause();
+        hideKeyBoard();
+    }
+
+    Handler softHandler;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mWalletPin.setFocusableInTouchMode(true);
+        mWalletPin.requestFocus();
+        if(softHandler != null){
+            softHandler.postDelayed(this, 300);
+        }
     }
 
     @Override
     public void initializeViews() {
+        softHandler = new Handler();
         getPresenter().setAction(getArguments().getString(ACTION));
         mWalletPin.setOnPinEnteredListener(new PinEntryEditText.OnPinEnteredListener() {
             @Override
@@ -126,10 +149,10 @@ public abstract class PinFragment extends BaseFragment implements PinFragmentVie
                 }
             }
         });
+    }
 
-        mWalletPin.setFocusableInTouchMode(true);
-        mWalletPin.requestFocus();
+    @Override
+    public void run() {
         showSoftInput();
-
     }
 }

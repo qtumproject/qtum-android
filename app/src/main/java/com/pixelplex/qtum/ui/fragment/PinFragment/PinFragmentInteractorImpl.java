@@ -108,7 +108,7 @@ class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        callBack.OnError(e.getMessage());
                     }
 
                     @Override
@@ -129,10 +129,13 @@ class PinFragmentInteractorImpl implements PinFragmentInteractor {
 
     interface CreateWalletCallBack {
         void onSuccess();
+        void OnError(String message);
+
     }
 
     interface LoadWalletFromFileCallBack {
         void onSuccess();
+        void OnError(String message);
     }
 
 }

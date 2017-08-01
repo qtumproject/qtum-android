@@ -18,7 +18,7 @@ public final class FingerprintUtils {
         READY
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private static mSensorState checkSensorState(@NonNull Context context) {
             KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
             if (!keyguardManager.isKeyguardSecure()) {
@@ -32,7 +32,7 @@ public final class FingerprintUtils {
             return mSensorState.READY;
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public static boolean isSensorStateAt(@NonNull mSensorState state, @NonNull Context context) {
         return checkSensorState(context) == state;
     }

@@ -19,6 +19,7 @@
             <com.pixelplex.qtum.utils.EditTextValidated
                 android:id="@+id/et_param"
                 android:layout_width="match_parent"
+                android:gravity="left"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:textColor="@color/colorPrimary"/>

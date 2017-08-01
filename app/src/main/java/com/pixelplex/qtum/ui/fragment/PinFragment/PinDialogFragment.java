@@ -12,11 +12,14 @@ import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.utils.CryptoUtilsCompat;
 import com.pixelplex.qtum.utils.ThemeUtils;
 import com.pixelplex.qtum.utils.crypto.KeyStoreHelper;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
@@ -163,7 +166,7 @@ public class PinDialogFragment extends DialogFragment {
     }
 
     private void confirm(String pin){
-        String pinHashEntered = CryptoUtils.generateSHA256String(pin);
+        String pinHashEntered = CryptoUtilsCompat.generateSHA256String(pin);
         String pinHashGenuine = KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, QtumSharedPreference.getInstance().getWalletPassword(getContext()));
         if (pinHashEntered.equals(pinHashGenuine)) {
             clearError();

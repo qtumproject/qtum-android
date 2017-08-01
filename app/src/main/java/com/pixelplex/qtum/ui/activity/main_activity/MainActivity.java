@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.content.res.ColorStateList;
 import android.hardware.fingerprint.FingerprintManager;
@@ -77,6 +78,11 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         getPresenter().processNewIntent(intent);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     public String getAddressForSendAction(){

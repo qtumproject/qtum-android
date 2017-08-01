@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:id="@+id/root_layout"
     android:clickable="true"
@@ -42,6 +43,7 @@
 
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/token_balance"
+            tools:text="0.0"
             android:textSize="14sp"
             android:textColor="@color/colorPrimary"
             app:typefaceAsset="@string/simplonMonoMedium"
@@ -49,8 +51,10 @@
             android:layout_height="wrap_content" />
 
         <com.pixelplex.qtum.utils.FontTextView
+            android:layout_marginStart="2dp"
             android:id="@+id/token_symbol"
             android:textSize="14sp"
+            tools:text="s"
             android:textColor="@color/colorPrimary"
             app:typefaceAsset="@string/simplonMonoMedium"
             android:layout_width="wrap_content"

@@ -8,8 +8,11 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.activity.base_activity.BaseActivity;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
@@ -24,96 +27,104 @@ import com.transitionseverywhere.TransitionManager;
 import butterknife.BindView;
 
 
-public class SplashActivity extends BaseActivity implements SplashActivityView, Transition.TransitionListener {
+public class SplashActivity extends BaseActivity implements SplashActivityView {
 
     private SplashActivityPresenterImpl presenter;
     private static final int LAYOUT = R.layout.lyt_splash;
-    private static final int LAYOUT_LIGHT = R.layout.lyt_splash_light;
 
     @BindView(R.id.ic_app_logo)
     AppCompatImageView appLogo;
 
+    @BindView(R.id.ic_app_logo_red)
+    AppCompatImageView appLogoRed;
+
+    @BindView(R.id.ic_app_logo_white)
+    AppCompatImageView appLogoWhite;
+
     @BindView(R.id.root_layout)
     RelativeLayout rootLayout;
+
+    @BindView(R.id.lyt_light)
+    View lytLight;
+
+    @BindView(R.id.txt_app_name_white)
+    TextView appNameWhite;
+
+    @BindView(R.id.txt_wait)
+    TextView waitText;
+
+    @BindView(R.id.txt_app_name)
+    TextView appName;
 
     private ChangeClipBounds clip;
 
     private int appLogoHeight = 0;
 
-    Handler handler;
-
-    WaveView waveView;
-    private WaveHelper mWaveHelper;
-
     @Override
     public void initializeViews() {
-
         if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)) {
+            appLogoWhite.setVisibility(View.INVISIBLE);
             recolorStatusBar(R.color.background);
-            if (appLogo.getHeight() == 0) {
-                appLogo.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        appLogo.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        appLogoHeight = (appLogoHeight == 0) ? appLogo.getHeight() : appLogoHeight;
-                        DoTransition();
-                    }
-                });
-            } else {
-                appLogoHeight = (appLogoHeight == 0) ? appLogo.getHeight() : appLogoHeight;
-                DoTransition();
-            }
+            waitText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         } else {
+            appLogoRed.setVisibility(View.INVISIBLE);
             recolorStatusBar(R.color.title_color_light);
-            waveView = (WaveView) findViewById(R.id.wave_view);
-            waveView.setShapeType(WaveView.ShapeType.SQUARE);
-            mWaveHelper = new WaveHelper(waveView);
+        }
+
+        if (appLogo.getHeight() == 0) {
+            appLogo.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    appLogo.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    appLogoHeight = (appLogoHeight == 0) ? appLogo.getHeight() : appLogoHeight;
+                    DoTransition();
+                }
+            });
+        } else {
+            appLogoHeight = (appLogoHeight == 0) ? appLogo.getHeight() : appLogoHeight;
+            DoTransition();
         }
     }
 
     private void DoTransition(){
         TransitionManager.endTransitions(rootLayout);
         appLogo.setClipBounds(new Rect(0,0,appLogoHeight,appLogoHeight));
+
+        if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_LIGHT)){
+            appName.setClipBounds(new Rect(0,0,appName.getWidth(),appName.getHeight()));
+            lytLight.setClipBounds(new Rect(0,0,getResources().getDisplayMetrics().widthPixels,0));
+        }
+
         TransitionManager.beginDelayedTransition(rootLayout, clip);
         appLogo.setClipBounds(new Rect(0,0,appLogoHeight,0));
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(mWaveHelper != null) {
-            mWaveHelper.start();
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if(mWaveHelper != null) {
-            mWaveHelper.cancel();
+        if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_LIGHT)){
+            lytLight.setVisibility(View.VISIBLE);
+            appName.setClipBounds(new Rect(0,0,appName.getWidth(),0));
+            lytLight.setClipBounds(new Rect(0,0,getResources().getDisplayMetrics().widthPixels,getResources().getDisplayMetrics().heightPixels));
         }
     }
 
     @Override
     protected void updateTheme() {
-
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)? LAYOUT : LAYOUT_LIGHT);
+        setContentView(LAYOUT);
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)) {
-            clip = new ChangeClipBounds();
-            clip.addTarget(appLogo);
-            clip.setDuration(2000);
-            clip.addListener(this);
+        clip = new ChangeClipBounds();
+        clip.addTarget(appLogo);
+        if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_LIGHT)){
+            clip.addTarget(appName);
+            clip.addTarget(lytLight);
         }
+        clip.setDuration(2000);
     }
 
     public void recolorStatusBar(int color){
@@ -130,31 +141,6 @@ public class SplashActivity extends BaseActivity implements SplashActivityView, 
     @Override
     protected SplashActivityPresenterImpl getPresenter() {
         return presenter;
-    }
-
-    @Override
-    public void onTransitionStart(Transition transition) {
-
-    }
-
-    @Override
-    public void onTransitionEnd(Transition transition) {
-        DoTransition();
-    }
-
-    @Override
-    public void onTransitionCancel(Transition transition) {
-
-    }
-
-    @Override
-    public void onTransitionPause(Transition transition) {
-
-    }
-
-    @Override
-    public void onTransitionResume(Transition transition) {
-
     }
 
     @Override

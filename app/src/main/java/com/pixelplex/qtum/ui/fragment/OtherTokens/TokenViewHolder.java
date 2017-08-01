@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.OtherTokens;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -61,6 +62,11 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
         ContractManagementHelper.getPropertyValue("symbol", token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
             @Override
             public void onSuccess(String value) {
+                spinner.setVisibility(View.GONE);
+                if(TextUtils.isEmpty(tokenBalanceView.getText().toString())){
+                    tokenBalanceView.setVisibility(View.VISIBLE);
+                    tokenBalanceView.setText("0.0");
+                }
                 mTextViewSymbol.setVisibility(View.VISIBLE);
                 mTextViewSymbol.setText(value);
             }
