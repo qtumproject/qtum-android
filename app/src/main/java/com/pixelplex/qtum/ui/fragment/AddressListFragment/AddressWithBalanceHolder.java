@@ -8,7 +8,6 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
 import com.pixelplex.qtum.model.DeterministicKeyWithBalance;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
-import com.pixelplex.qtum.utils.CurrentNetParams;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import java.math.BigDecimal;
@@ -35,9 +34,6 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.address_symbol)
     FontTextView mTextViewSymbol;
 
-    @BindView(R.id.spinner)
-    ProgressBar mSpinner;
-
     DeterministicKeyWithBalance mDeterministicKeyWithBalance;
 
 
@@ -46,7 +42,7 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClickClick(mDeterministicKeyWithBalance);
+                listener.onItemClick(mDeterministicKeyWithBalance);
             }
         });
         ButterKnife.bind(this, itemView);
@@ -55,52 +51,8 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
     public void bindDeterministicKeyWithBalance(final DeterministicKeyWithBalance deterministicKeyWithBalance){
         mDeterministicKeyWithBalance = deterministicKeyWithBalance;;
         mTextViewAddress.setText(deterministicKeyWithBalance.getAddress());
-        mSpinner.setVisibility(View.VISIBLE);
-        mTextViewAddressBalance.setVisibility(View.GONE);
-        mTextViewSymbol.setVisibility(View.GONE);
 
-        QtumService.newInstance().getUnspentOutputs(deterministicKeyWithBalance.getAddress())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<UnspentOutput>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<UnspentOutput> unspentOutputs) {
-                        for(Iterator<UnspentOutput> iterator = unspentOutputs.iterator(); iterator.hasNext();){
-                            UnspentOutput unspentOutput = iterator.next();
-                            if(!unspentOutput.isOutputAvailableToPay()){
-                                iterator.remove();
-                            }
-                        }
-                        Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
-                            @Override
-                            public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {
-                                return unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? -1 : 0;
-                            }
-                        });
-                        deterministicKeyWithBalance.setUnspentOutputList(unspentOutputs);
-                        BigDecimal balance = new BigDecimal("0");
-                        BigDecimal amount;
-                        for(UnspentOutput unspentOutput : unspentOutputs){
-                            amount = new BigDecimal(String.valueOf(unspentOutput.getAmount()));
-                            balance = balance.add(amount);
-                        }
-                        mTextViewSymbol.setVisibility(View.VISIBLE);
-                        mTextViewAddressBalance.setVisibility(View.VISIBLE);
-                        mSpinner.setVisibility(View.GONE);
-                        mTextViewAddressBalance.setText(balance.toString());
-                        mTextViewSymbol.setText(" QTUM");
-
-                    }
-                });
+        mTextViewAddressBalance.setText(deterministicKeyWithBalance.getBalance().toString());
+        mTextViewSymbol.setText(" QTUM");
     }
 }

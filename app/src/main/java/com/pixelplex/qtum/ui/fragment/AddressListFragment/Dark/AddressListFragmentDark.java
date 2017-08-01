@@ -3,14 +3,10 @@ package com.pixelplex.qtum.ui.fragment.AddressListFragment.Dark;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.DeterministicKeyWithBalance;
-import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressListFragment;
 import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressesWithBalanceAdapter;
 import com.pixelplex.qtum.ui.fragment.AddressListFragment.OnAddressClickListener;
 
-import org.bitcoinj.crypto.DeterministicKey;
-
-import java.util.HashMap;
 import java.util.List;
 
 public class AddressListFragmentDark extends AddressListFragment{

@@ -3,7 +3,10 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:orientation="vertical"
-              android:background="@color/background"
+              android:background="@color/colorPrimary"
+              android:padding="32dp"
+              android:clickable="true"
+              android:focusableInTouchMode="true"
               android:layout_height="match_parent">
 
     <com.pixelplex.qtum.utils.FontTextView
@@ -22,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:theme="@style/InputText"
+        android:theme="@style/InputTextBlack"
         android:textColorHint="@color/background">
 
         <android.support.design.widget.TextInputEditText
@@ -61,12 +64,24 @@
             android:textSize="16sp"/>
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/background"/>
+
     <android.support.v7.widget.AppCompatSpinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:id="@+id/spinner_transfer">
 
     </android.support.v7.widget.AppCompatSpinner>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,7 +103,7 @@
             android:textSize="@dimen/button_text"/>
 
         <com.pixelplex.qtum.utils.FontButton
-            android:id="@+id/bt_restore"
+            android:id="@+id/bt_transfer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"

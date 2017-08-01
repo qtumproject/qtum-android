@@ -38,6 +38,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:weightSum="2"
+                android:layout_weight="1"
                 android:id="@+id/ll_receive"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -70,9 +71,9 @@
                 android:id="@+id/iv_choose_address"
                 android:layout_gravity="center"
                 android:layout_marginStart="8dp"
-                android:paddingEnd="6dp"
+                android:layout_marginEnd="8dp"
                 android:tint="@color/background"
-                app:srcCompat="@drawable/ic_createnew" />
+                app:srcCompat="@drawable/ic_transfer" />
 
         </LinearLayout>
 

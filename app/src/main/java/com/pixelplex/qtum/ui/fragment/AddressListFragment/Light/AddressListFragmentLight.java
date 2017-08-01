@@ -7,8 +7,6 @@ import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressListFragment;
 import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressesWithBalanceAdapter;
 import com.pixelplex.qtum.ui.fragment.AddressListFragment.OnAddressClickListener;
 
-import org.bitcoinj.crypto.DeterministicKey;
-
 import java.util.List;
 
 public class AddressListFragmentLight extends AddressListFragment{

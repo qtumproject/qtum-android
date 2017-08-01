@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ProgressBar;
 import android.widget.SpinnerAdapter;
 
 import com.pixelplex.qtum.R;
@@ -19,12 +18,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 
-public class AddressWithBalanceSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
+public class AddressesWithBalanceSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
     private Context mContext;
     private List<DeterministicKeyWithBalance> mKeyWithBalanceList;
 
-    public AddressWithBalanceSpinnerAdapter(@NonNull Context context, List<DeterministicKeyWithBalance> keyWithBalanceList) {
+    public AddressesWithBalanceSpinnerAdapter(@NonNull Context context, List<DeterministicKeyWithBalance> keyWithBalanceList) {
         mContext = context;
         mKeyWithBalanceList = keyWithBalanceList;
     }
@@ -47,26 +46,22 @@ public class AddressWithBalanceSpinnerAdapter extends BaseAdapter implements Spi
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return getCustomView(position, convertView, parent);
+        return getCustomView(position, R.layout.item_address_spinner, parent);
     }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return getCustomView(position, convertView, parent);
+        return getCustomView(position, R.layout.item_address_spinner_dropdown, parent);
     }
 
-    public View getCustomView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getCustomView(int position, @Nullable int resId, @NonNull ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(R.layout.item_address,parent,false);
+        View view = layoutInflater.inflate(resId,parent,false);
         FontTextView textViewAddress = (FontTextView) view.findViewById(R.id.address_name);
 
         final FontTextView textViewBalance = (FontTextView) view.findViewById(R.id.address_balance);
         final FontTextView textViewSymbol = (FontTextView) view.findViewById(R.id.address_symbol);
-        final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.spinner);
 
-        textViewBalance.setVisibility(View.GONE);
-        textViewSymbol.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
         BigDecimal balance = new BigDecimal("0");
         BigDecimal amount;
         for(UnspentOutput unspentOutput : mKeyWithBalanceList.get(position).getUnspentOutputList()){

@@ -62,13 +62,4 @@
 
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/spinner"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:indeterminateTint="@color/title_color_light"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"/>
-
 </RelativeLayout>

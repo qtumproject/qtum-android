@@ -4,38 +4,26 @@
                 android:orientation="vertical"
                 android:id="@+id/root_layout"
                 android:layout_width="match_parent"
-                android:background="?attr/selectableItemBackground"
+                android:background="@color/colorPrimary"
                 android:layout_height="56dp">
-
-    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:tint="@color/colorPrimary"
-        android:layout_marginStart="8dp"
-        app:srcCompat = "@drawable/ic_addressbook"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/imageView"/>
 
     <com.pixelplex.qtum.utils.FontTextView
         android:id="@+id/address_name"
         android:textSize="16sp"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/background"
         android:text="@string/token_name"
         android:gravity="left|center_vertical"
-        android:layout_marginStart="8dp"
+        android:layout_toStartOf="@+id/ll_balance"
         android:maxLines="1"
         android:ellipsize="end"
         app:typefaceAsset="@string/simplonMonoRegular"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageView"/>
+        android:layout_height="match_parent" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/background"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"/>
 
@@ -52,7 +40,7 @@
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/address_balance"
             android:textSize="14sp"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/background"
             app:typefaceAsset="@string/simplonMonoMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -60,7 +48,7 @@
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/address_symbol"
             android:textSize="14sp"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/background"
             app:typefaceAsset="@string/simplonMonoMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -6,13 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.model.DeterministicKeyWithBalance;
-import com.pixelplex.qtum.model.gson.UnspentOutput;
-import com.pixelplex.qtum.utils.CurrentNetParams;
 
-import org.bitcoinj.crypto.DeterministicKey;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 
