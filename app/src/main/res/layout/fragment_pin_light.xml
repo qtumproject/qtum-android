@@ -72,7 +72,7 @@
             android:background="@drawable/background_bt_alpha"
             android:textColor="@android:color/white"
             android:layout_centerHorizontal = "true"
-            app:typefaceAsset="@string/euclidFlexMedium"
+            app:typefaceAsset="@string/proximaNovaLight"
             android:layout_below="@+id/til_wallet_pin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

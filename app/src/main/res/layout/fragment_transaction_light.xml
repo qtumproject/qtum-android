@@ -52,66 +52,6 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/ll_receive_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|bottom"
-                android:layout_marginBottom="30dp"
-                android:orientation="horizontal"
-                android:padding="8dp"
-                android:paddingBottom="8dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp">
-
-                <ImageView
-                    android:id="@+id/ic_confirm"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginEnd="4dp"
-                    android:tint="@color/white"
-                    app:srcCompat="@drawable/ic_confirmation_loader" />
-
-                <com.pixelplex.qtum.utils.FontTextView
-                    android:id="@+id/not_confirmed_flag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/ic_confirm"
-                    android:layout_alignTop="@+id/ic_confirm"
-                    android:layout_toEndOf="@+id/ic_confirm"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:paddingEnd="16dp"
-                    android:text="@string/not_confirmed_yet"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    app:typefaceAsset="@string/simplonMonoMedium" />
-
-                <ImageView
-                    android:id="@+id/ic_time"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_toStartOf="@+id/tv_received_time"
-                    android:tint="@color/white"
-                    app:srcCompat="@drawable/ic_time_light" />
-
-                <com.pixelplex.qtum.utils.FontTextView
-                    android:id="@+id/tv_received_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/ic_time"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignTop="@+id/ic_time"
-                    android:gravity="center"
-                    android:text="Dec 18"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    app:typefaceAsset="@string/simplonMonoRegular" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -161,6 +101,66 @@
                     app:typefaceAsset="@string/proximaNovaSemibold" />
 
             </android.support.v7.widget.Toolbar>
+
+            <RelativeLayout
+                android:id="@+id/ll_receive_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:layout_marginBottom="30dp"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:paddingBottom="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
+
+                <ImageView
+                    android:id="@+id/ic_confirm"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginEnd="4dp"
+                    android:tint="@color/white"
+                    app:srcCompat="@drawable/ic_confirmation_loader" />
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:id="@+id/not_confirmed_flag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/ic_confirm"
+                    android:layout_alignTop="@+id/ic_confirm"
+                    android:layout_toEndOf="@+id/ic_confirm"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingEnd="16dp"
+                    android:text="@string/not_confirmed_yet"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:typefaceAsset="@string/proximaNovaRegular" />
+
+                <ImageView
+                    android:id="@+id/ic_time"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_toStartOf="@+id/tv_received_time"
+                    android:tint="@color/white"
+                    app:srcCompat="@drawable/ic_time_light" />
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:id="@+id/tv_received_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/ic_time"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/ic_time"
+                    android:gravity="center"
+                    android:text="Dec 18"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:typefaceAsset="@string/proximaNovaRegular" />
+
+            </RelativeLayout>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>

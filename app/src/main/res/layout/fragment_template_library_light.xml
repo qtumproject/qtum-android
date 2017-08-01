@@ -48,13 +48,48 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <LinearLayout
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/divider"
-        android:splitMotionEvents="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bottom_nav_bar_color_light"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:id="@+id/ll_footer">
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/footer_text_color"
+                app:typefaceAsset="@string/proximaNovaSemibold"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:layout_gravity="left"
+                android:text="Type"/>
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/footer_text_color"
+                app:typefaceAsset="@string/proximaNovaSemibold"
+                android:layout_gravity="end"
+                android:text="Purchase Date"/>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:splitMotionEvents="false" />
+
+    </LinearLayout>
+
+
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -73,7 +73,7 @@
             android:background="@color/bottom_nav_bar_color_light"
             android:orientation="horizontal"
             android:layout_below="@+id/step"
-            android:padding="16dp"
+            android:padding="8dp"
             android:id="@+id/ll_footer">
 
             <com.pixelplex.qtum.utils.FontTextView

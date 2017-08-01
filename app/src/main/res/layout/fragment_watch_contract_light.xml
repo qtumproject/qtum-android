@@ -72,8 +72,7 @@
                 android:hint="Contract Name"
                 android:inputType="text"
                 android:maxLines="1"
-                android:imeOptions="actionNext"
-                android:textColor="@color/bottom_nav_bar_text_color_light_alpha_50"/>
+                android:imeOptions="actionNext" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -95,8 +94,7 @@
                 android:gravity="left|center_vertical"
                 android:inputType="text"
                 android:maxLines="1"
-                android:imeOptions="actionNext"
-                android:textColor="@color/bottom_nav_bar_text_color_light_alpha_50"/>
+                android:imeOptions="actionNext" />
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
@@ -197,7 +195,7 @@
                 android:padding="16dp"
                 android:textSize="16sp"
                 android:layout_marginStart="4dp"
-                android:background="@drawable/btn_sea_corner_background_light"
+                android:background="@drawable/btn_sea_corner_background_light_selector"
                 android:enabled="false"
                 android:textColor="@color/primary_text_color_enabled_selector_light"
                 app:typeface="@string/proximaNovaSemibold"
