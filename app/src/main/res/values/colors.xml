@@ -3,26 +3,16 @@
     <color name="colorPrimary">#2e9ad0</color>
     <color name="colorPrimaryDark">#232328</color>
     <color name="colorAccent">#e75647</color>
-    <color name="pink">#f95e86</color>
-    <color name="pink_lite">#e39a9a</color>
-    <color name="green">#53cd7e</color>
     <color name="grey">#4e5d6f</color>
     <color name="grey70">#b24e5d6f</color>
-    <color name="grey50">#7a4e5d6f</color>
     <color name="grey20">#334e5d6f</color>
-    <color name="grey_devider">#c9c9c9</color>
     <color name="black">#1a1b1e</color>
     <color name="white">#fff</color>
-    <color name="grey_lite">#f8f8f8</color>
-    <color name="grey_data">#d6dae2</color>
     <color name="grey_input_text">#bdc6cf</color>
     <color name="grey_background_brain_code">#f7f7f7</color>
     <color name="white_alpha80">#ccffffff</color>
-    <color name="white_alpha50">#7affffff</color>
     <color name="white_alpha20">#33ffffff</color>
     <color name="alpha">#00ffffff</color>
-    <color name="wave_background">#24ffffff</color>
-    <color name="wave_stroke">#4058c0dd</color>
 
     <!--NEW DESIGN COLORS-->
 
@@ -52,11 +42,5 @@
     <color name="switch_on">#36b9c8</color>
     <color name="qr_code_background">#edf6f8</color>
     <color name="qr_code_tint_color">#3c87b9</color>
-
-    <array name="av_colors">
-        <item>#33ffffff</item>
-        <item>#33ffffff</item>
-        <item>#33ffffff</item>
-    </array>
 
 </resources>

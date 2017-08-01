@@ -8,14 +8,60 @@
     android:background="@color/white"
     android:fitsSystemWindows="true">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.pixelplex.qtum.utils.StackCollapseLinearLayout
+                android:id="@+id/collapse_layout"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/token_addr_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp">
+                    <include layout="@layout/lyt_header_light"/>
+                </FrameLayout>
+
+            </com.pixelplex.qtum.utils.StackCollapseLinearLayout>
+
+            <com.pixelplex.qtum.utils.FontTextView
+                app:typefaceAsset="@string/proximaNovaSemibold"
+                android:background="@color/bottom_nav_bar_color_light"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:gravity="left|center_vertical"
+                android:padding="8dp"
+                android:text="@string/activity"
+                android:textColor="@color/grey70" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:splitMotionEvents="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_main"
         android:fitsSystemWindows="true"
-        app:layout_scrollFlags="scroll|snap"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_scrollFlags="scroll|snap">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
@@ -69,8 +115,8 @@
                             android:id="@+id/tv_token_name"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="@string/token_name"
                             android:gravity="center"
+                            android:text="@string/token_name"
                             android:textColor="@color/white"
                             android:textSize="20sp"
                             app:typefaceAsset="@string/proximaNovaSemibold" />
@@ -113,53 +159,6 @@
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.pixelplex.qtum.utils.StackCollapseLinearLayout
-                android:id="@+id/collapse_layout"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:orientation="vertical">
-
-                <FrameLayout
-                    android:id="@+id/token_addr_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp">
-                    <include layout="@layout/lyt_header_light"/>
-                </FrameLayout>
-
-            </com.pixelplex.qtum.utils.StackCollapseLinearLayout>
-
-            <com.pixelplex.qtum.utils.FontTextView
-                app:typefaceAsset="@string/proximaNovaSemibold"
-                android:background="@color/bottom_nav_bar_color_light"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:gravity="left|center_vertical"
-                android:padding="8dp"
-                android:text="@string/activity"
-                android:textColor="@color/grey70" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:splitMotionEvents="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
 
 
 </android.support.design.widget.CoordinatorLayout>

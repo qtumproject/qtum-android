@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
+import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
 
@@ -16,6 +18,7 @@ public class LogOutDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         return new AlertDialog
                 .Builder(getActivity())
                 .setTitle(R.string.are_you_sure)
@@ -33,6 +36,7 @@ public class LogOutDialogFragment extends DialogFragment {
                     }
                 })
                 .create();
+
     }
 
     public interface OnYesClickListener{

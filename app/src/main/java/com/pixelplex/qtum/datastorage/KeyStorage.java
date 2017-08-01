@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.google.common.collect.ImmutableList;
 
+import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.crypto.ChildNumber;
 import org.bitcoinj.crypto.DeterministicHierarchy;
 import org.bitcoinj.crypto.DeterministicKey;
@@ -120,6 +121,7 @@ public class KeyStorage implements Serializable {
                     e.printStackTrace();
                 }
                 if (seed != null) {
+                    NetworkParameters netParams = CurrentNetParams.getNetParams();
                     sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
 
                 }

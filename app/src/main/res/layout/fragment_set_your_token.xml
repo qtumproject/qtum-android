@@ -93,6 +93,7 @@
                 android:focusableInTouchMode="true"
                 android:id="@+id/tv_template_name"
                 android:textSize="16sp"
+                android:gravity="left"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginStart="8dp"
                 android:layout_gravity="center"
