@@ -128,6 +128,17 @@
                             android:tint="@color/white"
                             app:srcCompat="@drawable/ic_qrcode_light" />
 
+                        <ImageView
+                            android:layout_toStartOf="@+id/bt_qr_code"
+                            android:layout_centerVertical="true"
+                            android:layout_width="36dp"
+                            android:paddingTop="3dp"
+                            android:paddingBottom="5dp"
+                            android:layout_height="36dp"
+                            android:id="@+id/iv_choose_address"
+                            android:tint="@color/white"
+                            app:srcCompat="@drawable/ic_address_book" />
+
                         <include
                             android:id="@+id/app_bar_placeholder"
                             layout="@layout/lyt_appbar_wallet_placeholder_light"

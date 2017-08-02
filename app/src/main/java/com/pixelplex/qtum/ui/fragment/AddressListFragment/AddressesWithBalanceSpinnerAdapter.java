@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 
-public class AddressesWithBalanceSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
+public abstract class AddressesWithBalanceSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
     private Context mContext;
     private List<DeterministicKeyWithBalance> mKeyWithBalanceList;
@@ -41,17 +41,6 @@ public class AddressesWithBalanceSpinnerAdapter extends BaseAdapter implements S
     @Override
     public long getItemId(int position) {
         return (long) position;
-    }
-
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return getCustomView(position, R.layout.item_address_spinner, parent);
-    }
-
-    @Override
-    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return getCustomView(position, R.layout.item_address_spinner_dropdown, parent);
     }
 
     public View getCustomView(int position, @Nullable int resId, @NonNull ViewGroup parent) {

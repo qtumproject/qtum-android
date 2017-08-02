@@ -7,5 +7,5 @@ import java.util.List;
 
 
 interface AddressListFragmentView extends BaseFragmentView{
-    void updateAddressList(List<DeterministicKeyWithBalance> deterministicKeyWithBalance, OnAddressClickListener listener);
+    void updateAddressList(List<DeterministicKeyWithBalance> deterministicKeyWithBalance);
 }

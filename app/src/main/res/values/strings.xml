@@ -174,5 +174,9 @@
     <string name="address_list">Address List</string>
     <string name="transfer_balance">Transfer Balance</string>
     <string name="transfer">Transfer</string>
+    <string name="enter_valid_amount_value">Enter valid Amount value</string>
+    <string name="transaction_amount_cant_be_zero">Transaction amount can\'t be zero. Please edit your transaction and try again</string>
+    <string name="address_book">Address Book</string>
+    <string name="complete">Complete</string>
 
 </resources>

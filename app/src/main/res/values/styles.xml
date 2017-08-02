@@ -38,6 +38,10 @@
         <item name="colorControlHighlight">@color/background</item>
     </style>
 
+    <style name="LightSpinner" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/background_progress_bar</item>
+    </style>
+
     <style name="LogoutDialogTitle" parent="@android:style/TextAppearance.DialogWindowTitle">
         <item name="android:gravity">left</item>
     </style>

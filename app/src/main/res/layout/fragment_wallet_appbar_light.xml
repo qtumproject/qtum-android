@@ -104,13 +104,5 @@
                 android:textColor="@color/white"
                 app:typefaceAsset="@string/proximaNovaSemibold"/>
         </LinearLayout>
-        <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:id="@+id/iv_choose_address"
-            android:layout_gravity="center"
-            android:paddingEnd="6dp"
-            android:tint="@color/white"
-            app:srcCompat="@drawable/ic_plus_light" />
     </LinearLayout>
 </LinearLayout>

@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
+import android.text.style.TtsSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,12 +55,9 @@ public class AddressListFragmentPresenter extends BaseFragmentPresenterImpl{
     private AddressListFragmentView mAddressListFragmentView;
     private AddressListFragmentInteractor mAddressListFragmentInteractor;
     private Context mContext;
-    private List<DeterministicKeyWithBalance> mKeyWithBalanceList = new ArrayList<>();
+    public List<DeterministicKeyWithBalance> mKeyWithBalanceList = new ArrayList<>();
     private int balanceCountToReceive;
-    private DeterministicKeyWithBalance keyWithBalanceFrom;
-
-
-    private AlertDialog mTransferDialog;
+    public DeterministicKeyWithBalance keyWithBalanceFrom;
 
     AddressListFragmentPresenter(AddressListFragmentView addressListFragmentView){
         mAddressListFragmentView = addressListFragmentView;
@@ -118,14 +117,7 @@ public class AddressListFragmentPresenter extends BaseFragmentPresenterImpl{
                             balanceCountToReceive--;
                             if(balanceCountToReceive==0){
                                 getView().dismissProgressDialog();
-                                getView().updateAddressList(mKeyWithBalanceList, new OnAddressClickListener() {
-                                    @Override
-                                    public void onItemClick(DeterministicKeyWithBalance deterministicKeyWithBalance) {
-                                        List<DeterministicKeyWithBalance> deterministicKeyWithBalances = new ArrayList<DeterministicKeyWithBalance>(mKeyWithBalanceList);
-                                        deterministicKeyWithBalances.remove(deterministicKeyWithBalance);
-                                        showRestoreDialogFragment(deterministicKeyWithBalance, deterministicKeyWithBalances);
-                                    }
-                                });
+                                getView().updateAddressList(mKeyWithBalanceList);
                             }
                         }
                     });
@@ -134,75 +126,23 @@ public class AddressListFragmentPresenter extends BaseFragmentPresenterImpl{
 
     }
 
-    private void showRestoreDialogFragment(final DeterministicKeyWithBalance keyWithBalanceTo, List<DeterministicKeyWithBalance> keyWithBalanceList){
-        View view = LayoutInflater.from(getView().getMainActivity()).inflate(R.layout.dialog_transfer_balance_fragment,null);
+    public void transfer(DeterministicKeyWithBalance keyWithBalanceTo, DeterministicKeyWithBalance keyWithBalanceFrom, String amountString, TransferListener listener){
 
-        final TextInputEditText mEditTextAmount = (TextInputEditText)view.findViewById(R.id.et_amount);
-        final Spinner spinner = (Spinner) view.findViewById(R.id.spinner_transfer);
-        FontTextView mEditTextAddressTo = (FontTextView)view.findViewById(R.id.tv_address_to);
-
-        mEditTextAddressTo.setText(keyWithBalanceTo.getKey().toAddress(CurrentNetParams.getNetParams()).toString());
-
-        AddressesWithBalanceSpinnerAdapter spinnerAdapter = new AddressesWithBalanceSpinnerAdapter(mContext,keyWithBalanceList);
-        spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                keyWithBalanceFrom = (DeterministicKeyWithBalance) spinner.getItemAtPosition(i);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        view.findViewById(R.id.bt_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mTransferDialog.dismiss();
-            }
-        });
-
-        view.findViewById(R.id.bt_transfer).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getView().setProgressDialog();
-               transfer(keyWithBalanceTo, keyWithBalanceFrom, mEditTextAmount.getText().toString(), new TransferListener(){
-                   @Override
-                   public void onError(String errorText) {
-                        getView().setAlertDialog(mContext.getString(R.string.error),mContext.getString(R.string.ok),errorText, BaseFragment.PopUpType.error);
-                   }
-
-                   @Override
-                   public void onSuccess() {
-                       getView().dismissProgressDialog();
-                       mTransferDialog.dismiss();
-                       getView().setAlertDialog(mContext.getString(R.string.payment_completed_successfully), "","Ok", BaseFragment.PopUpType.confirm,new BaseFragment.AlertDialogCallBack(){
-                           @Override
-                           public void onOkClick() {
-                               getView().getMainActivity().onBackPressed();
-                           }
-                       });
-                   }
-               });
-            }
-        });
-
-        mTransferDialog = new AlertDialog
-                .Builder(mContext)
-                .setView(view)
-                .create();
-
-        if(mTransferDialog.getWindow() != null) {
-            mTransferDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if(TextUtils.isEmpty(amountString)){
+            getView().setAlertDialog(mContext.getResources().getString(R.string.error),
+                    mContext.getResources().getString(R.string.enter_valid_amount_value),
+                    mContext.getResources().getString(R.string.ok),
+                    BaseFragment.PopUpType.error);
+            return;
         }
 
-        mTransferDialog.setCanceledOnTouchOutside(false);
-        mTransferDialog.show();
-    }
-
-    private void transfer(DeterministicKeyWithBalance keyWithBalanceTo, DeterministicKeyWithBalance keyWithBalanceFrom, String amountString, TransferListener listener){
+        if(Float.valueOf(amountString) <= 0){
+            getView().setAlertDialog(mContext.getResources().getString(R.string.error),
+                    mContext.getResources().getString(R.string.transaction_amount_cant_be_zero),
+                    mContext.getResources().getString(R.string.ok),
+                    BaseFragment.PopUpType.error);
+            return;
+        }
 
         List<UnspentOutput> unspentOutputs = keyWithBalanceFrom.getUnspentOutputList();
 
@@ -294,7 +234,7 @@ public class AddressListFragmentPresenter extends BaseFragmentPresenterImpl{
         return mAddressListFragmentInteractor;
     }
 
-    interface TransferListener{
+    public interface TransferListener{
         void onSuccess();
         void onError(String errorText);
     }

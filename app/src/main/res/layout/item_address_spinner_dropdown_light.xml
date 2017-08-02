@@ -1,42 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:orientation="vertical"
-                android:id="@+id/root_layout"
-                android:layout_width="match_parent"
-                android:background="?attr/selectableItemBackground"
-                android:layout_height="56dp">
-
-    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:tint="@color/colorPrimary"
-        android:layout_marginStart="16dp"
-        app:srcCompat = "@drawable/ic_transfer"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/imageView"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="56dp">
 
     <com.pixelplex.qtum.utils.FontTextView
         android:id="@+id/address_name"
         android:textSize="16sp"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/black"
         android:text="@string/token_name"
-        android:gravity="left|center_vertical"
-        android:layout_marginStart="8dp"
-        android:maxLines="1"
+        android:gravity="center_vertical"
         android:layout_toStartOf="@+id/ll_balance"
+        android:layout_marginStart="16dp"
+        android:maxLines="1"
         android:ellipsize="end"
-        app:typefaceAsset="@string/simplonMonoRegular"
+        app:typefaceAsset="@string/proximaNovaRegular"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageView"/>
+        android:layout_height="match_parent" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/background"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"/>
 
@@ -53,16 +40,16 @@
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/address_balance"
             android:textSize="14sp"
-            android:textColor="@color/colorPrimary"
-            app:typefaceAsset="@string/simplonMonoMedium"
+            android:textColor="@color/black"
+            app:typefaceAsset="@string/proximaNovaSemibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/address_symbol"
             android:textSize="14sp"
-            android:textColor="@color/colorPrimary"
-            app:typefaceAsset="@string/simplonMonoMedium"
+            android:textColor="@color/grey70"
+            app:typefaceAsset="@string/proximaNovaRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
