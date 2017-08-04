@@ -8,4 +8,5 @@ public interface TokenFragmentView extends BaseFragmentView {
     void setTokenAddress(String address);
     void onContractPropertyUpdated(String propName, String propValue);
     void setSenderAddress(String address);
+    String getCurrency();
 }

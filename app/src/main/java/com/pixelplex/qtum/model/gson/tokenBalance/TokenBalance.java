@@ -25,6 +25,17 @@ public class TokenBalance {
         return balances;
     }
 
+    public Balance getBalanceForAddress(String contractAddress){
+        if(balances != null) {
+            for (Balance b : balances) {
+                if(contractAddress.equals(b.getAddress())){
+                    return b;
+                }
+            }
+        }
+        return null;
+    }
+
     public float getMaxBalance() {
         float maxBalance = 0;
         if(balances != null && balances.size() > 0){

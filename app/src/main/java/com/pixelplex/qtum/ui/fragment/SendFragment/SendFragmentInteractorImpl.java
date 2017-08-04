@@ -32,7 +32,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-class SendFragmentInteractorImpl implements SendFragmentInteractor {
+public class SendFragmentInteractorImpl implements SendFragmentInteractor {
 
     private Context mContext;
 
@@ -61,6 +61,40 @@ class SendFragmentInteractorImpl implements SendFragmentInteractor {
                         for(Iterator<UnspentOutput> iterator = unspentOutputs.iterator();iterator.hasNext();){
                             UnspentOutput unspentOutput = iterator.next();
                             if(!unspentOutput.isOutputAvailableToPay()/* || unspentOutput.getConfirmations()==0*/){
+                                iterator.remove();
+                            }
+                        }
+                        Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
+                            @Override
+                            public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {
+                                return unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? -1 : 0;
+                            }
+                        });
+                        callBack.onSuccess(unspentOutputs);
+                    }
+                });
+    }
+
+    public void getUnspentOutputs(String address, final SendFragmentInteractorImpl.GetUnspentListCallBack callBack) {
+        QtumService.newInstance().getUnspentOutputs(address)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<UnspentOutput>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callBack.onError("Get Unspent Outputs " + e.getMessage());
+                    }
+                    @Override
+                    public void onNext(List<UnspentOutput> unspentOutputs) {
+
+                        for(Iterator<UnspentOutput> iterator = unspentOutputs.iterator(); iterator.hasNext();){
+                            UnspentOutput unspentOutput = iterator.next();
+                            if(!unspentOutput.isOutputAvailableToPay()){
                                 iterator.remove();
                             }
                         }
@@ -187,7 +221,7 @@ class SendFragmentInteractorImpl implements SendFragmentInteractor {
                 });
     }
 
-    interface GetUnspentListCallBack {
+    public interface GetUnspentListCallBack {
         void onSuccess(List<UnspentOutput> unspentOutputs);
         void onError(String error);
     }
@@ -198,7 +232,7 @@ class SendFragmentInteractorImpl implements SendFragmentInteractor {
         void onError(String error);
     }
 
-    interface SendTxCallBack {
+    public interface SendTxCallBack {
         void onSuccess();
 
         void onError(String error);

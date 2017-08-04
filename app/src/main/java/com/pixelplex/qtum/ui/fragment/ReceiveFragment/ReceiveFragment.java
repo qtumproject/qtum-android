@@ -65,6 +65,9 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
 
     @OnClick(R.id.iv_qr_code)
     public void onQrCodeClick(){
+        mImageViewQrCode.setDrawingCacheEnabled(false);
+        mImageViewQrCode.setDrawingCacheEnabled(true);
+        mImageViewQrCode.buildDrawingCache();
         if(mImageViewQrCode.getDrawingCache() != null) {
             zoomDialog = QrCodePreview.newInstance(mImageViewQrCode.getDrawingCache());
             zoomDialog.show(getFragmentManager(), zoomDialog.getClass().getCanonicalName());

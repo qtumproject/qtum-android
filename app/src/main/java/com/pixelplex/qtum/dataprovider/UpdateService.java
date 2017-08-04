@@ -39,6 +39,7 @@ import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
 import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
 import com.pixelplex.qtum.model.gson.callSmartContractResponse.CallSmartContractResponse;
 import com.pixelplex.qtum.model.gson.history.History;
+import com.pixelplex.qtum.model.gson.tokenBalance.Balance;
 import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
@@ -221,11 +222,7 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 TokenBalance tokenBalance = gson.fromJson(data.toString(), TokenBalance.class);
-                mAllTokenBalanceList.put(tokenBalance.getContractAddress(),tokenBalance);
-                TokenBalanceChangeListener tokenBalanceChangeListener = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
-                if(tokenBalanceChangeListener!=null){
-                    tokenBalanceChangeListener.onBalanceChange(tokenBalance);
-                }
+                updateTokenBalance(tokenBalance);
             }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
@@ -235,6 +232,26 @@ public class UpdateService extends Service {
         });
 
         notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
+    }
+
+    private void updateTokenBalance(TokenBalance tokenBalance){
+        TokenBalance tokenBalanceFromList = mAllTokenBalanceList.get(tokenBalance.getContractAddress());
+        if(tokenBalanceFromList != null){
+            for (Balance b : tokenBalanceFromList.getBalances()){
+                for (Balance b2 : tokenBalance.getBalances()){
+                    if(b.getAddress().equals(b2.getAddress())){
+                        b.setBalance(b2.getBalance());
+                    }
+                }
+            }
+        } else {
+            mAllTokenBalanceList.put(tokenBalance.getContractAddress(),tokenBalance);
+        }
+
+        TokenBalanceChangeListener tokenBalanceChangeListener = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
+        if(tokenBalanceChangeListener!=null){
+            tokenBalanceChangeListener.onBalanceChange(tokenBalance);
+        }
     }
 
     private void checkConfirmContract() {

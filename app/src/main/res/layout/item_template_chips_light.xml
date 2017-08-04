@@ -9,7 +9,7 @@
         android:id="@+id/bt_template"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_sea_corner_background_light"
+        android:background="@drawable/chip_normal_corner_background"
         android:gravity="center"
         android:padding="8dp"
         android:textColor="@color/white"

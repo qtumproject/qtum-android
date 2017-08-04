@@ -2,6 +2,8 @@ package com.pixelplex.qtum.ui.fragment.TokenFragment.Light;
 
 import android.support.design.widget.AppBarLayout;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
@@ -9,6 +11,7 @@ import com.pixelplex.qtum.ui.fragment.TokenFragment.TokenFragment;
 import com.pixelplex.qtum.ui.wave_visualizer.WaveHelper;
 import com.pixelplex.qtum.ui.wave_visualizer.WaveView;
 
+import butterknife.BindBitmap;
 import butterknife.BindView;
 
 /**
@@ -30,6 +33,14 @@ public class TokenFragmentLight extends TokenFragment {
     @BindView(R.id.tv_placeholder_currency_value)
     TextView placeHolderCurrency;
 
+    @BindView(R.id.bt_share)
+    ImageButton mShareBtn;
+
+    @BindView(R.id.iv_choose_address)
+    ImageView mIvChooseAddress;
+
+    @BindView(R.id.tv_token_name)
+    TextView mTokenTitle;
 
     @Override
     protected int getLayout() {
@@ -49,9 +60,16 @@ public class TokenFragmentLight extends TokenFragment {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 percents = (((getTotalRange() - Math.abs(verticalOffset))*1.0f)/getTotalRange());
-                balanceView.setAlpha((percents>0.5f)? percents : 1 - percents);
+
+                float testPercents = percents - (1 - percents);
+                float testP2 = (percents >= .8f)? 0 : (1 - percents) - percents;
+
+                mShareBtn.setAlpha(testPercents);
+                mIvChooseAddress.setAlpha(testPercents);
+                mTokenTitle.setAlpha(testPercents);
+                balanceView.setAlpha(testPercents);
                 collapseLinearLayout.collapseFromPercents(percents);
-                appbarPlaceholder.setAlpha(1-percents);
+                appbarPlaceholder.setAlpha(testP2);
                 prevPercents = percents;
             }
 

@@ -4,7 +4,7 @@ package com.pixelplex.qtum.model.gson.tokenBalance;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-class Balance {
+public class Balance {
 
     @SerializedName("address")
     @Expose

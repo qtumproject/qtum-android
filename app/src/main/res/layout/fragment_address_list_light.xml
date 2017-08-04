@@ -43,9 +43,9 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="48dp"
                 android:gravity="center"
-                android:text="@string/address_book"
+                android:text="@string/address_manage"
                 android:textColor="@color/white"
-                android:textSize="@dimen/toolbar_text_size"
+                android:textSize="20sp"
                 app:typefaceAsset="@string/proximaNovaSemibold" />
         </android.support.v7.widget.Toolbar>
 

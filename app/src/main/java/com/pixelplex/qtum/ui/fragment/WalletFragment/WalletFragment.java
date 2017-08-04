@@ -48,7 +48,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletFragm
     @BindView(R.id.unconfirmed_balance_title) protected FontTextView uncomfirmedBalanceTitle;
     //HEADER
     @BindView(R.id.balance_view) protected FrameLayout balanceView;
-    @BindView(R.id.toolbar_layout) CollapsingToolbarLayout collapsingToolbar;
+    @BindView(R.id.toolbar_layout) protected CollapsingToolbarLayout collapsingToolbar;
     @OnClick({R.id.ll_receive, R.id.iv_receive})
     public void onReceiveClick(){
         getPresenter().onReceiveClick();

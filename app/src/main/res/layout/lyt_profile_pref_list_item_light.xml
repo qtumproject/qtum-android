@@ -6,11 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/icon"
         app:srcCompat="@drawable/ic_about"
         android:layout_centerVertical="true"
-        android:tint="@color/bottom_nav_view_item_color"
+        android:tint="@color/grey"
         android:layout_width="30dp"
         android:padding="4dp"
         android:layout_marginStart="16dp"
@@ -32,14 +32,14 @@
         android:layout_height="60dp"
         android:layout_toEndOf="@+id/icon"/>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/arrow"
         app:srcCompat="@drawable/ic_setting_arrow"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:scaleType="center"
         android:layout_marginEnd="16dp"
-        android:tint="@color/bottom_nav_view_item_color"
+        android:tint="@color/grey"
         android:layout_width="16dp"
         android:layout_height="16dp" />
 

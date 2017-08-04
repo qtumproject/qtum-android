@@ -3,6 +3,7 @@ package com.pixelplex.qtum.ui.fragment.SendFragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.pixelplex.qtum.R;
@@ -20,6 +21,7 @@ import com.pixelplex.qtum.model.gson.history.Vout;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
 import com.pixelplex.qtum.dataprovider.UpdateService;
+import com.pixelplex.qtum.model.gson.tokenBalance.Balance;
 import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
@@ -240,6 +242,8 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         getView().openFragmentForResult(getView().getFragment(), currencyFragment);
     }
 
+    String availableAddress = null;
+
     @Override
     public void send(String[] sendInfo) {
 
@@ -275,13 +279,22 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                         });
                     } else {
                         for(final Token token : mTokenList){
-                            if(token.getContractAddress().equals(currency)) {
+                            if(token.getContractName().equals(currency)) {
 
                                 getView().getSocketService().addTokenBalanceChangeListener(token.getContractAddress(), new TokenBalanceChangeListener() {
                                     @Override
                                     public void onBalanceChange(TokenBalance tokenBalance) {
 
-                                        if (tokenBalance.getMaxBalance() < Float.valueOf(amount)){
+                                        availableAddress = null;
+
+                                        for (Balance balance : tokenBalance.getBalances()){
+                                            if(balance.getBalance() >= Float.valueOf(amount)){
+                                                availableAddress = balance.getAddress();
+                                                break;
+                                            }
+                                        }
+
+                                        if (TextUtils.isEmpty(availableAddress)){
                                             getView().dismissProgressDialog();
                                             getView().setAlertDialog(mContext.getString(R.string.error), "You have insufficient funds for this transaction", "Ok", BaseFragment.PopUpType.error);
                                             return;
@@ -310,10 +323,9 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
 
                                                     @Override
                                                     public void onNext(String s) {
-                                                        createTx(s, token.getContractAddress());
+                                                        createTx(s, token.getContractAddress(), availableAddress);
                                                     }
                                                 });
-                                        return;
                                     }
                                 });
                             }
@@ -333,22 +345,23 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         }
     }
 
-    private void createTx(final String abiParams, final String contractAddress) {
-        getInteractor().getUnspentOutputs(new SendFragmentInteractorImpl.GetUnspentListCallBack() {
+    private void createTx(final String abiParams, final String contractAddress, String senderAddress) {
+        getInteractor().getUnspentOutputs(senderAddress, new SendFragmentInteractorImpl.GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
+
                 ContractBuilder contractBuilder = new ContractBuilder();
                 Script script = contractBuilder.createMethodScript(abiParams, contractAddress);
                 getInteractor().sendTx(contractBuilder.createTransactionHash(script, unspentOutputs), new SendFragmentInteractorImpl.SendTxCallBack() {
                     @Override
                     public void onSuccess() {
-                        getView().setAlertDialog(mContext.getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
+                        getView().setAlertDialog(getView().getContext().getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
                     }
 
                     @Override
                     public void onError(String error) {
                         getView().dismissProgressDialog();
-                        getView().setAlertDialog(mContext.getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
+                        getView().setAlertDialog(getView().getContext().getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
                     }
                 });
             }
@@ -356,7 +369,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
             @Override
             public void onError(String error) {
                 getView().dismissProgressDialog();
-                getView().setAlertDialog(mContext.getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
+                getView().setAlertDialog(getView().getContext().getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
             }
         });
 

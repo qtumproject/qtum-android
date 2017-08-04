@@ -11,6 +11,8 @@ import com.pixelplex.qtum.model.gson.callSmartContractResponse.CallSmartContract
 import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.contract.Token;
+import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressListFragment;
+import com.pixelplex.qtum.ui.fragment.AddressesListFragmentToken.AdressesListFragmentToken;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
@@ -19,6 +21,7 @@ import com.pixelplex.qtum.utils.sha3.sha.Keccak;
 import com.pixelplex.qtum.utils.sha3.sha.Parameters;
 
 import org.spongycastle.util.encoders.Hex;
+import org.w3c.dom.Text;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -58,6 +61,13 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
     public TokenFragmentPresenter(TokenFragmentView view){
         this.view = view;
         this.mContext = getView().getContext();
+    }
+
+    public void onChooseAddressClick() {
+        if(!TextUtils.isEmpty(getView().getCurrency())) {
+            BaseFragment addressListFragment = AdressesListFragmentToken.newInstance(mContext, token, getView().getCurrency());
+            getView().openFragment(addressListFragment);
+        }
     }
 
     @Override

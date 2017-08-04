@@ -61,7 +61,7 @@ android {
         versionCode autoVersionCode
         versionName "0.9"
         //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
+       // vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
     buildTypes {

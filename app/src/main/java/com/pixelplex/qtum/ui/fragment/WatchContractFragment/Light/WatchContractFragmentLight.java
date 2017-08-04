@@ -33,7 +33,7 @@ public class WatchContractFragmentLight extends WatchContractFragment {
 
     @Override
     public void setUpTemplatesList(List<ContractTemplate> contractTemplateList, OnTemplateClickListener listener) {
-        mRecyclerViewTemplates.setAdapter(new TemplatesAdapter(contractTemplateList, listener, R.layout.item_template_chips_light));
+        mRecyclerViewTemplates.setAdapter(new TemplatesAdapter(contractTemplateList, listener, R.layout.item_template_chips_light, R.drawable.chip_selected_corner_background));
     }
 
 }

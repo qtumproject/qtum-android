@@ -34,7 +34,6 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
 
     protected AlertDialog mTransferDialog;
 
-
     protected AddressesWithBalanceAdapter mAddressesWithBalanceAdapter;
 
     @OnClick({R.id.ibt_back})

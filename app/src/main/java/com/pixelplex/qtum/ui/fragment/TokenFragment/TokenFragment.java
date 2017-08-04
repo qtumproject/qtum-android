@@ -137,6 +137,16 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
         presenter.onReceiveClick();
     }
 
+    @OnClick(R.id.iv_choose_address)
+    public void onChooseAddressClick(){
+        presenter.onChooseAddressClick();
+    }
+
+    @Override
+    public String getCurrency() {
+        return mTextViewCurrency.getText().toString().trim();
+    }
+
     @Override
     protected void createPresenter() {
         presenter = new TokenFragmentPresenter(this);
@@ -167,16 +177,6 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
 
         collapseLinearLayout.requestLayout();
         headerPAdding = convertDpToPixel(16,getContext());
-
-//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if(newState == SCROLL_STATE_IDLE){
-//                    autodetectAppbar();
-//                }
-//            }
-//        });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }

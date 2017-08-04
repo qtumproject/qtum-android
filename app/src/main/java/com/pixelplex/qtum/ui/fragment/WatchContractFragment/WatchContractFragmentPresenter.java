@@ -131,6 +131,11 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
         }
         getView().setUpTemplatesList(contractFullTemplateList, new OnTemplateClickListener() {
             @Override
+            public void updateSelection(int adapterPosition) {
+                getView().notifyAdapter();
+            }
+
+            @Override
             public void onTemplateClick(ContractTemplate contractTemplate) {
                 String abi = FileStorageManager.getInstance().readAbiContract(mContext, contractTemplate.getUuid());
                 getView().setABIInterface(abi);

@@ -84,6 +84,8 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
         super.initializeViews();
         mIsToken = getArguments().getBoolean(IS_TOKEN);
         if(mIsToken){
+            mTilContractName.setHint(getResources().getString(R.string.token_name));
+            mTilContractAddress.setHint(getResources().getString(R.string.token_address));
             mTextViewToolbar.setText(getString(R.string.watch_token));
         } else {
             mTextViewToolbar.setText(getString(R.string.watch_contract));
@@ -193,4 +195,10 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
         }
         mButtonConfirm.setEnabled(true);
     }
+
+    @Override
+    public void notifyAdapter() {
+        mRecyclerViewTemplates.getAdapter().notifyDataSetChanged();
+    }
+
 }

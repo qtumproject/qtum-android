@@ -4,6 +4,7 @@ import android.support.design.widget.AppBarLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.history.History;
@@ -27,6 +28,7 @@ public class WalletFragmentLight extends WalletFragment {
     @BindView(R.id.tv_placeholder_balance_value) TextView placeHolderBalance;
     @BindView(R.id.tv_placeholder_not_confirmed_balance_value) TextView placeHolderBalanceNotConfirmed;
     @BindView(R.id.balance_view) FrameLayout waveContainer;
+    @BindView(R.id.gradient_iv) ImageView mGrIv;
 
     @BindView(R.id.wave_view) WaveView waveView;
     private WaveHelper mWaveHelper;
@@ -35,6 +37,9 @@ public class WalletFragmentLight extends WalletFragment {
     protected int getLayout() {
         return R.layout.fragment_wallet_light;
     }
+
+    @BindView(R.id.iv_choose_address) ImageView mIvChooseAddr;
+
 
     @Override
     public void initializeViews() {
@@ -55,10 +60,15 @@ public class WalletFragmentLight extends WalletFragment {
 
                 percents = (((getTotalRange() - Math.abs(verticalOffset))*1.0f)/getTotalRange());
 
-                balanceView.setAlpha(percents);
-                mButtonQrCode.setAlpha(percents);
-                mTextViewWalletName.setAlpha(percents);
-                appbarPlaceholder.setAlpha(1-percents);
+                float testPercents = percents - (1 - percents);
+                float testP2 = (percents >= .8f)? 0 : (1 - percents) - percents;
+
+                balanceView.setAlpha(testPercents);
+                mButtonQrCode.setAlpha(testPercents);
+                mTextViewWalletName.setAlpha(testPercents);
+                mGrIv.setAlpha(testPercents);
+                mIvChooseAddr.setAlpha(testPercents);
+                appbarPlaceholder.setAlpha(testP2);
 
             }
         });
