@@ -75,6 +75,40 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                 });
     }
 
+    public void getUnspentOutputs(String address, final SendFragmentInteractorImpl.GetUnspentListCallBack callBack) {
+        QtumService.newInstance().getUnspentOutputs(address)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<UnspentOutput>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callBack.onError("Get Unspent Outputs " + e.getMessage());
+                    }
+                    @Override
+                    public void onNext(List<UnspentOutput> unspentOutputs) {
+
+                        for(Iterator<UnspentOutput> iterator = unspentOutputs.iterator(); iterator.hasNext();){
+                            UnspentOutput unspentOutput = iterator.next();
+                            if(!unspentOutput.isOutputAvailableToPay()){
+                                iterator.remove();
+                            }
+                        }
+                        Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
+                            @Override
+                            public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {
+                                return unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? -1 : 0;
+                            }
+                        });
+                        callBack.onSuccess(unspentOutputs);
+                    }
+                });
+    }
+
     @Override
     public void createTx(final String address, final String amountString, final CreateTxCallBack callBack) {
         getUnspentOutputs(new GetUnspentListCallBack() {
