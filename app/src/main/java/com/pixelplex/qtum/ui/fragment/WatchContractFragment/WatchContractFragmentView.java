@@ -10,4 +10,5 @@ interface WatchContractFragmentView extends BaseFragmentView{
     void setABIInterface(String abiInterface);
     boolean isToken();
     void setUpTemplatesList(List<ContractTemplate> contractTemplateList, OnTemplateClickListener listener);
+    void notifyAdapter();
 }

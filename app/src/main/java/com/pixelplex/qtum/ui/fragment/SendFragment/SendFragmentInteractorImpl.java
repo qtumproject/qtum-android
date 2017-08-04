@@ -32,7 +32,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-class SendFragmentInteractorImpl implements SendFragmentInteractor {
+public class SendFragmentInteractorImpl implements SendFragmentInteractor {
 
     private Context mContext;
 
@@ -187,7 +187,7 @@ class SendFragmentInteractorImpl implements SendFragmentInteractor {
                 });
     }
 
-    interface GetUnspentListCallBack {
+    public interface GetUnspentListCallBack {
         void onSuccess(List<UnspentOutput> unspentOutputs);
         void onError(String error);
     }
@@ -198,7 +198,7 @@ class SendFragmentInteractorImpl implements SendFragmentInteractor {
         void onError(String error);
     }
 
-    interface SendTxCallBack {
+    public interface SendTxCallBack {
         void onSuccess();
 
         void onError(String error);

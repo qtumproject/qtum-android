@@ -42,7 +42,7 @@ class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         if(history.getBlockTime()!=null) {
             dateString = DateCalculator.getfullDate(history.getBlockTime() * 1000L);
         } else {
-            dateString = "Not confirmed";
+            dateString = "Unconfirmed";
         }
         List<String> listTo = new ArrayList<>();
         List<String> listFrom = new ArrayList<>();

@@ -48,7 +48,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="bottom"
-                    android:text="@string/public_key"
+                    android:text="@string/qtum_address"
                     android:textColor="@color/background"
                     app:typefaceAsset="@string/simplonMonoRegular" />
 
@@ -114,7 +114,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="@android:color/transparent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:statusBarScrim="?attr/colorPrimaryDark"
             app:titleEnabled="false">
 

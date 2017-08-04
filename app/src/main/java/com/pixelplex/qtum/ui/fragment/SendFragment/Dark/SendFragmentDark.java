@@ -59,8 +59,10 @@ public class SendFragmentDark extends SendFragment {
     @Override
     public void updateAvailableBalance(String balance) {
         hideProgressBar();
-        mTextViewTotalBalanceNumber.setVisibility(View.VISIBLE);
-        mTextViewTotalBalanceNumber.setText(balance);
+        if(mTextViewTotalBalanceNumber != null) {
+            mTextViewTotalBalanceNumber.setVisibility(View.VISIBLE);
+            mTextViewTotalBalanceNumber.setText(balance);
+        }
     }
 
 
@@ -69,7 +71,9 @@ public class SendFragmentDark extends SendFragment {
     }
 
     public void hideProgressBar() {
-        mProgressBar.setVisibility(View.GONE);
+        if(mProgressBar != null) {
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 
 }

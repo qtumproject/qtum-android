@@ -49,7 +49,7 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindDeterministicKeyWithBalance(final DeterministicKeyWithBalance deterministicKeyWithBalance){
-        mDeterministicKeyWithBalance = deterministicKeyWithBalance;;
+        mDeterministicKeyWithBalance = deterministicKeyWithBalance;
         mTextViewAddress.setText(deterministicKeyWithBalance.getAddress());
 
         mTextViewAddressBalance.setText(deterministicKeyWithBalance.getBalance().toString());

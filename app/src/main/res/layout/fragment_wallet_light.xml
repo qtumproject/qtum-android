@@ -43,7 +43,6 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_main"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -51,11 +50,18 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/title_color_light"
             android:fitsSystemWindows="true"
             app:contentScrim="@android:color/transparent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:statusBarScrim="?attr/colorPrimaryDark"
             app:titleEnabled="false">
+
+            <ImageView
+                android:id="@+id/gradient_iv"
+                android:src="@drawable/background_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <FrameLayout
                 android:id="@+id/balance_view"

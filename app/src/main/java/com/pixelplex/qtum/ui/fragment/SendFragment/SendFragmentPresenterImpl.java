@@ -313,7 +313,6 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                                                         createTx(s, token.getContractAddress());
                                                     }
                                                 });
-                                        return;
                                     }
                                 });
                             }

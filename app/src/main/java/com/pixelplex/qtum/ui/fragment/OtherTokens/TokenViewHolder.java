@@ -68,7 +68,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
                     tokenBalanceView.setText("0.0");
                 }
                 mTextViewSymbol.setVisibility(View.VISIBLE);
-                mTextViewSymbol.setText(value);
+                mTextViewSymbol.setText(String.format(" %s", value));
             }
         });
 

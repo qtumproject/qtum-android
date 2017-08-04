@@ -69,7 +69,7 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:tint="@color/bottom_nav_view_item_color"
+                    android:tint="@color/grey"
                     android:id="@+id/iv_restore_icon"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/ic_attach"/>

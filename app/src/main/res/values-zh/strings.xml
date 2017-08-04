@@ -70,7 +70,7 @@
     <string name="coped">Copied</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="skip">Skip</string>
-    <string name="not_confirmed_balance">Not Confirmed Balance</string>
+    <string name="not_confirmed_balance">Unconfirmed Balance</string>
 
     <string name="mine_address">Mine Address</string>
 
@@ -102,7 +102,7 @@
     <string name="contracts">Contracts</string>
     <string name="contracts_store">Contracts Store</string>
     <string name="function_detail">Function Detail</string>
-    <string name="not_confirmed">Not Confirmed</string>
+    <string name="not_confirmed">Unconfirmed</string>
     <string name="ok">Ok</string>
     <string name="other_tokens">Other Tokens</string>
     <string name="retry">RETRY</string>
@@ -159,5 +159,6 @@
     <string name="transaction_amount_cant_be_zero">Transaction amount can\'t be zero. Please edit your transaction and try again</string>
     <string name="address_book">Address Book</string>
     <string name="complete">Complete</string>
+    <string name="address_manage">Manage Addresses</string>
 
 </resources>

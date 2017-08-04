@@ -10,7 +10,7 @@
 
     <string name="wallet_name">Wallet Name</string>
 
-    <string name="my_wallet">My wallet</string>
+    <string name="my_wallet">My Wallet</string>
     <string name="public_key">Public Key</string>
     <string name="qtum">QTUM</string>
     <string name="receive">Receive</string>
@@ -58,7 +58,7 @@
     <string name="view_details">View Details</string>
     <string name="view_source_code">View Source Code</string>
     <string name="change_pin">Change PIN</string>
-    <string name="wallet_back_up">Wallet Back Up</string>
+    <string name="wallet_back_up">Wallet Backup</string>
     <string name="about">About</string>
     <string name="empty_name">Empty Name</string>
     <string name="incorrect_repeated_pin">Incorrect repeated PIN</string>
@@ -178,5 +178,6 @@
     <string name="transaction_amount_cant_be_zero">Transaction amount can\'t be zero. Please edit your transaction and try again</string>
     <string name="address_book">Address Book</string>
     <string name="complete">Complete</string>
+    <string name="address_manage">Manage Addresses</string>
 
 </resources>

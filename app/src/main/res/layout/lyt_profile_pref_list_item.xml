@@ -4,10 +4,9 @@
     android:clickable="true"
     android:background="@drawable/list_item_background_selector"
     android:layout_width="match_parent"
-
     android:layout_height="wrap_content">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/icon"
         app:srcCompat="@drawable/ic_about"
         android:layout_centerVertical="true"
@@ -33,7 +32,7 @@
         android:layout_height="60dp"
         android:layout_toEndOf="@+id/icon"/>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/arrow"
         app:srcCompat="@drawable/ic_setting_arrow"
         android:layout_alignParentEnd="true"
