@@ -13,7 +13,7 @@ import com.pixelplex.qtum.utils.FontButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TemplateHolder extends RecyclerView.ViewHolder implements Runnable{
+public class TemplateHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.bt_template)
     FontButton mButton;
@@ -35,7 +35,6 @@ public class TemplateHolder extends RecyclerView.ViewHolder implements Runnable{
             public void onClick(View view) {
                 listener.updateSelection(getAdapterPosition());
                 listener.onTemplateClick(mContractTemplate);
-                handler.postDelayed(TemplateHolder.this,100);
             }
         });
 
@@ -43,13 +42,14 @@ public class TemplateHolder extends RecyclerView.ViewHolder implements Runnable{
     }
 
     public void onBind(ContractTemplate contractTemplate){
-        mButton.setBackground(defaultDrawable);
         mButton.setText(contractTemplate.getName());
         mContractTemplate = contractTemplate;
+
+        if(contractTemplate.isSelectedABI()){
+            mButton.setBackgroundResource(selectionColor);
+        } else {
+            mButton.setBackground(defaultDrawable);
+        }
     }
 
-    @Override
-    public void run() {
-        mButton.setBackgroundResource(selectionColor);
-    }
 }

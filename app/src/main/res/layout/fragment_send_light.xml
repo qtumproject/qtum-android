@@ -78,23 +78,32 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include
+        <FrameLayout
             android:id="@+id/balance"
-            layout="@layout/lyt_appbar_wallet_placeholder_light" />
+            android:background="@color/title_color_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include
+                layout="@layout/lyt_appbar_wallet_placeholder_light" />
+        </FrameLayout>
+
 
         <RelativeLayout
+            android:layout_below="@+id/balance"
             android:id="@+id/rl_send"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/balance"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:padding="@dimen/activity_horizontal_margin"
-            android:theme="@style/InputTextLight">
+            android:theme="@style/InputTextLight"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true">
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_receivers_address"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -122,6 +131,15 @@
                 android:paddingBottom="16dp"
                 android:paddingTop="16dp">
 
+                <com.pixelplex.qtum.utils.FontTextView
+                    app:typefaceAsset="@string/proximaNovaRegular"
+                    android:textColor="@color/bottom_nav_bar_text_color_light_alpha_60"
+                    android:text="@string/currency"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -131,8 +149,8 @@
                         android:id="@+id/tv_currency"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="left"
                         android:layout_weight="1"
+                        android:gravity="left"
                         android:textSize="16sp"
                         app:typefaceAsset="@string/proximaNovaSemibold" />
 

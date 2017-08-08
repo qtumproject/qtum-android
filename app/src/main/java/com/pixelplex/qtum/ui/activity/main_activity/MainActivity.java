@@ -213,16 +213,16 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     }
 
     public void showBottomNavigationView(boolean recolorStatusBar) {
-        mBottomNavigationView.setVisibility(View.VISIBLE);
-
+        if(mBottomNavigationView != null)
+            mBottomNavigationView.setVisibility(View.VISIBLE);
         if(recolorStatusBar) {
             recolorStatusBarBlue();
         }
     }
 
     public void hideBottomNavigationView(boolean recolorStatusBar) {
-        mBottomNavigationView.setVisibility(View.GONE);
-
+        if(mBottomNavigationView != null)
+            mBottomNavigationView.setVisibility(View.GONE);
         if(recolorStatusBar) {
             recolorStatusBarBlack();
         }
@@ -241,8 +241,8 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     }
 
     public void showBottomNavigationView(int resColorId) {
-        mBottomNavigationView.setVisibility(View.VISIBLE);
-
+        if(mBottomNavigationView != null)
+            mBottomNavigationView.setVisibility(View.VISIBLE);
         if(resColorId > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
@@ -251,8 +251,8 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     }
 
     public void hideBottomNavigationView(int resColorId) {
+        if(mBottomNavigationView != null)
         mBottomNavigationView.setVisibility(View.GONE);
-
         if(resColorId > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));

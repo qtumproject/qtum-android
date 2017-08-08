@@ -1,6 +1,10 @@
 package com.pixelplex.qtum.ui.fragment.PinFragment;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.hardware.fingerprint.FingerprintManager;
+import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
@@ -42,6 +46,7 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
     private Context mContext;
 
     private FingerprintHelper mFingerprintHelper;
+    private FingerPrintHelperCompat23 mFingerPrintHelperCompat23;
 
     private String[] CREATING_STATE;
     private String[] AUTHENTICATION_STATE;
@@ -473,23 +478,89 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
 
     private void prepareSensor() {
         if (FingerprintUtils.isSensorStateAt(FingerprintUtils.mSensorState.READY, mContext)) {
-            FingerprintManagerCompat.CryptoObject cryptoObject = CryptoUtils.getCryptoObject();
-            if (cryptoObject != null) {
-                mFingerprintHelper = new FingerprintHelper(mContext);
-                mFingerprintHelper.startAuth(cryptoObject);
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+                FingerprintManagerCompat.CryptoObject cryptoObject = CryptoUtils.getCryptoObject();
+                if (cryptoObject != null) {
+                    mFingerprintHelper = new FingerprintHelper(mContext);
+                    mFingerprintHelper.startAuth(cryptoObject);
+                } else {
+                    //TODO: make
+                    Toast.makeText(mContext, "new fingerprint enrolled. enter pin again", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                //TODO: make
-                Toast.makeText(mContext, "new fingerprint enrolled. enter pin again", Toast.LENGTH_SHORT).show();
+                FingerprintManager.CryptoObject cryptoObject = CryptoUtils.getCryptoObjectCompat23();
+                if (cryptoObject != null) {
+                    mFingerPrintHelperCompat23 = new FingerPrintHelperCompat23(mContext);
+                    mFingerPrintHelperCompat23.startAuth(cryptoObject);
+                } else {
+                    //TODO: make
+                    Toast.makeText(mContext, "new fingerprint enrolled. enter pin again", Toast.LENGTH_SHORT).show();
+                }
             }
-
         }
     }
 
     @Override
     public void onStop(Context context) {
         super.onStop(context);
-        if (mFingerprintHelper != null) {
-            mFingerprintHelper.cancel();
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (mFingerprintHelper != null) {
+                mFingerprintHelper.cancel();
+            }
+        } else {
+            if (mFingerPrintHelperCompat23 != null) {
+                mFingerPrintHelperCompat23.cancel();
+            }
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public class FingerPrintHelperCompat23 extends FingerprintManager.AuthenticationCallback{
+
+        private Context mContext;
+        private android.os.CancellationSignal mCancellationSignal;
+
+        FingerPrintHelperCompat23(Context context) {
+            mContext = context;
+        }
+
+        void cancel() {
+            if (mCancellationSignal != null) {
+                mCancellationSignal.cancel();
+            }
+        }
+
+        void startAuth(FingerprintManager.CryptoObject cryptoObject) {
+            mCancellationSignal = new android.os.CancellationSignal();
+            FingerprintManager manager = (FingerprintManager) mContext.getSystemService(Context.FINGERPRINT_SERVICE);
+            manager.authenticate(cryptoObject, mCancellationSignal, 0,  this, null);
+        }
+
+        @Override
+        public void onAuthenticationError(int errorCode, CharSequence errString) {
+            super.onAuthenticationError(errorCode, errString);
+            getView().confirmError(errString.toString());
+        }
+
+        @Override
+        public void onAuthenticationFailed() {
+            super.onAuthenticationFailed();
+            getView().confirmError("try again");
+        }
+
+        @Override
+        public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
+            super.onAuthenticationHelp(helpCode, helpString);
+            getView().confirmError(helpString.toString());
+        }
+
+        @Override
+        public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+            super.onAuthenticationSucceeded(result);
+            Cipher cipher = result.getCryptoObject().getCipher();
+            String encoded = getInteractor().getTouchIdPassword();
+            String decoded = CryptoUtils.decode(encoded, cipher);
+            getView().setPin(decoded);
         }
     }
 

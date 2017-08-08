@@ -241,6 +241,7 @@ public class UpdateService extends Service {
                 for (Balance b2 : tokenBalance.getBalances()){
                     if(b.getAddress().equals(b2.getAddress())){
                         b.setBalance(b2.getBalance());
+                        break;
                     }
                 }
             }

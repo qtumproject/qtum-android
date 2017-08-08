@@ -8,8 +8,10 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
+import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
 import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
 import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
+import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.model.contract.Contract;
@@ -61,31 +63,42 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        mUpdateService = getView().getMainActivity().getUpdateService();
-        mUpdateService.addTransactionListener(new TransactionListener() {
+        getView().getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
             @Override
-            public void onNewHistory(History history) {
-                calculateChangeInBalance(history,getInteractor().getAddresses());
-                if(history.getChangeInBalance().doubleValue()<0){
-                    getView().getMainActivity().runOnUiThread(new Runnable() {
+            public void onServiceConnectionChange(boolean isConnecting) {
+                if(isConnecting){
+                    mUpdateService = getView().getMainActivity().getUpdateService();
+                    mUpdateService.addTransactionListener(new TransactionListener() {
                         @Override
-                        public void run() {
-                            updateAvailableBalance();
+                        public void onNewHistory(History history) {
+                            getView().getMainActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setUpBalance();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public boolean getVisibility() {
+                            return false;
                         }
                     });
-                } else if(history.getBlockTime()!=null){
-                    getView().getMainActivity().runOnUiThread(new Runnable() {
+
+                    mUpdateService.removeBalanceChangeListener();
+
+                    mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
                         @Override
-                        public void run() {
-                            updateAvailableBalance();
+                        public void onChangeBalance() {
+                            getView().getMainActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setUpBalance();
+                                }
+                            });
                         }
                     });
                 }
-            }
-
-            @Override
-            public boolean getVisibility() {
-                return false;
             }
         });
 
@@ -144,6 +157,8 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         if(OPEN_QR_CODE_FRAGMENT_FLAG) {
             openQrCodeFragment();
         }
+
+        setUpBalance();
     }
 
     private void openQrCodeFragment(){
@@ -153,32 +168,9 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         getView().openInnerFragmentForResult(qrCodeRecognitionFragment);
     }
 
-    private void updateAvailableBalance(){
-        getView().setProgressBar();
-        getInteractor().getUnspentOutputs(new SendFragmentInteractorImpl.GetUnspentListCallBack() {
-            @Override
-            public void onSuccess(List<UnspentOutput> unspentOutputs) {
-                BigDecimal balance = new BigDecimal("0");
-                BigDecimal amount;
-                for(UnspentOutput unspentOutput : unspentOutputs){
-                    amount = new BigDecimal(String.valueOf(unspentOutput.getAmount()));
-                    balance = balance.add(amount);
-                }
-                getView().updateAvailableBalance(balance.toString() + " QTUM");
-            }
-
-            @Override
-            public void onError(String error) {
-                getView().dismissProgressDialog();
-                getView().setAlertDialog(mContext.getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
-            }
-        });
-    }
-
     @Override
     public void initializeViews() {
         super.initializeViews();
-        updateAvailableBalance();
         String currency;
         mTokenList = new ArrayList<>();
         for(Token token : getInteractor().getTokenList()){
@@ -240,6 +232,19 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     public void onCurrencyClick() {
         BaseFragment currencyFragment = CurrencyFragment.newInstance(getView().getContext());
         getView().openFragmentForResult(getView().getFragment(), currencyFragment);
+    }
+
+    private void setUpBalance() {
+        String balance = getInteractor().getBalance();
+        if(balance!=null) {
+            String unconfirmedBalance = HistoryList.getInstance().getUnconfirmedBalance();
+            if(!TextUtils.isEmpty(unconfirmedBalance) && !unconfirmedBalance.equals("0")) {
+                BigDecimal unconfirmedBalanceDecimal = new BigDecimal(unconfirmedBalance);
+                getView().updateBalance(String.format("%S QTUM", getInteractor().getBalance()),String.format("%S QTUM", String.valueOf(unconfirmedBalanceDecimal.floatValue())));
+            } else {
+                getView().updateBalance(String.format("%S QTUM", getInteractor().getBalance()),null);
+            }
+        }
     }
 
     String availableAddress = null;

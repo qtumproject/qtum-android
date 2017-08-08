@@ -50,32 +50,36 @@ public class WalletFragmentLight extends WalletFragment {
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (!mSwipeRefreshLayout.isActivated()) {
-                    if (verticalOffset == 0) {
-                        mSwipeRefreshLayout.setEnabled(true);
-                    } else {
-                        mSwipeRefreshLayout.setEnabled(false);
+                if (mAppBarLayout != null) {
+                    if (mSwipeRefreshLayout != null) {
+                        if (!mSwipeRefreshLayout.isActivated()) {
+                            if (verticalOffset == 0) {
+                                mSwipeRefreshLayout.setEnabled(true);
+                            } else {
+                                mSwipeRefreshLayout.setEnabled(false);
+                            }
+                        }
                     }
+
+                    percents = (((getTotalRange() - Math.abs(verticalOffset)) * 1.0f) / getTotalRange());
+
+                    float testPercents = percents - (1 - percents);
+                    float testP2 = (percents >= .8f) ? 0 : (1 - percents) - percents;
+
+                    balanceView.setAlpha(testPercents);
+                    mButtonQrCode.setAlpha(testPercents);
+                    mTextViewWalletName.setAlpha(testPercents);
+                    mGrIv.setAlpha(testPercents);
+                    mIvChooseAddr.setAlpha(testPercents);
+                    appbarPlaceholder.setAlpha(testP2);
                 }
-
-                percents = (((getTotalRange() - Math.abs(verticalOffset))*1.0f)/getTotalRange());
-
-                float testPercents = percents - (1 - percents);
-                float testP2 = (percents >= .8f)? 0 : (1 - percents) - percents;
-
-                balanceView.setAlpha(testPercents);
-                mButtonQrCode.setAlpha(testPercents);
-                mTextViewWalletName.setAlpha(testPercents);
-                mGrIv.setAlpha(testPercents);
-                mIvChooseAddr.setAlpha(testPercents);
-                appbarPlaceholder.setAlpha(testP2);
-
             }
         });
 
         appbarPlaceholder.setVisibility(View.VISIBLE);
         waveView.setShapeType(WaveView.ShapeType.SQUARE);
         mWaveHelper = new WaveHelper(waveView);
+
     }
 
     @Override

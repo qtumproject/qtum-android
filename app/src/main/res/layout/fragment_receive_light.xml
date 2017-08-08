@@ -81,19 +81,25 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/background"/>
+            android:background="@color/background" />
 
-        <include layout="@layout/lyt_appbar_wallet_placeholder_light"
-            android:id="@+id/balance"/>
+        <FrameLayout
+            android:id="@+id/balance"
+            android:background="@color/title_color_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include
+                layout="@layout/lyt_appbar_wallet_placeholder_light" />
+        </FrameLayout>
 
         <RelativeLayout
-            android:layout_below="@+id/balance"
-            android:layout_above="@+id/buttons"
+            android:id="@+id/rl_receive"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@+id/buttons"
+            android:layout_below="@+id/balance"
             android:clickable="true"
             android:focusable="true"
-            android:id="@+id/rl_receive"
             android:focusableInTouchMode="true"
             android:padding="@dimen/activity_horizontal_margin">
 
@@ -115,18 +121,18 @@
             </android.support.design.widget.TextInputLayout>
 
             <RelativeLayout
-                android:background="@color/qr_code_background"
-                android:layout_below="@+id/til_amount"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_below="@+id/til_amount"
+                android:background="@color/qr_code_background">
 
                 <FrameLayout
                     android:id="@+id/qr_code_boarder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentTop="true"
                     android:layout_above="@+id/tv_single_string"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
                     android:padding="4dp">
 
@@ -134,8 +140,7 @@
                         android:id="@+id/iv_qr_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        />
+                        android:layout_gravity="center" />
 
                 </FrameLayout>
 
@@ -144,20 +149,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:maxLines="1"
-                    android:ellipsize="end"
                     android:layout_centerHorizontal="true"
-                    android:padding="8dp"
+                    android:ellipsize="end"
                     android:gravity="center"
-                    android:textColor="@color/qr_code_tint_color"/>
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:textColor="@color/qr_code_tint_color" />
 
                 <ProgressBar
                     android:id="@+id/qr_progress_bar"
-                    android:layout_centerInParent="true"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:indeterminateTint="@color/colorPrimary"/>
+                    android:indeterminateTint="@color/colorPrimary" />
 
             </RelativeLayout>
 
@@ -169,48 +174,49 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:paddingTop="8dp"
-            android:paddingBottom="@dimen/activity_horizontal_margin">
+            android:paddingBottom="@dimen/activity_horizontal_margin"
+            android:paddingTop="8dp">
+
             <com.pixelplex.qtum.utils.FontButton
                 android:id="@+id/bt_copy_wallet_address"
                 android:layout_width="match_parent"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:paddingStart="32dp"
-                android:paddingEnd="32dp"
-                android:gravity="center"
                 android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/bt_choose_another_address"
+                android:layout_alignStart="@+id/bt_choose_another_address"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/btn_sea_corner_background_light"
-                app:typeface="@string/proximaNovaSemibold"
-                android:layout_alignStart="@+id/bt_choose_another_address"
-                android:layout_alignEnd="@+id/bt_choose_another_address"
+                android:gravity="center"
+                android:paddingBottom="16dp"
+                android:paddingEnd="32dp"
+                android:paddingStart="32dp"
+                android:paddingTop="16dp"
                 android:stateListAnimator="@null"
                 android:text="@string/copy_wallet_address"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="@dimen/button_text"/>
+                android:textSize="@dimen/button_text"
+                app:typeface="@string/proximaNovaSemibold" />
 
             <com.pixelplex.qtum.utils.FontButton
                 android:id="@+id/bt_choose_another_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:paddingStart="32dp"
-                android:paddingEnd="32dp"
                 android:layout_below="@id/bt_copy_wallet_address"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                app:typeface="@string/proximaNovaSemibold"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/btn_gray_corner_background_light"
+                android:paddingBottom="16dp"
+                android:paddingEnd="32dp"
+                android:paddingStart="32dp"
+                android:paddingTop="16dp"
                 android:stateListAnimator="@null"
                 android:text="@string/choose_another_address"
                 android:textAllCaps="true"
                 android:textColor="@color/bottom_nav_bar_text_color_light"
-                android:textSize="@dimen/button_text"/>
+                android:textSize="@dimen/button_text"
+                app:typeface="@string/proximaNovaSemibold" />
 
         </RelativeLayout>
     </RelativeLayout>

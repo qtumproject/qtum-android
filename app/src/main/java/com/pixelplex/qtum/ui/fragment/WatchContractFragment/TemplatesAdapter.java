@@ -37,6 +37,20 @@ public class TemplatesAdapter extends RecyclerView.Adapter<TemplateHolder> {
         holder.onBind(mContractTemplates.get(position));
     }
 
+    public void setSelection(int position) {
+        for (int i = 0; i < mContractTemplates.size(); i ++){
+            mContractTemplates.get(i).setSelectedABI(i == position);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void setSelection(String templateName) {
+        for (ContractTemplate item : mContractTemplates){
+            item.setSelectedABI(templateName.equals(item.getName()));
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mContractTemplates.size();

@@ -41,7 +41,6 @@ public class ReceiveFragmentLight extends ReceiveFragment {
         notConfirmedBalancePlaceholder.setVisibility(View.GONE);
         mTilAmount.setTypeface(FontManager.getInstance().getFont(getResources().getString(R.string.proximaNovaRegular)));
         mEtAmount.setTypeface(FontManager.getInstance().getFont(getResources().getString(R.string.proximaNovaSemibold)));
-
     }
 
     @Override

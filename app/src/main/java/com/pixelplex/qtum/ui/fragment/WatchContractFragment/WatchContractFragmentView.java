@@ -7,8 +7,8 @@ import java.util.List;
 
 
 interface WatchContractFragmentView extends BaseFragmentView{
-    void setABIInterface(String abiInterface);
+    void setABIInterface(String name, String abiInterface);
     boolean isToken();
     void setUpTemplatesList(List<ContractTemplate> contractTemplateList, OnTemplateClickListener listener);
-    void notifyAdapter();
+    void notifyAdapter(int adapterPosition);
 }
