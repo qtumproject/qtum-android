@@ -17,11 +17,6 @@ import butterknife.OnClick;
 
 public class SendFragmentDark extends SendFragment {
 
-    @BindView(R.id.tv_total_balance_number)
-    TextView mTextViewTotalBalanceNumber;
-    @BindView(R.id.progress_bar)
-    ProgressBar mProgressBar;
-
     @OnClick(R.id.bt_send)
     public void onSendClick(){
         String[] sendInfo = new String[3];
@@ -48,32 +43,6 @@ public class SendFragmentDark extends SendFragment {
         mTextInputEditTextAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
         tilAdress.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
         tilAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
-    }
-
-    @Override
-    public void setProgressBar() {
-        showProgressBar();
-        mTextViewTotalBalanceNumber.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void updateAvailableBalance(String balance) {
-        hideProgressBar();
-        if(mTextViewTotalBalanceNumber != null) {
-            mTextViewTotalBalanceNumber.setVisibility(View.VISIBLE);
-            mTextViewTotalBalanceNumber.setText(balance);
-        }
-    }
-
-
-    public void showProgressBar() {
-        mProgressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void hideProgressBar() {
-        if(mProgressBar != null) {
-            mProgressBar.setVisibility(View.GONE);
-        }
     }
 
 }

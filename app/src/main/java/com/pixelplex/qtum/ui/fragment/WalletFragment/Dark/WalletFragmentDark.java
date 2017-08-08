@@ -68,17 +68,6 @@ public class WalletFragmentDark extends WalletFragment {
         super.initializeViews();
 
         showBottomNavView(R.color.primary_text_color);
-        if (mAppBarLayout.getLayoutParams() != null) {
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
-            AppBarLayout.Behavior appBarLayoutBehaviour = new AppBarLayout.Behavior();
-            appBarLayoutBehaviour.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
-                @Override
-                public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
-                    return false;
-                }
-            });
-            layoutParams.setBehavior(appBarLayoutBehaviour);
-        }
 
         headerPAdding = convertDpToPixel(16,getContext());
 
@@ -90,56 +79,57 @@ public class WalletFragmentDark extends WalletFragment {
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if(mSwipeRefreshLayout != null) {
-                    if (!mSwipeRefreshLayout.isActivated()) {
-                        if (verticalOffset == 0) {
-                            mSwipeRefreshLayout.setEnabled(true);
-                        } else {
-                            mSwipeRefreshLayout.setEnabled(false);
+                if (mAppBarLayout != null) {
+                    if (mSwipeRefreshLayout != null) {
+                        if (!mSwipeRefreshLayout.isActivated()) {
+                            if (verticalOffset == 0) {
+                                mSwipeRefreshLayout.setEnabled(true);
+                            } else {
+                                mSwipeRefreshLayout.setEnabled(false);
+                            }
                         }
                     }
+
+                    percents = (((getTotalRange() - Math.abs(verticalOffset)) * 1.0f) / getTotalRange());
+
+                    balanceView.setAlpha((percents > 0.5f) ? percents : 1 - percents);
+
+                    if (percents == 0) {
+                        doDividerExpand();
+                    } else {
+                        doDividerCollapse();
+                    }
+
+                    final float textPercent = (percents >= .5f) ? percents : .5f;
+                    final float textPercent3f = (percents >= .3f) ? percents : .3f;
+
+                    if (uncomfirmedBalanceTitle.getVisibility() == View.VISIBLE) {
+                        animateText(percents, balanceLayout, .5f);
+                        balanceLayout.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (balanceLayout.getWidth() * textPercent) / 2) - balanceLayout.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
+                        balanceLayout.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - balanceLayout.getHeight() * percents - balanceLayout.getHeight() * (1 - percents));
+
+                        animateText(percents, balanceTitle, .7f);
+                        balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
+                        balanceTitle.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - balanceTitle.getHeight() * (1 - percents));
+
+                        animateText(percents, uncomfirmedBalanceValue, .5f);
+                        uncomfirmedBalanceValue.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (uncomfirmedBalanceValue.getWidth() * textPercent) / 2) - uncomfirmedBalanceValue.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
+
+                        animateText(percents, uncomfirmedBalanceTitle, .7f);
+                        uncomfirmedBalanceTitle.setY(balanceView.getHeight() / 2 + uncomfirmedBalanceValue.getHeight() * percents - (uncomfirmedBalanceTitle.getHeight() * percents * (1 - percents)));
+                        uncomfirmedBalanceTitle.setX(balanceView.getWidth() / 2 * percents - (uncomfirmedBalanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
+                    } else {
+                        animateText(percents, balanceTitle, .7f);
+                        balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
+                        balanceTitle.setY(balanceView.getHeight() / 2 + balanceTitle.getHeight() / 2 * percents - balanceTitle.getHeight() / 2 * (1 - percents));
+
+                        animateText(percents, balanceLayout, .5f);
+                        balanceLayout.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (balanceLayout.getWidth() * textPercent) / 2) - balanceLayout.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
+                        balanceLayout.setY(balanceView.getHeight() / 2 - balanceLayout.getHeight() * percents - balanceLayout.getHeight() / 2 * (1 - percents));
+                    }
+                    prevPercents = percents;
                 }
-
-                percents = (((getTotalRange() - Math.abs(verticalOffset))*1.0f)/getTotalRange());
-
-                balanceView.setAlpha((percents>0.5f)? percents : 1 - percents);
-
-                if(percents == 0){
-                    doDividerExpand();
-                } else {
-                    doDividerCollapse();
-                }
-
-                final float textPercent = (percents >= .5f)? percents : .5f;
-                final float textPercent3f = (percents >= .3f)? percents : .3f;
-
-                if(uncomfirmedBalanceTitle.getVisibility() == View.VISIBLE) {
-                    animateText(percents, balanceLayout, .5f);
-                    balanceLayout.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (balanceLayout.getWidth() * textPercent) / 2) - balanceLayout.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
-                    balanceLayout.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - balanceLayout.getHeight() * percents - balanceLayout.getHeight() * (1 - percents));
-
-                    animateText(percents, balanceTitle, .7f);
-                    balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
-                    balanceTitle.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - balanceTitle.getHeight() * (1 - percents) );
-
-                    animateText(percents, uncomfirmedBalanceValue, .5f);
-                    uncomfirmedBalanceValue.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (uncomfirmedBalanceValue.getWidth() * textPercent) / 2) - uncomfirmedBalanceValue.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
-
-                    animateText(percents, uncomfirmedBalanceTitle, .7f);
-                    uncomfirmedBalanceTitle.setY(balanceView.getHeight() / 2 + uncomfirmedBalanceValue.getHeight() * percents - (uncomfirmedBalanceTitle.getHeight() * percents * (1 - percents)));
-                    uncomfirmedBalanceTitle.setX(balanceView.getWidth() / 2 * percents - (uncomfirmedBalanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
-                } else {
-                    animateText(percents, balanceTitle, .7f);
-                    balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
-                    balanceTitle.setY(balanceView.getHeight() / 2 + balanceTitle.getHeight() / 2 * percents - balanceTitle.getHeight() / 2 * (1-percents));
-
-                    animateText(percents, balanceLayout, .5f);
-                    balanceLayout.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (balanceLayout.getWidth() * textPercent) / 2) - balanceLayout.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
-                    balanceLayout.setY(balanceView.getHeight() / 2 - balanceLayout.getHeight() * percents - balanceLayout.getHeight() / 2 * (1-percents));
-                }
-                prevPercents = percents;
             }
-
         });
 
     }

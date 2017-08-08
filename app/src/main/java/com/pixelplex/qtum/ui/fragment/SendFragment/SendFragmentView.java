@@ -12,8 +12,7 @@ interface SendFragmentView extends BaseFragmentView{
     void sendToolBar();
     void updateData(String publicAddress, double amount, String tokenAddress);
     void errorRecognition();
-    void setProgressBar();
-    void updateAvailableBalance(String balance);
+    void updateBalance(String balance, String unconfirmedBalance);
     void setUpCurrencyField(String currency);
     Fragment getFragment();
     void hideCurrencyField();

@@ -84,38 +84,15 @@
             android:layout_height="1dp"
             android:background="@color/background"/>
 
-        <LinearLayout
-            android:id="@+id/balance"
-            android:padding="16dp"
+        <FrameLayout
             android:layout_below="@+id/divider"
+            android:id="@+id/balance"
             android:background="@color/colorPrimary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.pixelplex.qtum.utils.FontTextView
-                android:id="@+id/tv_total_balance"
-                android:layout_width="0dp"
-                app:typefaceAsset="@string/simplonMonoRegular"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="@string/available_balance"
-                android:textColor="@color/background"/>
-
-            <com.pixelplex.qtum.utils.FontTextView
-                android:id="@+id/tv_total_balance_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:typefaceAsset="@string/simplonMonoRegular"
-                android:layout_marginEnd="12dp"
-                android:textColor="@color/background"/>
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/progress_bar"/>
-        </LinearLayout>
+            android:layout_height="wrap_content">
+            <include
+                layout="@layout/lyt_appbar_wallet_placeholder" />
+        </FrameLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

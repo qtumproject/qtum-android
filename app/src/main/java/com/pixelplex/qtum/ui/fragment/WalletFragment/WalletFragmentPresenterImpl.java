@@ -117,6 +117,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
                 }
             }
         });
+        setUpBalance();
     }
 
     @Override

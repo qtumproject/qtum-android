@@ -49,6 +49,11 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     @BindView(R.id.bt_qr_code) ImageButton mButtonQrCode;
     @BindView(R.id.toolbar) Toolbar mToolbar;
 
+    @BindView(R.id.not_confirmed_balance_view) View notConfirmedBalancePlaceholder;
+    @BindView(R.id.tv_placeholder_balance_value) TextView placeHolderBalance;
+    @BindView(R.id.tv_placeholder_not_confirmed_balance_value) TextView placeHolderBalanceNotConfirmed;
+
+
     protected SendFragmentPresenterImpl sendBaseFragmentPresenter;
 
     @OnClick({R.id.bt_qr_code,R.id.ibt_back, R.id.ll_currency})
@@ -206,5 +211,16 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     public void setSoftMode() {
         super.setSoftMode();
         getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
+    @Override
+    public void updateBalance(String balance, String unconfirmedBalance) {
+        placeHolderBalance.setText(balance);
+        if(!TextUtils.isEmpty(unconfirmedBalance)) {
+            notConfirmedBalancePlaceholder.setVisibility(View.VISIBLE);
+            placeHolderBalanceNotConfirmed.setText(unconfirmedBalance);
+        } else {
+            notConfirmedBalancePlaceholder.setVisibility(View.GONE);
+        }
     }
 }

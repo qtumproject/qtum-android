@@ -19,10 +19,6 @@ import butterknife.OnClick;
 
 public class SendFragmentLight extends SendFragment {
 
-    @BindView(R.id.not_confirmed_balance_view) View notConfirmedBalancePlaceholder;
-    @BindView(R.id.tv_placeholder_balance_value) TextView placeHolderBalance;
-    @BindView(R.id.tv_placeholder_not_confirmed_balance_value) TextView placeHolderBalanceNotConfirmed;
-
     @OnClick(R.id.bt_send)
     public void onSendClick(){
         String[] sendInfo = new String[3];
@@ -47,20 +43,10 @@ public class SendFragmentLight extends SendFragment {
 
         ((MainActivity)getActivity()).showBottomNavigationView(R.color.title_color_light);
 
-        notConfirmedBalancePlaceholder.setVisibility(View.GONE);
-
         mTextInputEditTextAddress.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaSemibold)));
         mTextInputEditTextAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaSemibold)));
         tilAdress.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaRegular)));
         tilAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaRegular)));
     }
 
-    @Override
-    public void setProgressBar() {
-    }
-
-    @Override
-    public void updateAvailableBalance(String balance) {
-        placeHolderBalance.setText(balance);
-    }
 }

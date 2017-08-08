@@ -17,21 +17,21 @@
         android:layout_height="0dp">
 
         <com.pixelplex.qtum.utils.FontTextView
-            android:textColor="@color/white"
+            android:textColor="@color/background"
             android:textSize="12sp"
             android:id="@+id/tv_placeholder_balance_title"
             android:text="@string/available_balance"
             android:layout_width="wrap_content"
-            app:typefaceAsset="@string/proximaNovaRegular"
+            app:typefaceAsset="@string/simplonMonoRegular"
             android:gravity="center"
             android:layout_height="match_parent" />
 
         <com.pixelplex.qtum.utils.FontTextView
-            android:textColor="@color/white"
+            android:textColor="@color/background"
             android:textSize="12sp"
             android:layout_alignParentRight="true"
             android:id="@+id/tv_placeholder_balance_value"
-            app:typefaceAsset="@string/proximaNovaRegular"
+            app:typefaceAsset="@string/simplonMonoRegular"
             android:text="0.0 QTUM"
             android:layout_width="wrap_content"
             android:gravity="center"
@@ -49,21 +49,21 @@
         android:layout_height="0dp">
 
         <com.pixelplex.qtum.utils.FontTextView
-            android:textColor="@color/white"
+            android:textColor="@color/background"
             android:textSize="12sp"
             android:id="@+id/tv_placeholder_not_confirmed_balance_title"
-            app:typefaceAsset="@string/proximaNovaRegular"
+            app:typefaceAsset="@string/simplonMonoRegular"
             android:text="@string/not_confirmed_balance"
             android:layout_width="wrap_content"
             android:gravity="center"
             android:layout_height="match_parent" />
 
         <com.pixelplex.qtum.utils.FontTextView
-            android:textColor="@color/white"
+            android:textColor="@color/background"
             android:textSize="12sp"
             android:layout_alignParentRight="true"
             android:id="@+id/tv_placeholder_not_confirmed_balance_value"
-            app:typefaceAsset="@string/proximaNovaRegular"
+            app:typefaceAsset="@string/simplonMonoRegular"
             android:text="0.0 QTUM"
             android:layout_width="wrap_content"
             android:gravity="center"
