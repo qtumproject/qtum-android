@@ -26,6 +26,16 @@ public class ContractTemplate {
         isFullContractTemplate = true;
     }
 
+    public boolean isSelectedABI() {
+        return selectedABI;
+    }
+
+    public void setSelectedABI(boolean selectedABI) {
+        this.selectedABI = selectedABI;
+    }
+
+    private boolean selectedABI;
+
     public String getName() {
         return name;
     }

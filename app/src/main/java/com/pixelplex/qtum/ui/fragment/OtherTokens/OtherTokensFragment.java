@@ -75,7 +75,9 @@ public abstract class OtherTokensFragment extends BaseFragment implements OtherT
                     mSwipeRefreshLayout.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mSwipeRefreshLayout.setRefreshing(false);
+                            if(mSwipeRefreshLayout != null) {
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
                         }
                     }, 500);
                 }

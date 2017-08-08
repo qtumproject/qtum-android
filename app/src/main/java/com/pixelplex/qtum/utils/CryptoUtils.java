@@ -2,6 +2,7 @@ package com.pixelplex.qtum.utils;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
@@ -226,6 +227,14 @@ public final class CryptoUtils {
     public static FingerprintManagerCompat.CryptoObject getCryptoObject() {
         if (prepare() && initCipher(Cipher.DECRYPT_MODE)) {
             return new FingerprintManagerCompat.CryptoObject(sCipher);
+        }
+        return null;
+    }
+
+    @Nullable
+    public static FingerprintManager.CryptoObject getCryptoObjectCompat23() {
+        if (prepare() && initCipher(Cipher.DECRYPT_MODE)) {
+            return new FingerprintManager.CryptoObject(sCipher);
         }
         return null;
     }

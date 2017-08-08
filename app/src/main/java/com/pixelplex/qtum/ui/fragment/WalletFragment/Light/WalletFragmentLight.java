@@ -50,11 +50,13 @@ public class WalletFragmentLight extends WalletFragment {
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (!mSwipeRefreshLayout.isActivated()) {
-                    if (verticalOffset == 0) {
-                        mSwipeRefreshLayout.setEnabled(true);
-                    } else {
-                        mSwipeRefreshLayout.setEnabled(false);
+                if(mSwipeRefreshLayout != null) {
+                    if (!mSwipeRefreshLayout.isActivated()) {
+                        if (verticalOffset == 0) {
+                            mSwipeRefreshLayout.setEnabled(true);
+                        } else {
+                            mSwipeRefreshLayout.setEnabled(false);
+                        }
                     }
                 }
 

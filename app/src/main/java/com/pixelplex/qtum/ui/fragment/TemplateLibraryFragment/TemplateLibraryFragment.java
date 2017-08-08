@@ -68,7 +68,7 @@ public abstract class TemplateLibraryFragment extends BaseFragment implements Te
             @Override
             public void onSelectContract(ContractTemplate contractTemplate) {
                 String abiInterface = FileStorageManager.getInstance().readAbiContract(getContext(),contractTemplate.getUuid());
-                ((WatchContractFragment) getTargetFragment()).setABIInterface(abiInterface);
+                ((WatchContractFragment) getTargetFragment()).setABIInterfaceForResult(contractTemplate.getName(), abiInterface);
                 getMainActivity().onBackPressed();
             }
         }, resId));

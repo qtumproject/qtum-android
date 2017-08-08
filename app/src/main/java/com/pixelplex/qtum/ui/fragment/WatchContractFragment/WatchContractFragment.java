@@ -100,15 +100,9 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
 
         mEditTextABIInterface.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void afterTextChanged(Editable editable) {
                 isEmptyABIInterface = editable.toString().isEmpty();
@@ -118,15 +112,9 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
 
         mEditTextContractAddress.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void afterTextChanged(Editable editable) {
                 isEmptyContractAddress = editable.toString().isEmpty();
@@ -136,15 +124,9 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
 
         mEditTextContractName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void afterTextChanged(Editable editable) {
                 isEmptyContractName = editable.toString().isEmpty();
@@ -177,8 +159,13 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
     }
 
     @Override
-    public void setABIInterface(String abiInterface) {
+    public void setABIInterface(String name, String abiInterface) {
         mEditTextABIInterface.setText(abiInterface);
+    }
+
+    public void setABIInterfaceForResult(String name, String abiInterface){
+        mEditTextABIInterface.setText(abiInterface);
+        ((TemplatesAdapter)mRecyclerViewTemplates.getAdapter()).setSelection(name);
     }
 
     @Override
@@ -197,8 +184,8 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
     }
 
     @Override
-    public void notifyAdapter() {
-        mRecyclerViewTemplates.getAdapter().notifyDataSetChanged();
+    public void notifyAdapter(int adapterPosition) {
+        ((TemplatesAdapter)mRecyclerViewTemplates.getAdapter()).setSelection(adapterPosition);
     }
 
 }
