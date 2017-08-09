@@ -10,8 +10,12 @@ import com.pixelplex.qtum.model.gson.News;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
 import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
+import com.pixelplex.qtum.model.gson.store.QSearchItem;
+import com.pixelplex.qtum.model.gson.store.QstoreContract;
+import com.pixelplex.qtum.model.gson.store.QstoreItem;
 
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -50,4 +54,21 @@ interface QtumRestService {
     @GET("/transactions/{tx_hash}")
     Observable<History> getTransaction(@Path("tx_hash") String txHash);
 
+    @GET("/contracts/trending-now")
+    Observable<List<QstoreItem>> getTrendingNow();
+
+    @GET("/contracts/last-added")
+    Observable<List<QstoreItem>> getWatsNew();
+
+    @GET("/contracts/{count}/{offset}")
+    Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset, @Query("type_name") String type, @Query("tags") String[] tags);
+
+     @GET("/contracts/{contract_id}")
+    Observable<QstoreContract> getContract(@Path("contract_id") String contractId);
+
+    @GET("/contracts/{contract_id}/source-code")
+    Observable<Object> getSourceCodeByContractId(@Path("contract_id") String contractId);
+
+    @GET("/contracts/{contract_id}/abi")
+    Observable<Object> getAbiByContractId(@Path("contract_id") String contractId);
 }

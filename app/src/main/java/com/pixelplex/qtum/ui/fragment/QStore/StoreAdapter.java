@@ -5,22 +5,19 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.fragment.QStore.categories.QstoreCategory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 class StoreAdapter extends RecyclerView.Adapter<StoreViewHolder> {
 
-    private List<TestStoreObject> items;
+    private List<QstoreCategory> items;
 
     private StoreItemClickListener listener;
 
-    public StoreAdapter(StoreItemClickListener listener){
-        items = new ArrayList<>();
-        items.add(new TestStoreObject(2,"Tranding Now",10));
-        items.add(new TestStoreObject(1,"What's New",15));
-        items.add(new TestStoreObject(3,"Other",5));
+    public StoreAdapter(List<QstoreCategory> items, StoreItemClickListener listener){
+        this.items = items;
         this.listener = listener;
     }
 

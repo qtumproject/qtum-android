@@ -160,5 +160,6 @@
     <string name="address_book">Address Book</string>
     <string name="complete">Complete</string>
     <string name="address_manage">Manage Addresses</string>
+    <string name="view_abi">View ABI</string>
 
 </resources>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.model.gson.store.QstoreItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +15,12 @@ class StoreTokensAdapter extends RecyclerView.Adapter<StoreTokenViewHolder> {
 
     private int count;
 
-    private List<TestTokenObject> items;
+    private List<QstoreItem> items;
 
     private StoreItemClickListener listener;
 
-    public StoreTokensAdapter(int count, StoreItemClickListener listener){
-        this.count = count;
-        items = new ArrayList<>();
-        for (int i = 0; i < count; i ++){
-            items.add(new TestTokenObject());
-        }
+    public StoreTokensAdapter(List<QstoreItem> items, StoreItemClickListener listener){
+        this.items = items;
         this.listener = listener;
     }
 

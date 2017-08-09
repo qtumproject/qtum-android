@@ -11,8 +11,12 @@ import com.pixelplex.qtum.model.gson.News;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
 import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
+import com.pixelplex.qtum.model.gson.store.QSearchItem;
+import com.pixelplex.qtum.model.gson.store.QstoreContract;
+import com.pixelplex.qtum.model.gson.store.QstoreItem;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -85,6 +89,26 @@ public class QtumService {
 
     public Observable<History> getTransaction(final String txHash) {
         return mServiceApi.getTransaction(txHash);
+    }
+
+    public Observable<List<QstoreItem>> getTrendingNow(){
+        return mServiceApi.getTrendingNow();
+    }
+
+    public Observable<List<QstoreItem>> getWatsNew(){
+        return mServiceApi.getWatsNew();
+    }
+
+    public Observable<List<QSearchItem>> searchContracts(int offset, String tag){
+        return mServiceApi.getSearchContracts(20/*must be changed*/, offset ,"other"/*get all contracts*/, new String[]{tag});
+    }
+
+    public Observable<QstoreContract> getContractById(String id){
+        return mServiceApi.getContract(id);
+    }
+
+    public Observable<Object> getAbiByContractId(String contractId){
+        return mServiceApi.getAbiByContractId(contractId);
     }
 
 }

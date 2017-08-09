@@ -24,7 +24,7 @@
 
         <com.pixelplex.qtum.utils.FontTextView
             style="@style/confirm_purchase_title_dialog"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:text="@string/contract_name"
             app:typefaceAsset="@string/euclidFlexMedium"
             android:layout_height="wrap_content" />
@@ -32,14 +32,13 @@
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/contract_name"
             style="@style/confirm_purchase_subtitle_dialog"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Super Contract"
             app:typefaceAsset="@string/simplonMonoRegular" />
 
         <com.pixelplex.qtum.utils.FontTextView
             style="@style/confirm_purchase_title_dialog"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:text="@string/contract_type"
             app:typefaceAsset="@string/euclidFlexMedium"
             android:layout_height="wrap_content" />
@@ -47,14 +46,13 @@
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/contract_type"
             style="@style/confirm_purchase_subtitle_dialog"
-            android:layout_width="wrap_content"
-            android:text="Smart Contract"
+            android:layout_width="match_parent"
             app:typefaceAsset="@string/simplonMonoRegular"
             android:layout_height="wrap_content" />
 
         <com.pixelplex.qtum.utils.FontTextView
             style="@style/confirm_purchase_title_dialog"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:text="@string/price"
             app:typefaceAsset="@string/euclidFlexMedium"
             android:layout_height="wrap_content" />
@@ -62,14 +60,13 @@
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/price"
             style="@style/confirm_purchase_subtitle_dialog"
-            android:layout_width="wrap_content"
-            android:text="0.2 QTUM"
-            app:typefaceAsset="@string/simplonMonoRegular"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:typefaceAsset="@string/simplonMonoRegular" />
 
         <com.pixelplex.qtum.utils.FontTextView
             style="@style/confirm_purchase_title_dialog"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:text="@string/miner_address"
             app:typefaceAsset="@string/euclidFlexMedium"
             android:layout_height="wrap_content" />
@@ -77,14 +74,14 @@
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/miner_address"
             style="@style/confirm_purchase_subtitle_dialog"
-            android:layout_width="wrap_content"
-            android:text="sdflsj6357vpsf9vv8wx9vv9wm-v9w-ffxcvv"
+            android:text="sd34nf439u4fn38uc34mc03xm3434092-ck330cc943cc03"
+            android:layout_width="match_parent"
             app:typefaceAsset="@string/simplonMonoRegular"
             android:layout_height="wrap_content" />
 
         <com.pixelplex.qtum.utils.FontTextView
             style="@style/confirm_purchase_title_dialog"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:text="@string/Fee"
             app:typefaceAsset="@string/euclidFlexMedium"
             android:layout_height="wrap_content" />
@@ -92,8 +89,8 @@
         <com.pixelplex.qtum.utils.FontTextView
             android:id="@+id/fee"
             style="@style/confirm_purchase_subtitle_dialog"
-            android:layout_width="wrap_content"
-            android:text="0.001 QTUM"
+            android:layout_width="match_parent"
+            android:text="0.100 QTUM"
             app:typefaceAsset="@string/simplonMonoRegular"
             android:layout_height="wrap_content" />
 
