@@ -49,6 +49,7 @@ import com.google.gson.Gson;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.ContractTemplate;
+import com.pixelplex.qtum.model.gson.store.QstoreBuyResponse;
 import com.pixelplex.qtum.utils.DateCalculator;
 
 

@@ -111,7 +111,7 @@
 
             <com.pixelplex.qtum.utils.FontTextView
                 android:layout_centerHorizontal="true"
-                android:id="@+id/tv_view_source_code"
+                android:id="@+id/tv_view_abi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -299,25 +299,53 @@
 
                 </RelativeLayout>
 
-                <com.pixelplex.qtum.utils.FontButton
-                    android:id="@+id/btn_purchase"
-                    app:typeface="@string/simplonMonoRegular"
+                <RelativeLayout
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="32dp"
                     android:layout_marginBottom="32dp"
-                    android:background="@color/accent_red_color"
-                    android:drawableStart="@drawable/ic_purchase"
-                    android:textSize="18sp"
-                    android:gravity="center"
-                    android:drawablePadding="4dp"
-                    android:textAllCaps="true"
-                    android:text="@string/purchase"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingStart="32dp"
-                    android:paddingEnd="32dp"
-                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content">
+
+                    <com.pixelplex.qtum.utils.FontButton
+                        android:id="@+id/btn_purchase"
+                        app:typeface="@string/simplonMonoRegular"
+                        android:background="@drawable/purchase_background_selector"
+                        android:textColor="@color/background"
+                        android:drawableStart="@drawable/ic_purchase"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:layout_centerInParent="true"
+                        android:drawablePadding="4dp"
+                        android:textAllCaps="true"
+                        android:text="@string/purchase"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingStart="32dp"
+                        android:paddingEnd="32dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.pixelplex.qtum.utils.FontButton
+                        android:visibility="gone"
+                        android:id="@+id/btn_view_source_code"
+                        app:typeface="@string/simplonMonoRegular"
+                        android:background="@drawable/purchase_background_selector"
+                        android:textColor="@color/background"
+                        android:drawableStart="@drawable/ic_purchase"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:drawablePadding="4dp"
+                        android:textAllCaps="true"
+                        android:text="@string/view_source_code"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingStart="32dp"
+                        android:paddingEnd="32dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
 
             </LinearLayout>
 

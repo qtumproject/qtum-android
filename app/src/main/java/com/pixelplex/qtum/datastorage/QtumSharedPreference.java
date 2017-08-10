@@ -26,7 +26,6 @@ public class QtumSharedPreference {
 
     private List<LanguageChangeListener> mLanguageChangeListeners;
 
-
     private QtumSharedPreference() {
         mLanguageChangeListeners = new ArrayList<>();
     }

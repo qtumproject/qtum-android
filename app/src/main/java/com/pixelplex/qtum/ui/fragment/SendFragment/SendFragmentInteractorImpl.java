@@ -226,7 +226,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
         void onError(String error);
     }
 
-    interface CreateTxCallBack {
+    public interface CreateTxCallBack {
         void onSuccess(String txHex);
 
         void onError(String error);

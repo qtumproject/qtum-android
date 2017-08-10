@@ -10,10 +10,14 @@ import com.pixelplex.qtum.model.gson.News;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
 import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
+import com.pixelplex.qtum.model.gson.store.IsPaidResponse;
 import com.pixelplex.qtum.model.gson.store.QSearchItem;
+import com.pixelplex.qtum.model.gson.store.QstoreBuyResponse;
 import com.pixelplex.qtum.model.gson.store.QstoreContract;
 import com.pixelplex.qtum.model.gson.store.QstoreItem;
+import com.pixelplex.qtum.model.gson.store.QstoreSourceCodeResponse;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,14 +65,22 @@ interface QtumRestService {
     Observable<List<QstoreItem>> getWatsNew();
 
     @GET("/contracts/{count}/{offset}")
-    Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset, @Query("type_name") String type, @Query("tags") String[] tags);
+    Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset, /*@Query("type_name") String type,*/ @Query("tags[]") String[] tags);
 
      @GET("/contracts/{contract_id}")
     Observable<QstoreContract> getContract(@Path("contract_id") String contractId);
 
-    @GET("/contracts/{contract_id}/source-code")
-    Observable<Object> getSourceCodeByContractId(@Path("contract_id") String contractId);
+    @POST("/contracts/{contract_id}/source-code")
+    Observable<QstoreSourceCodeResponse> getSourceCode(@Path("contract_id") String contractId, @Body HashMap<String, String> body);
 
     @GET("/contracts/{contract_id}/abi")
     Observable<Object> getAbiByContractId(@Path("contract_id") String contractId);
+
+    @POST("/contracts/{contract_id}/buy-request")
+    Observable<QstoreBuyResponse> buyRequest(@Path("contract_id") String contractId);
+
+    @GET("/contracts/{contract_id}/is-paid/by-request-id")
+    Observable<IsPaidResponse> isPaidByRequestId(@Path("contract_id") String contractId, @Query("request_id") String requestId);
+
+
 }
