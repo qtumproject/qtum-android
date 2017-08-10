@@ -4,28 +4,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.store.QstoreItem;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class StoreTokenViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.icon)
-    ImageView icon;
-
-    @BindView(R.id.token_name)
-    TextView tokenName;
-
-    @BindView(R.id.token_type)
-    TextView tokenType;
-
-    @BindView(R.id.token_cost)
-    TextView tokenCost;
-
+    @BindView(R.id.icon) ImageView icon;
+    @BindView(R.id.token_name) TextView tokenName;
+    @BindView(R.id.token_type) TextView tokenType;
+    @BindView(R.id.token_cost) TextView tokenCost;
 
     public StoreTokenViewHolder(final View itemView, final StoreItemClickListener listener) {
         super(itemView);
@@ -45,9 +34,22 @@ public class StoreTokenViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(QstoreItem item){
         this.item = item;
-        icon.setImageResource(R.drawable.ic_token);
+        icon.setImageResource(getIconByType(item.type));
         tokenName.setText(item.name);
         tokenType.setText(item.type);
         tokenCost.setText(String.valueOf(item.price));
+    }
+
+    private int getIconByType(String type){
+        switch (type){
+            case "token":
+                return R.drawable.ic_supertoken;
+            case "other":
+                return R.drawable.ic_smart_contract;
+            case "crowdsale":
+                return R.drawable.ic_crowdsale;
+            default:
+                return R.drawable.ic_smart_contract;
+        }
     }
 }

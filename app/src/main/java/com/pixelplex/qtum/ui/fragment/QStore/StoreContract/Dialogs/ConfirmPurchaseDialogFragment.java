@@ -43,7 +43,16 @@ public class ConfirmPurchaseDialogFragment extends AppCompatDialogFragment {
 
     @OnClick(R.id.btn_confirm)
     public void onConfirmClick(){
+        if(listener != null){
+            listener.onPurchaseConfirm();
+        }
         dismiss();
+    }
+
+    PurchaseClickListener listener;
+
+    public void setOnPurchaseListener(PurchaseClickListener listener){
+        this.listener = listener;
     }
 
     @NonNull

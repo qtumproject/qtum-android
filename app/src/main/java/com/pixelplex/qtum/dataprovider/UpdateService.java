@@ -39,6 +39,7 @@ import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
 import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
 import com.pixelplex.qtum.model.gson.callSmartContractResponse.CallSmartContractResponse;
 import com.pixelplex.qtum.model.gson.history.History;
+import com.pixelplex.qtum.model.gson.store.ContractPurchaseResponse;
 import com.pixelplex.qtum.model.gson.tokenBalance.Balance;
 import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
 import com.pixelplex.qtum.datastorage.HistoryList;
@@ -223,6 +224,14 @@ public class UpdateService extends Service {
                 JSONObject data = (JSONObject) args[0];
                 TokenBalance tokenBalance = gson.fromJson(data.toString(), TokenBalance.class);
                 updateTokenBalance(tokenBalance);
+            }
+        }).on("contract_purchase", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Gson gson = new Gson();
+                JSONObject data = (JSONObject) args[0];
+                ContractPurchaseResponse objectData = gson.fromJson(data.toString(), ContractPurchaseResponse.class);
+                //TODO
             }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override

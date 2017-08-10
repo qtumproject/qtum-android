@@ -9,13 +9,16 @@ import android.widget.Toast;
 
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.datastorage.QStoreStorage;
 import com.pixelplex.qtum.model.gson.store.QstoreContract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.QStore.QStoreFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ConfirmPurchaseDialogFragment;
+import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.PurchaseClickListener;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ViewSourceCodeDialogFragment;
 import com.pixelplex.qtum.utils.DateCalculator;
+import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import java.lang.reflect.Array;
@@ -25,9 +28,12 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ViewSourceCodeDialogFragment.ABI;
+import static com.pixelplex.qtum.ui.fragment.QStore.StoreContract.StoreContractPresenter.NON_PAID_STATUS;
+import static com.pixelplex.qtum.ui.fragment.QStore.StoreContract.StoreContractPresenter.PAID_STATUS;
+import static com.pixelplex.qtum.ui.fragment.QStore.StoreContract.StoreContractPresenter.PENDING_STATUS;
 
 
-public class StoreContractFragment extends BaseFragment implements StoreContractView, TagClickListener {
+public class StoreContractFragment extends BaseFragment implements StoreContractView, TagClickListener, PurchaseClickListener {
 
     public static final String CONTRACT_ID = "CONTRACT_ID";
 
@@ -59,12 +65,20 @@ public class StoreContractFragment extends BaseFragment implements StoreContract
         getActivity().onBackPressed();
     }
 
-    @BindView(R.id.tv_view_source_code) FontTextView viewSourceCode;
+    @BindView(R.id.btn_view_source_code) FontButton btnViewSourceCode;
 
-    @OnClick(R.id.tv_view_source_code)
+    @OnClick(R.id.btn_view_source_code)
     public void onViewSourceCodeClick(){
+        presenter.getSourceCode();
+    }
+
+    @OnClick(R.id.tv_view_abi)
+    public void onViewAbiClick(){
         presenter.getContractAbiById(presenter.getContract().id);
     }
+
+    @BindView(R.id.btn_purchase)
+    FontButton purchaseBtn;
 
     @OnClick(R.id.btn_purchase)
     public void onPurchaseClick(){
@@ -72,6 +86,7 @@ public class StoreContractFragment extends BaseFragment implements StoreContract
         arguments.putSerializable(ConfirmPurchaseDialogFragment.CONTRACT, presenter.getContract());
         confirmPurchase = new ConfirmPurchaseDialogFragment();
         confirmPurchase.setArguments(arguments);
+        confirmPurchase.setOnPurchaseListener(this);
         confirmPurchase.show(getFragmentManager(), confirmPurchase.getClass().getCanonicalName());
     }
 
@@ -111,8 +126,6 @@ public class StoreContractFragment extends BaseFragment implements StoreContract
         tvSourceCode.setText(contract.withSourceCode? "Yes":"No");
         tvPublishedBy.setText(contract.publisherAddress);
         tvDownloads.setText(String.valueOf(contract.countDownloads));
-
-        viewSourceCode.setVisibility(contract.withSourceCode? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
@@ -125,11 +138,34 @@ public class StoreContractFragment extends BaseFragment implements StoreContract
     }
 
     @Override
+    public void setContractPayStatus(String status) {
+        purchaseBtn.setVisibility(View.VISIBLE);
+        btnViewSourceCode.setVisibility(View.GONE);
+        switch (status){
+            case PAID_STATUS:
+                purchaseBtn.setVisibility(View.GONE);
+                btnViewSourceCode.setVisibility(View.VISIBLE);
+                break;
+            case NON_PAID_STATUS:
+                purchaseBtn.setEnabled(true);
+                break;
+            case PENDING_STATUS:
+                purchaseBtn.setEnabled(false);
+                break;
+        }
+    }
+
+    @Override
     public void onTagClick(String tag) {
         QStoreFragment invoker = (QStoreFragment)getTargetFragment();
         if(invoker != null) {
             invoker.setSearchTag(tag);
         }
         onBackClick();
+    }
+
+    @Override
+    public void onPurchaseConfirm() {
+        presenter.sendBuyRequest();
     }
 }
