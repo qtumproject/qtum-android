@@ -11,12 +11,16 @@ import android.support.annotation.Nullable;
         import android.view.ViewGroup;
 
         import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.utils.FontTextView;
 
-        import butterknife.ButterKnife;
+import butterknife.BindView;
+import butterknife.ButterKnife;
         import butterknife.OnClick;
 
 
 public class ViewSourceCodeDialogFragment extends AppCompatDialogFragment {
+
+    public static final String ABI = "CONTRACT_ABI";
 
     @OnClick(R.id.btn_cancel)
     public void onCancelClick(){
@@ -27,6 +31,9 @@ public class ViewSourceCodeDialogFragment extends AppCompatDialogFragment {
     public void onConfirmClick(){
         dismiss();
     }
+
+    @BindView(R.id.source_code_tv)
+    FontTextView tvSourceCode;
 
     @NonNull
     @Override
@@ -49,5 +56,6 @@ public class ViewSourceCodeDialogFragment extends AppCompatDialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tvSourceCode.setText(getArguments().getString(ABI));
     }
 }

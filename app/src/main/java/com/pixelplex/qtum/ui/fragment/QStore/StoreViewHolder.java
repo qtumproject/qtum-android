@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.fragment.QStore.categories.QstoreCategory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,11 +33,11 @@ public class StoreViewHolder extends RecyclerView.ViewHolder {
         this.listener = listener;
     }
 
-    public void bind(TestStoreObject item) {
+    public void bind(QstoreCategory item) {
         sectionName.setText(item.title);
-        manager = new GridLayoutManager(list.getContext(),item.rowCount, LinearLayoutManager.HORIZONTAL,false);
+        manager = new GridLayoutManager(list.getContext(),(item.items.size() <= 5)? 1 : item.items.size() / 5, LinearLayoutManager.HORIZONTAL,false);
         list.setLayoutManager(manager);
-        adapter = new StoreTokensAdapter(item.itemsCount * item.rowCount, listener);
+        adapter = new StoreTokensAdapter(item.items, listener);
         list.setAdapter(adapter);
     }
 }

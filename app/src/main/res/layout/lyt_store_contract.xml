@@ -46,11 +46,13 @@
                     app:srcCompat="@drawable/ic_back_indicator"/>
 
                 <com.pixelplex.qtum.utils.FontTextView
-                    android:id="@+id/tv_toolbar_language"
+                    android:id="@+id/tv_toolbar_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_centerInParent="true"
                     android:gravity="center"
+                    android:layout_toEndOf="@+id/ibt_back"
+                    android:layout_marginEnd="48dp"
                     android:text="Qstore Super Contract"
                     android:textColor="@color/background"
                     android:textSize="20sp"
@@ -80,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="0.023"
+                android:text="0.0"
                 android:textColor="@color/background"
                 android:textSize="24sp"
                 app:typefaceAsset="@string/simplonMonoMedium" />
@@ -106,19 +108,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.pixelplex.qtum.utils.FontTextView
-                android:id="@+id/tv_view_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/view_details"
-                android:textAllCaps="true"
-                android:textColor="@color/background"
-                android:textSize="16sp"
-                app:typefaceAsset="@string/simplonMonoRegular" />
 
             <com.pixelplex.qtum.utils.FontTextView
-                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
                 android:id="@+id/tv_view_source_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -164,11 +156,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <com.pixelplex.qtum.utils.FontTextView
-                    android:id="@+id/tv_tags"
-                    style="@style/qstore_text_subtitle_style"
-                    app:typefaceAsset="@string/simplonMonoRegular"
-                    android:text="#smartcontract #lottery #createticket"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_tags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -304,7 +293,9 @@
                         app:typefaceAsset="@string/simplonMonoRegular"
                         android:text="346"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true" />
 
                 </RelativeLayout>
 

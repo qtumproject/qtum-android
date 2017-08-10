@@ -5,18 +5,36 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.model.gson.store.QstoreContract;
+import com.pixelplex.qtum.utils.FontTextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
 public class ConfirmPurchaseDialogFragment extends AppCompatDialogFragment {
+
+    public static final String CONTRACT = "CONTRACT";
+
+    @BindView(R.id.contract_name)
+    FontTextView tvContractName;
+
+    @BindView(R.id.contract_type)
+    FontTextView tvContractType;
+
+    @BindView(R.id.price)
+    FontTextView tvPrice;
+
+    @BindView(R.id.miner_address)
+    FontTextView tvMinerAddress;
 
     @OnClick(R.id.btn_cancel)
     public void onCancelClick(){
@@ -49,5 +67,15 @@ public class ConfirmPurchaseDialogFragment extends AppCompatDialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        QstoreContract c = (QstoreContract) getArguments().getSerializable(CONTRACT);
+
+        if(c != null) {
+            tvContractName.setText(c.name);
+            tvContractType.setText(c.type);
+            tvPrice.setText(String.valueOf(c.price));
+            tvMinerAddress.setText(c.publisherAddress);
+        } else {
+            dismiss();
+        }
     }
 }

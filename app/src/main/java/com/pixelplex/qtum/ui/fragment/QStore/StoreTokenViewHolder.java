@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.model.gson.store.QstoreItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,13 +41,13 @@ public class StoreTokenViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    private TestTokenObject item;
+    private QstoreItem item;
 
-    public void bind(TestTokenObject item){
+    public void bind(QstoreItem item){
         this.item = item;
-        icon.setImageResource(item.icon);
+        icon.setImageResource(R.drawable.ic_token);
         tokenName.setText(item.name);
         tokenType.setText(item.type);
-        tokenCost.setText(String.valueOf(item.cost));
+        tokenCost.setText(String.valueOf(item.price));
     }
 }

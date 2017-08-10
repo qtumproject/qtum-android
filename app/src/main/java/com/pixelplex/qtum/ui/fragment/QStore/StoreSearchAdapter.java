@@ -5,22 +5,24 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.model.gson.store.QSearchItem;
+import com.pixelplex.qtum.model.gson.store.QstoreItem;
 
 import java.util.List;
 
 
 class StoreSearchAdapter extends RecyclerView.Adapter<StoreSearchViewHolder> {
 
-    private List<TestTokenObject> items;
+    private List<QSearchItem> items;
 
     private StoreItemClickListener listener;
 
-    public StoreSearchAdapter(List<TestTokenObject> items, StoreItemClickListener listener) {
+    public StoreSearchAdapter(List<QSearchItem> items, StoreItemClickListener listener) {
         this.items = items;
         this.listener = listener;
     }
 
-    public void updateItems(List<TestTokenObject> items){
+    public void updateItems(List<QSearchItem> items){
         this.items = items;
         notifyDataSetChanged();
     }
