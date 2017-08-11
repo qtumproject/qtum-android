@@ -13,6 +13,7 @@ import com.pixelplex.qtum.datastorage.QStoreStorage;
 import com.pixelplex.qtum.model.gson.store.QstoreContract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.QStoreFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ConfirmPurchaseDialogFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.PurchaseClickListener;
@@ -77,6 +78,11 @@ public class StoreContractFragment extends BaseFragment implements StoreContract
         presenter.getContractAbiById(presenter.getContract().id);
     }
 
+    @OnClick(R.id.tv_view_details)
+    public void onViewDetailsClick(){
+        presenter.getDetails();
+    }
+
     @BindView(R.id.btn_purchase)
     FontButton purchaseBtn;
 
@@ -135,6 +141,11 @@ public class StoreContractFragment extends BaseFragment implements StoreContract
         sourceCodeDialogFragment = new ViewSourceCodeDialogFragment();
         sourceCodeDialogFragment.setArguments(args);
         sourceCodeDialogFragment.show(getFragmentManager(), sourceCodeDialogFragment.getClass().getCanonicalName());
+    }
+
+    @Override
+    public void openDetails(String abi) {
+        openFragment(ContractManagementFragment.newInstance(getContext(),abi));
     }
 
     @Override

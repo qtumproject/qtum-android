@@ -8,6 +8,7 @@ public interface StoreContractView extends BaseFragmentView {
 
     void setContractData(QstoreContract contract);
     void openAbiViewer(String abi);
+    void openDetails(String abi);
     void setContractPayStatus(String status);
 }
 

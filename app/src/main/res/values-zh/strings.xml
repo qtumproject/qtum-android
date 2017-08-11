@@ -161,5 +161,7 @@
     <string name="complete">Complete</string>
     <string name="address_manage">Manage Addresses</string>
     <string name="view_abi">View ABI</string>
+    <string name="contract_management">Contract Management</string>
+    <string name="contract_details">Contract Details</string>
 
 </resources>

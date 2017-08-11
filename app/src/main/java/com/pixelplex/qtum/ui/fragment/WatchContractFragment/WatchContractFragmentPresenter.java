@@ -66,7 +66,7 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
                 return;
             }
         }else {
-            ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(getView().getContext(), null, null, ABIInterface, "none", "no_name", DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
+            ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(getView().getContext(), null, null, ABIInterface, "contract", "no_name", DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
             List<Contract> contractList = tinyDB.getContractListWithoutToken();
             Contract contract = new Contract(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "Stub!", name);
             contractList.add(contract);

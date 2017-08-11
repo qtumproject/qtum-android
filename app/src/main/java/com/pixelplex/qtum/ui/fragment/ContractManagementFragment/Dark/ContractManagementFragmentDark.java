@@ -15,8 +15,8 @@ public class ContractManagementFragmentDark extends ContractManagementFragment {
     }
 
     @Override
-    public void setRecyclerView(List<ContractMethod> contractMethodList) {
-        mMethodAdapter = new MethodAdapter(contractMethodList,R.layout.item_contract_property,R.layout.item_contract_method);
+    public void setRecyclerView(List<ContractMethod> contractMethodList, boolean needToGetValue) {
+        mMethodAdapter = new MethodAdapter(contractMethodList,R.layout.item_contract_property,R.layout.item_contract_method, needToGetValue);
         mRecyclerView.setAdapter(mMethodAdapter);
     }
 

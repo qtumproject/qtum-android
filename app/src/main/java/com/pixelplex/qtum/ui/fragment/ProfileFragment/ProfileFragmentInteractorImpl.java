@@ -27,7 +27,7 @@ class ProfileFragmentInteractorImpl implements ProfileFragmentInteractor {
         NewsList.getInstance().clearNewsList();
         TinyDB db = new TinyDB(mContext);
         db.clearTokenList();
+        db.clearContractList();
         db.clearTemplateList();
     }
-
 }

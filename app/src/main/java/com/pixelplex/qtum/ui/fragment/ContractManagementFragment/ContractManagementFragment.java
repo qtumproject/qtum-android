@@ -4,9 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.ContractMethod;
@@ -25,9 +27,13 @@ public abstract class ContractManagementFragment extends BaseFragment implements
     private ContractManagementFragmentPresenter mContractManagmentFragmentPresenter;
     private static final String CONTRACT_TEMPLATE_UIID = "contract_template_uiid";
     private static final String CONTRACT_ADDRESS = "contract_address";
+    private static final String CONTRACT_ABI = "contract_abi";
 
     @BindView(R.id.methods_list)
     protected RecyclerView mRecyclerView;
+
+    @BindView(R.id.tv_toolbar_profile)
+    FontTextView titleView;
 
     @OnClick({R.id.ibt_back})
     public void onClick(View view) {
@@ -50,6 +56,14 @@ public abstract class ContractManagementFragment extends BaseFragment implements
         return fragment;
     }
 
+    public static BaseFragment newInstance(Context context, String abi) {
+        Bundle args = new Bundle();
+        args.putString(CONTRACT_ABI, abi);
+        BaseFragment fragment = Factory.instantiateFragment(context, ContractManagementFragment.class);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     protected void createPresenter() {
         mContractManagmentFragmentPresenter = new ContractManagementFragmentPresenter(this);
@@ -64,7 +78,12 @@ public abstract class ContractManagementFragment extends BaseFragment implements
     public void initializeViews() {
         super.initializeViews();
         mContractAddress = getArguments().getString(CONTRACT_ADDRESS);
-
+        if(!TextUtils.isEmpty(mContractAddress)){
+            getPresenter().getAbiFromFile();
+        } else {
+            titleView.setText(getString(R.string.contract_details));
+            getPresenter().getAbiFromString(getArguments().getString(CONTRACT_ABI));
+        }
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
@@ -79,16 +98,24 @@ public abstract class ContractManagementFragment extends BaseFragment implements
         FontTextView mTextViewName;
         ContractMethod mContractMethod;
 
-        MethodViewHolder(View itemView) {
+        @BindView(R.id.arrow)
+        ImageView arrowIcon;
+
+        MethodViewHolder(View itemView, boolean needToGetValue) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    BaseFragment contractFunctionFragment = ContractFunctionFragment.newInstance(getContext(), mContractMethod.name,getContractTemplateUiid(),getArguments().getString(CONTRACT_ADDRESS));
-                    openFragment(contractFunctionFragment);
-                }
-            });
+            if(needToGetValue) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        BaseFragment contractFunctionFragment = ContractFunctionFragment.newInstance(getContext(), mContractMethod.name, getContractTemplateUiid(), getArguments().getString(CONTRACT_ADDRESS));
+                        openFragment(contractFunctionFragment);
+                    }
+                });
+            }else {
+                arrowIcon.setVisibility(View.GONE);
+                itemView.setClickable(false);
+            }
         }
 
         void bindMethod(ContractMethod contractMethod){
@@ -109,22 +136,30 @@ public abstract class ContractManagementFragment extends BaseFragment implements
 
         ContractMethod mContractMethod;
 
-        PropertiesViewHolder(View itemView) {
+        boolean needToGetValue;
+
+        PropertiesViewHolder(View itemView, boolean needToGetValue) {
             super(itemView);
+            this.needToGetValue = needToGetValue;
             ButterKnife.bind(this, itemView);
         }
 
         void bindProperty(ContractMethod contractMethod){
             mTextViewPropertyName.setText(contractMethod.name);
             mContractMethod = contractMethod;
-            ContractManagementHelper.getPropertyValue(mContractAddress, mContractMethod, new ContractManagementHelper.GetPropertyValueCallBack() {
-                @Override
-                public void onSuccess(String value) {
-                    mProgressBar.setVisibility(View.GONE);
-                    mTextViewPropertyValue.setVisibility(View.VISIBLE);
-                    mTextViewPropertyValue.setText(value);
-                }
-            });
+            if(needToGetValue) {
+                ContractManagementHelper.getPropertyValue(mContractAddress, mContractMethod, new ContractManagementHelper.GetPropertyValueCallBack() {
+                    @Override
+                    public void onSuccess(String value) {
+                        mProgressBar.setVisibility(View.GONE);
+                        mTextViewPropertyValue.setVisibility(View.VISIBLE);
+                        mTextViewPropertyValue.setText(value);
+                    }
+                });
+            } else {
+                mProgressBar.setVisibility(View.GONE);
+                itemView.setClickable(false);
+            }
         }
 
     }
@@ -139,10 +174,13 @@ public abstract class ContractManagementFragment extends BaseFragment implements
         int mResIdProperty;
         int mResIdMethod;
 
-        public MethodAdapter(List<ContractMethod> list, int resIdProperty, int resIdMethod){
+        boolean needToGetValue;
+
+        public MethodAdapter(List<ContractMethod> list, int resIdProperty, int resIdMethod, boolean needToGetValue){
             contractMethods = list;
             mResIdMethod = resIdMethod;
             mResIdProperty = resIdProperty;
+            this.needToGetValue = needToGetValue;
         }
 
         @Override
@@ -159,11 +197,11 @@ public abstract class ContractManagementFragment extends BaseFragment implements
             if (viewType == TYPE_PROPERTY) {
                 LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
                 View view = layoutInflater.inflate(mResIdProperty, parent, false);
-                return new PropertiesViewHolder(view);
+                return new PropertiesViewHolder(view, needToGetValue);
             } else if (viewType == TYPE_METHOD) {
                 LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
                 View view = layoutInflater.inflate(mResIdMethod, parent, false);
-                return new MethodViewHolder(view);
+                return new MethodViewHolder(view, needToGetValue);
             }
             throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
         }

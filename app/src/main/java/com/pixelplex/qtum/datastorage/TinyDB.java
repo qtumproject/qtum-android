@@ -471,6 +471,10 @@ public class TinyDB {
         putListString(TOKEN_LIST, new ArrayList<String>());
     }
 
+    public void clearContractList(){
+        putListString(CONTRACT_LIST, new ArrayList<String>());
+    }
+
     public List<ContractTemplate> getContractTemplateList(){
         Gson gson = new Gson();
 

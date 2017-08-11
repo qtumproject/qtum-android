@@ -31,12 +31,19 @@ public class ContractManagementFragmentPresenter extends BaseFragmentPresenterIm
         mContractManagementFragmentView = contractManagementFragmentView;
     }
 
-    @Override
-    public void initializeViews() {
-        super.initializeViews();
+    public void getAbiFromFile(){
         List<ContractMethod> contractMethodList = FileStorageManager.getInstance().getContractMethods(getView().getContext(),getView().getContractTemplateUiid());
         if(contractMethodList != null) {
-            getView().setRecyclerView(contractMethodList);
+            getView().setRecyclerView(contractMethodList, true);
+        } else {
+            getView().setAlertDialog("Error","Fail to get contract methods", BaseFragment.PopUpType.error);
+        }
+    }
+
+    public void getAbiFromString(String abi){
+        List<ContractMethod> contractMethodList = FileStorageManager.getInstance().getContractMethodsByAbiString(getView().getContext(), abi);
+        if(contractMethodList != null) {
+            getView().setRecyclerView(contractMethodList, false);
         } else {
             getView().setAlertDialog("Error","Fail to get contract methods", BaseFragment.PopUpType.error);
         }
