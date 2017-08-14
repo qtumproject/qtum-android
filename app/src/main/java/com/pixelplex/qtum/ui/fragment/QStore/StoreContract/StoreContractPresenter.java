@@ -5,8 +5,10 @@ import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QStoreStorage;
+import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
 import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
@@ -41,6 +43,8 @@ import java.util.List;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static com.pixelplex.qtum.datastorage.FileStorageManager.HUMANSTANDARDTOKENUUID;
 
 
 public class StoreContractPresenter extends BaseFragmentPresenterImpl {
@@ -382,4 +386,8 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl {
     }
 
 
+    public void getDetails() {
+        String s = FileStorageManager.getInstance().readAbiContract(getView().getContext(), HUMANSTANDARDTOKENUUID);
+        getView().openDetails(s);
+    }
 }

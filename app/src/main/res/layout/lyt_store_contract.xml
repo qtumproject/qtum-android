@@ -101,27 +101,40 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:background="@color/colorPrimary"
             android:orientation="horizontal"
             android:padding="8dp"
+            android:weightSum="2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
             <com.pixelplex.qtum.utils.FontTextView
-                android:layout_centerHorizontal="true"
-                android:id="@+id/tv_view_abi"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/tv_view_details"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/view_source_code"
+                android:text="@string/view_details"
                 android:textAllCaps="true"
                 android:textColor="@color/background"
                 android:textSize="16sp"
                 app:typefaceAsset="@string/simplonMonoRegular" />
 
-        </RelativeLayout>
+
+            <com.pixelplex.qtum.utils.FontTextView
+                android:layout_weight="1"
+                android:id="@+id/tv_view_abi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/view_abi"
+                android:textAllCaps="true"
+                android:textColor="@color/background"
+                android:textSize="16sp"
+                app:typefaceAsset="@string/simplonMonoRegular" />
+
+        </LinearLayout>
 
         <ScrollView
             android:scrollbars="none"

@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="48dp"
                 android:gravity="center"
-                android:text="Contract Management"
+                android:text="@string/contract_management"
                 android:textColor="@color/background"
                 android:textSize="@dimen/toolbar_text_size"
                 app:typefaceAsset="@string/euclidFlexMedium" />

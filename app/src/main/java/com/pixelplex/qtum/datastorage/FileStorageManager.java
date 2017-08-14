@@ -45,7 +45,7 @@ public class FileStorageManager {
     private final static String ERC20TOKENSTANDART = "ERC20TokenStandard";
     private final static String HUMANSTANDARDTOKEN = "HumanStandardToken";
 
-    private final static String HUMANSTANDARDTOKENUUID = "human-standard-token-identifire";
+    public final static String HUMANSTANDARDTOKENUUID = "human-standard-token-identifire";
     private final static String ERC20TOKENSTANDARTUUID = "erc20-token-identifire";
     private final static String CROWDSALEUUID = "crowdsale-identifire";
 
@@ -88,9 +88,6 @@ public class FileStorageManager {
     }
 
     private boolean writeFile(Context context, String fileName, String fileContent, String packageName) {
-
-        TinyDB tinyDB = new TinyDB(context);
-
         ContextWrapper cw = new ContextWrapper(context);
         File contractDir = getPackagePath(cw, CONTRACTS_PACKAGE);
         File mFileDirectory = new File(String.format("%s/%s", contractDir.getAbsolutePath(), packageName));
@@ -268,6 +265,39 @@ public class FileStorageManager {
         List<ContractMethod> contractMethods = new ArrayList<>();
         try {
             array = new JSONArray(abiContent);
+
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jb = array.getJSONObject(i);
+                if (FUNCTION_TYPE.equals(jb.getString(TYPE))) {
+                    Gson gson = new Gson();
+                    contractMethods.add(gson.fromJson(jb.toString(), ContractMethod.class));
+                }
+            }
+            Collections.sort(contractMethods, new Comparator<ContractMethod>() {
+                @Override
+                public int compare(ContractMethod contractMethod, ContractMethod t1) {
+                    if (contractMethod.constant && !t1.constant) {
+                        return -1;
+                    } else if (!contractMethod.constant && t1.constant) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+            return contractMethods;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<ContractMethod> getContractMethodsByAbiString(final Context context, String abi) {
+        JSONArray array;
+        List<ContractMethod> contractMethods = new ArrayList<>();
+        try {
+            array = new JSONArray(abi);
 
             for (int i = 0; i < array.length(); i++) {
                 JSONObject jb = array.getJSONObject(i);
