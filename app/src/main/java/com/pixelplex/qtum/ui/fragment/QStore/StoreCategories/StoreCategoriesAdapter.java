@@ -8,12 +8,14 @@ import com.pixelplex.qtum.ui.fragment.QStore.TestTokenObject;
 import java.util.List;
 
 
-class StoreCategoriesAdapter extends RecyclerView.Adapter<StoreCategoryViewHolder> {
+public class StoreCategoriesAdapter extends RecyclerView.Adapter<StoreCategoryViewHolder> {
 
     private List<TestTokenObject> items;
+    int resId;
 
-    public StoreCategoriesAdapter(List<TestTokenObject> items) {
+    public StoreCategoriesAdapter(List<TestTokenObject> items, int resId) {
         this.items = items;
+        this.resId = resId;
     }
 
     public void updateItems(List<TestTokenObject> items){
@@ -23,7 +25,7 @@ class StoreCategoriesAdapter extends RecyclerView.Adapter<StoreCategoryViewHolde
 
     @Override
     public StoreCategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new StoreCategoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_store_category_list_item, parent, false));
+        return new StoreCategoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(resId, parent, false));
     }
 
     @Override

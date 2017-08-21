@@ -100,7 +100,7 @@ public class UpdateService extends Service {
         super.onCreate();
 
         try {
-            socket = IO.socket("http://163.172.68.103:5931/");
+            socket = IO.socket("http://163.172.251.4:5931/");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

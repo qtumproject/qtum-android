@@ -46,5 +46,6 @@
 
     <color name="chip_selected">#3696c8</color>
     <color name="chip_normal">#5cb6e5</color>
+    <color name="qstore_background">#edf6f8</color>
 
 </resources>

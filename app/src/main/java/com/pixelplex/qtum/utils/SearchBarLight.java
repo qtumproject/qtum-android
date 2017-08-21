@@ -60,6 +60,13 @@ public class SearchBarLight extends RelativeLayout implements View.OnClickListen
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+
+    public void setText(String text){
+        input.requestFocus();
+        this.input.setText(text);
+    }
+
+
     public void setListener(SearchBarListener listener){
         this.listener = listener;
     }

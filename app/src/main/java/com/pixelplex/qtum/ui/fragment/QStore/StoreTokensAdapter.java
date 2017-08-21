@@ -13,20 +13,21 @@ import java.util.List;
 
 class StoreTokensAdapter extends RecyclerView.Adapter<StoreTokenViewHolder> {
 
-    private int count;
-
     private List<QstoreItem> items;
 
     private StoreItemClickListener listener;
 
-    public StoreTokensAdapter(List<QstoreItem> items, StoreItemClickListener listener){
+    int itemResId;
+
+    public StoreTokensAdapter(List<QstoreItem> items, StoreItemClickListener listener, int itemResId){
         this.items = items;
         this.listener = listener;
+        this.itemResId = itemResId;
     }
 
     @Override
     public StoreTokenViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new StoreTokenViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_store_token_list_item, parent, false), listener);
+        return new StoreTokenViewHolder(LayoutInflater.from(parent.getContext()).inflate(itemResId, parent, false), listener);
     }
 
     @Override

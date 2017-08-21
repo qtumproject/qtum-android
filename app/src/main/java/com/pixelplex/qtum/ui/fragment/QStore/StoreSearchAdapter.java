@@ -11,15 +11,18 @@ import com.pixelplex.qtum.model.gson.store.QstoreItem;
 import java.util.List;
 
 
-class StoreSearchAdapter extends RecyclerView.Adapter<StoreSearchViewHolder> {
+public class StoreSearchAdapter extends RecyclerView.Adapter<StoreSearchViewHolder> {
 
     private List<QSearchItem> items;
 
     private StoreItemClickListener listener;
 
-    public StoreSearchAdapter(List<QSearchItem> items, StoreItemClickListener listener) {
+    int resId;
+
+    public StoreSearchAdapter(List<QSearchItem> items, StoreItemClickListener listener, int resId) {
         this.items = items;
         this.listener = listener;
+        this.resId = resId;
     }
 
     public void updateItems(List<QSearchItem> items){
@@ -29,7 +32,7 @@ class StoreSearchAdapter extends RecyclerView.Adapter<StoreSearchViewHolder> {
 
     @Override
     public StoreSearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new StoreSearchViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_store_search_list_item, parent, false), listener);
+        return new StoreSearchViewHolder(LayoutInflater.from(parent.getContext()).inflate(resId, parent, false), listener);
     }
 
     @Override

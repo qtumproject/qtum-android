@@ -34,7 +34,7 @@ import rx.Observable;
 public class QtumService {
 
     private static QtumService sQtumService;
-    private static final String BASE_URL = "http://163.172.68.103:5931/";
+    private static final String BASE_URL = "http://163.172.251.4:5931/";
     private QtumRestService mServiceApi;
 
     public static QtumService newInstance() {
