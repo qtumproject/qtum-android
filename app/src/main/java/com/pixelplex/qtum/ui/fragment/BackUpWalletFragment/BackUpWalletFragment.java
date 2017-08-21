@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
@@ -119,7 +120,8 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
 
     @Override
     public void showToast() {
-        Snackbar.make(mCoordinatorLayout, getString(R.string.coped), Snackbar.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),getString(R.string.coped),Toast.LENGTH_SHORT).show();
+        //Snackbar.make(mCoordinatorLayout, getString(R.string.coped), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

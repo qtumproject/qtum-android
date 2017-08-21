@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.DeterministicKeyWithBalance;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
+import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.CurrentNetParams;
 import com.pixelplex.qtum.utils.FontTextView;
@@ -65,8 +66,27 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
     }
 
     @Override
-    public void initializeViews() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    public void onPause() {
+        super.onPause();
+        if(mTransferDialog!=null) {
+            mTransferDialog.hide();
+        }
     }
 
+    @Override
+    public void initializeViews() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        getMainActivity().addAuthenticationListener(new MainActivity.AuthenticationListener() {
+            @Override
+            public void onAuthenticate() {
+                mTransferDialog.show();
+            }
+        });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getMainActivity().removeAuthenticationListener();
+    }
 }

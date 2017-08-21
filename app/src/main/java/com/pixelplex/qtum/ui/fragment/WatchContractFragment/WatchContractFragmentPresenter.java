@@ -86,7 +86,7 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
 
     public void onChooseFromLibraryClick(boolean isToken){
         BaseFragment templateLibraryFragment = TemplateLibraryFragment.newInstance(getView().getContext(),isToken);
-        getView().openFragmentForResult(getView().getFragment(),templateLibraryFragment);
+        getView().openFragmentForResult(templateLibraryFragment);
     }
 
     private boolean validateContractAddress(String address){

@@ -23,10 +23,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import com.pixelplex.qtum.dataprovider.UpdateService;
+import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
 import com.pixelplex.qtum.ui.fragment.AddressesFragment.AddressesFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 
+import java.math.BigDecimal;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -39,6 +42,8 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     private ReceiveFragmentInteractorImpl mReceiveFragmentInteractor;
     private String mAmount = "0.0";
     private String mTokenAddress;
+
+    private UpdateService mUpdateService;
 
     private DrawQRTask drawQRTask;
 
@@ -117,6 +122,7 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     public void onDestroyView() {
         super.onDestroyView();
         getView().hideKeyBoard();
+        mUpdateService.removeBalanceChangeListener();
         drawQRTask.cancel(false);
     }
 
@@ -134,13 +140,35 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
         getView().openFragmentForResult(addressesFragment);
     }
 
-
+    @Override
+    public void onViewCreated() {
+        super.onViewCreated();
+        mUpdateService = getView().getMainActivity().getUpdateService();
+        mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
+            @Override
+            public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
+                getView().getMainActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String balanceString = balance.toString();
+                        if(balanceString!=null) {
+                            String unconfirmedBalanceString = unconfirmedBalance.toString();
+                            if(!TextUtils.isEmpty(unconfirmedBalanceString) && !unconfirmedBalanceString.equals("0")) {
+                                getView().updateBalance(String.format("%S QTUM", balanceString),String.format("%S QTUM", String.valueOf(unconfirmedBalance.floatValue())));
+                            } else {
+                                getView().updateBalance(String.format("%S QTUM", balanceString),null);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
 
     @Override
     public void initializeViews() {
         super.initializeViews();
         getView().setUpAddress(getInteractor().getCurrentReceiveAddress());
-        getView().setBalance(getInteractor().getBalance());
         changeAmount("");
     }
 

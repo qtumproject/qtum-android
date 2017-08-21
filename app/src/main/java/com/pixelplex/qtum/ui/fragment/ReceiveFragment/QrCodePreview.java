@@ -6,6 +6,7 @@ package com.pixelplex.qtum.ui.fragment.ReceiveFragment;
 
 import android.app.Dialog;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;

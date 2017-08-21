@@ -10,7 +10,6 @@ interface SendFragmentInteractor {
     void sendTx(String txHex, SendFragmentInteractorImpl.SendTxCallBack callBack);
     void createTx(String address, String amount, SendFragmentInteractorImpl.CreateTxCallBack callBack);
     String getPassword();
-    String getBalance();
     List<String> getAddresses();
     List<Token> getTokenList();
 }

@@ -182,5 +182,6 @@
     <string name="view_abi">View ABI</string>
     <string name="contract_management">Contract Management</string>
     <string name="contract_details">Contract Details</string>
+    <string name="sent_time">Sent time</string>
 
 </resources>

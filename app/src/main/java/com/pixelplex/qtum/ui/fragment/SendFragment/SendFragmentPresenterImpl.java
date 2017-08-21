@@ -68,32 +68,23 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
             public void onServiceConnectionChange(boolean isConnecting) {
                 if(isConnecting){
                     mUpdateService = getView().getMainActivity().getUpdateService();
-                    mUpdateService.addTransactionListener(new TransactionListener() {
-                        @Override
-                        public void onNewHistory(History history) {
-                            getView().getMainActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setUpBalance();
-                                }
-                            });
-                        }
-
-                        @Override
-                        public boolean getVisibility() {
-                            return false;
-                        }
-                    });
-
                     mUpdateService.removeBalanceChangeListener();
 
                     mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
                         @Override
-                        public void onChangeBalance() {
+                        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
                             getView().getMainActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    setUpBalance();
+                                    String balanceString = balance.toString();
+                                    if(balanceString!=null) {
+                                        String unconfirmedBalanceString = unconfirmedBalance.toString();
+                                        if(!TextUtils.isEmpty(unconfirmedBalanceString) && !unconfirmedBalanceString.equals("0")) {
+                                            getView().updateBalance(String.format("%S QTUM", balanceString),String.format("%S QTUM", String.valueOf(unconfirmedBalance.floatValue())));
+                                        } else {
+                                            getView().updateBalance(String.format("%S QTUM", balanceString),null);
+                                        }
+                                    }
                                 }
                             });
                         }
@@ -157,8 +148,6 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         if(OPEN_QR_CODE_FRAGMENT_FLAG) {
             openQrCodeFragment();
         }
-
-        setUpBalance();
     }
 
     private void openQrCodeFragment(){
@@ -231,20 +220,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     @Override
     public void onCurrencyClick() {
         BaseFragment currencyFragment = CurrencyFragment.newInstance(getView().getContext());
-        getView().openFragmentForResult(getView().getFragment(), currencyFragment);
-    }
-
-    private void setUpBalance() {
-        String balance = getInteractor().getBalance();
-        if(balance!=null) {
-            String unconfirmedBalance = HistoryList.getInstance().getUnconfirmedBalance();
-            if(!TextUtils.isEmpty(unconfirmedBalance) && !unconfirmedBalance.equals("0")) {
-                BigDecimal unconfirmedBalanceDecimal = new BigDecimal(unconfirmedBalance);
-                getView().updateBalance(String.format("%S QTUM", getInteractor().getBalance()),String.format("%S QTUM", String.valueOf(unconfirmedBalanceDecimal.floatValue())));
-            } else {
-                getView().updateBalance(String.format("%S QTUM", getInteractor().getBalance()),null);
-            }
-        }
+        getView().openFragmentForResult(currencyFragment);
     }
 
     String availableAddress = null;

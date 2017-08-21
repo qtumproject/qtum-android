@@ -19,10 +19,6 @@ import butterknife.BindView;
 
 public class ReceiveFragmentLight extends ReceiveFragment {
 
-    @BindView(R.id.not_confirmed_balance_view) View notConfirmedBalancePlaceholder;
-    @BindView(R.id.tv_placeholder_balance_value) TextView placeHolderBalance;
-    @BindView(R.id.tv_placeholder_not_confirmed_balance_value) TextView placeHolderBalanceNotConfirmed;
-
     @BindView(R.id.til_amount)
     TextInputLayout mTilAmount;
 
@@ -37,14 +33,10 @@ public class ReceiveFragmentLight extends ReceiveFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        getPresenter().setQrColors(mCoordinatorLayout.getDrawingCacheBackgroundColor(), ContextCompat.getColor(getContext(),R.color.qr_code_tint_color));
-        notConfirmedBalancePlaceholder.setVisibility(View.GONE);
+        getPresenter().setQrColors(ContextCompat.getColor(getContext(),R.color.qr_code_background), ContextCompat.getColor(getContext(),R.color.qr_code_tint_color));
         mTilAmount.setTypeface(FontManager.getInstance().getFont(getResources().getString(R.string.proximaNovaRegular)));
         mEtAmount.setTypeface(FontManager.getInstance().getFont(getResources().getString(R.string.proximaNovaSemibold)));
     }
 
-    @Override
-    public void setBalance(String balance) {
-        placeHolderBalance.setText((balance != null)? String.format("%s QTUM",balance) : "N/A");
-    }
+
 }

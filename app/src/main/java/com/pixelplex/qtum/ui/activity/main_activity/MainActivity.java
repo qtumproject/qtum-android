@@ -377,6 +377,9 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     public void setCheckAuthenticationShowFlag(boolean flag){
         getPresenter().setCheckAuthenticationShowFlag(flag);
+        if(mAuthenticationListener!=null && !flag){
+            mAuthenticationListener.onAuthenticate();
+        }
     }
 
     @Override
@@ -395,7 +398,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
         if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)){
             mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
-            mBottomNavigationView.setItemBackgroundResource(R.drawable.bottom_nav_view_background_drawable);
+            mBottomNavigationView.setItemBackgroundResource(R.drawable.bottom_nav_view_tab_background);
             mBottomNavigationView.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
             mBottomNavigationView.setItemIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
             resetNavBarIconsWithTheme(blackThemeIcons);
@@ -434,4 +437,19 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     public void onLogout(){
         getPresenter().onLogout();
     }
+
+    AuthenticationListener mAuthenticationListener;
+
+    public void addAuthenticationListener(AuthenticationListener authenticationListener){
+        mAuthenticationListener = authenticationListener;
+    }
+
+    public void removeAuthenticationListener(){
+        mAuthenticationListener = null;
+    }
+
+    public interface AuthenticationListener{
+        void onAuthenticate();
+    }
+
 }

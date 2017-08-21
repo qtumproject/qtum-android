@@ -9,8 +9,6 @@ public class HistoryList {
     private static HistoryList sHistoryList;
 
     private List<History> mHistoryList;
-    private String mBalance;
-    private String mUnconfirmedBalance;
     private int mTotalItem = 0;
 
     private HistoryList() {
@@ -36,14 +34,6 @@ public class HistoryList {
         mHistoryList = historyList;
     }
 
-    public String getBalance() {
-        return mBalance;
-    }
-
-    public void setBalance(String balance) {
-        mBalance = balance;
-    }
-
     public int getTotalItem() {
         return mTotalItem;
     }
@@ -52,11 +42,4 @@ public class HistoryList {
         this.mTotalItem = totalItem;
     }
 
-    public String getUnconfirmedBalance() {
-        return mUnconfirmedBalance;
-    }
-
-    public void setUnconfirmedBalance(String unconfirmedBalance) {
-        mUnconfirmedBalance = unconfirmedBalance;
-    }
 }
