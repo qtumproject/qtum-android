@@ -243,10 +243,6 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
         return QtumSharedPreference.getInstance().getWalletPassword(mContext);
     }
 
-    @Override
-    public String getBalance() {
-        return HistoryList.getInstance().getBalance();
-    }
 
     @Override
     public List<String> getAddresses() {

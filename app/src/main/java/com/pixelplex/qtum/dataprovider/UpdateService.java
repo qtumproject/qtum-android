@@ -88,6 +88,8 @@ public class UpdateService extends Service {
     private Socket socket;
     private int totalTransaction = 0;
     private JSONArray mAddresses;
+    private BigDecimal unconfirmedBalance;
+    private BigDecimal balance;
 
     private String mFirebasePrevToken;
     private String mFirebaseCurrentToken;
@@ -100,7 +102,7 @@ public class UpdateService extends Service {
         super.onCreate();
 
         try {
-            socket = IO.socket("http://163.172.68.103:5931/");
+            socket = IO.socket("http://163.172.251.4:5931/");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -132,18 +134,15 @@ public class UpdateService extends Service {
             public void call(Object... args) {
                 try {
                     JSONObject data = (JSONObject) args[0];
-                    BigDecimal unconfirmedBalance;
-                    BigDecimal balance;
+
                     try {
                         unconfirmedBalance = (new BigDecimal(data.getString("unconfirmedBalance"))).divide(new BigDecimal("100000000"));
                         balance = (new BigDecimal(data.getString("balance"))).divide(new BigDecimal("100000000"));
-                        HistoryList.getInstance().setBalance(balance.toString());
-                        HistoryList.getInstance().setUnconfirmedBalance(unconfirmedBalance.toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     if (mBalanceChangeListener != null) {
-                        mBalanceChangeListener.onChangeBalance();
+                        mBalanceChangeListener.onChangeBalance(unconfirmedBalance, balance);
                     }
                 } catch (ClassCastException e) {
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
@@ -473,7 +472,9 @@ public class UpdateService extends Service {
 
     public void addBalanceChangeListener(BalanceChangeListener balanceChangeListener) {
         mBalanceChangeListener = balanceChangeListener;
-        balanceChangeListener.onChangeBalance();
+        if(balance!=null) {
+            balanceChangeListener.onChangeBalance(unconfirmedBalance, balance);
+        }
     }
 
     public void addTokenListener(TokenListener tokenListener){

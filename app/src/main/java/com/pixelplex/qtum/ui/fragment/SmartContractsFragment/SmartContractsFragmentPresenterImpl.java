@@ -34,7 +34,7 @@ class SmartContractsFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
     void onContractsStoreClick(){
-        QStoreFragment qStroreFragment = QStoreFragment.newInstance();
+        BaseFragment qStroreFragment = QStoreFragment.newInstance(getView().getContext());
         getView().openFragment(qStroreFragment);
     }
 

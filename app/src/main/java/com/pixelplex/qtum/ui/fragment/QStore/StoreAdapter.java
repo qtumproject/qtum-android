@@ -10,20 +10,24 @@ import com.pixelplex.qtum.ui.fragment.QStore.categories.QstoreCategory;
 import java.util.List;
 
 
-class StoreAdapter extends RecyclerView.Adapter<StoreViewHolder> {
+public class StoreAdapter extends RecyclerView.Adapter<StoreViewHolder> {
 
     private List<QstoreCategory> items;
 
     private StoreItemClickListener listener;
 
-    public StoreAdapter(List<QstoreCategory> items, StoreItemClickListener listener){
+    int catResId, itemResId;
+
+    public StoreAdapter(List<QstoreCategory> items, StoreItemClickListener listener, int catResId, int itemResId){
         this.items = items;
         this.listener = listener;
+        this.catResId = catResId;
+        this.itemResId = itemResId;
     }
 
     @Override
     public StoreViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new StoreViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_store_list_item, parent, false), listener);
+        return new StoreViewHolder(LayoutInflater.from(parent.getContext()).inflate(catResId, parent, false), listener, itemResId);
     }
 
     @Override

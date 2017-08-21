@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.store.QSearchItem;
 import com.pixelplex.qtum.model.gson.store.QstoreItem;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreCategories.StoreCategoriesFragment;
@@ -19,6 +20,7 @@ import com.pixelplex.qtum.ui.fragment.QStore.categories.QstoreCategory;
 import com.pixelplex.qtum.utils.FontCheckBox;
 import com.pixelplex.qtum.utils.SearchBar;
 import com.pixelplex.qtum.utils.SearchBarListener;
+import com.pixelplex.qtum.utils.ThemeUtils;
 
 import java.util.List;
 
@@ -26,22 +28,20 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class QStoreFragment extends BaseFragment implements QStoreView, SearchBarListener, StoreItemClickListener{
+public abstract class QStoreFragment extends BaseFragment implements QStoreView, SearchBarListener, StoreItemClickListener{
 
     private QStorePresenter presenter;
 
-    private StoreAdapter storeAdapter;
-    private StoreSearchAdapter searchAdapter;
+    protected StoreAdapter storeAdapter;
+    protected StoreSearchAdapter searchAdapter;
 
     @OnClick(R.id.ibt_back)
     public void onBackClick(){
         getActivity().onBackPressed();
     }
 
-    @BindView(R.id.search_bar)
-    SearchBar searchBar;
-
     @BindView(R.id.content_list)
+    protected
     RecyclerView contentList;
 
     @BindView(R.id.search_type_menu)
@@ -55,12 +55,12 @@ public class QStoreFragment extends BaseFragment implements QStoreView, SearchBa
 
     @OnClick(R.id.ibt_categories)
     public void onCategoriesClick() {
-        openFragment(StoreCategoriesFragment.newInstance());
+        openFragment(StoreCategoriesFragment.newInstance(getContext()));
     }
 
-    public static QStoreFragment newInstance() {
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        QStoreFragment fragment = new QStoreFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, QStoreFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,7 +78,6 @@ public class QStoreFragment extends BaseFragment implements QStoreView, SearchBa
     @Override
     public void initializeViews() {
         super.initializeViews();
-        searchBar.setListener(this);
         contentList.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
@@ -92,11 +91,6 @@ public class QStoreFragment extends BaseFragment implements QStoreView, SearchBa
     public void onDetach() {
         super.onDetach();
         showBottomNavView(false);
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.lyt_q_store;
     }
 
     @Override
@@ -126,24 +120,13 @@ public class QStoreFragment extends BaseFragment implements QStoreView, SearchBa
 
     @Override
     public void OnItemClick(QstoreItem item) {
-        openFragmentForResult(this, StoreContractFragment.newInstance(item.id));
+        openFragmentForResult(StoreContractFragment.newInstance(getContext(), item.id));
     }
 
     public void setSearchTag(String tag){
         cbByName.setChecked(false);
         cbByTag.setChecked(true);
-        searchBar.setText(tag);
+        setSearchBarText(tag);
     }
 
-    @Override
-    public void setCategories(List<QstoreCategory> categories) {
-        storeAdapter = new StoreAdapter(categories, this);
-        contentList.setAdapter(storeAdapter);
-    }
-
-    @Override
-    public void setSearchResult(List<QSearchItem> items) {
-        searchAdapter = new StoreSearchAdapter(items, this);
-        contentList.setAdapter(searchAdapter);
-    }
 }

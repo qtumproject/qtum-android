@@ -99,6 +99,7 @@
                 <com.pixelplex.qtum.utils.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/tv_time_type"
                     android:text="@string/received_time"
                     android:textColor="@color/background"
                     app:typefaceAsset="@string/simplonMonoRegular" />

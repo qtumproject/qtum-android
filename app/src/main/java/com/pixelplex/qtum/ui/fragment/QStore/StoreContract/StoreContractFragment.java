@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.QStore.StoreContract;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -11,10 +12,12 @@ import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.datastorage.QStoreStorage;
 import com.pixelplex.qtum.model.gson.store.QstoreContract;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.QStoreFragment;
+import com.pixelplex.qtum.ui.fragment.QStore.StoreCategories.StoreCategoriesFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ConfirmPurchaseDialogFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.PurchaseClickListener;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ViewSourceCodeDialogFragment;
@@ -34,7 +37,7 @@ import static com.pixelplex.qtum.ui.fragment.QStore.StoreContract.StoreContractP
 import static com.pixelplex.qtum.ui.fragment.QStore.StoreContract.StoreContractPresenter.PENDING_STATUS;
 
 
-public class StoreContractFragment extends BaseFragment implements StoreContractView, TagClickListener, PurchaseClickListener {
+public abstract class StoreContractFragment extends BaseFragment implements StoreContractView, TagClickListener, PurchaseClickListener {
 
     public static final String CONTRACT_ID = "CONTRACT_ID";
 
@@ -43,10 +46,10 @@ public class StoreContractFragment extends BaseFragment implements StoreContract
     private ConfirmPurchaseDialogFragment confirmPurchase;
     private ViewSourceCodeDialogFragment sourceCodeDialogFragment;
 
-    public static StoreContractFragment newInstance(String id) {
+    public static BaseFragment newInstance(Context context, String id) {
         Bundle args = new Bundle();
         args.putString(CONTRACT_ID, id);
-        StoreContractFragment fragment = new StoreContractFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, StoreCategoriesFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -104,11 +107,6 @@ public class StoreContractFragment extends BaseFragment implements StoreContract
     @Override
     protected BaseFragmentPresenterImpl getPresenter() {
         return presenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.lyt_store_contract;
     }
 
     @Override

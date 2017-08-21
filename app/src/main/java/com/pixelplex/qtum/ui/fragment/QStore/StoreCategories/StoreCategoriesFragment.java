@@ -1,9 +1,11 @@
 package com.pixelplex.qtum.ui.fragment.QStore.StoreCategories;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.SearchBar;
@@ -13,26 +15,24 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class StoreCategoriesFragment extends BaseFragment implements StoreCategoriesView, SearchBarListener {
+public abstract class StoreCategoriesFragment extends BaseFragment implements StoreCategoriesView, SearchBarListener {
 
     private StoreCategoriesPresenter presenter;
 
-    private StoreCategoriesAdapter adapter;
+    protected StoreCategoriesAdapter adapter;
 
     @OnClick(R.id.ibt_back)
     public void onBackClick(){
         getActivity().onBackPressed();
     }
 
-    @BindView(R.id.search_bar)
-    SearchBar searchBar;
-
     @BindView(R.id.content_list)
+    protected
     RecyclerView contentList;
 
-    public static StoreCategoriesFragment newInstance() {
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        StoreCategoriesFragment fragment = new StoreCategoriesFragment();
+        BaseFragment fragment = Factory.instantiateFragment(context, StoreCategoriesFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,10 +40,7 @@ public class StoreCategoriesFragment extends BaseFragment implements StoreCatego
     @Override
     public void initializeViews() {
         super.initializeViews();
-        searchBar.setListener(this);
         contentList.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new StoreCategoriesAdapter(presenter.getSearchItems());
-        contentList.setAdapter(adapter);
     }
 
     @Override
@@ -52,13 +49,8 @@ public class StoreCategoriesFragment extends BaseFragment implements StoreCatego
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected StoreCategoriesPresenter getPresenter() {
         return presenter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.lyt_store_categories;
     }
 
     @Override
