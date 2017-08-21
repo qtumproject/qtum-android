@@ -10,5 +10,6 @@ public interface StoreContractView extends BaseFragmentView {
     void openAbiViewer(String abi);
     void openDetails(String abi);
     void setContractPayStatus(String status);
+    void disablePurchase();
 }
 

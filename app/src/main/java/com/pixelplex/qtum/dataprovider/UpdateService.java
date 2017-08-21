@@ -31,6 +31,7 @@ import com.pixelplex.qtum.dataprovider.listeners.FireBaseTokenRefreshListener;
 import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
 import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
 import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.datastorage.QStoreStorage;
 import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.ContractMethod;
@@ -231,7 +232,8 @@ public class UpdateService extends Service {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
                 ContractPurchaseResponse objectData = gson.fromJson(data.toString(), ContractPurchaseResponse.class);
-                //TODO
+                QStoreStorage.getInstance(getApplicationContext()).setPurchaseItemBuyStatus(objectData.contractId, QStoreStorage.PurchaseItem.PAID_STATUS);
+
             }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
@@ -332,6 +334,17 @@ public class UpdateService extends Service {
         for(Contract contract : (new TinyDB(getApplicationContext())).getContractList()){
             subscribeTokenBalanceChange(contract.getContractAddress(),mFirebasePrevToken,mFirebaseCurrentToken);
         }
+        subscribeStoreContracts();
+    }
+
+    private void subscribeStoreContracts(){
+        for (String id : QStoreStorage.getInstance(getApplicationContext()).getNonPayedContracts()) {
+            socket.emit("subscribe", "contract_purchase", id);
+        }
+    }
+
+    public void subscribeStoreContract(String id){
+        socket.emit("subscribe", "contract_purchase", id);
     }
 
     private void subscribeTokenBalanceChange(String tokenAddress, String prevToken, String currentToken){

@@ -10,6 +10,8 @@ import com.pixelplex.qtum.model.gson.store.QstoreBuyResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.PAID_STATUS;
+
 /**
  * Created by kirillvolkov on 10.08.17.
  */
@@ -65,6 +67,19 @@ public class QStoreStorage {
         return false;
     }
 
+    public List<String> getNonPayedContracts(){
+
+        List<String> addresses = new ArrayList<>();
+
+        for (PurchaseItem item : purchaseItems){
+            if(!item.payStatus.equals(PAID_STATUS)){
+                addresses.add(item.requestId);
+            }
+        }
+
+        return addresses;
+    }
+
     public PurchaseItem getPurchaseByContractId(String contractId){
 
         if(TextUtils.isEmpty(contractId)){
@@ -90,7 +105,29 @@ public class QStoreStorage {
         tDb.putListString(PURCHASE_LIST, objStrings);
     }
 
+    public void setPurchaseItemBuyStatus(String contractId, String buyStatus){
+
+        for (PurchaseItem item : purchaseItems){
+            if(item.contractId.equals(contractId)){
+                item.payStatus = buyStatus;
+            }
+        }
+
+        Gson gson = new Gson();
+        ArrayList<String> objStrings = new ArrayList<>();
+        for(PurchaseItem obj : purchaseItems){
+            objStrings.add(gson.toJson(obj));
+        }
+        tDb.putListString(PURCHASE_LIST, objStrings);
+    }
+
     public class PurchaseItem{
+
+        public static final String NON_PAID_STATUS = "NON_PAID_STATUS";
+        public static final String PAID_STATUS = "PAID_STATUS";
+        public static final String PENDING_STATUS = "PENDING_STATUS";
+
+        public String payStatus = PENDING_STATUS;
 
         public PurchaseItem(String contractId, QstoreBuyResponse buyResponse){
             this.contractId = contractId;

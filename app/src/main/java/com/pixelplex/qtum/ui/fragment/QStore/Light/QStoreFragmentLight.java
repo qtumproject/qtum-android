@@ -6,6 +6,8 @@ import com.pixelplex.qtum.ui.fragment.QStore.QStoreFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreAdapter;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreSearchAdapter;
 import com.pixelplex.qtum.ui.fragment.QStore.categories.QstoreCategory;
+import com.pixelplex.qtum.ui.wave_visualizer.WaveHelper;
+import com.pixelplex.qtum.ui.wave_visualizer.WaveView;
 import com.pixelplex.qtum.utils.SearchBar;
 import com.pixelplex.qtum.utils.SearchBarLight;
 

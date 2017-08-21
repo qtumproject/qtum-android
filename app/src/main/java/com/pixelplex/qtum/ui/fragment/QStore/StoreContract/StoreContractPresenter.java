@@ -45,13 +45,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static com.pixelplex.qtum.datastorage.FileStorageManager.HUMANSTANDARDTOKENUUID;
+import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.NON_PAID_STATUS;
+import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.PAID_STATUS;
+import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.PENDING_STATUS;
 
 
 public class StoreContractPresenter extends BaseFragmentPresenterImpl {
-
-    public static final String NON_PAID_STATUS = "NON_PAID_STATUS";
-    public static final String PAID_STATUS = "PAID_STATUS";
-    public static final String PENDING_STATUS = "PENDING_STATUS";
 
     private StoreContractView view;
     private QstoreContract qstoreContract;
@@ -230,8 +229,11 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl {
             @Override
             public void onSuccess() {
                 QStoreStorage.getInstance(getView().getContext()).addPurchasedItem(getContract().id,qstoreBuyResponse);
+                getView().getMainActivity().getUpdateService().subscribeStoreContract(qstoreBuyResponse.requestId);
                 getView().dismissProgressDialog();
                 getView().setAlertDialog(getView().getContext().getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
+                getView().disablePurchase();
+
             }
 
             @Override
