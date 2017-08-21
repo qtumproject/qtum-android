@@ -82,11 +82,19 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 
                     mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
                         @Override
-                        public void onChangeBalance() {
+                        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
                             getView().getMainActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    setUpBalance();
+                                    String balanceString = balance.toString();
+                                    if(balanceString!=null) {
+                                        String unconfirmedBalanceString = unconfirmedBalance.toString();
+                                        if(!TextUtils.isEmpty(unconfirmedBalanceString) && !unconfirmedBalanceString.equals("0")) {
+                                            getView().updateBalance(balanceString,String.valueOf(unconfirmedBalance.floatValue()));
+                                        } else {
+                                            getView().updateBalance(balanceString,null);
+                                        }
+                                    }
                                 }
                             });
                         }
@@ -117,7 +125,6 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
                 }
             }
         });
-        setUpBalance();
     }
 
     @Override
@@ -136,7 +143,6 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
         String pubKey = getInteractor().getAddress();
         getView().updatePubKey(pubKey);
         loadAndUpdateData();
-        setUpBalance();
     }
 
     @Override
@@ -172,7 +178,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
 
     public void onReceiveClick(){
         BaseFragment receiveFragment = ReceiveFragment.newInstance(mContext,null);
-        getView().openFragment(receiveFragment);
+        getView().openFragmentForResult(receiveFragment);
     }
 
     @Override
@@ -258,19 +264,6 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
                 Toast.makeText(mContext, e.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void setUpBalance() {
-        String balance = getInteractor().getBalance();
-        if(balance!=null) {
-            String unconfirmedBalance = getInteractor().getUnconfirmedBalance();
-            if(!TextUtils.isEmpty(unconfirmedBalance) && !unconfirmedBalance.equals("0")) {
-                BigDecimal unconfirmedBalanceDecimal = new BigDecimal(unconfirmedBalance);
-                getView().updateBalance(getInteractor().getBalance(),String.valueOf(unconfirmedBalanceDecimal.floatValue()));
-            } else {
-                getView().updateBalance(getInteractor().getBalance(),null);
-            }
-        }
     }
 
     private void updateData() {

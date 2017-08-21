@@ -120,7 +120,7 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
 
     @Override
     public void OnItemClick(QstoreItem item) {
-        openFragmentForResult(this, StoreContractFragment.newInstance(getContext(), item.id));
+        openFragmentForResult(StoreContractFragment.newInstance(getContext(), item.id));
     }
 
     public void setSearchTag(String tag){

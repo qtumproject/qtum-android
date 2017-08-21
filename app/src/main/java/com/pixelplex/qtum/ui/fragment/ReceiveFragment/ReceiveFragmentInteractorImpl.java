@@ -19,8 +19,4 @@ class ReceiveFragmentInteractorImpl implements ReceiveFragmentInteractor{
         return KeyStorage.getInstance().getCurrentAddress();
     }
 
-    @Override
-    public String getBalance() {
-        return HistoryList.getInstance().getBalance();
-    }
 }

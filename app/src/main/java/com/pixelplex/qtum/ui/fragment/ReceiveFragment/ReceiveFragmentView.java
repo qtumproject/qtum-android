@@ -11,7 +11,7 @@ interface ReceiveFragmentView extends BaseFragmentView {
     void showSpinner();
     void hideSpinner();
     void setUpAddress(String s);
-    void setBalance(String balance);
+    void updateBalance(String balance, String unconfirmedBalance);
     void showToast();
     void openFragmentForResult(Fragment fragment);
     Bitmap getQrCode();

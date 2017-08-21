@@ -116,6 +116,12 @@ public class AddressListFragmentPresenter extends BaseFragmentPresenterImpl{
                             mKeyWithBalanceList.add(deterministicKeyWithBalance);
                             balanceCountToReceive--;
                             if(balanceCountToReceive==0){
+                                Collections.sort(mKeyWithBalanceList, new Comparator<DeterministicKeyWithBalance>() {
+                                    @Override
+                                    public int compare(DeterministicKeyWithBalance deterministicKeyWithBalance, DeterministicKeyWithBalance t1) {
+                                        return deterministicKeyWithBalance.getAddress().hashCode() < t1.getAddress().hashCode() ? 1 : deterministicKeyWithBalance.getAddress().hashCode() > t1.getAddress().hashCode() ? -1 : 0;
+                                    }
+                                });
                                 getView().dismissProgressDialog();
                                 getView().updateAddressList(mKeyWithBalanceList);
                             }

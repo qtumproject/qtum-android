@@ -14,8 +14,6 @@ import butterknife.BindView;
 
 public class ReceiveFragmentDark extends ReceiveFragment {
 
-    @BindView(R.id.tv_total_balance_number) TextView mTextViewTotalBalanceNumber;
-
     @Override
     protected int getLayout() {
         return R.layout.fragment_receive;
@@ -27,8 +25,4 @@ public class ReceiveFragmentDark extends ReceiveFragment {
         getPresenter().setQrColors(ContextCompat.getColor(getContext(),R.color.colorPrimary), mCoordinatorLayout.getDrawingCacheBackgroundColor());
     }
 
-    @Override
-    public void setBalance(String balance) {
-        mTextViewTotalBalanceNumber.setText((balance != null)? String.format("%s QTUM",balance) : "N/A");
-    }
 }

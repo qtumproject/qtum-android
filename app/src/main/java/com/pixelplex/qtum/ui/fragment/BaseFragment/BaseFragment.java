@@ -94,7 +94,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     public void setAlertDialog(String title, String message, String buttonText, PopUpType type, final AlertDialogCallBack callBack) {
         try {
             dismissProgressDialog();
-
+            dismissAlertDialog();
             View view = LayoutInflater.from(getContext()).inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? R.layout.dialog_popup_fragment : R.layout.dialog_popup_fragment_light, null);
 
             FontTextView tvTitle = ((FontTextView) view.findViewById(R.id.tv_pop_up_title));
@@ -173,7 +173,9 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void dismissAlertDialog() {
-        mAlertDialog.dismiss();
+        if(mAlertDialog!=null) {
+            mAlertDialog.cancel();
+        }
     }
 
     @Override
@@ -307,10 +309,10 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
-    public void openFragmentForResult(Fragment targetFragment, Fragment fragment) {
+    public void openFragmentForResult(Fragment fragment) {
         hideKeyBoard();
         int code_response = 200;
-        fragment.setTargetFragment(targetFragment, code_response);
+        fragment.setTargetFragment(this, code_response);
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
