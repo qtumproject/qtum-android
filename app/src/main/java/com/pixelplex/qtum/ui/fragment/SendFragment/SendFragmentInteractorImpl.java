@@ -12,6 +12,8 @@ import org.bitcoinj.core.TransactionOutPoint;
 import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
+
+import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
@@ -120,7 +122,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                 try {
                     addressToSend = Address.fromBase58(CurrentNetParams.getNetParams(), address);
                 } catch (AddressFormatException a) {
-                    callBack.onError("Incorrect Address");
+                    callBack.onError(mContext.getString(R.string.incorrect_address));
                     return;
                 }
                 ECKey myKey = KeyStorage.getInstance().getCurrentKey();
@@ -140,7 +142,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                     }
                 }
                 if (overFlow.doubleValue() < amount.doubleValue()) {
-                    callBack.onError("You have insufficient funds for this transaction");
+                    callBack.onError(mContext.getString(R.string.you_have_insufficient_funds_for_this_transaction));
                     return;
                 }
                 BigDecimal delivery = overFlow.subtract(amount);

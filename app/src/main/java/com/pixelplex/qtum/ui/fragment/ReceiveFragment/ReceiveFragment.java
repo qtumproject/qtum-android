@@ -273,7 +273,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
 
     @Override
     public void showToast() {
-        Toast.makeText(getContext(), R.string.coped, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.copied, Toast.LENGTH_SHORT).show();
     }
 
     public void onChangeAddress() {

@@ -67,7 +67,6 @@
     <string name="enter_old_pin">enter old pin</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="coped">Copied</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="skip">Skip</string>
     <string name="not_confirmed_balance">Unconfirmed Balance</string>
@@ -102,7 +101,7 @@
     <string name="contracts">Contracts</string>
     <string name="contracts_store">Contracts Store</string>
     <string name="function_detail">Function Detail</string>
-    <string name="not_confirmed">Unconfirmed</string>
+    <string name="unconfirmed">Unconfirmed</string>
     <string name="ok">Ok</string>
     <string name="other_tokens">Other Tokens</string>
     <string name="retry">RETRY</string>
@@ -163,5 +162,22 @@
     <string name="view_abi">View ABI</string>
     <string name="contract_management">Contract Management</string>
     <string name="contract_details">Contract Details</string>
+    <string name="invalid_token_address">Invalid Token Address</string>
+    <string name="address_list">Address List</string>
+    <string name="abi_doesnt_match_qrc20_standard">ABI doesn\'t match QRC20 standard</string>
+    <string name="token_was_added_to_your_wallet">Token was added to your wallet</string>
+    <string name="token_with_same_address_already_exists">Token with same address already exists</string>
+    <string name="transfer">Transfer</string>
+    <string name="transfer_balance">Transfer Balance</string>
+    <string name="error_qrcode_recognition_try_again">Error QR-code Recognition. Try Again</string>
+    <string name="fail_to_get_contract_methods">Fail to get contract methods</string>
+    <string name="fail_to_get_contracts">Fail to get contracts</string>
+    <string name="copied">Copied</string>
+    <string name="new_confirmed_transaction">New confirmed transaction</string>
+    <string name="token_not_found">Token not found</string>
+    <string name="touch_to_open_transaction_history">Touch to open transaction history</string>
+    <string name="trending_now">Trending Now</string>
+    <string name="whats_new">What\'s New?</string>
+    <string name="you_have_insufficient_funds_for_this_transaction">You have insufficient funds for this transaction</string>
 
 </resources>

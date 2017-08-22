@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.TransactionFragment;
 
 
+import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.model.gson.history.Vin;
 import com.pixelplex.qtum.model.gson.history.Vout;
@@ -42,7 +43,7 @@ class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         if(history.getBlockTime()!=null) {
             dateString = DateCalculator.getfullDate(history.getBlockTime() * 1000L);
         } else {
-            dateString = "Unconfirmed";
+            dateString = getView().getContext().getString(R.string.unconfirmed);
         }
         List<String> listTo = new ArrayList<>();
         List<String> listFrom = new ArrayList<>();

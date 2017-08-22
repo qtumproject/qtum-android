@@ -10,9 +10,6 @@ import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.ui.fragment.WalletFragment.TransactionClickListener;
 import com.pixelplex.qtum.utils.DateCalculator;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -51,7 +48,7 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
         if(history.getBlockTime() != null) {
             mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime()*1000L));
         } else {
-            mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.not_confirmed));
+            mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.unconfirmed));
         }
         if (history.getChangeInBalance().doubleValue() > 0) {
             mTextViewOperationType.setText(R.string.received);

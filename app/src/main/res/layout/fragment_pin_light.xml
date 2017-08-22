@@ -78,7 +78,7 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/balance_view"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
@@ -87,10 +87,26 @@
         android:fitsSystemWindows="true"
         app:layout_collapseMode="parallax">
 
+        <com.pixelplex.qtum.utils.FontButton
+            android:id="@+id/bt_cancel"
+            android:layout_width="202dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            app:typeface="@string/proximaNovaBold"
+            android:background="@drawable/btn_gray_corner_background_light_alpha_30"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/button_text"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"/>
+
         <com.pixelplex.qtum.ui.wave_visualizer.WaveView
             android:id="@+id/wave_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </FrameLayout>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -203,15 +203,15 @@ public class UpdateService extends Service {
                     if (!mTransactionListener.getVisibility()) {
                         if (history.getBlockTime() != null) {
                             totalTransaction++;
-                            sendNotification("New confirmed transaction", totalTransaction + " new confirmed transaction",
-                                    "Touch to open transaction history", RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                            sendNotification(getString(R.string.new_confirmed_transaction), totalTransaction + " " + getString(R.string.new_confirmed_transaction),
+                                    getString(R.string.touch_to_open_transaction_history), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                         }
                     }
                 } else {
                     if (history.getBlockTime() != null) {
                         totalTransaction++;
-                        sendNotification("New confirmed transaction", totalTransaction + " new confirmed transaction",
-                                "Touch to open transaction history", RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                        sendNotification(getString(R.string.new_confirmed_transaction), totalTransaction + " " + getString(R.string.new_confirmed_transaction),
+                                getString(R.string.touch_to_open_transaction_history), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                     }
                 }
 

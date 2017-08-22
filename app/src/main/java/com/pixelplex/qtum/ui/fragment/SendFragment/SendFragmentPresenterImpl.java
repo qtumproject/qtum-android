@@ -208,7 +208,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                 return tokenAddress;
             }
         }
-        getView().setAlertDialog("Token not found","Ok", BaseFragment.PopUpType.error);
+        getView().setAlertDialog(mContext.getString(R.string.token_not_found),"Ok", BaseFragment.PopUpType.error);
         return "";
     }
 
@@ -277,7 +277,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
 
                                         if (TextUtils.isEmpty(availableAddress)){
                                             getView().dismissProgressDialog();
-                                            getView().setAlertDialog(mContext.getString(R.string.error), "You have insufficient funds for this transaction", "Ok", BaseFragment.PopUpType.error);
+                                            getView().setAlertDialog(mContext.getString(R.string.error), mContext.getString(R.string.you_have_insufficient_funds_for_this_transaction), "Ok", BaseFragment.PopUpType.error);
                                             return;
                                         }
 

@@ -55,14 +55,14 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
             }
         }
         if(isToken){
-            if(ContractBuilder.checkForValidityERC20(ABIInterface)) {
+            if(ContractBuilder.checkForValidityQRC20(ABIInterface)) {
                 ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(getView().getContext(), null, null, ABIInterface, "token", "no_name", DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
                 List<Token> tokenList = tinyDB.getTokenList();
                 Token token = new Token(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "Stub!", name);
                 tokenList.add(token);
                 tinyDB.putTokenList(tokenList);
             } else {
-                getView().setAlertDialog(mContext.getString(R.string.abi_doesnt_match_erc20_standard),mContext.getString(R.string.ok), BaseFragment.PopUpType.error);
+                getView().setAlertDialog(mContext.getString(R.string.abi_doesnt_match_qrc20_standard),mContext.getString(R.string.ok), BaseFragment.PopUpType.error);
                 return;
             }
         }else {

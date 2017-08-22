@@ -16,6 +16,7 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 public abstract class PinFragment extends BaseFragment implements PinFragmentView, Runnable {
@@ -43,6 +44,15 @@ public abstract class PinFragment extends BaseFragment implements PinFragmentVie
 
     @BindView(R.id.tooltip)
     FontTextView tooltip;
+
+    @OnClick({R.id.bt_cancel})
+    void onClick(View view){
+        switch (view.getId()){
+            case R.id.bt_cancel:
+                getMainActivity().onBackPressed();
+                break;
+        }
+    }
 
     public static BaseFragment newInstance(String action, String passphrase, Context context) {
         BaseFragment pinFragment = Factory.instantiateFragment(context,PinFragment.class);
@@ -113,7 +123,7 @@ public abstract class PinFragment extends BaseFragment implements PinFragmentVie
     @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Override

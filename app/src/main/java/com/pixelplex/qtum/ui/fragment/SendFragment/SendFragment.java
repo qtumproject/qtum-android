@@ -159,7 +159,7 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
 
     @Override
     public void errorRecognition() {
-        setAlertDialog("Error QR-code Recognition. Try Again","Ok",PopUpType.error);
+        setAlertDialog(getString(R.string.error_qrcode_recognition_try_again),"Ok",PopUpType.error);
     }
 
     @Override
@@ -204,7 +204,7 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     }
 
     public void onResponseError() {
-        setAlertDialog("Invalid QR Code","OK", PopUpType.error);
+        setAlertDialog(getString(R.string.invalid_qr_code),"OK", PopUpType.error);
     }
 
     @Override

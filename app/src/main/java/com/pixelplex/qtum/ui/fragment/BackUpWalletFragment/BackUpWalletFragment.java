@@ -120,7 +120,7 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
 
     @Override
     public void showToast() {
-        Toast.makeText(getContext(),getString(R.string.coped),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),getString(R.string.copied),Toast.LENGTH_SHORT).show();
         //Snackbar.make(mCoordinatorLayout, getString(R.string.coped), Snackbar.LENGTH_SHORT).show();
     }
 

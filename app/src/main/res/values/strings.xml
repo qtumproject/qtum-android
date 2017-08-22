@@ -90,7 +90,6 @@
     <string name="enter_old_pin">enter old pin</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="coped">Copied</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="skip">Skip</string>
     <string name="not_confirmed_balance">Unconfirmed Balance</string>
@@ -105,10 +104,10 @@
     <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
     <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
-    <string name="proximaNovaBold">fonts/proximanovabold.ttf</string>
-    <string name="proximaNovaLight">fonts/proximanovalight.ttf</string>
-    <string name="proximaNovaRegular">fonts/proximanovaregular.ttf</string>
-    <string name="proximaNovaSemibold">fonts/proximanovasemibold.ttf</string>
+    <string name="proximaNovaBold" translatable="false">fonts/proximanovabold.ttf</string>
+    <string name="proximaNovaLight" translatable="false">fonts/proximanovalight.ttf</string>
+    <string name="proximaNovaRegular" translatable="false">fonts/proximanovaregular.ttf</string>
+    <string name="proximaNovaSemibold" translatable="false">fonts/proximanovasemibold.ttf</string>
 
     <string name="retry">RETRY</string>
 
@@ -119,7 +118,7 @@
     <string name="contracts">Contracts</string>
 
     <string name="contract_address">Contract Address</string>
-    <string name="not_confirmed">Unconfirmed</string>
+    <string name="unconfirmed">Unconfirmed</string>
     <string name="watch_contract">Watch Contract</string>
     <string name="watch_token">Watch Token</string>
     <string name="restore_contracts">Restore Contracts</string>
@@ -168,7 +167,7 @@
     <string name="preview">Preview</string>
     <string name="restore">Restore</string>
     <string name="token_was_added_to_your_wallet">Token was added to your wallet</string>
-    <string name="abi_doesnt_match_erc20_standard">ABI doesn\'t match ERC20 standard</string>
+    <string name="abi_doesnt_match_qrc20_standard">ABI doesn\'t match QRC20 standard</string>
     <string name="token_with_same_address_already_exists">Token with same address already exists</string>
     <string name="invalid_token_address">Invalid Token Address</string>
     <string name="address_list">Address List</string>
@@ -183,5 +182,17 @@
     <string name="contract_management">Contract Management</string>
     <string name="contract_details">Contract Details</string>
     <string name="sent_time">Sent time</string>
+    <string name="you_have_insufficient_funds_for_this_transaction">You have insufficient funds for this transaction</string>
+    <string name="incorrect_address">Incorrect Address</string>
+    <string name="fail_to_get_contract_methods">Fail to get contract methods</string>
+    <string name="fail_to_get_contracts">Fail to get contracts</string>
+    <string name="trending_now">Trending Now</string>
+    <string name="whats_new">What\'s New?</string>
+    <string name="error_qrcode_recognition_try_again">Error QR-code Recognition. Try Again</string>
+    <string name="invalid_qr_code">Invalid QR Code</string>
+    <string name="token_not_found">Token not found</string>
+    <string name="copied">Copied</string>
+    <string name="new_confirmed_transaction">New confirmed transaction</string>
+    <string name="touch_to_open_transaction_history">Touch to open transaction history</string>
 
 </resources>
