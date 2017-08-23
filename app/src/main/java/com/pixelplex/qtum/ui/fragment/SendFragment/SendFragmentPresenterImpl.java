@@ -122,7 +122,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     public void onDestroyView() {
         super.onDestroyView();
         getView().getMainActivity().removePermissionResultListener();
-        mUpdateService.removeTransactionListener();
+        mUpdateService.removeBalanceChangeListener();
         mNetworkStateReceiver.removeNetworkStateListener();
         //TODO:unsubscribe rx
     }
