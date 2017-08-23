@@ -99,7 +99,7 @@
 
         <LinearLayout
             android:id="@+id/search_type_menu"
-
+            android:visibility="gone"
             android:padding="4dp"
             android:background="@color/qstore_background"
             android:orientation="horizontal"

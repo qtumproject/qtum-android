@@ -2,22 +2,16 @@ package com.pixelplex.qtum.ui.fragment.QStore.StoreContract;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
-
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.datastorage.QStoreStorage;
 import com.pixelplex.qtum.model.gson.store.QstoreContract;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.QStoreFragment;
-import com.pixelplex.qtum.ui.fragment.QStore.StoreCategories.StoreCategoriesFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ConfirmPurchaseDialogFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.PurchaseClickListener;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ViewSourceCodeDialogFragment;
@@ -25,17 +19,13 @@ import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.NON_PAID_STATUS;
+import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.PAID_STATUS;
+import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.PENDING_STATUS;
 import static com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ViewSourceCodeDialogFragment.ABI;
-import static com.pixelplex.qtum.ui.fragment.QStore.StoreContract.StoreContractPresenter.NON_PAID_STATUS;
-import static com.pixelplex.qtum.ui.fragment.QStore.StoreContract.StoreContractPresenter.PAID_STATUS;
-import static com.pixelplex.qtum.ui.fragment.QStore.StoreContract.StoreContractPresenter.PENDING_STATUS;
-
 
 public abstract class StoreContractFragment extends BaseFragment implements StoreContractView, TagClickListener, PurchaseClickListener {
 
@@ -49,7 +39,7 @@ public abstract class StoreContractFragment extends BaseFragment implements Stor
     public static BaseFragment newInstance(Context context, String id) {
         Bundle args = new Bundle();
         args.putString(CONTRACT_ID, id);
-        BaseFragment fragment = Factory.instantiateFragment(context, StoreCategoriesFragment.class);
+        BaseFragment fragment = Factory.instantiateFragment(context, StoreContractFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,10 +66,6 @@ public abstract class StoreContractFragment extends BaseFragment implements Stor
         presenter.getSourceCode();
     }
 
-    @OnClick(R.id.tv_view_abi)
-    public void onViewAbiClick(){
-        presenter.getContractAbiById(presenter.getContract().id);
-    }
 
     @OnClick(R.id.tv_view_details)
     public void onViewDetailsClick(){
@@ -105,7 +91,7 @@ public abstract class StoreContractFragment extends BaseFragment implements Stor
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected StoreContractPresenter getPresenter() {
         return presenter;
     }
 
@@ -116,20 +102,6 @@ public abstract class StoreContractFragment extends BaseFragment implements Stor
         ChipsLayoutManager chipsLayoutManager = ChipsLayoutManager.newBuilder(getContext())
                 .build();
         rvTags.setLayoutManager(chipsLayoutManager);
-    }
-
-    @Override
-    public void setContractData(QstoreContract contract) {
-        toolbarTitle.setText(contract.name);
-        tvCost.setText(String.valueOf(contract.price));
-        tvDescription.setText(contract.description);
-        rvTags.setAdapter(new TagRecyclerViewAdapter(contract.tags, this));
-        tvPublishDate.setText(DateCalculator.getShortDate(contract.creationDate));
-        tvSizeInBytes.setText(String.valueOf(contract.sizeInBytes));
-        tvCompiledOn.setText(contract.completedOn);
-        tvSourceCode.setText(contract.withSourceCode? "Yes":"No");
-        tvPublishedBy.setText(contract.publisherAddress);
-        tvDownloads.setText(String.valueOf(contract.countDownloads));
     }
 
     @Override
@@ -176,5 +148,10 @@ public abstract class StoreContractFragment extends BaseFragment implements Stor
     @Override
     public void onPurchaseConfirm() {
         presenter.sendBuyRequest();
+    }
+
+    @Override
+    public void disablePurchase() {
+        purchaseBtn.setEnabled(false);
     }
 }

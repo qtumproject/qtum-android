@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.dataprovider.listeners.ContractPurchaseListener;
 import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.datastorage.KeyStorage;
@@ -12,6 +13,7 @@ import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
 import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
+import com.pixelplex.qtum.model.gson.store.ContractPurchaseResponse;
 import com.pixelplex.qtum.model.gson.store.IsPaidResponse;
 import com.pixelplex.qtum.model.gson.store.QstoreBuyResponse;
 import com.pixelplex.qtum.model.gson.store.QstoreContract;
@@ -45,13 +47,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static com.pixelplex.qtum.datastorage.FileStorageManager.HUMANSTANDARDTOKENUUID;
+import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.NON_PAID_STATUS;
+import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.PAID_STATUS;
+import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.PENDING_STATUS;
 
 
-public class StoreContractPresenter extends BaseFragmentPresenterImpl {
-
-    public static final String NON_PAID_STATUS = "NON_PAID_STATUS";
-    public static final String PAID_STATUS = "PAID_STATUS";
-    public static final String PENDING_STATUS = "PENDING_STATUS";
+public class StoreContractPresenter extends BaseFragmentPresenterImpl implements ContractPurchaseListener {
 
     private StoreContractView view;
     private QstoreContract qstoreContract;
@@ -71,6 +72,25 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl {
     @Override
     public StoreContractView getView() {
         return view;
+    }
+
+    @Override
+    public void onViewCreated() {
+        super.onViewCreated();
+        getView().getMainActivity().getUpdateService().setContractPurchaseListener(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        getView().getMainActivity().getUpdateService().removeContractPurchaseListener();
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onContractPurchased(ContractPurchaseResponse purchaseData) {
+        if(qstoreContract.id.equals(purchaseData.contractId)) {
+            getView().setContractPayStatus(PAID_STATUS);
+        }
     }
 
     public void getSourceCode(){
@@ -230,8 +250,11 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl {
             @Override
             public void onSuccess() {
                 QStoreStorage.getInstance(getView().getContext()).addPurchasedItem(getContract().id,qstoreBuyResponse);
+                getView().getMainActivity().getUpdateService().subscribeStoreContract(qstoreBuyResponse.requestId);
                 getView().dismissProgressDialog();
                 getView().setAlertDialog(getView().getContext().getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
+                getView().disablePurchase();
+
             }
 
             @Override
@@ -390,4 +413,5 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl {
         String s = FileStorageManager.getInstance().readAbiContract(getView().getContext(), HUMANSTANDARDTOKENUUID);
         getView().openDetails(s);
     }
+
 }

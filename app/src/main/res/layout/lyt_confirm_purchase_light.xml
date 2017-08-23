@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:background="@drawable/background_progress_bar"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:layout_width="match_parent"
+            android:text="@string/confirm_purchase"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"
+            app:typefaceAsset="@string/proximaNovaSemibold"
+            android:layout_height="wrap_content" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            style="@style/confirm_purchase_title_dialog"
+            android:id="@+id/contract_name"
+            android:text="savfsv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:typefaceAsset="@string/proximaNovaRegular" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            style="@style/confirm_purchase_subtitle_dialog_light"
+            android:layout_width="match_parent"
+            android:text="@string/contract_name"
+            app:typefaceAsset="@string/proximaNovaRegular"
+            android:layout_height="wrap_content" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            style="@style/confirm_purchase_title_dialog"
+            android:id="@+id/contract_type"
+
+            android:layout_width="match_parent"
+            app:typefaceAsset="@string/proximaNovaRegular"
+            android:layout_height="wrap_content" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            style="@style/confirm_purchase_subtitle_dialog_light"
+            android:layout_width="match_parent"
+            android:text="@string/contract_type"
+            app:typefaceAsset="@string/proximaNovaRegular"
+            android:layout_height="wrap_content" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            android:id="@+id/miner_address"
+            style="@style/confirm_purchase_title_dialog"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="sd34nf439u4fn38uc34mc03xm3434092-ck330cc943cc03"
+            android:layout_width="match_parent"
+            app:typefaceAsset="@string/proximaNovaRegular"
+            android:layout_height="wrap_content" />
+
+        <com.pixelplex.qtum.utils.FontTextView
+            style="@style/confirm_purchase_subtitle_dialog_light"
+            android:layout_width="match_parent"
+            android:text="@string/miner_address"
+            app:typefaceAsset="@string/proximaNovaRegular"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:id="@+id/price"
+                    android:gravity="center"
+                    style="@style/confirm_purchase_subtitle_dialog_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:typefaceAsset="@string/proximaNovaBold" />
+
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    style="@style/confirm_purchase_subtitle_dialog_light_start"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:text="@string/price"
+                    app:typefaceAsset="@string/proximaNovaRegular"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:id="@+id/fee"
+                    android:gravity="center"
+                    style="@style/confirm_purchase_subtitle_dialog_start"
+                    android:layout_width="match_parent"
+                    android:text="0.100 QTUM"
+                    app:typefaceAsset="@string/proximaNovaBold"
+                    android:layout_height="wrap_content" />
+
+                <com.pixelplex.qtum.utils.FontTextView
+                    android:gravity="center"
+                    style="@style/confirm_purchase_subtitle_dialog_light_start"
+                    android:layout_width="match_parent"
+                    android:text="@string/Fee"
+                    app:typefaceAsset="@string/proximaNovaRegular"
+                    android:layout_height="wrap_content" />
+
+
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginTop="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.pixelplex.qtum.utils.FontButton
+                android:id="@+id/btn_cancel"
+                android:padding="16dp"
+                android:background="@drawable/btn_gray_corner_background_light"
+                app:typeface="@string/proximaNovaRegular"
+                android:text="@string/cancel"
+                android:layout_marginEnd="4dp"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/grey70"
+                android:textAllCaps="false"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+            <com.pixelplex.qtum.utils.FontButton
+                android:id="@+id/btn_confirm"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_sea_corner_background_light"
+                android:layout_alignParentEnd="true"
+                app:typeface="@string/proximaNovaRegular"
+                android:text="@string/confirm"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

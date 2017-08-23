@@ -93,9 +93,10 @@
     </style>
 
     <style name="qstore_text_title_style_light" parent="oneline_textview">
+        <item name="android:alpha">.6</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/background</item>
-        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:layout_marginTop">8dp</item>
     </style>
 
     <style name="qstore_text_subtitle_style" parent="oneline_textview">
@@ -107,7 +108,6 @@
 
     <style name="qstore_text_subtitle_style_light" parent="oneline_textview">
         <item name="android:textSize">16sp</item>
-        <item name="android:alpha">.6</item>
         <item name="android:textColor">@color/background</item>
         <item name="android:layout_marginTop">4dp</item>
     </style>
@@ -119,6 +119,8 @@
 
     <style name="qstore_text_oneline_title_style_light" parent="oneline_textview">
         <item name="android:textSize">14sp</item>
+        <item name="android:alpha">.6</item>
+        <item name="android:layout_marginTop">4dp</item>
         <item name="android:textColor">@color/background</item>
     </style>
 
@@ -132,14 +134,14 @@
     <style name="qstore_text_oneline_subtitle_style_light" parent="oneline_textview">
         <item name="android:textSize">14sp</item>
         <item name="android:layout_alignParentEnd">true</item>
-        <item name="android:alpha">.6</item>
+
         <item name="android:textColor">@color/background</item>
+        <item name="android:layout_marginTop">8dp</item>
     </style>
 
     <style name="confirm_purchase_title_dialog" parent="oneline_textview">
 
         <item name="android:layout_marginTop">16dp</item>
-        <item name="android:layout_marginStart">16dp</item>
         <item name="android:textColor">@color/background</item>
         <item name="android:textSize">14sp</item>
 
@@ -152,6 +154,29 @@
         <item name="android:textSize">14sp</item>
 
     </style>
+
+    <style name="confirm_purchase_subtitle_dialog_start" parent="oneline_textview">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textColor">@color/background</item>
+        <item name="android:textSize">18sp</item>
+
+    </style>
+
+
+    <style name="confirm_purchase_subtitle_dialog_light">
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textColor">@color/background</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:alpha">.6</item>
+    </style>
+
+    <style name="confirm_purchase_subtitle_dialog_light_start">
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textColor">@color/background</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:alpha">.6</item>
+    </style>
+
 
     <!--WHITE THEME-->
 

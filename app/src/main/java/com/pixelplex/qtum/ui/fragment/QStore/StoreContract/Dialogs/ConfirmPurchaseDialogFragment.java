@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.gson.store.QstoreContract;
 import com.pixelplex.qtum.utils.FontTextView;
+import com.pixelplex.qtum.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,7 +69,7 @@ public class ConfirmPurchaseDialogFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.lyt_confirm_purchase, container, false);
+        View view = inflater.inflate((ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? R.layout.lyt_confirm_purchase : R.layout.lyt_confirm_purchase_light), container, false);
         ButterKnife.bind(this, view);
         return view;
     }

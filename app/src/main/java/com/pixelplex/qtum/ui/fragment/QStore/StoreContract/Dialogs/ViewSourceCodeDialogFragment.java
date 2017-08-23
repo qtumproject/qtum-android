@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 
         import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.utils.FontTextView;
+import com.pixelplex.qtum.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +49,7 @@ public class ViewSourceCodeDialogFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.lyt_view_source_code_popup, container, false);
+        View view = inflater.inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? R.layout.lyt_view_source_code_popup : R.layout.lyt_view_source_code_popup_light, container, false);
         ButterKnife.bind(this, view);
         return view;
     }

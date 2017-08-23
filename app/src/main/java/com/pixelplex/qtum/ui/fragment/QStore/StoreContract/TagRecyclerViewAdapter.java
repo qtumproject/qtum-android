@@ -13,15 +13,17 @@ public class TagRecyclerViewAdapter extends RecyclerView.Adapter<TagViewHolder> 
 
     String[] tags;
     TagClickListener listener;
+    private int resId;
 
-    public TagRecyclerViewAdapter(String[] tags, TagClickListener listener){
+    public TagRecyclerViewAdapter(String[] tags, TagClickListener listener, int resId){
         this.tags = tags;
         this.listener = listener;
+        this.resId = resId;
     }
 
     @Override
     public TagViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TagViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tag, parent, false), listener);
+        return new TagViewHolder(LayoutInflater.from(parent.getContext()).inflate(resId, parent, false), listener);
     }
 
     @Override
