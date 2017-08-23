@@ -13,6 +13,7 @@ import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.model.gson.store.IsPaidResponse;
 import com.pixelplex.qtum.model.gson.store.QSearchItem;
 import com.pixelplex.qtum.model.gson.store.QstoreBuyResponse;
+import com.pixelplex.qtum.model.gson.store.QstoreByteCodeResponse;
 import com.pixelplex.qtum.model.gson.store.QstoreContract;
 import com.pixelplex.qtum.model.gson.store.QstoreItem;
 import com.pixelplex.qtum.model.gson.store.QstoreSourceCodeResponse;
@@ -72,6 +73,9 @@ interface QtumRestService {
 
     @POST("/contracts/{contract_id}/source-code")
     Observable<QstoreSourceCodeResponse> getSourceCode(@Path("contract_id") String contractId, @Body HashMap<String, String> body);
+
+    @POST("/contracts/{contract_id}/bytecode")
+    Observable<QstoreByteCodeResponse> getByteCode(@Path("contract_id") String contractId, @Body HashMap<String, String> body);
 
     @GET("/contracts/{contract_id}/abi")
     Observable<Object> getAbiByContractId(@Path("contract_id") String contractId);

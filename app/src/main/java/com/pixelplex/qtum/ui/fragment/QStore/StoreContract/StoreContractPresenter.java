@@ -87,10 +87,15 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
     }
 
     @Override
-    public void onContractPurchased(ContractPurchaseResponse purchaseData) {
-        if(qstoreContract.id.equals(purchaseData.contractId)) {
-            getView().setContractPayStatus(PAID_STATUS);
-        }
+    public void onContractPurchased(final ContractPurchaseResponse purchaseData) {
+        getView().getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(qstoreContract.id.equals(purchaseData.contractId)) {
+                    getView().setContractPayStatus(PAID_STATUS);
+                }
+            }
+        });
     }
 
     public void getSourceCode(){

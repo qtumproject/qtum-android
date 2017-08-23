@@ -49,6 +49,7 @@ import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragmentPresenter;
+import com.pixelplex.qtum.utils.BoughtContractBuilder;
 import com.pixelplex.qtum.utils.ContractBuilder;
 import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.QtumIntent;
@@ -234,6 +235,14 @@ public class UpdateService extends Service {
                 JSONObject data = (JSONObject) args[0];
                 ContractPurchaseResponse objectData = gson.fromJson(data.toString(), ContractPurchaseResponse.class);
                 QStoreStorage.getInstance(getApplicationContext()).setPurchaseItemBuyStatus(objectData.contractId, QStoreStorage.PurchaseItem.PAID_STATUS);
+
+                BoughtContractBuilder boughtContractBuilder = new BoughtContractBuilder();
+                boughtContractBuilder.build(getApplicationContext(), objectData, new BoughtContractBuilder.ContractBuilderListener() {
+                    @Override
+                    public void onBuildSuccess() {
+                        int i = 0;
+                    }
+                });
 
                 if(mContractPurchaseListener != null){
                     mContractPurchaseListener.onContractPurchased(objectData);

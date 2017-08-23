@@ -14,6 +14,7 @@ import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.model.gson.store.IsPaidResponse;
 import com.pixelplex.qtum.model.gson.store.QSearchItem;
 import com.pixelplex.qtum.model.gson.store.QstoreBuyResponse;
+import com.pixelplex.qtum.model.gson.store.QstoreByteCodeResponse;
 import com.pixelplex.qtum.model.gson.store.QstoreContract;
 import com.pixelplex.qtum.model.gson.store.QstoreItem;
 import com.pixelplex.qtum.model.gson.store.QstoreSourceCodeResponse;
@@ -134,6 +135,13 @@ public class QtumService {
         body.put("request_id",requestId);
         body.put("access_token",accessToken);
         return mServiceApi.getSourceCode(contractId, body);
+    }
+
+    public Observable<QstoreByteCodeResponse> getByteCode(String contractId, String requestId, String accessToken){
+        HashMap<String, String> body = new HashMap<>();
+        body.put("request_id",requestId);
+        body.put("access_token",accessToken);
+        return mServiceApi.getByteCode(contractId, body);
     }
 
 }

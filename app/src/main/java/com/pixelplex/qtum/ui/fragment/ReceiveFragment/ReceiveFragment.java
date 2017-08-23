@@ -268,7 +268,9 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
     @Override
     public void setUpAddress(String s) {
         mTextViewAddress.setText(s);
-        ((WalletFragment) getTargetFragment()).updatePubKey(s);
+        if(getTargetFragment()!=null) {
+            ((WalletFragment) getTargetFragment()).updatePubKey(s);
+        }
     }
 
     @Override
