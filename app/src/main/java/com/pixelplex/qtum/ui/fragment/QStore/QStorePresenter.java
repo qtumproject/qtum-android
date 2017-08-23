@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.QStore;
 
+import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
 import com.pixelplex.qtum.model.gson.store.QSearchItem;
 import com.pixelplex.qtum.model.gson.store.QstoreItem;
@@ -54,7 +55,7 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
 
                     @Override
                     public void onNext(List<QstoreItem> qstoreItems) {
-                        categories.add(new QstoreCategory("Trending Now",qstoreItems));
+                        categories.add(new QstoreCategory(getView().getContext().getString(R.string.trending_now),qstoreItems));
                         getView().setCategories(categories);
 
                     }
@@ -79,7 +80,7 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
 
                     @Override
                     public void onNext(List<QstoreItem> qstoreItems) {
-                        categories.add(new QstoreCategory("What's New?",qstoreItems));
+                        categories.add(new QstoreCategory(getView().getContext().getString(R.string.whats_new),qstoreItems));
                         getView().setCategories(categories);
                     }
                 });

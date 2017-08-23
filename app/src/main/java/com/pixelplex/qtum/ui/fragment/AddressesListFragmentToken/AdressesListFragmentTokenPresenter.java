@@ -162,7 +162,7 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
 
         if (tokenBalance == null || tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()) == null || tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()).getBalance() < Float.valueOf(amountString)){
             getView().dismissProgressDialog();
-            getView().setAlertDialog(getView().getContext().getString(R.string.error), "You have insufficient funds for this transaction", "Ok", BaseFragment.PopUpType.error);
+            getView().setAlertDialog(getView().getContext().getString(R.string.error), getView().getContext().getString(R.string.you_have_insufficient_funds_for_this_transaction), "Ok", BaseFragment.PopUpType.error);
             return;
         }
 

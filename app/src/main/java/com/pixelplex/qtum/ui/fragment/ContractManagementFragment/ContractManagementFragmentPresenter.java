@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.ContractManagementFragment;
 
+import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
 import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
@@ -36,7 +37,7 @@ public class ContractManagementFragmentPresenter extends BaseFragmentPresenterIm
         if(contractMethodList != null) {
             getView().setRecyclerView(contractMethodList, true);
         } else {
-            getView().setAlertDialog("Error","Fail to get contract methods", BaseFragment.PopUpType.error);
+            getView().setAlertDialog(getView().getContext().getString(R.string.error),getView().getContext().getString(R.string.fail_to_get_contract_methods), BaseFragment.PopUpType.error);
         }
     }
 
@@ -45,7 +46,7 @@ public class ContractManagementFragmentPresenter extends BaseFragmentPresenterIm
         if(contractMethodList != null) {
             getView().setRecyclerView(contractMethodList, false);
         } else {
-            getView().setAlertDialog("Error","Fail to get contract methods", BaseFragment.PopUpType.error);
+            getView().setAlertDialog(getView().getContext().getString(R.string.error),getView().getContext().getString(R.string.fail_to_get_contract_methods), BaseFragment.PopUpType.error);
         }
     }
 

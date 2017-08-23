@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragment;
-import com.pixelplex.qtum.ui.fragment.TemplatesFragment.TemplatesFragment;
 import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.FontTextView;
 
@@ -103,7 +101,7 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
             if(contract.getDate()!=null){
                 mTextViewDate.setText(DateCalculator.getShortDate(contract.getDate()));
             }else{
-                mTextViewDate.setText(R.string.not_confirmed);
+                mTextViewDate.setText(R.string.unconfirmed);
             }
             mTextViewTitle.setText(contract.getContractName());
             TinyDB tinyDB = new TinyDB(getContext());

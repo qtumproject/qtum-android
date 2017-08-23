@@ -42,15 +42,15 @@ public class FileStorageManager {
     private final static String prefMigrationBuildVersion = "migration_buid_version";
 
     private final static String CROWDSALE = "Crowdsale";
-    private final static String ERC20TOKENSTANDART = "ERC20TokenStandard";
+    private final static String QRC20TOKENSTANDART = "QRC20TokenStandard";
     private final static String HUMANSTANDARDTOKEN = "HumanStandardToken";
 
     public final static String HUMANSTANDARDTOKENUUID = "human-standard-token-identifire";
-    private final static String ERC20TOKENSTANDARTUUID = "erc20-token-identifire";
+    private final static String QRC20TOKENSTANDARTUUID = "qrc20-token-identifire";
     private final static String CROWDSALEUUID = "crowdsale-identifire";
 
-    private static String[] STANDART_CONTRACTS = {CROWDSALE, HUMANSTANDARDTOKEN, ERC20TOKENSTANDART};
-    private static String[] STANDART_UUIDS = {CROWDSALEUUID, HUMANSTANDARDTOKENUUID, ERC20TOKENSTANDARTUUID};
+    private static String[] STANDART_CONTRACTS = {CROWDSALE, HUMANSTANDARDTOKEN, QRC20TOKENSTANDART};
+    private static String[] STANDART_UUIDS = {CROWDSALEUUID, HUMANSTANDARDTOKENUUID, QRC20TOKENSTANDARTUUID};
 
     private HashMap<String, String> standartUUIDs;
 

@@ -76,6 +76,22 @@
             android:layout_below="@+id/til_wallet_pin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <com.pixelplex.qtum.utils.FontButton
+            android:id="@+id/bt_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            app:typeface="@string/simplonMonoRegular"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/button_text"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"/>
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

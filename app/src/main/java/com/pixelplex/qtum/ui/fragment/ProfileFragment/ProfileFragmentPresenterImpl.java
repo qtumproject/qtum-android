@@ -42,11 +42,11 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
             if(getView().getMainActivity().checkAvailabilityTouchId()) {
                 settingsData.add(new SettingSwitchObject(R.string.touch_id, R.drawable.ic_touchid, 1, QtumSharedPreference.getInstance().isTouchIdEnable(getView().getContext())));
             }
-            settingsData.add(new SettingObject(R.string.subscribe_tokens, R.drawable.ic_tokensubscribe, 2));
             settingsData.add(new SettingObject(R.string.smart_contracts, R.drawable.ic_token, 2));
+            settingsData.add(new SettingObject(R.string.subscribe_tokens, R.drawable.ic_tokensubscribe, 2));
             settingsData.add(new SettingObject(R.string.about, R.drawable.ic_about, 4));
+            settingsData.add(new SettingObject(R.string.switch_theme, R.drawable.ic_changepin, 4));
             settingsData.add(new SettingObject(R.string.log_out, R.drawable.ic_logout, 4));
-            settingsData.add(new SettingObject(R.string.switch_theme, R.drawable.ic_changepin, 5));
         }
     }
 

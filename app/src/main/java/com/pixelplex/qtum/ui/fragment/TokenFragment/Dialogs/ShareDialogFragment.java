@@ -95,6 +95,6 @@ public class ShareDialogFragment extends AppCompatDialogFragment {
         ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", str);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(getContext(),"Copied",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.copied,Toast.LENGTH_SHORT).show();
     }
 }

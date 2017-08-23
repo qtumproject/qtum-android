@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.MyContractsFragment;
 
+import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
@@ -24,7 +25,7 @@ public class MyContractsFragmentPresenter extends BaseFragmentPresenterImpl {
         if(contractList != null) {
             getView().updateRecyclerView(contractList);
         } else {
-            getView().setAlertDialog("Error","Fail to get contracts", BaseFragment.PopUpType.error);
+            getView().setAlertDialog(getView().getContext().getString(R.string.error),getView().getContext().getString(R.string.fail_to_get_contracts), BaseFragment.PopUpType.error);
         }
     }
 

@@ -158,7 +158,7 @@ public class AddressListFragmentPresenter extends BaseFragmentPresenterImpl{
         try {
             addressToSend = keyWithBalanceTo.getKey().toAddress(CurrentNetParams.getNetParams());
         } catch (AddressFormatException a) {
-            listener.onError("Incorrect Address");
+            listener.onError(mContext.getString(R.string.incorrect_address));
             return;
         }
         ECKey myKey = KeyStorage.getInstance().getCurrentKey();
@@ -178,7 +178,7 @@ public class AddressListFragmentPresenter extends BaseFragmentPresenterImpl{
             }
         }
         if (overFlow.doubleValue() < amount.doubleValue()) {
-            listener.onError("You have insufficient funds for this transaction");
+            listener.onError(mContext.getString(R.string.you_have_insufficient_funds_for_this_transaction));
             return;
         }
         BigDecimal delivery = overFlow.subtract(amount);

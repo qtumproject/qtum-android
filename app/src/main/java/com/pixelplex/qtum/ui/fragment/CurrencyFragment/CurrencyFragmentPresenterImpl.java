@@ -30,7 +30,7 @@ class CurrencyFragmentPresenterImpl extends BaseFragmentPresenterImpl implements
     public void onViewCreated() {
         super.onViewCreated();
         List<Currency> currencyList = new ArrayList<>();
-        Currency currency = new Currency("Qtum (default currency)");
+        Currency currency = new Currency("Qtum " + getView().getContext().getString(R.string.default_currency));
         currencyList.add(currency);
         for(Token token : getInteractor().getTokenList()){
             if(token.isHasBeenCreated() && token.isSubscribe()){
