@@ -31,5 +31,4 @@ public class SmartContractsFragmentLight extends SmartContractsFragment{
         settingsData.add(new SettingObject(R.string.backup_contracts,R.drawable.ic_contract_backup_light,0));
         initializeList(R.layout.lyt_profile_pref_list_item_light,R.drawable.color_primary_divider_light,R.drawable.section_setting_divider_light,settingsData);
     }
-
 }
