@@ -5,33 +5,12 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.pixelplex.qtum.datastorage.FileStorageManager;
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
-import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
-import com.pixelplex.qtum.model.gson.callSmartContractResponse.CallSmartContractResponse;
-import com.pixelplex.qtum.model.contract.ContractMethod;
-import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.contract.Token;
-import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressListFragment;
 import com.pixelplex.qtum.ui.fragment.AddressesListFragmentToken.AdressesListFragmentToken;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ReceiveFragment.ReceiveFragment;
 import com.pixelplex.qtum.utils.ContractManagementHelper;
-import com.pixelplex.qtum.utils.sha3.sha.Keccak;
-import com.pixelplex.qtum.utils.sha3.sha.Parameters;
-
-import org.spongycastle.util.encoders.Hex;
-import org.w3c.dom.Text;
-
-import java.math.BigInteger;
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {

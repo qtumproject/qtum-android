@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.model.gson.callSmartContractResponse;
+package com.pixelplex.qtum.model.gson.call_smart_contract_response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

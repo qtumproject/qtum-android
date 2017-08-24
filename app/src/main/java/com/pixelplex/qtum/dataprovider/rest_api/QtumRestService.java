@@ -1,22 +1,22 @@
-package com.pixelplex.qtum.dataprovider.restAPI;
+package com.pixelplex.qtum.dataprovider.rest_api;
 
 import com.pixelplex.qtum.model.gson.BlockChainInfo;
 
 import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
-import com.pixelplex.qtum.model.gson.callSmartContractResponse.CallSmartContractResponse;
+import com.pixelplex.qtum.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.model.gson.history.HistoryResponse;
 import com.pixelplex.qtum.model.gson.News;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
 import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
-import com.pixelplex.qtum.model.gson.store.ContractPurchase;
-import com.pixelplex.qtum.model.gson.store.QSearchItem;
-import com.pixelplex.qtum.model.gson.store.QstoreBuyResponse;
-import com.pixelplex.qtum.model.gson.store.QstoreByteCodeResponse;
-import com.pixelplex.qtum.model.gson.store.QstoreContract;
-import com.pixelplex.qtum.model.gson.store.QstoreItem;
-import com.pixelplex.qtum.model.gson.store.QstoreSourceCodeResponse;
+import com.pixelplex.qtum.model.gson.qstore.ContractPurchase;
+import com.pixelplex.qtum.model.gson.qstore.QSearchItem;
+import com.pixelplex.qtum.model.gson.qstore.QstoreBuyResponse;
+import com.pixelplex.qtum.model.gson.qstore.QstoreByteCodeResponse;
+import com.pixelplex.qtum.model.gson.qstore.QstoreContract;
+import com.pixelplex.qtum.model.gson.qstore.QstoreItem;
+import com.pixelplex.qtum.model.gson.qstore.QstoreSourceCodeResponse;
 
 import java.util.HashMap;
 import java.util.List;

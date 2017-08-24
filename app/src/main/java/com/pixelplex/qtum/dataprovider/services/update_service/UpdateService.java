@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.dataprovider;
+package com.pixelplex.qtum.dataprovider.services.update_service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -24,24 +24,26 @@ import org.json.JSONObject;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.firebase.FirebaseSharedPreferences;
-import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
-import com.pixelplex.qtum.dataprovider.listeners.ContractPurchaseListener;
-import com.pixelplex.qtum.dataprovider.listeners.FireBaseTokenRefreshListener;
-import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
-import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.dataprovider.services.update_service.listeners.BalanceChangeListener;
+import com.pixelplex.qtum.dataprovider.services.update_service.listeners.ContractPurchaseListener;
+import com.pixelplex.qtum.dataprovider.firebase.listeners.FireBaseTokenRefreshListener;
+import com.pixelplex.qtum.dataprovider.services.update_service.listeners.TokenListener;
+import com.pixelplex.qtum.dataprovider.services.update_service.listeners.TransactionListener;
+import com.pixelplex.qtum.dataprovider.rest_api.QtumService;
 import com.pixelplex.qtum.datastorage.QStoreStorage;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
-import com.pixelplex.qtum.dataprovider.listeners.TokenBalanceChangeListener;
+import com.pixelplex.qtum.dataprovider.services.update_service.listeners.TokenBalanceChangeListener;
 import com.pixelplex.qtum.model.gson.history.History;
-import com.pixelplex.qtum.model.gson.store.ContractPurchase;
-import com.pixelplex.qtum.model.gson.tokenBalance.Balance;
-import com.pixelplex.qtum.model.gson.tokenBalance.TokenBalance;
+import com.pixelplex.qtum.model.gson.qstore.ContractPurchase;
+import com.pixelplex.qtum.model.gson.qstore.PurchaseItem;
+import com.pixelplex.qtum.model.gson.token_balance.Balance;
+import com.pixelplex.qtum.model.gson.token_balance.TokenBalance;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.utils.BoughtContractBuilder;
 import com.pixelplex.qtum.utils.ContractBuilder;
+import com.pixelplex.qtum.utils.CurrentNetParams;
 import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.QtumIntent;
 import com.pixelplex.qtum.datastorage.TinyDB;
@@ -89,7 +91,7 @@ public class UpdateService extends Service {
         super.onCreate();
 
         try {
-            socket = IO.socket("http://163.172.251.4:5931/");
+            socket = IO.socket(CurrentNetParams.getUrl());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -217,14 +219,13 @@ public class UpdateService extends Service {
             public void call(Object... args) {
                 Gson gson = new Gson();
                 JSONObject data = (JSONObject) args[0];
-                ContractPurchase objectData = gson.fromJson(data.toString(), ContractPurchase.class);
-                QStoreStorage.getInstance(getApplicationContext()).setPurchaseItemBuyStatus(objectData.contractId, QStoreStorage.PurchaseItem.PAID_STATUS);
+                final ContractPurchase objectData = gson.fromJson(data.toString(), ContractPurchase.class);
 
                 BoughtContractBuilder boughtContractBuilder = new BoughtContractBuilder();
                 boughtContractBuilder.build(getApplicationContext(), objectData, new BoughtContractBuilder.ContractBuilderListener() {
                     @Override
                     public void onBuildSuccess() {
-                        int i = 0;
+                        QStoreStorage.getInstance(getApplicationContext()).setPurchaseItemBuyStatus(objectData.getContractId(), PurchaseItem.PAID_STATUS);
                     }
                 });
 
@@ -267,9 +268,9 @@ public class UpdateService extends Service {
     }
 
     private void checkPurchaseContract() {
-        for(final QStoreStorage.PurchaseItem purchaseItem : QStoreStorage.getInstance(getApplicationContext()).getNonPayedContracts()){
+        for(final PurchaseItem purchaseItem : QStoreStorage.getInstance(getApplicationContext()).getNonPayedContracts()){
             QtumService.newInstance()
-                    .isPaidByRequestId(purchaseItem.contractId,purchaseItem.requestId)
+                    .isPaidByRequestId(purchaseItem.getContractId(),purchaseItem.getRequestId())
                     .subscribeOn(Schedulers.io())
                     .subscribe(new Subscriber<ContractPurchase>() {
                         @Override
@@ -284,8 +285,8 @@ public class UpdateService extends Service {
 
                         @Override
                         public void onNext(ContractPurchase contractPurchase) {
-                            if(contractPurchase.payedAt != null){
-                                QStoreStorage.getInstance(getApplicationContext()).setPurchaseItemBuyStatus(purchaseItem.contractId, QStoreStorage.PurchaseItem.PAID_STATUS);
+                            if(contractPurchase.getPayedAt() != null){
+                                QStoreStorage.getInstance(getApplicationContext()).setPurchaseItemBuyStatus(purchaseItem.getContractId(), PurchaseItem.PAID_STATUS);
 
                                 BoughtContractBuilder boughtContractBuilder = new BoughtContractBuilder();
                                 boughtContractBuilder.build(getApplicationContext(), contractPurchase, new BoughtContractBuilder.ContractBuilderListener() {
@@ -377,8 +378,8 @@ public class UpdateService extends Service {
     }
 
     private void subscribeStoreContracts(){
-        for (QStoreStorage.PurchaseItem purchaseItem : QStoreStorage.getInstance(getApplicationContext()).getNonPayedContracts()) {
-            socket.emit("subscribe", "contract_purchase", purchaseItem.requestId);
+        for (PurchaseItem purchaseItem : QStoreStorage.getInstance(getApplicationContext()).getNonPayedContracts()) {
+            socket.emit("subscribe", "contract_purchase", purchaseItem.getRequestId());
         }
     }
 

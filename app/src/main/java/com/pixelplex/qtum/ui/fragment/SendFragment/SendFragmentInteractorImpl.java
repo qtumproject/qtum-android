@@ -14,12 +14,11 @@ import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.dataprovider.rest_api.QtumService;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
 import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
-import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.utils.CurrentNetParams;

@@ -6,8 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.model.gson.store.QSearchItem;
-import com.pixelplex.qtum.model.gson.store.QstoreItem;
+import com.pixelplex.qtum.model.gson.qstore.QSearchItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

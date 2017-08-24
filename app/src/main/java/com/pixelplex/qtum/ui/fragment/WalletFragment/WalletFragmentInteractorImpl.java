@@ -1,7 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.WalletFragment;
 
 
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.dataprovider.rest_api.QtumService;
 import com.pixelplex.qtum.model.gson.history.History;
 import com.pixelplex.qtum.model.gson.history.HistoryResponse;
 import com.pixelplex.qtum.model.gson.history.Vin;
@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;

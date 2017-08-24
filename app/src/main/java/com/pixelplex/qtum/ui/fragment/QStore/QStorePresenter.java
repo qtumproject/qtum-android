@@ -1,9 +1,9 @@
 package com.pixelplex.qtum.ui.fragment.QStore;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
-import com.pixelplex.qtum.model.gson.store.QSearchItem;
-import com.pixelplex.qtum.model.gson.store.QstoreItem;
+import com.pixelplex.qtum.dataprovider.rest_api.QtumService;
+import com.pixelplex.qtum.model.gson.qstore.QSearchItem;
+import com.pixelplex.qtum.model.gson.qstore.QstoreItem;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.QStore.categories.QstoreCategory;
 

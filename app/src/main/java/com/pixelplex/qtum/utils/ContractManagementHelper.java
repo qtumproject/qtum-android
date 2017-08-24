@@ -3,14 +3,13 @@ package com.pixelplex.qtum.utils;
 
 import android.content.Context;
 
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.dataprovider.rest_api.QtumService;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
-import com.pixelplex.qtum.model.gson.callSmartContractResponse.CallSmartContractResponse;
-import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragmentPresenter;
+import com.pixelplex.qtum.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import com.pixelplex.qtum.utils.sha3.sha.Keccak;
 import com.pixelplex.qtum.utils.sha3.sha.Parameters;
 

@@ -6,25 +6,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.model.gson.store.QstoreContract;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.ContractManagementFragment.ContractManagementFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.QStoreFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ConfirmPurchaseDialogFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.PurchaseClickListener;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ViewSourceCodeDialogFragment;
-import com.pixelplex.qtum.utils.DateCalculator;
 import com.pixelplex.qtum.utils.FontButton;
 import com.pixelplex.qtum.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.NON_PAID_STATUS;
-import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.PAID_STATUS;
-import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.PENDING_STATUS;
+import static com.pixelplex.qtum.model.gson.qstore.PurchaseItem.NON_PAID_STATUS;
+import static com.pixelplex.qtum.model.gson.qstore.PurchaseItem.PAID_STATUS;
+import static com.pixelplex.qtum.model.gson.qstore.PurchaseItem.PENDING_STATUS;
 import static com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dialogs.ViewSourceCodeDialogFragment.ABI;
 
 public abstract class StoreContractFragment extends BaseFragment implements StoreContractView, TagClickListener, PurchaseClickListener {

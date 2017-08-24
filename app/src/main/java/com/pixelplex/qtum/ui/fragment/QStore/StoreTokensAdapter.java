@@ -4,10 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.model.gson.store.QstoreItem;
+import com.pixelplex.qtum.model.gson.qstore.QstoreItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

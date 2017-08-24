@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.dataprovider.listeners;
+package com.pixelplex.qtum.dataprovider.receivers.network_state_receiver.listeners;
 
 
 public interface NetworkStateListener {

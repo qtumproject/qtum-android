@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.model.gson.tokenBalance;
+package com.pixelplex.qtum.model.gson.token_balance;
 
 
 import com.google.gson.annotations.Expose;

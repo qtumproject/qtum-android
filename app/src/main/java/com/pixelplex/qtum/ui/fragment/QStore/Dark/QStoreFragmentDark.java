@@ -1,7 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.QStore.Dark;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.model.gson.store.QSearchItem;
+import com.pixelplex.qtum.model.gson.qstore.QSearchItem;
 import com.pixelplex.qtum.ui.fragment.QStore.QStoreFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreAdapter;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreSearchAdapter;

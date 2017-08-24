@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.dataprovider.listeners;
+package com.pixelplex.qtum.dataprovider.firebase.listeners;
 
 
 public interface FireBaseTokenRefreshListener {

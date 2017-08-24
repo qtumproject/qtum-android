@@ -2,7 +2,6 @@ package com.pixelplex.qtum.ui.fragment.ProfileFragment;
 
 import android.content.Context;
 
-import com.pixelplex.qtum.dataprovider.UpdateService;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.NewsList;

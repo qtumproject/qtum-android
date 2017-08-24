@@ -2,26 +2,11 @@ package com.pixelplex.qtum.ui.fragment.ContractManagementFragment;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
-import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
-import com.pixelplex.qtum.model.gson.callSmartContractResponse.CallSmartContractResponse;
 import com.pixelplex.qtum.model.contract.ContractMethod;
-import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
-import com.pixelplex.qtum.utils.sha3.sha.Keccak;
-import com.pixelplex.qtum.utils.sha3.sha.Parameters;
 
-import org.spongycastle.util.encoders.Hex;
-
-import java.math.BigInteger;
 import java.util.List;
-import java.util.concurrent.Callable;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 public class ContractManagementFragmentPresenter extends BaseFragmentPresenterImpl {

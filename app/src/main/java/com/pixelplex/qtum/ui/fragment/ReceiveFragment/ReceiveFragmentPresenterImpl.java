@@ -19,12 +19,8 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import com.pixelplex.qtum.dataprovider.UpdateService;
-import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
+import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
+import com.pixelplex.qtum.dataprovider.services.update_service.listeners.BalanceChangeListener;
 import com.pixelplex.qtum.ui.fragment.AddressesFragment.AddressesFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;

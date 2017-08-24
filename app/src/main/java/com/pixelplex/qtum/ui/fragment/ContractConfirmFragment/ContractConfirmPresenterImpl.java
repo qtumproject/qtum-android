@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.dataprovider.rest_api.QtumService;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;
@@ -18,9 +18,7 @@ import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.ContractBuilder;
 import com.pixelplex.qtum.datastorage.TinyDB;
 
-import org.bitcoinj.core.Utils;
 import org.bitcoinj.script.Script;
-import org.bitcoinj.script.ScriptChunk;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -2,7 +2,7 @@ package com.pixelplex.qtum.ui.fragment.SendFragment;
 
 import android.support.v4.app.Fragment;
 
-import com.pixelplex.qtum.dataprovider.UpdateService;
+import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 

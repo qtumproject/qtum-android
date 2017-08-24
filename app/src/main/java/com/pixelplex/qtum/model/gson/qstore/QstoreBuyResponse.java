@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.model.gson.store;
+package com.pixelplex.qtum.model.gson.qstore;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -49,7 +49,7 @@
         </meta-data>
 
         <service
-            android:name=".dataprovider.UpdateService"
+            android:name=".dataprovider.services.update_service.UpdateService"
             android:enabled="true"
             android:exported="true">
         </service>

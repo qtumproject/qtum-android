@@ -2,7 +2,7 @@ package com.pixelplex.qtum.ui.fragment.OtherTokens;
 
 import android.content.Context;
 
-import com.pixelplex.qtum.dataprovider.UpdateService;
+import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
 import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.Token;

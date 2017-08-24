@@ -4,18 +4,19 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.listeners.ContractPurchaseListener;
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.dataprovider.services.update_service.listeners.ContractPurchaseListener;
+import com.pixelplex.qtum.dataprovider.rest_api.QtumService;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QStoreStorage;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
 import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
-import com.pixelplex.qtum.model.gson.store.ContractPurchase;
-import com.pixelplex.qtum.model.gson.store.QstoreBuyResponse;
-import com.pixelplex.qtum.model.gson.store.QstoreContract;
-import com.pixelplex.qtum.model.gson.store.QstoreSourceCodeResponse;
+import com.pixelplex.qtum.model.gson.qstore.ContractPurchase;
+import com.pixelplex.qtum.model.gson.qstore.PurchaseItem;
+import com.pixelplex.qtum.model.gson.qstore.QstoreBuyResponse;
+import com.pixelplex.qtum.model.gson.qstore.QstoreContract;
+import com.pixelplex.qtum.model.gson.qstore.QstoreSourceCodeResponse;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragmentInteractorImpl;
@@ -45,9 +46,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static com.pixelplex.qtum.datastorage.FileStorageManager.HUMANSTANDARDTOKENUUID;
-import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.NON_PAID_STATUS;
-import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.PAID_STATUS;
-import static com.pixelplex.qtum.datastorage.QStoreStorage.PurchaseItem.PENDING_STATUS;
+import static com.pixelplex.qtum.model.gson.qstore.PurchaseItem.NON_PAID_STATUS;
+import static com.pixelplex.qtum.model.gson.qstore.PurchaseItem.PAID_STATUS;
+import static com.pixelplex.qtum.model.gson.qstore.PurchaseItem.PENDING_STATUS;
 
 
 public class StoreContractPresenter extends BaseFragmentPresenterImpl implements ContractPurchaseListener {
@@ -57,7 +58,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
     private String abiString;
 
     QstoreBuyResponse qstoreBuyResponse;
-    QStoreStorage.PurchaseItem purchaseByContractId;
+    PurchaseItem purchaseByContractId;
 
     public QstoreContract getContract(){
         return qstoreContract;
@@ -89,7 +90,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
         getView().getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(qstoreContract.id.equals(purchaseData.contractId)) {
+                if(qstoreContract.id.equals(purchaseData.getContractId())) {
                     getView().setContractPayStatus(PAID_STATUS);
                 }
             }
@@ -101,7 +102,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
             getView().setProgressDialog();
             QtumService
                     .newInstance()
-                    .getSourceCode(getContract().id, purchaseByContractId.requestId, purchaseByContractId.accessToken)
+                    .getSourceCode(getContract().id, purchaseByContractId.getRequestId(), purchaseByContractId.getAccessToken())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<QstoreSourceCodeResponse>() {
@@ -133,7 +134,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
         getView().setProgressDialog();
         QtumService
                 .newInstance()
-                .isPaidByRequestId(getContract().id, purchaseByContractId.requestId)
+                .isPaidByRequestId(getContract().id, purchaseByContractId.getRequestId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ContractPurchase>() {
@@ -151,7 +152,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
 
             @Override
             public void onNext(ContractPurchase o) {
-                getView().setContractPayStatus((o != null && !TextUtils.isEmpty(o.payedAt))? PAID_STATUS : PENDING_STATUS);
+                getView().setContractPayStatus((o != null && !TextUtils.isEmpty(o.getPayedAt()))? PAID_STATUS : PENDING_STATUS);
             }
         });
     }

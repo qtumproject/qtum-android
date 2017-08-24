@@ -1,8 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.ProfileFragment;
 
-import android.support.v4.app.Fragment;
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.UpdateService;
+import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;

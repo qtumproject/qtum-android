@@ -2,10 +2,9 @@ package com.pixelplex.qtum.ui.fragment.AddressesListFragmentToken;
 
 import android.os.Handler;
 
-import com.pixelplex.qtum.dataprovider.UpdateService;
+import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
 import com.pixelplex.qtum.model.DeterministicKeyWithTokenBalance;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
-import com.pixelplex.qtum.ui.fragment.OtherTokens.UpdateSocketInstance;
 
 import java.util.List;
 

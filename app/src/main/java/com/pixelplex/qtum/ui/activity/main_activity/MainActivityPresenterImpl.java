@@ -14,8 +14,8 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
-import com.pixelplex.qtum.dataprovider.UpdateService;
+import com.pixelplex.qtum.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
+import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
 import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.activity.base_activity.BasePresenterImpl;

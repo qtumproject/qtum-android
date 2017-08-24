@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.dataprovider;
+package com.pixelplex.qtum.dataprovider.receivers.network_state_receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
+import com.pixelplex.qtum.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 
 
 public class NetworkStateReceiver extends BroadcastReceiver {

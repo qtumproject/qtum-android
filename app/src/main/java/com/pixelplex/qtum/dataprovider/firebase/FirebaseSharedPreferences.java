@@ -3,11 +3,7 @@ package com.pixelplex.qtum.dataprovider.firebase;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.pixelplex.qtum.dataprovider.listeners.FireBaseTokenRefreshListener;
-
-/**
- * Created by kirillvolkov on 21.07.17.
- */
+import com.pixelplex.qtum.dataprovider.firebase.listeners.FireBaseTokenRefreshListener;
 
 public class FirebaseSharedPreferences {
 

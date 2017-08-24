@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.NewsFragment;
 
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.dataprovider.rest_api.QtumService;
 import com.pixelplex.qtum.model.gson.News;
 import com.pixelplex.qtum.datastorage.NewsList;
 

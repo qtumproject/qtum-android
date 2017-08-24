@@ -2,8 +2,8 @@ package com.pixelplex.qtum.ui.fragment.WalletMainFragment;
 import android.content.Context;
 import android.util.Log;
 
-import com.pixelplex.qtum.dataprovider.UpdateService;
-import com.pixelplex.qtum.dataprovider.listeners.TokenListener;
+import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
+import com.pixelplex.qtum.dataprovider.services.update_service.listeners.TokenListener;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;

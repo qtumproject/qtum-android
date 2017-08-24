@@ -1,6 +1,6 @@
 package com.pixelplex.qtum.ui.fragment.QStore.StoreContract;
 
-import com.pixelplex.qtum.model.gson.store.QstoreContract;
+import com.pixelplex.qtum.model.gson.qstore.QstoreContract;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentView;
 
 

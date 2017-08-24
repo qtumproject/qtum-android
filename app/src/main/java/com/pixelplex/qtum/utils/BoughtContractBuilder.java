@@ -2,19 +2,20 @@ package com.pixelplex.qtum.utils;
 
 import android.content.Context;
 
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.pixelplex.qtum.dataprovider.rest_api.QtumService;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.datastorage.QStoreStorage;
-import com.pixelplex.qtum.model.gson.store.ContractPurchase;
-import com.pixelplex.qtum.model.gson.store.QstoreByteCodeResponse;
-import com.pixelplex.qtum.model.gson.store.QstoreContract;
-import com.pixelplex.qtum.model.gson.store.QstoreSourceCodeResponse;
+import com.pixelplex.qtum.model.gson.qstore.ContractPurchase;
+import com.pixelplex.qtum.model.gson.qstore.PurchaseItem;
+import com.pixelplex.qtum.model.gson.qstore.QstoreByteCodeResponse;
+import com.pixelplex.qtum.model.gson.qstore.QstoreContract;
+import com.pixelplex.qtum.model.gson.qstore.QstoreSourceCodeResponse;
 
 import rx.Subscriber;
 
-/**
- * Created by max-v on 8/23/2017.
- */
 
 public class BoughtContractBuilder {
 
@@ -27,22 +28,22 @@ public class BoughtContractBuilder {
     String uuid;
 
     public void build(final Context context, ContractPurchase contractPurchase, final ContractBuilderListener listener){
-        final QStoreStorage.PurchaseItem purchaseItem = QStoreStorage.getInstance(context).getPurchaseByContractId(contractPurchase.contractId);
+        final PurchaseItem purchaseItem = QStoreStorage.getInstance(context).getPurchaseByContractId(contractPurchase.getContractId());
         QtumService.newInstance()
-                .getSourceCode(purchaseItem.contractId,purchaseItem.requestId,purchaseItem.accessToken)
+                .getSourceCode(purchaseItem.getContractId(),purchaseItem.getRequestId(),purchaseItem.getAccessToken())
                 .subscribe(new Subscriber<QstoreSourceCodeResponse>() {
                     @Override
                     public void onCompleted() {
                         QtumService.newInstance()
-                                .getByteCode(purchaseItem.contractId,purchaseItem.requestId,purchaseItem.accessToken)
+                                .getByteCode(purchaseItem.getContractId(),purchaseItem.getRequestId(),purchaseItem.getAccessToken())
                                 .subscribe(new Subscriber<QstoreByteCodeResponse>() {
                                     @Override
                                     public void onCompleted() {
-                                        QtumService.newInstance().getAbiByContractId(purchaseItem.contractId)
+                                        QtumService.newInstance().getAbiByContractId(purchaseItem.getContractId())
                                                 .subscribe(new Subscriber<Object>() {
                                                     @Override
                                                     public void onCompleted() {
-                                                        QtumService.newInstance().getContractById(purchaseItem.contractId)
+                                                        QtumService.newInstance().getContractById(purchaseItem.getContractId())
                                                                 .subscribe(new Subscriber<QstoreContract>() {
                                                                     @Override
                                                                     public void onCompleted() {
@@ -60,7 +61,7 @@ public class BoughtContractBuilder {
                                                                         type = qstoreContract.type;
                                                                         name = qstoreContract.name;
                                                                         dateString = qstoreContract.creationDate;
-                                                                        uuid = purchaseItem.contractId;
+                                                                        uuid = purchaseItem.getContractId();
                                                                     }
                                                                 });
                                                     }
@@ -72,7 +73,7 @@ public class BoughtContractBuilder {
 
                                                     @Override
                                                     public void onNext(Object abi) {
-                                                        abiContract = abi.toString();
+                                                        abiContract = (new Gson()).toJson(abi);
                                                     }
                                                 });
                                     }

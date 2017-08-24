@@ -2,19 +2,10 @@ package com.pixelplex.qtum.ui.fragment.AddressListFragment;
 
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.text.style.TtsSpan;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.dataprovider.rest_api.QtumService;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.model.DeterministicKeyWithBalance;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
@@ -23,7 +14,6 @@ import com.pixelplex.qtum.model.gson.UnspentOutput;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.utils.CurrentNetParams;
-import com.pixelplex.qtum.utils.FontTextView;
 
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.AddressFormatException;

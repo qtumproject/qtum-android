@@ -10,12 +10,12 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.listeners.BalanceChangeListener;
-import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
-import com.pixelplex.qtum.dataprovider.listeners.NetworkStateListener;
+import com.pixelplex.qtum.dataprovider.services.update_service.listeners.BalanceChangeListener;
+import com.pixelplex.qtum.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
+import com.pixelplex.qtum.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import com.pixelplex.qtum.model.gson.history.History;
-import com.pixelplex.qtum.dataprovider.listeners.TransactionListener;
-import com.pixelplex.qtum.dataprovider.UpdateService;
+import com.pixelplex.qtum.dataprovider.services.update_service.listeners.TransactionListener;
+import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 import com.pixelplex.qtum.ui.fragment.AddressListFragment.AddressListFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;

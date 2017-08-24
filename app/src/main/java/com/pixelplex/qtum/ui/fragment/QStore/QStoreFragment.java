@@ -9,20 +9,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.model.gson.store.QSearchItem;
-import com.pixelplex.qtum.model.gson.store.QstoreItem;
+import com.pixelplex.qtum.model.gson.qstore.QstoreItem;
 import com.pixelplex.qtum.ui.FragmentFactory.Factory;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreCategories.StoreCategoriesFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.StoreContractFragment;
-import com.pixelplex.qtum.ui.fragment.QStore.categories.QstoreCategory;
 import com.pixelplex.qtum.utils.FontCheckBox;
-import com.pixelplex.qtum.utils.SearchBar;
 import com.pixelplex.qtum.utils.SearchBarListener;
-import com.pixelplex.qtum.utils.ThemeUtils;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;

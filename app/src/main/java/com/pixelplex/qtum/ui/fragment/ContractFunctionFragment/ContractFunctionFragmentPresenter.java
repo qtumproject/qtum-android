@@ -2,7 +2,7 @@ package com.pixelplex.qtum.ui.fragment.ContractFunctionFragment;
 
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
-import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
+import com.pixelplex.qtum.dataprovider.rest_api.QtumService;
 import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;

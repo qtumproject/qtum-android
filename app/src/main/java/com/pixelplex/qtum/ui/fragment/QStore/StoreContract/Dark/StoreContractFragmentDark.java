@@ -1,7 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.QStore.StoreContract.Dark;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.model.gson.store.QstoreContract;
+import com.pixelplex.qtum.model.gson.qstore.QstoreContract;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.StoreContractFragment;
 import com.pixelplex.qtum.ui.fragment.QStore.StoreContract.TagRecyclerViewAdapter;
 import com.pixelplex.qtum.utils.DateCalculator;
