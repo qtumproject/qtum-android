@@ -1,8 +1,5 @@
 package com.pixelplex.qtum.datastorage;
 
-/**
- * Created by kirillvolkov on 14.07.17.
- */
 
 public class SharedTemplate {
 
