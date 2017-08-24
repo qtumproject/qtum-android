@@ -9,12 +9,10 @@ import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.QStoreStorage;
-import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
 import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
-import com.pixelplex.qtum.model.gson.store.ContractPurchaseResponse;
-import com.pixelplex.qtum.model.gson.store.IsPaidResponse;
+import com.pixelplex.qtum.model.gson.store.ContractPurchase;
 import com.pixelplex.qtum.model.gson.store.QstoreBuyResponse;
 import com.pixelplex.qtum.model.gson.store.QstoreContract;
 import com.pixelplex.qtum.model.gson.store.QstoreSourceCodeResponse;
@@ -87,7 +85,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
     }
 
     @Override
-    public void onContractPurchased(final ContractPurchaseResponse purchaseData) {
+    public void onContractPurchased(final ContractPurchase purchaseData) {
         getView().getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -138,7 +136,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
                 .isPaidByRequestId(getContract().id, purchaseByContractId.requestId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<IsPaidResponse>() {
+                .subscribe(new Subscriber<ContractPurchase>() {
             @Override
             public void onCompleted() {
                 getView().dismissProgressDialog();
@@ -152,7 +150,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
             }
 
             @Override
-            public void onNext(IsPaidResponse o) {
+            public void onNext(ContractPurchase o) {
                 getView().setContractPayStatus((o != null && !TextUtils.isEmpty(o.payedAt))? PAID_STATUS : PENDING_STATUS);
             }
         });

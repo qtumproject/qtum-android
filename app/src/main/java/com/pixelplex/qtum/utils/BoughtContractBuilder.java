@@ -1,12 +1,11 @@
 package com.pixelplex.qtum.utils;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.pixelplex.qtum.dataprovider.restAPI.QtumService;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.datastorage.QStoreStorage;
-import com.pixelplex.qtum.model.gson.store.ContractPurchaseResponse;
+import com.pixelplex.qtum.model.gson.store.ContractPurchase;
 import com.pixelplex.qtum.model.gson.store.QstoreByteCodeResponse;
 import com.pixelplex.qtum.model.gson.store.QstoreContract;
 import com.pixelplex.qtum.model.gson.store.QstoreSourceCodeResponse;
@@ -27,8 +26,8 @@ public class BoughtContractBuilder {
     String dateString;
     String uuid;
 
-    public void build(final Context context, ContractPurchaseResponse contractPurchaseResponse, final ContractBuilderListener listener){
-        final QStoreStorage.PurchaseItem purchaseItem = QStoreStorage.getInstance(context).getPurchaseByContractId(contractPurchaseResponse.contractId);
+    public void build(final Context context, ContractPurchase contractPurchase, final ContractBuilderListener listener){
+        final QStoreStorage.PurchaseItem purchaseItem = QStoreStorage.getInstance(context).getPurchaseByContractId(contractPurchase.contractId);
         QtumService.newInstance()
                 .getSourceCode(purchaseItem.contractId,purchaseItem.requestId,purchaseItem.accessToken)
                 .subscribe(new Subscriber<QstoreSourceCodeResponse>() {

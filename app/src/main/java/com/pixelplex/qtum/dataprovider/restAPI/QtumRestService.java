@@ -10,7 +10,7 @@ import com.pixelplex.qtum.model.gson.News;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
 import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
-import com.pixelplex.qtum.model.gson.store.IsPaidResponse;
+import com.pixelplex.qtum.model.gson.store.ContractPurchase;
 import com.pixelplex.qtum.model.gson.store.QSearchItem;
 import com.pixelplex.qtum.model.gson.store.QstoreBuyResponse;
 import com.pixelplex.qtum.model.gson.store.QstoreByteCodeResponse;
@@ -20,7 +20,6 @@ import com.pixelplex.qtum.model.gson.store.QstoreSourceCodeResponse;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -84,7 +83,7 @@ interface QtumRestService {
     Observable<QstoreBuyResponse> buyRequest(@Path("contract_id") String contractId);
 
     @GET("/contracts/{contract_id}/is-paid/by-request-id")
-    Observable<IsPaidResponse> isPaidByRequestId(@Path("contract_id") String contractId, @Query("request_id") String requestId);
+    Observable<ContractPurchase> isPaidByRequestId(@Path("contract_id") String contractId, @Query("request_id") String requestId);
 
 
 }

@@ -67,17 +67,17 @@ public class QStoreStorage {
         return false;
     }
 
-    public List<String> getNonPayedContracts(){
+    public List<PurchaseItem> getNonPayedContracts(){
 
-        List<String> addresses = new ArrayList<>();
+        List<PurchaseItem> nonPayedContracts = new ArrayList<>();
 
         for (PurchaseItem item : purchaseItems){
             if(!item.payStatus.equals(PAID_STATUS)){
-                addresses.add(item.requestId);
+                nonPayedContracts.add(item);
             }
         }
 
-        return addresses;
+        return nonPayedContracts;
     }
 
     public PurchaseItem getPurchaseByContractId(String contractId){
