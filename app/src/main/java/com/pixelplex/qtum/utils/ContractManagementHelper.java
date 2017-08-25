@@ -10,8 +10,8 @@ import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
 import com.pixelplex.qtum.model.gson.call_smart_contract_response.CallSmartContractResponse;
-import com.pixelplex.qtum.utils.sha3.sha.Keccak;
-import com.pixelplex.qtum.utils.sha3.sha.Parameters;
+import com.pixelplex.qtum.utils.sha3.Keccak;
+import com.pixelplex.qtum.utils.sha3.Parameters;
 
 import org.spongycastle.util.encoders.Hex;
 

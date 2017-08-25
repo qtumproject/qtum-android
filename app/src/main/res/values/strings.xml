@@ -183,7 +183,7 @@
     <string name="contract_details">Contract Details</string>
     <string name="sent_time">Sent time</string>
     <string name="you_have_insufficient_funds_for_this_transaction">You have insufficient funds for this transaction</string>
-    <string name="incorrect_address">Incorrect Address</string>
+    <string name="invalid_qtum_address">Invalid QTUM Address</string>
     <string name="fail_to_get_contract_methods">Fail to get contract methods</string>
     <string name="fail_to_get_contracts">Fail to get contracts</string>
     <string name="trending_now">Trending Now</string>

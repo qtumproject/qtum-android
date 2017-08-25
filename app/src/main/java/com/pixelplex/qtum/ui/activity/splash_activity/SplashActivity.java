@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
@@ -14,14 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.ui.activity.base_activity.BaseActivity;
+import com.pixelplex.qtum.ui.base.base_activity.BaseActivity;
 import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
-import com.pixelplex.qtum.ui.wave_visualizer.WaveHelper;
-import com.pixelplex.qtum.ui.wave_visualizer.WaveView;
 import com.pixelplex.qtum.utils.QtumIntent;
 import com.pixelplex.qtum.utils.ThemeUtils;
 import com.transitionseverywhere.ChangeClipBounds;
-import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
 
 import butterknife.BindView;

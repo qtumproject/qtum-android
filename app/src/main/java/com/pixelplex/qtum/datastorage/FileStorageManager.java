@@ -10,6 +10,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.pixelplex.qtum.BuildConfig;
 import com.pixelplex.qtum.model.ContractTemplate;
+import com.pixelplex.qtum.model.SharedTemplate;
 import com.pixelplex.qtum.model.backup.TemplateJSON;
 import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.utils.DateCalculator;
@@ -49,10 +50,10 @@ public class FileStorageManager {
     private final static String QRC20TOKENSTANDARTUUID = "qrc20-token-identifire";
     private final static String CROWDSALEUUID = "crowdsale-identifire";
 
-    private static String[] STANDART_CONTRACTS = {CROWDSALE, HUMANSTANDARDTOKEN, QRC20TOKENSTANDART};
-    private static String[] STANDART_UUIDS = {CROWDSALEUUID, HUMANSTANDARDTOKENUUID, QRC20TOKENSTANDARTUUID};
+    private static String[] STANDARD_CONTRACTS = {CROWDSALE, HUMANSTANDARDTOKEN, QRC20TOKENSTANDART};
+    private static String[] STANDARD_UUIDS = {CROWDSALEUUID, HUMANSTANDARDTOKENUUID, QRC20TOKENSTANDARTUUID};
 
-    private HashMap<String, String> standartUUIDs;
+    private HashMap<String, String> standardUUIDs;
 
     private static String abiContract = "abi-contract";
     private static String byteCodeContract = "bitecode-contract";
@@ -332,9 +333,9 @@ public class FileStorageManager {
 
             List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
 
-            for (int i = 0; i < STANDART_CONTRACTS.length; i++) {
-                String contractName = STANDART_CONTRACTS[i];
-                String uuid = STANDART_UUIDS[i];
+            for (int i = 0; i < STANDARD_CONTRACTS.length; i++) {
+                String contractName = STANDARD_CONTRACTS[i];
+                String uuid = STANDARD_UUIDS[i];
                 if (!migrateContract(context, contractName, uuid)) {
                     return false;
                 }

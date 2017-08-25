@@ -32,13 +32,13 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.ui.activity.base_activity.BaseActivity;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
+import com.pixelplex.qtum.ui.base.base_activity.BaseActivity;
+import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 import com.pixelplex.qtum.utils.FontManager;
 
-import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
-import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
+import com.pixelplex.qtum.ui.fragment.profile_fragment.ProfileFragment;
+import com.pixelplex.qtum.ui.fragment.send_fragment.SendFragment;
 import com.pixelplex.qtum.utils.ThemeUtils;
 
 import java.lang.reflect.Field;
