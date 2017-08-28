@@ -11,16 +11,16 @@ import com.pixelplex.qtum.model.gson.News;
 import com.pixelplex.qtum.model.gson.SendRawTransactionRequest;
 import com.pixelplex.qtum.model.gson.SendRawTransactionResponse;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
-import com.pixelplex.qtum.model.gson.store.IsPaidResponse;
+import com.pixelplex.qtum.model.gson.store.ContractPurchase;
 import com.pixelplex.qtum.model.gson.store.QSearchItem;
 import com.pixelplex.qtum.model.gson.store.QstoreBuyResponse;
+import com.pixelplex.qtum.model.gson.store.QstoreByteCodeResponse;
 import com.pixelplex.qtum.model.gson.store.QstoreContract;
 import com.pixelplex.qtum.model.gson.store.QstoreItem;
 import com.pixelplex.qtum.model.gson.store.QstoreSourceCodeResponse;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -125,7 +125,7 @@ public class QtumService {
         return mServiceApi.buyRequest(contractId);
     }
 
-    public Observable<IsPaidResponse> isPaidByRequestId(String contractId, String requestId){
+    public Observable<ContractPurchase> isPaidByRequestId(String contractId, String requestId){
         return mServiceApi.isPaidByRequestId(contractId, requestId);
     }
 
@@ -134,6 +134,13 @@ public class QtumService {
         body.put("request_id",requestId);
         body.put("access_token",accessToken);
         return mServiceApi.getSourceCode(contractId, body);
+    }
+
+    public Observable<QstoreByteCodeResponse> getByteCode(String contractId, String requestId, String accessToken){
+        HashMap<String, String> body = new HashMap<>();
+        body.put("request_id",requestId);
+        body.put("access_token",accessToken);
+        return mServiceApi.getByteCode(contractId, body);
     }
 
 }

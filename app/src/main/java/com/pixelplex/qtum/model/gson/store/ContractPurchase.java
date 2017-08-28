@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by kirillvolkov on 10.08.17.
  */
 
-public class IsPaidResponse {
+public class ContractPurchase {
 
     @SerializedName("contract_id")
     public String contractId;
@@ -20,7 +20,9 @@ public class IsPaidResponse {
     @SerializedName("payed_at")
     public String payedAt;
 
+    @SerializedName("created_at")
+    public String createDate;
+
     @SerializedName("from_addresses")
     public String[] fromAddresses;
-
 }
