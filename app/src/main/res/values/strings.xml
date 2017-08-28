@@ -195,4 +195,8 @@
     <string name="new_confirmed_transaction">New confirmed transaction</string>
     <string name="touch_to_open_transaction_history">Touch to open transaction history</string>
 
+    <string name="coped">Copied</string>
+    <string name="not_confirmed">Unconfirmed</string>
+    <string name="abi_doesnt_match_erc20_standard">ABI Does not match QRC20 Standart</string>
+
 </resources>
