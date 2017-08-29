@@ -8,13 +8,13 @@ public class News {
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("date")
+    @SerializedName("mDate")
     @Expose
     private String date;
     @SerializedName("link")
     @Expose
     private String link;
-    @SerializedName("title")
+    @SerializedName("mTitle")
     @Expose
     private String title;
     @SerializedName("body")

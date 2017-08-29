@@ -37,10 +37,10 @@ public class StoreViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(QstoreCategory item) {
-        sectionName.setText(item.title);
-        manager = new GridLayoutManager(list.getContext(),(item.items.size() <= 5)? 1 : item.items.size() / 5, LinearLayoutManager.HORIZONTAL,false);
+        sectionName.setText(item.mTitle);
+        manager = new GridLayoutManager(list.getContext(),(item.mItems.size() <= 5)? 1 : item.mItems.size() / 5, LinearLayoutManager.HORIZONTAL,false);
         list.setLayoutManager(manager);
-        adapter = new StoreTokensAdapter(item.items, listener, itemResId);
+        adapter = new StoreTokensAdapter(item.mItems, listener, itemResId);
         list.setAdapter(adapter);
     }
 }

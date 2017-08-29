@@ -7,12 +7,12 @@ import java.util.List;
 
 public class QstoreCategory {
 
-    public String title;
-    public List<QstoreItem> items;
+    public String mTitle;
+    public List<QstoreItem> mItems;
 
     public QstoreCategory(String title, List<QstoreItem> items) {
-        this.title = title;
-        this.items = items;
+        this.mTitle = title;
+        this.mItems = items;
     }
 
 }

@@ -1,11 +1,6 @@
 package com.pixelplex.qtum.utils.sha3;
 
 
-/**
- * Hex-utils
- *
- * @author romus
- */
 public class HexUtils {
 
     private static final char[] DIGITS =

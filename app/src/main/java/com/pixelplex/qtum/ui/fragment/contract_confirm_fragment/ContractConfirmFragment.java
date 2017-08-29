@@ -21,7 +21,7 @@ import butterknife.OnClick;
 public abstract class ContractConfirmFragment extends BaseFragment implements  ContractConfirmView, OnValueClick{
 
     protected static final String paramsKey = "params";
-    private static final String CONTRACT_TEMPLATE_UIID = "uiid";
+    private static final String CONTRACT_TEMPLATE_UIID = "mUiid";
     private static final String CONTRACT_NAME = "name";
 
 

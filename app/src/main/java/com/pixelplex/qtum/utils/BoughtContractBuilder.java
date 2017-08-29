@@ -19,13 +19,13 @@ import rx.Subscriber;
 
 public class BoughtContractBuilder {
 
-    String sourceContract;
-    String byteCodeContract;
-    String abiContract;
-    String type;
-    String name;
-    String dateString;
-    String uuid;
+    private String sourceContract;
+    private String byteCodeContract;
+    private String abiContract;
+    private String type;
+    private String name;
+    private String dateString;
+    private String uuid;
 
     public void build(final Context context, ContractPurchase contractPurchase, final ContractBuilderListener listener){
         final PurchaseItem purchaseItem = QStoreStorage.getInstance(context).getPurchaseByContractId(contractPurchase.getContractId());

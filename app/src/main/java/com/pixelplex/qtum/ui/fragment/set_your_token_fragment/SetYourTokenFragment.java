@@ -23,7 +23,7 @@ import butterknife.OnClick;
 
 public abstract class SetYourTokenFragment extends BaseFragment implements SetYourTokenFragmentView, OnValidateParamsListener {
 
-    protected final static String CONTRACT_TEMPLATE_UIID = "uiid";
+    protected final static String CONTRACT_TEMPLATE_UIID = "mUiid";
 
     protected String templateUiid;
 

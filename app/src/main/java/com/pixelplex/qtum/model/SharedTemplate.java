@@ -3,28 +3,28 @@ package com.pixelplex.qtum.model;
 
 public class SharedTemplate {
 
-    private String uuid;
-    private String templateName;
+    private String mUuid;
+    private String mTemplateName;
 
     public SharedTemplate(String uuid, String templateName){
-        this.uuid = uuid;
-        this.templateName = templateName;
+        this.mUuid = uuid;
+        this.mTemplateName = templateName;
     }
 
     public String getUuid(){
-        return uuid;
+        return mUuid;
     }
 
     public String getTemplateName(){
-        return templateName;
+        return mTemplateName;
     }
 
     public void setUuid(String uuid){
-        this.uuid = uuid;
+        this.mUuid = uuid;
     }
 
     public void setTemplateName(String templateName){
-        this.templateName = templateName;
+        this.mTemplateName = templateName;
     }
 
 }

@@ -3,27 +3,27 @@ package com.pixelplex.qtum.model;
 import com.pixelplex.qtum.model.backup.TemplateJSON;
 
 public class ContractTemplate {
-    private String name;
-    private String date;
-    private String type;
-    private String uuid;
-    private boolean isFullContractTemplate;
+    private String mName;
+    private String mDate;
+    private String mType;
+    private String mUuid;
+    private boolean mIsFullContractTemplate;
 
     public ContractTemplate(String name, String date, String contractType, String uuid){
-        this.name = name;
-        this.date = date;
-        this.type = contractType;
-        this.uuid = uuid;
-        isFullContractTemplate = true;
+        this.mName = name;
+        this.mDate = date;
+        this.mType = contractType;
+        this.mUuid = uuid;
+        mIsFullContractTemplate = true;
 
     }
 
     public ContractTemplate(TemplateJSON templateJSON){
-        this.name = templateJSON.getName();
-        this.date = templateJSON.getCreationDate();
-        this.type = templateJSON.getType();
-        this.uuid = templateJSON.getUuid();
-        isFullContractTemplate = true;
+        this.mName = templateJSON.getName();
+        this.mDate = templateJSON.getCreationDate();
+        this.mType = templateJSON.getType();
+        this.mUuid = templateJSON.getUuid();
+        mIsFullContractTemplate = true;
     }
 
     public boolean isSelectedABI() {
@@ -37,42 +37,42 @@ public class ContractTemplate {
     private boolean selectedABI;
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.mName = name;
     }
 
     public String getDate() {
-        return date;
+        return mDate;
     }
 
     public void setData(String date) {
-        this.date = date;
+        this.mDate = date;
     }
 
     public String getContractType() {
-        return type;
+        return mType;
     }
 
     public void setContractType(String contractType) {
-        this.type = contractType;
+        this.mType = contractType;
     }
 
     public String getUuid() {
-        return uuid;
+        return mUuid;
     }
 
     public void setUuid(String uuid) {
-        this.uuid = uuid;
+        this.mUuid = uuid;
     }
 
     public boolean isFullContractTemplate() {
-        return isFullContractTemplate;
+        return mIsFullContractTemplate;
     }
 
     public void setFullContractTemplate(boolean fullContractTemplate) {
-        isFullContractTemplate = fullContractTemplate;
+        mIsFullContractTemplate = fullContractTemplate;
     }
 }

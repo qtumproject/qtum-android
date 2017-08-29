@@ -3,27 +3,27 @@ package com.pixelplex.qtum.model.contract;
 
 public class Token extends Contract {
 
-    private float lastBalance = 0;
+    private float mLastBalance = 0;
 
     public Token(String contractAddress, String templateUiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName) {
         super(contractAddress, templateUiid, hasBeenCreated, date, senderAddress, contractName);
-        this.isSubscribe = true;
+        this.mIsSubscribe = true;
     }
 
     public void setLastBalance(float balance){
-        this.lastBalance = balance;
+        this.mLastBalance = balance;
     }
 
     public float getLastBalance(){
-        return lastBalance;
+        return mLastBalance;
     }
 
     public boolean isSubscribe() {
-        return isSubscribe;
+        return mIsSubscribe;
     }
 
     public void setSubscribe(boolean subscribe) {
-        isSubscribe = subscribe;
+        mIsSubscribe = subscribe;
     }
 
 }

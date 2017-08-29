@@ -5,77 +5,77 @@ import java.io.Serializable;
 
 public class Contract implements Serializable {
 
-    protected String contractAddress;
-    protected String uiid;
-    protected String contractName;
-    protected Boolean hasBeenCreated;
-    protected String date;
-    protected String senderAddress;
-    protected boolean isSubscribe;
+    protected String mContractAddress;
+    protected String mUiid;
+    protected String mContractName;
+    protected Boolean mHasBeenCreated;
+    protected String mDate;
+    protected String mSenderAddress;
+    protected boolean mIsSubscribe;
 
     public Contract(String contractAddress, String uiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName){
-        this.contractAddress = contractAddress;
-        this.uiid = uiid;
-        this.hasBeenCreated = hasBeenCreated;
-        this.contractName = contractName;
-        this.date = date;
-        this.senderAddress = senderAddress;
-        this.isSubscribe = false;
+        this.mContractAddress = contractAddress;
+        this.mUiid = uiid;
+        this.mHasBeenCreated = hasBeenCreated;
+        this.mContractName = contractName;
+        this.mDate = date;
+        this.mSenderAddress = senderAddress;
+        this.mIsSubscribe = false;
     }
 
     public String getContractAddress() {
-        return contractAddress;
+        return mContractAddress;
     }
 
     public void setContractAddress(String contractAddress) {
-        this.contractAddress = contractAddress;
+        this.mContractAddress = contractAddress;
     }
 
     public String getUiid() {
-        return uiid;
+        return mUiid;
     }
 
     public void setUiid(String uiid) {
-        this.uiid = uiid;
+        this.mUiid = uiid;
     }
 
     public Boolean isHasBeenCreated() {
-        return hasBeenCreated;
+        return mHasBeenCreated;
     }
 
     public void setHasBeenCreated(Boolean hasBeenCreated) {
-        this.hasBeenCreated = hasBeenCreated;
+        this.mHasBeenCreated = hasBeenCreated;
     }
 
     public String getDate() {
-        return date;
+        return mDate;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.mDate = date;
     }
 
     public String getContractName() {
-        return contractName;
+        return mContractName;
     }
 
     public void setContractName(String contractName) {
-        this.contractName = contractName;
+        this.mContractName = contractName;
     }
 
     public String getSenderAddress() {
-        return senderAddress;
+        return mSenderAddress;
     }
 
     public void setSenderAddress(String senderAddress) {
-        this.senderAddress = senderAddress;
+        this.mSenderAddress = senderAddress;
     }
 
     public boolean isSubscribe() {
-        return isSubscribe;
+        return mIsSubscribe;
     }
 
     public void setSubscribe(boolean subscribe) {
-        isSubscribe = subscribe;
+        mIsSubscribe = subscribe;
     }
 }

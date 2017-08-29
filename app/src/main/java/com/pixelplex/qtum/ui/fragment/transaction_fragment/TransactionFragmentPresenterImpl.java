@@ -36,7 +36,7 @@ class TransactionFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         String dateString;
         History history = getInteractor().getHistory(position);
         if(history.getBlockTime()!=null) {
-            dateString = DateCalculator.getfullDate(history.getBlockTime() * 1000L);
+            dateString = DateCalculator.getFullDate(history.getBlockTime() * 1000L);
         } else {
             dateString = getView().getContext().getString(R.string.unconfirmed);
         }
