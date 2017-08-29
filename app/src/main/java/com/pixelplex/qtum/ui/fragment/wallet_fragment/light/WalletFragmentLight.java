@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.fragment.wallet_fragment.Light;
+package com.pixelplex.qtum.ui.fragment.wallet_fragment.light;
 
 import android.support.design.widget.AppBarLayout;
 import android.util.Log;
