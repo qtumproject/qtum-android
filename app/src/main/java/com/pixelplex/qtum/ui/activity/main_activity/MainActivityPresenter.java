@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
-import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
+import com.pixelplex.qtum.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 
 interface MainActivityPresenter {
     boolean onNavigationItemSelected(@NonNull MenuItem item);

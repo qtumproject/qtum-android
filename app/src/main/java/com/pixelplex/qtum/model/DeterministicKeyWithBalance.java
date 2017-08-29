@@ -6,19 +6,18 @@ import com.pixelplex.qtum.utils.CurrentNetParams;
 import org.bitcoinj.crypto.DeterministicKey;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 
 public class DeterministicKeyWithBalance {
     private DeterministicKey mKey;
     private List<UnspentOutput> mUnspentOutputList;
-    private String address;
-    private BigDecimal balance;
+    private String mAddress;
+    private BigDecimal mBalance;
     
     public DeterministicKeyWithBalance(DeterministicKey key){
         mKey = key;
-        address = key.toAddress(CurrentNetParams.getNetParams()).toString();
+        mAddress = key.toAddress(CurrentNetParams.getNetParams()).toString();
     }
 
     public DeterministicKey getKey() {
@@ -38,18 +37,18 @@ public class DeterministicKeyWithBalance {
     }
 
     public String getAddress() {
-        return address;
+        return mAddress;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.mAddress = address;
     }
 
     public BigDecimal getBalance() {
-        return balance;
+        return mBalance;
     }
 
     public void setBalance(BigDecimal balance) {
-        this.balance = balance;
+        this.mBalance = balance;
     }
 }

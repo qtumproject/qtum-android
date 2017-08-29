@@ -12,13 +12,13 @@ import java.math.BigDecimal;
 
 public class DeterministicKeyWithTokenBalance {
     private DeterministicKey mKey;
-    private String address;
+    private String mAddress;
 
-    private BigDecimal balance;
+    private BigDecimal mBalance;
 
     public DeterministicKeyWithTokenBalance(DeterministicKey key){
         mKey = key;
-        address = key.toAddress(CurrentNetParams.getNetParams()).toString();
+        mAddress = key.toAddress(CurrentNetParams.getNetParams()).toString();
     }
 
     public DeterministicKey getKey() {
@@ -26,26 +26,26 @@ public class DeterministicKeyWithTokenBalance {
     }
 
     public String getAddress() {
-        return address;
+        return mAddress;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.mAddress = address;
     }
 
     public BigDecimal getBalance() {
-        return balance;
+        return mBalance;
     }
 
     public void setBalance(BigDecimal balance) {
-        this.balance = balance;
+        this.mBalance = balance;
     }
 
     public void addBalance(BigDecimal balance) {
-        if(this.balance == null){
+        if(this.mBalance == null){
             setBalance(balance);
             return;
         }
-       this.balance = this.balance.add(balance);
+       this.mBalance = this.mBalance.add(balance);
     }
 }

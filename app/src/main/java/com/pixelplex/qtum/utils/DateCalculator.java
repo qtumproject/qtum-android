@@ -79,7 +79,7 @@ public class DateCalculator {
         return dateString;
     }
 
-    public static String getfullDate(long timeInMills){
+    public static String getFullDate(long timeInMills){
         String dateString;
         Date dateTransaction = new Date(timeInMills);
         Calendar calendar = Calendar.getInstance();

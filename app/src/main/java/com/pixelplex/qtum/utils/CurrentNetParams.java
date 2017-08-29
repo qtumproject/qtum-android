@@ -11,4 +11,8 @@ public class CurrentNetParams {
     public static NetworkParameters getNetParams(){
         return QtumMainNetParams.get();
     }
+
+    public static String getUrl(){
+        return "http://163.172.251.4:5931/";
+    }
 }

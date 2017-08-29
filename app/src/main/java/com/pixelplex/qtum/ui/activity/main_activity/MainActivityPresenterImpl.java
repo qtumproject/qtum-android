@@ -14,18 +14,18 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.dataprovider.NetworkStateReceiver;
-import com.pixelplex.qtum.dataprovider.UpdateService;
-import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
+import com.pixelplex.qtum.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
+import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
+import com.pixelplex.qtum.datastorage.listeners.LanguageChangeListener;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
-import com.pixelplex.qtum.ui.activity.base_activity.BasePresenterImpl;
-import com.pixelplex.qtum.ui.fragment.BaseFragment.BaseFragment;
-import com.pixelplex.qtum.ui.fragment.NewsFragment.NewsFragment;
-import com.pixelplex.qtum.ui.fragment.PinFragment.PinFragment;
-import com.pixelplex.qtum.ui.fragment.ProfileFragment.ProfileFragment;
-import com.pixelplex.qtum.ui.fragment.SendFragment.SendFragment;
-import com.pixelplex.qtum.ui.fragment.StartPageFragment.StartPageFragment;
-import com.pixelplex.qtum.ui.fragment.WalletMainFragment.WalletMainFragment;
+import com.pixelplex.qtum.ui.base.base_activity.BasePresenterImpl;
+import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
+import com.pixelplex.qtum.ui.fragment.news_fragment.NewsFragment;
+import com.pixelplex.qtum.ui.fragment.pin_fragment.PinFragment;
+import com.pixelplex.qtum.ui.fragment.profile_fragment.ProfileFragment;
+import com.pixelplex.qtum.ui.fragment.send_fragment.SendFragment;
+import com.pixelplex.qtum.ui.fragment.start_page_fragment.StartPageFragment;
+import com.pixelplex.qtum.ui.fragment.wallet_main_fragment.WalletMainFragment;
 import com.pixelplex.qtum.utils.QtumIntent;
 
 

@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 
-import com.pixelplex.qtum.dataprovider.listeners.FireBaseTokenRefreshListener;
-import com.pixelplex.qtum.dataprovider.listeners.LanguageChangeListener;
+import com.pixelplex.qtum.datastorage.listeners.LanguageChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;

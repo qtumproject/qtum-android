@@ -8,8 +8,8 @@ import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
 import com.pixelplex.qtum.model.gson.UnspentOutput;
-import com.pixelplex.qtum.utils.sha3.sha.Keccak;
-import com.pixelplex.qtum.utils.sha3.sha.Parameters;
+import com.pixelplex.qtum.utils.sha3.Keccak;
+import com.pixelplex.qtum.utils.sha3.Parameters;
 
 import org.bitcoinj.core.Base58;
 import org.bitcoinj.core.Coin;

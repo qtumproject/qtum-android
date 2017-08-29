@@ -183,7 +183,7 @@
     <string name="contract_details">Contract Details</string>
     <string name="sent_time">Sent time</string>
     <string name="you_have_insufficient_funds_for_this_transaction">You have insufficient funds for this transaction</string>
-    <string name="incorrect_address">Incorrect Address</string>
+    <string name="invalid_qtum_address">Invalid QTUM Address</string>
     <string name="fail_to_get_contract_methods">Fail to get contract methods</string>
     <string name="fail_to_get_contracts">Fail to get contracts</string>
     <string name="trending_now">Trending Now</string>
@@ -193,10 +193,7 @@
     <string name="token_not_found">Token not found</string>
     <string name="copied">Copied</string>
     <string name="new_confirmed_transaction">New confirmed transaction</string>
+    <string name="_2017_qtum_n_skynet_testnet_version">© 2017 QTUM \n Skynet Testnet Version</string>
     <string name="touch_to_open_transaction_history">Touch to open transaction history</string>
-
-    <string name="coped">Copied</string>
-    <string name="not_confirmed">Unconfirmed</string>
-    <string name="abi_doesnt_match_erc20_standard">ABI Does not match QRC20 Standart</string>
 
 </resources>

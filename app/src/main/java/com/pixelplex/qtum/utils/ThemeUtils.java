@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.ui.activity.base_activity.BaseActivity;
+import com.pixelplex.qtum.ui.base.base_activity.BaseActivity;
 
 /**
  * Created by kirillvolkov on 04.07.17.
