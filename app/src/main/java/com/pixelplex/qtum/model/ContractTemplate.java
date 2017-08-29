@@ -1,12 +1,18 @@
 package com.pixelplex.qtum.model;
 
+import com.google.gson.annotations.SerializedName;
 import com.pixelplex.qtum.model.backup.TemplateJSON;
 
 public class ContractTemplate {
+    @SerializedName("name")
     private String mName;
+    @SerializedName("date")
     private String mDate;
+    @SerializedName("type")
     private String mType;
+    @SerializedName("uuid")
     private String mUuid;
+    @SerializedName("isFullContractTemplate")
     private boolean mIsFullContractTemplate;
 
     public ContractTemplate(String name, String date, String contractType, String uuid){

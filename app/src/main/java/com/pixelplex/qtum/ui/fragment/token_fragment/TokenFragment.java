@@ -171,6 +171,13 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
         collapseLinearLayout.requestLayout();
         headerPAdding = convertDpToPixel(16,getContext());
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+            }
+        });
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 

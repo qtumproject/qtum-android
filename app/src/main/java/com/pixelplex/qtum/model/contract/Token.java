@@ -1,8 +1,11 @@
 package com.pixelplex.qtum.model.contract;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class Token extends Contract {
 
+    @SerializedName("lastBalance")
     private float mLastBalance = 0;
 
     public Token(String contractAddress, String templateUiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName) {

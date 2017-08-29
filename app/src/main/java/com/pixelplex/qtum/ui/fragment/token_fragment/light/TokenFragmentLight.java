@@ -13,9 +13,6 @@ import com.pixelplex.qtum.ui.wave_visualizer.WaveView;
 
 import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 26.07.17.
- */
 
 public class TokenFragmentLight extends TokenFragment {
 

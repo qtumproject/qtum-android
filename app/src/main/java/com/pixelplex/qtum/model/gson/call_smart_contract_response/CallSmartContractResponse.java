@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public class CallSmartContractResponse {
-    @SerializedName("mItems")
+    @SerializedName("items")
     @Expose
     private List<Item> items = null;
 

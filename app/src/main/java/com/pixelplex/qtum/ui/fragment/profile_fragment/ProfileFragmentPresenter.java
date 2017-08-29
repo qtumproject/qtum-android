@@ -8,4 +8,5 @@ interface ProfileFragmentPresenter {
     void onLogOutYesClick();
     void onSmartContractsClick();
     void onSubscribeTokensClick();
+    void onAboutClick();
 }

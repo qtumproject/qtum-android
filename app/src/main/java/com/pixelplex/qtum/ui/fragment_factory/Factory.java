@@ -28,7 +28,7 @@ public class Factory {
 
     private static String getThemedFargment(Context context, Class fragment){
         String postfix = (ThemeUtils.getCurrentTheme(context).equals(ThemeUtils.THEME_DARK)? DARK_POSTFIX : LIGHT_POSTFIX);
-        String fullname = String.format("%s.%s.%s%s",fragment.getPackage().getName(),postfix ,fragment.getSimpleName(),postfix);
+        String fullname = String.format("%s.%s.%s%s",fragment.getPackage().getName(),postfix.toLowerCase() ,fragment.getSimpleName(),postfix);
         return fullname;
     }
 

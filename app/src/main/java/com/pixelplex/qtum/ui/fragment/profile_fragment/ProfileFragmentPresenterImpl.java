@@ -6,6 +6,7 @@ import com.pixelplex.qtum.datastorage.listeners.LanguageChangeListener;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragmentPresenterImpl;
+import com.pixelplex.qtum.ui.fragment.about_fragment.AboutFragment;
 import com.pixelplex.qtum.ui.fragment.language_fragment.LanguageFragment;
 import com.pixelplex.qtum.ui.fragment.pin_fragment.PinFragment;
 import com.pixelplex.qtum.ui.fragment.smart_contracts_fragment.SmartContractsFragment;
@@ -123,6 +124,12 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     public void onSubscribeTokensClick() {
         BaseFragment subscribeTokensFragment = SubscribeTokensFragment.newInstance(getView().getContext());
         getView().openFragment(subscribeTokensFragment);
+    }
+
+    @Override
+    public void onAboutClick() {
+        BaseFragment aboutFragment = AboutFragment.newInstance(getView().getContext());
+        getView().openFragment(aboutFragment);
     }
 
     public void onTouchIdSwitched(boolean isChecked){

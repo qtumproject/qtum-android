@@ -24,9 +24,6 @@ import butterknife.OnClick;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
-/**
- * Created by kirillvolkov on 20.07.17.
- */
 
 public class ShareDialogFragment extends AppCompatDialogFragment {
 

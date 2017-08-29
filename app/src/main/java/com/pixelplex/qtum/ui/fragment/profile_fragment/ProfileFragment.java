@@ -60,7 +60,7 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileFra
                 getPresenter().onSubscribeTokensClick();
                 break;
             case R.string.about:
-                // getPresenter().onAboutClick();
+                 getPresenter().onAboutClick();
                 break;
             case R.string.log_out:
                 getPresenter().onLogOutClick();

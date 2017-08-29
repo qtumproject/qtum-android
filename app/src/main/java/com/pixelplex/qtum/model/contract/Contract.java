@@ -1,16 +1,25 @@
 package com.pixelplex.qtum.model.contract;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 
 public class Contract implements Serializable {
 
+    @SerializedName("contractAddress")
     protected String mContractAddress;
+    @SerializedName("uiid")
     protected String mUiid;
+    @SerializedName("contractName")
     protected String mContractName;
+    @SerializedName("hasBeenCreated")
     protected Boolean mHasBeenCreated;
+    @SerializedName("date")
     protected String mDate;
+    @SerializedName("senderAddress")
     protected String mSenderAddress;
+    @SerializedName("isSubscribe")
     protected boolean mIsSubscribe;
 
     public Contract(String contractAddress, String uiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName){

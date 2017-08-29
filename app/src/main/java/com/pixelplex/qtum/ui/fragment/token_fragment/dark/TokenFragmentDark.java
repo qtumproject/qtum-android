@@ -10,9 +10,6 @@ import com.pixelplex.qtum.utils.ResizeWidthAnimation;
 
 import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 26.07.17.
- */
 
 public class TokenFragmentDark extends TokenFragment {
 

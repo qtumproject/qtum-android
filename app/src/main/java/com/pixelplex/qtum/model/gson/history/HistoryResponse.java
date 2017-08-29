@@ -11,7 +11,7 @@ public class HistoryResponse {
     @SerializedName("totalItems")
     @Expose
     private Integer totalItems;
-    @SerializedName("mItems")
+    @SerializedName("items")
     @Expose
     private List<History> items = null;
 
