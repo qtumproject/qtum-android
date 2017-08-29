@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.fragment.token_cash_management_fragment.Dark;
+package com.pixelplex.qtum.ui.fragment.token_cash_management_fragment.dark;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;

@@ -50,7 +50,7 @@ public class TokenFragmentLight extends TokenFragment {
         waveView.setShapeType(WaveView.ShapeType.SQUARE);
         mWaveHelper = new WaveHelper(waveView);
 
-        mSwipeRefreshLayout.setEnabled(false);
+        //mSwipeRefreshLayout.setEnabled(false);
 
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
