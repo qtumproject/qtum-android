@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.fragment.token_cash_management_fragment.Light;
+package com.pixelplex.qtum.ui.fragment.token_cash_management_fragment.light;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

@@ -34,7 +34,7 @@
     <string name="import_button">导入</string>
     <string name="language">语言</string>
     <string name="change_pin">更改 PIN</string>
-    <string name="wallet_back_up">备份钱包</string>
+    <string name="export_passphrase">备份钱包</string>
     <string name="about">关于</string>
     <string name="empty_name">空名称</string>
     <string name="incorrect_repeated_pin">PIN不一致</string>

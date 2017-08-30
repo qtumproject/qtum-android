@@ -58,7 +58,7 @@
     <string name="view_details">View Details</string>
     <string name="view_source_code">View Source Code</string>
     <string name="change_pin">Change PIN</string>
-    <string name="wallet_back_up">Wallet Backup</string>
+    <string name="export_passphrase">Export Passphrase</string>
     <string name="about">About</string>
     <string name="empty_name">Empty Name</string>
     <string name="incorrect_repeated_pin">Incorrect repeated PIN</string>

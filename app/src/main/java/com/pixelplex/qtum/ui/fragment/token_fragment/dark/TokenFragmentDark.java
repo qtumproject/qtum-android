@@ -28,7 +28,7 @@ public class TokenFragmentDark extends TokenFragment {
     public void initializeViews() {
         super.initializeViews();
 
-        mSwipeRefreshLayout.setEnabled(false);
+        //mSwipeRefreshLayout.setEnabled(false);
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {

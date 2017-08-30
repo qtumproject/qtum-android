@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.fragment.qtum_cash_management_fragment.Dark;
+package com.pixelplex.qtum.ui.fragment.qtum_cash_management_fragment.light;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -16,20 +16,20 @@ import java.util.List;
  * Created by kirillvolkov on 01.08.17.
  */
 
-public class AddressesWithBalanceSpinnerAdapterDark extends AddressesWithBalanceSpinnerAdapter {
+public class AddressesWithBalanceSpinnerAdapterLight extends AddressesWithBalanceSpinnerAdapter {
 
-    public AddressesWithBalanceSpinnerAdapterDark(@NonNull Context context, List<DeterministicKeyWithBalance> keyWithBalanceList) {
+    public AddressesWithBalanceSpinnerAdapterLight(@NonNull Context context, List<DeterministicKeyWithBalance> keyWithBalanceList) {
         super(context, keyWithBalanceList);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return getCustomView(position, R.layout.item_address_spinner, parent);
+        return getCustomView(position, R.layout.item_address_spinner_light, parent);
     }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return getCustomView(position, R.layout.item_address_spinner_dropdown, parent);
+        return getCustomView(position, R.layout.item_address_spinner_dropdown_light, parent);
     }
 }

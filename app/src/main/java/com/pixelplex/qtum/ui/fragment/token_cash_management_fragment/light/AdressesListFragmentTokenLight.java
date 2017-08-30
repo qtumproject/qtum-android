@@ -1,5 +1,4 @@
-package com.pixelplex.qtum.ui.fragment.qtum_cash_management_fragment.Dark;
-
+package com.pixelplex.qtum.ui.fragment.token_cash_management_fragment.light;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,11 +10,10 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import com.pixelplex.qtum.R;
-import com.pixelplex.qtum.model.DeterministicKeyWithBalance;
-import com.pixelplex.qtum.ui.fragment.qtum_cash_management_fragment.AddressListFragment;
+import com.pixelplex.qtum.model.DeterministicKeyWithTokenBalance;
 import com.pixelplex.qtum.ui.fragment.qtum_cash_management_fragment.AddressListFragmentPresenter;
-import com.pixelplex.qtum.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceAdapter;
-import com.pixelplex.qtum.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceSpinnerAdapter;
+import com.pixelplex.qtum.ui.fragment.token_cash_management_fragment.AdressesListFragmentToken;
+import com.pixelplex.qtum.ui.fragment.token_cash_management_fragment.TokenAdressesAdapter;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.utils.CurrentNetParams;
 import com.pixelplex.qtum.utils.FontTextView;
@@ -23,28 +21,33 @@ import com.pixelplex.qtum.utils.FontTextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddressListFragmentDark extends AddressListFragment{
+/**
+ * Created by kirillvolkov on 03.08.17.
+ */
 
+public class AdressesListFragmentTokenLight extends AdressesListFragmentToken {
     @Override
     protected int getLayout() {
-        return R.layout.fragment_address_list;
+        return R.layout.fragment_address_list_light;
     }
 
     @Override
-    public void updateAddressList(List<DeterministicKeyWithBalance> deterministicKeyWithBalance) {
-        mAddressesWithBalanceAdapter = new AddressesWithBalanceAdapter(deterministicKeyWithBalance, this,R.layout.item_address);
-        mRecyclerView.setAdapter(mAddressesWithBalanceAdapter);
+    public void updateAddressList(List<DeterministicKeyWithTokenBalance> deterministicKeyWithBalance, String currency) {
+        if(mRecyclerView != null) {
+            adapter = new TokenAdressesAdapter(deterministicKeyWithBalance, R.layout.item_address_light, this, currency);
+            mRecyclerView.setAdapter(adapter);
+        }
     }
 
     @Override
-    public void onItemClick(DeterministicKeyWithBalance deterministicKeyWithBalance) {
-        List<DeterministicKeyWithBalance> deterministicKeyWithBalances = new ArrayList<>(getPresenter().mKeyWithBalanceList);
-                                        deterministicKeyWithBalances.remove(deterministicKeyWithBalance);
-        showTransferDialogFragment(deterministicKeyWithBalance, deterministicKeyWithBalances);
+    public void onItemClick(DeterministicKeyWithTokenBalance item) {
+        List<DeterministicKeyWithTokenBalance> deterministicKeyWithBalances = new ArrayList<>(getPresenter().items);
+        deterministicKeyWithBalances.remove(item);
+        showTransferDialogFragment(item, deterministicKeyWithBalances);
     }
 
-    protected void showTransferDialogFragment(final DeterministicKeyWithBalance keyWithBalanceTo, List<DeterministicKeyWithBalance> keyWithBalanceList){
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_transfer_balance_fragment, null);
+    protected void showTransferDialogFragment(final DeterministicKeyWithTokenBalance keyWithBalanceTo, List<DeterministicKeyWithTokenBalance> keyWithBalanceList){
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_transfer_balance_fragment_light, null);
 
         final TextInputEditText mEditTextAmount = (TextInputEditText)view.findViewById(R.id.et_amount);
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner_transfer);
@@ -52,16 +55,18 @@ public class AddressListFragmentDark extends AddressListFragment{
 
         mEditTextAddressTo.setText(keyWithBalanceTo.getKey().toAddress(CurrentNetParams.getNetParams()).toString());
 
-        AddressesWithBalanceSpinnerAdapter spinnerAdapter = new AddressesWithBalanceSpinnerAdapterDark(getContext(),keyWithBalanceList);
+        AddressesWithTokenBalanceSpinnerAdapterLight spinnerAdapter = new AddressesWithTokenBalanceSpinnerAdapterLight(getContext(),keyWithBalanceList, getPresenter().getCurrency());
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                getPresenter().keyWithBalanceFrom = (DeterministicKeyWithBalance) spinner.getItemAtPosition(i);
+                getPresenter().keyWithTokenBalanceFrom = (DeterministicKeyWithTokenBalance) spinner.getItemAtPosition(i);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
         });
 
         view.findViewById(R.id.bt_back).setOnClickListener(new View.OnClickListener() {
@@ -75,7 +80,7 @@ public class AddressListFragmentDark extends AddressListFragment{
             @Override
             public void onClick(View v) {
                 setProgressDialog();
-                getPresenter().transfer(keyWithBalanceTo, getPresenter().keyWithBalanceFrom, mEditTextAmount.getText().toString(), new AddressListFragmentPresenter.TransferListener(){
+                getPresenter().transfer(keyWithBalanceTo, getPresenter().keyWithTokenBalanceFrom, mEditTextAmount.getText().toString(), new AddressListFragmentPresenter.TransferListener(){
                     @Override
                     public void onError(String errorText) {
                         setAlertDialog(getContext().getString(R.string.error),errorText,getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
@@ -88,11 +93,11 @@ public class AddressListFragmentDark extends AddressListFragment{
                         setAlertDialog(getContext().getString(R.string.complete),
                                 getContext().getString(R.string.payment_completed_successfully),
                                 getContext().getString(R.string.ok), BaseFragment.PopUpType.confirm,new BaseFragment.AlertDialogCallBack(){
-                            @Override
-                            public void onOkClick() {
-                                getMainActivity().onBackPressed();
-                            }
-                        });
+                                    @Override
+                                    public void onOkClick() {
+                                        getMainActivity().onBackPressed();
+                                    }
+                                });
                     }
                 });
             }

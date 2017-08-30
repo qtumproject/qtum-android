@@ -174,7 +174,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                getPresenter().initializeViews();
             }
         });
 

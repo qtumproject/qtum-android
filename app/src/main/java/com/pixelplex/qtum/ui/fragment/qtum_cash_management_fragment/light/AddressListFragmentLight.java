@@ -1,4 +1,4 @@
-package com.pixelplex.qtum.ui.fragment.qtum_cash_management_fragment.Light;
+package com.pixelplex.qtum.ui.fragment.qtum_cash_management_fragment.light;
 
 
 import android.graphics.Color;

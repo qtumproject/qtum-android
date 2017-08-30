@@ -95,7 +95,7 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
             mButtonCopy.setVisibility(View.VISIBLE);
             copyPassphare.setVisibility(View.GONE);
         }else {
-            mTextViewToolbarTitle.setText(R.string.wallet_back_up);
+            mTextViewToolbarTitle.setText(R.string.export_passphrase);
             mTextViewCopyBrainCodeToUse.setVisibility(View.VISIBLE);
             youCanSkip.setVisibility(View.GONE);
             mButtonContinue.setVisibility(View.GONE);

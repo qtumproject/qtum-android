@@ -27,8 +27,8 @@ public class SmartContractsFragmentLight extends SmartContractsFragment{
         settingsData.add(new SettingObject(R.string.contracts_store,R.drawable.qtum_logo,0));
         settingsData.add(new SettingObject(R.string.watch_contract,R.drawable.ic_contr_watch_light,0));
         settingsData.add(new SettingObject(R.string.watch_token,R.drawable.ic_token_watch_light,0));
-        settingsData.add(new SettingObject(R.string.restore_contracts,R.drawable.ic_contract_restore_light,0));
         settingsData.add(new SettingObject(R.string.backup_contracts,R.drawable.ic_contract_backup_light,0));
+        settingsData.add(new SettingObject(R.string.restore_contracts,R.drawable.ic_contract_restore_light,0));
         initializeList(R.layout.lyt_profile_pref_list_item_light,R.drawable.color_primary_divider_light,R.drawable.section_setting_divider_light,settingsData);
     }
 }
