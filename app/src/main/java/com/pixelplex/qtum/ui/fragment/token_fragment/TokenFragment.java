@@ -36,6 +36,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
     public static final String totalSupply = "totalSupply";
     public static final String decimals = "decimals";
     public static final String symbol = "symbol";
+    public static final String name = "name";
 
     public static BaseFragment newInstance(Context context, Contract token) {
         Bundle args = new Bundle();
@@ -98,7 +99,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
     FontTextView tokenAddress;
 
     @BindView(R.id.tv_token_name)
-    FontTextView mTextViewTokenName;
+    protected FontTextView mTextViewTokenName;
 
     @BindView(R.id.contract_address_value)
     FontTextView contractAddress;
@@ -164,10 +165,6 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
         Token token = (Token) getArguments().getSerializable(tokenKey);
         presenter.setToken(token);
 
-        if (token != null) {
-            mTextViewTokenName.setText(token.getContractName());
-        }
-
         collapseLinearLayout.requestLayout();
         headerPAdding = convertDpToPixel(16,getContext());
 
@@ -179,6 +176,11 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
         });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    @Override
+    public String getTokenBalance() {
+        return mTextViewBalance.getText().toString() + mTextViewCurrency.getText().toString();
     }
 
     protected boolean expanded = false;

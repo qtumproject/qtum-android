@@ -116,6 +116,9 @@ public class TokenFragmentDark extends TokenFragment {
             case symbol:
                 mTextViewCurrency.setText(" " + propValue);
                 break;
+            case name:
+                mTextViewTokenName.setText(propValue);
+                break;
         }
     }
 

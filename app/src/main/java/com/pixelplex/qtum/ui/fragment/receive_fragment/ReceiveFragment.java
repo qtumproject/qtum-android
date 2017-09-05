@@ -49,6 +49,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
     private final int WRITE_EXTERNAL_STORAGE_CODE = 5;
 
     public static final String TOKEN_ADDRESS = "TOKEN_ADDRESS";
+    public static final String TOKEN_BALANCE = "TOKEN_BALANCE";
 
     @BindView(R.id.iv_qr_code)
     ImageView mImageViewQrCode;
@@ -131,9 +132,10 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
         }
     }
 
-    public static BaseFragment newInstance(Context context, String tokenAddress) {
+    public static BaseFragment newInstance(Context context, String tokenAddress, String balance) {
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, ReceiveFragment.class);
+        args.putString(TOKEN_BALANCE, balance);
         fragment.setArguments(args);
         return fragment;
     }
@@ -280,6 +282,11 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
 
     public void onChangeAddress() {
         getPresenter().changeAddress();
+    }
+
+    @Override
+    public String getTokenBalance() {
+        return getArguments().getString(TOKEN_BALANCE);
     }
 
     @Override
