@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.fragment.start_page_fragment.StartPageFragment;
 import com.pixelplex.qtum.ui.fragment_factory.Factory;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontButton;
@@ -41,11 +42,11 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
     FontTextView youCanSkip;
 
     @OnClick(R.id.bt_share)
-    public void onShareClick(){
+    public void onShareClick() {
         getPresenter().chooseShareMethod();
     }
 
-    @OnClick({R.id.bt_copy,R.id.bt_continue, R.id.ibt_back, R.id.bt_copy_brain_code})
+    @OnClick({R.id.bt_copy, R.id.bt_continue, R.id.ibt_back, R.id.bt_copy_brain_code})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_copy_brain_code:
@@ -61,10 +62,18 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
         }
     }
 
+    private void onBack() {
+        if (getArguments().getBoolean(IS_WALLET_CREATING)) {
+            openRootFragment(StartPageFragment.newInstance(false, getContext()));
+        } else {
+            getActivity().onBackPressed();
+        }
+    }
+
     public static BaseFragment newInstance(Context context, boolean isWalletCreating, String pin) {
         BaseFragment backUpWalletFragment = Factory.instantiateFragment(context, BackUpWalletFragment.class);
         Bundle args = new Bundle();
-        args.putBoolean(IS_WALLET_CREATING,isWalletCreating);
+        args.putBoolean(IS_WALLET_CREATING, isWalletCreating);
         args.putString(PIN, pin);
         backUpWalletFragment.setArguments(args);
         return backUpWalletFragment;
@@ -87,14 +96,14 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
 
     @Override
     public void initializeViews() {
-        if(getArguments().getBoolean(IS_WALLET_CREATING)){
+        if (getArguments().getBoolean(IS_WALLET_CREATING)) {
             mTextViewToolbarTitle.setText(R.string.copy_brain_code);
             mTextViewCopyBrainCodeToUse.setVisibility(View.GONE);
             youCanSkip.setVisibility(View.VISIBLE);
             mButtonContinue.setVisibility(View.VISIBLE);
             mButtonCopy.setVisibility(View.VISIBLE);
             copyPassphare.setVisibility(View.GONE);
-        }else {
+        } else {
             mTextViewToolbarTitle.setText(R.string.export_passphrase);
             mTextViewCopyBrainCodeToUse.setVisibility(View.VISIBLE);
             youCanSkip.setVisibility(View.GONE);
@@ -117,7 +126,7 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
 
     @Override
     public void showToast() {
-        Toast.makeText(getContext(),getString(R.string.copied),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getString(R.string.copied), Toast.LENGTH_SHORT).show();
         //Snackbar.make(mCoordinatorLayout, getString(R.string.coped), Snackbar.LENGTH_SHORT).show();
     }
 

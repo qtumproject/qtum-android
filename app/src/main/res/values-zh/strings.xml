@@ -177,6 +177,7 @@
     <string name="invalid_qtum_address">不合法的QTUM地址</string>
     <string name="invalid_qr_code">无效的二维码格式</string>
     <string name="_2017_qtum_n_skynet_testnet_version">"© 2017 QTUM "</string>
+    <string name="functions">Functions</string>
 
 
 </resources>
