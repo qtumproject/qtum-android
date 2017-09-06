@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.qtum_cash_management_fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
     RecyclerView mRecyclerView;
 
     protected AlertDialog mTransferDialog;
+    protected boolean showTransferDialog = false;
 
     protected AddressesWithBalanceAdapter mAddressesWithBalanceAdapter;
 
@@ -68,7 +70,9 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
         getMainActivity().addAuthenticationListener(new MainActivity.AuthenticationListener() {
             @Override
             public void onAuthenticate() {
-                mTransferDialog.show();
+                if(showTransferDialog) {
+                    mTransferDialog.show();
+                }
             }
         });
     }

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
 import com.pixelplex.qtum.model.SharedTemplate;
 import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.model.contract.Contract;
@@ -63,6 +64,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
     private File mRestoreFile;
     private Context mContext;
     private Backup mBackup;
+    private UpdateService mUpdateService;
     private AlertDialog mRestoreDialog;
 
     RestoreContractsFragmentPresenter(RestoreContractsFragmentView restoreContractsFragmentView){
@@ -81,6 +83,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
     @Override
     public void onViewCreated() {
         super.onViewCreated();
+        mUpdateService = getView().getMainActivity().getUpdateService();
         getView().hideBottomNavView(false);
         getView().getMainActivity().addActivityResultListener(new MainActivity.ActivityResultListener() {
             @Override
@@ -372,6 +375,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                                             ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(mContext, templateJSON, templates);
                                             Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                             token.setSubscribe(contractJSON.getIsActive());
+                                            mUpdateService.subscribeTokenBalanceChange(token.getContractAddress());
                                             tokenList.add(token);
                                         }
                                     }
@@ -390,6 +394,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                                         if (contractJSON.getTemplate().equals(templateJSON.getUuid())) {
                                             ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(mContext, templateJSON, templates);
                                             Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                            mUpdateService.subscribeTokenBalanceChange(token.getContractAddress());
                                             token.setSubscribe(contractJSON.getIsActive());
                                             tokenList.add(token);
                                         }
@@ -424,6 +429,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                                         } else if(contractJSON.getType().equals("token")){
                                             Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                             token.setSubscribe(contractJSON.getIsActive());
+                                            mUpdateService.subscribeTokenBalanceChange(token.getContractAddress());
                                             tokenList.add(token);
                                         }
                                     }
@@ -462,6 +468,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                                         if(contractJSON.getType().equals("token")){
                                             Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), true, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                             token.setSubscribe(contractJSON.getIsActive());
+                                            mUpdateService.subscribeTokenBalanceChange(token.getContractAddress());
                                             tokenList.add(token);
                                         }
                                     }

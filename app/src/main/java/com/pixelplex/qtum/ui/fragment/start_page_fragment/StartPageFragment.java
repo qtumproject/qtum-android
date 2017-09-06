@@ -13,6 +13,7 @@ import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.fragment_factory.Factory;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.pin_fragment.PinFragment;
+import com.pixelplex.qtum.utils.FontButton;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -25,7 +26,7 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     private static final String IS_LOGIN = "is_login";
 
     @BindView(R.id.bt_create_new)
-    Button mButtonCreateNew;
+    protected Button mButtonCreateNew;
     @BindView(R.id.bt_import_wallet)
     Button mButtonImportWallet;
     @BindView(R.id.tv_start_page_you_dont_have)
@@ -34,6 +35,8 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     TextView mTextViewStartPageCreate;
     @BindView(R.id.rl_button_container)
     RelativeLayout mRelativeLayoutButtonContainer;
+    @BindView(R.id.bt_login)
+    protected FontButton mButtonLogin;
 
     @BindView(R.id.logo_view)
     ImageView logoView;
@@ -89,5 +92,6 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
             openFragment(fragment);
         }
     }
+
 
 }

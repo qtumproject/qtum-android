@@ -2,6 +2,7 @@ package com.pixelplex.qtum.ui.fragment.start_page_fragment;
 
 import android.content.Context;
 
+import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.create_wallet_name_fragment.CreateWalletNameFragment;
@@ -31,6 +32,15 @@ class StartPageFragmentPresenterImpl extends BaseFragmentPresenterImpl implement
     public void createNewWallet() {
         BaseFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(getView().getContext(), true);
         getView().openFragment(createWalletNameFragment);
+    }
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        boolean isKeyGenerated = QtumSharedPreference.getInstance().getKeyGeneratedInstance(getView().getContext());
+        if(!isKeyGenerated){
+            getView().hideLoginButton();
+        }
     }
 
     @Override
