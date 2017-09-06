@@ -60,6 +60,11 @@ public class WalletFragmentDark extends WalletFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void initializeViews() {
         super.initializeViews();
 

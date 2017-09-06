@@ -121,9 +121,15 @@ public class ContractBuilder {
             return appendNumericPattern(convertToByteCode(Long.valueOf(_value)));
         } else if (parameter.getType().contains(TYPE_STRING)) {
             return getStringOffset(parameter);
-        } else if (parameter.getType().contains(TYPE_ADDRESS)) {
-            return appendAddressPattern(Hex.toHexString(Base58.decode(_value)).substring(2, 42));
+        } else if (parameter.getType().contains(TYPE_ADDRESS) && _value.length() == 34) {
+            byte[] decode = Base58.decode(_value);
+            String toHexString = Hex.toHexString(decode);
+            String substring = toHexString.substring(2, 42);
+            return appendAddressPattern(substring);
+        } else if(parameter.getType().contains(TYPE_ADDRESS) ) {
+            return getStringOffset(parameter);
         }
+
         return "";
     }
 

@@ -13,6 +13,7 @@ import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.fragment_factory.Factory;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.pin_fragment.PinFragment;
+import com.pixelplex.qtum.utils.FontButton;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,6 +41,9 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
 
     @BindView(R.id.root_layout)
     RelativeLayout rootLayout;
+
+    @BindView(R.id.bt_login)
+    FontButton loginBtn;
 
     @OnClick({R.id.bt_import_wallet, R.id.bt_create_new, R.id.bt_login})
     public void OnClick(View view) {
@@ -84,6 +88,13 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
 
     @Override
     public void initializeViews() {
+
+        if(!QtumSharedPreference.getInstance().getKeyGeneratedInstance(getContext())){
+            loginBtn.setVisibility(View.INVISIBLE);
+        } else {
+            loginBtn.setVisibility(View.VISIBLE);
+        }
+
         if(getArguments().getBoolean(IS_LOGIN,false)){
             BaseFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION, getContext());
             openFragment(fragment);

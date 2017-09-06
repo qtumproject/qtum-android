@@ -89,6 +89,11 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         }
     }
 
+    public void resetAuthFlags(){
+        mCheckAuthenticationFlag = true;
+        mCheckAuthenticationShowFlag = false;
+    }
+
     @Override
     public void onResume(Context context) {
         super.onResume(context);
@@ -99,6 +104,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
             mCheckAuthenticationShowFlag = true;
         }
     }
+
 
     public boolean isCheckAuthenticationShowFlag() {
         return mCheckAuthenticationShowFlag;
@@ -115,6 +121,10 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
     private MainActivityInteractorImpl getInteractor() {
         return mMainActivityInteractor;
+    }
+
+    public boolean getLoginflag(){
+        return mAuthenticationFlag;
     }
 
     @Override

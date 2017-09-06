@@ -170,8 +170,8 @@ public class KeyStorage implements Serializable {
             mDeterministicKeyList = new ArrayList<>(ADDRESSES_COUNT);
             mAddressesList = new ArrayList<>();
             List<ChildNumber> pathParent = new ArrayList<>();
-            pathParent.add(new ChildNumber(44,true));
             pathParent.add(new ChildNumber(88,true));
+            pathParent.add(new ChildNumber(0,true));
             for (int i = 0; i < ADDRESSES_COUNT; i++) {
                 ImmutableList<ChildNumber> path = HDUtils.append(pathParent, new ChildNumber(i, true));
                 DeterministicKey k = sWallet.getActiveKeyChain().getKeyByPath(path,true);
