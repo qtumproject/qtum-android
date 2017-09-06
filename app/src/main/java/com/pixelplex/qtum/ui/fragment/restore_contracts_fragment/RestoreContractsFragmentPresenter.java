@@ -342,7 +342,7 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                 }
 
                 TinyDB tinyDB = new TinyDB(mContext);
-                List<SharedTemplate> templates = tinyDB.getTemplates();
+                List<ContractTemplate> templates = tinyDB.getContractTemplateList();
 
                 if (!restoreContracts && !restoreTokens) {
                             for (TemplateJSON templateJSON : mBackup.getTemplates()) {

@@ -41,7 +41,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
     public static BaseFragment newInstance(Context context, Contract token) {
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, TokenFragment.class);
-        args.putSerializable(tokenKey,token);
+        args.putSerializable(tokenKey, token);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,17 +49,15 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
     private TokenFragmentPresenter presenter;
 
     @OnClick(R.id.bt_back)
-    public void onBackClick(){
+    public void onBackClick() {
         getActivity().onBackPressed();
     }
 
     //HEADER
     @BindView(R.id.ll_balance)
-    protected
-    LinearLayout mLinearLayoutBalance;
+    protected LinearLayout mLinearLayoutBalance;
     @BindView(R.id.tv_balance)
-    protected
-    FontTextView mTextViewBalance;
+    protected FontTextView mTextViewBalance;
     @BindView(R.id.tv_currency)
     protected
     FontTextView mTextViewCurrency;
@@ -84,9 +82,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @BindView(R.id.swipe_refresh)
-    protected
-    SwipeRefreshLayout mSwipeRefreshLayout;
+
     @BindView(R.id.app_bar)
     protected
     AppBarLayout mAppBarLayout;
@@ -121,18 +117,18 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
     ShareDialogFragment shareDialog;
 
     @OnClick(R.id.bt_share)
-    public void onShareClick(){
-        shareDialog = ShareDialogFragment.newInstance(presenter.getToken().getContractAddress(),presenter.getAbi());
+    public void onShareClick() {
+        shareDialog = ShareDialogFragment.newInstance(presenter.getToken().getContractAddress(), presenter.getAbi());
         shareDialog.show(getFragmentManager(), shareDialog.getClass().getCanonicalName());
     }
 
     @OnClick(R.id.token_addr_btn)
-    public void onTokenAddrClick(){
+    public void onTokenAddrClick() {
         presenter.onReceiveClick();
     }
 
     @OnClick(R.id.iv_choose_address)
-    public void onChooseAddressClick(){
+    public void onChooseAddressClick() {
         presenter.onChooseAddressClick();
     }
 
@@ -166,14 +162,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
         presenter.setToken(token);
 
         collapseLinearLayout.requestLayout();
-        headerPAdding = convertDpToPixel(16,getContext());
-
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getPresenter().initializeViews();
-            }
-        });
+        headerPAdding = convertDpToPixel(16, getContext());
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
@@ -185,18 +174,18 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
 
     protected boolean expanded = false;
 
-    private void autodetectAppbar(){
-        if(percents >=.5f){
+    private void autodetectAppbar() {
+        if (percents >= .5f) {
             mAppBarLayout.setExpanded(true, true);
         } else {
             mAppBarLayout.setExpanded(false, true);
         }
     }
 
-    private static float convertDpToPixel(float dp, Context context){
+    private static float convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        return dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
     protected int getTotalRange() {
@@ -204,7 +193,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
     }
 
     protected void animateText(float percents, View view, float fringe) {
-        if(percents > fringe) {
+        if (percents > fringe) {
             view.setScaleX(percents);
             view.setScaleY(percents);
         } else {
@@ -215,7 +204,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
 
     @Override
     public void setTokenAddress(String address) {
-        if(!TextUtils.isEmpty(address)) {
+        if (!TextUtils.isEmpty(address)) {
             tokenAddress.setText(address);
             contractAddress.setText(address);
         }
@@ -224,7 +213,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
     @Override
     public void setSenderAddress(String address) {
         //if(!TextUtils.isEmpty(address)) {
-            //senderAddrValue.setText(address);
+        //senderAddrValue.setText(address);
         //}
     }
 }

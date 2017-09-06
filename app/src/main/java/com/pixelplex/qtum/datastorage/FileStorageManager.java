@@ -364,7 +364,7 @@ public class FileStorageManager {
         return prefs.edit().putInt(prefMigrationBuildVersion, BuildConfig.VERSION_CODE).commit();
     }
 
-    public ContractTemplate importTemplate(Context context, TemplateJSON templateJSON, List<SharedTemplate> templates){
+    public ContractTemplate importTemplate(Context context, TemplateJSON templateJSON, List<ContractTemplate> templates){
 
         if(TinyDB.isTemplateUnique(templates, templateJSON.getUuid())) {
 

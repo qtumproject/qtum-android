@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragmentPresenterImpl;
-import com.pixelplex.qtum.ui.fragment.create_wallet_name_fragment.CreateWalletNameFragment;
+import com.pixelplex.qtum.ui.fragment.pin_fragment.PinFragment;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,8 +42,8 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
         getInteractor().importWallet(brainCode, new ImportWalletFragmentInteractorImpl.ImportWalletCallBack() {
             @Override
             public void onSuccess() {
-                BaseFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(getView().getContext(), false,ImportWalletFragmentInteractorImpl.sPassphrase);
-                getView().openRootFragment(createWalletNameFragment);
+                BaseFragment pinfragment = PinFragment.newInstance(PinFragment.IMPORTING, ImportWalletFragmentInteractorImpl.sPassphrase, getView().getContext());
+                getView().openRootFragment(pinfragment);
                 getView().dismissProgressDialog();
                 ImportWalletFragmentInteractorImpl.isDataLoaded = false;
             }
@@ -82,8 +82,8 @@ class ImportWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     public void onResume(Context context) {
         super.onResume(context);
         if (ImportWalletFragmentInteractorImpl.isDataLoaded) {
-            BaseFragment createWalletNameFragment = CreateWalletNameFragment.newInstance(getView().getContext(), false,ImportWalletFragmentInteractorImpl.sPassphrase);
-            getView().openRootFragment(createWalletNameFragment);
+            BaseFragment pinFragment = PinFragment.newInstance(PinFragment.IMPORTING, ImportWalletFragmentInteractorImpl.sPassphrase, getView().getContext());
+            getView().openRootFragment(pinFragment);
             getView().dismissProgressDialog();
             ImportWalletFragmentInteractorImpl.isDataLoaded = false;
         }

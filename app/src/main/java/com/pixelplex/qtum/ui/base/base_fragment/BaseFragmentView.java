@@ -12,6 +12,7 @@ import com.pixelplex.qtum.ui.activity.main_activity.MainActivity;
 public interface BaseFragmentView extends BaseContextView {
     void openRootFragment(Fragment fragment);
     void openFragment(Fragment fragment);
+    void openFragmentWithBackStack(Fragment fragment, String tag);
     void openFragmentForResult(Fragment fragment);
     MainActivity getMainActivity();
     Fragment getFragment();

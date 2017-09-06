@@ -45,7 +45,7 @@ public abstract class ContractManagementFragment extends BaseFragment implements
     }
 
     protected MethodAdapter mMethodAdapter;
-    private String mContractAddress;
+    protected String mContractAddress;
 
     public static BaseFragment newInstance(Context context, String contractTemplateUiid, String contractAddress) {
         Bundle args = new Bundle();

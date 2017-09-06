@@ -85,11 +85,11 @@
 
         <FrameLayout
             android:id="@+id/balance"
-            android:background="@color/title_color_light"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include
-                layout="@layout/lyt_appbar_wallet_placeholder_light" />
+            android:layout_height="wrap_content"
+            android:background="@color/title_color_light">
+
+            <include layout="@layout/lyt_appbar_wallet_placeholder_light" />
         </FrameLayout>
 
         <RelativeLayout
