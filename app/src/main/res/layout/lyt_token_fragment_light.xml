@@ -8,16 +8,11 @@
     android:background="@color/white"
     android:fitsSystemWindows="true">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <com.pixelplex.qtum.utils.StackCollapseLinearLayout
                 android:id="@+id/collapse_layout"
@@ -51,8 +46,6 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"

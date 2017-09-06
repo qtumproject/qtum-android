@@ -87,8 +87,8 @@ public class TinyDB {
         return bitmapFromPath;
     }
 
-    public static boolean isTemplateUnique(List<SharedTemplate> templates, String uuid){
-        for (SharedTemplate template : templates){
+    public static boolean isTemplateUnique(List<ContractTemplate> templates, String uuid){
+        for (ContractTemplate template : templates){
             if (uuid.equals(template.getUuid())){
                 return false;
             }

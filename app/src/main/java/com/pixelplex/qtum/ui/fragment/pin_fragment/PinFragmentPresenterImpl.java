@@ -123,7 +123,8 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
                                     } else {
                                         getInteractor().savePassword(pinHash);
                                         getView().getMainActivity().onLogin();
-                                        getView().openRootFragment(fragment);
+                                        getView().dismiss();
+                                        getView().openFragmentWithBackStack(fragment, fragment.getClass().getName());
                                         getView().dismissProgressDialog();
                                         PinFragmentInteractorImpl.isDataLoaded = false;
                                     }

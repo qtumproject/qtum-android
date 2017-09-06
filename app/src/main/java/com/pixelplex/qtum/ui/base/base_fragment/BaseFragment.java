@@ -322,6 +322,16 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
+    public void openFragmentWithBackStack(Fragment fragment, String tag){
+        hideKeyBoard();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                .addToBackStack(tag)
+                .commit();
+    }
+
+    @Override
     public void initializeViews() {
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (null != mToolbar) {
