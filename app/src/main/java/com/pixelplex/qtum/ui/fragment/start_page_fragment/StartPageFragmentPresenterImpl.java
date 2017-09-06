@@ -1,14 +1,18 @@
 package com.pixelplex.qtum.ui.fragment.start_page_fragment;
 
 import android.content.Context;
+
+
+import com.pixelplex.qtum.datastorage.QtumSharedPreference;
+
 import android.content.Intent;
 
 import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
 import com.pixelplex.qtum.datastorage.HistoryList;
 import com.pixelplex.qtum.datastorage.KeyStorage;
 import com.pixelplex.qtum.datastorage.NewsList;
-import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.datastorage.TinyDB;
+
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.import_wallet_fragment.ImportWalletFragment;
@@ -39,6 +43,15 @@ class StartPageFragmentPresenterImpl extends BaseFragmentPresenterImpl implement
         clearWallet();
         BaseFragment pinFragment = PinFragment.newInstance(PinFragment.CREATING, getView().getContext());
         getView().openFragment(pinFragment);
+    }
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        boolean isKeyGenerated = QtumSharedPreference.getInstance().getKeyGeneratedInstance(getView().getContext());
+        if(!isKeyGenerated){
+            getView().hideLoginButton();
+        }
     }
 
     @Override

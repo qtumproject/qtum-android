@@ -104,6 +104,9 @@ public class TokenFragmentLight extends TokenFragment {
                 placeHolderCurrency.setText(propValue);
                 mTextViewCurrency.setText(" " + propValue);
                 break;
+            case name:
+                mTextViewTokenName.setText(propValue);
+                break;
         }
     }
 

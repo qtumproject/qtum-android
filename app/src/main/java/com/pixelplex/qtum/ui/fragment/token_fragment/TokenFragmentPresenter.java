@@ -61,7 +61,7 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
 
 
     public void onReceiveClick(){
-        BaseFragment receiveFragment = ReceiveFragment.newInstance(getView().getContext(), token.getContractAddress());
+        BaseFragment receiveFragment = ReceiveFragment.newInstance(getView().getContext(), token.getContractAddress(), getView().getTokenBalance());
         getView().openFragment(receiveFragment);
     }
 
@@ -86,6 +86,11 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
                 getView().onContractPropertyUpdated(TokenFragment.symbol, value);
             }
         });
+        ContractManagementHelper.getPropertyValue(TokenFragment.name, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
+            @Override
+            public void onSuccess(String value) {
+                getView().onContractPropertyUpdated(TokenFragment.name, value);
+            }
+        });
     }
 }
-

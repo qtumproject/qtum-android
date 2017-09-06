@@ -26,7 +26,7 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     private static final String IS_LOGIN = "is_login";
 
     @BindView(R.id.bt_create_new)
-    Button mButtonCreateNew;
+    protected Button mButtonCreateNew;
     @BindView(R.id.bt_import_wallet)
     Button mButtonImportWallet;
     @BindView(R.id.tv_start_page_you_dont_have)
@@ -36,14 +36,14 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     @BindView(R.id.rl_button_container)
     RelativeLayout mRelativeLayoutButtonContainer;
 
+    @BindView(R.id.bt_login)
+    protected FontButton mButtonLogin;
+
     @BindView(R.id.logo_view)
     ImageView logoView;
 
     @BindView(R.id.root_layout)
     RelativeLayout rootLayout;
-
-    @BindView(R.id.bt_login)
-    FontButton loginBtn;
 
     @OnClick({R.id.bt_import_wallet, R.id.bt_create_new, R.id.bt_login})
     public void OnClick(View view) {
@@ -88,17 +88,11 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
 
     @Override
     public void initializeViews() {
-
-        if(!QtumSharedPreference.getInstance().getKeyGeneratedInstance(getContext())){
-            loginBtn.setVisibility(View.INVISIBLE);
-        } else {
-            loginBtn.setVisibility(View.VISIBLE);
-        }
-
         if(getArguments().getBoolean(IS_LOGIN,false)){
             BaseFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION, getContext());
             openFragment(fragment);
         }
     }
+
 
 }

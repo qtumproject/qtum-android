@@ -1,6 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.qtum_cash_management_fragment.dark;
 
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TextInputEditText;
@@ -107,7 +108,15 @@ public class AddressListFragmentDark extends AddressListFragment{
             mTransferDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
+        mTransferDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                showTransferDialog = false;
+            }
+        });
+
         mTransferDialog.setCanceledOnTouchOutside(false);
+        showTransferDialog = true;
         mTransferDialog.show();
     }
 }

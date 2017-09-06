@@ -20,7 +20,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public abstract class PinFragment extends BaseFragment implements PinFragmentView, Runnable {
+public abstract class PinFragment extends BaseFragment implements PinFragmentView {
 
     private PinFragmentPresenterImpl mPinFragmentPresenter;
 
@@ -138,14 +138,19 @@ public abstract class PinFragment extends BaseFragment implements PinFragmentVie
 
     @Override
     public void onPause() {
-        if(softHandler != null) {
-            softHandler.removeCallbacks(this);
-        }
         super.onPause();
         hideKeyBoard();
     }
 
     Handler softHandler;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showSoftInput();
+        mWalletPin.setFocusableInTouchMode(true);
+        mWalletPin.requestFocus();
+    }
 
     @Override
     public void initializeViews() {
@@ -159,10 +164,5 @@ public abstract class PinFragment extends BaseFragment implements PinFragmentVie
                 }
             }
         });
-    }
-
-    @Override
-    public void run() {
-        showSoftInput();
     }
 }

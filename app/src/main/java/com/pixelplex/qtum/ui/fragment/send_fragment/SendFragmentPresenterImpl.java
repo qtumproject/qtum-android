@@ -186,8 +186,8 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
 
     @Override
     public void onResponse(String publicAddress, double amount, String tokenAddress) {
-        tokenAddress = validateTokenExistance(tokenAddress);
-        getView().updateData(publicAddress, amount, tokenAddress);
+        String tokenName = validateTokenExistance(tokenAddress);
+        getView().updateData(publicAddress, amount, tokenName);
     }
 
     private String validateTokenExistance(String tokenAddress){
@@ -200,7 +200,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         List<Token> tokenList = tdb.getTokenList();
         for (Token token : tokenList){
             if(tokenAddress.equals(token.getContractAddress())){
-                return tokenAddress;
+                return token.getContractName();
             }
         }
         getView().setAlertDialog(mContext.getString(R.string.token_not_found),"Ok", BaseFragment.PopUpType.error);

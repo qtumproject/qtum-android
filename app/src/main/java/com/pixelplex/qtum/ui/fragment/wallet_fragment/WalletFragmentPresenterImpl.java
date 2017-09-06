@@ -181,7 +181,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
     }
 
     public void onReceiveClick(){
-        BaseFragment receiveFragment = ReceiveFragment.newInstance(mContext,null);
+        BaseFragment receiveFragment = ReceiveFragment.newInstance(mContext,null, null);
         getView().openFragmentForResult(receiveFragment);
     }
 
