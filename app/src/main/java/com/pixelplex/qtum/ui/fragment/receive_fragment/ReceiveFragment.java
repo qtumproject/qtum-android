@@ -134,6 +134,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, ReceiveFragment.class);
         args.putString(TOKEN_BALANCE, balance);
+        args.putString(TOKEN_ADDRESS, tokenAddress);
         fragment.setArguments(args);
         return fragment;
     }
