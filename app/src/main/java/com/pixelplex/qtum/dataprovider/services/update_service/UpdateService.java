@@ -387,6 +387,10 @@ public class UpdateService extends Service {
         socket.emit("subscribe", "contract_purchase", id);
     }
 
+    public void subscribeTokenBalanceChange(String tokenAddress){
+        subscribeTokenBalanceChange(tokenAddress, mFirebasePrevToken, mFirebaseCurrentToken);
+    }
+
     private void subscribeTokenBalanceChange(String tokenAddress, String prevToken, String currentToken){
         JSONObject jsonObject = new JSONObject();
         JSONObject jsonObjectToken = new JSONObject();

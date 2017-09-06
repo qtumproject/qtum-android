@@ -15,4 +15,5 @@ interface ReceiveFragmentView extends BaseFragmentView {
     void showToast();
     void openFragmentForResult(Fragment fragment);
     Bitmap getQrCode();
+    String getTokenBalance();
 }

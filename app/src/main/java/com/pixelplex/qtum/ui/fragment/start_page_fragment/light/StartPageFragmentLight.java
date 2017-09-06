@@ -1,5 +1,7 @@
 package com.pixelplex.qtum.ui.fragment.start_page_fragment.light;
 
+import android.view.View;
+
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.ui.fragment.start_page_fragment.StartPageFragment;
 import com.pixelplex.qtum.ui.wave_visualizer.WaveHelper;
@@ -40,4 +42,10 @@ public class StartPageFragmentLight extends StartPageFragment {
         mWaveHelper.cancel();
         super.onPause();
     }
+
+    @Override
+    public void hideLoginButton() {
+        mButtonLogin.setVisibility(View.GONE);
+    }
+
 }

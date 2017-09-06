@@ -49,6 +49,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
     private final int WRITE_EXTERNAL_STORAGE_CODE = 5;
 
     public static final String TOKEN_ADDRESS = "TOKEN_ADDRESS";
+    public static final String TOKEN_BALANCE = "TOKEN_BALANCE";
 
     @BindView(R.id.iv_qr_code)
     ImageView mImageViewQrCode;
@@ -81,9 +82,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
 
     @OnClick(R.id.iv_qr_code)
     public void onQrCodeClick() {
-        mImageViewQrCode.setDrawingCacheEnabled(false);
-        mImageViewQrCode.setDrawingCacheEnabled(true);
-        mImageViewQrCode.buildDrawingCache();
+        rebuildDrawingCash();
         if (mImageViewQrCode.getDrawingCache() != null) {
             zoomDialog = QrCodePreview.newInstance(mImageViewQrCode.getDrawingCache());
             zoomDialog.show(getFragmentManager(), zoomDialog.getClass().getCanonicalName());
@@ -131,9 +130,10 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
         }
     }
 
-    public static BaseFragment newInstance(Context context, String tokenAddress) {
+    public static BaseFragment newInstance(Context context, String tokenAddress, String balance) {
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, ReceiveFragment.class);
+        args.putString(TOKEN_BALANCE, balance);
         fragment.setArguments(args);
         return fragment;
     }
@@ -238,6 +238,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
 
     @Override
     public Bitmap getQrCode() {
+        rebuildDrawingCash();
         return mImageViewQrCode.getDrawingCache();
     }
 
@@ -283,6 +284,11 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
     }
 
     @Override
+    public String getTokenBalance() {
+        return getArguments().getString(TOKEN_BALANCE);
+    }
+
+    @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
         placeHolderBalance.setText(balance);
         if(!TextUtils.isEmpty(unconfirmedBalance)) {
@@ -291,5 +297,11 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
         } else {
             notConfirmedBalancePlaceholder.setVisibility(View.GONE);
         }
+    }
+
+    private void rebuildDrawingCash(){
+        mImageViewQrCode.setDrawingCacheEnabled(false);
+        mImageViewQrCode.setDrawingCacheEnabled(true);
+        mImageViewQrCode.buildDrawingCache();
     }
 }
