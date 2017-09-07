@@ -34,6 +34,7 @@ import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
 import com.pixelplex.qtum.datastorage.QtumSharedPreference;
 import com.pixelplex.qtum.ui.base.base_activity.BaseActivity;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
+import com.pixelplex.qtum.ui.fragment.wallet_fragment.WalletFragment;
 import com.pixelplex.qtum.utils.CustomContextWrapper;
 import com.pixelplex.qtum.utils.FontManager;
 
@@ -42,6 +43,7 @@ import com.pixelplex.qtum.ui.fragment.send_fragment.SendFragment;
 import com.pixelplex.qtum.utils.ThemeUtils;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -97,6 +99,10 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     public void loadPermissions(String perm, int requestCode) {
         ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
+    }
+
+    public boolean getLoginflag(){
+        return getPresenter().getLoginflag();
     }
 
     public boolean checkPermission(String perm){
@@ -271,6 +277,22 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         });
 
         getPresenter().processIntent(getIntent());
+
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() { //Update wallet balance change listener
+            @Override
+            public void onBackStackChanged() {
+                if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                    List<Fragment> fragments = getSupportFragmentManager().getFragments();
+                    if (fragments != null) {
+                        for (Fragment fr : fragments) {
+                            if (fr != null && fr.getClass() != null && fr instanceof WalletFragment){
+                                ((WalletFragment)fr).initBalanceListener();
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void initBottomNavViewWithFont(int fontId){
@@ -447,6 +469,10 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     public interface AuthenticationListener{
         void onAuthenticate();
+    }
+
+    public void resetAuthFlags(){
+        getPresenter().resetAuthFlags();
     }
 
 }

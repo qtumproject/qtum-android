@@ -10,7 +10,7 @@ public class ContractJSON {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("contract_creation_addres")
+    @SerializedName("contract_creation_address")
     @Expose
     private String contractCreationAddres;
     @SerializedName("contract_address")
@@ -96,7 +96,7 @@ public class ContractJSON {
     }
 
     public boolean getValidity(){
-        return !TextUtils.isEmpty(name) && !TextUtils.isEmpty(contractCreationAddres) && !TextUtils.isEmpty(type) && !TextUtils.isEmpty(contractAddress) && !TextUtils.isEmpty(publishDate) && !TextUtils.isEmpty(template);
+        return !TextUtils.isEmpty(name) && !TextUtils.isEmpty(type) && !TextUtils.isEmpty(contractAddress) && !TextUtils.isEmpty(publishDate) && !TextUtils.isEmpty(template);
     }
 
 }
