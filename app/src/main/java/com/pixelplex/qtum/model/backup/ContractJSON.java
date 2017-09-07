@@ -10,7 +10,7 @@ public class ContractJSON {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("contract_creation_addres")
+    @SerializedName("contract_creation_address")
     @Expose
     private String contractCreationAddres;
     @SerializedName("contract_address")

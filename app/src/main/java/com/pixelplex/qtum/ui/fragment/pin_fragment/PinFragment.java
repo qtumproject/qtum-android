@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.ui.fragment.start_page_fragment.StartPageFragment;
 import com.pixelplex.qtum.ui.fragment_factory.Factory;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.utils.FontTextView;
@@ -49,8 +50,17 @@ public abstract class PinFragment extends BaseFragment implements PinFragmentVie
     void onClick(View view){
         switch (view.getId()){
             case R.id.bt_cancel:
-                getMainActivity().onBackPressed();
+                onCancelClick();
                 break;
+        }
+    }
+
+    void onCancelClick(){
+        if(getMainActivity().getLoginflag()){
+            getMainActivity().resetAuthFlags();
+            openRootFragment(StartPageFragment.newInstance(false,getContext()));
+        } else {
+            getMainActivity().onBackPressed();
         }
     }
 

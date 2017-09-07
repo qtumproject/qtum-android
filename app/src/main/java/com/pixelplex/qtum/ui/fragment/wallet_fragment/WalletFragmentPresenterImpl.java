@@ -80,25 +80,7 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
                         }
                     });
 
-                    mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
-                        @Override
-                        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
-                            getView().getMainActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String balanceString = balance.toString();
-                                    if(balanceString!=null) {
-                                        String unconfirmedBalanceString = unconfirmedBalance.toString();
-                                        if(!TextUtils.isEmpty(unconfirmedBalanceString) && !unconfirmedBalanceString.equals("0")) {
-                                            getView().updateBalance(balanceString,String.valueOf(unconfirmedBalance.floatValue()));
-                                        } else {
-                                            getView().updateBalance(balanceString,null);
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    });
+                   initBalanceListener();
                 }
             }
         });
@@ -123,6 +105,28 @@ public class WalletFragmentPresenterImpl extends BaseFragmentPresenterImpl imple
                         OPEN_QR_CODE_FRAGMENT_FLAG = true;
                     }
                 }
+            }
+        });
+    }
+
+    public void initBalanceListener(){
+        mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
+            @Override
+            public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
+                getView().getMainActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String balanceString = balance.toString();
+                        if(balanceString!=null) {
+                            String unconfirmedBalanceString = unconfirmedBalance.toString();
+                            if(!TextUtils.isEmpty(unconfirmedBalanceString) && !unconfirmedBalanceString.equals("0")) {
+                                getView().updateBalance(balanceString,String.valueOf(unconfirmedBalance.floatValue()));
+                            } else {
+                                getView().updateBalance(balanceString,null);
+                            }
+                        }
+                    }
+                });
             }
         });
     }

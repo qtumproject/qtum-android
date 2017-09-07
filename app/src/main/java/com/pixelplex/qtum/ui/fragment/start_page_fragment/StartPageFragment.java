@@ -35,6 +35,7 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     TextView mTextViewStartPageCreate;
     @BindView(R.id.rl_button_container)
     RelativeLayout mRelativeLayoutButtonContainer;
+
     @BindView(R.id.bt_login)
     protected FontButton mButtonLogin;
 

@@ -184,6 +184,10 @@ public abstract class WalletFragment extends BaseFragment implements WalletFragm
         });
     }
 
+    public void initBalanceListener(){
+        getPresenter().initBalanceListener();
+    }
+
     @Override
     public void notifyConfirmHistory(final int notifyPosition) {
         getActivity().runOnUiThread(new Runnable() {
