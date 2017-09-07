@@ -174,14 +174,6 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
 
     protected boolean expanded = false;
 
-    private void autodetectAppbar() {
-        if (percents >= .5f) {
-            mAppBarLayout.setExpanded(true, true);
-        } else {
-            mAppBarLayout.setExpanded(false, true);
-        }
-    }
-
     private static float convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();

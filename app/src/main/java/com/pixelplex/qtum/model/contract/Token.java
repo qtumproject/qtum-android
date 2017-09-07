@@ -13,6 +13,17 @@ public class Token extends Contract {
         this.mIsSubscribe = true;
     }
 
+    @SerializedName("decimal_units")
+    private Integer decimalUnits;
+
+    public void setDecimalUnits(Integer decimalUnits){
+        this.decimalUnits = decimalUnits;
+    }
+
+    public Integer getDecimalUnits(){
+        return this.decimalUnits;
+    }
+
     public void setLastBalance(float balance){
         this.mLastBalance = balance;
     }
@@ -27,6 +38,10 @@ public class Token extends Contract {
 
     public void setSubscribe(boolean subscribe) {
         mIsSubscribe = subscribe;
+    }
+
+    public float getTokenBalanceWithDecimalUnits(){
+        return  (mLastBalance / (float)Math.pow(10, (decimalUnits != null)? decimalUnits : 0 ));
     }
 
 }

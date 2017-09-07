@@ -5,12 +5,15 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.pixelplex.qtum.datastorage.FileStorageManager;
+import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.ui.fragment.token_cash_management_fragment.AdressesListFragmentToken;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import com.pixelplex.qtum.ui.fragment.receive_fragment.ReceiveFragment;
 import com.pixelplex.qtum.utils.ContractManagementHelper;
+
+import java.util.List;
 
 
 public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
@@ -58,6 +61,17 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
         Toast.makeText(mContext,"Refreshing...", Toast.LENGTH_SHORT).show();
     }
 
+    private void saveTokenDecimalUnits(int decimalUnits){
+        TinyDB tinyDB = new TinyDB(getView().getContext());
+        List<Token> tokenList = tinyDB.getTokenList();
+        for (Token t : tokenList){
+            if(token.getUiid().equals(t.getUiid())){
+                t.setDecimalUnits(decimalUnits);
+                this.token = t;
+            }
+        }
+        tinyDB.putTokenList(tokenList);
+    }
 
 
     public void onReceiveClick(){
@@ -74,12 +88,22 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
                 getView().onContractPropertyUpdated(TokenFragment.totalSupply, value);
             }
         });
-        ContractManagementHelper.getPropertyValue(TokenFragment.decimals, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
-            @Override
-            public void onSuccess(String value) {
-                getView().onContractPropertyUpdated(TokenFragment.decimals, value);
-            }
-        });
+
+        if(token.getDecimalUnits() == null) {
+            ContractManagementHelper.getPropertyValue(TokenFragment.decimals, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
+                @Override
+                public void onSuccess(String value) {
+                    getView().onContractPropertyUpdated(TokenFragment.decimals, value);
+                    if(value != null) {
+                        saveTokenDecimalUnits(Integer.valueOf(value));
+                        getView().setBalance(token.getTokenBalanceWithDecimalUnits());
+                    }
+                }
+            });
+        } else {
+            getView().onContractPropertyUpdated(TokenFragment.decimals, String.valueOf(token.getDecimalUnits()));
+        }
+
         ContractManagementHelper.getPropertyValue(TokenFragment.symbol, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
             @Override
             public void onSuccess(String value) {
@@ -93,4 +117,5 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
             }
         });
     }
+
 }
