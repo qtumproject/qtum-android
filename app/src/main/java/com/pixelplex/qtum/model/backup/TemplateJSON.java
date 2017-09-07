@@ -100,4 +100,9 @@ public class TemplateJSON {
         return (!TextUtils.isEmpty(source) || !TextUtils.isEmpty(abi)) && !TextUtils.isEmpty(uuid) && !TextUtils.isEmpty(creationDate) && !TextUtils.isEmpty(type) && !TextUtils.isEmpty(name);
     }
 
+    public boolean isFull(){
+        return (!TextUtils.isEmpty(bytecode) && !TextUtils.isEmpty(abi) || !TextUtils.isEmpty(source));
+    }
+
+
 }

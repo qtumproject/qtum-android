@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.gson.token_balance.TokenBalance;
 import com.pixelplex.qtum.dataprovider.services.update_service.listeners.TokenBalanceChangeListener;
+import com.pixelplex.qtum.ui.fragment.token_fragment.TokenFragment;
 import com.pixelplex.qtum.utils.ContractManagementHelper;
 import com.pixelplex.qtum.utils.FontTextView;
 import butterknife.BindView;
@@ -59,7 +61,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
 
         this.token = token;
 
-        ContractManagementHelper.getPropertyValue("symbol", token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
+        ContractManagementHelper.getPropertyValue(TokenFragment.symbol, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
             @Override
             public void onSuccess(String value) {
                 spinner.setVisibility(View.GONE);
@@ -81,16 +83,31 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
     @SuppressLint("DefaultLocale")
     @Override
     public void onBalanceChange(final TokenBalance tokenBalance) {
-        if(token.getContractAddress().equals(tokenBalance.getContractAddress())){
+        if (token.getContractAddress().equals(tokenBalance.getContractAddress())) {
             token.setLastBalance(tokenBalance.getTotalBalance());
-            rootLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    spinner.setVisibility(View.GONE);
-                    tokenBalanceView.setText(String.valueOf(tokenBalance.getTotalBalance()));
-                    tokenBalanceView.setVisibility(View.VISIBLE);
-                }
-            });
+
+            if (token.getDecimalUnits() == null) {
+                ContractManagementHelper.getPropertyValue(TokenFragment.decimals, token, itemView.getContext(), new ContractManagementHelper.GetPropertyValueCallBack() {
+                    @Override
+                    public void onSuccess(String value) {
+                        token = new TinyDB(itemView.getContext()).setTokenDecimals(token, Integer.valueOf(value));
+                        updateBalance();
+                    }
+                });
+            } else {
+                updateBalance();
+            }
         }
+    }
+
+    private void updateBalance() {
+        rootLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                spinner.setVisibility(View.GONE);
+                tokenBalanceView.setText(String.valueOf(token.getTokenBalanceWithDecimalUnits()));
+                tokenBalanceView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

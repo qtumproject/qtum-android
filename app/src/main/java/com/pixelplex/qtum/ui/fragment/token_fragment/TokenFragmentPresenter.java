@@ -28,8 +28,8 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
         return token;
     }
 
-    public String getAbi(){
-        abi = (TextUtils.isEmpty(abi))? FileStorageManager.getInstance().readAbiContract(getView().getContext(),token.getUiid()) : abi;
+    public String getAbi() {
+        abi = (TextUtils.isEmpty(abi)) ? FileStorageManager.getInstance().readAbiContract(getView().getContext(), token.getUiid()) : abi;
         return abi;
     }
 
@@ -40,13 +40,13 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
         getView().setSenderAddress(this.token.getSenderAddress());
     }
 
-    public TokenFragmentPresenter(TokenFragmentView view){
+    public TokenFragmentPresenter(TokenFragmentView view) {
         this.view = view;
         this.mContext = getView().getContext();
     }
 
     public void onChooseAddressClick() {
-        if(!TextUtils.isEmpty(getView().getCurrency())) {
+        if (!TextUtils.isEmpty(getView().getCurrency())) {
             BaseFragment addressListFragment = AdressesListFragmentToken.newInstance(mContext, token, getView().getCurrency());
             getView().openFragment(addressListFragment);
         }
@@ -58,23 +58,10 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
     }
 
     public void onRefresh() {
-        Toast.makeText(mContext,"Refreshing...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "Refreshing...", Toast.LENGTH_SHORT).show();
     }
 
-    private void saveTokenDecimalUnits(int decimalUnits){
-        TinyDB tinyDB = new TinyDB(getView().getContext());
-        List<Token> tokenList = tinyDB.getTokenList();
-        for (Token t : tokenList){
-            if(token.getUiid().equals(t.getUiid())){
-                t.setDecimalUnits(decimalUnits);
-                this.token = t;
-            }
-        }
-        tinyDB.putTokenList(tokenList);
-    }
-
-
-    public void onReceiveClick(){
+    public void onReceiveClick() {
         BaseFragment receiveFragment = ReceiveFragment.newInstance(getView().getContext(), token.getContractAddress(), getView().getTokenBalance());
         getView().openFragment(receiveFragment);
     }
@@ -89,19 +76,20 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
             }
         });
 
-        if(token.getDecimalUnits() == null) {
+        if (token.getDecimalUnits() == null) {
             ContractManagementHelper.getPropertyValue(TokenFragment.decimals, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
                 @Override
                 public void onSuccess(String value) {
                     getView().onContractPropertyUpdated(TokenFragment.decimals, value);
-                    if(value != null) {
-                        saveTokenDecimalUnits(Integer.valueOf(value));
+                    if (value != null) {
+                        token = new TinyDB(getView().getContext()).setTokenDecimals(token, Integer.valueOf(value));
                         getView().setBalance(token.getTokenBalanceWithDecimalUnits());
                     }
                 }
             });
         } else {
             getView().onContractPropertyUpdated(TokenFragment.decimals, String.valueOf(token.getDecimalUnits()));
+            getView().setBalance(token.getTokenBalanceWithDecimalUnits());
         }
 
         ContractManagementHelper.getPropertyValue(TokenFragment.symbol, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
