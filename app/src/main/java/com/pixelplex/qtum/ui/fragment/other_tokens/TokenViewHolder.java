@@ -105,7 +105,10 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
             @Override
             public void run() {
                 spinner.setVisibility(View.GONE);
-                tokenBalanceView.setText(String.valueOf(token.getTokenBalanceWithDecimalUnits()));
+
+                String s = token.getTokenBalanceWithDecimalUnits().toPlainString();
+
+                tokenBalanceView.setText(String.valueOf(s));
                 tokenBalanceView.setVisibility(View.VISIBLE);
             }
         });

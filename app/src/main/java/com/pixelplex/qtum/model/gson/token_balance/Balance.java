@@ -4,6 +4,8 @@ package com.pixelplex.qtum.model.gson.token_balance;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 public class Balance {
 
     @SerializedName("address")
@@ -11,7 +13,7 @@ public class Balance {
     private String address;
     @SerializedName("balance")
     @Expose
-    private Float balance;
+    private BigDecimal balance;
 
     public String getAddress() {
         return address;
@@ -21,11 +23,11 @@ public class Balance {
         this.address = address;
     }
 
-    public Float getBalance() {
-        return (balance != null)? balance : 0;
+    public BigDecimal getBalance() {
+        return (balance != null)? balance : new BigDecimal(0);
     }
 
-    public void setBalance(Float balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

@@ -35,7 +35,7 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
 
     public void setToken(Token token) {
         this.token = token;
-        getView().setBalance(this.token.getLastBalance());
+        getView().setBalance(this.token.getLastBalance().toPlainString());
         getView().setTokenAddress(this.token.getContractAddress());
         getView().setSenderAddress(this.token.getSenderAddress());
     }
@@ -83,13 +83,13 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
                     getView().onContractPropertyUpdated(TokenFragment.decimals, value);
                     if (value != null) {
                         token = new TinyDB(getView().getContext()).setTokenDecimals(token, Integer.valueOf(value));
-                        getView().setBalance(token.getTokenBalanceWithDecimalUnits());
+                        getView().setBalance(token.getTokenBalanceWithDecimalUnits().toPlainString());
                     }
                 }
             });
         } else {
             getView().onContractPropertyUpdated(TokenFragment.decimals, String.valueOf(token.getDecimalUnits()));
-            getView().setBalance(token.getTokenBalanceWithDecimalUnits());
+            getView().setBalance(token.getTokenBalanceWithDecimalUnits().toPlainString());
         }
 
         ContractManagementHelper.getPropertyValue(TokenFragment.symbol, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {

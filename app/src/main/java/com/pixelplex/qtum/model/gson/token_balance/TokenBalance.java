@@ -1,5 +1,6 @@
 package com.pixelplex.qtum.model.gson.token_balance;
 
+import java.math.BigDecimal;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -36,11 +37,11 @@ public class TokenBalance {
         return null;
     }
 
-    public float getMaxBalance() {
-        float maxBalance = 0;
+    public BigDecimal getMaxBalance() {
+        BigDecimal maxBalance = new BigDecimal(0);
         if(balances != null && balances.size() > 0){
             for (Balance balance: balances) {
-                if(maxBalance < balance.getBalance()){
+                if(maxBalance.intValue() < balance.getBalance().intValue()){
                     maxBalance = balance.getBalance();
                 }
             }
@@ -48,11 +49,13 @@ public class TokenBalance {
         return maxBalance;
     }
 
-    public float getTotalBalance() {
-        float summaryBalance = 0;
+    public BigDecimal getTotalBalance() {
+        BigDecimal summaryBalance = new BigDecimal(0);
         if(balances != null && balances.size() > 0){
             for (Balance balance: balances) {
-                summaryBalance += balance.getBalance();
+                if(balance.getBalance().intValue() > 0) {
+                   summaryBalance = summaryBalance.add(balance.getBalance());
+                }
             }
         }
         return summaryBalance;

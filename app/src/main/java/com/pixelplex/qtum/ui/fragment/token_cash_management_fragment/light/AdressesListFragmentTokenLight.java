@@ -34,7 +34,7 @@ public class AdressesListFragmentTokenLight extends AdressesListFragmentToken {
     @Override
     public void updateAddressList(List<DeterministicKeyWithTokenBalance> deterministicKeyWithBalance, String currency) {
         if(mRecyclerView != null) {
-            adapter = new TokenAdressesAdapter(deterministicKeyWithBalance, R.layout.item_address_light, this, currency);
+            adapter = new TokenAdressesAdapter(deterministicKeyWithBalance, R.layout.item_address_light, this, currency, getPresenter().getDecimalUnits());
             mRecyclerView.setAdapter(adapter);
         }
     }
@@ -43,10 +43,10 @@ public class AdressesListFragmentTokenLight extends AdressesListFragmentToken {
     public void onItemClick(DeterministicKeyWithTokenBalance item) {
         List<DeterministicKeyWithTokenBalance> deterministicKeyWithBalances = new ArrayList<>(getPresenter().items);
         deterministicKeyWithBalances.remove(item);
-        showTransferDialogFragment(item, deterministicKeyWithBalances);
+        showTransferDialogFragment(item, deterministicKeyWithBalances, getPresenter().getDecimalUnits());
     }
 
-    protected void showTransferDialogFragment(final DeterministicKeyWithTokenBalance keyWithBalanceTo, List<DeterministicKeyWithTokenBalance> keyWithBalanceList){
+    protected void showTransferDialogFragment(final DeterministicKeyWithTokenBalance keyWithBalanceTo, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, int decimalUnits){
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_transfer_balance_fragment_light, null);
 
         final TextInputEditText mEditTextAmount = (TextInputEditText)view.findViewById(R.id.et_amount);
@@ -55,7 +55,7 @@ public class AdressesListFragmentTokenLight extends AdressesListFragmentToken {
 
         mEditTextAddressTo.setText(keyWithBalanceTo.getKey().toAddress(CurrentNetParams.getNetParams()).toString());
 
-        AddressesWithTokenBalanceSpinnerAdapterLight spinnerAdapter = new AddressesWithTokenBalanceSpinnerAdapterLight(getContext(),keyWithBalanceList, getPresenter().getCurrency());
+        AddressesWithTokenBalanceSpinnerAdapterLight spinnerAdapter = new AddressesWithTokenBalanceSpinnerAdapterLight(getContext(),keyWithBalanceList, getPresenter().getCurrency(), decimalUnits);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

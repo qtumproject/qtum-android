@@ -22,11 +22,13 @@ public abstract class AddressesWithTokenBalanceSpinnerAdapter extends BaseAdapte
     private Context mContext;
     private List<DeterministicKeyWithTokenBalance> mKeyWithBalanceList;
     String currency;
+    int decimalUnits;
 
-    public AddressesWithTokenBalanceSpinnerAdapter(@NonNull Context context, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, String currency) {
+    public AddressesWithTokenBalanceSpinnerAdapter(@NonNull Context context, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, String currency, int decimalUnits) {
         mContext = context;
         mKeyWithBalanceList = keyWithBalanceList;
         this.currency = currency;
+        this.decimalUnits = decimalUnits;
     }
 
     @Override
@@ -51,7 +53,7 @@ public abstract class AddressesWithTokenBalanceSpinnerAdapter extends BaseAdapte
         final FontTextView textViewBalance = (FontTextView) view.findViewById(R.id.address_balance);
         final FontTextView textViewSymbol = (FontTextView) view.findViewById(R.id.address_symbol);
         textViewSymbol.setText(String.format(" %s", currency));
-        textViewBalance.setText((mKeyWithBalanceList.get(position).getBalance() != null)? String.valueOf(mKeyWithBalanceList.get(position).getBalance()) : "0");
+        textViewBalance.setText((mKeyWithBalanceList.get(position).getBalance() != null)? String.valueOf(mKeyWithBalanceList.get(position).getBalance().doubleValue() / Math.pow(10, decimalUnits)) : "0");
         textViewAddress.setText(mKeyWithBalanceList.get(position).getAddress());
 
         return view;
