@@ -99,7 +99,7 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
     String getadditionalInfo(){
-        return "label=1234&message=mne";
+        return "label=QTUM Mobile Wallet&message=Payment Request";
     }
 
     String getFormattedTokenAddr(String addr){
