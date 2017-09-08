@@ -101,10 +101,6 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
     }
 
-    public boolean getLoginflag(){
-        return getPresenter().getLoginflag();
-    }
-
     public boolean checkPermission(String perm){
         return ContextCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED;
     }
@@ -242,6 +238,10 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         }
+    }
+
+    public boolean isBottomNavigationViewVisible(){
+        return mBottomNavigationView.getVisibility() == View.VISIBLE;
     }
 
     public void showBottomNavigationView(int resColorId) {

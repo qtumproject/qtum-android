@@ -8,15 +8,14 @@ import com.pixelplex.qtum.ui.wave_visualizer.WaveView;
 
 import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 06.07.17.
- */
 
 public class PinFragmentLight extends PinFragment {
 
     @BindView(R.id.wave_view)
     WaveView waveView;
     private WaveHelper mWaveHelper;
+
+    boolean isBottomNavigationViewVisible;
 
     @Override
     protected int getLayout() {
@@ -26,6 +25,8 @@ public class PinFragmentLight extends PinFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
+        ((MainActivity)getActivity()).hideBottomNavigationView(R.color.title_color_light);
+        isBottomNavigationViewVisible = ((MainActivity)getActivity()).isBottomNavigationViewVisible();
         waveView.setShapeType(WaveView.ShapeType.SQUARE);
         mWaveHelper = new WaveHelper(waveView);
     }
@@ -34,13 +35,22 @@ public class PinFragmentLight extends PinFragment {
     public void onResume() {
         super.onResume();
         mWaveHelper.start();
-        ((MainActivity)getActivity()).hideBottomNavigationView(R.color.title_color_light);
     }
 
     @Override
     public void onPause() {
         mWaveHelper.cancel();
         super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(isBottomNavigationViewVisible){
+            ((MainActivity)getActivity()).showBottomNavigationView(R.color.title_color_light);
+        }else{
+            ((MainActivity)getActivity()).hideBottomNavigationView(R.color.title_color_light);
+        }
     }
 
 }

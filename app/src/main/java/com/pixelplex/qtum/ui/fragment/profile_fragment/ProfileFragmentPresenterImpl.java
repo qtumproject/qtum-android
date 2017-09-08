@@ -63,6 +63,7 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
                 getView().resetText();
             }
         };
+        getView().getMainActivity().setIconChecked(1);
         QtumSharedPreference.getInstance().addLanguageListener(mLanguageChangeListener);
     }
 
@@ -106,7 +107,6 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
         mUpdateService.stopMonitoring();
         BaseFragment startPageFragment = StartPageFragment.newInstance(false, getView().getContext());
         getView().getMainActivity().openRootFragment(startPageFragment);
-        getView().getMainActivity().setIconChecked(0);
     }
 
     public void onLanguageClick(){

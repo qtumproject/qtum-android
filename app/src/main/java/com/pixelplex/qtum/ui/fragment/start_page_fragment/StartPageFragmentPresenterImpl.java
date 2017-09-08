@@ -62,6 +62,7 @@ class StartPageFragmentPresenterImpl extends BaseFragmentPresenterImpl implement
     }
 
     private void clearWallet() {
+        getView().getMainActivity().onLogout();
         getView().getMainActivity().stopUpdateService();
         QtumSharedPreference.getInstance().clear(getView().getContext());
         KeyStorage.getInstance().clearKeyStorage();

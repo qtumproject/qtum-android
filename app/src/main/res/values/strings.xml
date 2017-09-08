@@ -104,6 +104,7 @@
     <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
     <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
     <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
+    <string name="avenir">fonts/avenir.ttc</string>
     <string name="proximaNovaBold" translatable="false">fonts/proximanovabold.ttf</string>
     <string name="proximaNovaLight" translatable="false">fonts/proximanovalight.ttf</string>
     <string name="proximaNovaRegular" translatable="false">fonts/proximanovaregular.ttf</string>
@@ -193,7 +194,7 @@
     <string name="token_not_found">Token not found</string>
     <string name="copied">Copied</string>
     <string name="new_confirmed_transaction">New confirmed transaction</string>
-    <string name="_2017_qtum_n_skynet_testnet_version">© 2017 QTUM \n Skynet Testnet Version</string>
+    <string name="_2017_qtum_n_skynet_testnet_version">© 2017 QTUM \n </string>
     <string name="touch_to_open_transaction_history">Touch to open transaction history</string>
     <string name="functions">Functions</string>
     <string name="wallet_backup">Wallet Backup</string>

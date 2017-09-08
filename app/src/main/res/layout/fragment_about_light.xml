@@ -55,15 +55,23 @@
         android:background="@color/select_file_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="82dp"
+            android:src="@drawable/ic_qtum_logo_with_text"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="135dp"/>
+
         <com.pixelplex.qtum.utils.FontTextView
-            android:id="@+id/tv_select_back_up"
+            android:id="@+id/tv_qtum_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/_2017_qtum_n_skynet_testnet_version"
             android:textColor="@color/grey"
             android:textSize="18sp"
-            app:typefaceAsset="@string/proximaNovaSemibold"
+            app:typefaceAsset="@string/avenir"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="64dp"/>

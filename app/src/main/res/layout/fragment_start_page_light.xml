@@ -25,13 +25,30 @@
             android:layout_centerHorizontal="true">
 
             <com.pixelplex.qtum.utils.FontButton
+
                 android:id="@+id/bt_create_new"
+                android:layout_width="202dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bt_login"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/create_new"
+                app:typeface="@string/proximaNovaBold"
+                android:background="@drawable/btn_gray_corner_background_light_alpha_30"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/button_text" />
+
+
+            <com.pixelplex.qtum.utils.FontButton
+                android:id="@+id/bt_login"
                 android:layout_width="202dp"
                 android:gravity="center"
                 android:padding="16dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_gray_corner_background_light_alpha_30"
-                android:text="@string/create_new"
+                android:text="@string/login"
                 android:textAllCaps="true"
                 app:typeface="@string/proximaNovaBold"
                 android:textColor="@color/white"
@@ -52,20 +69,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/button_text" />
 
-            <com.pixelplex.qtum.utils.FontButton
-                android:id="@+id/bt_login"
-                android:layout_width="202dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/bt_import_wallet"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:padding="16dp"
-                app:typeface="@string/proximaNovaBold"
-                android:background="@drawable/btn_gray_corner_background_light_alpha_30"
-                android:text="@string/login"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/button_text" />
+
         </RelativeLayout>
 
         <com.pixelplex.qtum.utils.FontTextView

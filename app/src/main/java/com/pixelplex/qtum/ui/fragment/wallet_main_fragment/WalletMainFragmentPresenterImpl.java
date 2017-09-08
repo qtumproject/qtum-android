@@ -36,6 +36,12 @@ class WalletMainFragmentPresenterImpl extends BaseFragmentPresenterImpl {
     }
 
     @Override
+    public void onViewCreated() {
+        super.onViewCreated();
+        getView().getMainActivity().setIconChecked(0);
+    }
+
+    @Override
     public void onResume(Context context) {
         super.onResume(context);
         getView().getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {

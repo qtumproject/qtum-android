@@ -58,6 +58,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     @Override
     public void onViewCreated() {
         super.onViewCreated();
+        getView().getMainActivity().setIconChecked(3);
         getView().getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
             @Override
             public void onServiceConnectionChange(boolean isConnecting) {

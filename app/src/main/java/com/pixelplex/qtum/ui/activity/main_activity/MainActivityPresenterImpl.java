@@ -103,7 +103,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     @Override
     public void onPostResume(Context context) {
         super.onPostResume(context);
-        if(mCheckAuthenticationFlag && !mCheckAuthenticationShowFlag){
+        if(mAuthenticationFlag && mCheckAuthenticationFlag && !mCheckAuthenticationShowFlag){
             BaseFragment pinFragment = PinFragment.newInstance(PinFragment.CHECK_AUTHENTICATION, getView().getContext());
             getView().openFragment(pinFragment);
             mCheckAuthenticationFlag = false;
@@ -126,10 +126,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
     private MainActivityInteractorImpl getInteractor() {
         return mMainActivityInteractor;
-    }
-
-    public boolean getLoginflag(){
-        return mAuthenticationFlag;
     }
 
     @Override

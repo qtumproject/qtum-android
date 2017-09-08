@@ -605,14 +605,6 @@ class PinFragmentPresenterImpl extends BaseFragmentPresenterImpl implements PinF
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mAction.equals(PinFragment.CHANGING) || mAction.equals(PinFragment.CHECK_AUTHENTICATION) || mAction.equals(PinFragment.AUTHENTICATION_FOR_PASSPHRASE)) {
-            getView().getMainActivity().showBottomNavigationView(ThemeUtils.getCurrentTheme(getView().getContext()).equals(ThemeUtils.THEME_DARK)? R.color.colorPrimary : R.color.title_color_light);
-        }
-    }
-
-    @Override
     public PinFragmentView getView() {
         return mPinFragmentView;
     }

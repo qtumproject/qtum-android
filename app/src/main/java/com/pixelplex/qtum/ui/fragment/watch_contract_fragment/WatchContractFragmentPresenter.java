@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
 import com.pixelplex.qtum.R;
+import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.model.ContractTemplate;
 import com.pixelplex.qtum.model.contract.Contract;
@@ -28,6 +29,7 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
 
     private WatchContractFragmentView mWatchContractFragmentView;
     Context mContext;
+    UpdateService mUpdateService;
 
     WatchContractFragmentPresenter(WatchContractFragmentView watchContractFragmentView){
         mWatchContractFragmentView = watchContractFragmentView;
@@ -60,6 +62,7 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
                 List<Token> tokenList = tinyDB.getTokenList();
                 Token token = new Token(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "Stub!", name);
                 tokenList.add(token);
+                mUpdateService.subscribeTokenBalanceChange(token.getContractAddress());
                 tinyDB.putTokenList(tokenList);
             } else {
                 getView().setAlertDialog(mContext.getString(R.string.abi_doesnt_match_qrc20_standard),mContext.getString(R.string.ok), BaseFragment.PopUpType.error);
@@ -93,6 +96,12 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
         Pattern p = Pattern.compile("^[a-zA-Z0-9]{40,}$");
         Matcher m = p.matcher(address);
         return m.matches();
+    }
+
+    @Override
+    public void onViewCreated() {
+        super.onViewCreated();
+        mUpdateService = getView().getMainActivity().getUpdateService();
     }
 
     @Override
