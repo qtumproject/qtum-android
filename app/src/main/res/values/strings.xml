@@ -196,5 +196,6 @@
     <string name="_2017_qtum_n_skynet_testnet_version">© 2017 QTUM \n Skynet Testnet Version</string>
     <string name="touch_to_open_transaction_history">Touch to open transaction history</string>
     <string name="functions">Functions</string>
+    <string name="wallet_backup">Wallet Backup</string>
 
 </resources>

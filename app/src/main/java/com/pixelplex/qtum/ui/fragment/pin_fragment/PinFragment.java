@@ -56,12 +56,8 @@ public abstract class PinFragment extends BaseFragment implements PinFragmentVie
     }
 
     void onCancelClick() {
-        if (getMainActivity().getLoginflag()) {
-            getMainActivity().resetAuthFlags();
-            openRootFragment(StartPageFragment.newInstance(false, getContext()));
-        } else {
-            getMainActivity().onBackPressed();
-        }
+        getMainActivity().resetAuthFlags();
+        openRootFragment(StartPageFragment.newInstance(false, getContext()));
     }
 
     public static BaseFragment newInstance(String action, String passphrase, Context context) {

@@ -35,6 +35,9 @@ public abstract class ContractManagementFragment extends BaseFragment implements
     @BindView(R.id.tv_toolbar_profile)
     FontTextView titleView;
 
+    @BindView(R.id.tv_contract_address)
+    FontTextView tvContractAddress;
+
     @OnClick({R.id.ibt_back})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -85,6 +88,8 @@ public abstract class ContractManagementFragment extends BaseFragment implements
             getPresenter().getAbiFromString(getArguments().getString(CONTRACT_ABI));
         }
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        tvContractAddress.setText(mContractAddress);
     }
 
     @Override

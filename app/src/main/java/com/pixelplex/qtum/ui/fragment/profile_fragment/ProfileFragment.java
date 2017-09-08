@@ -50,7 +50,7 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileFra
             case R.string.change_pin:
                 getPresenter().onChangePinClick();
                 break;
-            case R.string.export_passphrase:
+            case R.string.wallet_backup:
                 getPresenter().onWalletBackUpClick();
                 break;
             case R.string.smart_contracts:
