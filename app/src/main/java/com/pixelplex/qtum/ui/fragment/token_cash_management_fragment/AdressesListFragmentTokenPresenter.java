@@ -164,10 +164,17 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
             return;
         }
 
+        String resultAmount = amountString;
+
+        if(token.getDecimalUnits() != null){
+            resultAmount = String.valueOf((int)(Double.valueOf(amountString) * Math.pow(10, token.getDecimalUnits())));
+            resultAmount = String.valueOf(Integer.valueOf(resultAmount));
+        }
+
         ContractBuilder contractBuilder = new ContractBuilder();
         List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
         ContractMethodParameter contractMethodParameterAddressTo = new ContractMethodParameter("_to", "address", keyWithBalanceTo.getAddress());
-        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", amountString);
+        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", resultAmount);
         contractMethodParameterList.add(contractMethodParameterAddressTo);
         contractMethodParameterList.add(contractMethodParameterAmount);
         contractBuilder.createAbiMethodParams("transfer", contractMethodParameterList).subscribeOn(Schedulers.io())

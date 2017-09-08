@@ -7,6 +7,8 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.DeterministicKeyWithTokenBalance;
 import com.pixelplex.qtum.utils.FontTextView;
 
+import java.math.BigDecimal;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -48,7 +50,7 @@ public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
         this.item = item;
         mTextViewAddress.setText(item.getAddress());
 
-        mTextViewAddressBalance.setText((item.getBalance() != null) ? String.valueOf(item.getBalance().floatValue() / Math.pow(10, decimalUnits)) : "0");
+        mTextViewAddressBalance.setText((item.getBalance() != null) ? String.valueOf(item.getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)))) : "0");
         mTextViewSymbol.setText(String.format(" %s", currency));
     }
 }

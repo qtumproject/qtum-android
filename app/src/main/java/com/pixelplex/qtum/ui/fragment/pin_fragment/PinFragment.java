@@ -47,25 +47,25 @@ public abstract class PinFragment extends BaseFragment implements PinFragmentVie
     FontTextView tooltip;
 
     @OnClick({R.id.bt_cancel})
-    void onClick(View view){
-        switch (view.getId()){
+    void onClick(View view) {
+        switch (view.getId()) {
             case R.id.bt_cancel:
                 onCancelClick();
                 break;
         }
     }
 
-    void onCancelClick(){
-        if(getMainActivity().getLoginflag()){
+    void onCancelClick() {
+        if (getMainActivity().getLoginflag()) {
             getMainActivity().resetAuthFlags();
-            openRootFragment(StartPageFragment.newInstance(false,getContext()));
+            openRootFragment(StartPageFragment.newInstance(false, getContext()));
         } else {
             getMainActivity().onBackPressed();
         }
     }
 
     public static BaseFragment newInstance(String action, String passphrase, Context context) {
-        BaseFragment pinFragment = Factory.instantiateFragment(context,PinFragment.class);
+        BaseFragment pinFragment = Factory.instantiateFragment(context, PinFragment.class);
         Bundle args = new Bundle();
         args.putString(ACTION, action);
         args.putString(PASSPHRASE, passphrase);
@@ -74,7 +74,7 @@ public abstract class PinFragment extends BaseFragment implements PinFragmentVie
     }
 
     public static BaseFragment newInstance(String action, Context context) {
-        BaseFragment pinFragment = Factory.instantiateFragment(context,PinFragment.class);
+        BaseFragment pinFragment = Factory.instantiateFragment(context, PinFragment.class);
         Bundle args = new Bundle();
         args.putString(ACTION, action);
         pinFragment.setArguments(args);
@@ -93,10 +93,10 @@ public abstract class PinFragment extends BaseFragment implements PinFragmentVie
 
     @Override
     public void confirmError(String errorText) {
-        if(mWalletPin!=null) {
+        if (mWalletPin != null) {
             mWalletPin.setText("");
             tooltip.setText(errorText);
-            tooltip.setTextColor(ContextCompat.getColor(getContext(),R.color.accent_red_color));
+            tooltip.setTextColor(ContextCompat.getColor(getContext(), R.color.accent_red_color));
             tooltip.setVisibility(View.VISIBLE);
         }
     }

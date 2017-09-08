@@ -11,6 +11,8 @@ import android.widget.SpinnerAdapter;
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.DeterministicKeyWithTokenBalance;
 import com.pixelplex.qtum.utils.FontTextView;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -53,7 +55,7 @@ public abstract class AddressesWithTokenBalanceSpinnerAdapter extends BaseAdapte
         final FontTextView textViewBalance = (FontTextView) view.findViewById(R.id.address_balance);
         final FontTextView textViewSymbol = (FontTextView) view.findViewById(R.id.address_symbol);
         textViewSymbol.setText(String.format(" %s", currency));
-        textViewBalance.setText((mKeyWithBalanceList.get(position).getBalance() != null)? String.valueOf(mKeyWithBalanceList.get(position).getBalance().doubleValue() / Math.pow(10, decimalUnits)) : "0");
+        textViewBalance.setText((mKeyWithBalanceList.get(position).getBalance() != null)? String.valueOf(mKeyWithBalanceList.get(position).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)))) : "0");
         textViewAddress.setText(mKeyWithBalanceList.get(position).getAddress());
 
         return view;
