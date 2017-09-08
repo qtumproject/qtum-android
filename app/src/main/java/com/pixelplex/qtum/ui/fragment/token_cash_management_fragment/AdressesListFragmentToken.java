@@ -56,6 +56,14 @@ public abstract class AdressesListFragmentToken extends BaseFragment implements 
     }
 
     @Override
+    public void onPause() {
+        if(mTransferDialog != null){
+            mTransferDialog.dismiss();
+        }
+        super.onPause();
+    }
+
+    @Override
     protected void createPresenter() {
         presenter = new AdressesListFragmentTokenPresenter(this);
     }

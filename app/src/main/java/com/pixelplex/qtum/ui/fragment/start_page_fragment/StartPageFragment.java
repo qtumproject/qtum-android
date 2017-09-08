@@ -49,9 +49,11 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.bt_create_new:
+                hideLoginButton();
                 getPresenter().createNewWallet();
                 break;
             case R.id.bt_import_wallet:
+                hideLoginButton();
                 getPresenter().importWallet();
                 break;
             case R.id.bt_login:

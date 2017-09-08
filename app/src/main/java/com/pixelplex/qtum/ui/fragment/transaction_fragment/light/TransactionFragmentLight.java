@@ -16,6 +16,7 @@ public class TransactionFragmentLight extends TransactionFragment {
     ImageView confirmIcon;
 
     private boolean confirmed;
+    private boolean isSend;
 
     @Override
     protected int getLayout() {
@@ -26,7 +27,9 @@ public class TransactionFragmentLight extends TransactionFragment {
     public void setUpTransactionData(String value, String receivedTime, List<String> from, List<String> to, boolean confirmed) {
         setTransactionData(value, receivedTime);
         this.confirmed = confirmed;
-        checkConfirmation(this.confirmed);
+        this.isSend = Double.valueOf(value) > 0;
+        checkConfirmation(confirmed);
+        colorHeader();
     }
 
     @Override
@@ -39,17 +42,24 @@ public class TransactionFragmentLight extends TransactionFragment {
     public void onUserResume() {
         super.onUserResume();
         checkConfirmation(this.confirmed);
+        colorHeader();
+    }
+
+    void colorHeader(){
+        if(isSend){
+            getMainActivity().recolorStatusBar(R.color.title_lt_green_color);
+            toolbarLayout.setBackgroundResource(R.drawable.transaction_back_confirmed);
+        } else {
+            getMainActivity().recolorStatusBar(R.color.title_red_color);
+            toolbarLayout.setBackgroundResource(R.drawable.transaction_back_not_confirmed);
+        }
     }
 
     void checkConfirmation(boolean confirmed){
         if(confirmed){
-            getMainActivity().recolorStatusBar(R.color.title_lt_green_color);
-            toolbarLayout.setBackgroundResource(R.drawable.transaction_back_confirmed);
             confirmIcon.setImageResource(R.drawable.ic_confirmed_light);
             notConfFlag.setText(R.string.confirmed);
         } else {
-            getMainActivity().recolorStatusBar(R.color.title_red_color);
-            toolbarLayout.setBackgroundResource(R.drawable.transaction_back_not_confirmed);
             confirmIcon.setImageResource(R.drawable.ic_confirmation_loader);
             notConfFlag.setText(R.string.not_confirmed_yet);
         }

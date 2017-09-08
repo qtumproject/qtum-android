@@ -12,8 +12,7 @@ import butterknife.BindView;
 
 public class ContractManagementFragmentLight extends ContractManagementFragment {
 
-    @BindView(R.id.tv_contract_address)
-    FontTextView tvContractAddress;
+
 
     @Override
     protected int getLayout() {
@@ -26,11 +25,5 @@ public class ContractManagementFragmentLight extends ContractManagementFragment 
         mRecyclerView.setAdapter(mMethodAdapter);
     }
 
-    @Override
-    public void initializeViews() {
-        super.initializeViews();
-
-        tvContractAddress.setText(mContractAddress);
-    }
 }
 
