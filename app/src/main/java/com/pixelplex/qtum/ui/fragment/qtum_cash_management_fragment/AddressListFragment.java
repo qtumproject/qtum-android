@@ -37,6 +37,7 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
         }
     }
 
+
     AddressListFragmentPresenter mAddressListFragmentPresenter;
 
     public static BaseFragment newInstance(Context context) {
@@ -59,8 +60,8 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
     @Override
     public void onPause() {
         super.onPause();
-        if(mTransferDialog!=null) {
-            mTransferDialog.hide();
+        if (mTransferDialog != null) {
+            mTransferDialog.dismiss();
         }
     }
 
@@ -70,7 +71,7 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
         getMainActivity().addAuthenticationListener(new MainActivity.AuthenticationListener() {
             @Override
             public void onAuthenticate() {
-                if(showTransferDialog) {
+                if (showTransferDialog) {
                     mTransferDialog.show();
                 }
             }

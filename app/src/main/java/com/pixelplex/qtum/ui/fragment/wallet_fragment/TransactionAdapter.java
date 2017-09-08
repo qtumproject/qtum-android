@@ -15,6 +15,10 @@ public abstract class TransactionAdapter extends RecyclerView.Adapter<RecyclerVi
     protected final int TYPE_PROGRESS_BAR = 0;
     protected final int TYPE_TRANSACTION = 1;
 
+    public History getItem(int position){
+        return mHistoryList.get(position);
+    }
+
     protected TransactionClickListener listener;
 
     public TransactionAdapter(List<History> historyList, TransactionClickListener listener) {

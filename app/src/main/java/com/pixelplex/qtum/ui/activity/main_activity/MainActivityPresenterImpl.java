@@ -97,14 +97,19 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     @Override
     public void onResume(Context context) {
         super.onResume(context);
-        if(mCheckAuthenticationFlag && !mCheckAuthenticationShowFlag){
+
+    }
+
+    @Override
+    public void onPostResume(Context context) {
+        super.onPostResume(context);
+        if(mAuthenticationFlag && mCheckAuthenticationFlag && !mCheckAuthenticationShowFlag){
             BaseFragment pinFragment = PinFragment.newInstance(PinFragment.CHECK_AUTHENTICATION, getView().getContext());
             getView().openFragment(pinFragment);
             mCheckAuthenticationFlag = false;
             mCheckAuthenticationShowFlag = true;
         }
     }
-
 
     public boolean isCheckAuthenticationShowFlag() {
         return mCheckAuthenticationShowFlag;
@@ -144,6 +149,13 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
             }else {
                 mContext.bindService(mIntent, mServiceConnection, 0);
             }
+        }
+    }
+
+    public void stopUpdateService(){
+        if(mUpdateService != null) {
+            mUpdateService.stopMonitoring();
+            getView().getActivity().stopService(mIntent);
         }
     }
 

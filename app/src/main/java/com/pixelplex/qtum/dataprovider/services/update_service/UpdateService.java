@@ -87,6 +87,11 @@ public class UpdateService extends Service {
     String[] firebaseTokens;
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
 

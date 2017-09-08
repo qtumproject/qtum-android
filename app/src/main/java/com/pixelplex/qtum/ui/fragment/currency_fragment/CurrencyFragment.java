@@ -1,9 +1,11 @@
 package com.pixelplex.qtum.ui.fragment.currency_fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +13,16 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.dataprovider.services.update_service.UpdateService;
 import com.pixelplex.qtum.dataprovider.services.update_service.listeners.TokenBalanceChangeListener;
+import com.pixelplex.qtum.datastorage.TinyDB;
 import com.pixelplex.qtum.model.Currency;
 import com.pixelplex.qtum.model.CurrencyToken;
+import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.gson.token_balance.TokenBalance;
+import com.pixelplex.qtum.ui.fragment.token_fragment.TokenFragment;
 import com.pixelplex.qtum.ui.fragment_factory.Factory;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.ui.fragment.send_fragment.SendFragment;
@@ -26,6 +32,7 @@ import com.pixelplex.qtum.utils.SearchBarListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -49,7 +56,7 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
     FrameLayout mFrameLayoutBase;
 
     @OnClick({R.id.ibt_back})
-    public void onClick(View view){
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ibt_back:
                 getActivity().onBackPressed();
@@ -85,7 +92,7 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
         mFrameLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(b)
+                if (b)
                     hideKeyBoard();
             }
         });
@@ -98,7 +105,7 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
 
     @Override
     public void onDeactivate() {
-        if(mFrameLayoutBase != null) {
+        if (mFrameLayoutBase != null) {
             mFrameLayoutBase.requestFocus();
         }
         hideKeyBoard();
@@ -106,20 +113,20 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
 
     @Override
     public void onRequestSearch(String filter) {
-        if(filter.isEmpty()){
+        if (filter.isEmpty()) {
             mCurrencyAdapter.setFilter(mCurrentList);
         } else {
             mSearchString = filter.toLowerCase();
             List<Currency> newList = new ArrayList<>();
-            for(Currency currency: mCurrentList){
-                if(currency.getName().toLowerCase().contains(mSearchString))
+            for (Currency currency : mCurrentList) {
+                if (currency.getName().toLowerCase().contains(mSearchString))
                     newList.add(currency);
             }
             mCurrencyAdapter.setFilter(newList);
         }
     }
 
-    class CurrencyHolder extends RecyclerView.ViewHolder{
+    class CurrencyHolder extends RecyclerView.ViewHolder implements TokenBalanceChangeListener {
 
         @BindView(R.id.root_layout)
         RelativeLayout rootLayout;
@@ -138,9 +145,11 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
 
         Currency mCurrency;
 
+        Token token;
+
         CurrencyHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -151,16 +160,17 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
 
         }
 
-        void bindCurrency(Currency currency){
+        void bindCurrency(Currency currency) {
 
-            if(this.mCurrency != null && mCurrency instanceof CurrencyToken) {
+            if (this.mCurrency != null && mCurrency instanceof CurrencyToken) {
                 mUpdateService.removeTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress());
             }
 
             mCurrency = currency;
             mTextViewCurrencyName.setText(currency.getName());
-            if(mCurrency instanceof CurrencyToken) {
-                ContractManagementHelper.getPropertyValue("symbol", ((CurrencyToken) mCurrency).getToken(), getContext(), new ContractManagementHelper.GetPropertyValueCallBack() {
+            if (mCurrency instanceof CurrencyToken) {
+                token = ((CurrencyToken)mCurrency).getToken();
+                ContractManagementHelper.getPropertyValue(TokenFragment.symbol, ((CurrencyToken) mCurrency).getToken(), getContext(), new ContractManagementHelper.GetPropertyValueCallBack() {
                     @Override
                     public void onSuccess(String value) {
                         mTextViewSymbol.setVisibility(View.VISIBLE);
@@ -169,23 +179,44 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
                 });
                 mTextViewCurrencyBalance.setVisibility(View.GONE);
                 spinner.setVisibility(View.VISIBLE);
-                mUpdateService.addTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(), new TokenBalanceChangeListener() {
-                    @Override
-                    public void onBalanceChange(final TokenBalance tokenBalance) {
-                        rootLayout.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                spinner.setVisibility(View.GONE);
-                                mTextViewCurrencyBalance.setText(String.valueOf(tokenBalance.getTotalBalance()));
-                                mTextViewCurrencyBalance.setVisibility(View.VISIBLE);
-                            }
-                        });
-                    }
-                });
+
+                mUpdateService.addTokenBalanceChangeListener(token.getContractAddress(),this);
+
             } else {
                 mTextViewCurrencyBalance.setVisibility(View.GONE);
                 spinner.setVisibility(View.GONE);
             }
+        }
+
+        @SuppressLint("DefaultLocale")
+        @Override
+        public void onBalanceChange(final TokenBalance tokenBalance) {
+            if (token.getContractAddress().equals(tokenBalance.getContractAddress())) {
+                token.setLastBalance(tokenBalance.getTotalBalance());
+
+                if (token.getDecimalUnits() == null) {
+                    ContractManagementHelper.getPropertyValue(TokenFragment.decimals, token, itemView.getContext(), new ContractManagementHelper.GetPropertyValueCallBack() {
+                        @Override
+                        public void onSuccess(String value) {
+                            token = new TinyDB(itemView.getContext()).setTokenDecimals(token, Integer.valueOf(value));
+                            updateBalance();
+                        }
+                    });
+                } else {
+                    updateBalance();
+                }
+            }
+        }
+
+        private void updateBalance() {
+            rootLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    spinner.setVisibility(View.GONE);
+                    mTextViewCurrencyBalance.setText(String.valueOf(((CurrencyToken) mCurrency).getToken().getTokenBalanceWithDecimalUnits()));
+                    mTextViewCurrencyBalance.setVisibility(View.VISIBLE);
+                }
+            });
         }
     }
 
@@ -213,7 +244,7 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
             holder.bindCurrency(mCurrencyList.get(position));
         }
 
-        void setFilter(List<Currency> currencyListNew){
+        void setFilter(List<Currency> currencyListNew) {
             mCurrencyList = new ArrayList<>();
             mCurrencyList.addAll(currencyListNew);
             notifyDataSetChanged();

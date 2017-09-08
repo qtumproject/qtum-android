@@ -8,6 +8,7 @@ import com.pixelplex.qtum.datastorage.FileStorageManager;
 import com.pixelplex.qtum.model.contract.Contract;
 import com.pixelplex.qtum.model.contract.ContractMethod;
 import com.pixelplex.qtum.model.contract.ContractMethodParameter;
+import com.pixelplex.qtum.model.contract.Token;
 import com.pixelplex.qtum.model.gson.CallSmartContractRequest;
 import com.pixelplex.qtum.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import com.pixelplex.qtum.utils.sha3.Keccak;

@@ -461,6 +461,32 @@ public class TinyDB {
         return tokenArrayList;
     }
 
+    public Token setTokenDecimals(Token token, int decimalUnits){
+
+        List<Token> tokenList = getTokenList();
+        for (Token t : tokenList){
+            if(token.getUiid().equals(t.getUiid())){
+                t.setLastBalance(token.getLastBalance());
+                t.setDecimalUnits(decimalUnits);
+                token = t;
+            }
+        }
+        putTokenList(tokenList);
+        return token;
+    }
+
+    public Token setTokenSymbol(Token token, String symbol){
+        List<Token> tokenList = getTokenList();
+        for (Token t : tokenList){
+            if(token.getUiid().equals(t.getUiid())){
+                t.setSymbol(symbol);
+                token = t;
+            }
+        }
+        putTokenList(tokenList);
+        return token;
+    }
+
     public ArrayList<String> getUnconfirmedContractTxHasList(){
         return getListString(UNCONFIRMED_CONTRACT_TX_HAS_LIST);
     }

@@ -86,7 +86,8 @@ public class TokenFragmentLight extends TokenFragment {
         super.onPause();
     }
 
-    public void setBalance(float balance) {
+    @Override
+    public void setBalance(String balance) {
         mTextViewBalance.setText(String.valueOf(balance));
         placeHolderBalance.setText(String.valueOf(balance));
     }

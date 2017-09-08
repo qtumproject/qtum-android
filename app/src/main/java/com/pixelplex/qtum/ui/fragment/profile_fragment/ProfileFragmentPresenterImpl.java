@@ -38,7 +38,7 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
             settingsData = new ArrayList<>();
             settingsData.add(new SettingObject(R.string.language, R.drawable.ic_language, 0));
             settingsData.add(new SettingObject(R.string.change_pin, R.drawable.ic_changepin, 1));
-            settingsData.add(new SettingObject(R.string.export_passphrase, R.drawable.ic_backup, 1));
+            settingsData.add(new SettingObject(R.string.wallet_backup, R.drawable.ic_backup, 1));
             if(getView().getMainActivity().checkAvailabilityTouchId()) {
                 settingsData.add(new SettingSwitchObject(R.string.touch_id, R.drawable.ic_touchid, 1, QtumSharedPreference.getInstance().isTouchIdEnable(getView().getContext())));
             }
@@ -63,6 +63,7 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
                 getView().resetText();
             }
         };
+        getView().getMainActivity().setIconChecked(1);
         QtumSharedPreference.getInstance().addLanguageListener(mLanguageChangeListener);
     }
 
@@ -106,7 +107,6 @@ public class ProfileFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
         mUpdateService.stopMonitoring();
         BaseFragment startPageFragment = StartPageFragment.newInstance(false, getView().getContext());
         getView().getMainActivity().openRootFragment(startPageFragment);
-        getView().getMainActivity().setIconChecked(0);
     }
 
     public void onLanguageClick(){

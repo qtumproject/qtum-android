@@ -7,6 +7,8 @@ import com.pixelplex.qtum.R;
 import com.pixelplex.qtum.model.DeterministicKeyWithTokenBalance;
 import com.pixelplex.qtum.utils.FontTextView;
 
+import java.math.BigDecimal;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -28,8 +30,9 @@ public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
     DeterministicKeyWithTokenBalance item;
 
     String currency;
+    int decimalUnits;
 
-    public TokenAddressViewHolder(final View itemView, final OnAddressTokenClickListener listener, String currency) {
+    public TokenAddressViewHolder(final View itemView, final OnAddressTokenClickListener listener, String currency, int decimalUnits) {
         super(itemView);
         this.currency = currency;
         itemView.setClickable(true);
@@ -39,15 +42,15 @@ public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
                 listener.onItemClick(item);
             }
         });
-
+        this.decimalUnits = decimalUnits;
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(DeterministicKeyWithTokenBalance item){
+    public void bind(DeterministicKeyWithTokenBalance item) {
         this.item = item;
         mTextViewAddress.setText(item.getAddress());
 
-        mTextViewAddressBalance.setText((item.getBalance() != null)? String.valueOf(item.getBalance()) : "0");
-        mTextViewSymbol.setText(String.format(" %s",currency));
+        mTextViewAddressBalance.setText((item.getBalance() != null) ? String.valueOf(item.getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)))) : "0");
+        mTextViewSymbol.setText(String.format(" %s", currency));
     }
 }

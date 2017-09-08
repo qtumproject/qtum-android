@@ -28,11 +28,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 import org.spongycastle.crypto.digests.SHA256Digest;
+import org.spongycastle.util.BigIntegers;
 import org.spongycastle.util.encoders.Hex;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -118,7 +120,7 @@ public class ContractBuilder {
         String _value = parameter.getValue();
 
         if (parameter.getType().contains(TYPE_INT)) {
-            return appendNumericPattern(convertToByteCode(Long.valueOf(_value)));
+            return appendNumericPattern(convertToByteCode(new BigInteger(_value)));
         } else if (parameter.getType().contains(TYPE_STRING)) {
             return getStringOffset(parameter);
         } else if (parameter.getType().contains(TYPE_ADDRESS) && _value.length() == 34) {
@@ -168,6 +170,10 @@ public class ContractBuilder {
 
     private String convertToByteCode(long _value) {
         return Long.toString(_value, radix);
+    }
+
+    private String convertToByteCode(BigInteger _value) {
+        return _value.toString(radix);
     }
 
     private static String convertToByteCode(String _value) {

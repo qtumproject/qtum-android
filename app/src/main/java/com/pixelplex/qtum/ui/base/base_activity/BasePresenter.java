@@ -29,6 +29,8 @@ interface BasePresenter {
 
     void saveState(Bundle outState);
 
+    void onPostResume(Context context);
+
     void handleInitialArguments(Bundle arg);
 
     void startActivity(Intent intent);

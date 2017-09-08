@@ -183,6 +183,9 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         super.onPause();
         hideKeyBoard();
         getPresenter().onPause(getActivity());
+
+        dismissProgressDialog();
+        dismissAlertDialog();
     }
 
     @Override

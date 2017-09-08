@@ -113,7 +113,7 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
     private void processTokenBalace(DeterministicKeyWithTokenBalance deterministicKeyWithTokenBalance, TokenBalance balance){
         for (Balance bal : balance.getBalances()){
             if(deterministicKeyWithTokenBalance.getAddress().equals(bal.getAddress())){
-                deterministicKeyWithTokenBalance.addBalance(BigDecimal.valueOf(bal.getBalance()));
+                deterministicKeyWithTokenBalance.addBalance(bal.getBalance());
             }
         }
     }
@@ -158,16 +158,23 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
 
         getView().hideTransferDialog();
 
-        if (tokenBalance == null || tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()) == null || tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()).getBalance() < Float.valueOf(amountString)){
+        if (tokenBalance == null || tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()) == null || tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()).getBalance().floatValue() < Float.valueOf(amountString)){
             getView().dismissProgressDialog();
             getView().setAlertDialog(getView().getContext().getString(R.string.error), getView().getContext().getString(R.string.you_have_insufficient_funds_for_this_transaction), "Ok", BaseFragment.PopUpType.error);
             return;
         }
 
+        String resultAmount = amountString;
+
+        if(token.getDecimalUnits() != null){
+            resultAmount = String.valueOf((int)(Double.valueOf(amountString) * Math.pow(10, token.getDecimalUnits())));
+            resultAmount = String.valueOf(Integer.valueOf(resultAmount));
+        }
+
         ContractBuilder contractBuilder = new ContractBuilder();
         List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
         ContractMethodParameter contractMethodParameterAddressTo = new ContractMethodParameter("_to", "address", keyWithBalanceTo.getAddress());
-        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", amountString);
+        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", resultAmount);
         contractMethodParameterList.add(contractMethodParameterAddressTo);
         contractMethodParameterList.add(contractMethodParameterAmount);
         contractBuilder.createAbiMethodParams("transfer", contractMethodParameterList).subscribeOn(Schedulers.io())
@@ -316,5 +323,9 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
                         callBack.onSuccess();
                     }
                 });
+    }
+
+    public int getDecimalUnits() {
+        return token.getDecimalUnits();
     }
 }
