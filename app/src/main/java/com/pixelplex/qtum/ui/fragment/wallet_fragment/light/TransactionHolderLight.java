@@ -1,6 +1,8 @@
 package com.pixelplex.qtum.ui.fragment.wallet_fragment.light;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -60,6 +62,15 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
         }
 
         mTextViewID.setText(history.getTxHash());
-        mTextViewValue.setText(history.getChangeInBalance().toString() + " QTUM");
+        mTextViewValue.setText(getSpannedBalance(history.getChangeInBalance().toString() + " QTUM"));
+    }
+
+    private SpannableString getSpannedBalance(String balance){
+
+        SpannableString span =  new SpannableString(balance);
+        if(balance.length() > 4) {
+            span.setSpan(new RelativeSizeSpan(.6f), balance.length() - 4, balance.length(), 0);
+        }
+        return span;
     }
 }

@@ -128,10 +128,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         return mMainActivityInteractor;
     }
 
-    public boolean getLoginflag(){
-        return mAuthenticationFlag;
-    }
-
     @Override
     public void onLogin() {
         mAuthenticationFlag = true;
