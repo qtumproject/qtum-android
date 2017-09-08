@@ -18,8 +18,8 @@ import java.util.List;
 
 public class AddressesWithTokenBalanceSpinnerAdapterLight extends AddressesWithTokenBalanceSpinnerAdapter {
 
-    public AddressesWithTokenBalanceSpinnerAdapterLight(@NonNull Context context, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, String currency) {
-        super(context, keyWithBalanceList, currency);
+    public AddressesWithTokenBalanceSpinnerAdapterLight(@NonNull Context context, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, String currency, int decimalUnits) {
+        super(context, keyWithBalanceList, currency, decimalUnits);
     }
 
     @NonNull

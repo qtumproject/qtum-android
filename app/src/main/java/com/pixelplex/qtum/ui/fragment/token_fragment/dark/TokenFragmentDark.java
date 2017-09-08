@@ -100,7 +100,8 @@ public class TokenFragmentDark extends TokenFragment {
         }
     }
 
-    public void setBalance(float balance) {
+    @Override
+    public void setBalance(String balance) {
         mTextViewBalance.setText(String.valueOf(balance));
     }
 

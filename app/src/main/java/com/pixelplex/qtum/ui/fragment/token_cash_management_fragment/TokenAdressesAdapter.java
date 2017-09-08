@@ -18,19 +18,21 @@ public class TokenAdressesAdapter extends RecyclerView.Adapter<TokenAddressViewH
     int resId;
     String currency;
     OnAddressTokenClickListener listener;
+    int decimalUnits;
 
-    public TokenAdressesAdapter(List<DeterministicKeyWithTokenBalance> items, int resId, OnAddressTokenClickListener listener, String currency){
+    public TokenAdressesAdapter(List<DeterministicKeyWithTokenBalance> items, int resId, OnAddressTokenClickListener listener, String currency, int decimalUnits){
         this.items = items;
         this.resId = resId;
         this.listener = listener;
         this.currency = currency;
+        this.decimalUnits = decimalUnits;
     }
 
     @Override
     public TokenAddressViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(resId, parent, false);
-        return new TokenAddressViewHolder(view, listener, currency);
+        return new TokenAddressViewHolder(view, listener, currency, decimalUnits);
     }
 
     @Override

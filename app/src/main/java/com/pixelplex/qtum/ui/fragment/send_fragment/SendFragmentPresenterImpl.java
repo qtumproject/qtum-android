@@ -264,7 +264,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                                         availableAddress = null;
 
                                         for (Balance balance : tokenBalance.getBalances()){
-                                            if(balance.getBalance() >= Float.valueOf(amount)){
+                                            if(balance.getBalance().floatValue() >= Float.valueOf(amount)){
                                                 availableAddress = balance.getAddress();
                                                 break;
                                             }
@@ -279,7 +279,15 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                                         ContractBuilder contractBuilder = new ContractBuilder();
                                         List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
                                         ContractMethodParameter contractMethodParameterAddress = new ContractMethodParameter("_to", "address", address);
-                                        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", amount);
+
+                                        String resultAmount = amount;
+
+                                        if(token.getDecimalUnits() != null){
+                                            resultAmount = String.valueOf((int)(Double.valueOf(amount) * Math.pow(10, token.getDecimalUnits())));
+                                            resultAmount = String.valueOf(Integer.valueOf(resultAmount));
+                                        }
+
+                                        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", resultAmount);
                                         contractMethodParameterList.add(contractMethodParameterAddress);
                                         contractMethodParameterList.add(contractMethodParameterAmount);
                                         contractBuilder.createAbiMethodParams("transfer", contractMethodParameterList).subscribeOn(Schedulers.io())
@@ -304,6 +312,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                                                 });
                                     }
                                 });
+                                break;
                             }
                         }
                     }

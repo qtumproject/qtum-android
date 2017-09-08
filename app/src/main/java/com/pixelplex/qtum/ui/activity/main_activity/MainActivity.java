@@ -449,6 +449,10 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         }
     }
 
+    public void stopUpdateService(){
+        getPresenter().stopUpdateService();
+    }
+
     public void onLogin(){
         getPresenter().onLogin();
     }
