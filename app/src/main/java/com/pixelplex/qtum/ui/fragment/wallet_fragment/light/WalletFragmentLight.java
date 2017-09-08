@@ -1,6 +1,9 @@
 package com.pixelplex.qtum.ui.fragment.wallet_fragment.light;
 
 import android.support.design.widget.AppBarLayout;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -42,6 +45,8 @@ public class WalletFragmentLight extends WalletFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
+
+        updateBalance("0","0");
 
         showBottomNavView(R.color.title_color_light);
 
@@ -105,14 +110,15 @@ public class WalletFragmentLight extends WalletFragment {
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
         try {
-        balanceValue.setText(String.format("%s QTUM",balance));
-        placeHolderBalance.setText(String.format("%s QTUM",balance));
+
+        balanceValue.setText(getSpannedBalance(String.format("%s QTUM",balance)));
+        placeHolderBalance.setText(getSpannedBalance(String.format("%s QTUM",balance)));
         if(unconfirmedBalance != null) {
             notConfirmedBalancePlaceholder.setVisibility(View.VISIBLE);
             uncomfirmedBalanceValue.setVisibility(View.VISIBLE);
             uncomfirmedBalanceTitle.setVisibility(View.VISIBLE);
-            uncomfirmedBalanceValue.setText(String.format("%s QTUM", unconfirmedBalance));
-            placeHolderBalanceNotConfirmed.setText(String.format("%s QTUM", unconfirmedBalance));
+            uncomfirmedBalanceValue.setText(getSpannedBalance(String.format("%s QTUM", unconfirmedBalance)));
+            placeHolderBalanceNotConfirmed.setText(getSpannedBalance(String.format("%s QTUM", unconfirmedBalance)));
         } else {
             notConfirmedBalancePlaceholder.setVisibility(View.GONE);
             uncomfirmedBalanceValue.setVisibility(View.GONE);
@@ -121,6 +127,15 @@ public class WalletFragmentLight extends WalletFragment {
         } catch (NullPointerException e){
             Log.d("WalletFragmentLight", "updateBalance: " + e.getMessage());
         }
+    }
+
+    private SpannableString getSpannedBalance(String balance){
+
+        SpannableString span =  new SpannableString(balance);
+        if(balance.length() > 4) {
+            span.setSpan(new RelativeSizeSpan(.6f), balance.length() - 4, balance.length(), 0);
+        }
+        return span;
     }
 
 }

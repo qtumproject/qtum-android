@@ -1,6 +1,8 @@
 package com.pixelplex.qtum.ui.fragment.transaction_fragment.transaction_detail_fragment;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.widget.TextView;
 
@@ -28,6 +30,15 @@ public class TransactionDetailHolder extends RecyclerView.ViewHolder{
 
     void bindTransactionDetail(TransactionInfo transactionInfo){
         mTextViewAddress.setText(transactionInfo.getAddress());
-        mTextViewValue.setText(String.format("%s QTUM",transactionInfo.getValue().toString()));
+        mTextViewValue.setText(getSpannedBalance(String.format("%s QTUM",transactionInfo.getValue().toString())));
+    }
+
+    private SpannableString getSpannedBalance(String balance){
+
+        SpannableString span =  new SpannableString(balance);
+        if(balance.length() > 4) {
+            span.setSpan(new RelativeSizeSpan(.6f), balance.length() - 4, balance.length(), 0);
+        }
+        return span;
     }
 }
