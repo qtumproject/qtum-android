@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:textColorHint="@color/colorPrimary"
             android:theme="@style/InputText">
-            <com.pixelplex.qtum.utils.EditTextValidated
+            <org.qtum.wallet.utils.EditTextValidated
                 android:id="@+id/et_param"
                 android:layout_width="match_parent"
                 android:gravity="left"

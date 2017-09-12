@@ -15,7 +15,7 @@
         android:layout_marginStart="16dp"
         android:layout_height="20dp" />
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:maxLines="1"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/icon"/>
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:layout_below="@+id/title"
         android:layout_marginTop="8dp"
         android:alpha=".6"

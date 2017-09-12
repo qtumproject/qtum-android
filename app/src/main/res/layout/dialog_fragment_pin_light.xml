@@ -8,7 +8,7 @@
     android:background="@drawable/background_progress_bar"
     android:fitsSystemWindows="true">
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/tv_toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         app:pinLineColors="@color/switch_on"
         android:textColor="@color/grey"/>
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/tooltip"
         android:text="enter pin"
         android:paddingTop="4dp"

@@ -13,7 +13,7 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,19 +71,7 @@
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax">
 
-                <!--<com.pixelplex.qtum.ui.wave_visualizer.GLWaveVisualizationView-->
-                    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-                    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                    <!--android:id="@+id/visualizer_view"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--app:av_wavesHeight="400dp"-->
-                    <!--app:av_wavesFooterHeight="0dp"-->
-                    <!--app:av_wavesColors="@array/av_colors"-->
-                    <!--app:av_wavesCount="3"-->
-                    <!--app:av_layersCount="2" />-->
-
-                <com.pixelplex.qtum.ui.wave_visualizer.WaveView
+                <org.qtum.wallet.ui.wave_visualizer.WaveView
                     android:id="@+id/wave_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -113,7 +101,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="56dp">
 
-                        <com.pixelplex.qtum.utils.FontTextView
+                        <org.qtum.wallet.utils.FontTextView
                             android:id="@+id/tv_wallet_name"
                             style="@style/appbar_wallet_title"
                             android:layout_width="match_parent"

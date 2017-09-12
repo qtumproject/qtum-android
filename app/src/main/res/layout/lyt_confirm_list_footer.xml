@@ -9,7 +9,7 @@
     android:paddingBottom="64dp"
     android:layout_height="wrap_content">
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/miner_title"
         android:text="@string/mine_address"
         android:textColor="@color/colorPrimary"
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/miner_value"
         android:textStyle="bold"
         android:layout_marginTop="8dp"
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/free_title"
         android:layout_marginTop="16dp"
         android:text="@string/fee"
@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/free_value"
         android:textStyle="bold"
         android:layout_marginTop="8dp"

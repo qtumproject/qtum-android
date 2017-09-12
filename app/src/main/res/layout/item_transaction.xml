@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_date"
             app:typefaceAsset="@string/simplonMonoRegular"
             android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                 android:scaleType="fitStart"
                 app:srcCompat="@drawable/ic_sent"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_operation_type"
                 app:typefaceAsset="@string/simplonMonoRegular"
                 android:textColor="@color/colorPrimary"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="Send"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_value"
                 android:layout_width="match_parent"
                 android:gravity="right"
@@ -60,7 +60,7 @@
 
         </LinearLayout>
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_id"
             app:typefaceAsset="@string/simplonMonoRegular"
             android:layout_width="wrap_content"

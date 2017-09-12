@@ -34,7 +34,7 @@
             android:paddingTop="10dp"
             app:srcCompat="@drawable/ic_back_indicator"/>
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_toolbar_restore_contracts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -72,7 +72,7 @@
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/ic_attach"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_select_back_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                 app:typefaceAsset="@string/simplonMonoRegular"
                 android:textColor="@color/colorPrimary"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_file_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
 
     </FrameLayout>
 
-        <com.pixelplex.qtum.utils.FontButton
+        <org.qtum.wallet.utils.FontButton
             android:id="@+id/bt_restore"
             android:text="Restore"
             android:gravity="center"
@@ -129,7 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.pixelplex.qtum.utils.FontCheckBox
+            <org.qtum.wallet.utils.FontCheckBox
                 android:id="@+id/cb_restore_templates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
                 android:textColor="@color/colorPrimary"
                 android:text="Restore Templates"/>
 
-            <com.pixelplex.qtum.utils.FontCheckBox
+            <org.qtum.wallet.utils.FontCheckBox
                 android:id="@+id/cb_restore_contracts"
                 android:layout_width="wrap_content"
                 android:layout_alignStart="@+id/cb_restore_templates"
@@ -161,7 +161,7 @@
                 android:textColor="@color/colorPrimary"
                 android:text="Restore Contracts"/>
 
-            <com.pixelplex.qtum.utils.FontCheckBox
+            <org.qtum.wallet.utils.FontCheckBox
                 android:id="@+id/cb_restore_tokens"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -178,7 +178,7 @@
                 android:textColor="@color/colorPrimary"
                 android:text="Restore Tokens"/>
 
-            <com.pixelplex.qtum.utils.FontCheckBox
+            <org.qtum.wallet.utils.FontCheckBox
                 android:id="@+id/cb_restore_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

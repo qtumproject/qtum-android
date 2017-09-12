@@ -24,7 +24,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true">
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_create_new"
                 android:layout_width="wrap_content"
                 android:gravity="center"
@@ -42,7 +42,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/button_text" />
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_import_wallet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/button_text" />
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_start_page_you_dont_have"
                 android:layout_width="match_parent"
                 android:gravity="center"
@@ -105,7 +105,7 @@
                 android:textSize="22sp"
                 app:typefaceAsset="@string/euclidFlexMedium" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_start_page_create"
                 android:layout_width="match_parent"
                 android:gravity="center"

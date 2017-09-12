@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <com.pixelplex.qtum.utils.FontButton
+    <org.qtum.wallet.utils.FontButton
         android:id="@+id/cancel"
         android:gravity="center"
         android:paddingStart="16dp"
@@ -71,7 +71,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/text"
             android:textSize="16sp"
             android:text="@string/search"

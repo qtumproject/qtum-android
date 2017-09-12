@@ -7,7 +7,7 @@
                 android:background="@color/colorPrimary"
                 android:layout_height="56dp">
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/address_name"
         android:textSize="16sp"
         android:textColor="@color/background"
@@ -30,7 +30,7 @@
         android:layout_marginEnd="16dp"
         android:orientation="horizontal">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/address_balance"
             android:textSize="14sp"
             android:textColor="@color/background"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/address_symbol"
             android:textSize="14sp"
             android:textColor="@color/background"

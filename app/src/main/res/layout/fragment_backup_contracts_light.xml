@@ -34,7 +34,7 @@
                 android:tint="@color/white"
                 app:srcCompat="@drawable/ic_back_indicator"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_toolbar_restore_contracts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -70,7 +70,7 @@
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/ic_attach"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_select_back_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                 android:textSize="18sp"
                 app:typefaceAsset="@string/proximaNovaSemibold"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_file_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

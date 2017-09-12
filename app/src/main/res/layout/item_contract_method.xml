@@ -6,7 +6,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp">
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/method_name"
         android:layout_width="wrap_content"
         android:maxLines="1"

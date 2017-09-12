@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/txt_app_name_white"
         android:layout_centerInParent="true"
         android:text="@string/app_name"
@@ -25,7 +25,7 @@
         android:textColor="@color/white"
         android:layout_height="wrap_content" />
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/txt_app_name"
         android:layout_centerInParent="true"
         android:text="@string/app_name"
@@ -65,7 +65,7 @@
         app:srcCompat="@drawable/qtum_logo"
         android:layout_height="140dp" />
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/txt_wait"
         android:textColor="@color/white"
         android:text="@string/please_wait_a_few_seconds"

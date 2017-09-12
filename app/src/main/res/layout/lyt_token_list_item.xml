@@ -9,7 +9,7 @@
     android:background="?attr/selectableItemBackground"
     android:layout_height="56dp">
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/token_name"
         android:textSize="16sp"
         android:textColor="@color/colorPrimary"
@@ -41,7 +41,7 @@
         android:layout_marginEnd="16dp"
         android:orientation="horizontal">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/token_balance"
             tools:text="0.0"
             android:textSize="14sp"
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:layout_marginStart="2dp"
             android:id="@+id/token_symbol"
             android:textSize="14sp"

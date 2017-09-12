@@ -19,7 +19,7 @@
             android:textColorHint="@color/bottom_nav_bar_text_color_light_alpha_50"
             android:theme="@style/InputTextParameter">
 
-            <com.pixelplex.qtum.utils.EditTextValidated
+            <org.qtum.wallet.utils.EditTextValidated
                 android:id="@+id/et_param"
                 android:layout_width="match_parent"
                 android:gravity="left"

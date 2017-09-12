@@ -61,7 +61,7 @@
                         android:background="@color/colorPrimary"
                         android:layout_height="56dp">
 
-                        <com.pixelplex.qtum.utils.FontTextView
+                        <org.qtum.wallet.utils.FontTextView
                             android:id="@+id/tv_token_name"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -130,7 +130,7 @@
                     android:layout_height="1dp"
                     android:background="@color/background"/>
 
-                <com.pixelplex.qtum.utils.StackCollapseLinearLayout
+                <org.qtum.wallet.utils.StackCollapseLinearLayout
                     android:id="@+id/collapse_layout"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
@@ -160,7 +160,7 @@
                     </FrameLayout>
 
 
-                </com.pixelplex.qtum.utils.StackCollapseLinearLayout>
+                </org.qtum.wallet.utils.StackCollapseLinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:layout_width="match_parent"
             android:text="@string/Source_code"
             android:gravity="center"
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="280dp">
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 app:typefaceAsset="@string/proximaNovaRegular"
                 android:id="@+id/source_code_tv"
                 android:padding="8dp"
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/btn_cancel"
                 android:padding="16dp"
                 android:background="@drawable/btn_gray_corner_background_light"
@@ -63,7 +63,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content" />
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/btn_copy"
                 android:padding="16dp"
                 android:textSize="16sp"

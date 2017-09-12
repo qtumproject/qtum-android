@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:layout_width="match_parent"
             android:text="@string/confirm_purchase"
             android:gravity="center"
@@ -22,7 +22,7 @@
             app:typefaceAsset="@string/proximaNovaSemibold"
             android:layout_height="wrap_content" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             style="@style/confirm_purchase_title_dialog"
             android:id="@+id/contract_name"
             android:text="savfsv"
@@ -30,14 +30,14 @@
             android:layout_height="wrap_content"
             app:typefaceAsset="@string/proximaNovaRegular" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             style="@style/confirm_purchase_subtitle_dialog_light"
             android:layout_width="match_parent"
             android:text="@string/contract_name"
             app:typefaceAsset="@string/proximaNovaRegular"
             android:layout_height="wrap_content" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             style="@style/confirm_purchase_title_dialog"
             android:id="@+id/contract_type"
 
@@ -45,14 +45,14 @@
             app:typefaceAsset="@string/proximaNovaRegular"
             android:layout_height="wrap_content" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             style="@style/confirm_purchase_subtitle_dialog_light"
             android:layout_width="match_parent"
             android:text="@string/contract_type"
             app:typefaceAsset="@string/proximaNovaRegular"
             android:layout_height="wrap_content" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/miner_address"
             style="@style/confirm_purchase_title_dialog"
             android:maxLines="1"
@@ -62,7 +62,7 @@
             app:typefaceAsset="@string/proximaNovaRegular"
             android:layout_height="wrap_content" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             style="@style/confirm_purchase_subtitle_dialog_light"
             android:layout_width="match_parent"
             android:text="@string/miner_address"
@@ -83,7 +83,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content">
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/price"
                     android:gravity="center"
                     style="@style/confirm_purchase_subtitle_dialog_start"
@@ -92,7 +92,7 @@
                     app:typefaceAsset="@string/proximaNovaBold" />
 
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     style="@style/confirm_purchase_subtitle_dialog_light_start"
                     android:layout_width="match_parent"
                     android:gravity="center"
@@ -110,7 +110,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content">
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/fee"
                     android:gravity="center"
                     style="@style/confirm_purchase_subtitle_dialog_start"
@@ -119,7 +119,7 @@
                     app:typefaceAsset="@string/proximaNovaBold"
                     android:layout_height="wrap_content" />
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:gravity="center"
                     style="@style/confirm_purchase_subtitle_dialog_light_start"
                     android:layout_width="match_parent"
@@ -140,7 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/btn_cancel"
                 android:padding="16dp"
                 android:background="@drawable/btn_gray_corner_background_light"
@@ -155,7 +155,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content" />
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/btn_confirm"
                 android:padding="16dp"
                 android:textSize="16sp"

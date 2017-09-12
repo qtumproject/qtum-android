@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.pixelplex.qtum">
+    package="org.qtum.wallet">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
@@ -17,13 +17,13 @@
         android:resizeableActivity="false"
         android:theme="@style/AppTheme"
         android:allowBackup="true"
-        android:name=".QtumApplication"
+        android:name="org.qtum.wallet.QtumApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         tools:targetApi="n">
         <activity
             android:theme="@style/AppTheme"
-            android:name="com.pixelplex.qtum.ui.activity.main_activity.MainActivity"
+            android:name="org.qtum.wallet.ui.activity.main_activity.MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -36,7 +36,7 @@
 
         <activity
             android:theme="@style/SplashTheme"
-            android:name="com.pixelplex.qtum.ui.activity.splash_activity.SplashActivity"
+            android:name="org.qtum.wallet.ui.activity.splash_activity.SplashActivity"
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -49,18 +49,18 @@
         </meta-data>
 
         <service
-            android:name=".dataprovider.services.update_service.UpdateService"
+            android:name="org.qtum.wallet.dataprovider.services.update_service.UpdateService"
             android:enabled="true"
             android:exported="true">
         </service>
 
-        <service android:name=".dataprovider.firebase.QtumFirebaseMessagingService">
+        <service android:name="org.qtum.wallet.dataprovider.firebase.QtumFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
-        <service android:name=".dataprovider.firebase.QtumFirebaseInstanceIdService">
+        <service android:name="org.qtum.wallet.dataprovider.firebase.QtumFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>

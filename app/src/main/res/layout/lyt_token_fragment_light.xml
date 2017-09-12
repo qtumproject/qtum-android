@@ -14,7 +14,7 @@
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <com.pixelplex.qtum.utils.StackCollapseLinearLayout
+            <org.qtum.wallet.utils.StackCollapseLinearLayout
                 android:id="@+id/collapse_layout"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
@@ -27,9 +27,9 @@
                     <include layout="@layout/lyt_header_light"/>
                 </FrameLayout>
 
-            </com.pixelplex.qtum.utils.StackCollapseLinearLayout>
+            </org.qtum.wallet.utils.StackCollapseLinearLayout>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 app:typefaceAsset="@string/proximaNovaSemibold"
                 android:background="@color/bottom_nav_bar_color_light"
                 android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-                <com.pixelplex.qtum.ui.wave_visualizer.WaveView
+                <org.qtum.wallet.ui.wave_visualizer.WaveView
                     android:id="@+id/wave_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -110,7 +110,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="56dp">
 
-                        <com.pixelplex.qtum.utils.FontTextView
+                        <org.qtum.wallet.utils.FontTextView
                             android:id="@+id/tv_token_name"
                             android:layout_toEndOf="@+id/bt_back"
                             android:layout_toStartOf="@+id/bt_share"

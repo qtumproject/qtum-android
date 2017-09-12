@@ -8,7 +8,7 @@
     android:padding="8dp"
     android:layout_height="match_parent">
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/contract_address_title"
         android:text="@string/contract_address"
         app:typefaceAsset="@string/proximaNovaRegular"
@@ -18,7 +18,7 @@
         android:gravity="center"
         android:layout_height="wrap_content" />
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/contract_address_value"
         android:text="N/A"
         android:layout_marginTop="4dp"
@@ -47,7 +47,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content">
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/initial_supply_value"
                 android:text="0"
                 app:typefaceAsset="@string/proximaNovaSemibold"
@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/initial_supply_title"
                 android:text="@string/initial_supply"
                 android:textSize="12sp"
@@ -76,7 +76,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content">
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/decimal_units_value"
                 android:text="0"
                 app:typefaceAsset="@string/proximaNovaSemibold"
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/decimal_units_title"
                 android:text="@string/decimal_units"
                 android:textSize="12sp"

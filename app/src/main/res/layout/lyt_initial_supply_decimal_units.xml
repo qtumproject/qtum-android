@@ -14,7 +14,7 @@
         android:paddingEnd="16sp"
         android:layout_weight="10">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/initial_supply_title"
             android:text="@string/initial_supply"
             android:layout_centerVertical="true"
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/initial_supply_value"
             android:layout_alignParentEnd="true"
             android:text="0"
@@ -42,7 +42,7 @@
         android:paddingEnd="16sp"
         android:layout_weight="10">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/decimal_units_title"
             android:text="@string/decimal_units"
             android:layout_centerVertical="true"
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/decimal_units_value"
             android:layout_alignParentEnd="true"
             android:text="0"

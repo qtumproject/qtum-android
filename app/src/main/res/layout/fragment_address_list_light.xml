@@ -37,7 +37,7 @@
                 android:paddingTop="10dp"
                 app:srcCompat="@drawable/ic_back_indicator"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_toolbar_send"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -44,7 +44,7 @@
                     android:tint="@color/white"
                     app:srcCompat="@drawable/ic_back_indicator" />
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_toolbar_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.pixelplex.qtum.ui.wave_visualizer.WaveView
+            <org.qtum.wallet.ui.wave_visualizer.WaveView
                 android:id="@+id/wave_view"
                 android:layout_width="match_parent"
                 android:layout_height="100dp" />
@@ -90,7 +90,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_cost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                     android:textSize="24sp"
                     app:typefaceAsset="@string/proximaNovaBold" />
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_qtum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
 
             </LinearLayout>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:layout_marginTop="8dp"
                 android:id="@+id/tv_view_details"
                 android:layout_width="match_parent"
@@ -157,7 +157,7 @@
             android:paddingStart="16dp"
             android:paddingTop="8dp">
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_description"
                 style="@style/qstore_text_subtitle_style_light"
                 android:layout_width="match_parent"
@@ -165,7 +165,7 @@
                 android:text="Smart Contract creates lottery tickets"
                 app:typefaceAsset="@string/proximaNovaRegular" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 style="@style/qstore_text_title_style_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -184,7 +184,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 style="@style/qstore_text_title_style_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/grey20" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_pub_date"
                 style="@style/qstore_text_oneline_subtitle_style_light"
                 android:layout_width="wrap_content"
@@ -206,7 +206,7 @@
                 app:typefaceAsset="@string/proximaNovaRegular" />
 
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 style="@style/qstore_text_oneline_title_style_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -219,7 +219,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/grey20" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_size"
                 style="@style/qstore_text_oneline_subtitle_style_light"
                 android:layout_width="wrap_content"
@@ -227,7 +227,7 @@
                 android:text="54Mb"
                 app:typefaceAsset="@string/proximaNovaRegular" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 style="@style/qstore_text_oneline_title_style_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -240,7 +240,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/grey20" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_compiled_on"
                 style="@style/qstore_text_oneline_subtitle_style_light"
                 android:layout_width="wrap_content"
@@ -248,7 +248,7 @@
                 android:text="1/0/5"
                 app:typefaceAsset="@string/proximaNovaRegular" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 style="@style/qstore_text_oneline_title_style_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -261,7 +261,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/grey20" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_source_code"
                 style="@style/qstore_text_oneline_subtitle_style_light"
                 android:layout_width="wrap_content"
@@ -269,7 +269,7 @@
                 android:text="Yes"
                 app:typefaceAsset="@string/proximaNovaRegular" />
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     style="@style/qstore_text_oneline_title_style_light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -282,7 +282,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/grey20" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_pub_by"
                 style="@style/qstore_text_oneline_subtitle_style_light"
                 android:layout_width="wrap_content"
@@ -291,7 +291,7 @@
                 android:text="kwf90weckw0vwkvw0vjw0vwjvw0vsq6"
                 app:typefaceAsset="@string/proximaNovaRegular" />
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_pub_by_title"
                     style="@style/qstore_text_oneline_title_style_light"
                     android:layout_width="wrap_content"
@@ -305,7 +305,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/grey20" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_downloads"
                 style="@style/qstore_text_oneline_subtitle_style_light"
                 android:layout_width="wrap_content"
@@ -313,7 +313,7 @@
                 android:text="346"
                 app:typefaceAsset="@string/proximaNovaRegular" />
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     style="@style/qstore_text_oneline_title_style_light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -333,7 +333,7 @@
                 android:layout_marginBottom="32dp"
                 android:layout_marginTop="32dp">
 
-                <com.pixelplex.qtum.utils.FontButton
+                <org.qtum.wallet.utils.FontButton
                     android:id="@+id/btn_purchase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -353,7 +353,7 @@
                     android:textSize="18sp"
                     app:typeface="@string/proximaNovaRegular" />
 
-                <com.pixelplex.qtum.utils.FontButton
+                <org.qtum.wallet.utils.FontButton
                     android:id="@+id/btn_view_source_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

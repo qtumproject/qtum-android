@@ -12,7 +12,7 @@
         android:id="@+id/ll_balance"
         android:orientation="horizontal">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
             android:textColor="@color/background"
             android:textSize="24sp" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
 
 
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/available_balance_title"
         android:gravity="center"
         app:typefaceAsset="@string/simplonMonoRegular"
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:typefaceAsset="@string/simplonMonoRegular"
@@ -51,7 +51,7 @@
             android:textColor="@color/background"
             android:id="@+id/tv_unconfirmed_balance"/>
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/unconfirmed_balance_title"
         android:gravity="center"
         app:typefaceAsset="@string/simplonMonoRegular"
