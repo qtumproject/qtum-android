@@ -113,8 +113,7 @@
     </LinearLayout>
 
         <com.pixelplex.qtum.utils.FontButton
-            android:drawableStart="@drawable/ic_popup_close"
-            android:drawableTint="@color/grey"
+            android:drawableStart="@drawable/wrapper_ic_popup_close"
             android:alpha=".5"
             android:layout_alignParentEnd="true"
             android:layout_margin="4dp"

@@ -1,6 +1,8 @@
 package com.pixelplex.qtum.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Pair;
 
 import com.google.gson.Gson;
 import com.pixelplex.qtum.datastorage.FileStorageManager;
@@ -28,7 +30,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 import org.spongycastle.crypto.digests.SHA256Digest;
-import org.spongycastle.util.BigIntegers;
 import org.spongycastle.util.encoders.Hex;
 
 import java.io.ByteArrayOutputStream;
@@ -36,21 +37,38 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import rx.Observable;
 
-
 public class ContractBuilder {
 
-    private String hashPattern = "0000000000000000000000000000000000000000000000000000000000000000";
+    private String hashPattern = "0000000000000000000000000000000000000000000000000000000000000000"; //64b
+    //0xa5643bf2
+    //0000000000000000000000000000000000000000000000000000000000000060 //96
+    //0000000000000000000000000000000000000000000000000000000000000001 //true
+    //00000000000000000000000000000000000000000000000000000000000000a0 //160
+    //0000000000000000000000000000000000000000000000000000000000000004 //4
+    //6461766500000000000000000000000000000000000000000000000000000000 //dave
+    //0000000000000000000000000000000000000000000000000000000000000003 //3
+    //0000000000000000000000000000000000000000000000000000000000000001 //1
+    //0000000000000000000000000000000000000000000000000000000000000002 //2
+    //0000000000000000000000000000000000000000000000000000000000000003 //3
 
     private final int radix = 16;
     private final String TYPE_INT = "int";
     private final String TYPE_STRING = "string";
     private final String TYPE_ADDRESS = "address";
+    private final String TYPE_BOOL = "bool";
+
+    private final String ARRAY_PARAMETER_CHECK_PATTERN = ".*?\\d+\\[\\d*\\]";
+    private final String ARRAY_PARAMETER_TYPE = "(.*?\\d+)\\[(\\d*)\\]";
 
     final int OP_PUSHDATA_1 = 1;
     final int OP_PUSHDATA_4 = 0x04;
@@ -65,6 +83,47 @@ public class ContractBuilder {
 
     }
 
+    public void testContractParameters() {
+        List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
+        contractMethodParameterList.add(new ContractMethodParameter("1", "uint32[]", "1,2,3,4,5"));
+        contractMethodParameterList.add(new ContractMethodParameter("2", "bool", "true"));
+        contractMethodParameterList.add(new ContractMethodParameter("3", "bool", "false"));
+        contractMethodParameterList.add(new ContractMethodParameter("4", "uint256[1]", "1"));
+        contractMethodParameterList.add(new ContractMethodParameter("5", "string", "test"));
+        contractMethodParameterList.add(new ContractMethodParameter("6", "int", "567"));
+        contractMethodParameterList.add(new ContractMethodParameter("4", "uint8[]", ""));
+
+        for (ContractMethodParameter cmp : contractMethodParameterList) {
+            if (parameterIsArray(cmp)) {
+                System.out.println(getArrayTypeAndLength(cmp));
+                System.out.println(getArrayValues(cmp));
+                System.out.println("----------");
+            }
+
+        }
+
+    }
+
+    private List<String> getArrayValues(ContractMethodParameter contractMethodParameter) {
+        return Arrays.asList(contractMethodParameter.getValue().split("\\s*,\\s*"));
+    }
+
+    private boolean parameterIsArray(ContractMethodParameter contractMethodParameter) {
+        Pattern p = Pattern.compile(ARRAY_PARAMETER_CHECK_PATTERN);
+        Matcher m = p.matcher(contractMethodParameter.getType());
+        return m.matches();
+    }
+
+    private Pair<String, String> getArrayTypeAndLength(ContractMethodParameter contractMethodParameter) {
+        Pattern p = Pattern.compile(ARRAY_PARAMETER_TYPE);
+        Matcher m = p.matcher(contractMethodParameter.getType());
+        if (m.matches()) {
+            return new Pair<>(m.group(1), m.group(2));
+        } else {
+            throw new TypeNotPresentException(contractMethodParameter.getType(), new Throwable("Can not find type for ABI array parameter"));
+        }
+    }
+
     private List<ContractMethodParameter> mContractMethodParameterList;
 
     public Observable<String> createAbiMethodParams(final String _methodName, final List<ContractMethodParameter> contractMethodParameterList) {
@@ -77,7 +136,7 @@ public class ContractBuilder {
                 mContractMethodParameterList = contractMethodParameterList;
                 if (contractMethodParameterList != null && contractMethodParameterList.size() != 0) {
                     for (ContractMethodParameter parameter : contractMethodParameterList) {
-                        abiParams += convertParameter(parameter, abiParams);
+                        abiParams += convertParameter(parameter);
                         parameters = parameters + parameter.getType() + ",";
                     }
                     methodName = methodName + "(" + parameters.substring(0, parameters.length() - 1) + ")";
@@ -91,6 +150,7 @@ public class ContractBuilder {
             }
         });
     }
+
 
     long paramsCount;
 
@@ -106,32 +166,67 @@ public class ContractBuilder {
                 mContractMethodParameterList = contractMethodParameterList;
                 if (mContractMethodParameterList != null) {
                     for (ContractMethodParameter parameter : mContractMethodParameterList) {
-                        abiParams += convertParameter(parameter, abiParams);
+                        abiParams += convertParameter(parameter);
                     }
                 }
-                abiParams = getByteCodeByUiid(uiid) + abiParams + appendStringParameters();
+                abiParams = getByteCodeByUiid(uiid) + abiParams + appendStringParameters() + appendArrayParameters();
                 return abiParams;
             }
         });
     }
 
-    private String convertParameter(ContractMethodParameter parameter, String abiParams) {
+    private String convertParameter(ContractMethodParameter parameter) {
 
         String _value = parameter.getValue();
 
-        if (parameter.getType().contains(TYPE_INT)) {
-            return appendNumericPattern(convertToByteCode(new BigInteger(_value)));
-        } else if (parameter.getType().contains(TYPE_STRING)) {
-            return getStringOffset(parameter);
-        } else if (parameter.getType().contains(TYPE_ADDRESS) && _value.length() == 34) {
-            byte[] decode = Base58.decode(_value);
-            String toHexString = Hex.toHexString(decode);
-            String substring = toHexString.substring(2, 42);
-            return appendAddressPattern(substring);
-        } else if(parameter.getType().contains(TYPE_ADDRESS) ) {
+        if (!parameterIsArray(parameter)) {
+            if (parameter.getType().contains(TYPE_INT)) {
+                return appendNumericPattern(convertToByteCode(new BigInteger(_value)));
+            } else if (parameter.getType().contains(TYPE_STRING)) {
+                return getStringOffset(parameter);
+            } else if (parameter.getType().contains(TYPE_ADDRESS) && _value.length() == 34) {
+                byte[] decode = Base58.decode(_value);
+                String toHexString = Hex.toHexString(decode);
+                String substring = toHexString.substring(2, 42);
+                return appendAddressPattern(substring);
+            } else if (parameter.getType().contains(TYPE_ADDRESS)) {
+                return getStringOffset(parameter);
+            } else if (parameter.getType().contains(TYPE_BOOL)) {
+                return appendBoolean(_value);
+            }
+        } else {
             return getStringOffset(parameter);
         }
 
+        return "";
+    }
+
+    private String appendArrayParameters() {
+        String stringParams = "";
+        for (ContractMethodParameter parameter : mContractMethodParameterList) {
+            if (parameterIsArray(parameter)) {
+                Pair<String, String> arrayTypeAndLength = getArrayTypeAndLength(parameter);
+                List<String> paramsList = getArrayValues(parameter);
+                if (paramsList.size() > 0) {
+                    String arrayLength = (TextUtils.isEmpty(arrayTypeAndLength.second)) ? String.valueOf(paramsList.size()) : arrayTypeAndLength.second;
+                    stringParams += appendNumericPattern(arrayLength);
+                    for (String item : paramsList){
+                        stringParams += appendArrayParameter(arrayTypeAndLength.first, item);
+                    }
+                }
+            }
+        }
+        return stringParams;
+    }
+
+    private String appendArrayParameter(String type, String param){
+        if (type.contains(TYPE_INT)) {
+            return appendNumericPattern(convertToByteCode(new BigInteger(param)));
+        } else if (type.contains(TYPE_BOOL)) {
+            return appendBoolean(param);
+        }else if (type.contains(TYPE_ADDRESS)) {
+            return appendAddressPattern(param);
+        }
         return "";
     }
 
@@ -143,6 +238,10 @@ public class ContractBuilder {
             }
         }
         return stringParams;
+    }
+
+    private String appendBoolean(String parameter) {
+        return Boolean.valueOf(parameter) ? appendNumericPattern("1") : appendNumericPattern("0");
     }
 
     private int getStringsChainSize(ContractMethodParameter parameter) {
@@ -374,7 +473,7 @@ public class ContractBuilder {
                     if (contractMethod.getName().equals(contractMethodStandard.getName()) && contractMethod.getType().contains(contractMethodStandard.getType()) && contractMethod.isConstant() == contractMethodStandard.isConstant()) {
 
                         if (contractMethodStandard.getInputParams() != null) {
-                            if(contractMethod.getInputParams() == null){
+                            if (contractMethod.getInputParams() == null) {
                                 return false;
                             }
                             for (ContractMethodParameter contractMethodParameterStandard : contractMethodStandard.getInputParams()) {
@@ -395,7 +494,7 @@ public class ContractBuilder {
                             }
                         }
                         if (contractMethodStandard.getOutputParams() != null) {
-                            if(contractMethod.getOutputParams() == null){
+                            if (contractMethod.getOutputParams() == null) {
                                 return false;
                             }
                             for (ContractMethodParameter contractMethodParameterStandard : contractMethodStandard.getOutputParams()) {

@@ -44,7 +44,7 @@
     <string name="choose_another_address">选择另一个地址</string>
     <string name="log_out">退出</string>
     <string name="qr_code">二维码</string>
-    <string name="_continue">" Skynet Testnet Version"</string>
+    <string name="_continue">跳过</string>
     <string name="you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want">你可以跳过这一步，今后也可以随时导出</string>
     <string name="copy">复制</string>
     <string name="addresses">地址</string>
@@ -139,7 +139,7 @@
     <string name="switch_theme">切换应用主题</string>
     <string name="confirmation">确认…</string>
     <string name="qtum_address">QTUM地址</string>
-    <string name="not_confirmed_yet">还未确认...</string>
+    <string name="not_confirmed_yet">还未确认…</string>
     <string name="confirmed">已确认</string>
     <string name="preview">预览</string>
     <string name="restore">恢复</string>
@@ -177,7 +177,8 @@
     <string name="invalid_qtum_address">不合法的QTUM地址</string>
     <string name="invalid_qr_code">无效的二维码格式</string>
     <string name="_2017_qtum_n_skynet_testnet_version">"© 2017 QTUM \n "</string>
-    <string name="functions">Functions</string>
+    <string name="functions">函数</string>
+    <string name="wallet_backup">钱包备份</string>
 
 
 </resources>

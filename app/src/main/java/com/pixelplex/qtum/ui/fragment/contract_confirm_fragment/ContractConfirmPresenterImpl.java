@@ -44,6 +44,11 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
     private List<ContractMethodParameter> mContractMethodParameterList;
 
+//    public void testClick(){
+//        ContractBuilder contractBuilder = new ContractBuilder();
+//        contractBuilder.testContractParameters();
+//    }
+
     public void setContractMethodParameterList(List<ContractMethodParameter> contractMethodParameterList) {
         this.mContractMethodParameterList = contractMethodParameterList;
     }

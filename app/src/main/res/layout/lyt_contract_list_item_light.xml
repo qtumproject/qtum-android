@@ -19,14 +19,14 @@
         android:ellipsize="end"
         android:layout_height="match_parent" />
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/arrow"
         app:srcCompat="@drawable/ic_setting_arrow"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:scaleType="center"
         android:layout_marginEnd="8dp"
-        android:tint="@color/bottom_nav_view_item_color"
+        android:tint="@color/grey"
         android:layout_width="16dp"
         android:layout_height="16dp" />
 

@@ -105,6 +105,12 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveFra
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        hideBottomNavView(false);
+    }
+
     private boolean checkPermissionWriteExternalStorage() {
         if (getMainActivity().checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             return true;

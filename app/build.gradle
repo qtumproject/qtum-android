@@ -23,6 +23,12 @@ android {
     lintOptions {
         disable 'MissingTranslation'
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/rxjava.properties'
+    }
+
     signingConfigs {
         config_test {
             keyAlias 'QTUM'
@@ -61,7 +67,7 @@ android {
         versionCode autoVersionCode
         versionName "0.9"
         //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-       // vectorDrawables.useSupportLibrary = true
+        vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
     buildTypes {

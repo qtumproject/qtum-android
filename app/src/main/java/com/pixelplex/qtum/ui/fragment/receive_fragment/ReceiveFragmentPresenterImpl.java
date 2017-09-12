@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -25,6 +26,7 @@ import com.pixelplex.qtum.ui.fragment.addresses_fragment.AddressesFragment;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragment;
 import com.pixelplex.qtum.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.EnumMap;
 import java.util.Map;
@@ -305,7 +307,11 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
 
     public void chooseShareMethod(){
         if(getView().getQrCode() != null) {
-            String pathofBmp = MediaStore.Images.Media.insertImage(getView().getContext().getContentResolver(), getView().getQrCode(), "QTUM QRCode", null);
+            String pathofBmp = MediaStore.Images.Media.insertImage(getView().getContext().getContentResolver(), getView().getQrCode(), "QTUM QRCode", "Share");
+            if(TextUtils.isEmpty(pathofBmp)){
+                fixMediaDir();
+                return;
+            }
             Uri bmpUri = Uri.parse(pathofBmp);
             Intent intentShareFile = new Intent(Intent.ACTION_SEND);
             intentShareFile.setType("image/png");
@@ -313,6 +319,16 @@ public class ReceiveFragmentPresenterImpl extends BaseFragmentPresenterImpl impl
                     "Qtum QR-Code");
             intentShareFile.putExtra(Intent.EXTRA_STREAM, bmpUri);
             getView().getMainActivity().startActivity(Intent.createChooser(intentShareFile, "Qtum QR-Code"));
+        }
+    }
+
+    void fixMediaDir() {
+        File sdcard = Environment.getExternalStorageDirectory();
+        if (sdcard != null) {
+            File mediaDir = new File(sdcard, "DCIM/Camera");
+            if (!mediaDir.exists()) {
+                mediaDir.mkdirs();
+            }
         }
     }
 }

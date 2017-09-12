@@ -1,6 +1,8 @@
 package com.pixelplex.qtum;
 
 import android.support.multidex.MultiDexApplication;
+import android.support.v7.app.AppCompatDelegate;
+
 import com.crashlytics.android.Crashlytics;
 import com.pixelplex.qtum.datastorage.QStoreStorage;
 import com.pixelplex.qtum.utils.FontManager;
@@ -20,5 +22,6 @@ public class QtumApplication extends MultiDexApplication {
         }
         FontManager.init(getAssets());
         QStoreStorage.getInstance(getApplicationContext());
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 }
