@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -35,7 +35,7 @@
             android:textColor="@color/background"
             app:typefaceAsset="@string/simplonMonoRegular" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_token_address"
             android:layout_width="wrap_content"
             android:layout_height="0dp"

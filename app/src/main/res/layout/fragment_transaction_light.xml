@@ -31,7 +31,7 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal">
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                     android:textSize="30sp"
                     app:typefaceAsset="@string/proximaNovaBold" />
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -58,7 +58,7 @@
                 android:layout_gravity="bottom"
                 android:background="@color/bottom_nav_bar_color_light">
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tab_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                     android:tint="@color/white"
                     app:srcCompat="@drawable/ic_back_indicator" />
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="48dp"
@@ -122,7 +122,7 @@
                     android:tint="@color/white"
                     app:srcCompat="@drawable/ic_confirmation_loader" />
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/not_confirmed_flag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -147,7 +147,7 @@
                     android:tint="@color/white"
                     app:srcCompat="@drawable/ic_time_light" />
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_received_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -41,7 +41,7 @@
                         android:tint="@color/background"
                         app:srcCompat="@drawable/ic_back_indicator" />
 
-                    <com.pixelplex.qtum.utils.FontTextView
+                    <org.qtum.wallet.utils.FontTextView
                         android:id="@+id/tv_toolbar_send"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                 android:orientation="vertical"
                 android:paddingBottom="16dp">
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12dp"
@@ -150,7 +150,7 @@
                     android:orientation="horizontal">
 
 
-                    <com.pixelplex.qtum.utils.FontTextView
+                    <org.qtum.wallet.utils.FontTextView
                         android:paddingBottom="4dp"
                         app:typefaceAsset="@string/simplonMonoRegular"
                         android:id="@+id/tv_currency"
@@ -195,7 +195,7 @@
                     android:textColor="@color/colorPrimary"/>
             </android.support.design.widget.TextInputLayout>
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_send"
                 android:layout_width="200dp"
                 android:padding="10dp"

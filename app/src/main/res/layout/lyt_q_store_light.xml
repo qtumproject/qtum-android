@@ -67,7 +67,7 @@
                     android:padding="32dp"
                     app:srcCompat="@drawable/ic_add_light"/>
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_toolbar_language"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.pixelplex.qtum.utils.SearchBarLight
+        <org.qtum.wallet.utils.SearchBarLight
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="50dp"/>
@@ -107,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.pixelplex.qtum.utils.FontCheckBox
+            <org.qtum.wallet.utils.FontCheckBox
                 android:id="@+id/cb_by_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
                 android:textSize="14sp"
                 app:checkBoxTypeface="@string/proximaNovaRegular" />
 
-            <com.pixelplex.qtum.utils.FontCheckBox
+            <org.qtum.wallet.utils.FontCheckBox
                 android:id="@+id/cb_by_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:textColor="@color/white"
             android:textSize="12sp"
             android:id="@+id/tv_placeholder_balance_title"
@@ -26,7 +26,7 @@
             android:gravity="center"
             android:layout_height="match_parent" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:textColor="@color/white"
             android:textSize="12sp"
             android:layout_alignParentRight="true"
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:textColor="@color/white"
             android:textSize="12sp"
             android:id="@+id/tv_placeholder_not_confirmed_balance_title"
@@ -58,7 +58,7 @@
             android:gravity="center"
             android:layout_height="match_parent" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:textColor="@color/white"
             android:textSize="12sp"
             android:layout_alignParentRight="true"

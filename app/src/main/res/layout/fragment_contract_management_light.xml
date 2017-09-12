@@ -34,7 +34,7 @@
                 android:tint="@color/white"
                 app:srcCompat="@drawable/ic_back_indicator"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_toolbar_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 android:padding="2dp"
@@ -77,7 +77,7 @@
                 android:gravity="center"
                 android:layout_height="wrap_content" />
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 android:padding="2dp"

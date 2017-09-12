@@ -12,7 +12,7 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_single_string"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

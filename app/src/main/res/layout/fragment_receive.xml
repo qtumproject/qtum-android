@@ -28,7 +28,7 @@
                 android:layout_height="56dp"
                 android:orientation="horizontal">
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_toolbar_send"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -175,7 +175,7 @@
             android:paddingBottom="@dimen/activity_horizontal_margin"
             android:paddingTop="8dp">
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_copy_wallet_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -195,7 +195,7 @@
                 android:textSize="@dimen/button_text"
                 app:typeface="@string/simplonMonoRegular"/>
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_choose_another_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

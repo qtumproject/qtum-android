@@ -34,7 +34,7 @@
                 android:paddingTop="10dp"
                 app:srcCompat="@drawable/ic_back_indicator"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_toolbar_watch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -106,7 +106,7 @@
             android:layout_below="@id/til_contract_address"
             android:layout_marginTop="16dp">
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -117,7 +117,7 @@
                 android:layout_weight="1"
                 android:text="ABI Interface"/>
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_choose_from_library"
                 android:text="Choose from library"
                 android:gravity="center"
@@ -133,7 +133,7 @@
 
 
 
-        <com.pixelplex.qtum.utils.FontEditText
+        <org.qtum.wallet.utils.FontEditText
             android:id="@+id/et_abi_interface"
             android:layout_width="match_parent"
             android:layout_marginLeft="16dp"
@@ -173,7 +173,7 @@
             android:padding="8dp"
             android:layout_height="wrap_content">
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_cancel"
                 android:text="@string/cancel"
                 android:gravity="center"
@@ -188,7 +188,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_ok"
                 android:text="@string/ok"
                 android:gravity="center"

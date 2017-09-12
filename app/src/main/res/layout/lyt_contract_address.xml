@@ -14,7 +14,7 @@
         android:paddingEnd="16sp"
         android:layout_weight="10">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/contract_address_title"
             android:text="@string/contract_address"
             android:layout_centerVertical="true"
@@ -32,7 +32,7 @@
         android:paddingEnd="16sp"
         android:layout_weight="10">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/contract_address_value"
             android:text="N/A"
             android:maxLines="1"

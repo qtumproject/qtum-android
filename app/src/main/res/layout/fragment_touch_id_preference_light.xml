@@ -22,7 +22,7 @@
             android:background="@color/alpha"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             android:layout_above="@+id/tv_you_can_skip"
             android:layout_centerHorizontal="true"/>
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_you_can_skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true">
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_enable_touch_id"
                 android:layout_width="202dp"
                 android:gravity="center"
@@ -82,7 +82,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/button_text" />
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_not_now"
                 android:layout_width="202dp"
                 android:layout_height="wrap_content"

@@ -24,7 +24,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true">
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
 
                 android:id="@+id/bt_create_new"
                 android:layout_width="202dp"
@@ -41,7 +41,7 @@
                 android:textSize="@dimen/button_text" />
 
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_login"
                 android:layout_width="202dp"
                 android:gravity="center"
@@ -54,7 +54,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/button_text" />
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_import_wallet"
                 android:layout_width="202dp"
                 android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
 
         </RelativeLayout>
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_start_page_create"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
             android:layout_centerHorizontal="true"
             app:srcCompat="@drawable/qtum_logo" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_start_page_you_dont_have"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
         android:fitsSystemWindows="true"
         app:layout_collapseMode="parallax">
 
-        <com.pixelplex.qtum.ui.wave_visualizer.WaveView
+        <org.qtum.wallet.ui.wave_visualizer.WaveView
             android:id="@+id/wave_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

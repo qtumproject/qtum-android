@@ -42,7 +42,7 @@
                     android:paddingTop="10dp"
                     app:srcCompat="@drawable/ic_back_indicator"/>
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_toolbar_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -78,7 +78,7 @@
         android:padding="@dimen/activity_horizontal_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_brain_code"
             android:layout_width="match_parent"
             app:editTextTypeface="@string/proximaNovaRegular"
@@ -92,7 +92,7 @@
             android:textColor="@color/bottom_nav_bar_text_color_light"
             android:textColorHint="@color/bottom_nav_bar_text_color_light"/>
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_copy_brain_code_to_use"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
             android:textSize="16sp"
             app:typefaceAsset="@string/proximaNovaRegular"/>
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_you_can_skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -127,9 +127,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:padding="8dp"
-        app:layout_behavior="com.pixelplex.qtum.utils.MoveUpwardBehavior">
+        app:layout_behavior="org.qtum.wallet.utils.MoveUpwardBehavior">
 
-        <com.pixelplex.qtum.utils.FontButton
+        <org.qtum.wallet.utils.FontButton
             app:typeface="@string/proximaNovaSemibold"
             android:id="@+id/bt_continue"
             android:layout_width="0dp"
@@ -145,7 +145,7 @@
             android:textColor="@color/bottom_nav_bar_text_color_light"
             android:textSize="@dimen/button_text" />
 
-        <com.pixelplex.qtum.utils.FontButton
+        <org.qtum.wallet.utils.FontButton
             app:typeface="@string/proximaNovaSemibold"
             android:id="@+id/bt_copy"
             android:layout_width="0dp"
@@ -163,8 +163,8 @@
 
     </LinearLayout>
 
-    <com.pixelplex.qtum.utils.FontButton
-        app:layout_behavior="com.pixelplex.qtum.utils.MoveUpwardBehavior"
+    <org.qtum.wallet.utils.FontButton
+        app:layout_behavior="org.qtum.wallet.utils.MoveUpwardBehavior"
         app:typeface="@string/proximaNovaSemibold"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="16dp"

@@ -40,7 +40,7 @@
                     android:paddingTop="10dp"
                     app:srcCompat="@drawable/ic_back_indicator"/>
 
-                <com.pixelplex.qtum.utils.FontTextView
+                <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_toolbar_title"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -74,7 +74,7 @@
         android:padding="@dimen/activity_horizontal_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_brain_code"
             android:layout_width="match_parent"
             app:editTextTypeface="@string/simplonMonoMedium"
@@ -87,7 +87,7 @@
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"/>
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_copy_brain_code_to_use"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
             android:textSize="16sp"
             app:typefaceAsset="@string/simplonMonoMedium"/>
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_you_can_skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -120,9 +120,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:paddingBottom="@dimen/activity_horizontal_margin"
-        app:layout_behavior="com.pixelplex.qtum.utils.MoveUpwardBehavior">
+        app:layout_behavior="org.qtum.wallet.utils.MoveUpwardBehavior">
 
-        <com.pixelplex.qtum.utils.FontButton
+        <org.qtum.wallet.utils.FontButton
             android:id="@+id/bt_copy_brain_code"
             android:layout_toEndOf="@+id/bt_continue"
             android:layout_toStartOf="@+id/bt_copy"
@@ -137,7 +137,7 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/button_text"/>
 
-        <com.pixelplex.qtum.utils.FontButton
+        <org.qtum.wallet.utils.FontButton
             android:id="@+id/bt_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true" />
 
-        <com.pixelplex.qtum.utils.FontButton
+        <org.qtum.wallet.utils.FontButton
             android:id="@+id/bt_continue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -34,7 +34,7 @@
                 android:paddingTop="10dp"
                 app:srcCompat="@drawable/ic_back_indicator"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_toolbar_watch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -108,7 +108,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp">
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_json_interface"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
                 android:textSize="16sp"
                 app:typefaceAsset="@string/simplonMonoRegular"/>
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_choose_from_library"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
         </LinearLayout>
 
 
-        <com.pixelplex.qtum.utils.FontEditText
+        <org.qtum.wallet.utils.FontEditText
             android:id="@+id/et_abi_interface"
             android:layout_width="match_parent"
             android:layout_height="128dp"
@@ -173,7 +173,7 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_cancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -187,7 +187,7 @@
                 android:textSize="16sp"
                 app:typeface="@string/simplonMonoRegular" />
 
-            <com.pixelplex.qtum.utils.FontButton
+            <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_ok"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

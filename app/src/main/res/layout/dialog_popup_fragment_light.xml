@@ -29,7 +29,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp" />
 
-        <com.pixelplex.qtum.utils.FontTextView
+        <org.qtum.wallet.utils.FontTextView
             android:text="Title"
             android:textSize="18sp"
             app:typefaceAsset="@string/proximaNovaSemibold"
@@ -39,7 +39,7 @@
 
     </LinearLayout>
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:text="Notification Message"
         android:textSize="16sp"
         android:gravity="center"
@@ -51,7 +51,7 @@
         android:layout_below="@+id/ll_title"
         android:layout_centerHorizontal="true" />
 
-    <com.pixelplex.qtum.utils.FontButton
+    <org.qtum.wallet.utils.FontButton
         android:layout_marginBottom="32dp"
         android:id="@+id/bt_pop_up"
         android:layout_marginTop="16dp"

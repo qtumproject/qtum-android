@@ -33,7 +33,7 @@
                 android:paddingRight="16dp"
                 app:srcCompat="@drawable/ic_back_indicator"/>
 
-            <com.pixelplex.qtum.utils.FontTextView
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_currency_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary">
 
-            <com.pixelplex.qtum.utils.SearchBar
+            <org.qtum.wallet.utils.SearchBar
                 android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"/>

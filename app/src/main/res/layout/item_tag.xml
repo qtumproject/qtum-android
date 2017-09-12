@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:paddingBottom="4dp"
     android:paddingRight="4dp">
-    <com.pixelplex.qtum.utils.FontButton
+    <org.qtum.wallet.utils.FontButton
         android:id="@+id/bt_title"
         android:background="?attr/selectableItemBackground"
         android:layout_width="wrap_content"
@@ -19,5 +19,5 @@
         android:textSize="12sp"
         app:typeface="@string/simplonMonoRegular">
 
-    </com.pixelplex.qtum.utils.FontButton>
+    </org.qtum.wallet.utils.FontButton>
 </FrameLayout>

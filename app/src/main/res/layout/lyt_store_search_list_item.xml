@@ -15,7 +15,7 @@
         android:layout_marginStart="16dp"
         android:layout_height="20dp" />
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:maxLines="1"
@@ -30,7 +30,7 @@
         android:layout_toEndOf="@+id/icon"
         android:layout_toStartOf="@+id/cost"/>
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/cost"
         android:maxLines="1"
         android:layout_toLeftOf="@+id/qtum"
@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
-    <com.pixelplex.qtum.utils.FontTextView
+    <org.qtum.wallet.utils.FontTextView
         android:id="@+id/qtum"
         android:maxLines="1"
         android:layout_marginTop="4dp"

@@ -61,7 +61,7 @@ android {
         }
     }
     defaultConfig {
-        applicationId "com.pixelplex.qtum"
+        applicationId "org.qtum.wallet"
         minSdkVersion 19
         targetSdkVersion 25
         versionCode autoVersionCode
