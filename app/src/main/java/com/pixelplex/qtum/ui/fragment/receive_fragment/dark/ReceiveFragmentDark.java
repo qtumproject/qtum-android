@@ -19,7 +19,7 @@ public class ReceiveFragmentDark extends ReceiveFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        getPresenter().setQrColors(ContextCompat.getColor(getContext(),R.color.colorPrimary), mCoordinatorLayout.getDrawingCacheBackgroundColor());
+        getPresenter().setQrColors(ContextCompat.getColor(getContext(),R.color.colorPrimary), ContextCompat.getColor(getContext(),R.color.background));
     }
 
 }

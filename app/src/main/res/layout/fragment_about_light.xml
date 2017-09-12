@@ -55,10 +55,10 @@
         android:background="@color/select_file_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="300dp"
             android:layout_height="82dp"
-            android:src="@drawable/ic_qtum_logo_with_text"
+            app:srcCompat="@drawable/ic_qtum_logo_with_text"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="135dp"/>

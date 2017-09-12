@@ -17,35 +17,37 @@ class TransactionDetailFragmentPresenter {
     private TransactionDetailFragmentView mTransactionDetailFragmentView;
     private History mHistory;
 
-    TransactionDetailFragmentPresenter(TransactionDetailFragmentView transactionDetailFragmentView){
+    TransactionDetailFragmentPresenter(TransactionDetailFragmentView transactionDetailFragmentView) {
         mTransactionDetailFragmentInteractor = new TransactionDetailFragmentInteractor();
         mTransactionDetailFragmentView = transactionDetailFragmentView;
     }
 
-    private TransactionDetailFragmentView getView(){
+    private TransactionDetailFragmentView getView() {
         return mTransactionDetailFragmentView;
     }
 
-    private TransactionDetailFragmentInteractor getInteractor(){
+    private TransactionDetailFragmentInteractor getInteractor() {
         return mTransactionDetailFragmentInteractor;
     }
 
-    void onViewCreated(Bundle bundle){
+    void onViewCreated(Bundle bundle) {
         mHistory = getInteractor().getHistory(bundle.getInt(TransactionDetailFragment.POSITION));
-        List<TransactionInfo> transactionInfoList = new ArrayList<>();
-        switch (bundle.getInt(TransactionDetailFragment.ACTION)){
-            case TransactionDetailFragment.ACTION_FROM:
-                for(Vin vin : mHistory.getVin()){
-                    transactionInfoList.add(vin);
-                }
-                break;
-            case TransactionDetailFragment.ACTION_TO:
-                for(Vout vout : mHistory.getVout()){
-                    transactionInfoList.add(vout);
-                }
-                break;
+        if (mHistory != null) {
+            List<TransactionInfo> transactionInfoList = new ArrayList<>();
+            switch (bundle.getInt(TransactionDetailFragment.ACTION)) {
+                case TransactionDetailFragment.ACTION_FROM:
+                    for (Vin vin : mHistory.getVin()) {
+                        transactionInfoList.add(vin);
+                    }
+                    break;
+                case TransactionDetailFragment.ACTION_TO:
+                    for (Vout vout : mHistory.getVout()) {
+                        transactionInfoList.add(vout);
+                    }
+                    break;
+            }
+            getView().setUpRecyclerView(transactionInfoList);
         }
-        getView().setUpRecyclerView(transactionInfoList);
 
     }
 }

@@ -83,6 +83,8 @@
             android:layout_below="@+id/step">
 
             <ImageView
+                android:clickable="true"
+                android:id="@+id/test_click"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 app:srcCompat="@drawable/ic_token2"/>

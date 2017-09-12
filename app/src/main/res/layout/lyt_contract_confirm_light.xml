@@ -64,6 +64,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
 
+                <com.pixelplex.qtum.utils.FontButton
+                    android:visibility="gone"
+                    android:id="@+id/test_click"
+                    android:text="test"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:layout_toStartOf="@+id/confirm"
+                    android:background="?attr/selectableItemBackground"
+                    android:textColor="@color/white"
+                    app:typeface="@string/proximaNovaSemibold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
 
