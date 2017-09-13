@@ -21,7 +21,6 @@ public class ContractTemplate {
         this.mType = contractType;
         this.mUuid = uuid;
         mIsFullContractTemplate = true;
-
     }
 
     public ContractTemplate(TemplateJSON templateJSON){
