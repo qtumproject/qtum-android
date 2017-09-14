@@ -13,6 +13,8 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
 import org.qtum.wallet.utils.ContractManagementHelper;
 
+import java.math.BigDecimal;
+
 
 public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
 
@@ -70,6 +72,11 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
         ContractManagementHelper.getPropertyValue(TokenFragment.totalSupply, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
             @Override
             public void onSuccess(String value) {
+                BigDecimal bigDecimalTotalSupply = new BigDecimal(value);
+                if(token.getDecimalUnits() != null){
+                    BigDecimal divide = bigDecimalTotalSupply.divide(new BigDecimal(Math.pow(10,token.getDecimalUnits())));
+                    value = divide.toPlainString();
+                }
                 getView().onContractPropertyUpdated(TokenFragment.totalSupply, value);
             }
         });

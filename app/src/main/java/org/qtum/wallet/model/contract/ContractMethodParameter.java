@@ -1,5 +1,7 @@
 package org.qtum.wallet.model.contract;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -29,7 +31,7 @@ public class ContractMethodParameter implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return TextUtils.isEmpty(name)? type : name;
     }
 
     public void setName(String name) {
@@ -53,7 +55,7 @@ public class ContractMethodParameter implements Serializable {
     }
 
     public String getDisplayName() {
-        return displayName;
+        return TextUtils.isEmpty(displayName)? type : displayName;
     }
 
     public void setDisplayName(String displayName) {

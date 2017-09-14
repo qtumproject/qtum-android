@@ -191,7 +191,8 @@ public abstract class ContractManagementFragment extends BaseFragment implements
 
         @Override
         public int getItemViewType(int position) {
-            if(contractMethods.get(position).constant){
+            ContractMethod contractMethod = contractMethods.get(position);
+            if(contractMethod.constant && (contractMethod.getInputParams().size() == 0)){
                 return TYPE_PROPERTY;
             } else{
                 return TYPE_METHOD;
