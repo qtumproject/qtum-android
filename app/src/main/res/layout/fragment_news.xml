@@ -43,13 +43,58 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <FrameLayout
+            android:id="@+id/data_container"
             android:layout_width="match_parent"
-            android:splitMotionEvents="false"
             android:layout_height="match_parent">
 
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <RelativeLayout
+                android:padding="16dp"
+                android:id="@+id/placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="300dp"
+                    android:layout_height="82dp"
+                    app:srcCompat="@drawable/ic_qtum_logo_with_text"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="135dp"/>
+
+                <org.qtum.wallet.utils.FontTextView
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"
+                    android:layout_above="@+id/link_news"
+                    app:typefaceAsset="@string/simplonMonoRegular"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/news_placeholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <org.qtum.wallet.utils.FontTextView
+                    android:background="@color/colorPrimary"
+                    android:id="@+id/link_news"
+                    android:padding="8dp"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="18sp"
+                    android:layout_centerHorizontal="true"
+                    android:textColorLink="@color/background"
+                    app:typefaceAsset="@string/simplonMonoRegular"
+                    android:autoLink="web"
+                    android:text="@string/news_placeholder_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+        </FrameLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
