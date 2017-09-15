@@ -50,16 +50,6 @@ import rx.Observable;
 public class ContractBuilder {
 
     private String hashPattern = "0000000000000000000000000000000000000000000000000000000000000000"; //64b
-    //0xa5643bf2
-    //0000000000000000000000000000000000000000000000000000000000000060 //96
-    //0000000000000000000000000000000000000000000000000000000000000001 //true
-    //00000000000000000000000000000000000000000000000000000000000000a0 //160
-    //0000000000000000000000000000000000000000000000000000000000000004 //4
-    //6461766500000000000000000000000000000000000000000000000000000000 //dave
-    //0000000000000000000000000000000000000000000000000000000000000003 //3
-    //0000000000000000000000000000000000000000000000000000000000000001 //1
-    //0000000000000000000000000000000000000000000000000000000000000002 //2
-    //0000000000000000000000000000000000000000000000000000000000000003 //3
 
     private final int radix = 16;
     private final String TYPE_INT = "int";
@@ -80,27 +70,6 @@ public class ContractBuilder {
     private Context mContext;
 
     public ContractBuilder() {
-
-    }
-
-    public void testContractParameters() {
-        List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
-        contractMethodParameterList.add(new ContractMethodParameter("1", "uint32[]", "1,2,3,4,5"));
-        contractMethodParameterList.add(new ContractMethodParameter("2", "bool", "true"));
-        contractMethodParameterList.add(new ContractMethodParameter("3", "bool", "false"));
-        contractMethodParameterList.add(new ContractMethodParameter("4", "uint256[1]", "1"));
-        contractMethodParameterList.add(new ContractMethodParameter("5", "string", "test"));
-        contractMethodParameterList.add(new ContractMethodParameter("6", "int", "567"));
-        contractMethodParameterList.add(new ContractMethodParameter("4", "uint8[]", ""));
-
-        for (ContractMethodParameter cmp : contractMethodParameterList) {
-            if (parameterIsArray(cmp)) {
-                System.out.println(getArrayTypeAndLength(cmp));
-                System.out.println(getArrayValues(cmp));
-                System.out.println("----------");
-            }
-
-        }
 
     }
 

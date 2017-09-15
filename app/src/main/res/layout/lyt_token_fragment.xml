@@ -175,11 +175,30 @@
                     android:layout_height="1dp"
                     android:background="@color/colorPrimary"/>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                 <android.support.v7.widget.RecyclerView
+                    android:minHeight="200dp"
                     android:id="@+id/recycler_view"
                     android:splitMotionEvents="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
+                    <org.qtum.wallet.utils.FontTextView
+                        android:gravity="center"
+                        android:layout_alignTop="@+id/recycler_view"
+                        android:layout_alignBottom="@+id/recycler_view"
+                        app:typefaceAsset="@string/simplonMonoRegular"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_centerInParent="true"
+                        android:textSize="18sp"
+                        android:text="@string/no_transaction_available_yet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
 
             </LinearLayout>
 

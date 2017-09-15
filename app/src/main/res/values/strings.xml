@@ -198,5 +198,8 @@
     <string name="touch_to_open_transaction_history">Touch to open transaction history</string>
     <string name="functions">Functions</string>
     <string name="wallet_backup">Wallet Backup</string>
+    <string name="news_placeholder">Please follow our Medium account to get latest news and updates:</string>
+    <string name="news_placeholder_link">https://medium.com/@Qtum/</string>
+    <string name="no_transaction_available_yet">No transactions available yet</string>
 
 </resources>

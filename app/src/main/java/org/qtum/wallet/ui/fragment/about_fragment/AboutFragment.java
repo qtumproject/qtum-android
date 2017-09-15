@@ -4,6 +4,7 @@ package org.qtum.wallet.ui.fragment.about_fragment;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -32,7 +33,6 @@ public abstract class AboutFragment extends BaseFragment implements AboutFragmen
     FontTextView mTextViewQtumVersion;
 
     public static BaseFragment newInstance(Context context) {
-
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, AboutFragment.class);
         fragment.setArguments(args);

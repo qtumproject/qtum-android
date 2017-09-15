@@ -34,6 +34,7 @@ import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.ui.base.base_activity.BaseActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment.news_fragment.NewsFragment;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 import org.qtum.wallet.utils.CustomContextWrapper;
 import org.qtum.wallet.utils.FontManager;
@@ -285,15 +286,25 @@ public class MainActivity extends BaseActivity implements MainActivityView{
                     List<Fragment> fragments = getSupportFragmentManager().getFragments();
                     if (fragments != null) {
                         for (Fragment fr : fragments) {
-                            if (fr != null && fr.getClass() != null && fr instanceof WalletFragment){
-                                ((WalletFragment)fr).initBalanceListener();
-                                showBottomNavigationView(false);
+                            if (fr != null && fr.getClass() != null){
+                                if(fr instanceof WalletFragment) {
+                                    ((WalletFragment) fr).initBalanceListener();
+                                    showBottomNavigationView(false);
+                                } else if(fr instanceof NewsFragment) {
+                                    showBottomNavigationView(false);
+                                }
                             }
                         }
                     }
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     private void initBottomNavViewWithFont(int fontId){

@@ -55,7 +55,7 @@ public class ContractMethodParameter implements Serializable {
     }
 
     public String getDisplayName() {
-        return TextUtils.isEmpty(displayName)? type : displayName;
+        return displayName;
     }
 
     public void setDisplayName(String displayName) {
