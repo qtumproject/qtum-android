@@ -110,7 +110,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
     }
 
     @Override
-    public void createTx(final String address, final String amountString, final CreateTxCallBack callBack) {
+    public void createTx(final String address, final String amountString, final String feeString,final CreateTxCallBack callBack) {
         getUnspentOutputs(new GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
@@ -125,7 +125,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                 }
                 ECKey myKey = KeyStorage.getInstance().getCurrentKey();
                 BigDecimal amount = new BigDecimal(amountString);
-                BigDecimal fee = new BigDecimal("0.1");
+                BigDecimal fee = new BigDecimal(feeString);
 
                 BigDecimal amountFromOutput = new BigDecimal("0.0");
                 BigDecimal overFlow = new BigDecimal("0.0");
@@ -184,8 +184,8 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
     }
 
     @Override
-    public void sendTx(String address, String amount, final SendTxCallBack callBack) {
-        createTx(address, amount, new CreateTxCallBack() {
+    public void sendTx(String address, String amount, String fee,final SendTxCallBack callBack) {
+        createTx(address, amount,fee, new CreateTxCallBack() {
             @Override
             public void onSuccess(String txHex) {
                 sendTx(txHex, callBack);
