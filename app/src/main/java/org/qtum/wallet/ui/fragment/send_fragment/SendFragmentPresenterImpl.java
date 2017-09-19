@@ -232,7 +232,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
             final String amount = sendInfo[1];
             final String currency = sendInfo[2];
             final double feeDouble = Double.valueOf(sendInfo[3]);
-            if(feeDouble<0.001 && feeDouble>0.2){
+            if(feeDouble<0.001 || feeDouble>0.2){
                 getView().dismissProgressDialog();
                 getView().setAlertDialog(mContext.getString(org.qtum.wallet.R.string.error), mContext.getResources().getString(R.string.invalid_fee), "Ok", BaseFragment.PopUpType.error);
                 return;
