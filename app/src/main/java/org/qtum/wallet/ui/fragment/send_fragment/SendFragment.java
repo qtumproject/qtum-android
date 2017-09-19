@@ -13,8 +13,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
@@ -30,6 +32,7 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     private static final String ADDRESS = "address";
     private static final String TOKEN = "tokenAddr";
     private static final String AMOUNT = "amount";
+    private final double INITIAL_FEE = 0.1;
 
     @BindView(org.qtum.wallet.R.id.et_receivers_address)
     protected TextInputEditText mTextInputEditTextAddress;
@@ -39,6 +42,12 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     protected TextInputLayout tilAdress;
     @BindView(org.qtum.wallet.R.id.til_amount)
     protected TextInputLayout tilAmount;
+    @BindView(R.id.et_fee)
+    protected TextInputEditText mTextInputEditTextFee;
+    @BindView(R.id.til_fee)
+    protected TextInputLayout tilFee;
+    @BindView(R.id.ll_fee)
+    LinearLayout mLinearLayoutFee;
     @BindView(org.qtum.wallet.R.id.bt_send) Button mButtonSend;
     @BindView(org.qtum.wallet.R.id.ibt_back) ImageButton mImageButtonBack;
     @BindView(org.qtum.wallet.R.id.tv_toolbar_send) TextView mTextViewToolBar;
@@ -49,7 +58,8 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     protected TextView mTextViewCurrency;
     @BindView(org.qtum.wallet.R.id.bt_qr_code) ImageButton mButtonQrCode;
     @BindView(org.qtum.wallet.R.id.toolbar) Toolbar mToolbar;
-
+    @BindView(R.id.seekBar)
+    SeekBar mSeekBar;
     @BindView(org.qtum.wallet.R.id.not_confirmed_balance_view) View notConfirmedBalancePlaceholder;
     @BindView(org.qtum.wallet.R.id.tv_placeholder_balance_value) TextView placeHolderBalance;
     @BindView(org.qtum.wallet.R.id.tv_placeholder_not_confirmed_balance_value) TextView placeHolderBalanceNotConfirmed;
@@ -70,6 +80,20 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
                 getPresenter().onCurrencyClick();
                 break;
         }
+    }
+
+    @OnClick(R.id.bt_send)
+    public void onSendClick(){
+        String[] sendInfo = new String[4];
+        sendInfo[0] = mTextInputEditTextAddress.getText().toString();
+        sendInfo[1] = mTextInputEditTextAmount.getText().toString();
+        if(mLinearLayoutCurrency.getVisibility()==View.VISIBLE){
+            sendInfo[2] = mTextViewCurrency.getText().toString();
+        } else {
+            sendInfo[2] = "Qtum "+getString(org.qtum.wallet.R.string.default_currency);
+        }
+        sendInfo[3] = mTextInputEditTextFee.getText().toString();
+        getPresenter().send(sendInfo);
     }
 
     public static BaseFragment newInstance(boolean qrCodeRecognition, String address, String amount, String tokenAddress, Context context) {
@@ -146,6 +170,29 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         String amount = getArguments().getString(AMOUNT, "");
         mTextInputEditTextAmount.setText(amount);
         mTextInputEditTextAddress.setText(address);
+        final int step = 1;
+        int max = 200;
+        final int min = 1;
+        mSeekBar.setMax( (max - min) / step );
+        mSeekBar.setProgress((int)(INITIAL_FEE*1000));
+        mTextInputEditTextFee.setText(String.valueOf(INITIAL_FEE));
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                double value = (min + (progress * step))/1000.;
+                mTextInputEditTextFee.setText(String.valueOf(value));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     @Override
@@ -167,6 +214,15 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     public void setUpCurrencyField(String currency) {
         mLinearLayoutCurrency.setVisibility(View.VISIBLE);
         mTextViewCurrency.setText(currency);
+        if(currency.equals("Qtum (default currency)")){
+            tilFee.setVisibility(View.VISIBLE);
+            mTextInputEditTextFee.setVisibility(View.VISIBLE);
+            mLinearLayoutFee.setVisibility(View.VISIBLE);
+        } else {
+            tilFee.setVisibility(View.GONE);
+            mTextInputEditTextFee.setVisibility(View.GONE);
+            mLinearLayoutFee.setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
@@ -30,6 +31,7 @@ import org.qtum.wallet.utils.ContractBuilder;
 import org.bitcoinj.script.Script;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import rx.Subscriber;
@@ -229,7 +231,13 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
             final String address = sendInfo[0];
             final String amount = sendInfo[1];
             final String currency = sendInfo[2];
-
+            final double feeDouble = Double.valueOf(sendInfo[3]);
+            if(feeDouble<0.001 || feeDouble>0.2){
+                getView().dismissProgressDialog();
+                getView().setAlertDialog(mContext.getString(org.qtum.wallet.R.string.error), mContext.getResources().getString(R.string.invalid_fee), "Ok", BaseFragment.PopUpType.error);
+                return;
+            }
+            final String fee = validateFee(feeDouble);
             if((TextUtils.isEmpty(amount)) || Float.valueOf(amount) <= 0){
                 getView().dismissProgressDialog();
                 getView().setAlertDialog(mContext.getString(org.qtum.wallet.R.string.error), mContext.getResources().getString(org.qtum.wallet.R.string.transaction_amount_cant_be_zero), "Ok", BaseFragment.PopUpType.error);
@@ -243,7 +251,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                 public void onSuccess() {
                     getView().setProgressDialog();
                     if(currency.equals("Qtum "+mContext.getString(org.qtum.wallet.R.string.default_currency))) {
-                        getInteractor().sendTx(address, amount, new SendFragmentInteractorImpl.SendTxCallBack() {
+                        getInteractor().sendTx(address, amount, fee , new SendFragmentInteractorImpl.SendTxCallBack() {
                             @Override
                             public void onSuccess() {
                                 getView().setAlertDialog(mContext.getString(org.qtum.wallet.R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
@@ -330,6 +338,12 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         } else {
             getView().setAlertDialog(mContext.getString(org.qtum.wallet.R.string.no_internet_connection),mContext.getString(org.qtum.wallet.R.string.please_check_your_network_settings),"Ok", BaseFragment.PopUpType.error);
         }
+    }
+
+    private String validateFee(Double fee) {
+        String pattern = "##0.00000000";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern);
+        return decimalFormat.format(fee);
     }
 
     private void createTx(final String abiParams, final String contractAddress, String senderAddress) {
