@@ -219,7 +219,7 @@
                 android:layout_below="@+id/til_amount"
                 android:layout_marginTop="13dp"
                 android:layout_alignParentStart="true"
-                android:id="@+id/linearLayout">
+                android:id="@+id/ll_fee">
 
                 <org.qtum.wallet.utils.FontTextView
                     android:layout_width="wrap_content"
@@ -257,7 +257,7 @@
                 android:theme="@style/InputText"
                 android:focusable="true"
                 android:textColorHint="@color/colorPrimary"
-                android:layout_below="@+id/linearLayout"
+                android:layout_below="@+id/ll_fee"
                 android:layout_alignParentStart="true">
 
                 <android.support.design.widget.TextInputEditText

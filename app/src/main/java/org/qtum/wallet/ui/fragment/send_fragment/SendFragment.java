@@ -46,6 +46,8 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     protected TextInputEditText mTextInputEditTextFee;
     @BindView(R.id.til_fee)
     protected TextInputLayout tilFee;
+    @BindView(R.id.ll_fee)
+    LinearLayout mLinearLayoutFee;
     @BindView(org.qtum.wallet.R.id.bt_send) Button mButtonSend;
     @BindView(org.qtum.wallet.R.id.ibt_back) ImageButton mImageButtonBack;
     @BindView(org.qtum.wallet.R.id.tv_toolbar_send) TextView mTextViewToolBar;
@@ -212,6 +214,15 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     public void setUpCurrencyField(String currency) {
         mLinearLayoutCurrency.setVisibility(View.VISIBLE);
         mTextViewCurrency.setText(currency);
+        if(currency.equals("Qtum (default currency)")){
+            tilFee.setVisibility(View.VISIBLE);
+            mTextInputEditTextFee.setVisibility(View.VISIBLE);
+            mLinearLayoutFee.setVisibility(View.VISIBLE);
+        } else {
+            tilFee.setVisibility(View.GONE);
+            mTextInputEditTextFee.setVisibility(View.GONE);
+            mLinearLayoutFee.setVisibility(View.GONE);
+        }
     }
 
     @Override
