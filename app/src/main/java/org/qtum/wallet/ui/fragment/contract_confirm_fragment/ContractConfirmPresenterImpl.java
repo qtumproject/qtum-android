@@ -20,6 +20,7 @@ import org.qtum.wallet.datastorage.TinyDB;
 
 import org.bitcoinj.script.Script;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -122,8 +123,8 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                         });
                         ContractBuilder contractBuilder = new ContractBuilder();
                         Script script = contractBuilder.createConstructScript(abiParams);
-
-                        String hash = contractBuilder.createTransactionHash(script,unspentOutputs);
+//TODO
+                        String hash = contractBuilder.createTransactionHash(script,unspentOutputs,36731,new BigDecimal("0.00001"),"0.5");
                         sendTx(hash, "Stub!");
                     }
                 });

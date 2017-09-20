@@ -17,6 +17,7 @@ interface SendFragmentView extends BaseFragmentView {
     Fragment getFragment();
     void hideCurrencyField();
     UpdateService getSocketService();
+    void updateFee(double minFee, double maxFee);
 
     void setAdressAndAmount(String address, String anount);
 }
