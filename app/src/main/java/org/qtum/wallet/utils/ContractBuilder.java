@@ -376,14 +376,15 @@ public class ContractBuilder {
         return new Script(program);
     }
 
-    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs) {
+    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, BigDecimal feePerKb, String feeString) {
 
         Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
         transaction.addOutput(Coin.ZERO, script);
-
+        BigDecimal fee = new BigDecimal(feeString);
+        BigDecimal gasFee = new BigDecimal(gasLimit/100000000.);
         UnspentOutput unspentOutput = null;
         for (UnspentOutput unspentOutput1 : unspentOutputs) {
-            if (unspentOutput1.getAmount().doubleValue() > 1.0) {
+            if (unspentOutput1.getAmount().doubleValue() > fee.add(gasFee).doubleValue()) {
                 unspentOutput = unspentOutput1;
                 break;
             }
@@ -395,7 +396,7 @@ public class ContractBuilder {
 
         BigDecimal bitcoin = new BigDecimal(100000000);
         ECKey myKey = KeyStorage.getInstance().getCurrentKey();
-        transaction.addOutput(Coin.valueOf((long) (unspentOutput.getAmount().multiply(bitcoin).subtract(new BigDecimal("10000000")).doubleValue())),
+        transaction.addOutput(Coin.valueOf((long) (unspentOutput.getAmount().multiply(bitcoin).subtract(fee.multiply(bitcoin)).doubleValue())),
                 myKey.toAddress(CurrentNetParams.getNetParams()));
 
         for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList(10)) {
@@ -412,6 +413,13 @@ public class ContractBuilder {
         transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
 
         byte[] bytes = transaction.unsafeBitcoinSerialize();
+
+        int txSizeInkB = (int) Math.ceil(bytes.length/1024.);
+        BigDecimal minimumFee = (feePerKb.multiply(new BigDecimal(txSizeInkB))).add(gasFee);
+        if(minimumFee.doubleValue() > fee.doubleValue()){
+            throw new RuntimeException("Insufficient fee. Please use minimum of " + minimumFee.toString() + " QTUM");
+        }
+
         return Hex.toHexString(bytes);
     }
 

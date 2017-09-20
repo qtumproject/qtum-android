@@ -21,6 +21,7 @@ import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -56,6 +57,10 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     protected LinearLayout mLinearLayoutCurrency;
     @BindView(org.qtum.wallet.R.id.tv_currency)
     protected TextView mTextViewCurrency;
+    @BindView(R.id.tv_max_fee)
+    FontTextView mFontTextViewMaxFee;
+    @BindView(R.id.tv_min_fee)
+    FontTextView mFontTextViewMinFee;
     @BindView(org.qtum.wallet.R.id.bt_qr_code) ImageButton mButtonQrCode;
     @BindView(org.qtum.wallet.R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.seekBar)
@@ -64,6 +69,9 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     @BindView(org.qtum.wallet.R.id.tv_placeholder_balance_value) TextView placeHolderBalance;
     @BindView(org.qtum.wallet.R.id.tv_placeholder_not_confirmed_balance_value) TextView placeHolderBalanceNotConfirmed;
 
+    int mMinFee;
+    int mMaxFee;
+    int step = 100;
 
     protected SendFragmentPresenterImpl sendBaseFragmentPresenter;
 
@@ -170,16 +178,14 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         String amount = getArguments().getString(AMOUNT, "");
         mTextInputEditTextAmount.setText(amount);
         mTextInputEditTextAddress.setText(address);
-        final int step = 1;
-        int max = 200;
-        final int min = 1;
-        mSeekBar.setMax( (max - min) / step );
-        mSeekBar.setProgress((int)(INITIAL_FEE*1000));
+
+
+
         mTextInputEditTextFee.setText(String.valueOf(INITIAL_FEE));
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                double value = (min + (progress * step))/1000.;
+                double value = (mMinFee + (progress * step))/100000000.;
                 mTextInputEditTextFee.setText(String.valueOf(value));
             }
 
@@ -194,7 +200,6 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
             }
         });
     }
-
     @Override
     public void updateData(String publicAddress, double amount, String tokenAddress) {
         mTextInputEditTextAddress.setText(publicAddress);
@@ -214,15 +219,6 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     public void setUpCurrencyField(String currency) {
         mLinearLayoutCurrency.setVisibility(View.VISIBLE);
         mTextViewCurrency.setText(currency);
-        if(currency.equals("Qtum (default currency)")){
-            tilFee.setVisibility(View.VISIBLE);
-            mTextInputEditTextFee.setVisibility(View.VISIBLE);
-            mLinearLayoutFee.setVisibility(View.VISIBLE);
-        } else {
-            tilFee.setVisibility(View.GONE);
-            mTextInputEditTextFee.setVisibility(View.GONE);
-            mLinearLayoutFee.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -251,6 +247,15 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         });
     }
 
+    @Override
+    public void updateFee(double minFee, double maxFee) {
+        mFontTextViewMaxFee.setText(String.valueOf(maxFee));
+        mFontTextViewMinFee.setText(String.valueOf(minFee));
+        mMinFee =Double.valueOf( minFee*100000000).intValue();
+        mMaxFee = Double.valueOf(maxFee*100000000).intValue();
+        mSeekBar.setMax( (mMaxFee - mMinFee) / step );
+        //mSeekBar.setProgress((int)(INITIAL_FEE*100000000));
+    }
 
     public void onResponse(String pubAddress, Double amount, String tokenAddress) {
         getPresenter().onResponse(pubAddress, amount, tokenAddress);

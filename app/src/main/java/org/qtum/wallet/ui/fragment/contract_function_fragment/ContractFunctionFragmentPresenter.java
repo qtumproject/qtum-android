@@ -14,6 +14,7 @@ import org.qtum.wallet.utils.ContractBuilder;
 
 import org.bitcoinj.script.Script;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -107,7 +108,8 @@ class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl {
                         });
                         ContractBuilder contractBuilder = new ContractBuilder();
                         Script script = contractBuilder.createMethodScript(abiParams, contractAddress);
-                        sendTx(contractBuilder.createTransactionHash(script,unspentOutputs));
+                        //TODO
+                        sendTx(contractBuilder.createTransactionHash(script,unspentOutputs,36731,new BigDecimal("0.00001"),"0.1"));
                     }
                 });
     }
