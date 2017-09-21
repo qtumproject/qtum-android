@@ -10,4 +10,5 @@ public interface ContractFunctionFragmentView extends BaseFragmentView {
     void setUpParameterList(List<ContractMethodParameter> contractMethodParameterList);
     String getContractTemplateUiid();
     String getMethodName();
+    void updateFee(double minFee, double maxFee);
 }

@@ -13,6 +13,8 @@ import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceCha
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenBalanceChangeListener;
 import org.qtum.wallet.datastorage.TinyDB;
+import org.qtum.wallet.model.Currency;
+import org.qtum.wallet.model.CurrencyToken;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
@@ -119,7 +121,16 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         });
     }
 
-    public void onCurrencyChoose(String currency){
+    public void searchAndSetUpCurrency(String currency){
+        for(Token token : getInteractor().getTokenList()){
+            if(token.getContractAddress().equals(currency)){
+                getView().setUpCurrencyField(new CurrencyToken(token.getContractName(),token));
+                return;
+            }
+        }
+    }
+
+    public void onCurrencyChoose(Currency currency){
         getView().setUpCurrencyField(currency);
     }
 
@@ -165,7 +176,6 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     @Override
     public void initializeViews() {
         super.initializeViews();
-        String currency;
         mTokenList = new ArrayList<>();
         for(Token token : getInteractor().getTokenList()){
             if(token.isSubscribe()){
@@ -173,8 +183,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
             }
         }
         if(!mTokenList.isEmpty()) {
-            currency = "Qtum "+mContext.getString(org.qtum.wallet.R.string.default_currency);
-            getView().setUpCurrencyField(currency);
+            getView().setUpCurrencyField(new Currency("Qtum " + getView().getContext().getString(R.string.default_currency)));
         }else {
             getView().hideCurrencyField();
         }
@@ -255,13 +264,9 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     String availableAddress = null;
 
     @Override
-    public void send(String[] sendInfo) {
-
+    public void send(final String from, final String address, final String amount, final Currency currency, String feeString) {
         if(mNetworkConnectedFlag) {
-            final String address = sendInfo[0];
-            final String amount = sendInfo[1];
-            final String currency = sendInfo[2];
-            final double feeDouble = Double.valueOf(sendInfo[3]);
+            final double feeDouble = Double.valueOf(feeString);
             if(feeDouble<minFee || feeDouble>maxFee){
                 getView().dismissProgressDialog();
                 getView().setAlertDialog(mContext.getString(org.qtum.wallet.R.string.error), mContext.getResources().getString(R.string.invalid_fee), "Ok", BaseFragment.PopUpType.error);
@@ -280,8 +285,8 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                 @Override
                 public void onSuccess() {
                     getView().setProgressDialog();
-                    if(currency.equals("Qtum "+mContext.getString(org.qtum.wallet.R.string.default_currency))) {
-                        getInteractor().sendTx(address, amount, fee , new SendFragmentInteractorImpl.SendTxCallBack() {
+                    if(currency.getName().equals("Qtum "+mContext.getString(org.qtum.wallet.R.string.default_currency))) {
+                        getInteractor().sendTx(from, address, amount, fee , new SendFragmentInteractorImpl.SendTxCallBack() {
                             @Override
                             public void onSuccess() {
                                 getView().setAlertDialog(mContext.getString(org.qtum.wallet.R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
@@ -295,7 +300,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                         });
                     } else {
                         for(final Token token : mTokenList){
-                            if(token.getContractName().equals(currency)) {
+                            if(token.getContractAddress().equals(((CurrencyToken)currency).getToken().getContractAddress())) {
 
                                 getView().getSocketService().addTokenBalanceChangeListener(token.getContractAddress(), new TokenBalanceChangeListener() {
                                     @Override
@@ -347,7 +352,9 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
 
                                                     @Override
                                                     public void onNext(final String s) {
-                                                        QtumService.newInstance().callSmartContract(token.getContractAddress(),new CallSmartContractRequest(new String[]{s}))
+                                                        String hash = s.substring(0,s.length()-64);
+                                                        hash = hash.concat("0000000000000000000000000000000000000000000000000000000000000000");
+                                                        QtumService.newInstance().callSmartContract(token.getContractAddress(),new CallSmartContractRequest(new String[]{hash}))
                                                                 .subscribeOn(Schedulers.io())
                                                                 .observeOn(AndroidSchedulers.mainThread())
                                                         .subscribe(new Subscriber<CallSmartContractResponse>() {
@@ -367,7 +374,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                                                                     getView().setAlertDialog(mContext.getString(org.qtum.wallet.R.string.error), callSmartContractResponse.getItems().get(0).getExcepted(), "Ok", BaseFragment.PopUpType.error);
                                                                     return;
                                                                 }
-                                                                createTx(s, token.getContractAddress(), availableAddress, callSmartContractResponse.getItems().get(0).getGasUsed(), fee);
+                                                                createTx(s, token.getContractAddress(), availableAddress, /*TODO callSmartContractResponse.getItems().get(0).getGasUsed()*/ 2000000, fee);
                                                             }
                                                         });
                                                     }
@@ -404,7 +411,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
 
                 ContractBuilder contractBuilder = new ContractBuilder();
-                Script script = contractBuilder.createMethodScript(abiParams, contractAddress);
+                Script script = contractBuilder.createMethodScript(abiParams, gasLimit,contractAddress);
                 getInteractor().sendTx(contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, getInteractor().getFeePerKb().getFeePerKb(),fee), new SendFragmentInteractorImpl.SendTxCallBack() {
                     @Override
                     public void onSuccess() {

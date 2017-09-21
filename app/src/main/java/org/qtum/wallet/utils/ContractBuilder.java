@@ -341,10 +341,12 @@ public class ContractBuilder {
         return new Script(program);
     }
 
-    public Script createMethodScript(String abiParams, String _contractAddress) throws RuntimeException {
+    public Script createMethodScript(String abiParams, int gasLimitInt,String _contractAddress) throws RuntimeException {
 
         byte[] version = Hex.decode("04000000");
-        byte[] gasLimit = Hex.decode("80841e0000000000");
+        byte[] array = org.spongycastle.util.Arrays.reverse((new BigInteger(String.valueOf(gasLimitInt))).toByteArray());
+        byte[] gasLimit = new byte[]{0,0,0,0,0,0,0,0};
+        System.arraycopy(array, 0, gasLimit, 0, array.length);
         byte[] gasPrice = Hex.decode("0100000000000000");
         byte[] data = Hex.decode(abiParams);
         byte[] contractAddress = Hex.decode(_contractAddress);
@@ -381,10 +383,10 @@ public class ContractBuilder {
         Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
         transaction.addOutput(Coin.ZERO, script);
         BigDecimal fee = new BigDecimal(feeString);
-        BigDecimal gasFee = new BigDecimal(gasLimit/100000000.);
+        BigDecimal gasFee = (new BigDecimal(gasLimit)).divide(new BigDecimal(100000000));
         UnspentOutput unspentOutput = null;
         for (UnspentOutput unspentOutput1 : unspentOutputs) {
-            if (unspentOutput1.getAmount().doubleValue() > fee.add(gasFee).doubleValue()) {
+            if (unspentOutput1.getAmount().doubleValue() > fee.doubleValue()) {
                 unspentOutput = unspentOutput1;
                 break;
             }
