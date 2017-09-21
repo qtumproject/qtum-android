@@ -384,7 +384,7 @@ public class ContractBuilder {
         BigDecimal gasFee = new BigDecimal(gasLimit/100000000.);
         UnspentOutput unspentOutput = null;
         for (UnspentOutput unspentOutput1 : unspentOutputs) {
-            if (unspentOutput1.getAmount().doubleValue() > fee.add(gasFee).doubleValue()) {
+            if (unspentOutput1.getAmount().doubleValue() > fee.doubleValue()) {
                 unspentOutput = unspentOutput1;
                 break;
             }

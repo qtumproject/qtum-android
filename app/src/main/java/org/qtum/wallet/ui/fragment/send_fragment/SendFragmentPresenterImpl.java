@@ -52,7 +52,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     private boolean mNetworkConnectedFlag = false;
     private List<Token> mTokenList;
     private double minFee;
-    private double maxFee = 0.2;
+    private double maxFee = 1.2;
 
     private static final int REQUEST_CAMERA = 3;
     private boolean OPEN_QR_CODE_FRAGMENT_FLAG = false;
@@ -347,7 +347,9 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
 
                                                     @Override
                                                     public void onNext(final String s) {
-                                                        QtumService.newInstance().callSmartContract(token.getContractAddress(),new CallSmartContractRequest(new String[]{s}))
+                                                        String hash = s.substring(0,s.length()-64);
+                                                        hash = hash.concat("0000000000000000000000000000000000000000000000000000000000000000");
+                                                        QtumService.newInstance().callSmartContract(token.getContractAddress(),new CallSmartContractRequest(new String[]{hash}))
                                                                 .subscribeOn(Schedulers.io())
                                                                 .observeOn(AndroidSchedulers.mainThread())
                                                         .subscribe(new Subscriber<CallSmartContractResponse>() {
