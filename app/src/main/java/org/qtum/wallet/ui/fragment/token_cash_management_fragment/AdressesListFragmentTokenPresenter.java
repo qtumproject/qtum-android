@@ -1,6 +1,7 @@
 package org.qtum.wallet.ui.fragment.token_cash_management_fragment;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
 import org.qtum.wallet.R;
@@ -18,6 +19,7 @@ import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFragmentPresenter;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragmentInteractorImpl;
 import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.CurrentNetParams;
@@ -164,38 +166,43 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
             return;
         }
 
-        String resultAmount = amountString;
+        getView().getMainActivity().setIconChecked(3);
+        Fragment fragment = SendFragment.newInstance(keyWithTokenBalanceFrom.getAddress(),keyWithBalanceTo.getAddress(),amountString,token.getContractAddress(),getView().getContext());
+        getView().getMainActivity().setRootFragment(fragment);
+        getView().openRootFragment(fragment);
 
-        if(token.getDecimalUnits() != null){
-            resultAmount = String.valueOf((int)(Double.valueOf(amountString) * Math.pow(10, token.getDecimalUnits())));
-            resultAmount = String.valueOf(Integer.valueOf(resultAmount));
-        }
-
-        ContractBuilder contractBuilder = new ContractBuilder();
-        List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
-        ContractMethodParameter contractMethodParameterAddressTo = new ContractMethodParameter("_to", "address", keyWithBalanceTo.getAddress());
-        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", resultAmount);
-        contractMethodParameterList.add(contractMethodParameterAddressTo);
-        contractMethodParameterList.add(contractMethodParameterAmount);
-        contractBuilder.createAbiMethodParams("transfer", contractMethodParameterList).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        transferListener.onError(e.getMessage());
-
-                    }
-
-                    @Override
-                    public void onNext(String s) {
-                        createTx(s, token.getContractAddress(), keyWithTokenBalanceFrom.getAddress());
-                    }
-                });
+//        String resultAmount = amountString;
+//
+//        if(token.getDecimalUnits() != null){
+//            resultAmount = String.valueOf((int)(Double.valueOf(amountString) * Math.pow(10, token.getDecimalUnits())));
+//            resultAmount = String.valueOf(Integer.valueOf(resultAmount));
+//        }
+//
+//        ContractBuilder contractBuilder = new ContractBuilder();
+//        List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
+//        ContractMethodParameter contractMethodParameterAddressTo = new ContractMethodParameter("_to", "address", keyWithBalanceTo.getAddress());
+//        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", resultAmount);
+//        contractMethodParameterList.add(contractMethodParameterAddressTo);
+//        contractMethodParameterList.add(contractMethodParameterAmount);
+//        contractBuilder.createAbiMethodParams("transfer", contractMethodParameterList).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<String>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        transferListener.onError(e.getMessage());
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(String s) {
+//                        createTx(s, token.getContractAddress(), keyWithTokenBalanceFrom.getAddress());
+//                    }
+//                });
 
     }
 
@@ -205,7 +212,7 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
 
                 ContractBuilder contractBuilder = new ContractBuilder();
-                Script script = contractBuilder.createMethodScript(abiParams, contractAddress);
+                Script script = contractBuilder.createMethodScript(abiParams, /*TODO*/ 2000000,contractAddress);
                 sendTx(createTransactionHash(script, unspentOutputs), new SendFragmentInteractorImpl.SendTxCallBack() {
                     @Override
                     public void onSuccess() {

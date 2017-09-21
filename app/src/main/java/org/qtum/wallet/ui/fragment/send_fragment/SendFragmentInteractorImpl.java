@@ -96,6 +96,10 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
     }
 
     public void getUnspentOutputs(String address, final SendFragmentInteractorImpl.GetUnspentListCallBack callBack) {
+        if(address.equals("")){
+            getUnspentOutputs(callBack);
+            return;
+        }
         QtumService.newInstance().getUnspentOutputs(address)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -130,8 +134,8 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
     }
 
     @Override
-    public void createTx(final String address, final String amountString, final String feeString,final BigDecimal estimateFeePerKb,final CreateTxCallBack callBack) {
-        getUnspentOutputs(new GetUnspentListCallBack() {
+    public void createTx(final String from, final String address, final String amountString, final String feeString,final BigDecimal estimateFeePerKb,final CreateTxCallBack callBack) {
+        getUnspentOutputs(from, new GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
                 Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
@@ -211,7 +215,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
     }
 
     @Override
-    public void sendTx(final String address, final String amount, final String fee, final SendTxCallBack callBack) {
+    public void sendTx(final String from, final String address, final String amount, final String fee, final SendTxCallBack callBack) {
         getFeePerKbObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -231,7 +235,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                                    if(mFeePerKb==null){
                                        setFeePerKb(s);
                                    }
-                                   createTx(address, amount, fee,s.getFeePerKb(), new CreateTxCallBack() {
+                                   createTx(from, address, amount, fee,s.getFeePerKb(), new CreateTxCallBack() {
                                        @Override
                                        public void onSuccess(String txHex) {
                                            sendTx(txHex, callBack);

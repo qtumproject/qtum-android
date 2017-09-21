@@ -152,7 +152,7 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((SendFragment) getTargetFragment()).onCurrencyChoose(mCurrency.getName());
+                    ((SendFragment) getTargetFragment()).onCurrencyChoose(mCurrency);
                     getActivity().onBackPressed();
                 }
             });
