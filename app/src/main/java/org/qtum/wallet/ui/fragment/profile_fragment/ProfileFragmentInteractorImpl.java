@@ -20,8 +20,8 @@ class ProfileFragmentInteractorImpl implements ProfileFragmentInteractor {
     @Override
     public void clearWallet() {
         QtumSharedPreference.getInstance().clear(mContext);
-        KeyStorage.getInstance().clearKeyStorage();
         KeyStorage.getInstance().clearKeyFile(mContext);
+        KeyStorage.getInstance().clearKeyStorage();
         HistoryList.getInstance().clearHistoryList();
         NewsList.getInstance().clearNewsList();
         TinyDB db = new TinyDB(mContext);
