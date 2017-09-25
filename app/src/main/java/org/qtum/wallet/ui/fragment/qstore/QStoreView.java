@@ -10,4 +10,5 @@ public interface QStoreView extends BaseFragmentView {
      void setCategories(List<QstoreCategory> categories);
      void setSearchResult(List<QSearchItem> items);
      void setSearchBarText(String text);
+     String getSeacrhBarText();
 }

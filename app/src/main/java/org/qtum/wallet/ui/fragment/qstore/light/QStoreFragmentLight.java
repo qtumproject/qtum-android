@@ -38,6 +38,11 @@ public class QStoreFragmentLight extends QStoreFragment {
     }
 
     @Override
+    public String getSeacrhBarText() {
+        return searchBar.getText();
+    }
+
+    @Override
     public void setCategories(List<QstoreCategory> categories) {
         storeAdapter = new StoreAdapter(categories, this, R.layout.lyt_store_list_item_light, R.layout.lyt_store_token_list_item_light);
         contentList.setAdapter(storeAdapter);
