@@ -103,7 +103,6 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_receivers_address"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -119,6 +118,23 @@
                     android:inputType="textPersonName"/>
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_fee"
+                android:layout_width="match_parent"
+                android:layout_marginTop="13dp"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:layout_below="@+id/ll_fee"
+                android:layout_alignParentStart="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_fee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:hint="@string/_fee"
+                    android:inputType="numberDecimal"/>
+            </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
                 android:id="@+id/ll_currency"
@@ -203,6 +219,45 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/button_text"
                 app:typeface="@string/proximaNovaSemibold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/til_amount"
+                android:layout_marginTop="13dp"
+                android:layout_alignParentStart="true"
+                android:id="@+id/ll_fee">
+
+                <org.qtum.wallet.utils.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/tv_min_fee"
+                    android:text="@string/_0_001"
+                    app:typefaceAsset="@string/proximaNovaRegular"
+                    android:textColor="@color/black"/>
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:thumb="@drawable/seekbar_thumb_light"
+                    android:progressDrawable="@drawable/seekbar_progress_light"/>
+
+                <org.qtum.wallet.utils.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/tv_max_fee"
+                    android:text="@string/_0_2"
+                    app:typefaceAsset="@string/proximaNovaRegular"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+
         </RelativeLayout>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

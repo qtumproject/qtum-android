@@ -3,6 +3,7 @@ package org.qtum.wallet.dataprovider.rest_api;
 import org.qtum.wallet.model.gson.BlockChainInfo;
 
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
+import org.qtum.wallet.model.gson.FeePerKb;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
@@ -84,6 +85,9 @@ interface QtumRestService {
 
     @GET("/contracts/{contract_id}/is-paid/by-request-id")
     Observable<ContractPurchase> isPaidByRequestId(@Path("contract_id") String contractId, @Query("request_id") String requestId);
+
+    @GET("/estimate-fee-per-kb")
+    Observable<FeePerKb> getEstimateFeePerKb(@Query("nBlocks") int nBlocks);
 
 
 }

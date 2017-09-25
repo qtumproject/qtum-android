@@ -12,6 +12,21 @@ public class Item {
     @SerializedName("output")
     @Expose
     private String output;
+    @SerializedName("excepted")
+    @Expose
+    private String excepted;
+    @SerializedName("gas_used")
+    @Expose
+    private int gasUsed;
+
+
+    public String getExcepted() {
+        return excepted;
+    }
+
+    public int getGasUsed(){
+        return gasUsed;
+    }
 
     public String getHash() {
         return hash;

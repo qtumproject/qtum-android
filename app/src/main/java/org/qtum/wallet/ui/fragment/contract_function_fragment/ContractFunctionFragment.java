@@ -15,11 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.SeekBar;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
-import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.FontManager;
+import org.qtum.wallet.utils.FontTextView;
 
 import java.util.List;
 
@@ -38,16 +41,30 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
     @BindView(org.qtum.wallet.R.id.recycler_view)
     protected RecyclerView mParameterList;
     protected ParameterAdapter mParameterAdapter;
+    @BindView(R.id.et_fee)
+    protected TextInputEditText mTextInputEditTextFee;
+    @BindView(R.id.til_fee)
+    protected TextInputLayout tilFee;
+    @BindView(R.id.seekBar)
+    SeekBar mSeekBar;
+    @BindView(R.id.tv_max_fee)
+    FontTextView mFontTextViewMaxFee;
+    @BindView(R.id.tv_min_fee)
+    FontTextView mFontTextViewMinFee;
+
+    int mMinFee;
+    int mMaxFee;
+    int step = 100;
 
     @OnClick({org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.cancel, org.qtum.wallet.R.id.call})
-    public void onClick(View view){
+    public void onClick(View view) {
         switch (view.getId()) {
             case org.qtum.wallet.R.id.cancel:
             case org.qtum.wallet.R.id.ibt_back:
                 getActivity().onBackPressed();
                 break;
             case org.qtum.wallet.R.id.call:
-                getPresenter().onCallClick(mParameterAdapter.getParams(),getArguments().getString(CONTRACT_ADDRESS),getArguments().getString(METHOD_NAME));
+                getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_ADDRESS), mTextInputEditTextFee.getText().toString(),getArguments().getString(METHOD_NAME));
                 break;
         }
     }
@@ -55,9 +72,9 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
     public static BaseFragment newInstance(Context context, String methodName, String uiid, String contractAddress) {
 
         Bundle args = new Bundle();
-        args.putString(CONTRACT_TEMPLATE_UIID,uiid);
-        args.putString(METHOD_NAME,methodName);
-        args.putString(CONTRACT_ADDRESS,contractAddress);
+        args.putString(CONTRACT_TEMPLATE_UIID, uiid);
+        args.putString(METHOD_NAME, methodName);
+        args.putString(CONTRACT_ADDRESS, contractAddress);
         BaseFragment fragment = Factory.instantiateFragment(context, ContractFunctionFragment.class);
         fragment.setArguments(args);
         return fragment;
@@ -77,6 +94,33 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
     public void initializeViews() {
         super.initializeViews();
         mParameterList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                double value = (mMinFee + (progress * step)) / 100000000.;
+                mTextInputEditTextFee.setText(String.valueOf(value));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    @Override
+    public void updateFee(double minFee, double maxFee) {
+        mFontTextViewMaxFee.setText(String.valueOf(maxFee));
+        mFontTextViewMinFee.setText(String.valueOf(minFee));
+        mMinFee = Double.valueOf(minFee * 100000000).intValue();
+        mMaxFee = Double.valueOf(maxFee * 100000000).intValue();
+        mSeekBar.setMax((mMaxFee - mMinFee) / step);
+        //mSeekBar.setProgress((int)(INITIAL_FEE*100000000));
     }
 
     @Override
@@ -89,7 +133,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         return getArguments().getString(METHOD_NAME);
     }
 
-    class ParameterViewHolder extends RecyclerView.ViewHolder{
+    class ParameterViewHolder extends RecyclerView.ViewHolder {
 
         private String TYPE_BOOL = "bool";
 
@@ -106,8 +150,8 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
 
         private final String TYPE_INT = "int";
 
-        private int uint8 = (int) Math.pow(2,8);
-        private int uint16 = (int) Math.pow(2,16);
+        private int uint8 = (int) Math.pow(2, 8);
+        private int uint16 = (int) Math.pow(2, 16);
         private long uint32 = (long) Math.pow(2, 32);
         private long uint64 = (long) Math.pow(2, 64);
 
@@ -160,20 +204,20 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             etParam.setFilters(new InputFilter[]{filter});
         }
 
-        public void bind (ContractMethodParameter parameter, boolean isLast) {
+        public void bind(ContractMethodParameter parameter, boolean isLast) {
             this.parameter = parameter;
 
             tilParam.setHint(fromCamelCase(parameter.getName()));
             setInputType(parameter.getType());
-            if(isLast){
+            if (isLast) {
                 etParam.setImeOptions(EditorInfo.IME_ACTION_DONE);
-            }else {
+            } else {
                 etParam.setImeOptions(EditorInfo.IME_ACTION_NEXT);
             }
         }
 
         private String fromCamelCase(String cCase) {
-            if(TextUtils.isEmpty(parameter.getDisplayName())) {
+            if (TextUtils.isEmpty(parameter.getDisplayName())) {
                 StringBuilder builder = new StringBuilder(cCase);
                 for (int i = builder.length() - 1; i > 0; i--) {
                     char ch = builder.charAt(i);
@@ -188,11 +232,11 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             return parameter.getDisplayName();
         }
 
-        private void setInputType(String type){
+        private void setInputType(String type) {
 
             int inputType = InputType.TYPE_CLASS_TEXT;
 
-            if(type.contains(TYPE_BOOL)){
+            if (type.contains(TYPE_BOOL)) {
 
                 tilParam.setVisibility(View.INVISIBLE);
                 checkBox.setVisibility(View.VISIBLE);
@@ -216,7 +260,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             }
         }
 
-        private String validateINT(String content){
+        private String validateINT(String content) {
             try {
                 int num = Integer.parseInt(content);
                 if (num > Integer.MIN_VALUE && num < Integer.MAX_VALUE) {
@@ -229,7 +273,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             return DENY;
         }
 
-        private String validateUINT(String content, long uint){
+        private String validateUINT(String content, long uint) {
             try {
                 long num = Long.parseLong(content);
                 if (num > 0 && num < uint) {
@@ -248,7 +292,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         List<ContractMethodParameter> params;
         int mResId;
 
-        public List<ContractMethodParameter> getParams(){
+        public List<ContractMethodParameter> getParams() {
             return params;
         }
 
@@ -259,12 +303,12 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
 
         @Override
         public ParameterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ParameterViewHolder(LayoutInflater.from(parent.getContext()).inflate(mResId,parent, false));
+            return new ParameterViewHolder(LayoutInflater.from(parent.getContext()).inflate(mResId, parent, false));
         }
 
         @Override
         public void onBindViewHolder(ParameterViewHolder holder, int position) {
-            holder.bind(params.get(position),position == getItemCount()-1);
+            holder.bind(params.get(position), position == getItemCount() - 1);
         }
 
         @Override

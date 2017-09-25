@@ -13,12 +13,16 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
-import org.qtum.wallet.ui.fragment_factory.Factory;
+import org.qtum.wallet.model.Currency;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment_factory.Factory;
+import org.qtum.wallet.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -30,6 +34,12 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     private static final String ADDRESS = "address";
     private static final String TOKEN = "tokenAddr";
     private static final String AMOUNT = "amount";
+    private static final String CURRENCY = "currency";
+
+    private static final String ADDRESS_FROM = "address_from";
+
+    private final double INITIAL_FEE = 0.1;
+
 
     @BindView(org.qtum.wallet.R.id.et_receivers_address)
     protected TextInputEditText mTextInputEditTextAddress;
@@ -39,21 +49,45 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     protected TextInputLayout tilAdress;
     @BindView(org.qtum.wallet.R.id.til_amount)
     protected TextInputLayout tilAmount;
-    @BindView(org.qtum.wallet.R.id.bt_send) Button mButtonSend;
-    @BindView(org.qtum.wallet.R.id.ibt_back) ImageButton mImageButtonBack;
-    @BindView(org.qtum.wallet.R.id.tv_toolbar_send) TextView mTextViewToolBar;
-    @BindView(org.qtum.wallet.R.id.rl_send) RelativeLayout mRelativeLayoutBase;
+    @BindView(R.id.et_fee)
+    protected TextInputEditText mTextInputEditTextFee;
+    @BindView(R.id.til_fee)
+    protected TextInputLayout tilFee;
+    @BindView(R.id.ll_fee)
+    LinearLayout mLinearLayoutFee;
+    @BindView(org.qtum.wallet.R.id.bt_send)
+    Button mButtonSend;
+    @BindView(org.qtum.wallet.R.id.ibt_back)
+    ImageButton mImageButtonBack;
+    @BindView(org.qtum.wallet.R.id.tv_toolbar_send)
+    TextView mTextViewToolBar;
+    @BindView(org.qtum.wallet.R.id.rl_send)
+    RelativeLayout mRelativeLayoutBase;
     @BindView(org.qtum.wallet.R.id.ll_currency)
     protected LinearLayout mLinearLayoutCurrency;
     @BindView(org.qtum.wallet.R.id.tv_currency)
     protected TextView mTextViewCurrency;
-    @BindView(org.qtum.wallet.R.id.bt_qr_code) ImageButton mButtonQrCode;
-    @BindView(org.qtum.wallet.R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.tv_max_fee)
+    FontTextView mFontTextViewMaxFee;
+    @BindView(R.id.tv_min_fee)
+    FontTextView mFontTextViewMinFee;
+    @BindView(org.qtum.wallet.R.id.bt_qr_code)
+    ImageButton mButtonQrCode;
+    @BindView(org.qtum.wallet.R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.seekBar)
+    SeekBar mSeekBar;
+    @BindView(org.qtum.wallet.R.id.not_confirmed_balance_view)
+    View notConfirmedBalancePlaceholder;
+    @BindView(org.qtum.wallet.R.id.tv_placeholder_balance_value)
+    TextView placeHolderBalance;
+    @BindView(org.qtum.wallet.R.id.tv_placeholder_not_confirmed_balance_value)
+    TextView placeHolderBalanceNotConfirmed;
 
-    @BindView(org.qtum.wallet.R.id.not_confirmed_balance_view) View notConfirmedBalancePlaceholder;
-    @BindView(org.qtum.wallet.R.id.tv_placeholder_balance_value) TextView placeHolderBalance;
-    @BindView(org.qtum.wallet.R.id.tv_placeholder_not_confirmed_balance_value) TextView placeHolderBalanceNotConfirmed;
-
+    int mMinFee;
+    int mMaxFee;
+    int step = 100;
+    Currency mCurrency;
 
     protected SendFragmentPresenterImpl sendBaseFragmentPresenter;
 
@@ -72,13 +106,33 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         }
     }
 
+    @OnClick(R.id.bt_send)
+    public void onSendClick() {
+        String address = mTextInputEditTextAddress.getText().toString();
+        String amount = mTextInputEditTextAmount.getText().toString();
+        String fee = mTextInputEditTextFee.getText().toString();
+        String from = getArguments().getString(ADDRESS_FROM,"");
+        getPresenter().send(from, address, amount, mCurrency, fee);
+    }
+
     public static BaseFragment newInstance(boolean qrCodeRecognition, String address, String amount, String tokenAddress, Context context) {
         BaseFragment sendFragment = Factory.instantiateFragment(context, SendFragment.class);
         Bundle args = new Bundle();
         args.putBoolean(IS_QR_CODE_RECOGNITION, qrCodeRecognition);
-        args.putString(ADDRESS,address);
-        args.putString(TOKEN,tokenAddress);
-        args.putString(AMOUNT,amount);
+        args.putString(ADDRESS, address);
+        args.putString(TOKEN, tokenAddress);
+        args.putString(AMOUNT, amount);
+        sendFragment.setArguments(args);
+        return sendFragment;
+    }
+
+    public static BaseFragment newInstance(String addressFrom, String addressTo, String amount, String currency,Context context) {
+        BaseFragment sendFragment = Factory.instantiateFragment(context, SendFragment.class);
+        Bundle args = new Bundle();
+        args.putString(ADDRESS_FROM, addressFrom);
+        args.putString(ADDRESS, addressTo);
+        args.putString(AMOUNT, amount);
+        args.putString(CURRENCY, currency);
         sendFragment.setArguments(args);
         return sendFragment;
     }
@@ -88,6 +142,10 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         super.onResume();
         getPresenter().isQrCodeRecognition(getArguments().getBoolean(IS_QR_CODE_RECOGNITION));
         getArguments().putBoolean(IS_QR_CODE_RECOGNITION, false);
+        String currency = getArguments().getString(CURRENCY,"");
+        if(!currency.equals("")){
+            getPresenter().searchAndSetUpCurrency(currency);
+        }
     }
 
     @Override
@@ -131,28 +189,50 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     @Override
     public void initializeViews() {
         super.initializeViews();
+        mCurrency = new Currency("Qtum " + getContext().getString(R.string.default_currency));
         showBottomNavView(true);
         ((MainActivity) getActivity()).setIconChecked(3);
         mImageButtonBack.setVisibility(View.GONE);
         mRelativeLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(b) {
+                if (b) {
                     hideKeyBoard();
                 }
             }
         });
+
         String address = getArguments().getString(ADDRESS, "");
         String amount = getArguments().getString(AMOUNT, "");
         mTextInputEditTextAmount.setText(amount);
         mTextInputEditTextAddress.setText(address);
+
+
+        mTextInputEditTextFee.setText(String.valueOf(INITIAL_FEE));
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                double value = (mMinFee + (progress * step)) / 100000000.;
+                mTextInputEditTextFee.setText(String.valueOf(value));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     @Override
     public void updateData(String publicAddress, double amount, String tokenAddress) {
         mTextInputEditTextAddress.setText(publicAddress);
         mTextInputEditTextAmount.setText(String.valueOf(amount));
-        if(!TextUtils.isEmpty(tokenAddress)) {
+        if (!TextUtils.isEmpty(tokenAddress)) {
             mLinearLayoutCurrency.setVisibility(View.VISIBLE);
             mTextViewCurrency.setText(tokenAddress);
         }
@@ -160,13 +240,14 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
 
     @Override
     public void errorRecognition() {
-        setAlertDialog(getString(org.qtum.wallet.R.string.error_qrcode_recognition_try_again),"Ok",PopUpType.error);
+        setAlertDialog(getString(org.qtum.wallet.R.string.error_qrcode_recognition_try_again), "Ok", PopUpType.error);
     }
 
     @Override
-    public void setUpCurrencyField(String currency) {
+    public void setUpCurrencyField(Currency currency) {
         mLinearLayoutCurrency.setVisibility(View.VISIBLE);
-        mTextViewCurrency.setText(currency);
+        mTextViewCurrency.setText(currency.getName());
+        mCurrency = currency;
     }
 
     @Override
@@ -195,17 +276,26 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         });
     }
 
+    @Override
+    public void updateFee(double minFee, double maxFee) {
+        mFontTextViewMaxFee.setText(String.valueOf(maxFee));
+        mFontTextViewMinFee.setText(String.valueOf(minFee));
+        mMinFee = Double.valueOf(minFee * 100000000).intValue();
+        mMaxFee = Double.valueOf(maxFee * 100000000).intValue();
+        mSeekBar.setMax((mMaxFee - mMinFee) / step);
+        //mSeekBar.setProgress((int)(INITIAL_FEE*100000000));
+    }
 
     public void onResponse(String pubAddress, Double amount, String tokenAddress) {
         getPresenter().onResponse(pubAddress, amount, tokenAddress);
     }
 
-    public void onCurrencyChoose(String currency){
+    public void onCurrencyChoose(Currency currency) {
         getPresenter().onCurrencyChoose(currency);
     }
 
     public void onResponseError() {
-        setAlertDialog(getString(org.qtum.wallet.R.string.invalid_qr_code),"OK", PopUpType.error);
+        setAlertDialog(getString(org.qtum.wallet.R.string.invalid_qr_code), "OK", PopUpType.error);
     }
 
     @Override
@@ -217,11 +307,12 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
         placeHolderBalance.setText(balance);
-        if(!TextUtils.isEmpty(unconfirmedBalance)) {
+        if (!TextUtils.isEmpty(unconfirmedBalance)) {
             notConfirmedBalancePlaceholder.setVisibility(View.VISIBLE);
             placeHolderBalanceNotConfirmed.setText(unconfirmedBalance);
         } else {
             notConfirmedBalancePlaceholder.setVisibility(View.GONE);
         }
     }
+
 }

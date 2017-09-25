@@ -201,5 +201,9 @@
     <string name="news_placeholder">Please follow our Medium account to get latest news and updates:</string>
     <string name="news_placeholder_link">https://medium.com/@Qtum/</string>
     <string name="no_transaction_available_yet">No transactions available yet</string>
+    <string name="_0_2">0.2</string>
+    <string name="_0_001">0.001</string>
+    <string name="_fee">Fee</string>
+    <string name="invalid_fee">Invalid Fee</string>
 
 </resources>
