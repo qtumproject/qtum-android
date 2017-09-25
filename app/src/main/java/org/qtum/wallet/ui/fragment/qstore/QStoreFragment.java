@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import org.qtum.wallet.R;
@@ -73,6 +74,24 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
     public void initializeViews() {
         super.initializeViews();
         contentList.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        cbByTag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cbByName.setChecked(!isChecked);
+                onRequestSearch(getSeacrhBarText());
+            }
+        });
+
+        cbByName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cbByTag.setChecked(!isChecked);
+                onRequestSearch(getSeacrhBarText());
+            }
+        });
+
+        cbByTag.setChecked(true);
     }
 
     @Override
@@ -108,7 +127,7 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
     @Override
     public void onRequestSearch(String filter) {
         if(!TextUtils.isEmpty(filter)) {
-            presenter.searchItemsByTag(filter);
+            presenter.searchItems(filter, cbByTag.isChecked());
         }
     }
 

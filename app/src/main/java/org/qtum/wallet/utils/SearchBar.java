@@ -59,6 +59,10 @@ public class SearchBar extends RelativeLayout implements View.OnClickListener{
         this.input.setText(text);
     }
 
+    public String getText(){
+        return input.getText().toString();
+    }
+
     public void setListener(SearchBarListener listener){
         this.listener = listener;
     }

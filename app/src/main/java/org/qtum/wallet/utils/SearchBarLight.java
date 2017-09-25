@@ -48,6 +48,10 @@ public class SearchBarLight extends RelativeLayout implements View.OnClickListen
         build();
     }
 
+    public String getText(){
+        return input.getText().toString();
+    }
+
     public SearchBarLight(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
