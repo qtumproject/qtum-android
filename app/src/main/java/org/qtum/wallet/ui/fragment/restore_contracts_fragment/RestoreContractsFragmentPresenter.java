@@ -146,9 +146,14 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                             if (!getFileExtension(name).equals(".json")) {
                                 getView().setAlertDialog(mContext.getString(R.string.something_went_wrong), "", "OK", BaseFragment.PopUpType.error, new BaseFragment.AlertDialogCallBack() {
                                     @Override
-                                    public void onOkClick() {
+                                    public void onButtonClick() {
                                         mRestoreFile.delete();
                                         mRestoreFile = null;
+                                    }
+
+                                    @Override
+                                    public void onButton2Click() {
+
                                     }
                                 });
                                 return;
@@ -300,19 +305,29 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                                             if (aBoolean) {
                                                 getView().setAlertDialog(mContext.getString(R.string.restored_successfully), "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
                                                     @Override
-                                                    public void onOkClick() {
+                                                    public void onButtonClick() {
                                                         FragmentManager fm = getView().getFragment().getFragmentManager();
                                                         int count = fm.getBackStackEntryCount() - 2;
                                                         for (int i = 0; i < count; ++i) {
                                                             fm.popBackStack();
                                                         }
                                                     }
+
+                                                    @Override
+                                                    public void onButton2Click() {
+
+                                                    }
                                                 });
                                             } else {
                                                 getView().setAlertDialog(mContext.getString(R.string.something_went_wrong), "", "OK", BaseFragment.PopUpType.error, new BaseFragment.AlertDialogCallBack() {
                                                     @Override
-                                                    public void onOkClick() {
+                                                    public void onButtonClick() {
                                                         onDeleteFileClick();
+                                                    }
+
+                                                    @Override
+                                                    public void onButton2Click() {
+
                                                     }
                                                 });
                                             }
@@ -323,8 +338,13 @@ public class RestoreContractsFragmentPresenter extends BaseFragmentPresenterImpl
                 } catch (Exception e) {
                     getView().setAlertDialog(mContext.getString(R.string.something_went_wrong), "", "OK", BaseFragment.PopUpType.error, new BaseFragment.AlertDialogCallBack() {
                         @Override
-                        public void onOkClick() {
+                        public void onButtonClick() {
                             onDeleteFileClick();
+                        }
+
+                        @Override
+                        public void onButton2Click() {
+
                         }
                     });
                 }

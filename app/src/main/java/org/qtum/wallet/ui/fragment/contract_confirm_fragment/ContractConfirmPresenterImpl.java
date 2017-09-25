@@ -140,12 +140,17 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                         getView().dismissProgressDialog();
                         getView().setAlertDialog(mContext.getString(R.string.contract_created_successfully), "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
                             @Override
-                            public void onOkClick() {
+                            public void onButtonClick() {
                                 FragmentManager fm = getView().getFragment().getFragmentManager();
                                 int count = fm.getBackStackEntryCount()-2;
                                 for(int i = 0; i < count; ++i) {
                                     fm.popBackStack();
                                 }
+                            }
+
+                            @Override
+                            public void onButton2Click() {
+
                             }
                         });
                     }

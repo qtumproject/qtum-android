@@ -51,20 +51,42 @@
         android:layout_below="@+id/ll_title"
         android:layout_centerHorizontal="true" />
 
-    <org.qtum.wallet.utils.FontButton
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:id="@+id/bt_pop_up"
         android:layout_marginTop="16dp"
-        android:background="@drawable/btn_sea_corner_background_light"
-        android:padding="16dp"
-        android:paddingStart="48dp"
-        android:paddingEnd="48dp"
-        android:text="@string/ok"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
         android:layout_below="@+id/tv_pop_up_message"
         android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:orientation="horizontal">
+
+        <org.qtum.wallet.utils.FontButton
+            android:id="@+id/bt_pop_up"
+            android:background="@drawable/btn_sea_corner_background_light"
+            android:padding="16dp"
+            android:paddingStart="48dp"
+            android:paddingEnd="48dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/ok"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <org.qtum.wallet.utils.FontButton
+            android:id="@+id/bt_pop_up2"
+            android:background="@drawable/btn_sea_corner_background_light"
+            android:padding="16dp"
+            android:paddingStart="48dp"
+            android:paddingEnd="48dp"
+            android:text="@string/ok"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
 </RelativeLayout>
     </FrameLayout>

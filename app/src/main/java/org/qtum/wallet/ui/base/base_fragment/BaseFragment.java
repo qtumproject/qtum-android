@@ -102,6 +102,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
             FontTextView tvMessage = ((FontTextView) view.findViewById(org.qtum.wallet.R.id.tv_pop_up_message));
             tvMessage.setText(message);
             FontButton popUpButton = ((FontButton) view.findViewById(org.qtum.wallet.R.id.bt_pop_up));
+            view.findViewById(org.qtum.wallet.R.id.bt_pop_up2).setVisibility(View.GONE);
 
             ImageView icon = ((ImageView) view.findViewById(org.qtum.wallet.R.id.iv_icon));
             popUpButton.setText(buttonText);
@@ -111,7 +112,85 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
                 public void onClick(View view) {
                     mAlertDialog.cancel();
                     if (callBack != null) {
-                        callBack.onOkClick();
+                        callBack.onButtonClick();
+                    }
+                }
+            });
+
+            if(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)) {
+                switch (type.name()) {
+                    case "error":
+                        icon.setImageResource(org.qtum.wallet.R.drawable.ic_error);
+                        view.findViewById(org.qtum.wallet.R.id.red_line).setVisibility(View.VISIBLE);
+                        break;
+                    case "confirm":
+                        icon.setImageResource(org.qtum.wallet.R.drawable.ic_confirm);
+                        view.findViewById(org.qtum.wallet.R.id.red_line).setVisibility(View.GONE);
+                        break;
+                }
+            } else {
+                switch (type.name()) {
+                    case "error":
+                        tvTitle.setTextColor(ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.title_red_color));
+                        icon.setImageResource(org.qtum.wallet.R.drawable.ic_popup_error_light);
+                        break;
+                    case "confirm":
+                        icon.setImageResource(org.qtum.wallet.R.drawable.ic_confirmed_light);
+                        break;
+                }
+            }
+
+            mAlertDialog = new AlertDialog
+                    .Builder(getContext())
+                    .setView(view)
+                    .create();
+
+            if(mAlertDialog.getWindow() != null) {
+                mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            }
+
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            mAlertDialog.show();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void setAlertDialog(String title, String message, String buttonText, String buttonText2, PopUpType type, final AlertDialogCallBack callBack) {
+        try {
+            dismissProgressDialog();
+            dismissAlertDialog();
+            View view = LayoutInflater.from(getContext()).inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? org.qtum.wallet.R.layout.dialog_popup_fragment : org.qtum.wallet.R.layout.dialog_popup_fragment_light, null);
+
+            FontTextView tvTitle = ((FontTextView) view.findViewById(org.qtum.wallet.R.id.tv_pop_up_title));
+            tvTitle.setText(title);
+            FontTextView tvMessage = ((FontTextView) view.findViewById(org.qtum.wallet.R.id.tv_pop_up_message));
+            tvMessage.setText(message);
+            FontButton popUpButton = ((FontButton) view.findViewById(org.qtum.wallet.R.id.bt_pop_up));
+            FontButton popUpButton2 = ((FontButton) view.findViewById(org.qtum.wallet.R.id.bt_pop_up2));
+            view.findViewById(org.qtum.wallet.R.id.bt_pop_up2).setVisibility(View.VISIBLE);
+
+            ImageView icon = ((ImageView) view.findViewById(org.qtum.wallet.R.id.iv_icon));
+            popUpButton.setText(buttonText);
+            popUpButton2.setText(buttonText2);
+
+            popUpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mAlertDialog.cancel();
+                    if (callBack != null) {
+                        callBack.onButtonClick();
+                    }
+                }
+            });
+
+            popUpButton2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mAlertDialog.cancel();
+                    if (callBack != null) {
+                        callBack.onButton2Click();
                     }
                 }
             });
@@ -370,6 +449,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     public interface AlertDialogCallBack{
-        void onOkClick();
+        void onButtonClick();
+        void onButton2Click();
     }
 }

@@ -90,8 +90,13 @@ public class AdressesListFragmentTokenDark extends AdressesListFragmentToken {
                                 getContext().getString(org.qtum.wallet.R.string.payment_completed_successfully),
                                 getContext().getString(org.qtum.wallet.R.string.ok), BaseFragment.PopUpType.confirm,new BaseFragment.AlertDialogCallBack(){
                                     @Override
-                                    public void onOkClick() {
+                                    public void onButtonClick() {
                                         getMainActivity().onBackPressed();
+                                    }
+
+                                    @Override
+                                    public void onButton2Click() {
+
                                     }
                                 });
                     }
