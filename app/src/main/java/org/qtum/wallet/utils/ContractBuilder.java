@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import android.util.Pair;
 
 import com.google.gson.Gson;
+
+import org.qtum.wallet.R;
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.model.contract.ContractMethod;
@@ -378,7 +380,7 @@ public class ContractBuilder {
         return new Script(program);
     }
 
-    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, BigDecimal feePerKb, String feeString) {
+    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, BigDecimal feePerKb, String feeString, Context context) {
 
         Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
         transaction.addOutput(Coin.ZERO, script);
@@ -419,7 +421,7 @@ public class ContractBuilder {
         int txSizeInkB = (int) Math.ceil(bytes.length/1024.);
         BigDecimal minimumFee = (feePerKb.multiply(new BigDecimal(txSizeInkB))).add(gasFee);
         if(minimumFee.doubleValue() > fee.doubleValue()){
-            throw new RuntimeException("Insufficient fee. Please use minimum of " + minimumFee.toString() + " QTUM");
+            throw new RuntimeException(context.getString(R.string.insufficient_fee_lease_use_minimum_of) + minimumFee.toString() + " QTUM");
         }
 
         return Hex.toHexString(bytes);

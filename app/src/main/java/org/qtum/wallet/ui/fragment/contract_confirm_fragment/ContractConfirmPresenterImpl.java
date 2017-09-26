@@ -124,7 +124,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                         ContractBuilder contractBuilder = new ContractBuilder();
                         Script script = contractBuilder.createConstructScript(abiParams);
 //TODO
-                        String hash = contractBuilder.createTransactionHash(script,unspentOutputs,36731,new BigDecimal("0.00001"),"0.5");
+                        String hash = contractBuilder.createTransactionHash(script,unspentOutputs,36731,new BigDecimal("0.00001"),"0.5",mContext);
                         sendTx(hash, "Stub!");
                     }
                 });

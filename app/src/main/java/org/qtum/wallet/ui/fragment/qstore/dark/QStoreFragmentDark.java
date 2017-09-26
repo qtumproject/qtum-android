@@ -37,6 +37,11 @@ public class QStoreFragmentDark extends QStoreFragment {
     }
 
     @Override
+    public String getSeacrhBarText() {
+        return searchBar.getText();
+    }
+
+    @Override
     public void setCategories(List<QstoreCategory> categories) {
         storeAdapter = new StoreAdapter(categories, this, org.qtum.wallet.R.layout.lyt_store_list_item, org.qtum.wallet.R.layout.lyt_store_token_list_item);
         contentList.setAdapter(storeAdapter);

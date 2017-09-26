@@ -76,7 +76,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:id="@+id/tv_min_fee"
-                android:text="@string/_0_001"
                 app:typefaceAsset="@string/proximaNovaRegular"
                 android:textColor="@color/black"/>
 
@@ -95,7 +94,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:id="@+id/tv_max_fee"
-                android:text="@string/_0_2"
                 app:typefaceAsset="@string/proximaNovaRegular"
                 android:textColor="@color/black"/>
 

@@ -86,10 +86,10 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
                 });
     }
 
-    public void searchItemsByTag(String tag){
+    public void searchItems(String tag, boolean byTag){
         searchOffset = 0;
         QtumService.newInstance()
-                .searchContracts(searchOffset,tag)
+                .searchContracts(searchOffset,tag, byTag)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<QSearchItem>>() {

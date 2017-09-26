@@ -308,10 +308,23 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
 
                                         availableAddress = null;
 
-                                        for (Balance balance : tokenBalance.getBalances()){
-                                            if(balance.getBalance().floatValue() >= Float.valueOf(amount)){
-                                                availableAddress = balance.getAddress();
-                                                break;
+                                        if(!from.equals("")){
+                                            for (Balance balance : tokenBalance.getBalances()){
+                                                if(balance.getAddress().equals(from)){
+                                                    if(balance.getBalance().floatValue() >= Float.valueOf(amount)){
+                                                        availableAddress = balance.getAddress();
+                                                        break;
+                                                    } else {
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }else{
+                                            for (Balance balance : tokenBalance.getBalances()){
+                                                if(balance.getBalance().floatValue() >= Float.valueOf(amount)){
+                                                    availableAddress = balance.getAddress();
+                                                    break;
+                                                }
                                             }
                                         }
 
@@ -412,7 +425,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
 
                 ContractBuilder contractBuilder = new ContractBuilder();
                 Script script = contractBuilder.createMethodScript(abiParams, gasLimit,contractAddress);
-                getInteractor().sendTx(contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, getInteractor().getFeePerKb().getFeePerKb(),fee), new SendFragmentInteractorImpl.SendTxCallBack() {
+                getInteractor().sendTx(contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, getInteractor().getFeePerKb().getFeePerKb(),fee,mContext), new SendFragmentInteractorImpl.SendTxCallBack() {
                     @Override
                     public void onSuccess() {
                         getView().setAlertDialog(getView().getContext().getString(org.qtum.wallet.R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);

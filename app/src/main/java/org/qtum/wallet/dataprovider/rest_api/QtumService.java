@@ -115,8 +115,12 @@ public class QtumService {
         return mServiceApi.getWatsNew();
     }
 
-    public Observable<List<QSearchItem>> searchContracts(int offset, String tag){
-        return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/, new String[]{tag});
+    public Observable<List<QSearchItem>> searchContracts(int offset, String data, boolean byTag){
+        if(byTag) {
+            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/, new String[]{data});
+        } else {
+            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/, data);
+        }
     }
 
     public Observable<QstoreContract> getContractById(String id){

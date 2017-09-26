@@ -191,7 +191,7 @@ class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl {
                         ContractBuilder contractBuilder = new ContractBuilder();
                         Script script = contractBuilder.createMethodScript(abiParams, gasLimit,contractAddress);
                         //TODO
-                        sendTx(contractBuilder.createTransactionHash(script,unspentOutputs,gasLimit,feePerKb,fee));
+                        sendTx(contractBuilder.createTransactionHash(script,unspentOutputs,gasLimit,feePerKb,fee,getView().getContext()));
                     }
                 });
     }

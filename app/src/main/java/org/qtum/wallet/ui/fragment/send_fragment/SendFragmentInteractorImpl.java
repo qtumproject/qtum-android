@@ -13,6 +13,7 @@ import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.FeePerKb;
@@ -198,7 +199,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                 int txSizeInkB = (int) Math.ceil(bytes.length/1024.);
                 BigDecimal minimumFee = estimateFeePerKb.multiply(new BigDecimal(txSizeInkB));
                 if(minimumFee.doubleValue() > fee.doubleValue()){
-                    callBack.onError("Insufficient fee. Please use minimum of " + minimumFee.toString() + " QTUM");
+                    callBack.onError(mContext.getString(R.string.insufficient_fee_lease_use_minimum_of) + minimumFee.toString() + " QTUM");
                     return;
                 }
 

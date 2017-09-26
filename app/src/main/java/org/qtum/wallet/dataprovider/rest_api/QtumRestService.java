@@ -66,7 +66,10 @@ interface QtumRestService {
     Observable<List<QstoreItem>> getWatsNew();
 
     @GET("/contracts/{count}/{offset}")
-    Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset, /*@Query("type_name") String type,*/ @Query("tags[]") String[] tags);
+    Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset,/* @Query("type_name") String type,*/ @Query("tags[]") String[] tags); //by tag
+
+    @GET("/contracts/{count}/{offset}")
+    Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset, @Query("name") String name); //by name
 
      @GET("/contracts/{contract_id}")
     Observable<QstoreContract> getContract(@Path("contract_id") String contractId);
