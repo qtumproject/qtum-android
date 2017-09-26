@@ -179,10 +179,12 @@
     <string name="_2017_qtum_n_skynet_testnet_version">"© 2017 QTUM \n "</string>
     <string name="functions">函数</string>
     <string name="wallet_backup">钱包备份</string>
-    <string name="news_placeholder">Please follow our Medium account to get latest news and updates:</string>
+    <string name="news_placeholder">请关注我们的社交媒体账号获取更多最新动态</string>
     <string name="news_placeholder_link">https://medium.com/@Qtum/</string>
-    <string name="no_transaction_available_yet">No transactions available yet</string>
+
     <string name="insufficient_fee_lease_use_minimum_of"></string>
+
+    <string name="no_transaction_available_yet">当前没有有效交易</string>
 
 
 </resources>
