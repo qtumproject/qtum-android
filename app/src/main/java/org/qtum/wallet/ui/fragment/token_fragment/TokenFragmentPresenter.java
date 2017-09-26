@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import org.qtum.wallet.datastorage.FileStorageManager;
+import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AdressesListFragmentToken;
@@ -40,6 +41,10 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
         getView().setSenderAddress(this.token.getSenderAddress());
     }
 
+    public void setQtumAddress(){
+        getView().setQtumAddress(KeyStorage.getInstance().getCurrentAddress());
+    }
+
     public TokenFragmentPresenter(TokenFragmentView view) {
         this.view = view;
         this.mContext = getView().getContext();
@@ -69,6 +74,7 @@ public class TokenFragmentPresenter extends BaseFragmentPresenterImpl {
     @Override
     public void initializeViews() {
         super.initializeViews();
+        setQtumAddress();
         ContractManagementHelper.getPropertyValue(TokenFragment.totalSupply, token, mContext, new ContractManagementHelper.GetPropertyValueCallBack() {
             @Override
             public void onSuccess(String value) {

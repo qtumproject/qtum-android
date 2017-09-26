@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.fragment.processing_dialog.ProcessingDialogFragment;
@@ -73,6 +74,10 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     public void onUserResume(){
 
+    }
+
+    protected void showToast(String text){
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     public enum PopUpType{

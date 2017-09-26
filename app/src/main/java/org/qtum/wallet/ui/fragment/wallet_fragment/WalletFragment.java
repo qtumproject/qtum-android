@@ -20,11 +20,13 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 public abstract class WalletFragment extends BaseFragment implements WalletFragmentView, TransactionClickListener{
     protected WalletFragmentPresenterImpl mWalletFragmentPresenter;
@@ -63,6 +65,17 @@ public abstract class WalletFragment extends BaseFragment implements WalletFragm
     @OnClick({R.id.bt_qr_code})
     public void onClick(View view) {
         getPresenter().onClickQrCode();
+    }
+
+    @OnLongClick(R.id.tv_public_key)
+    public boolean onAddressLongClick(){
+        ClipboardUtils.copyToClipBoard(getContext(), publicKeyValue.getText().toString(), new ClipboardUtils.CopyCallback() {
+            @Override
+            public void onCopyToClipBoard() {
+                showToast(getString(R.string.copied));
+            }
+        });
+        return true;
     }
 
     public static BaseFragment newInstance(Context context) {

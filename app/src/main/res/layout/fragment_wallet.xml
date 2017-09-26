@@ -53,13 +53,13 @@
                     app:typefaceAsset="@string/simplonMonoRegular" />
 
                 <org.qtum.wallet.utils.FontTextView
+
                     android:id="@+id/tv_public_key"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:gravity="top"
                     android:paddingEnd="16dp"
                     android:textColor="@color/background"
                     app:typefaceAsset="@string/simplonMonoMedium" />

@@ -87,7 +87,7 @@
                 style="@style/appbar_wallet_alpha_title"
                 android:layout_weight="1"
                 android:gravity="bottom"
-                android:text="@string/token_address"
+                android:text="@string/qtum_address"
                 app:typefaceAsset="@string/proximaNovaRegular" />
 
             <org.qtum.wallet.utils.FontTextView
