@@ -21,16 +21,19 @@ import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.token_fragment.dialogs.ShareDialogFragment;
+import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.StackCollapseLinearLayout;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 
 public abstract class TokenFragment extends BaseFragment implements TokenFragmentView {
 
     private static final String tokenKey = "tokenInfo";
+    private static final String qtumAddressKey = "qtumAddressKey";
 
     public static final String totalSupply = "totalSupply";
     public static final String decimals = "decimals";
@@ -115,6 +118,17 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
 
     ShareDialogFragment shareDialog;
 
+    @OnLongClick({R.id.tv_token_address, R.id.contract_address_value})
+    public boolean onAddressLongClick(){
+        ClipboardUtils.copyToClipBoard(getContext(), tokenAddress.getText().toString(), new ClipboardUtils.CopyCallback() {
+            @Override
+            public void onCopyToClipBoard() {
+                showToast(getString(R.string.copied));
+            }
+        });
+        return true;
+    }
+
     @OnClick(R.id.bt_share)
     public void onShareClick() {
         shareDialog = ShareDialogFragment.newInstance(presenter.getToken().getContractAddress(), presenter.getAbi());
@@ -196,8 +210,14 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
     @Override
     public void setTokenAddress(String address) {
         if (!TextUtils.isEmpty(address)) {
-            tokenAddress.setText(address);
             contractAddress.setText(address);
+        }
+    }
+
+    @Override
+    public void setQtumAddress(String address) {
+        if (!TextUtils.isEmpty(address)) {
+            tokenAddress.setText(address);
         }
     }
 

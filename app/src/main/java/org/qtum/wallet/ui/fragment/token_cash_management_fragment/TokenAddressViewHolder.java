@@ -2,15 +2,19 @@ package org.qtum.wallet.ui.fragment.token_cash_management_fragment;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
+import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 /**
  * Created by kirillvolkov on 03.08.17.
@@ -29,11 +33,30 @@ public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
 
     DeterministicKeyWithTokenBalance item;
 
+    OnAddressTokenClickListener listener;
+
+    @OnLongClick(R.id.address_name)
+    public boolean onAddressLongClick(){
+        ClipboardUtils.copyToClipBoard(mTextViewAddress.getContext(), mTextViewAddress.getText().toString(), new ClipboardUtils.CopyCallback() {
+            @Override
+            public void onCopyToClipBoard() {
+                Toast.makeText(mTextViewAddress.getContext(), mTextViewAddress.getContext().getString(R.string.copied),Toast.LENGTH_SHORT).show();
+            }
+        });
+        return true;
+    }
+
+    @OnClick(R.id.address_name)
+    public void onAddressClick(){
+        listener.onItemClick(item);
+    }
+
     String currency;
     int decimalUnits;
 
     public TokenAddressViewHolder(final View itemView, final OnAddressTokenClickListener listener, String currency, int decimalUnits) {
         super(itemView);
+        this.listener = listener;
         this.currency = currency;
         itemView.setClickable(true);
         itemView.setOnClickListener(new View.OnClickListener() {

@@ -31,7 +31,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="bottom"
-            android:text="@string/token_address"
+            android:text="@string/qtum_address"
             android:textColor="@color/background"
             app:typefaceAsset="@string/simplonMonoRegular" />
 
