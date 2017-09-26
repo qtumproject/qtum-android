@@ -181,6 +181,9 @@
     <string name="wallet_backup">钱包备份</string>
     <string name="news_placeholder">请关注我们的社交媒体账号获取更多最新动态</string>
     <string name="news_placeholder_link">https://medium.com/@Qtum/</string>
+
+    <string name="insufficient_fee_lease_use_minimum_of"></string>
+
     <string name="no_transaction_available_yet">当前没有有效交易</string>
 
 

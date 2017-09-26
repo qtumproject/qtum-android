@@ -136,7 +136,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_min_fee"
                 android:layout_gravity="center"
-                android:text="@string/_0_001"
                 app:typefaceAsset="@string/simplonMonoRegular"
                 android:textColor="@color/colorPrimary"/>
 
@@ -155,7 +154,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:id="@+id/tv_max_fee"
-                android:text="@string/_0_2"
                 app:typefaceAsset="@string/simplonMonoRegular"
                 android:textColor="@color/colorPrimary"/>
 

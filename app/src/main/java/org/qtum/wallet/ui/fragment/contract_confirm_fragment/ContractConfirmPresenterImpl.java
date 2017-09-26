@@ -124,7 +124,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                         ContractBuilder contractBuilder = new ContractBuilder();
                         Script script = contractBuilder.createConstructScript(abiParams);
 //TODO
-                        String hash = contractBuilder.createTransactionHash(script,unspentOutputs,36731,new BigDecimal("0.00001"),"0.5");
+                        String hash = contractBuilder.createTransactionHash(script,unspentOutputs,36731,new BigDecimal("0.00001"),"0.5",mContext);
                         sendTx(hash, "Stub!");
                     }
                 });
@@ -140,12 +140,17 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                         getView().dismissProgressDialog();
                         getView().setAlertDialog(mContext.getString(R.string.contract_created_successfully), "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
                             @Override
-                            public void onOkClick() {
+                            public void onButtonClick() {
                                 FragmentManager fm = getView().getFragment().getFragmentManager();
                                 int count = fm.getBackStackEntryCount()-2;
                                 for(int i = 0; i < count; ++i) {
                                     fm.popBackStack();
                                 }
+                            }
+
+                            @Override
+                            public void onButton2Click() {
+
                             }
                         });
                     }

@@ -77,12 +77,17 @@ class WatchContractFragmentPresenter extends BaseFragmentPresenterImpl {
         }
         getView().setAlertDialog(mContext.getString(R.string.token_was_added_to_your_wallet),"", mContext.getString(R.string.ok), BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
             @Override
-            public void onOkClick() {
+            public void onButtonClick() {
                 FragmentManager fm = getView().getFragment().getFragmentManager();
                 int count = fm.getBackStackEntryCount()-2;
                 for(int i = 0; i < count; ++i) {
                     fm.popBackStack();
                 }
+            }
+
+            @Override
+            public void onButton2Click() {
+
             }
         });
     }

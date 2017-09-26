@@ -92,8 +92,13 @@ public class AddressListFragmentLight extends AddressListFragment {
                                 getContext().getString(R.string.payment_completed_successfully),
                                 getContext().getString(R.string.ok), BaseFragment.PopUpType.confirm,new BaseFragment.AlertDialogCallBack(){
                                     @Override
-                                    public void onOkClick() {
+                                    public void onButtonClick() {
                                         getMainActivity().onBackPressed();
+                                    }
+
+                                    @Override
+                                    public void onButton2Click() {
+
                                     }
                                 });
                     }

@@ -6,7 +6,10 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -88,8 +91,11 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     int mMaxFee;
     int step = 100;
     Currency mCurrency;
+    AlertDialogCallBack mAlertDialogCallBack;
+    View.OnTouchListener mOnTouchListener;
 
     protected SendFragmentPresenterImpl sendBaseFragmentPresenter;
+    private boolean sendFrom = false;
 
     @OnClick({org.qtum.wallet.R.id.bt_qr_code, org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.ll_currency})
     public void onClick(View view) {
@@ -189,6 +195,32 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     @Override
     public void initializeViews() {
         super.initializeViews();
+        mAlertDialogCallBack = new AlertDialogCallBack() {
+            @Override
+            public void onButtonClick() {
+
+            }
+
+            @Override
+            public void onButton2Click() {
+                mTextInputEditTextAddress.setText("");
+                mTextInputEditTextAmount.setText("");
+                mCurrency = new Currency("Qtum " + getContext().getString(R.string.default_currency));
+                mTextViewCurrency.setText(mCurrency.getName());
+                sendFrom = false;
+                getArguments().putString(ADDRESS_FROM,"");
+            }
+        };
+        mOnTouchListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(sendFrom){
+                    setAlertDialog("Attention","By changing address or currency, transaction will be processed as a regular transfer", "Cancel", "Continue", PopUpType.confirm,mAlertDialogCallBack);
+                    return true;
+                }
+                return false;
+            }
+        };
         mCurrency = new Currency("Qtum " + getContext().getString(R.string.default_currency));
         showBottomNavView(true);
         ((MainActivity) getActivity()).setIconChecked(3);
@@ -204,9 +236,11 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
 
         String address = getArguments().getString(ADDRESS, "");
         String amount = getArguments().getString(AMOUNT, "");
+        if(!getArguments().getString(ADDRESS_FROM,"").equals("")){
+            sendFrom = true;
+        }
         mTextInputEditTextAmount.setText(amount);
         mTextInputEditTextAddress.setText(address);
-
 
         mTextInputEditTextFee.setText(String.valueOf(INITIAL_FEE));
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -226,6 +260,10 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
 
             }
         });
+
+        mTextInputEditTextAddress.setOnTouchListener(mOnTouchListener);
+        mLinearLayoutCurrency.setOnTouchListener(mOnTouchListener);
+
     }
 
     @Override
