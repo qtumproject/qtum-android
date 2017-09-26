@@ -27,6 +27,8 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.FontTextView;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -247,7 +249,7 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 double value = (mMinFee + (progress * step)) / 100000000.;
-                mTextInputEditTextFee.setText(String.valueOf(value));
+                mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
             }
 
             @Override
@@ -316,8 +318,8 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
 
     @Override
     public void updateFee(double minFee, double maxFee) {
-        mFontTextViewMaxFee.setText(String.valueOf(maxFee));
-        mFontTextViewMinFee.setText(String.valueOf(minFee));
+        mFontTextViewMaxFee.setText(new DecimalFormat("#.########").format(maxFee));
+        mFontTextViewMinFee.setText(new DecimalFormat("#.########").format(minFee));
         mMinFee = Double.valueOf(minFee * 100000000).intValue();
         mMaxFee = Double.valueOf(maxFee * 100000000).intValue();
         mSeekBar.setMax((mMaxFee - mMinFee) / step);
