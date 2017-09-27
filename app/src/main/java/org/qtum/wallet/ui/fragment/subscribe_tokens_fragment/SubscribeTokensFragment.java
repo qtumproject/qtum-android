@@ -10,11 +10,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.SearchBarListener;
 
 import java.util.ArrayList;
@@ -40,7 +43,10 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
     TextView mTextViewCurrencyTitle;
 
     @BindView(org.qtum.wallet.R.id.ll_currency)
-    FrameLayout mFrameLayoutBase;
+    RelativeLayout mFrameLayoutBase;
+
+    @BindView(R.id.place_holder)
+    FontTextView mFontTextViewPlaceHolder;
 
     @OnClick({org.qtum.wallet.R.id.ibt_back})
     public void onClick(View view){
@@ -69,6 +75,11 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
     }
 
     @Override
+    public void setPlaceHolder() {
+        mFontTextViewPlaceHolder.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void initializeViews() {
         super.initializeViews();
 
@@ -87,7 +98,11 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
 
     @Override
     public List<Token> getTokenList() {
-        return mTokenAdapter.getTokenList();
+        if(mTokenAdapter!=null) {
+            return mTokenAdapter.getTokenList();
+        } else {
+            return null;
+        }
     }
 
     @Override

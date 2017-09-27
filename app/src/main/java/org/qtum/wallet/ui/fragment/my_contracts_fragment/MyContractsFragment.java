@@ -35,6 +35,9 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
 
     protected ContractAdapter mContractAdapter;
 
+    @BindView(R.id.place_holder)
+    FontTextView mFontTextViewPlaceHolder;
+
     @OnClick({R.id.ibt_back})
     public void onClick(View view){
         switch (view.getId()) {
@@ -62,6 +65,11 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
     public void initializeViews() {
         super.initializeViews();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    @Override
+    public void setPlaceHolder(){
+        mFontTextViewPlaceHolder.setVisibility(View.VISIBLE);
     }
 
     @Override

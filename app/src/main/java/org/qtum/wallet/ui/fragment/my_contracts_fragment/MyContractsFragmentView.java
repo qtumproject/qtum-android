@@ -8,4 +8,5 @@ import java.util.List;
 
 interface MyContractsFragmentView extends BaseFragmentView {
     void updateRecyclerView(List<Contract> contractList);
+    void setPlaceHolder();
 }

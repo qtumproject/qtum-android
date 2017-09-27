@@ -421,7 +421,7 @@ public class ContractBuilder {
         int txSizeInkB = (int) Math.ceil(bytes.length/1024.);
         BigDecimal minimumFee = (feePerKb.multiply(new BigDecimal(txSizeInkB))).add(gasFee);
         if(minimumFee.doubleValue() > fee.doubleValue()){
-            throw new RuntimeException(context.getString(R.string.insufficient_fee_lease_use_minimum_of) + minimumFee.toString() + " QTUM");
+            throw new RuntimeException(context.getString(R.string.insufficient_fee_lease_use_minimum_of) +" "+ minimumFee.toString() + " QTUM");
         }
 
         return Hex.toHexString(bytes);

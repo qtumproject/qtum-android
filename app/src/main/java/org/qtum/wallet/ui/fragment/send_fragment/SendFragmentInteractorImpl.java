@@ -112,7 +112,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
 
                     @Override
                     public void onError(Throwable e) {
-                        callBack.onError("Get Unspent Outputs " + e.getMessage());
+                        callBack.onError(e.getMessage());
                     }
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
@@ -199,7 +199,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                 int txSizeInkB = (int) Math.ceil(bytes.length/1024.);
                 BigDecimal minimumFee = estimateFeePerKb.multiply(new BigDecimal(txSizeInkB));
                 if(minimumFee.doubleValue() > fee.doubleValue()){
-                    callBack.onError(mContext.getString(R.string.insufficient_fee_lease_use_minimum_of) + minimumFee.toString() + " QTUM");
+                    callBack.onError(mContext.getString(R.string.insufficient_fee_lease_use_minimum_of) + " " + minimumFee.toString() + " QTUM");
                     return;
                 }
 
