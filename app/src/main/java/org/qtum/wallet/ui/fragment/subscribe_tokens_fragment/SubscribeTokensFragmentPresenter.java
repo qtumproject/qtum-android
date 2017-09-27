@@ -31,13 +31,19 @@ public class SubscribeTokensFragmentPresenter extends BaseFragmentPresenterImpl 
         for (Token token : getInteractor().getTokenList()) {
             if (token.isHasBeenCreated()) confirmedTokens.add(token);
         }
-        getView().setTokenList(confirmedTokens);
+        if(confirmedTokens.size()!=0) {
+            getView().setTokenList(confirmedTokens);
+        }else{
+            getView().setPlaceHolder();
+        }
     }
 
     @Override
     public void onPause(Context context) {
         super.onPause(context);
-        getInteractor().saveTokenList(getView().getTokenList());
+        if(getView().getTokenList()!=null) {
+            getInteractor().saveTokenList(getView().getTokenList());
+        }
     }
 
     private SubscribeTokensFragmentInteractor getInteractor() {

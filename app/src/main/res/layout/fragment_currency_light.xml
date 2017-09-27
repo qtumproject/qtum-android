@@ -48,7 +48,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
@@ -78,6 +78,21 @@
 
         </android.support.v7.widget.RecyclerView>
 
-    </FrameLayout>
+        <org.qtum.wallet.utils.FontTextView
+            android:id="@+id/place_holder"
+            app:typefaceAsset="@string/proximaNovaRegular"
+            android:textColor="@color/grey70"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:text="@string/no_tokens_found"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

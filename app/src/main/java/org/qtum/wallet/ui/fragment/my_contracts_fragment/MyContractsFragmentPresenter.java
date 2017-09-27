@@ -23,7 +23,11 @@ public class MyContractsFragmentPresenter extends BaseFragmentPresenterImpl {
         TinyDB tinyDB = new TinyDB(getView().getContext());
         List<Contract> contractList = tinyDB.getContractList();
         if(contractList != null) {
-            getView().updateRecyclerView(contractList);
+            if(contractList.size()!=0) {
+                getView().updateRecyclerView(contractList);
+            } else {
+                getView().setPlaceHolder();
+            }
         } else {
             getView().setAlertDialog(getView().getContext().getString(R.string.error),getView().getContext().getString(R.string.fail_to_get_contracts), BaseFragment.PopUpType.error);
         }

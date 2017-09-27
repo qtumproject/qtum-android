@@ -9,4 +9,5 @@ import java.util.List;
 interface SubscribeTokensFragmentView extends BaseFragmentView {
     void setTokenList(List<Token> tokenList);
     List<Token> getTokenList();
+    void setPlaceHolder();
 }
