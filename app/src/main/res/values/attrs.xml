@@ -32,4 +32,8 @@
             <attr name="av_layersCount" format="integer" />
         </declare-styleable>
 
+    <declare-styleable name="SearchBar">
+        <attr name="lytSearchView" format="reference"/>
+    </declare-styleable>
+
 </resources>

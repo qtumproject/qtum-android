@@ -116,11 +116,11 @@ public class QtumService {
         return mServiceApi.getWatsNew();
     }
 
-    public Observable<List<QSearchItem>> searchContracts(int offset, String data, boolean byTag){
+    public Observable<List<QSearchItem>> searchContracts(int offset,String type, String data, boolean byTag){
         if(byTag) {
-            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/, new String[]{data});
+            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/,type, new String[]{data});
         } else {
-            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/, data);
+            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/,type, data);
         }
     }
 

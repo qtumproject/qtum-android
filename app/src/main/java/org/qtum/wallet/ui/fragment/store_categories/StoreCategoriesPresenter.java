@@ -3,13 +3,13 @@ package org.qtum.wallet.ui.fragment.store_categories;
 import android.content.Context;
 
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
-import org.qtum.wallet.datastorage.QStoreCategoriesStorage;
 import org.qtum.wallet.model.gson.QstoreContractType;
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.qstore.QStoreFragment;
 import org.qtum.wallet.ui.fragment.qstore.categories.QstoreCategory;
+import org.qtum.wallet.ui.fragment.qstore_by_type.QStoreByTypeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,29 +33,11 @@ public class StoreCategoriesPresenter extends BaseFragmentPresenterImpl {
     }
 
     private List<QstoreContractType> mQstoreContractTypes;
-    private List<QstoreItem> mQstoreItems;
 
     @Override
     public void initializeViews() {
         super.initializeViews();
         setUpCategories();
-    }
-
-    @Override
-    public void onResume(Context context) {
-        super.onResume(context);
-        QStoreCategoriesStorage.newInstance().addQStoreCategoriesStorageListener(new QStoreCategoriesStorage.QStoreCategoriesStorageListener() {
-            @Override
-            public void onQStoreCategoriesChange(List<QstoreCategory> qstoreCategories) {
-
-            }
-        });
-    }
-
-
-    @Override
-    public void onPause(Context context) {
-        super.onPause(context);
     }
 
     private void setUpCategories(){
@@ -79,8 +61,8 @@ public class StoreCategoriesPresenter extends BaseFragmentPresenterImpl {
                         getView().setUpCategoriesList(qstoreContractTypes, new StoreCategoryViewHolder.OnCategoryClickListener() {
                             @Override
                             public void onClick(String type) {
-                                BaseFragment qStroreFragment = QStoreFragment.newInstance(type, getView().getContext());
-                                getView().openFragment(qStroreFragment);
+                                BaseFragment qStoreByTypeFragment = QStoreByTypeFragment.newInstance(type, getView().getContext());
+                                getView().openFragment(qStoreByTypeFragment);
                             }
                         });
                     }

@@ -3,7 +3,6 @@ package org.qtum.wallet.ui.fragment.subscribe_tokens_fragment.light;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.ui.fragment.subscribe_tokens_fragment.SubscribeTokensFragment;
-import org.qtum.wallet.utils.SearchBarLight;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,18 +16,9 @@ import butterknife.BindView;
 
 public class SubscribeTokensFragmentLight extends SubscribeTokensFragment {
 
-    @BindView(R.id.search_bar)
-    SearchBarLight searchBar;
-
     @Override
     protected int getLayout() {
         return R.layout.fragment_currency_light;
-    }
-
-    @Override
-    public void initializeViews() {
-        super.initializeViews();
-        searchBar.setListener(this);
     }
 
     @Override

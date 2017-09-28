@@ -17,19 +17,9 @@ import butterknife.BindView;
 
 public class StoreCategoriesFragmentDark extends StoreCategoriesFragment {
 
-    @BindView(R.id.search_bar)
-    SearchBar searchBar;
-
     @Override
     protected int getLayout() {
         return R.layout.lyt_store_categories;
-    }
-
-    @Override
-    public void initializeViews() {
-        super.initializeViews();
-        searchBar.setListener(this);
-
     }
 
     @Override

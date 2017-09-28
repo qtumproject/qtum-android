@@ -2,7 +2,6 @@ package org.qtum.wallet.ui.fragment.qstore;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
-import org.qtum.wallet.datastorage.QStoreCategoriesStorage;
 import org.qtum.wallet.model.gson.qstore.QSearchItem;
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
@@ -21,6 +20,7 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
     private QStoreView view;
     private List<QstoreCategory> categories;
     private int searchOffset;
+    private final String EMPTY_TYPE = "";
 
     public QStorePresenter(QStoreView view){
         this.view = view;
@@ -35,31 +35,7 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
     public void onViewCreated() {
         super.onViewCreated();
         categories = new ArrayList<>();
-        if(getView().getType().isEmpty()) {
-            loadCategories();
-        } else {
-            final String type = getView().getType();
-            getView().setUpTitle(type);
-            QStoreCategoriesStorage.newInstance().addQStoreCategoriesStorageListener(new QStoreCategoriesStorage.QStoreCategoriesStorageListener() {
-                @Override
-                public void onQStoreCategoriesChange(List<QstoreCategory> qstoreCategories) {
-                    List<QstoreCategory> filteredQstoreCategories = new ArrayList<QstoreCategory>();
-                    for(QstoreCategory qstoreCategory : qstoreCategories){
-                        QstoreCategory filteredQstoreCategory = new QstoreCategory(qstoreCategory.getTitle());
-                        List<QstoreItem> filteredQstoreItemList = new ArrayList<QstoreItem>();
-                        for(QstoreItem qstoreItem : qstoreCategory.getItems()){
-                            if(qstoreItem.type.equals(type)){
-                                filteredQstoreItemList.add(qstoreItem);
-                            }
-                        }
-                        filteredQstoreCategory.setItems(filteredQstoreItemList);
-                        filteredQstoreCategories.add(filteredQstoreCategory);
-                    }
-                    categories = filteredQstoreCategories;
-                    getView().setCategories(filteredQstoreCategories);
-                }
-            });
-        }
+        loadCategories();
     }
 
     public void loadCategories(){
@@ -82,7 +58,6 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
                     public void onNext(List<QstoreItem> qstoreItems) {
                         QstoreCategory qstoreCategory = new QstoreCategory(getView().getContext().getString(R.string.trending_now),qstoreItems);
                         categories.add(qstoreCategory);
-                        QStoreCategoriesStorage.newInstance().addCategoryToQStoreCategories(qstoreCategory);
                         getView().setCategories(categories);
 
                     }
@@ -109,7 +84,6 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
                     public void onNext(List<QstoreItem> qstoreItems) {
                         QstoreCategory qstoreCategory = new QstoreCategory(getView().getContext().getString(R.string.whats_new),qstoreItems);
                         categories.add(qstoreCategory);
-                        QStoreCategoriesStorage.newInstance().addCategoryToQStoreCategories(qstoreCategory);
                         getView().setCategories(categories);
                     }
                 });
@@ -118,7 +92,7 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
     public void searchItems(String tag, boolean byTag){
         searchOffset = 0;
         QtumService.newInstance()
-                .searchContracts(searchOffset,tag, byTag)
+                .searchContracts(searchOffset,EMPTY_TYPE, tag,byTag)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<QSearchItem>>() {
@@ -137,5 +111,10 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
                         getView().setSearchResult(qstoreItems);
                     }
                 });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

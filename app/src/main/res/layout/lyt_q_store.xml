@@ -98,6 +98,7 @@
         <org.qtum.wallet.utils.SearchBar
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
+            app:lytSearchView="@layout/lyt_search_view"
             android:layout_height="50dp"/>
 
         <LinearLayout
