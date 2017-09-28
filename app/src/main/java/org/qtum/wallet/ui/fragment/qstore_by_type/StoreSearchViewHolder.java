@@ -1,4 +1,4 @@
-package org.qtum.wallet.ui.fragment.qstore;
+package org.qtum.wallet.ui.fragment.qstore_by_type;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

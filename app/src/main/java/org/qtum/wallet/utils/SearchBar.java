@@ -1,6 +1,7 @@
 package org.qtum.wallet.utils;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.Editable;
@@ -15,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.qtum.wallet.R;
 
 
 public class SearchBar extends RelativeLayout implements View.OnClickListener{
@@ -40,7 +43,17 @@ public class SearchBar extends RelativeLayout implements View.OnClickListener{
 
     public SearchBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        view = LayoutInflater.from(getContext()).inflate(org.qtum.wallet.R.layout.lyt_search_view, this, false);
+        TypedArray a = context.getTheme().obtainStyledAttributes(
+                attrs,
+                R.styleable.SearchBar,
+                0, 0);
+        int res = R.layout.lyt_search_view;
+        try {
+            res = a.getResourceId(R.styleable.SearchBar_lytSearchView, R.layout.lyt_search_view);
+        } finally {
+            a.recycle();
+        }
+        view = LayoutInflater.from(getContext()).inflate(res, this, false);
         addView(view);
         build();
     }

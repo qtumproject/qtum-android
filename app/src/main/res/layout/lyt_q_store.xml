@@ -65,7 +65,7 @@
                     app:srcCompat="@drawable/ic_add"/>
 
                 <org.qtum.wallet.utils.FontTextView
-                    android:id="@+id/tv_toolbar_language"
+                    android:id="@+id/tv_toolbar_qstore"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="48dp"
@@ -98,6 +98,7 @@
         <org.qtum.wallet.utils.SearchBar
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
+            app:lytSearchView="@layout/lyt_search_view"
             android:layout_height="50dp"/>
 
         <LinearLayout

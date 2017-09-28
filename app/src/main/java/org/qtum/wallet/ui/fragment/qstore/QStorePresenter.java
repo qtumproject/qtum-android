@@ -20,6 +20,7 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
     private QStoreView view;
     private List<QstoreCategory> categories;
     private int searchOffset;
+    private final String EMPTY_TYPE = "";
 
     public QStorePresenter(QStoreView view){
         this.view = view;
@@ -55,7 +56,8 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
 
                     @Override
                     public void onNext(List<QstoreItem> qstoreItems) {
-                        categories.add(new QstoreCategory(getView().getContext().getString(R.string.trending_now),qstoreItems));
+                        QstoreCategory qstoreCategory = new QstoreCategory(getView().getContext().getString(R.string.trending_now),qstoreItems);
+                        categories.add(qstoreCategory);
                         getView().setCategories(categories);
 
                     }
@@ -80,7 +82,8 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
 
                     @Override
                     public void onNext(List<QstoreItem> qstoreItems) {
-                        categories.add(new QstoreCategory(getView().getContext().getString(R.string.whats_new),qstoreItems));
+                        QstoreCategory qstoreCategory = new QstoreCategory(getView().getContext().getString(R.string.whats_new),qstoreItems);
+                        categories.add(qstoreCategory);
                         getView().setCategories(categories);
                     }
                 });
@@ -89,7 +92,7 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
     public void searchItems(String tag, boolean byTag){
         searchOffset = 0;
         QtumService.newInstance()
-                .searchContracts(searchOffset,tag, byTag)
+                .searchContracts(searchOffset,EMPTY_TYPE, tag,byTag)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<QSearchItem>>() {
@@ -108,5 +111,10 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
                         getView().setSearchResult(qstoreItems);
                     }
                 });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

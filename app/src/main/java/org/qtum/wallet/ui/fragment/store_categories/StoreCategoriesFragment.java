@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.utils.SearchBar;
 import org.qtum.wallet.utils.SearchBarListener;
 
 import butterknife.BindView;
@@ -28,6 +29,10 @@ public abstract class StoreCategoriesFragment extends BaseFragment implements St
     protected
     RecyclerView contentList;
 
+
+    @BindView(R.id.search_bar)
+    SearchBar searchBar;
+
     public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, StoreCategoriesFragment.class);
@@ -39,6 +44,7 @@ public abstract class StoreCategoriesFragment extends BaseFragment implements St
     public void initializeViews() {
         super.initializeViews();
         contentList.setLayoutManager(new LinearLayoutManager(getContext()));
+        searchBar.setListener(this);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.qtum.wallet.ui.fragment.qstore;
+package org.qtum.wallet.ui.fragment.qstore_by_type;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,11 +11,11 @@ import android.widget.LinearLayout;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
-import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.store_categories.StoreCategoriesFragment;
 import org.qtum.wallet.ui.fragment.store_contract.StoreContractFragment;
+import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.FontCheckBox;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.SearchBar;
@@ -31,15 +31,15 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 
-public abstract class QStoreFragment extends BaseFragment implements QStoreView, StoreItemClickListener{
+public abstract class QStoreByTypeFragment extends BaseFragment implements QStoreByTypeView, StoreItemClickListener {
 
-    private QStorePresenter presenter;
+    private QStoreByTypePresenter presenter;
 
-    protected StoreAdapter storeAdapter;
     protected StoreSearchAdapter searchAdapter;
+    private final static String TYPE = "type";
 
     @OnClick(R.id.ibt_back)
-    public void onBackClick(){
+    public void onBackClick() {
         getActivity().onBackPressed();
     }
 
@@ -49,6 +49,9 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
 
     @BindView(R.id.search_type_menu)
     LinearLayout searchTypeMenu;
+
+    @BindView(org.qtum.wallet.R.id.search_bar)
+    SearchBar searchBar;
 
     @BindView(R.id.cb_by_name)
     FontCheckBox cbByName;
@@ -62,9 +65,6 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
     @BindView(R.id.ibt_categories)
     ImageButton mImageButton;
 
-    @BindView(R.id.search_bar)
-    SearchBar searchBar;
-
     @OnClick(R.id.ibt_categories)
     public void onCategoriesClick() {
         openFragment(StoreCategoriesFragment.newInstance(getContext()));
@@ -72,14 +72,27 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
 
     public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        BaseFragment fragment = Factory.instantiateFragment(context, QStoreFragment.class);
+        BaseFragment fragment = Factory.instantiateFragment(context, QStoreByTypeFragment.class);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static BaseFragment newInstance(String type, Context context) {
+        Bundle args = new Bundle();
+        BaseFragment fragment = Factory.instantiateFragment(context, QStoreByTypeFragment.class);
+        args.putString(TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
+    public String getType() {
+        return getArguments().getString(TYPE, "");
+    }
+
+    @Override
     protected void createPresenter() {
-        presenter = new QStorePresenter(this);
+        presenter = new QStoreByTypePresenter(this);
     }
 
     @Override
@@ -109,6 +122,7 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
         });
 
         cbByTag.setChecked(true);
+
 
         Observable.create(new Observable.OnSubscribe<String>() {
             @Override
@@ -149,6 +163,22 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
     }
 
     @Override
+    public void setUpTitle(String type) {
+        mTextViewToolBar.setText(type);
+        mImageButton.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void setSearchBarText(String text) {
+        searchBar.setText(text);
+    }
+
+    @Override
+    public String getSeacrhBarText() {
+        return searchBar.getText();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         hideBottomNavView(false);
@@ -165,18 +195,7 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
         openFragmentForResult(StoreContractFragment.newInstance(getContext(), item.id));
     }
 
-    @Override
-    public void setSearchBarText(String text) {
-        searchBar.setText(text);
-    }
-
-    @Override
-    public String getSeacrhBarText() {
-        return searchBar.getText();
-    }
-
-
-    public void setSearchTag(String tag){
+    public void setSearchTag(String tag) {
         cbByName.setChecked(false);
         cbByTag.setChecked(true);
         setSearchBarText(tag);

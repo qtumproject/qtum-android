@@ -62,8 +62,9 @@
             android:layout_height="wrap_content"
             android:background="@color/title_color_light">
 
-            <org.qtum.wallet.utils.SearchBarLight
+            <org.qtum.wallet.utils.SearchBar
                 android:id="@+id/search_bar"
+                app:lytSearchView="@layout/lyt_search_view_light"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"/>
 

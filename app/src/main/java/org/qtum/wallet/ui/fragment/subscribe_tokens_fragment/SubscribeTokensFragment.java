@@ -18,6 +18,7 @@ import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.FontTextView;
+import org.qtum.wallet.utils.SearchBar;
 import org.qtum.wallet.utils.SearchBarListener;
 
 import java.util.ArrayList;
@@ -41,6 +42,9 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
 
     @BindView(org.qtum.wallet.R.id.tv_currency_title)
     TextView mTextViewCurrencyTitle;
+
+    @BindView(org.qtum.wallet.R.id.search_bar)
+    SearchBar searchBar;
 
     @BindView(org.qtum.wallet.R.id.ll_currency)
     RelativeLayout mFrameLayoutBase;
@@ -82,7 +86,7 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
     @Override
     public void initializeViews() {
         super.initializeViews();
-
+        searchBar.setListener(this);
         mTextViewCurrencyTitle.setText(org.qtum.wallet.R.string.chose_to_subscribe);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
