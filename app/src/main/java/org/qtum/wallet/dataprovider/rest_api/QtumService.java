@@ -5,6 +5,7 @@ import org.qtum.wallet.model.gson.BlockChainInfo;
 
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
 import org.qtum.wallet.model.gson.FeePerKb;
+import org.qtum.wallet.model.gson.QstoreContractType;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
@@ -151,6 +152,10 @@ public class QtumService {
         body.put("request_id",requestId);
         body.put("access_token",accessToken);
         return mServiceApi.getByteCode(contractId, body);
+    }
+
+    public Observable<List<QstoreContractType>> getContractTypes(){
+        return mServiceApi.getContractTypes();
     }
 
 }

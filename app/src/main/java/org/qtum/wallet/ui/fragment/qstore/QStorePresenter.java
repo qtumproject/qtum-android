@@ -2,6 +2,7 @@ package org.qtum.wallet.ui.fragment.qstore;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.datastorage.QStoreCategoriesStorage;
 import org.qtum.wallet.model.gson.qstore.QSearchItem;
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
@@ -55,7 +56,9 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
 
                     @Override
                     public void onNext(List<QstoreItem> qstoreItems) {
-                        categories.add(new QstoreCategory(getView().getContext().getString(R.string.trending_now),qstoreItems));
+                        QstoreCategory qstoreCategory = new QstoreCategory(getView().getContext().getString(R.string.trending_now),qstoreItems);
+                        categories.add(qstoreCategory);
+                        QStoreCategoriesStorage.newInstance().addCategoryToQStoreCategories(qstoreCategory);
                         getView().setCategories(categories);
 
                     }
@@ -80,7 +83,9 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
 
                     @Override
                     public void onNext(List<QstoreItem> qstoreItems) {
-                        categories.add(new QstoreCategory(getView().getContext().getString(R.string.whats_new),qstoreItems));
+                        QstoreCategory qstoreCategory = new QstoreCategory(getView().getContext().getString(R.string.whats_new),qstoreItems);
+                        categories.add(qstoreCategory);
+                        QStoreCategoriesStorage.newInstance().addCategoryToQStoreCategories(qstoreCategory);
                         getView().setCategories(categories);
                     }
                 });

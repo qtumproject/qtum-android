@@ -4,6 +4,7 @@ import org.qtum.wallet.model.gson.BlockChainInfo;
 
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
 import org.qtum.wallet.model.gson.FeePerKb;
+import org.qtum.wallet.model.gson.QstoreContractType;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
@@ -92,5 +93,7 @@ interface QtumRestService {
     @GET("/estimate-fee-per-kb")
     Observable<FeePerKb> getEstimateFeePerKb(@Query("nBlocks") int nBlocks);
 
+    @GET("/contracts/types")
+    Observable<List<QstoreContractType>> getContractTypes();
 
 }

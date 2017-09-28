@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.ui.fragment.qstore.TestTokenObject;
+import org.qtum.wallet.model.gson.QstoreContractType;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,14 +23,29 @@ public class StoreCategoryViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.cost)
     TextView cost;
 
+    OnCategoryClickListener mListener;
+    QstoreContractType mQstoreContractType;
+
     public StoreCategoryViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onClick(mQstoreContractType.getType());
+            }
+        });
     }
 
-    public void bind(TestTokenObject item) {
-        icon.setImageResource(item.icon);
-        title.setText(item.name);
-        cost.setText(String.valueOf(item.cost));
+    public void bind(QstoreContractType item, OnCategoryClickListener listener) {
+        mListener = listener;
+        mQstoreContractType = item;
+        icon.setImageResource(item.getIcon());
+        title.setText(item.getType());
+        cost.setText(String.valueOf(item.getCost()));
+    }
+
+    public interface OnCategoryClickListener{
+        void onClick(String type);
     }
 }

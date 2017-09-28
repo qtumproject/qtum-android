@@ -1,8 +1,12 @@
 package org.qtum.wallet.ui.fragment.store_categories.light;
 
+import org.qtum.wallet.model.gson.QstoreContractType;
 import org.qtum.wallet.ui.fragment.store_categories.StoreCategoriesAdapter;
 import org.qtum.wallet.ui.fragment.store_categories.StoreCategoriesFragment;
+import org.qtum.wallet.ui.fragment.store_categories.StoreCategoryViewHolder;
 import org.qtum.wallet.utils.SearchBarLight;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -24,8 +28,11 @@ public class StoreCategoriesFragmentLight extends StoreCategoriesFragment {
     public void initializeViews() {
         super.initializeViews();
         searchBar.setListener(this);
-        adapter = new StoreCategoriesAdapter(getPresenter().getSearchItems(), org.qtum.wallet.R.layout.lyt_store_category_list_item_light);
-        contentList.setAdapter(adapter);
     }
 
+    @Override
+    public void setUpCategoriesList(List<QstoreContractType> list, StoreCategoryViewHolder.OnCategoryClickListener listener) {
+        adapter = new StoreCategoriesAdapter(list, org.qtum.wallet.R.layout.lyt_store_category_list_item_light, listener);
+        contentList.setAdapter(adapter);
+    }
 }
