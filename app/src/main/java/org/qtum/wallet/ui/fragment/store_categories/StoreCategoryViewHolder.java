@@ -42,7 +42,7 @@ public class StoreCategoryViewHolder extends RecyclerView.ViewHolder {
         mQstoreContractType = item;
         icon.setImageResource(item.getIcon());
         title.setText(item.getType());
-        cost.setText(String.valueOf(item.getCost()));
+        cost.setText(String.valueOf(item.getCount()));
     }
 
     public interface OnCategoryClickListener{

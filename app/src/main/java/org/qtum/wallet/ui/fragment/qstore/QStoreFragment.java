@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import org.qtum.wallet.R;
@@ -17,6 +18,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.store_categories.StoreCategoriesFragment;
 import org.qtum.wallet.ui.fragment.store_contract.StoreContractFragment;
 import org.qtum.wallet.utils.FontCheckBox;
+import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.SearchBarListener;
 
 import butterknife.BindView;
@@ -29,6 +31,7 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
 
     protected StoreAdapter storeAdapter;
     protected StoreSearchAdapter searchAdapter;
+    private final static String TYPE = "type";
 
     @OnClick(R.id.ibt_back)
     public void onBackClick(){
@@ -48,6 +51,12 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
     @BindView(R.id.cb_by_tag)
     FontCheckBox cbByTag;
 
+    @BindView(R.id.tv_toolbar_qstore)
+    FontTextView mTextViewToolBar;
+
+    @BindView(R.id.ibt_categories)
+    ImageButton mImageButton;
+
     @OnClick(R.id.ibt_categories)
     public void onCategoriesClick() {
         openFragment(StoreCategoriesFragment.newInstance(getContext()));
@@ -58,6 +67,19 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
         BaseFragment fragment = Factory.instantiateFragment(context, QStoreFragment.class);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static BaseFragment newInstance(String type ,Context context) {
+        Bundle args = new Bundle();
+        BaseFragment fragment = Factory.instantiateFragment(context, QStoreFragment.class);
+        args.putString(TYPE,type);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public String getType(){
+        return getArguments().getString(TYPE,"");
     }
 
     @Override
@@ -92,6 +114,12 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
         });
 
         cbByTag.setChecked(true);
+    }
+
+    @Override
+    public void setUpTitle(String type) {
+        mTextViewToolBar.setText(type);
+        mImageButton.setVisibility(View.INVISIBLE);
     }
 
     @Override

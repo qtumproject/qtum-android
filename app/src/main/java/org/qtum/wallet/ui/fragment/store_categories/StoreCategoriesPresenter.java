@@ -9,6 +9,7 @@ import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.qstore.QStoreFragment;
+import org.qtum.wallet.ui.fragment.qstore.categories.QstoreCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +44,10 @@ public class StoreCategoriesPresenter extends BaseFragmentPresenterImpl {
     @Override
     public void onResume(Context context) {
         super.onResume(context);
-        QStoreCategoriesStorage.newInstance().addQStoreItemsStorageListener(new QStoreCategoriesStorage.QStoreItemsStorageListener() {
+        QStoreCategoriesStorage.newInstance().addQStoreCategoriesStorageListener(new QStoreCategoriesStorage.QStoreCategoriesStorageListener() {
             @Override
-            public void onQStoreItemsChange(List<QstoreItem> qstoreItems) {
-                mQstoreItems = qstoreItems;
+            public void onQStoreCategoriesChange(List<QstoreCategory> qstoreCategories) {
+
             }
         });
     }
@@ -78,13 +79,7 @@ public class StoreCategoriesPresenter extends BaseFragmentPresenterImpl {
                         getView().setUpCategoriesList(qstoreContractTypes, new StoreCategoryViewHolder.OnCategoryClickListener() {
                             @Override
                             public void onClick(String type) {
-                                List<QstoreItem> qstoreItems = new ArrayList<QstoreItem>();
-                                for(QstoreItem qstoreItem : mQstoreItems){
-                                    if(qstoreItem.type.equals(type)){
-                                        qstoreItems.add(qstoreItem);
-                                    }
-                                }
-                                BaseFragment qStroreFragment = QStoreFragment.newInstance(getView().getContext());
+                                BaseFragment qStroreFragment = QStoreFragment.newInstance(type, getView().getContext());
                                 getView().openFragment(qStroreFragment);
                             }
                         });

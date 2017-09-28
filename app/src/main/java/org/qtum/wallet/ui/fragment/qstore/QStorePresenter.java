@@ -35,7 +35,31 @@ public class QStorePresenter extends BaseFragmentPresenterImpl {
     public void onViewCreated() {
         super.onViewCreated();
         categories = new ArrayList<>();
-        loadCategories();
+        if(getView().getType().isEmpty()) {
+            loadCategories();
+        } else {
+            final String type = getView().getType();
+            getView().setUpTitle(type);
+            QStoreCategoriesStorage.newInstance().addQStoreCategoriesStorageListener(new QStoreCategoriesStorage.QStoreCategoriesStorageListener() {
+                @Override
+                public void onQStoreCategoriesChange(List<QstoreCategory> qstoreCategories) {
+                    List<QstoreCategory> filteredQstoreCategories = new ArrayList<QstoreCategory>();
+                    for(QstoreCategory qstoreCategory : qstoreCategories){
+                        QstoreCategory filteredQstoreCategory = new QstoreCategory(qstoreCategory.getTitle());
+                        List<QstoreItem> filteredQstoreItemList = new ArrayList<QstoreItem>();
+                        for(QstoreItem qstoreItem : qstoreCategory.getItems()){
+                            if(qstoreItem.type.equals(type)){
+                                filteredQstoreItemList.add(qstoreItem);
+                            }
+                        }
+                        filteredQstoreCategory.setItems(filteredQstoreItemList);
+                        filteredQstoreCategories.add(filteredQstoreCategory);
+                    }
+                    categories = filteredQstoreCategories;
+                    getView().setCategories(filteredQstoreCategories);
+                }
+            });
+        }
     }
 
     public void loadCategories(){

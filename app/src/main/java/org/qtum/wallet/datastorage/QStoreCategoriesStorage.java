@@ -1,6 +1,5 @@
 package org.qtum.wallet.datastorage;
 
-import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.ui.fragment.qstore.categories.QstoreCategory;
 
 import java.util.ArrayList;
@@ -14,8 +13,7 @@ public class QStoreCategoriesStorage {
 
     private static QStoreCategoriesStorage sQStoreCategoriesStorage;
     private List<QstoreCategory> mQstoreCategories = new ArrayList<>();
-    private QStoreItemsStorageListener mQStoreItemsStorageListener;
-    private List<QstoreItem> mQstoreItems = new ArrayList<>();
+    private QStoreCategoriesStorageListener mQStoreCategoriesStorageListener;
 
     private QStoreCategoriesStorage(){
 
@@ -23,7 +21,7 @@ public class QStoreCategoriesStorage {
 
     public static QStoreCategoriesStorage newInstance(){
         if(sQStoreCategoriesStorage == null){
-            return new QStoreCategoriesStorage();
+            sQStoreCategoriesStorage = new QStoreCategoriesStorage();
         }
         return sQStoreCategoriesStorage;
     }
@@ -36,7 +34,7 @@ public class QStoreCategoriesStorage {
         sQStoreCategoriesStorage = QStoreCategoriesStorage;
     }
 
-    public List<QstoreCategory> getQstoreItems() {
+    public List<QstoreCategory> getQstoreCategories() {
         return mQstoreCategories;
     }
 
@@ -44,24 +42,23 @@ public class QStoreCategoriesStorage {
         mQstoreCategories = qstoreItems;
     }
 
-    public void addQStoreItemsStorageListener(QStoreItemsStorageListener qStoreItemsStorageListener){
-        mQStoreItemsStorageListener = qStoreItemsStorageListener;
-        qStoreItemsStorageListener.onQStoreItemsChange(mQstoreItems);
+    public void addQStoreCategoriesStorageListener(QStoreCategoriesStorageListener qStoreCategoriesStorageListener){
+        mQStoreCategoriesStorageListener = qStoreCategoriesStorageListener;
+        qStoreCategoriesStorageListener.onQStoreCategoriesChange(mQstoreCategories);
     }
 
     public void addCategoryToQStoreCategories(QstoreCategory qstoreCategory){
         mQstoreCategories.add(qstoreCategory);
-        mQstoreItems.addAll(qstoreCategory.mItems);
-        if(mQStoreItemsStorageListener !=null){
-            mQStoreItemsStorageListener.onQStoreItemsChange(mQstoreItems);
+        if(mQStoreCategoriesStorageListener !=null){
+            mQStoreCategoriesStorageListener.onQStoreCategoriesChange(mQstoreCategories);
         }
     }
 
-    public void removeQStoreItemsStorageListener(){
-        mQStoreItemsStorageListener = null;
+    public void removeQStoreCategoriesStorageListener(){
+        mQStoreCategoriesStorageListener = null;
     }
 
-    public interface QStoreItemsStorageListener {
-        void onQStoreItemsChange(List<QstoreItem> qstoreItems);
+    public interface QStoreCategoriesStorageListener {
+        void onQStoreCategoriesChange(List<QstoreCategory> qstoreCategories);
     }
 }

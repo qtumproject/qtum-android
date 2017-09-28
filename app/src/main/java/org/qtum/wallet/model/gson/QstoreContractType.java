@@ -15,7 +15,11 @@ public class QstoreContractType {
     @SerializedName("type")
     @Expose
     private String type;
-    private float cost = 0;
+
+    @SerializedName("count")
+    @Expose
+    private int count = 0;
+
     private int icon;
 
     public String getId() {
@@ -26,27 +30,21 @@ public class QstoreContractType {
         return type;
     }
 
-    public float getCost() {
-        return cost;
+    public int getCount() {
+        return count;
     }
 
     public int getIcon() {
-        return icon;
-    }
-
-    public void getIconByType(){
         switch (type){
             case "QRC20 Token":
-                icon = R.drawable.ic_supertoken;
-                break;
+                return icon = R.drawable.ic_supertoken;
             case "Smart Contract":
-                icon = R.drawable.ic_smart_contract;
-                break;
+                return icon = R.drawable.ic_smart_contract;
             case "Crowdsale":
-                icon = R.drawable.ic_crowdsale;
-                break;
+                return icon = R.drawable.ic_crowdsale;
             default:
-                break;
+                return icon = R.drawable.ic_smart_contract;
         }
     }
+
 }
