@@ -2,7 +2,11 @@ package org.qtum.wallet.utils.sha3;
 
 
 
+import org.spongycastle.util.encoders.Hex;
+
 import java.math.BigInteger;
+
+import static org.spongycastle.util.Arrays.reverse;
 
 
 /**
@@ -106,7 +110,7 @@ public class Keccak {
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++) {
                     if ((5 * i + j) < (parameters.getR() / w)) {
-                        Z = Z + addZero(HexUtils.getReverseHex(S[j][i].toByteArray()), 16).substring(0, 16);
+                        Z = Z + addZero(Hex.toHexString(reverse(S[j][i].toByteArray())), 16).substring(0, 16);
                     }
                 }
             }
@@ -223,7 +227,7 @@ public class Keccak {
             if ((count * 4 % w) == 0) {
                 String subString = message.substring((count - w / 4), (w / 4) + (count - w / 4));
                 arrayM[i][j] = new BigInteger(subString, 16);
-                String revertString = HexUtils.getReverseHex(arrayM[i][j].toByteArray());
+                String revertString = Hex.toHexString(reverse((arrayM[i][j].toByteArray())));
                 revertString = addZero(revertString, subString.length());
                 arrayM[i][j] = new BigInteger(revertString, 16);
                 j++;
