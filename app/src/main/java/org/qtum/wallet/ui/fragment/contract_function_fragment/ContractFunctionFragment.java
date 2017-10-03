@@ -14,15 +14,19 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
+import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.FontManager;
 import org.qtum.wallet.utils.FontTextView;
+import org.qtum.wallet.utils.ResizeHeightAnimation;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -52,12 +56,20 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
     FontTextView mFontTextViewMaxFee;
     @BindView(R.id.tv_min_fee)
     FontTextView mFontTextViewMinFee;
+    @BindView(R.id.bt_edit_close)
+    FontButton mFontButtonEditClose;
+    @BindView(R.id.seek_bar_container)
+    LinearLayout mLinearLayoutSeekBarContainer;
 
     int mMinFee;
     int mMaxFee;
     int step = 100;
+    private int appLogoHeight = 0;
+    private ResizeHeightAnimation mAnimForward;
+    private ResizeHeightAnimation mAnimBackward;
+    boolean showing = false;
 
-    @OnClick({org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.cancel, org.qtum.wallet.R.id.call})
+    @OnClick({org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.cancel, org.qtum.wallet.R.id.call,R.id.bt_edit_close})
     public void onClick(View view) {
         switch (view.getId()) {
             case org.qtum.wallet.R.id.cancel:
@@ -67,7 +79,38 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             case org.qtum.wallet.R.id.call:
                 getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_ADDRESS), mTextInputEditTextFee.getText().toString(),getArguments().getString(METHOD_NAME));
                 break;
+            case R.id.bt_edit_close:
+                if(showing) {
+                    mLinearLayoutSeekBarContainer.startAnimation(mAnimBackward);
+                    mFontButtonEditClose.setText(R.string.edit);
+                    showing = !showing;
+                } else {
+                    mLinearLayoutSeekBarContainer.startAnimation(mAnimForward);
+                    mFontButtonEditClose.setText(R.string.close);
+                    showing = !showing;
+                }
+                break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    private void initializeAnim(){
+        mAnimForward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, 0, appLogoHeight);
+        mAnimForward.setDuration(300);
+        mAnimForward.setFillEnabled(true);
+        mAnimForward.setFillAfter(true);
+        //mAnimForward.setAnimationListener(this);
+
+        mAnimBackward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, appLogoHeight, 0);
+        mAnimBackward.setDuration(300);
+        mAnimBackward.setFillEnabled(true);
+        mAnimBackward.setFillAfter(true);
+        //mAnimBackward.setAnimationListener(this);
     }
 
     public static BaseFragment newInstance(Context context, String methodName, String uiid, String contractAddress) {
@@ -112,6 +155,22 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
 
             }
         });
+
+        if(mLinearLayoutSeekBarContainer.getHeight()==0) {
+            mLinearLayoutSeekBarContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    mLinearLayoutSeekBarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    appLogoHeight = (appLogoHeight == 0) ?  mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
+                    initializeAnim();
+                    mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
+                }
+            });
+        } else {
+            appLogoHeight = (appLogoHeight == 0) ?  mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
+            initializeAnim();
+            mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
+        }
     }
 
     @Override

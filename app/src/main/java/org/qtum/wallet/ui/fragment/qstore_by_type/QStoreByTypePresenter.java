@@ -1,13 +1,10 @@
 package org.qtum.wallet.ui.fragment.qstore_by_type;
 
-import org.qtum.wallet.R;
+
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.model.gson.qstore.QSearchItem;
-import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
-import org.qtum.wallet.ui.fragment.qstore.categories.QstoreCategory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Subscriber;
