@@ -9,7 +9,6 @@ import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenBalan
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
-import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
@@ -20,7 +19,7 @@ import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFrag
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
-import org.qtum.wallet.ui.fragment.send_fragment.SendFragmentInteractorImpl;
+import org.qtum.wallet.ui.fragment.send_fragment.SendInteractorImpl;
 import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.CurrentNetParams;
 
@@ -207,13 +206,13 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
     }
 
     private void createTx(final String abiParams, final String contractAddress, String senderAddress) {
-        getUnspentOutputs(senderAddress, new SendFragmentInteractorImpl.GetUnspentListCallBack() {
+        getUnspentOutputs(senderAddress, new SendInteractorImpl.GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
 
                 ContractBuilder contractBuilder = new ContractBuilder();
                 Script script = contractBuilder.createMethodScript(abiParams, /*TODO*/ 2000000,contractAddress);
-                sendTx(createTransactionHash(script, unspentOutputs), new SendFragmentInteractorImpl.SendTxCallBack() {
+                sendTx(createTransactionHash(script, unspentOutputs), new SendInteractorImpl.SendTxCallBack() {
                     @Override
                     public void onSuccess() {
                         getView().setAlertDialog(getView().getContext().getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
@@ -276,7 +275,7 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
         return Hex.toHexString(bytes);
     }
 
-    private void getUnspentOutputs(String address, final SendFragmentInteractorImpl.GetUnspentListCallBack callBack) {
+    private void getUnspentOutputs(String address, final SendInteractorImpl.GetUnspentListCallBack callBack) {
         QtumService.newInstance().getUnspentOutputs(address)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -310,7 +309,7 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
                 });
     }
 
-    private void sendTx(String txHex, final SendFragmentInteractorImpl.SendTxCallBack callBack){
+    private void sendTx(String txHex, final SendInteractorImpl.SendTxCallBack callBack){
         QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(txHex, 1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

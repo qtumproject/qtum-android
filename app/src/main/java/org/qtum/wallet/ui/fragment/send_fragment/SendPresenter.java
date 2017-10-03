@@ -1,13 +1,16 @@
 package org.qtum.wallet.ui.fragment.send_fragment;
 
-
 import org.qtum.wallet.model.Currency;
+import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 
-public interface SendFragmentPresenter {
-    void onClickQrCode();
-    void isQrCodeRecognition(boolean isQrCodeRecognition);
+public interface SendPresenter {
     void onResponse(String publicAddress, double amount, String tokenAddress);
+
     void onResponseError();
-    void onCurrencyClick();
+
     void send(String from, String address, String amount, Currency currency, String fee);
+
+    MainActivity.OnServiceConnectionChangeListener getServiceConnectionChangeListener();
+
+    void updateNetworkSate(boolean networkConnectedFlag);
 }

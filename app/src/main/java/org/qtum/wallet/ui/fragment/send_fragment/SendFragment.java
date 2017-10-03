@@ -1,14 +1,17 @@
 package org.qtum.wallet.ui.fragment.send_fragment;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,21 +23,29 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
+import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.model.Currency;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment.currency_fragment.CurrencyFragment;
+import org.qtum.wallet.ui.fragment.pin_fragment.PinDialogFragment;
+import org.qtum.wallet.ui.fragment.qr_code_recognition_fragment.QrCodeRecognitionFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.FontTextView;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public abstract class SendFragment extends BaseFragment implements SendFragmentView {
+public abstract class SendFragment extends BaseFragment implements SendView {
 
+    private static final int REQUEST_CAMERA = 3;
+    private boolean OPEN_QR_CODE_FRAGMENT_FLAG = false;
     private static final String IS_QR_CODE_RECOGNITION = "is_qr_code_recognition";
     private static final String ADDRESS = "address";
     private static final String TOKEN = "tokenAddr";
@@ -95,23 +106,103 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     Currency mCurrency;
     AlertDialogCallBack mAlertDialogCallBack;
     View.OnTouchListener mOnTouchListener;
+    private NetworkStateReceiver mNetworkStateReceiver;
 
-    protected SendFragmentPresenterImpl sendBaseFragmentPresenter;
+    protected SendPresenterImpl sendBaseFragmentPresenter;
     private boolean sendFrom = false;
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getMainActivity().setIconChecked(3);
+        getMainActivity().subscribeServiceConnectionChangeEvent(getPresenter().getServiceConnectionChangeListener());
+        getMainActivity().addPermissionResultListener(new MainActivity.PermissionsResultListener() {
+            @Override
+            public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+                if (requestCode == REQUEST_CAMERA) {
+                    if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                        OPEN_QR_CODE_FRAGMENT_FLAG = true;
+                    }
+                }
+            }
+        });
+
+        mNetworkStateReceiver = getMainActivity().getNetworkReceiver();
+        mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
+            @Override
+            public void onNetworkStateChanged(boolean networkConnectedFlag) {
+                getPresenter().updateNetworkSate(networkConnectedFlag);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isQrCodeRecognition(getArguments().getBoolean(IS_QR_CODE_RECOGNITION));
+        getArguments().putBoolean(IS_QR_CODE_RECOGNITION, false);
+        String currency = getArguments().getString(CURRENCY, "");
+        if (!currency.equals("")) {
+            getPresenter().searchAndSetUpCurrency(currency);
+        }
+
+        if (OPEN_QR_CODE_FRAGMENT_FLAG) {
+            openQrCodeFragment();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mNetworkStateReceiver.removeNetworkStateListener();
+    }
+
+    private void isQrCodeRecognition(boolean isQrCodeRecognition) {
+        if (isQrCodeRecognition) {
+            QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
+            openInnerFragmentForResult(qrCodeRecognitionFragment);
+        }
+    }
+
 
     @OnClick({org.qtum.wallet.R.id.bt_qr_code, org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.ll_currency})
     public void onClick(View view) {
         switch (view.getId()) {
             case org.qtum.wallet.R.id.bt_qr_code:
-                getPresenter().onClickQrCode();
+                onClickQrCode();
                 break;
             case org.qtum.wallet.R.id.ibt_back:
                 getActivity().onBackPressed();
                 break;
             case org.qtum.wallet.R.id.ll_currency:
-                getPresenter().onCurrencyClick();
+                onCurrencyClick();
                 break;
         }
+    }
+
+    private void onClickQrCode() {
+        if (getMainActivity().checkPermission(Manifest.permission.CAMERA)) {
+            openQrCodeFragment();
+        } else {
+            getMainActivity().loadPermissions(Manifest.permission.CAMERA, REQUEST_CAMERA);
+        }
+    }
+
+    private void onCurrencyClick() {
+        BaseFragment currencyFragment = CurrencyFragment.newInstance(getView().getContext());
+        openFragmentForResult(currencyFragment);
+    }
+
+    private void openQrCodeFragment() {
+        OPEN_QR_CODE_FRAGMENT_FLAG = false;
+        QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
+        hideKeyBoard();
+        openInnerFragmentForResult(qrCodeRecognitionFragment);
     }
 
     @OnClick(R.id.bt_send)
@@ -119,7 +210,7 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         String address = mTextInputEditTextAddress.getText().toString();
         String amount = mTextInputEditTextAmount.getText().toString();
         String fee = mTextInputEditTextFee.getText().toString();
-        String from = getArguments().getString(ADDRESS_FROM,"");
+        String from = getArguments().getString(ADDRESS_FROM, "");
         getPresenter().send(from, address, amount, mCurrency, fee);
     }
 
@@ -134,7 +225,7 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         return sendFragment;
     }
 
-    public static BaseFragment newInstance(String addressFrom, String addressTo, String amount, String currency,Context context) {
+    public static BaseFragment newInstance(String addressFrom, String addressTo, String amount, String currency, Context context) {
         BaseFragment sendFragment = Factory.instantiateFragment(context, SendFragment.class);
         Bundle args = new Bundle();
         args.putString(ADDRESS_FROM, addressFrom);
@@ -146,23 +237,12 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        getPresenter().isQrCodeRecognition(getArguments().getBoolean(IS_QR_CODE_RECOGNITION));
-        getArguments().putBoolean(IS_QR_CODE_RECOGNITION, false);
-        String currency = getArguments().getString(CURRENCY,"");
-        if(!currency.equals("")){
-            getPresenter().searchAndSetUpCurrency(currency);
-        }
-    }
-
-    @Override
     protected void createPresenter() {
-        sendBaseFragmentPresenter = new SendFragmentPresenterImpl(this);
+        sendBaseFragmentPresenter = new SendPresenterImpl(this, new SendInteractorImpl(getContext()));
     }
 
     @Override
-    protected SendFragmentPresenterImpl getPresenter() {
+    protected SendPresenterImpl getPresenter() {
         return sendBaseFragmentPresenter;
     }
 
@@ -210,14 +290,14 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
                 mCurrency = new Currency("Qtum " + getContext().getString(R.string.default_currency));
                 mTextViewCurrency.setText(mCurrency.getName());
                 sendFrom = false;
-                getArguments().putString(ADDRESS_FROM,"");
+                getArguments().putString(ADDRESS_FROM, "");
             }
         };
         mOnTouchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(sendFrom){
-                    setAlertDialog("Attention","By changing address or currency, transaction will be processed as a regular transfer", "Cancel", "Continue", PopUpType.confirm,mAlertDialogCallBack);
+                if (sendFrom) {
+                    setAlertDialog("Attention", "By changing address or currency, transaction will be processed as a regular transfer", "Cancel", "Continue", PopUpType.confirm, mAlertDialogCallBack);
                     return true;
                 }
                 return false;
@@ -238,7 +318,7 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
 
         String address = getArguments().getString(ADDRESS, "");
         String amount = getArguments().getString(AMOUNT, "");
-        if(!getArguments().getString(ADDRESS_FROM,"").equals("")){
+        if (!getArguments().getString(ADDRESS_FROM, "").equals("")) {
             sendFrom = true;
         }
         mTextInputEditTextAmount.setText(amount);
@@ -288,6 +368,12 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         mLinearLayoutCurrency.setVisibility(View.VISIBLE);
         mTextViewCurrency.setText(currency.getName());
         mCurrency = currency;
+    }
+
+    @Override
+    public void setUpCurrencyField(@StringRes int defaultCurrId) {
+        Currency currency = new Currency("Qtum " + getContext().getString(defaultCurrId));
+        setUpCurrencyField(currency);
     }
 
     @Override
@@ -354,5 +440,55 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
             notConfirmedBalancePlaceholder.setVisibility(View.GONE);
         }
     }
+
+    @Override
+    public UpdateService getUpdateService() {
+        return getMainActivity().getUpdateService();
+    }
+
+    @Override
+    public void handleBalanceUpdating(String balanceString, BigDecimal unconfirmedBalance) {
+        String unconfirmedBalanceString = unconfirmedBalance.toString();
+        if (!TextUtils.isEmpty(unconfirmedBalanceString) && !unconfirmedBalanceString.equals("0")) {
+            updateBalance(String.format("%S QTUM", balanceString), String.format("%S QTUM", String.valueOf(unconfirmedBalance.floatValue())));
+        } else {
+            updateBalance(String.format("%S QTUM", balanceString), null);
+        }
+    }
+
+    @Override
+    public String getStringValue(@StringRes int resId) {
+        return getString(resId);
+    }
+
+    @Override
+    public void removePermissionResultListener() {
+        getMainActivity().removePermissionResultListener();
+    }
+
+    @Override
+    public boolean isTokenEmpty(String tokenAddress) {
+        return TextUtils.isEmpty(tokenAddress);
+    }
+
+    @Override
+    public boolean isValidAmount(String amount) {
+        if ((TextUtils.isEmpty(amount)) || Float.valueOf(amount) <= 0) {
+            dismissProgressDialog();
+            setAlertDialog(org.qtum.wallet.R.string.error, org.qtum.wallet.R.string.transaction_amount_cant_be_zero, "Ok", BaseFragment.PopUpType.error);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void showPinDialog(PinDialogFragment.PinCallBack callback) {
+        PinDialogFragment pinDialogFragment = new PinDialogFragment();
+        pinDialogFragment.setTouchIdFlag(getMainActivity().checkTouchIdEnable());
+        pinDialogFragment.addPinCallBack(callback);
+        pinDialogFragment.show(getFragmentManager(), pinDialogFragment.getClass().getCanonicalName());
+    }
+
 
 }

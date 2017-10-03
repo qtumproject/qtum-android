@@ -1,6 +1,7 @@
 package org.qtum.wallet.ui.fragment.send_fragment;
 
 import android.content.Context;
+
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.AddressFormatException;
 import org.bitcoinj.core.Coin;
@@ -15,17 +16,24 @@ import org.bitcoinj.script.Script;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.CallSmartContractRequest;
 import org.qtum.wallet.model.gson.FeePerKb;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
+import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
+import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.CurrentNetParams;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.spongycastle.util.encoders.Hex;
+
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -36,12 +44,12 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class SendFragmentInteractorImpl implements SendFragmentInteractor {
+public class SendInteractorImpl implements SendInteractor {
 
     private Context mContext;
     private FeePerKb mFeePerKb;
 
-    SendFragmentInteractorImpl(Context context) {
+    SendInteractorImpl(Context context) {
         mContext = context;
     }
 
@@ -49,6 +57,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
         mFeePerKb = feePerKb;
     }
 
+    @Override
     public FeePerKb getFeePerKb() {
         return mFeePerKb;
     }
@@ -68,12 +77,13 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                     public void onError(Throwable e) {
                         callBack.onError("Get Unspent Outputs " + e.getMessage());
                     }
+
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
 
-                        for(Iterator<UnspentOutput> iterator = unspentOutputs.iterator();iterator.hasNext();){
+                        for (Iterator<UnspentOutput> iterator = unspentOutputs.iterator(); iterator.hasNext(); ) {
                             UnspentOutput unspentOutput = iterator.next();
-                            if(!unspentOutput.isOutputAvailableToPay()/* || unspentOutput.getConfirmations()==0*/){
+                            if (!unspentOutput.isOutputAvailableToPay()/* || unspentOutput.getConfirmations()==0*/) {
                                 iterator.remove();
                             }
                         }
@@ -88,16 +98,16 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                 });
     }
 
-    public Observable<FeePerKb> getFeePerKbObservable(){
-        if(mFeePerKb!=null){
+    public Observable<FeePerKb> getFeePerKbObservable() {
+        if (mFeePerKb != null) {
             return Observable.just(mFeePerKb);
         } else {
             return QtumService.newInstance().getEstimateFeePerKb(2);
         }
     }
 
-    public void getUnspentOutputs(String address, final SendFragmentInteractorImpl.GetUnspentListCallBack callBack) {
-        if(address.equals("")){
+    public void getUnspentOutputs(String address, final SendInteractorImpl.GetUnspentListCallBack callBack) {
+        if (address.equals("")) {
             getUnspentOutputs(callBack);
             return;
         }
@@ -114,12 +124,13 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                     public void onError(Throwable e) {
                         callBack.onError(e.getMessage());
                     }
+
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
 
-                        for(Iterator<UnspentOutput> iterator = unspentOutputs.iterator(); iterator.hasNext();){
+                        for (Iterator<UnspentOutput> iterator = unspentOutputs.iterator(); iterator.hasNext(); ) {
                             UnspentOutput unspentOutput = iterator.next();
-                            if(!unspentOutput.isOutputAvailableToPay()){
+                            if (!unspentOutput.isOutputAvailableToPay()) {
                                 iterator.remove();
                             }
                         }
@@ -135,7 +146,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
     }
 
     @Override
-    public void createTx(final String from, final String address, final String amountString, final String feeString,final BigDecimal estimateFeePerKb,final CreateTxCallBack callBack) {
+    public void createTx(final String from, final String address, final String amountString, final String feeString, final BigDecimal estimateFeePerKb, final CreateTxCallBack callBack) {
         getUnspentOutputs(from, new GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
@@ -154,7 +165,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
 
                 BigDecimal amountFromOutput = new BigDecimal("0.0");
                 BigDecimal overFlow = new BigDecimal("0.0");
-                transaction.addOutput(Coin.valueOf((long)(amount.multiply(bitcoin).doubleValue())), addressToSend);
+                transaction.addOutput(Coin.valueOf((long) (amount.multiply(bitcoin).doubleValue())), addressToSend);
 
                 amount = amount.add(fee);
 
@@ -170,21 +181,21 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                 }
                 BigDecimal delivery = overFlow.subtract(amount);
                 if (delivery.doubleValue() != 0.0) {
-                    transaction.addOutput(Coin.valueOf((long)(delivery.multiply(bitcoin).doubleValue())), myKey.toAddress(CurrentNetParams.getNetParams()));
+                    transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), myKey.toAddress(CurrentNetParams.getNetParams()));
                 }
 
                 for (UnspentOutput unspentOutput : unspentOutputs) {
-                    if(unspentOutput.getAmount().doubleValue() != 0.0)
-                    for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList(100)) {
-                        if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
-                            Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
-                            TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
-                            Script script = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
-                            transaction.addSignedInput(outPoint, script, deterministicKey, Transaction.SigHash.ALL, true);
-                            amountFromOutput = amountFromOutput.add(unspentOutput.getAmount());
-                            break;
+                    if (unspentOutput.getAmount().doubleValue() != 0.0)
+                        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList(100)) {
+                            if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
+                                Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
+                                TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
+                                Script script = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
+                                transaction.addSignedInput(outPoint, script, deterministicKey, Transaction.SigHash.ALL, true);
+                                amountFromOutput = amountFromOutput.add(unspentOutput.getAmount());
+                                break;
+                            }
                         }
-                    }
                     if (amountFromOutput.doubleValue() >= amount.doubleValue()) {
                         break;
                     }
@@ -196,9 +207,9 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
 
                 byte[] bytes = transaction.unsafeBitcoinSerialize();
 
-                int txSizeInkB = (int) Math.ceil(bytes.length/1024.);
+                int txSizeInkB = (int) Math.ceil(bytes.length / 1024.);
                 BigDecimal minimumFee = estimateFeePerKb.multiply(new BigDecimal(txSizeInkB));
-                if(minimumFee.doubleValue() > fee.doubleValue()){
+                if (minimumFee.doubleValue() > fee.doubleValue()) {
                     callBack.onError(mContext.getString(R.string.insufficient_fee_lease_use_minimum_of) + " " + minimumFee.toString() + " QTUM");
                     return;
                 }
@@ -221,38 +232,38 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<FeePerKb>() {
-                               @Override
-                               public void onCompleted() {
+                    @Override
+                    public void onCompleted() {
 
-                               }
+                    }
 
-                               @Override
-                               public void onError(Throwable e) {
+                    @Override
+                    public void onError(Throwable e) {
 
-                               }
+                    }
 
-                               @Override
-                               public void onNext(FeePerKb s) {
-                                   if(mFeePerKb==null){
-                                       setFeePerKb(s);
-                                   }
-                                   createTx(from, address, amount, fee,s.getFeePerKb(), new CreateTxCallBack() {
-                                       @Override
-                                       public void onSuccess(String txHex) {
-                                           sendTx(txHex, callBack);
-                                       }
+                    @Override
+                    public void onNext(FeePerKb s) {
+                        if (mFeePerKb == null) {
+                            setFeePerKb(s);
+                        }
+                        createTx(from, address, amount, fee, s.getFeePerKb(), new CreateTxCallBack() {
+                            @Override
+                            public void onSuccess(String txHex) {
+                                sendTx(txHex, callBack);
+                            }
 
-                                       @Override
-                                       public void onError(String error) {
-                                           callBack.onError(error);
-                                       }
-                                   });
-                               }
-                           });
+                            @Override
+                            public void onError(String error) {
+                                callBack.onError(error);
+                            }
+                        });
+                    }
+                });
     }
 
     @Override
-    public void sendTx(String txHex, final SendTxCallBack callBack){
+    public void sendTx(String txHex, final SendTxCallBack callBack) {
         QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(txHex, 1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -276,6 +287,7 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
 
     public interface GetUnspentListCallBack {
         void onSuccess(List<UnspentOutput> unspentOutputs);
+
         void onError(String error);
     }
 
@@ -305,5 +317,58 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
     @Override
     public List<Token> getTokenList() {
         return (new TinyDB(mContext).getTokenList());
+    }
+
+    @Override
+    public String validateTokenExistance(String tokenAddress) {
+        TinyDB tdb = new TinyDB(mContext);
+        List<Token> tokenList = tdb.getTokenList();
+        for (Token token : tokenList) {
+            if (tokenAddress.equals(token.getContractAddress())) {
+                return token.getContractName();
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public void handleFeePerKbValue(FeePerKb feePerKb) {
+        if (getFeePerKb() == null) {
+            setFeePerKb(feePerKb);
+        }
+    }
+
+    @Override
+    public String getValidatedFee(Double fee) {
+        String pattern = "##0.00000000";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern);
+        return decimalFormat.format(fee);
+    }
+
+    @Override
+    public String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, String fee) {
+        ContractBuilder contractBuilder = new ContractBuilder();
+        Script script = contractBuilder.createMethodScript(abiParams, gasLimit, contractAddress);
+        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, getFeePerKb().getFeePerKb(), fee, mContext);
+    }
+
+    @Override
+    public Observable<String> createAbiMethodParamsObservable(String address, String resultAmount, String transfer) {
+        ContractBuilder contractBuilder = new ContractBuilder();
+        List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
+        ContractMethodParameter contractMethodParameterAddress = new ContractMethodParameter("_to", "address", address);
+
+        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", resultAmount);
+        contractMethodParameterList.add(contractMethodParameterAddress);
+        contractMethodParameterList.add(contractMethodParameterAmount);
+        return contractBuilder.createAbiMethodParams("transfer", contractMethodParameterList);
+    }
+
+    @Override
+    public Observable<CallSmartContractResponse> callSmartContractObservable(Token token, String s) {
+        String hash = s.substring(0, s.length() - 64);
+        hash = hash.concat("0000000000000000000000000000000000000000000000000000000000000000");
+        return QtumService.newInstance().callSmartContract(token.getContractAddress(), new CallSmartContractRequest(new String[]{hash}));
     }
 }

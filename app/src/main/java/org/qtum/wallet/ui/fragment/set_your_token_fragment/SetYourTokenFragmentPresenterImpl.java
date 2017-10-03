@@ -33,11 +33,11 @@ public class SetYourTokenFragmentPresenterImpl extends BaseFragmentPresenterImpl
     }
 
     public void getConstructorByUiid(String uiid) {
-       contractMethod = FileStorageManager.getInstance().getContractConstructor(mContext,uiid);
-       getView().onContractConstructorPrepared(contractMethod.inputParams);
+        contractMethod = FileStorageManager.getInstance().getContractConstructor(mContext, uiid);
+        getView().onContractConstructorPrepared(contractMethod.inputParams);
     }
 
-    public void confirm(List<ContractMethodParameter> list, String uiid, String name){
+    public void confirm(List<ContractMethodParameter> list, String uiid, String name) {
         BaseFragment fragment = ContractConfirmFragment.newInstance(getView().getContext(), list, uiid, name);
 
         getView().openFragment(fragment);

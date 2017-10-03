@@ -5,11 +5,11 @@ import android.content.Context;
 
 import org.qtum.wallet.datastorage.KeyStorage;
 
-class ReceiveFragmentInteractorImpl implements ReceiveFragmentInteractor{
+class ReceiveFragmentInteractorImpl implements ReceiveFragmentInteractor {
 
     private Context mContext;
 
-    ReceiveFragmentInteractorImpl(Context context){
+    ReceiveFragmentInteractorImpl(Context context) {
         mContext = context;
     }
 

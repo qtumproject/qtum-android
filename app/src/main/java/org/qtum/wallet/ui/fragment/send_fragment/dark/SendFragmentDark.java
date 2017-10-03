@@ -1,12 +1,7 @@
 package org.qtum.wallet.ui.fragment.send_fragment.dark;
 
-import android.view.View;
-
-import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.utils.FontManager;
-
-import butterknife.OnClick;
 
 /**
  * Created by kirillvolkov on 06.07.17.

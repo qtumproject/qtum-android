@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -67,32 +68,46 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void dismissProgressDialog() {
-        if(mProcessingDialog !=null){
+        if (mProcessingDialog != null) {
             mProcessingDialog.dismiss();
         }
     }
 
-    public void onUserResume(){
+    public void onUserResume() {
 
     }
 
-    protected void showToast(String text){
+    protected void showToast(String text) {
         Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
 
-    public enum PopUpType{
+    public enum PopUpType {
         error, confirm
     }
 
     @Override
     public void setAlertDialog(String title, String buttonText, PopUpType type) {
-        setAlertDialog(title,"",buttonText,type);
+        setAlertDialog(title, "", buttonText, type);
+    }
+
+    @Override
+    public void setAlertDialog(@StringRes int titleResId, String buttonText, PopUpType type) {
+        setAlertDialog(getString(titleResId), "", buttonText, type);
     }
 
     @Override
     public void setAlertDialog(String title, String message, String buttonText, PopUpType popUpType) {
-        setAlertDialog(title,message,buttonText,popUpType,null);
+        setAlertDialog(title, message, buttonText, popUpType, null);
+    }
 
+    @Override
+    public void setAlertDialog(@StringRes int titleResId, String message, String buttonText, PopUpType type) {
+        setAlertDialog(getString(titleResId), message, buttonText, type, null);
+    }
+
+    @Override
+    public void setAlertDialog(@StringRes int titleResId, @StringRes int messageResId, String buttonText, PopUpType type) {
+        setAlertDialog(getString(titleResId), getString(messageResId), buttonText, type, null);
     }
 
     @Override
@@ -100,7 +115,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         try {
             dismissProgressDialog();
             dismissAlertDialog();
-            View view = LayoutInflater.from(getContext()).inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? org.qtum.wallet.R.layout.dialog_popup_fragment : org.qtum.wallet.R.layout.dialog_popup_fragment_light, null);
+            View view = LayoutInflater.from(getContext()).inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK) ? org.qtum.wallet.R.layout.dialog_popup_fragment : org.qtum.wallet.R.layout.dialog_popup_fragment_light, null);
 
             FontTextView tvTitle = ((FontTextView) view.findViewById(org.qtum.wallet.R.id.tv_pop_up_title));
             tvTitle.setText(title);
@@ -122,7 +137,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
                 }
             });
 
-            if(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)) {
+            if (ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)) {
                 switch (type.name()) {
                     case "error":
                         icon.setImageResource(org.qtum.wallet.R.drawable.ic_error);
@@ -150,13 +165,13 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
                     .setView(view)
                     .create();
 
-            if(mAlertDialog.getWindow() != null) {
+            if (mAlertDialog.getWindow() != null) {
                 mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             }
 
             mAlertDialog.setCanceledOnTouchOutside(false);
             mAlertDialog.show();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -166,7 +181,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         try {
             dismissProgressDialog();
             dismissAlertDialog();
-            View view = LayoutInflater.from(getContext()).inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? org.qtum.wallet.R.layout.dialog_popup_fragment : org.qtum.wallet.R.layout.dialog_popup_fragment_light, null);
+            View view = LayoutInflater.from(getContext()).inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK) ? org.qtum.wallet.R.layout.dialog_popup_fragment : org.qtum.wallet.R.layout.dialog_popup_fragment_light, null);
 
             FontTextView tvTitle = ((FontTextView) view.findViewById(org.qtum.wallet.R.id.tv_pop_up_title));
             tvTitle.setText(title);
@@ -200,7 +215,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
                 }
             });
 
-            if(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)) {
+            if (ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)) {
                 switch (type.name()) {
                     case "error":
                         icon.setImageResource(org.qtum.wallet.R.drawable.ic_error);
@@ -228,13 +243,13 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
                     .setView(view)
                     .create();
 
-            if(mAlertDialog.getWindow() != null) {
+            if (mAlertDialog.getWindow() != null) {
                 mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             }
 
             mAlertDialog.setCanceledOnTouchOutside(false);
             mAlertDialog.show();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -257,7 +272,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void dismissAlertDialog() {
-        if(mAlertDialog!=null) {
+        if (mAlertDialog != null) {
             mAlertDialog.cancel();
         }
     }
@@ -316,10 +331,10 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void showSoftInput() {
-        ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
-    public void setFocusTextInput(View textInputEditText, View textInputLayout){
+    public void setFocusTextInput(View textInputEditText, View textInputLayout) {
         textInputEditText.setFocusableInTouchMode(true);
         textInputEditText.requestFocus();
         textInputLayout.setFocusableInTouchMode(true);
@@ -338,7 +353,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
-        getActivity().startActivityForResult(intent,requestCode);
+        getActivity().startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -362,11 +377,11 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
-    public void dismiss(){
-        if(!getMainActivity().isFinishing()) {
+    public void dismiss() {
+        if (!getMainActivity().isFinishing()) {
             try {
                 getFragmentManager().beginTransaction().remove(this).commit();
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }
@@ -409,7 +424,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
-    public void openFragmentWithBackStack(Fragment fragment, String tag){
+    public void openFragmentWithBackStack(Fragment fragment, String tag) {
         hideKeyBoard();
         getFragmentManager()
                 .beginTransaction()
@@ -432,7 +447,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public MainActivity getMainActivity() {
-        return (MainActivity)getActivity();
+        return (MainActivity) getActivity();
     }
 
     protected void bindView(View view) {
@@ -453,8 +468,9 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         return this;
     }
 
-    public interface AlertDialogCallBack{
+    public interface AlertDialogCallBack {
         void onButtonClick();
+
         void onButton2Click();
     }
 }
