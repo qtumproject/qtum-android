@@ -45,6 +45,7 @@ import org.qtum.wallet.utils.ThemeUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Timer;
 
 import butterknife.BindView;
 
@@ -304,7 +305,6 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     private void initBottomNavViewWithFont(int fontId){
@@ -333,9 +333,11 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(mActivityResultListener!=null){
+            getPresenter().setmCheckAuthenticationFlag(false);
             mActivityResultListener.onActivityResult(requestCode,resultCode,data);
         }
         super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     @Override

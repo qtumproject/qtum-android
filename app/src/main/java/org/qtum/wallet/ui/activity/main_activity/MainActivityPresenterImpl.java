@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
+import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
@@ -68,7 +69,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
         mNetworkReceiver = new NetworkStateReceiver(getView().getNetworkConnectedFlag());
         mContext.registerReceiver(mNetworkReceiver,
-                    new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         mLanguageChangeListener = new LanguageChangeListener() {
             @Override
@@ -84,12 +85,12 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     @Override
     public void onStop(Context context) {
         super.onStop(context);
-        if(mAuthenticationFlag && !mCheckAuthenticationShowFlag){
+        if (mAuthenticationFlag && !mCheckAuthenticationShowFlag) {
             mCheckAuthenticationFlag = true;
         }
     }
 
-    public void resetAuthFlags(){
+    public void resetAuthFlags() {
         mCheckAuthenticationFlag = true;
         mCheckAuthenticationShowFlag = false;
     }
@@ -103,12 +104,16 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     @Override
     public void onPostResume(Context context) {
         super.onPostResume(context);
-        if(mAuthenticationFlag && mCheckAuthenticationFlag && !mCheckAuthenticationShowFlag){
+        if (mAuthenticationFlag && mCheckAuthenticationFlag && !mCheckAuthenticationShowFlag) {
             BaseFragment pinFragment = PinFragment.newInstance(PinFragment.CHECK_AUTHENTICATION, getView().getContext());
             getView().openFragment(pinFragment);
             mCheckAuthenticationFlag = false;
             mCheckAuthenticationShowFlag = true;
         }
+    }
+
+    public void setmCheckAuthenticationFlag(boolean check){
+        this.mCheckAuthenticationFlag = check;
     }
 
     public boolean isCheckAuthenticationShowFlag() {
@@ -134,22 +139,22 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         mIntent = new Intent(mContext, UpdateService.class);
         if (!isMyServiceRunning(UpdateService.class)) {
             mContext.startService(mIntent);
-            if(mUpdateService!=null){
+            if (mUpdateService != null) {
                 mUpdateService.startMonitoring();
             } else {
                 mContext.bindService(mIntent, mServiceConnection, 0);
             }
         } else {
-            if(mUpdateService!=null){
+            if (mUpdateService != null) {
                 mUpdateService.startMonitoring();
-            }else {
+            } else {
                 mContext.bindService(mIntent, mServiceConnection, 0);
             }
         }
     }
 
-    public void stopUpdateService(){
-        if(mUpdateService != null) {
+    public void stopUpdateService() {
+        if (mUpdateService != null) {
             mUpdateService.stopMonitoring();
             getView().getActivity().stopService(mIntent);
         }
@@ -158,13 +163,13 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     @Override
     public void subscribeOnServiceConnectionChangeEvent(MainActivity.OnServiceConnectionChangeListener listener) {
         mServiceConnectionChangeListeners.add(listener);
-        listener.onServiceConnectionChange(mUpdateService!=null);
+        listener.onServiceConnectionChange(mUpdateService != null);
     }
 
     @Override
     public void onLogout() {
         mAuthenticationFlag = false;
-        if(mUpdateService!=null){
+        if (mUpdateService != null) {
             mUpdateService.stopMonitoring();
         }
     }
@@ -175,7 +180,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
             mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
             mUpdateService.clearNotification();
             mUpdateService.startMonitoring();
-            for(MainActivity.OnServiceConnectionChangeListener listener : mServiceConnectionChangeListeners) {
+            for (MainActivity.OnServiceConnectionChangeListener listener : mServiceConnectionChangeListeners) {
                 listener.onServiceConnectionChange(true);
             }
         }
@@ -186,7 +191,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         }
     };
 
-    public UpdateService getUpdateService(){
+    public UpdateService getUpdateService() {
         return mUpdateService;
     }
 
@@ -210,15 +215,15 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     private void openStartFragment() {
         Fragment fragment;
         if (getInteractor().getKeyGeneratedInstance(mContext)) {
-            if(mSendFromIntent){
+            if (mSendFromIntent) {
                 fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND, getView().getContext());
                 getView().openRootFragment(fragment);
-            } else if(!mAuthenticationFlag){
-                fragment = StartPageFragment.newInstance(true,getView().getContext());
+            } else if (!mAuthenticationFlag) {
+                fragment = StartPageFragment.newInstance(true, getView().getContext());
                 getView().openRootFragment(fragment);
             }
         } else {
-            fragment = StartPageFragment.newInstance(false,getView().getContext());
+            fragment = StartPageFragment.newInstance(false, getView().getContext());
             getView().openRootFragment(fragment);
         }
     }
@@ -270,7 +275,7 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
 
     @Override
     public void processIntent(Intent intent) {
-        switch (intent.getAction()){
+        switch (intent.getAction()) {
             case QtumIntent.SEND_FROM_SDK:
                 mSendFromIntent = true;
                 mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
@@ -300,8 +305,8 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
                 mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
                 mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
                 mTokenAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_TOKEN);
-                if(mAuthenticationFlag){
-                    mRootFragment = SendFragment.newInstance(false,mAddressForSendAction,mAmountForSendAction, mTokenAddressForSendAction, getView().getContext());
+                if (mAuthenticationFlag) {
+                    mRootFragment = SendFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction, mTokenAddressForSendAction, getView().getContext());
                     getView().openRootFragment(mRootFragment);
                     getView().setIconChecked(3);
                 } else {
@@ -313,10 +318,10 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
             case NfcAdapter.ACTION_NDEF_DISCOVERED:
                 mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
                 mAmountForSendAction = "0.253";
-                if(mAuthenticationFlag) {
-                    mRootFragment = SendFragment.newInstance(false,mAddressForSendAction,mAmountForSendAction, mTokenAddressForSendAction, getView().getContext());
+                if (mAuthenticationFlag) {
+                    mRootFragment = SendFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction, mTokenAddressForSendAction, getView().getContext());
                     getView().setIconChecked(3);
-                } else{
+                } else {
                     mRootFragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_AND_SEND, getView().getContext());
 
                 }
@@ -340,8 +345,8 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
         clearservice();
     }
 
-    public void clearservice(){
-        if(mUpdateService != null) {
+    public void clearservice() {
+        if (mUpdateService != null) {
             mContext.unbindService(mServiceConnection);
             mContext.unregisterReceiver(mNetworkReceiver);
         }

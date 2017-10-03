@@ -9,7 +9,7 @@ import org.qtum.wallet.utils.FontManager;
 
 import io.fabric.sdk.android.Fabric;
 
-public class QtumApplication extends MultiDexApplication {
+public class QtumApplication extends MultiDexApplication{
 
     public static QtumApplication instance;
 
