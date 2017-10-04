@@ -147,7 +147,7 @@
                     android:layout_gravity="center"
                     android:id="@+id/tv_gas_price"
                     app:typefaceAsset="@string/simplonMonoRegular"
-                    android:textColor="@color/colorPrimary"/>
+                    android:textColor="@color/colorAccent"/>
             </LinearLayout>
 
             <LinearLayout
@@ -169,7 +169,7 @@
                     android:layout_gravity="center"
                     android:id="@+id/tv_gas_limit"
                     app:typefaceAsset="@string/simplonMonoRegular"
-                    android:textColor="@color/colorPrimary"/>
+                    android:textColor="@color/colorAccent"/>
             </LinearLayout>
 
         </LinearLayout>

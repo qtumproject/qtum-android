@@ -3,6 +3,7 @@ package org.qtum.wallet.dataprovider.rest_api;
 import org.qtum.wallet.model.gson.BlockChainInfo;
 
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
+import org.qtum.wallet.model.gson.DGPInfo;
 import org.qtum.wallet.model.gson.FeePerKb;
 import org.qtum.wallet.model.gson.QstoreContractType;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
@@ -96,5 +97,8 @@ interface QtumRestService {
 
     @GET("/contracts/types")
     Observable<List<QstoreContractType>> getContractTypes();
+
+    @GET("/blockchain/dgpinfo")
+    Observable<DGPInfo> getDGPInfo();
 
 }

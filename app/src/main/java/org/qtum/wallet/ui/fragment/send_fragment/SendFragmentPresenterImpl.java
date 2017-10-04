@@ -13,6 +13,7 @@ import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.N
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
+import org.qtum.wallet.datastorage.QtumNetworkState;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.Currency;
 import org.qtum.wallet.model.CurrencyToken;
@@ -55,6 +56,12 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     private List<Token> mTokenList;
     private double minFee;
     private double maxFee = 0.2;
+
+    private int minGasPrice;
+    private int maxGasPrice = 120;
+
+    private int minGasLimit = 100000;
+    private int maxGasLimit = 5000000;
 
     private static final int REQUEST_CAMERA = 3;
     private boolean OPEN_QR_CODE_FRAGMENT_FLAG = false;
@@ -188,29 +195,11 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
             getView().hideCurrencyField();
         }
 
-        getInteractor().getFeePerKbObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<FeePerKb>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(FeePerKb feePerKb) {
-                        if (getInteractor().getFeePerKb() == null) {
-                            getInteractor().setFeePerKb(feePerKb);
-                        }
-                        minFee = feePerKb.getFeePerKb().doubleValue();
-                        getView().updateFee(minFee, maxFee);
-                    }
-                });
+        minFee = QtumNetworkState.newInstance().getFeePerKb().getFeePerKb().doubleValue();
+        getView().updateFee(minFee,maxFee);
+        minGasPrice = QtumNetworkState.newInstance().getDGPInfo().getMingasprice();
+        getView().updateGasPrice(minGasPrice, maxGasPrice);
+        getView().updateGasLimit(minGasLimit, maxGasLimit);
     }
 
     private SendFragmentInteractorImpl getInteractor() {
@@ -264,7 +253,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
     String availableAddress = null;
 
     @Override
-    public void send(final String from, final String address, final String amount, final Currency currency, String feeString) {
+    public void send(final String from, final String address, final String amount, final Currency currency, String feeString, final int gasLimit, final int gasPrice) {
         if (mNetworkConnectedFlag) {
             final double feeDouble = Double.valueOf(feeString);
             if (feeDouble < minFee || feeDouble > maxFee) {
@@ -385,7 +374,11 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                                                                     getView().setAlertDialog(mContext.getString(org.qtum.wallet.R.string.error), callSmartContractResponse.getItems().get(0).getExcepted(), "Ok", BaseFragment.PopUpType.error);
                                                                     return;
                                                                 }
-                                                                createTx(s, token.getContractAddress(), availableAddress, /*TODO callSmartContractResponse.getItems().get(0).getGasUsed()*/ 2000000, fee);
+                                                                if(gasLimit<callSmartContractResponse.getItems().get(0).getGasUsed()){
+                                                                    getView().setAlertDialog(mContext.getString(org.qtum.wallet.R.string.error), callSmartContractResponse.getItems().get(0).getExcepted(), "Ok", BaseFragment.PopUpType.error);
+                                                                    return;
+                                                                }
+                                                                createTx(s, token.getContractAddress(), availableAddress, gasLimit, gasPrice, fee);
                                                             }
                                                         });
                                             }
@@ -415,14 +408,14 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
         return decimalFormat.format(fee);
     }
 
-    private void createTx(final String abiParams, final String contractAddress, String senderAddress, final int gasLimit, final String fee) {
+    private void createTx(final String abiParams, final String contractAddress, String senderAddress, final int gasLimit, final int gasPrice, final String fee) {
         getInteractor().getUnspentOutputs(senderAddress, new SendFragmentInteractorImpl.GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
 
                 ContractBuilder contractBuilder = new ContractBuilder();
-                Script script = contractBuilder.createMethodScript(abiParams, gasLimit, contractAddress);
-                getInteractor().sendTx(contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, getInteractor().getFeePerKb().getFeePerKb(), fee, mContext), new SendFragmentInteractorImpl.SendTxCallBack() {
+                Script script = contractBuilder.createMethodScript(abiParams, gasLimit, gasPrice,contractAddress);
+                getInteractor().sendTx(contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice,getInteractor().getFeePerKb().getFeePerKb(), fee, mContext), new SendFragmentInteractorImpl.SendTxCallBack() {
                     @Override
                     public void onSuccess() {
                         getView().setAlertDialog(getView().getContext().getString(org.qtum.wallet.R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);

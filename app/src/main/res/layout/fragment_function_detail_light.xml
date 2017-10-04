@@ -144,7 +144,7 @@
                     android:layout_gravity="center"
                     android:id="@+id/tv_gas_price"
                     app:typefaceAsset="@string/proximaNovaRegular"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/light_blue"/>
             </LinearLayout>
 
             <LinearLayout
@@ -166,7 +166,7 @@
                     android:layout_gravity="center"
                     android:id="@+id/tv_gas_limit"
                     app:typefaceAsset="@string/proximaNovaRegular"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/light_blue"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -251,7 +251,7 @@
 
         <org.qtum.wallet.utils.FontButton
             android:id="@+id/bt_edit_close"
-            android:text="@string/cancel"
+            android:text="@string/edit"
             android:gravity="center"
             android:background="@drawable/btn_gray_corner_background_light"
             android:padding="16dp"

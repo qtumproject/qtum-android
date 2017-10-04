@@ -51,11 +51,31 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
     @BindView(R.id.til_fee)
     protected TextInputLayout tilFee;
     @BindView(R.id.seekBar)
-    SeekBar mSeekBar;
+    SeekBar mSeekBarFee;
+    @BindView(R.id.seekBar_gas_limit)
+    SeekBar mSeekBarGasLimit;
+    @BindView(R.id.seekBar_gas_price)
+    SeekBar mSeekBarGasPrice;
     @BindView(R.id.tv_max_fee)
     FontTextView mFontTextViewMaxFee;
     @BindView(R.id.tv_min_fee)
     FontTextView mFontTextViewMinFee;
+    @BindView(R.id.tv_max_gas_price)
+    FontTextView mFontTextViewMaxGasPrice;
+    @BindView(R.id.tv_min_gas_price)
+    FontTextView mFontTextViewMinGasPrice;
+
+    @BindView(R.id.tv_max_gas_limit)
+    FontTextView mFontTextViewMaxGasLimit;
+    @BindView(R.id.tv_min_gas_limit)
+    FontTextView mFontTextViewMinGasLimit;
+
+    @BindView(R.id.tv_gas_price)
+    FontTextView mFontTextViewGasPrice;
+
+    @BindView(R.id.tv_gas_limit)
+    FontTextView mFontTextViewGasLimit;
+
     @BindView(R.id.bt_edit_close)
     FontButton mFontButtonEditClose;
     @BindView(R.id.seek_bar_container)
@@ -63,7 +83,16 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
 
     int mMinFee;
     int mMaxFee;
-    int step = 100;
+    int stepFee = 100;
+
+    int mMinGasPrice;
+    int mMaxGasPrice;
+    int stepGasPrice = 5;
+
+    int mMinGasLimit;
+    int mMaxGasLimit;
+    int stepGasLimit = 100000;
+
     private int appLogoHeight = 0;
     private ResizeHeightAnimation mAnimForward;
     private ResizeHeightAnimation mAnimBackward;
@@ -77,7 +106,8 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
                 getActivity().onBackPressed();
                 break;
             case org.qtum.wallet.R.id.call:
-                getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_ADDRESS), mTextInputEditTextFee.getText().toString(),getArguments().getString(METHOD_NAME));
+                getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_ADDRESS), mTextInputEditTextFee.getText().toString(),
+                        Integer.valueOf(mFontTextViewGasLimit.getText().toString()), Integer.valueOf(mFontTextViewGasPrice.getText().toString()),getArguments().getString(METHOD_NAME));
                 break;
             case R.id.bt_edit_close:
                 if(showing) {
@@ -91,12 +121,6 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
                 }
                 break;
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
     }
 
     private void initializeAnim(){
@@ -138,11 +162,47 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
     public void initializeViews() {
         super.initializeViews();
         mParameterList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mSeekBarFee.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                double value = (mMinFee + (progress * step)) / 100000000.;
+                double value = (mMinFee + (progress * stepFee)) / 100000000.;
                 mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        mSeekBarGasPrice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int value = (mMinGasPrice + (progress * stepGasPrice));
+                mFontTextViewGasPrice.setText(String.valueOf(value));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        mSeekBarGasLimit.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int value = (mMinGasLimit + (progress * stepGasLimit));
+                mFontTextViewGasLimit.setText(String.valueOf(value));
             }
 
             @Override
@@ -164,12 +224,14 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
                     appLogoHeight = (appLogoHeight == 0) ?  mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
                     initializeAnim();
                     mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
+                    mLinearLayoutSeekBarContainer.requestLayout();
                 }
             });
         } else {
             appLogoHeight = (appLogoHeight == 0) ?  mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
             initializeAnim();
             mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
+            mLinearLayoutSeekBarContainer.requestLayout();
         }
     }
 
@@ -179,8 +241,27 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         mFontTextViewMinFee.setText(new DecimalFormat("#.########").format(minFee));
         mMinFee = Double.valueOf(minFee * 100000000).intValue();
         mMaxFee = Double.valueOf(maxFee * 100000000).intValue();
-        mSeekBar.setMax((mMaxFee - mMinFee) / step);
-        //mSeekBar.setProgress((int)(INITIAL_FEE*100000000));
+        mSeekBarFee.setMax((mMaxFee - mMinFee) / stepFee);
+        //mSeekBarFee.setProgress((int)(INITIAL_FEE*100000000));
+    }
+
+    @Override
+    public void updateGasPrice(int minGasPrice, int maxGasPrice) {
+        mFontTextViewMaxGasPrice.setText(String.valueOf(maxGasPrice));
+        mFontTextViewMinGasPrice.setText(String.valueOf(minGasPrice));
+        mMinGasPrice = minGasPrice;
+        mMaxGasPrice = maxGasPrice;
+        mSeekBarGasPrice.setMax((mMaxGasPrice - mMinGasPrice) / stepGasPrice);
+    }
+
+    @Override
+    public void updateGasLimit(int minGasLimit, int maxGasLimit) {
+        mFontTextViewMaxGasLimit.setText(String.valueOf(maxGasLimit));
+        mFontTextViewMinGasLimit.setText(String.valueOf(minGasLimit));
+        mMinGasLimit = minGasLimit;
+        mMaxGasLimit = maxGasLimit;
+        mSeekBarGasLimit.setMax((mMaxGasLimit - mMinGasLimit) / stepGasLimit);
+        mSeekBarGasLimit.setProgress(1);
     }
 
     @Override

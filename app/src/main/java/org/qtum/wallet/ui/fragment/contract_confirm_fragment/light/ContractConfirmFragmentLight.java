@@ -30,7 +30,7 @@ public class ContractConfirmFragmentLight extends ContractConfirmFragment {
         super.initializeViews();
         presenter.setContractMethodParameterList((List<ContractMethodParameter>) getArguments().getSerializable(paramsKey));
         confirmList.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ContractConfirmAdapterLight(presenter.getContractMethodParameterList(),"4jhbr4hjb4l23342i4bn2kl4b2352l342k35bv235rl23","0.100", this);
+        adapter = new ContractConfirmAdapterLight(presenter.getContractMethodParameterList(),"4jhbr4hjb4l23342i4bn2kl4b2352l342k35bv235rl23", this);
         confirmList.setAdapter(adapter);
     }
 
