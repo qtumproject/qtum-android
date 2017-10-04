@@ -4,6 +4,7 @@ package org.qtum.wallet.dataprovider.rest_api;
 import org.qtum.wallet.model.gson.BlockChainInfo;
 
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
+import org.qtum.wallet.model.gson.DGPInfo;
 import org.qtum.wallet.model.gson.FeePerKb;
 import org.qtum.wallet.model.gson.QstoreContractType;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
@@ -138,6 +139,10 @@ public class QtumService {
 
     public Observable<ContractPurchase> isPaidByRequestId(String contractId, String requestId){
         return mServiceApi.isPaidByRequestId(contractId, requestId);
+    }
+
+    public Observable<DGPInfo> getDGPInfo(){
+        return mServiceApi.getDGPInfo();
     }
 
     public Observable<QstoreSourceCodeResponse> getSourceCode(String contractId, String requestId, String accessToken){

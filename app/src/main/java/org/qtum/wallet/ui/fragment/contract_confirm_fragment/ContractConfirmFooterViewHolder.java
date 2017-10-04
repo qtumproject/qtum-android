@@ -14,16 +14,12 @@ public class ContractConfirmFooterViewHolder extends RecyclerView.ViewHolder {
     @BindView(org.qtum.wallet.R.id.miner_value)
     FontTextView minerValue;
 
-    @BindView(org.qtum.wallet.R.id.free_value)
-    FontTextView freeValue;
-
     public ContractConfirmFooterViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(String address, String free) {
+    public void bind(String address) {
         minerValue.setText(address);
-        freeValue.setText(String.format("%s QTUM",free));
     }
 }

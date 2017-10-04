@@ -343,13 +343,18 @@ public class ContractBuilder {
         return new Script(program);
     }
 
-    public Script createMethodScript(String abiParams, int gasLimitInt,String _contractAddress) throws RuntimeException {
+    public Script createMethodScript(String abiParams, int gasLimitInt, int gasPriceInt,String _contractAddress) throws RuntimeException {
 
         byte[] version = Hex.decode("04000000");
-        byte[] array = org.spongycastle.util.Arrays.reverse((new BigInteger(String.valueOf(gasLimitInt))).toByteArray());
+
+        byte[] arrayGasLimit = org.spongycastle.util.Arrays.reverse((new BigInteger(String.valueOf(gasLimitInt))).toByteArray());
         byte[] gasLimit = new byte[]{0,0,0,0,0,0,0,0};
-        System.arraycopy(array, 0, gasLimit, 0, array.length);
-        byte[] gasPrice = Hex.decode("0100000000000000");
+        System.arraycopy(arrayGasLimit, 0, gasLimit, 0, arrayGasLimit.length);
+
+        byte[] arrayGasPrice = org.spongycastle.util.Arrays.reverse((new BigInteger(String.valueOf(gasPriceInt))).toByteArray());
+        byte[] gasPrice = new byte[]{0,0,0,0,0,0,0,0};
+        System.arraycopy(arrayGasPrice, 0, gasPrice, 0, arrayGasPrice.length);
+
         byte[] data = Hex.decode(abiParams);
         byte[] contractAddress = Hex.decode(_contractAddress);
         byte[] program;
@@ -380,12 +385,12 @@ public class ContractBuilder {
         return new Script(program);
     }
 
-    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, BigDecimal feePerKb, String feeString, Context context) {
+    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice,BigDecimal feePerKb, String feeString, Context context) {
 
         Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
         transaction.addOutput(Coin.ZERO, script);
         BigDecimal fee = new BigDecimal(feeString);
-        BigDecimal gasFee = (new BigDecimal(gasLimit)).divide(new BigDecimal(100000000));
+        BigDecimal gasFee = (new BigDecimal(gasLimit)).multiply(new BigDecimal(gasPrice)).divide(new BigDecimal(100000000));
         UnspentOutput unspentOutput = null;
         for (UnspentOutput unspentOutput1 : unspentOutputs) {
             if (unspentOutput1.getAmount().doubleValue() > fee.doubleValue()) {

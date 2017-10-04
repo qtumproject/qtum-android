@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.datastorage.QtumNetworkState;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
@@ -42,6 +43,15 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
     private String mContractTemplateUiid;
 
+    private double minFee;
+    private double maxFee = 0.2;
+
+    private int minGasPrice;
+    private int maxGasPrice = 120;
+
+    private int minGasLimit = 100000;
+    private int maxGasLimit = 5000000;
+
 
     private List<ContractMethodParameter> mContractMethodParameterList;
 
@@ -49,6 +59,17 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 //        ContractBuilder contractBuilder = new ContractBuilder();
 //        contractBuilder.testContractParameters();
 //    }
+
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        minFee = QtumNetworkState.newInstance().getFeePerKb().getFeePerKb().doubleValue();
+        getView().updateFee(minFee,maxFee);
+        minGasPrice = QtumNetworkState.newInstance().getDGPInfo().getMingasprice();
+        getView().updateGasPrice(minGasPrice, maxGasPrice);
+        getView().updateGasLimit(minGasLimit, maxGasLimit);
+    }
 
     public void setContractMethodParameterList(List<ContractMethodParameter> contractMethodParameterList) {
         this.mContractMethodParameterList = contractMethodParameterList;
@@ -65,7 +86,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
 
-    void confirmContract(final String uiid) {
+    void confirmContract(final String uiid, final int gasLimit, final int gasPrice) {
         getView().setProgressDialog();
         mContractTemplateUiid = uiid;
         ContractBuilder contractBuilder = new ContractBuilder();
@@ -86,13 +107,13 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onNext(String s) {
-                        createTx(s);
+                        createTx(s,gasLimit,gasPrice);
                     }
                 });
     }
 
 
-    private void createTx(final String abiParams) {
+    private void createTx(final String abiParams, final int gasLimit, final int gasPrice) {
         QtumService.newInstance().getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -124,7 +145,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                         ContractBuilder contractBuilder = new ContractBuilder();
                         Script script = contractBuilder.createConstructScript(abiParams);
 //TODO
-                        String hash = contractBuilder.createTransactionHash(script,unspentOutputs,36731,new BigDecimal("0.00001"),"0.5",mContext);
+                        String hash = contractBuilder.createTransactionHash(script,unspentOutputs,gasLimit, gasPrice,QtumNetworkState.newInstance().getFeePerKb().getFeePerKb(),"0.5",mContext);
                         sendTx(hash, "Stub!");
                     }
                 });

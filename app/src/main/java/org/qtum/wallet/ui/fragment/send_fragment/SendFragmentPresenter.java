@@ -9,5 +9,5 @@ public interface SendFragmentPresenter {
     void onResponse(String publicAddress, double amount, String tokenAddress);
     void onResponseError();
     void onCurrencyClick();
-    void send(String from, String address, String amount, Currency currency, String fee);
+    void send(String from, String address, String amount, Currency currency, String fee, int gasLimit, int gasPrice);
 }

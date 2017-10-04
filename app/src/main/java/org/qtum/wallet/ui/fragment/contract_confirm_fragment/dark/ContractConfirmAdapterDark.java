@@ -17,8 +17,8 @@ import java.util.List;
  */
 
 public class ContractConfirmAdapterDark extends ContractConfirmAdapter {
-    public ContractConfirmAdapterDark(List<ContractMethodParameter> params, String mineAddress, String fee, OnValueClick clickListener) {
-        super(params, mineAddress, fee, clickListener);
+    public ContractConfirmAdapterDark(List<ContractMethodParameter> params, String mineAddress, OnValueClick clickListener) {
+        super(params, mineAddress, clickListener);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ContractConfirmAdapterDark extends ContractConfirmAdapter {
         if(holder instanceof ContractConfirmViewHolder) {
             ((ContractConfirmViewHolder) holder).bind(getItem(position));
         } else if(holder instanceof ContractConfirmFooterViewHolder) {
-            ((ContractConfirmFooterViewHolder)holder).bind(mineAddress, fee);
+            ((ContractConfirmFooterViewHolder)holder).bind(mineAddress);
         }
     }
 

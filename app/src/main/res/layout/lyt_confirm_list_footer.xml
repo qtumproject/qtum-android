@@ -35,34 +35,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <org.qtum.wallet.utils.FontTextView
-        android:id="@+id/free_title"
-        android:layout_marginTop="16dp"
-        android:text="@string/fee"
-        android:textColor="@color/colorPrimary"
-        android:textSize="12sp"
-        android:gravity="left"
-        android:maxLines="1"
-        android:textAllCaps="true"
-        android:ellipsize="end"
-        app:typefaceAsset="@string/simplonMonoRegular"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <org.qtum.wallet.utils.FontTextView
-        android:id="@+id/free_value"
-        android:textStyle="bold"
-        android:layout_marginTop="8dp"
-        android:text="0 QTUM"
-        android:gravity="left"
-        android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        app:typefaceAsset="@string/simplonMonoRegular"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-
 </LinearLayout>
