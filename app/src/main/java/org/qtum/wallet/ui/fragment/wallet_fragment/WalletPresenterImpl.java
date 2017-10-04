@@ -14,9 +14,9 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
     private final int ONE_PAGE_COUNT = 25;
 
-    public WalletPresenterImpl(WalletView walletView) {
+    public WalletPresenterImpl(WalletView walletView, WalletInteractor interactor) {
         mWalletView = walletView;
-        mWalletFragmentInteractor = new WalletInteractorImpl();
+        mWalletFragmentInteractor = interactor;
     }
 
 

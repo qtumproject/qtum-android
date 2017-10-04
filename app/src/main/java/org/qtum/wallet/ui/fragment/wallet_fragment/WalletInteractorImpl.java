@@ -17,15 +17,14 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;
 
-class WalletInteractorImpl implements WalletInteractor {
+public class WalletInteractorImpl implements WalletInteractor {
 
     private SubscriptionList mSubscriptionList = new SubscriptionList();
     static final int UPDATE_STATE = 0;
     static final int LOAD_STATE = 1;
     private final List<String> addresses = KeyStorage.getInstance().getAddresses();
 
-    WalletInteractorImpl() {
-
+    public WalletInteractorImpl() {
     }
 
     @Override

@@ -5,7 +5,7 @@ import org.qtum.wallet.model.gson.history.History;
 
 import java.util.List;
 
-interface WalletInteractor {
+public interface WalletInteractor {
     List<History> getHistoryList();
 
     void getHistoryList(int STATE, int limit, int offset, WalletInteractorImpl.GetHistoryListCallBack callBack);
