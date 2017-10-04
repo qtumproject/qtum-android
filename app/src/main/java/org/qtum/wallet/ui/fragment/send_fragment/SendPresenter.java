@@ -1,16 +1,25 @@
 package org.qtum.wallet.ui.fragment.send_fragment;
 
 import org.qtum.wallet.model.Currency;
-import org.qtum.wallet.ui.activity.main_activity.MainActivity;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 
-public interface SendPresenter {
+import java.math.BigDecimal;
+
+public interface SendPresenter extends BaseFragmentPresenter {
     void onResponse(String publicAddress, double amount, String tokenAddress);
 
     void onResponseError();
 
-    void send(String from, String address, String amount, Currency currency, String fee);
-
-    MainActivity.OnServiceConnectionChangeListener getServiceConnectionChangeListener();
+    void send();
 
     void updateNetworkSate(boolean networkConnectedFlag);
+
+    void searchAndSetUpCurrency(String currency);
+
+    void onCurrencyChoose(Currency currency);
+
+    void handleBalanceChanges(BigDecimal unconfirmedBalance, BigDecimal balance);
+
+    void onPinSuccess();
+
 }

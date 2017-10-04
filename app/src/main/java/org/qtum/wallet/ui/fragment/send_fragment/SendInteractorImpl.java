@@ -49,7 +49,7 @@ public class SendInteractorImpl implements SendInteractor {
     private Context mContext;
     private FeePerKb mFeePerKb;
 
-    SendInteractorImpl(Context context) {
+    public SendInteractorImpl(Context context) {
         mContext = context;
     }
 

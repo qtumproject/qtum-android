@@ -42,4 +42,6 @@ public interface SendInteractor {
     Observable<String> createAbiMethodParamsObservable(String address, String resultAmount, String transfer);
 
     Observable<CallSmartContractResponse> callSmartContractObservable(Token token, String s);
+
+
 }

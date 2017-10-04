@@ -25,7 +25,20 @@ public class Token extends Contract {
      * Default constructor for unit testing
      */
     public Token() {
+    }
 
+    /**
+     * Constructor for unit testing
+     */
+    public Token(boolean isSubscribe) {
+        super(isSubscribe);
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Token(boolean isSubscribe, String contractAddress) {
+        super(isSubscribe, contractAddress);
     }
 
     public String getSymbol() {

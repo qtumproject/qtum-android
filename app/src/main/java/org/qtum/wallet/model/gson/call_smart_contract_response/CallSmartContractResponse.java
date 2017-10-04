@@ -11,6 +11,20 @@ public class CallSmartContractResponse {
     @Expose
     private List<Item> items = null;
 
+    /**
+     * Constructor for unit testing
+     */
+    public CallSmartContractResponse() {
+
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public CallSmartContractResponse(List<Item> items) {
+        this.items = items;
+    }
+
     public List<Item> getItems() {
         return items;
     }

@@ -38,7 +38,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     protected abstract void createPresenter();
 
-    protected abstract BaseFragmentPresenterImpl getPresenter();
+    protected abstract BaseFragmentPresenter getPresenter();
 
     protected abstract int getLayout();
 

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.model.Currency;
+import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinDialogFragment;
 
@@ -38,8 +39,6 @@ public interface SendView extends BaseFragmentView {
 
     void setAdressAndAmount(String address, String anount);
 
-    UpdateService getUpdateService();
-
     void handleBalanceUpdating(String balanceString, BigDecimal unconfirmedBalance);
 
     void removePermissionResultListener();
@@ -48,8 +47,23 @@ public interface SendView extends BaseFragmentView {
 
     String getStringValue(@StringRes int resId);
 
-    boolean isValidAmount(String amount);
+    boolean isValidAmount();
 
-    void showPinDialog(PinDialogFragment.PinCallBack callback);
+    void showPinDialog();
 
+    String getAddressInput();
+
+    String getAmountInput();
+
+    String getFeeInput();
+
+    String getFromAddress();
+
+    Currency getCurrency();
+
+    SendInteractorImpl.SendTxCallBack getSendTransactionCallback();
+
+    boolean isValidAvailableAddress(String availableAddress);
+
+    TokenBalance getTokenBalance(String contractAddress);
 }

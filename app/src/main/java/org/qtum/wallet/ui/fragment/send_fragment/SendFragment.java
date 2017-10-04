@@ -26,7 +26,9 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
+import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
 import org.qtum.wallet.model.Currency;
+import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.currency_fragment.CurrencyFragment;
@@ -40,7 +42,6 @@ import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
 
 public abstract class SendFragment extends BaseFragment implements SendView {
 
@@ -107,8 +108,9 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     AlertDialogCallBack mAlertDialogCallBack;
     View.OnTouchListener mOnTouchListener;
     private NetworkStateReceiver mNetworkStateReceiver;
+    private UpdateService mUpdateService;
 
-    protected SendPresenterImpl sendBaseFragmentPresenter;
+    protected SendPresenter sendBaseFragmentPresenter;
     private boolean sendFrom = false;
 
     @Override
@@ -120,7 +122,22 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getMainActivity().setIconChecked(3);
-        getMainActivity().subscribeServiceConnectionChangeEvent(getPresenter().getServiceConnectionChangeListener());
+        getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
+            @Override
+            public void onServiceConnectionChange(boolean isConnecting) {
+                if (isConnecting) {
+                    mUpdateService = getUpdateService();
+                    mUpdateService.removeBalanceChangeListener();
+
+                    mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
+                        @Override
+                        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
+                            getPresenter().handleBalanceChanges(unconfirmedBalance, balance);
+                        }
+                    });
+                }
+            }
+        });
         getMainActivity().addPermissionResultListener(new MainActivity.PermissionsResultListener() {
             @Override
             public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -160,6 +177,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     public void onDestroyView() {
         super.onDestroyView();
         mNetworkStateReceiver.removeNetworkStateListener();
+        mUpdateService.removeBalanceChangeListener();
     }
 
     private void isQrCodeRecognition(boolean isQrCodeRecognition) {
@@ -207,11 +225,32 @@ public abstract class SendFragment extends BaseFragment implements SendView {
 
     @OnClick(R.id.bt_send)
     public void onSendClick() {
-        String address = mTextInputEditTextAddress.getText().toString();
-        String amount = mTextInputEditTextAmount.getText().toString();
-        String fee = mTextInputEditTextFee.getText().toString();
-        String from = getArguments().getString(ADDRESS_FROM, "");
-        getPresenter().send(from, address, amount, mCurrency, fee);
+        getPresenter().send();
+    }
+
+    @Override
+    public String getAddressInput() {
+        return mTextInputEditTextAddress.getText().toString();
+    }
+
+    @Override
+    public String getAmountInput() {
+        return mTextInputEditTextAmount.getText().toString();
+    }
+
+    @Override
+    public String getFeeInput() {
+        return mTextInputEditTextFee.getText().toString();
+    }
+
+    @Override
+    public String getFromAddress() {
+        return getArguments().getString(ADDRESS_FROM, "");
+    }
+
+    @Override
+    public Currency getCurrency() {
+        return mCurrency;
     }
 
     public static BaseFragment newInstance(boolean qrCodeRecognition, String address, String amount, String tokenAddress, Context context) {
@@ -242,7 +281,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     }
 
     @Override
-    protected SendPresenterImpl getPresenter() {
+    protected SendPresenter getPresenter() {
         return sendBaseFragmentPresenter;
     }
 
@@ -441,8 +480,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         }
     }
 
-    @Override
-    public UpdateService getUpdateService() {
+    private UpdateService getUpdateService() {
         return getMainActivity().getUpdateService();
     }
 
@@ -472,7 +510,8 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     }
 
     @Override
-    public boolean isValidAmount(String amount) {
+    public boolean isValidAmount() {
+        String amount = getAmountInput();
         if ((TextUtils.isEmpty(amount)) || Float.valueOf(amount) <= 0) {
             dismissProgressDialog();
             setAlertDialog(org.qtum.wallet.R.string.error, org.qtum.wallet.R.string.transaction_amount_cant_be_zero, "Ok", BaseFragment.PopUpType.error);
@@ -483,12 +522,60 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     }
 
     @Override
-    public void showPinDialog(PinDialogFragment.PinCallBack callback) {
+    public void showPinDialog() {
         PinDialogFragment pinDialogFragment = new PinDialogFragment();
         pinDialogFragment.setTouchIdFlag(getMainActivity().checkTouchIdEnable());
         pinDialogFragment.addPinCallBack(callback);
         pinDialogFragment.show(getFragmentManager(), pinDialogFragment.getClass().getCanonicalName());
     }
 
+    PinDialogFragment.PinCallBack callback = new PinDialogFragment.PinCallBack() {
+        @Override
+        public void onSuccess() {
+            setProgressDialog();
+            getPresenter().onPinSuccess();
+        }
 
+        @Override
+        public void onError() {
+
+        }
+    };
+
+
+    private SendInteractorImpl.SendTxCallBack sendCallback = new SendInteractorImpl.SendTxCallBack() {
+        @Override
+        public void onSuccess() {
+            setAlertDialog(org.qtum.wallet.R.string.payment_completed_successfully, "Ok", BaseFragment.PopUpType.confirm);
+        }
+
+        @Override
+        public void onError(String error) {
+            dismissProgressDialog();
+            setAlertDialog(org.qtum.wallet.R.string.error, error, "Ok", BaseFragment.PopUpType.error);
+        }
+    };
+
+    @Override
+    public SendInteractorImpl.SendTxCallBack getSendTransactionCallback() {
+        return sendCallback;
+    }
+
+    @Override
+    public boolean isValidAvailableAddress(String availableAddress) {
+        if (TextUtils.isEmpty(availableAddress)) {
+            dismissProgressDialog();
+            setAlertDialog(org.qtum.wallet.R.string.error,
+                    org.qtum.wallet.R.string.you_have_insufficient_funds_for_this_transaction,
+                    "Ok", BaseFragment.PopUpType.error);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public TokenBalance getTokenBalance(String contractAddress) {
+        return getSocketService().getTokenBalance(contractAddress);
+    }
 }

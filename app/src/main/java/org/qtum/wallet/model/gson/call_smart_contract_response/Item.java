@@ -19,12 +19,25 @@ public class Item {
     @Expose
     private int gasUsed;
 
+    /**
+     * Constructor for unit testing
+     */
+    public Item() {
+
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Item(String excepted) {
+        this.excepted = excepted;
+    }
 
     public String getExcepted() {
         return excepted;
     }
 
-    public int getGasUsed(){
+    public int getGasUsed() {
         return gasUsed;
     }
 

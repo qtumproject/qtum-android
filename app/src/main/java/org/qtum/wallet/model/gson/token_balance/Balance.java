@@ -15,6 +15,25 @@ public class Balance {
     @Expose
     private BigDecimal balance;
 
+    public Balance() {
+
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Balance(String address) {
+        this.address = address;
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Balance(String address, BigDecimal balance) {
+        this.address = address;
+        this.balance = balance;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -24,7 +43,7 @@ public class Balance {
     }
 
     public BigDecimal getBalance() {
-        return (balance != null)? balance : new BigDecimal(0);
+        return (balance != null) ? balance : new BigDecimal(0);
     }
 
     public void setBalance(BigDecimal balance) {
