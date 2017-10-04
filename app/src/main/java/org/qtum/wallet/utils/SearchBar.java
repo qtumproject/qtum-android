@@ -186,6 +186,7 @@ public class SearchBar extends RelativeLayout implements View.OnClickListener{
         }
     }
 
+
     @Override
     public void onClick(View v) {
         if(!isActive) {

@@ -449,6 +449,7 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     @Override
     public void hideCurrencyField() {
         mLinearLayoutCurrency.setVisibility(View.GONE);
+        mRelativeLayoutGasManagementContainer.setVisibility(View.GONE);
     }
 
     @Override

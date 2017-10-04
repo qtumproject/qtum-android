@@ -245,7 +245,8 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
     public void onConfirmClick(){
         int gasLimit = Integer.valueOf(mFontTextViewGasLimit.getText().toString());
         int gasPrice = Integer.valueOf(mFontTextViewGasPrice.getText().toString());
-        presenter.confirmContract(getArguments().getString(CONTRACT_TEMPLATE_UIID),gasLimit,gasPrice);
+        String fee = mTextInputEditTextFee.getText().toString();
+        presenter.confirmContract(getArguments().getString(CONTRACT_TEMPLATE_UIID),gasLimit,gasPrice,fee);
     }
 
     @Override

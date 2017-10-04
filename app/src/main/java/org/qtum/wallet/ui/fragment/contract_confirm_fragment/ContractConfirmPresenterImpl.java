@@ -86,7 +86,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
 
-    void confirmContract(final String uiid, final int gasLimit, final int gasPrice) {
+    void confirmContract(final String uiid, final int gasLimit, final int gasPrice, final String fee) {
         getView().setProgressDialog();
         mContractTemplateUiid = uiid;
         ContractBuilder contractBuilder = new ContractBuilder();
@@ -107,13 +107,13 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onNext(String s) {
-                        createTx(s,gasLimit,gasPrice);
+                        createTx(s,gasLimit,gasPrice, fee);
                     }
                 });
     }
 
 
-    private void createTx(final String abiParams, final int gasLimit, final int gasPrice) {
+    private void createTx(final String abiParams, final int gasLimit, final int gasPrice, final String fee) {
         QtumService.newInstance().getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -143,9 +143,9 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                             }
                         });
                         ContractBuilder contractBuilder = new ContractBuilder();
-                        Script script = contractBuilder.createConstructScript(abiParams);
+                        Script script = contractBuilder.createConstructScript(abiParams,gasLimit,gasPrice);
 //TODO
-                        String hash = contractBuilder.createTransactionHash(script,unspentOutputs,gasLimit, gasPrice,QtumNetworkState.newInstance().getFeePerKb().getFeePerKb(),"0.5",mContext);
+                        String hash = contractBuilder.createTransactionHash(script,unspentOutputs,gasLimit, gasPrice,QtumNetworkState.newInstance().getFeePerKb().getFeePerKb(),fee,mContext);
                         sendTx(hash, "Stub!");
                     }
                 });

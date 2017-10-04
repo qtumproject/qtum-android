@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/ll_fee"
-            android:layout_marginBottom="16dp"
+            android:layout_margin="16dp"
             android:layout_above="@+id/til_fee"
             android:layout_alignParentStart="true">
 
@@ -103,6 +103,8 @@
             android:id="@+id/til_fee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:theme="@style/InputText"
             android:focusable="true"
             android:textColorHint="@color/colorPrimary"
@@ -123,6 +125,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:orientation="horizontal"
             android:id="@+id/ll_gas_price_and_gas_limit"
             android:layout_above="@+id/seek_bar_container">
@@ -177,6 +181,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/seek_bar_container"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_above="@+id/bt_edit_close"
             android:orientation="vertical">
 
