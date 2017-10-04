@@ -111,6 +111,11 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
+    public void setAlertDialog(@StringRes int titleResId, @StringRes int messageResId, @StringRes int buttonTextResId, PopUpType type) {
+        setAlertDialog(getString(titleResId), getString(messageResId), getString(buttonTextResId), type, null);
+    }
+
+    @Override
     public void setAlertDialog(String title, String message, String buttonText, PopUpType type, final AlertDialogCallBack callBack) {
         try {
             dismissProgressDialog();

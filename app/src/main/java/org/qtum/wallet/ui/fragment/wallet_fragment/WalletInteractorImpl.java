@@ -17,14 +17,14 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;
 
-class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
+class WalletInteractorImpl implements WalletInteractor {
 
     private SubscriptionList mSubscriptionList = new SubscriptionList();
     static final int UPDATE_STATE = 0;
     static final int LOAD_STATE = 1;
     private final List<String> addresses = KeyStorage.getInstance().getAddresses();
 
-    WalletFragmentInteractorImpl(){
+    WalletInteractorImpl() {
 
     }
 
@@ -55,18 +55,18 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                     @Override
                     public void onNext(HistoryResponse historyResponse) {
 
-                        for(History history : historyResponse.getItems()){
+                        for (History history : historyResponse.getItems()) {
                             calculateChangeInBalance(history, addresses);
                         }
 
-                        switch (STATE){
+                        switch (STATE) {
                             case UPDATE_STATE: {
                                 HistoryList.getInstance().setHistoryList(historyResponse.getItems());
                                 HistoryList.getInstance().setTotalItem(historyResponse.getTotalItems());
                                 callBack.onSuccess();
                                 break;
                             }
-                            case LOAD_STATE:{
+                            case LOAD_STATE: {
                                 HistoryList.getInstance().getHistoryList().addAll(historyResponse.getItems());
                                 callBack.onSuccess();
                                 break;
@@ -78,33 +78,33 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
                 }));
     }
 
-    private void calculateChangeInBalance(History history, List<String> addresses){
-        BigDecimal changeInBalance = calculateVout(history,addresses).subtract(calculateVin(history,addresses));
+    private void calculateChangeInBalance(History history, List<String> addresses) {
+        BigDecimal changeInBalance = calculateVout(history, addresses).subtract(calculateVin(history, addresses));
         history.setChangeInBalance(changeInBalance);
     }
 
-    private BigDecimal calculateVin(History history, List<String> addresses){
+    private BigDecimal calculateVin(History history, List<String> addresses) {
         BigDecimal totalVin = new BigDecimal("0.0");
         boolean equals = false;
-        for(Vin vin : history.getVin()){
-            for(String address : addresses){
-                if(vin.getAddress().equals(address)){
+        for (Vin vin : history.getVin()) {
+            for (String address : addresses) {
+                if (vin.getAddress().equals(address)) {
                     vin.setOwnAddress(true);
                     equals = true;
                 }
             }
         }
-        if(equals){
+        if (equals) {
             totalVin = history.getAmount();
         }
         return totalVin;
     }
 
-    private BigDecimal calculateVout(History history, List<String> addresses){
+    private BigDecimal calculateVout(History history, List<String> addresses) {
         BigDecimal totalVout = new BigDecimal("0.0");
-        for(Vout vout : history.getVout()){
-            for(String address : addresses){
-                if(vout.getAddress().equals(address)){
+        for (Vout vout : history.getVout()) {
+            for (String address : addresses) {
+                if (vout.getAddress().equals(address)) {
                     vout.setOwnAddress(true);
                     totalVout = totalVout.add(vout.getValue());
                 }
@@ -120,32 +120,34 @@ class WalletFragmentInteractorImpl implements WalletFragmentInteractor {
 
     @Override
     public void addToHistoryList(History history) {
-        calculateChangeInBalance(history,addresses);
-        HistoryList.getInstance().getHistoryList().add(0,history);
+        calculateChangeInBalance(history, addresses);
+        HistoryList.getInstance().getHistoryList().add(0, history);
     }
 
     @Override
     public Integer setHistory(History history) {
-        calculateChangeInBalance(history,addresses);
-        for(History historyReplacing : getHistoryList()){
-            if(historyReplacing.getTxHash().equals(history.getTxHash())){
+        calculateChangeInBalance(history, addresses);
+        for (History historyReplacing : getHistoryList()) {
+            if (historyReplacing.getTxHash().equals(history.getTxHash())) {
                 int position = getHistoryList().indexOf(historyReplacing);
-                getHistoryList().set(position,history);
+                getHistoryList().set(position, history);
                 return position;
             }
         }
-        getHistoryList().add(0,history);
+        getHistoryList().add(0, history);
         return null;
     }
 
-    void unSubscribe(){
-        if(mSubscriptionList != null){
+    @Override
+    public void unSubscribe() {
+        if (mSubscriptionList != null) {
             mSubscriptionList.clear();
         }
     }
 
     interface GetHistoryListCallBack {
         void onSuccess();
+
         void onError(Throwable e);
     }
 
