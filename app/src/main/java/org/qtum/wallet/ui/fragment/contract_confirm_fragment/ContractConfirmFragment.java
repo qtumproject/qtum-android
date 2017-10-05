@@ -233,7 +233,7 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
         mMinGasLimit = minGasLimit;
         mMaxGasLimit = maxGasLimit;
         mSeekBarGasLimit.setMax((mMaxGasLimit - mMinGasLimit) / stepGasLimit);
-        mSeekBarGasLimit.setProgress(1);
+        mSeekBarGasLimit.setProgress(19);
     }
 
     @OnClick(R.id.ibt_back)
