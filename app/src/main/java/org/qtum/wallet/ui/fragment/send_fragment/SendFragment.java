@@ -213,6 +213,27 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         if(!currency.equals("")){
             getPresenter().searchAndSetUpCurrency(currency);
         }
+
+        mLinearLayoutSeekBarContainer.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+    }
+
+    ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            if(mLinearLayoutSeekBarContainer.getHeight()!=0){
+                mLinearLayoutSeekBarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                appLogoHeight = mLinearLayoutSeekBarContainer.getHeight();
+                initializeAnim();
+                mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
+                mLinearLayoutSeekBarContainer.requestLayout();
+            }
+        }
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mLinearLayoutSeekBarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
     }
 
     @Override
@@ -361,18 +382,6 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         mTextInputEditTextAddress.setOnTouchListener(mOnTouchListener);
         mLinearLayoutCurrency.setOnTouchListener(mOnTouchListener);
 
-            mLinearLayoutSeekBarContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    if(mLinearLayoutSeekBarContainer.getHeight()!=0){
-                        mLinearLayoutSeekBarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        appLogoHeight = mLinearLayoutSeekBarContainer.getHeight();
-                        initializeAnim();
-                        mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
-                        mLinearLayoutSeekBarContainer.requestLayout();
-                    }
-                }
-            });
     }
 
     private void initializeAnim(){
