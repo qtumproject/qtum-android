@@ -311,11 +311,18 @@ public class ContractBuilder {
         return FileStorageManager.getInstance().readByteCodeContract(mContext, uiid);
     }
 
-    public Script createConstructScript(String abiParams) {
+    public Script createConstructScript(String abiParams, int gasLimitInt, int gasPriceInt) {
 
         byte[] version = Hex.decode("04000000");
-        byte[] gasLimit = Hex.decode("80841e0000000000");
-        byte[] gasPrice = Hex.decode("0100000000000000");
+
+        byte[] arrayGasLimit = org.spongycastle.util.Arrays.reverse((new BigInteger(String.valueOf(gasLimitInt))).toByteArray());
+        byte[] gasLimit = new byte[]{0,0,0,0,0,0,0,0};
+        System.arraycopy(arrayGasLimit, 0, gasLimit, 0, arrayGasLimit.length);
+
+        byte[] arrayGasPrice = org.spongycastle.util.Arrays.reverse((new BigInteger(String.valueOf(gasPriceInt))).toByteArray());
+        byte[] gasPrice = new byte[]{0,0,0,0,0,0,0,0};
+        System.arraycopy(arrayGasPrice, 0, gasPrice, 0, arrayGasPrice.length);
+
         byte[] data = Hex.decode(abiParams);
         byte[] program;
 
