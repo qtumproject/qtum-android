@@ -15,6 +15,7 @@ import org.bitcoinj.script.Script;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.datastorage.QtumNetworkState;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.FeePerKb;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
@@ -39,18 +40,13 @@ import rx.schedulers.Schedulers;
 public class SendFragmentInteractorImpl implements SendFragmentInteractor {
 
     private Context mContext;
-    private FeePerKb mFeePerKb;
 
     SendFragmentInteractorImpl(Context context) {
         mContext = context;
     }
 
-    public void setFeePerKb(FeePerKb feePerKb) {
-        mFeePerKb = feePerKb;
-    }
-
     public FeePerKb getFeePerKb() {
-        return mFeePerKb;
+        return QtumNetworkState.newInstance().getFeePerKb();
     }
 
     @Override
@@ -86,14 +82,6 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                         callBack.onSuccess(unspentOutputs);
                     }
                 });
-    }
-
-    public Observable<FeePerKb> getFeePerKbObservable(){
-        if(mFeePerKb!=null){
-            return Observable.just(mFeePerKb);
-        } else {
-            return QtumService.newInstance().getEstimateFeePerKb(2);
-        }
     }
 
     public void getUnspentOutputs(String address, final SendFragmentInteractorImpl.GetUnspentListCallBack callBack) {
@@ -217,26 +205,9 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
 
     @Override
     public void sendTx(final String from, final String address, final String amount, final String fee, final SendTxCallBack callBack) {
-        getFeePerKbObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<FeePerKb>() {
-                               @Override
-                               public void onCompleted() {
 
-                               }
 
-                               @Override
-                               public void onError(Throwable e) {
-
-                               }
-
-                               @Override
-                               public void onNext(FeePerKb s) {
-                                   if(mFeePerKb==null){
-                                       setFeePerKb(s);
-                                   }
-                                   createTx(from, address, amount, fee,s.getFeePerKb(), new CreateTxCallBack() {
+                                   createTx(from, address, amount, fee,getFeePerKb().getFeePerKb(), new CreateTxCallBack() {
                                        @Override
                                        public void onSuccess(String txHex) {
                                            sendTx(txHex, callBack);
@@ -247,8 +218,8 @@ public class SendFragmentInteractorImpl implements SendFragmentInteractor {
                                            callBack.onError(error);
                                        }
                                    });
-                               }
-                           });
+
+
     }
 
     @Override

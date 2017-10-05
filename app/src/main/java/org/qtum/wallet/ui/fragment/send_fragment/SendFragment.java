@@ -213,10 +213,10 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         if(!currency.equals("")){
             getPresenter().searchAndSetUpCurrency(currency);
         }
-
-        mLinearLayoutSeekBarContainer.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+        if(appLogoHeight==0) {
+            mLinearLayoutSeekBarContainer.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+        }
     }
-
     ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
