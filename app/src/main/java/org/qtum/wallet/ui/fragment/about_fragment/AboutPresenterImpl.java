@@ -1,6 +1,8 @@
 package org.qtum.wallet.ui.fragment.about_fragment;
 
 
+import android.content.pm.PackageManager;
+
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 public class AboutPresenterImpl extends BaseFragmentPresenterImpl implements AboutPresenter{
@@ -16,11 +18,22 @@ public class AboutPresenterImpl extends BaseFragmentPresenterImpl implements Abo
     @Override
     public void initializeViews() {
         super.initializeViews();
+        try {
+            int versionCode = getInteractor().getCodeVersion();
+            String version = getInteractor().getVersion();
+            getView().updateVersion(version, versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 
     @Override
     public AboutView getView() {
         return mAboutFragmentView;
+    }
+
+    private AboutInteractor getInteractor(){
+        return mAboutInteractor;
     }
 }
