@@ -43,7 +43,8 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         } else {
             getView().setAlertDialog(org.qtum.wallet.R.string.no_internet_connection,
                     org.qtum.wallet.R.string.please_check_your_network_settings,
-                    org.qtum.wallet.R.string.ok, BaseFragment.PopUpType.error);
+                    org.qtum.wallet.R.string.ok,
+                    BaseFragment.PopUpType.error);
             getView().stopRefreshRecyclerAnimation();
         }
     }
@@ -72,13 +73,6 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                     });
         }
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        getInteractor().unSubscribe();
-    }
-
 
     private void loadAndUpdateData() {
         getView().startRefreshAnimation();
@@ -122,5 +116,18 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     @Override
     public void updateVisibility(boolean value) {
         this.mVisibility = value;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getInteractor().unSubscribe();
+    }
+
+    /***
+     * Setter for unit tests
+     */
+    public void setNetworkConnectedFlag(boolean mNetworkConnectedFlag) {
+        this.mNetworkConnectedFlag = mNetworkConnectedFlag;
     }
 }

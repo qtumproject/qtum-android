@@ -358,7 +358,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         @Override
         public void onSuccess() {
             updateHistory(getPresenter().getHistoryList());
-
         }
 
         @Override

@@ -144,7 +144,7 @@ public class WalletInteractorImpl implements WalletInteractor {
         }
     }
 
-    interface GetHistoryListCallBack {
+    public interface GetHistoryListCallBack {
         void onSuccess();
 
         void onError(Throwable e);

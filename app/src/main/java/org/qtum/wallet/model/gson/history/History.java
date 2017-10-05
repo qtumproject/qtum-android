@@ -34,6 +34,20 @@ public class History {
     @Expose
     private List<Vin> vin = null;
 
+    /**
+     * Constructor for unit tests
+     */
+    public History() {
+
+    }
+
+    /**
+     * Constructor for unit tests
+     */
+    public History(Long blockTime) {
+        this.blockTime = blockTime;
+    }
+
     private BigDecimal changeInBalance;
 
     public Long getBlockTime() {

@@ -20,4 +20,5 @@ public interface WalletInteractor {
 
     void unSubscribe();
 
+
 }
