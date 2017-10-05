@@ -15,7 +15,7 @@ import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.model.gson.token_balance.Balance;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
-import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFragmentPresenter;
+import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListPresenterImpl;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
@@ -139,7 +139,7 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
         }
     }
 
-    public void transfer(DeterministicKeyWithTokenBalance keyWithBalanceTo, final DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String amountString, final AddressListFragmentPresenter.TransferListener transferListener) {
+    public void transfer(DeterministicKeyWithTokenBalance keyWithBalanceTo, final DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String amountString, final AddressListPresenterImpl.TransferListener transferListener) {
 
         if(TextUtils.isEmpty(amountString)){
             getView().setAlertDialog(getView().getContext().getResources().getString(R.string.error),

@@ -22,7 +22,6 @@ import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.model.gson.qstore.QstoreSourceCodeResponse;
 import org.qtum.wallet.utils.CurrentNetParams;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -92,7 +91,7 @@ public class QtumService {
         return mServiceApi.getBlockChainInfo();
     }
 
-    public Observable<FeePerKb> getEstimateFeePerKb(int nBlock){
+    public Observable<FeePerKb> getEstimateFeePerKb(int nBlock) {
         return mServiceApi.getEstimateFeePerKb(nBlock);
     }
 
@@ -100,61 +99,61 @@ public class QtumService {
         return mServiceApi.sendRawTransaction(sendRawTransactionRequest);
     }
 
-    public Observable<CallSmartContractResponse> callSmartContract(String contractAddress, final CallSmartContractRequest callSmartContractRequest){
-        return mServiceApi.callSmartContract(contractAddress,callSmartContractRequest);
+    public Observable<CallSmartContractResponse> callSmartContract(String contractAddress, final CallSmartContractRequest callSmartContractRequest) {
+        return mServiceApi.callSmartContract(contractAddress, callSmartContractRequest);
     }
 
     public Observable<History> getTransaction(final String txHash) {
         return mServiceApi.getTransaction(txHash);
     }
 
-    public Observable<List<QstoreItem>> getTrendingNow(){
+    public Observable<List<QstoreItem>> getTrendingNow() {
         return mServiceApi.getTrendingNow();
     }
 
-    public Observable<List<QstoreItem>> getWatsNew(){
+    public Observable<List<QstoreItem>> getWatsNew() {
         return mServiceApi.getWatsNew();
     }
 
-    public Observable<List<QSearchItem>> searchContracts(int offset,String type, String data, boolean byTag){
-        if(byTag) {
-            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/,type, new String[]{data});
+    public Observable<List<QSearchItem>> searchContracts(int offset, String type, String data, boolean byTag) {
+        if (byTag) {
+            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/, type, new String[]{data});
         } else {
-            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/,type, data);
+            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/, type, data);
         }
     }
 
-    public Observable<QstoreContract> getContractById(String id){
+    public Observable<QstoreContract> getContractById(String id) {
         return mServiceApi.getContract(id);
     }
 
-    public Observable<Object> getAbiByContractId(String contractId){
+    public Observable<Object> getAbiByContractId(String contractId) {
         return mServiceApi.getAbiByContractId(contractId);
     }
 
-    public Observable<QstoreBuyResponse> buyRequest(String contractId){
+    public Observable<QstoreBuyResponse> buyRequest(String contractId) {
         return mServiceApi.buyRequest(contractId);
     }
 
-    public Observable<ContractPurchase> isPaidByRequestId(String contractId, String requestId){
+    public Observable<ContractPurchase> isPaidByRequestId(String contractId, String requestId) {
         return mServiceApi.isPaidByRequestId(contractId, requestId);
     }
 
-    public Observable<QstoreSourceCodeResponse> getSourceCode(String contractId, String requestId, String accessToken){
+    public Observable<QstoreSourceCodeResponse> getSourceCode(String contractId, String requestId, String accessToken) {
         HashMap<String, String> body = new HashMap<>();
-        body.put("request_id",requestId);
-        body.put("access_token",accessToken);
+        body.put("request_id", requestId);
+        body.put("access_token", accessToken);
         return mServiceApi.getSourceCode(contractId, body);
     }
 
-    public Observable<QstoreByteCodeResponse> getByteCode(String contractId, String requestId, String accessToken){
+    public Observable<QstoreByteCodeResponse> getByteCode(String contractId, String requestId, String accessToken) {
         HashMap<String, String> body = new HashMap<>();
-        body.put("request_id",requestId);
-        body.put("access_token",accessToken);
+        body.put("request_id", requestId);
+        body.put("access_token", accessToken);
         return mServiceApi.getByteCode(contractId, body);
     }
 
-    public Observable<List<QstoreContractType>> getContractTypes(){
+    public Observable<List<QstoreContractType>> getContractTypes() {
         return mServiceApi.getContractTypes();
     }
 

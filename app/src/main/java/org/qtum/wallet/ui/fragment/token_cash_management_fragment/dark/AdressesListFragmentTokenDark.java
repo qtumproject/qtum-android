@@ -10,7 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
-import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFragmentPresenter;
+import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListPresenterImpl;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AdressesListFragmentToken;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.TokenAdressesAdapter;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -76,7 +76,7 @@ public class AdressesListFragmentTokenDark extends AdressesListFragmentToken {
             @Override
             public void onClick(View v) {
                 setProgressDialog();
-                getPresenter().transfer(keyWithBalanceTo, getPresenter().keyWithTokenBalanceFrom, mEditTextAmount.getText().toString(), new AddressListFragmentPresenter.TransferListener(){
+                getPresenter().transfer(keyWithBalanceTo, getPresenter().keyWithTokenBalanceFrom, mEditTextAmount.getText().toString(), new AddressListPresenterImpl.TransferListener(){
                     @Override
                     public void onError(String errorText) {
                         setAlertDialog(getContext().getString(org.qtum.wallet.R.string.error),errorText,getContext().getString(org.qtum.wallet.R.string.ok), BaseFragment.PopUpType.error);

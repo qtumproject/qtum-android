@@ -6,6 +6,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 import java.util.List;
 
 
-interface AddressListFragmentView extends BaseFragmentView {
+public interface AddressListView extends BaseFragmentView {
     void updateAddressList(List<DeterministicKeyWithBalance> deterministicKeyWithBalance);
 }
