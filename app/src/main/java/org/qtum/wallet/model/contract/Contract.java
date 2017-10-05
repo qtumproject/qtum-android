@@ -50,6 +50,13 @@ public class Contract implements Serializable {
     /**
      * Constructor for unit testing
      */
+    public Contract(String contractAddress) {
+        this.mContractAddress = contractAddress;
+    }
+
+    /**
+     * Constructor for unit testing
+     */
     public Contract(boolean isSubscribe, String contractAddress) {
         this.mIsSubscribe = isSubscribe;
         this.mContractAddress = contractAddress;

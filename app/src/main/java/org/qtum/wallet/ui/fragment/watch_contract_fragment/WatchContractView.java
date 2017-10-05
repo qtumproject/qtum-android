@@ -7,7 +7,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 import java.util.List;
 
 
-interface WatchContractView extends BaseFragmentView {
+public interface WatchContractView extends BaseFragmentView {
     void setABIInterface(String name, String abiInterface);
 
     boolean isToken();
