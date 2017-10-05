@@ -361,24 +361,18 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         mTextInputEditTextAddress.setOnTouchListener(mOnTouchListener);
         mLinearLayoutCurrency.setOnTouchListener(mOnTouchListener);
 
-        if(mLinearLayoutSeekBarContainer.getHeight()==0) {
             mLinearLayoutSeekBarContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    mLinearLayoutSeekBarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    appLogoHeight = (appLogoHeight == 0) ?  mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
-                    initializeAnim();
-                    mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
-                    mLinearLayoutSeekBarContainer.requestLayout();
+                    if(mLinearLayoutSeekBarContainer.getHeight()!=0){
+                        mLinearLayoutSeekBarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        appLogoHeight = mLinearLayoutSeekBarContainer.getHeight();
+                        initializeAnim();
+                        mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
+                        mLinearLayoutSeekBarContainer.requestLayout();
+                    }
                 }
             });
-        } else {
-            appLogoHeight = (appLogoHeight == 0) ?  mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
-            initializeAnim();
-            mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
-            mLinearLayoutSeekBarContainer.requestLayout();
-        }
-
     }
 
     private void initializeAnim(){
