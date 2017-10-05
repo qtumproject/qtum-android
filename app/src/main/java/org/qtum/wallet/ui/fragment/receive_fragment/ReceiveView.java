@@ -5,15 +5,33 @@ import android.support.v4.app.Fragment;
 
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
+import rx.Observable;
 
-interface ReceiveFragmentView extends BaseFragmentView {
+
+interface ReceiveView extends BaseFragmentView {
     void setQrCode(Bitmap bitmap);
+
     void showSpinner();
+
     void hideSpinner();
+
     void setUpAddress(String s);
+
     void updateBalance(String balance, String unconfirmedBalance);
+
     void showToast();
+
     void openFragmentForResult(Fragment fragment);
+
     Bitmap getQrCode();
+
     String getTokenBalance();
+
+    Observable<Bitmap> imageEncodeObserveble(final String param);
+
+    boolean isAmountValid(String amount);
+
+    boolean isTokenAddressValid(String addr);
+
+    boolean isUnconfirmedBalanceValid(String unconfirmedBalance);
 }

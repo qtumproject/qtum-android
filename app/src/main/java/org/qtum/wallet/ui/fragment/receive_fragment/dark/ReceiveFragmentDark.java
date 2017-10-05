@@ -18,7 +18,7 @@ public class ReceiveFragmentDark extends ReceiveFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        getPresenter().setQrColors(ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.colorPrimary), ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.background));
+        setQrColors(ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.colorPrimary), ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.background));
     }
 
 }
