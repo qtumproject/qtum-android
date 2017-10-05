@@ -399,13 +399,9 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     }
 
     @Override
-    public void updateData(String publicAddress, double amount, String tokenAddress) {
+    public void updateData(String publicAddress, double amount) {
         mTextInputEditTextAddress.setText(publicAddress);
         mTextInputEditTextAmount.setText(String.valueOf(amount));
-        if (!TextUtils.isEmpty(tokenAddress)) {
-            mLinearLayoutCurrency.setVisibility(View.VISIBLE);
-            mTextViewCurrency.setText(tokenAddress);
-        }
     }
 
     @Override
