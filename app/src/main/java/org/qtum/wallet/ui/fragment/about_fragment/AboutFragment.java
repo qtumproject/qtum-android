@@ -4,7 +4,6 @@ package org.qtum.wallet.ui.fragment.about_fragment;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,9 +15,9 @@ import org.qtum.wallet.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public abstract class AboutFragment extends BaseFragment implements AboutFragmentView{
+public abstract class AboutFragment extends BaseFragment implements AboutView {
 
-    AboutFragmentPresenter mAboutFragmentPresenter;
+    AboutPresenter mAboutFragmentPresenter;
 
     @OnClick({org.qtum.wallet.R.id.ibt_back})
     public void onClick(View view){
@@ -55,11 +54,11 @@ public abstract class AboutFragment extends BaseFragment implements AboutFragmen
 
     @Override
     protected void createPresenter() {
-        mAboutFragmentPresenter = new AboutFragmentPresenter(this);
+        mAboutFragmentPresenter = new AboutPresenterImpl(this, new AboutInteractorImpl(getContext()));
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected AboutPresenter getPresenter() {
         return mAboutFragmentPresenter;
     }
 }
