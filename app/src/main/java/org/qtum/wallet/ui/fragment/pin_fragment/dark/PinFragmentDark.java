@@ -16,15 +16,15 @@ public class PinFragmentDark extends PinFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        ((MainActivity)getActivity()).hideBottomNavigationView(R.color.background);
         isBottomNavigationViewVisible = ((MainActivity)getActivity()).isBottomNavigationViewVisible();
+        ((MainActivity)getActivity()).hideBottomNavigationView(R.color.background);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         if(isBottomNavigationViewVisible){
-            ((MainActivity)getActivity()).showBottomNavigationView(R.color.background);
+            ((MainActivity)getActivity()).showBottomNavigationView(true);
         }else{
             ((MainActivity)getActivity()).hideBottomNavigationView(R.color.background);
         }
