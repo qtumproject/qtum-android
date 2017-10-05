@@ -5,5 +5,6 @@ import org.qtum.wallet.model.ContractTemplate;
 
 public interface OnTemplateClickListener {
     void updateSelection(int adapterPosition);
+
     void onTemplateClick(ContractTemplate contractTemplate);
 }

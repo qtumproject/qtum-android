@@ -9,11 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import org.qtum.wallet.R;
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.model.ContractTemplate;
+import org.qtum.wallet.ui.fragment.watch_contract_fragment.WatchContractFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.templates_fragment.TemplateSelectListener;
 import org.qtum.wallet.ui.fragment.templates_fragment.TemplatesRecyclerAdapter;
-import org.qtum.wallet.ui.fragment.watch_contract_fragment.WatchContractFragment;
 
 import java.util.List;
 
