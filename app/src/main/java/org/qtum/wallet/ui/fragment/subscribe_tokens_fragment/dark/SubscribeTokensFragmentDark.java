@@ -16,18 +16,9 @@ import butterknife.BindView;
 
 public class SubscribeTokensFragmentDark extends SubscribeTokensFragment {
 
-    @BindView(org.qtum.wallet.R.id.search_bar)
-    SearchBar searchBar;
-
     @Override
     protected int getLayout() {
         return org.qtum.wallet.R.layout.fragment_currency;
-    }
-
-    @Override
-    public void initializeViews() {
-        super.initializeViews();
-        searchBar.setListener(this);
     }
 
     @Override

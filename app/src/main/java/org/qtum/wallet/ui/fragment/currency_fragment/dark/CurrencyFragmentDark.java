@@ -15,18 +15,9 @@ import butterknife.BindView;
 
 public class CurrencyFragmentDark extends CurrencyFragment {
 
-    @BindView(R.id.search_bar)
-    SearchBar searchBar;
-
     @Override
     protected int getLayout() {
         return R.layout.fragment_currency;
-    }
-
-    @Override
-    public void initializeViews() {
-        super.initializeViews();
-        searchBar.setListener(this);
     }
 
     @Override

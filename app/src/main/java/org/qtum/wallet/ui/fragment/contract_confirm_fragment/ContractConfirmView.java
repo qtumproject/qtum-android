@@ -12,4 +12,8 @@ public interface ContractConfirmView extends BaseFragmentView {
 
     String getContractName();
 
+    void updateFee(double minFee, double maxFee);
+    void updateGasPrice(int minGasPrice, int maxGasPrice);
+    void updateGasLimit(int minGasLimit, int maxGasLimit);
+
 }

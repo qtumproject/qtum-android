@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import org.qtum.wallet.R;
@@ -17,13 +17,21 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.store_categories.StoreCategoriesFragment;
 import org.qtum.wallet.ui.fragment.store_contract.StoreContractFragment;
 import org.qtum.wallet.utils.FontCheckBox;
+import org.qtum.wallet.utils.FontTextView;
+import org.qtum.wallet.utils.SearchBar;
 import org.qtum.wallet.utils.SearchBarListener;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 
-public abstract class QStoreFragment extends BaseFragment implements QStoreView, SearchBarListener, StoreItemClickListener{
+public abstract class QStoreFragment extends BaseFragment implements QStoreView, StoreItemClickListener{
 
     private QStorePresenter presenter;
 
@@ -47,6 +55,15 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
 
     @BindView(R.id.cb_by_tag)
     FontCheckBox cbByTag;
+
+    @BindView(R.id.tv_toolbar_qstore)
+    FontTextView mTextViewToolBar;
+
+    @BindView(R.id.ibt_categories)
+    ImageButton mImageButton;
+
+    @BindView(R.id.search_bar)
+    SearchBar searchBar;
 
     @OnClick(R.id.ibt_categories)
     public void onCategoriesClick() {
@@ -79,7 +96,7 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cbByName.setChecked(!isChecked);
-                onRequestSearch(getSeacrhBarText());
+                presenter.searchItems(getSeacrhBarText(), cbByTag.isChecked());
             }
         });
 
@@ -87,11 +104,48 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 cbByTag.setChecked(!isChecked);
-                onRequestSearch(getSeacrhBarText());
+                presenter.searchItems(getSeacrhBarText(), cbByTag.isChecked());
             }
         });
 
         cbByTag.setChecked(true);
+
+        Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(final Subscriber<? super String> subscriber) {
+                searchBar.setListener(new SearchBarListener() {
+                    @Override
+                    public void onActivate() {
+                        if (searchTypeMenu != null) {
+                            searchTypeMenu.setVisibility(View.VISIBLE);
+                        }
+                        contentList.setAdapter(searchAdapter);
+                    }
+
+                    @Override
+                    public void onDeactivate() {
+                        if (searchTypeMenu != null) {
+                            searchTypeMenu.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onRequestSearch(String filter) {
+                        subscriber.onNext(filter);
+                    }
+                });
+            }
+        })
+                .debounce(6000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(final String s) {
+                        if (cbByTag != null) {
+                            presenter.searchItems(s, cbByTag.isChecked());
+                        }
+                    }
+                });
     }
 
     @Override
@@ -107,34 +161,20 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
     }
 
     @Override
-    public void onActivate() {
-        if(searchTypeMenu != null) {
-            searchTypeMenu.setVisibility(View.VISIBLE);
-        }
-        contentList.setAdapter(searchAdapter);
-    }
-
-    @Override
-    public void onDeactivate() {
-        if(searchTypeMenu != null) {
-            searchTypeMenu.setVisibility(View.GONE);
-        }
-        if(contentList != null && storeAdapter != null) {
-            contentList.setAdapter(storeAdapter);
-        }
-    }
-
-    @Override
-    public void onRequestSearch(String filter) {
-        if(!TextUtils.isEmpty(filter)) {
-            presenter.searchItems(filter, cbByTag.isChecked());
-        }
-    }
-
-    @Override
     public void OnItemClick(QstoreItem item) {
         openFragmentForResult(StoreContractFragment.newInstance(getContext(), item.id));
     }
+
+    @Override
+    public void setSearchBarText(String text) {
+        searchBar.setText(text);
+    }
+
+    @Override
+    public String getSeacrhBarText() {
+        return searchBar.getText();
+    }
+
 
     public void setSearchTag(String tag){
         cbByName.setChecked(false);

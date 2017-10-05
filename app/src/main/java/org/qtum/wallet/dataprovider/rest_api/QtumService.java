@@ -4,7 +4,9 @@ package org.qtum.wallet.dataprovider.rest_api;
 import org.qtum.wallet.model.gson.BlockChainInfo;
 
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
+import org.qtum.wallet.model.gson.DGPInfo;
 import org.qtum.wallet.model.gson.FeePerKb;
+import org.qtum.wallet.model.gson.QstoreContractType;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
@@ -115,11 +117,11 @@ public class QtumService {
         return mServiceApi.getWatsNew();
     }
 
-    public Observable<List<QSearchItem>> searchContracts(int offset, String data, boolean byTag){
+    public Observable<List<QSearchItem>> searchContracts(int offset,String type, String data, boolean byTag){
         if(byTag) {
-            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/, new String[]{data});
+            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/,type, new String[]{data});
         } else {
-            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/, data);
+            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/,type, data);
         }
     }
 
@@ -139,6 +141,10 @@ public class QtumService {
         return mServiceApi.isPaidByRequestId(contractId, requestId);
     }
 
+    public Observable<DGPInfo> getDGPInfo(){
+        return mServiceApi.getDGPInfo();
+    }
+
     public Observable<QstoreSourceCodeResponse> getSourceCode(String contractId, String requestId, String accessToken){
         HashMap<String, String> body = new HashMap<>();
         body.put("request_id",requestId);
@@ -151,6 +157,10 @@ public class QtumService {
         body.put("request_id",requestId);
         body.put("access_token",accessToken);
         return mServiceApi.getByteCode(contractId, body);
+    }
+
+    public Observable<List<QstoreContractType>> getContractTypes(){
+        return mServiceApi.getContractTypes();
     }
 
 }

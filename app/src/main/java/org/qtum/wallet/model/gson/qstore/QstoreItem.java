@@ -2,6 +2,8 @@ package org.qtum.wallet.model.gson.qstore;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.qtum.wallet.R;
+
 /**
  * Created by kirillvolkov on 09.08.17.
  */
@@ -28,5 +30,18 @@ public class QstoreItem {
 
     @SerializedName("created_at")
     public String createDate;
+
+    public int getIcon() {
+        switch (type){
+            case "QRC20 Token":
+                return R.drawable.ic_supertoken;
+            case "Smart Contract":
+                return R.drawable.ic_smart_contract;
+            case "Crowdsale":
+                return R.drawable.ic_crowdsale;
+            default:
+                return R.drawable.ic_smart_contract;
+        }
+    }
 
 }

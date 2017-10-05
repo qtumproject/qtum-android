@@ -2,6 +2,7 @@ package org.qtum.wallet.ui.fragment.contract_function_fragment;
 
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.datastorage.QtumNetworkState;
 import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
@@ -36,10 +37,14 @@ class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl {
 
     private ContractFunctionFragmentView mContractMethodFragmentView;
 
-    FeePerKb mFeePerKb;
-
     private double minFee;
     private double maxFee = 0.2;
+
+    private int minGasPrice;
+    private int maxGasPrice = 120;
+
+    private int minGasLimit = 100000;
+    private int maxGasLimit = 5000000;
 
     ContractFunctionFragmentPresenter(ContractFunctionFragmentView contractMethodFragmentView){
         mContractMethodFragmentView = contractMethodFragmentView;
@@ -60,38 +65,14 @@ class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl {
                 break;
             }
         }
-        getFeePerKbObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<FeePerKb>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(FeePerKb feePerKb) {
-                        minFee = feePerKb.getFeePerKb().doubleValue();
-                        getView().updateFee(minFee,maxFee);
-                        mFeePerKb = feePerKb;
-                    }
-                });
+        minFee = QtumNetworkState.newInstance().getFeePerKb().getFeePerKb().doubleValue();
+        getView().updateFee(minFee,maxFee);
+        minGasPrice = QtumNetworkState.newInstance().getDGPInfo().getMingasprice();
+        getView().updateGasPrice(minGasPrice, maxGasPrice);
+        getView().updateGasLimit(minGasLimit, maxGasLimit);
     }
 
-    public Observable<FeePerKb> getFeePerKbObservable(){
-        if(mFeePerKb!=null){
-            return Observable.just(mFeePerKb);
-        } else {
-            return QtumService.newInstance().getEstimateFeePerKb(2);
-        }
-    }
-
-    void onCallClick(List<ContractMethodParameter> contractMethodParameterList, final String contractAddress, final String fee, String methodName){
+    void onCallClick(List<ContractMethodParameter> contractMethodParameterList, final String contractAddress, final String fee,final int gasLimit ,final int gasPrice, String methodName){
 
         getView().setProgressDialog();
         ContractBuilder contractBuilder = new ContractBuilder();
@@ -131,27 +112,11 @@ class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl {
                                             getView().setAlertDialog(getView().getContext().getString(org.qtum.wallet.R.string.error), callSmartContractResponse.getItems().get(0).getExcepted(), "Ok", BaseFragment.PopUpType.error);
                                             return;
                                         }
-                                        getFeePerKbObservable()
-                                                .subscribeOn(Schedulers.io())
-                                                .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(new Subscriber<FeePerKb>() {
-                                                               @Override
-                                                               public void onCompleted() {
-
-                                                               }
-
-                                                               @Override
-                                                               public void onError(Throwable e) {
-
-                                                               }
-
-                                                               @Override
-                                                               public void onNext(FeePerKb feePerKb) {
-                                                                   createTx(s, /*TODO callSmartContractResponse.getItems().get(0).getGasUsed()*/ 2000000, fee, feePerKb.getFeePerKb(),contractAddress);
-                                                                   mFeePerKb = feePerKb;
-                                                               }
-                                                           });
-
+                                        if(callSmartContractResponse.getItems().get(0).getGasUsed()>gasLimit){
+                                            getView().setAlertDialog(getView().getContext().getString(org.qtum.wallet.R.string.error), callSmartContractResponse.getItems().get(0).getExcepted(), "Ok", BaseFragment.PopUpType.error);
+                                            return;
+                                        }
+                                        createTx(s, /*TODO callSmartContractResponse.getItems().get(0).getGasUsed()*/ gasLimit, gasPrice,fee, QtumNetworkState.newInstance().getFeePerKb().getFeePerKb(),contractAddress);
                                     }
                                 });
                     }
@@ -159,7 +124,7 @@ class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl {
     }
 
 
-    private void createTx(final String abiParams, final int gasLimit, final String fee,final BigDecimal feePerKb ,final String contractAddress) {
+    private void createTx(final String abiParams, final int gasLimit, final int gasPrice, final String fee, final BigDecimal feePerKb , final String contractAddress) {
         QtumService.newInstance().getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -189,9 +154,9 @@ class ContractFunctionFragmentPresenter extends BaseFragmentPresenterImpl {
                             }
                         });
                         ContractBuilder contractBuilder = new ContractBuilder();
-                        Script script = contractBuilder.createMethodScript(abiParams, gasLimit,contractAddress);
+                        Script script = contractBuilder.createMethodScript(abiParams, gasLimit,gasPrice,contractAddress);
                         //TODO
-                        sendTx(contractBuilder.createTransactionHash(script,unspentOutputs,gasLimit,feePerKb,fee,getView().getContext()));
+                        sendTx(contractBuilder.createTransactionHash(script,unspentOutputs,gasLimit,gasPrice,feePerKb,fee,getView().getContext()));
                     }
                 });
     }

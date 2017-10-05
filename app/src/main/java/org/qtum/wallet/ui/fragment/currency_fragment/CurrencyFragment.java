@@ -27,6 +27,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontTextView;
+import org.qtum.wallet.utils.SearchBar;
 import org.qtum.wallet.utils.SearchBarListener;
 
 import java.util.ArrayList;
@@ -48,11 +49,14 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
     protected
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.search_bar)
+    SearchBar searchBar;
+
 
     @BindView(R.id.tv_currency_title)
     TextView mTextViewCurrencyTitle;
     @BindView(R.id.ll_currency)
-    FrameLayout mFrameLayoutBase;
+    RelativeLayout mFrameLayoutBase;
 
     @OnClick({R.id.ibt_back})
     public void onClick(View view) {
@@ -95,6 +99,7 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
                     hideKeyBoard();
             }
         });
+        searchBar.setListener(this);
     }
 
     @Override

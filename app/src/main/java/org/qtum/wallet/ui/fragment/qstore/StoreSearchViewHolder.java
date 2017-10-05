@@ -39,7 +39,7 @@ public class StoreSearchViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(QSearchItem item){
         this.item = item;
-        icon.setImageResource(R.drawable.ic_token);
+        icon.setImageResource(item.getIcon());
         title.setText(item.name);
         cost.setText(String.valueOf(item.price));
     }

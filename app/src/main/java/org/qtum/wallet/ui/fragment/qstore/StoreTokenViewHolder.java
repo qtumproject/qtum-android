@@ -35,22 +35,10 @@ public class StoreTokenViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(QstoreItem item){
         this.item = item;
-        icon.setImageResource(getIconByType(item.type));
+        icon.setImageResource(item.getIcon());
         tokenName.setText(item.name);
         tokenType.setText(item.type);
         tokenCost.setText(String.valueOf(item.price));
     }
 
-    private int getIconByType(String type){
-        switch (type){
-            case "token":
-                return R.drawable.ic_supertoken;
-            case "other":
-                return R.drawable.ic_smart_contract;
-            case "crowdsale":
-                return R.drawable.ic_crowdsale;
-            default:
-                return R.drawable.ic_smart_contract;
-        }
-    }
 }

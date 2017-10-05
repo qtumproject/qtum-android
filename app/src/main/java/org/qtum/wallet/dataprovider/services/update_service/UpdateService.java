@@ -564,6 +564,10 @@ public class UpdateService extends Service {
         }
     }
 
+    public TokenBalance getTokenBalance(String address){
+        return mAllTokenBalanceList.get(address);
+    }
+
     public void removeTokenBalanceChangeListener(String address){
         mStringTokenBalanceChangeListenerHashMap.remove(address);
     }

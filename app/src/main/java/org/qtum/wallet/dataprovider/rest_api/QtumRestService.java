@@ -3,7 +3,9 @@ package org.qtum.wallet.dataprovider.rest_api;
 import org.qtum.wallet.model.gson.BlockChainInfo;
 
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
+import org.qtum.wallet.model.gson.DGPInfo;
 import org.qtum.wallet.model.gson.FeePerKb;
+import org.qtum.wallet.model.gson.QstoreContractType;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
@@ -66,10 +68,11 @@ interface QtumRestService {
     Observable<List<QstoreItem>> getWatsNew();
 
     @GET("/contracts/{count}/{offset}")
-    Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset,/* @Query("type_name") String type,*/ @Query("tags[]") String[] tags); //by tag
+    Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset, @Query("type") String type, @Query("tags[]") String[] tags); //by tag
 
     @GET("/contracts/{count}/{offset}")
-    Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset, @Query("name") String name); //by name
+    Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset, @Query("type") String type, @Query("name") String name); //by name
+
 
      @GET("/contracts/{contract_id}")
     Observable<QstoreContract> getContract(@Path("contract_id") String contractId);
@@ -92,5 +95,10 @@ interface QtumRestService {
     @GET("/estimate-fee-per-kb")
     Observable<FeePerKb> getEstimateFeePerKb(@Query("nBlocks") int nBlocks);
 
+    @GET("/contracts/types")
+    Observable<List<QstoreContractType>> getContractTypes();
+
+    @GET("/blockchain/dgpinfo")
+    Observable<DGPInfo> getDGPInfo();
 
 }
