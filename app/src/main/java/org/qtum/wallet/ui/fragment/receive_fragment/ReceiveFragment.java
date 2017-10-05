@@ -61,9 +61,11 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func0;
+import rx.schedulers.Schedulers;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -413,6 +415,11 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
         }
     }
 
+    @Override
+    public void updateBalance(String balance) {
+        updateBalance(balance, null);
+    }
+
     private void rebuildDrawingCash() {
         mImageViewQrCode.setDrawingCacheEnabled(false);
         mImageViewQrCode.setDrawingCacheEnabled(true);
@@ -420,7 +427,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
     }
 
     @Override
-    public Observable<Bitmap> imageEncodeObserveble(final String param) {
+    public Subscription imageEncodeObservable(final String param) {
         return Observable.defer(new Func0<Observable<Bitmap>>() {
             @Override
             public Observable<Bitmap> call() {
@@ -431,7 +438,23 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
                     return Observable.error(e);
                 }
             }
-        });
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Bitmap>() {
+                    @Override
+                    public void call(Bitmap bitmap) {
+                        if (bitmap != null) {
+                            setQrCode(bitmap);
+                        }
+
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                });
     }
 
     private Bitmap textToImageEncode(String Value) throws WriterException {

@@ -1,15 +1,10 @@
 package org.qtum.wallet.ui.fragment.receive_fragment;
 
-import android.graphics.Bitmap;
-
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import java.math.BigDecimal;
 
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 public class ReceivePresenterImpl extends BaseFragmentPresenterImpl implements ReceivePresenter {
 
@@ -19,7 +14,7 @@ public class ReceivePresenterImpl extends BaseFragmentPresenterImpl implements R
     private String mTokenAddress;
     private Subscription subscription;
 
-    ReceivePresenterImpl(ReceiveView view, ReceiveInteractor interactor) {
+    public ReceivePresenterImpl(ReceiveView view, ReceiveInteractor interactor) {
         mReceiveView = view;
         mReceiveInteractor = interactor;
     }
@@ -39,7 +34,7 @@ public class ReceivePresenterImpl extends BaseFragmentPresenterImpl implements R
             if (getView().isUnconfirmedBalanceValid(unconfirmedBalanceString)) {
                 getView().updateBalance(getInteractor().formatBalance(balanceString), getInteractor().formatUnconfirmedBalance(unconfirmedBalance));
             } else {
-                getView().updateBalance(getInteractor().formatBalance(balanceString), null);
+                getView().updateBalance(getInteractor().formatBalance(balanceString));
             }
         }
     }
@@ -61,23 +56,7 @@ public class ReceivePresenterImpl extends BaseFragmentPresenterImpl implements R
         mAmount = s;
         String result = buildFullQrCodeData(getInteractor().getCurrentReceiveAddress(), mAmount, mTokenAddress);
         getView().showSpinner();
-        subscription = getView().imageEncodeObserveble(result)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Bitmap>() {
-                    @Override
-                    public void call(Bitmap bitmap) {
-                        if (bitmap != null) {
-                            getView().setQrCode(bitmap);
-                        }
-
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                });
+        subscription = getView().imageEncodeObservable(result);
     }
 
     @Override
@@ -85,23 +64,7 @@ public class ReceivePresenterImpl extends BaseFragmentPresenterImpl implements R
         mTokenAddress = address;
         String result = buildFullQrCodeData(getInteractor().getCurrentReceiveAddress(), mAmount, mTokenAddress);
         getView().showSpinner();
-        subscription = getView().imageEncodeObserveble(result)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Bitmap>() {
-                    @Override
-                    public void call(Bitmap bitmap) {
-                        if (bitmap != null) {
-                            getView().setQrCode(bitmap);
-                        }
-
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                });
+        subscription = getView().imageEncodeObservable(result);
     }
 
     private String getFormattedReceiveAddr(String addr) {
@@ -136,23 +99,7 @@ public class ReceivePresenterImpl extends BaseFragmentPresenterImpl implements R
     public void changeAddress() {
         String result = buildFullQrCodeData(getInteractor().getCurrentReceiveAddress(), mAmount, mTokenAddress);
         getView().showSpinner();
-        subscription = getView().imageEncodeObserveble(result)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Bitmap>() {
-                    @Override
-                    public void call(Bitmap bitmap) {
-                        if (bitmap != null) {
-                            getView().setQrCode(bitmap);
-                        }
-
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                });
+        subscription = getView().imageEncodeObservable(result);
         getView().setUpAddress(getInteractor().getCurrentReceiveAddress());
     }
 
