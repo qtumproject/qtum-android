@@ -125,6 +125,9 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     int mMaxFee;
     int step = 100;
 
+    boolean seekBarChangeValue = false;
+    boolean textViewChangeValue = false;
+
     int mMinGasPrice;
     int mMaxGasPrice;
     int stepGasPrice = 5;
@@ -328,7 +331,12 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(textViewChangeValue){
+                    textViewChangeValue=false;
+                    return;
+                }
                 double value = (mMinFee + (progress * step)) / 100000000.;
+                seekBarChangeValue = true;
                 mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
             }
 
@@ -381,6 +389,39 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
 
         mTextInputEditTextAddress.setOnTouchListener(mOnTouchListener);
         mLinearLayoutCurrency.setOnTouchListener(mOnTouchListener);
+
+        mTextInputEditTextFee.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(seekBarChangeValue){
+                    seekBarChangeValue = false;
+                    return;
+                }
+                if(!s.toString().isEmpty()) {
+                    Double fee = Double.valueOf(s.toString()) * 100000000;
+                    textViewChangeValue = true;
+                    int progress;
+                    if (fee < mMinFee) {
+                        progress = mMinFee / step;
+                    } else if (fee > mMaxFee) {
+                        progress = mMaxFee / step;
+                    } else {
+                        progress = fee.intValue() / step;
+                    }
+                    mSeekBar.setProgress(progress);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 
