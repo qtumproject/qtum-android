@@ -8,7 +8,7 @@ import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.contract_confirm_fragment.ContractConfirmFragment;
-import org.qtum.wallet.ui.fragment.templates_fragment.TemplatesFragmentInteractorImpl;
+import org.qtum.wallet.ui.fragment.templates_fragment.TemplatesInteractorImpl;
 
 import java.util.List;
 
@@ -17,14 +17,14 @@ public class SetYourTokenFragmentPresenterImpl extends BaseFragmentPresenterImpl
 
     private SetYourTokenFragmentView view;
     private Context mContext;
-    private TemplatesFragmentInteractorImpl interactor;
+    private TemplatesInteractorImpl interactor;
 
     private ContractMethod contractMethod;
 
     public SetYourTokenFragmentPresenterImpl(SetYourTokenFragmentView view) {
         this.view = view;
         this.mContext = getView().getContext();
-        interactor = new TemplatesFragmentInteractorImpl();
+        interactor = new TemplatesInteractorImpl(mContext);
     }
 
     @Override
