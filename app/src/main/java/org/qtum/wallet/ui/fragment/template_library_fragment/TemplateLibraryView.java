@@ -6,7 +6,8 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 import java.util.List;
 
-interface TemplateLibraryFragmentView extends BaseFragmentView {
+interface TemplateLibraryView extends BaseFragmentView {
     void setUpTemplateList(List<ContractTemplate> contractTemplateList);
+
     boolean isTokenLibrary();
 }
