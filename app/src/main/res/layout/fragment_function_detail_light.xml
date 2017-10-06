@@ -48,152 +48,41 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/activity_horizontal_margin"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_above="@+id/ll_fee"/>
+            android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ll_fee"
-            android:layout_marginBottom="16dp"
-            android:layout_above="@+id/til_fee"
-            android:layout_alignParentStart="true">
-
-            <org.qtum.wallet.utils.FontTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/tv_min_fee"
-                app:typefaceAsset="@string/proximaNovaRegular"
-                android:textColor="@color/black"/>
-
-            <SeekBar
-                android:id="@+id/seekBar"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:thumb="@drawable/seekbar_thumb_light"
-                android:progressDrawable="@drawable/seekbar_progress_light"/>
-
-            <org.qtum.wallet.utils.FontTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/tv_max_fee"
-                app:typefaceAsset="@string/proximaNovaRegular"
-                android:textColor="@color/black"/>
-
-        </LinearLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_fee"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:theme="@style/InputTextLight"
-            android:layout_above="@+id/ll_gas_price_and_gas_limit"
-            android:layout_marginBottom="16dp"
-            android:layout_alignParentStart="true">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_fee"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:splitMotionEvents="false"
+                android:layout_alignParentTop="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:hint="@string/_fee"
-                android:inputType="numberDecimal"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/ll_gas_price_and_gas_limit"
-            android:layout_above="@+id/seek_bar_container">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <org.qtum.wallet.utils.FontTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Gas Price: "
-                    app:typefaceAsset="@string/proximaNovaRegular"
-                    android:textColor="@color/black"/>
-                <org.qtum.wallet.utils.FontTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/tv_gas_price"
-                    app:typefaceAsset="@string/proximaNovaRegular"
-                    android:textColor="@color/light_blue"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <org.qtum.wallet.utils.FontTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Gas Limit: "
-                    app:typefaceAsset="@string/proximaNovaRegular"
-                    android:textColor="@color/black"/>
-                <org.qtum.wallet.utils.FontTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/tv_gas_limit"
-                    app:typefaceAsset="@string/proximaNovaRegular"
-                    android:textColor="@color/light_blue"/>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/seek_bar_container"
-            android:layout_above="@+id/bt_edit_close"
-            android:orientation="vertical">
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ll_gas_price"
-                android:layout_marginBottom="16dp">
+                android:id="@+id/ll_fee"
+                android:layout_margin = "16dp"
+                android:layout_below="@+id/recycler_view"
+                android:layout_alignParentStart="true">
 
                 <org.qtum.wallet.utils.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:id="@+id/tv_min_gas_price"
+                    android:id="@+id/tv_min_fee"
                     app:typefaceAsset="@string/proximaNovaRegular"
                     android:textColor="@color/black"/>
 
                 <SeekBar
-                    android:id="@+id/seekBar_gas_price"
+                    android:id="@+id/seekBar"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -206,105 +95,245 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:id="@+id/tv_max_gas_price"
+                    android:id="@+id/tv_max_fee"
                     app:typefaceAsset="@string/proximaNovaRegular"
                     android:textColor="@color/black"/>
 
             </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:theme="@style/InputTextLight"
+                android:layout_below="@id/ll_fee"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_alignParentStart="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_fee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:hint="@string/_fee"
+                    android:inputType="numberDecimal"/>
+            </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ll_gas_limit"
-                android:layout_marginBottom="16dp">
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/til_fee"
+                android:gravity="bottom"
+                android:orientation="vertical">
 
-                <org.qtum.wallet.utils.FontTextView
+                <RelativeLayout
+                    android:id="@+id/gas_management_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/tv_min_gas_limit"
-                    app:typefaceAsset="@string/proximaNovaRegular"
-                    android:textColor="@color/black"/>
+                    android:layout_above="@+id/bt_send"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin">
 
-                <SeekBar
-                    android:id="@+id/seekBar_gas_limit"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:thumb="@drawable/seekbar_thumb_light"
-                    android:progressDrawable="@drawable/seekbar_progress_light"/>
+                    <LinearLayout
+                        android:id="@+id/ll_gas_price_and_gas_limit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                <org.qtum.wallet.utils.FontTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/tv_max_gas_limit"
-                    app:typefaceAsset="@string/proximaNovaRegular"
-                    android:textColor="@color/black"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <org.qtum.wallet.utils.FontTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Gas Price: "
+                                android:textColor="@color/black"
+                                app:typefaceAsset="@string/proximaNovaRegular"/>
+
+                            <org.qtum.wallet.utils.FontTextView
+                                android:id="@+id/tv_gas_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="@color/light_blue"
+                                app:typefaceAsset="@string/proximaNovaRegular"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <org.qtum.wallet.utils.FontTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Gas Limit: "
+                                android:textColor="@color/black"
+                                app:typefaceAsset="@string/proximaNovaRegular"/>
+
+                            <org.qtum.wallet.utils.FontTextView
+                                android:id="@+id/tv_gas_limit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="@color/light_blue"
+                                app:typefaceAsset="@string/proximaNovaRegular"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/seek_bar_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ll_gas_price_and_gas_limit"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/ll_gas_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp">
+
+                            <org.qtum.wallet.utils.FontTextView
+                                android:id="@+id/tv_min_gas_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="@color/black"
+                                app:typefaceAsset="@string/proximaNovaRegular"/>
+
+                            <SeekBar
+                                android:id="@+id/seekBar_gas_price"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_weight="1"
+                                android:progressDrawable="@drawable/seekbar_progress_light"
+                                android:thumb="@drawable/seekbar_thumb_light"/>
+
+                            <org.qtum.wallet.utils.FontTextView
+                                android:id="@+id/tv_max_gas_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="@color/black"
+                                app:typefaceAsset="@string/proximaNovaRegular"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_gas_limit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp">
+
+                            <org.qtum.wallet.utils.FontTextView
+                                android:id="@+id/tv_min_gas_limit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="@color/black"
+                                app:typefaceAsset="@string/proximaNovaRegular"/>
+
+                            <SeekBar
+                                android:id="@+id/seekBar_gas_limit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_weight="1"
+                                android:progressDrawable="@drawable/seekbar_progress_light"
+                                android:thumb="@drawable/seekbar_thumb_light"/>
+
+                            <org.qtum.wallet.utils.FontTextView
+                                android:id="@+id/tv_max_gas_limit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="@color/black"
+                                app:typefaceAsset="@string/proximaNovaRegular"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <org.qtum.wallet.utils.FontButton
+                        android:id="@+id/bt_edit_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/seek_bar_container"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="16dp"
+                        android:background="@drawable/btn_gray_corner_background_light"
+                        android:gravity="center"
+                        android:padding="16dp"
+                        android:text="@string/edit"
+                        android:textAllCaps="true"
+                        android:textColor="@color/bt_grey_text_color"
+                        android:textSize="16sp"
+                        app:typeface="@string/proximaNovaSemibold"/>
+
+                    <LinearLayout
+                        android:id="@+id/buttons"
+                        android:layout_below="@id/bt_edit_close"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
+
+                        <org.qtum.wallet.utils.FontButton
+                            android:id="@+id/cancel"
+                            android:text="@string/cancel"
+                            android:gravity="center"
+                            android:background="@drawable/btn_gray_corner_background_light"
+                            android:padding="16dp"
+                            android:textSize="16sp"
+                            android:textColor="@color/bt_grey_text_color"
+                            app:typeface="@string/proximaNovaSemibold"
+                            android:textAllCaps="true"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"/>
+
+                        <org.qtum.wallet.utils.FontButton
+                            android:id="@+id/call"
+                            android:text="@string/call"
+                            android:gravity="center"
+                            android:padding="16dp"
+                            android:textSize="16sp"
+                            android:background="@drawable/btn_sea_corner_background_light"
+                            android:textColor="@color/white"
+                            app:typeface="@string/proximaNovaSemibold"
+                            android:textAllCaps="true"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
 
             </LinearLayout>
 
+        </RelativeLayout>
 
-        </LinearLayout>
-
-        <org.qtum.wallet.utils.FontButton
-            android:id="@+id/bt_edit_close"
-            android:text="@string/edit"
-            android:gravity="center"
-            android:background="@drawable/btn_gray_corner_background_light"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:textColor="@color/bt_grey_text_color"
-            app:typeface="@string/proximaNovaSemibold"
-            android:textAllCaps="true"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_above="@id/buttons"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"/>
-
-        <LinearLayout
-            android:id="@+id/buttons"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_height="wrap_content">
-
-            <org.qtum.wallet.utils.FontButton
-                android:id="@+id/cancel"
-                android:text="@string/cancel"
-                android:gravity="center"
-                android:background="@drawable/btn_gray_corner_background_light"
-                android:padding="16dp"
-                android:textSize="16sp"
-                android:textColor="@color/bt_grey_text_color"
-                app:typeface="@string/proximaNovaSemibold"
-                android:textAllCaps="true"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"/>
-
-            <org.qtum.wallet.utils.FontButton
-                android:id="@+id/call"
-                android:text="@string/call"
-                android:gravity="center"
-                android:padding="16dp"
-                android:textSize="16sp"
-                android:background="@drawable/btn_sea_corner_background_light"
-                android:textColor="@color/white"
-                app:typeface="@string/proximaNovaSemibold"
-                android:textAllCaps="true"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"/>
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
