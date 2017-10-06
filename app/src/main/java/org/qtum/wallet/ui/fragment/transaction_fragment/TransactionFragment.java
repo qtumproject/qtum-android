@@ -20,7 +20,7 @@ import org.qtum.wallet.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public abstract class TransactionFragment extends BaseFragment implements TransactionFragmentView {
+public abstract class TransactionFragment extends BaseFragment implements TransactionView {
 
     @BindView(org.qtum.wallet.R.id.tv_value)
     TextView mTextViewValue;
@@ -45,7 +45,7 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
     FontTextView notConfFlag;
 
     @OnClick({org.qtum.wallet.R.id.ibt_back})
-    public void onClick(View view){
+    public void onClick(View view) {
         switch (view.getId()) {
             case org.qtum.wallet.R.id.ibt_back:
                 getActivity().onBackPressed();
@@ -55,7 +55,7 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
 
     private final static String POSITION = "position";
 
-    private TransactionFragmentPresenterImpl mTransactionFragmentPresenter;
+    private TransactionPresenter mTransactionPresenter;
 
     public static BaseFragment newInstance(Context context, int position) {
         BaseFragment transactionFragment = Factory.instantiateFragment(context, TransactionFragment.class);
@@ -67,12 +67,12 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
 
     @Override
     protected void createPresenter() {
-        mTransactionFragmentPresenter = new TransactionFragmentPresenterImpl(this);
+        mTransactionPresenter = new TransactionPresenterImpl(this, new TransactionInteractorImpl(getContext()));
     }
 
     @Override
-    protected TransactionFragmentPresenterImpl getPresenter() {
-        return mTransactionFragmentPresenter;
+    protected TransactionPresenter getPresenter() {
+        return mTransactionPresenter;
     }
 
     @Override
@@ -86,8 +86,8 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         super.initializeViews();
     }
 
-    protected void setTransactionData(String value, String receivedTime){
-        if(mViewPager.getAdapter() == null) {
+    protected void setTransactionData(String value, String receivedTime) {
+        if (mViewPager.getAdapter() == null) {
             mTextViewValue.setText(value);
 
             mTextViewReceivedTime.setText(receivedTime);
@@ -96,9 +96,12 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
             tabIndicator.setupWithViewPager(mViewPager, true);
             mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                }
+
                 @Override
-                public void onPageScrollStateChanged(int state) {}
+                public void onPageScrollStateChanged(int state) {
+                }
 
                 @Override
                 public void onPageSelected(int position) {
@@ -113,7 +116,7 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
     }
 
 
-    private class TransactionPagerAdapter extends FragmentStatePagerAdapter{
+    private class TransactionPagerAdapter extends FragmentStatePagerAdapter {
 
         public TransactionPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -122,13 +125,13 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         @Override
         public Fragment getItem(int position) {
             Fragment transactionDetailFragment = null;
-            switch (position){
-                case TransactionDetailFragment.ACTION_FROM:{
-                    transactionDetailFragment =  TransactionDetailFragment.newInstance(getContext(), TransactionDetailFragment.ACTION_FROM,
+            switch (position) {
+                case TransactionDetailFragment.ACTION_FROM: {
+                    transactionDetailFragment = TransactionDetailFragment.newInstance(getContext(), TransactionDetailFragment.ACTION_FROM,
                             getArguments().getInt(POSITION));
                     break;
                 }
-                case TransactionDetailFragment.ACTION_TO:{
+                case TransactionDetailFragment.ACTION_TO: {
                     transactionDetailFragment = TransactionDetailFragment.newInstance(getContext(), TransactionDetailFragment.ACTION_TO,
                             getArguments().getInt(POSITION));
                     break;

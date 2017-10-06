@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
-import rx.Observable;
+import rx.Subscription;
 
 
-interface ReceiveView extends BaseFragmentView {
+public interface ReceiveView extends BaseFragmentView {
     void setQrCode(Bitmap bitmap);
 
     void showSpinner();
@@ -19,6 +19,8 @@ interface ReceiveView extends BaseFragmentView {
 
     void updateBalance(String balance, String unconfirmedBalance);
 
+    void updateBalance(String balance);
+
     void showToast();
 
     void openFragmentForResult(Fragment fragment);
@@ -27,7 +29,7 @@ interface ReceiveView extends BaseFragmentView {
 
     String getTokenBalance();
 
-    Observable<Bitmap> imageEncodeObserveble(final String param);
+    Subscription imageEncodeObservable(final String param);
 
     boolean isAmountValid(String amount);
 

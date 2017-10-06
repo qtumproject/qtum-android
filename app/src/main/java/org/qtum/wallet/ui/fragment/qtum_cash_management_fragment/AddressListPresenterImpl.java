@@ -96,30 +96,6 @@ public class AddressListPresenterImpl extends BaseFragmentPresenterImpl implemen
                 });
     }
 
-//    public void transfer(DeterministicKeyWithBalance keyWithBalanceTo, DeterministicKeyWithBalance keyWithBalanceFrom, String amountString, TransferListener listener) {
-//        if (TextUtils.isEmpty(amountString)) {
-//            getView().setAlertDialog(mContext.getResources().getString(R.string.error),
-//                    mContext.getResources().getString(R.string.enter_valid_amount_value),
-//                    mContext.getResources().getString(R.string.ok),
-//                    BaseFragment.PopUpType.error);
-//            return;
-//        }
-//
-//        if (Float.valueOf(amountString) <= 0) {
-//            getView().setAlertDialog(R.string.error,
-//                    R.string.transaction_amount_cant_be_zero,
-//                    R.string.ok,
-//                    BaseFragment.PopUpType.error);
-//            return;
-//        }
-//
-//
-//        getView().getMainActivity().setIconChecked(3);
-//        Fragment fragment = SendFragment.newInstance(keyWithBalanceFrom.getAddress(), keyWithBalanceTo.getAddress(), amountString, "", getView().getContext());
-//        getView().getMainActivity().setRootFragment(fragment);
-//        getView().openRootFragment(fragment);
-//    }
-
     public AddressListInteractor getInteractor() {
         return mAddressListInteractor;
     }

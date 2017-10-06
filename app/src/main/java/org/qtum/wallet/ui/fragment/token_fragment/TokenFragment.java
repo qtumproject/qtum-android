@@ -17,11 +17,13 @@ import android.widget.RelativeLayout;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
+import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AdressesListFragmentToken;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.token_fragment.dialogs.ShareDialogFragment;
 import org.qtum.wallet.utils.ClipboardUtils;
+import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.StackCollapseLinearLayout;
 
@@ -30,7 +32,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 
 
-public abstract class TokenFragment extends BaseFragment implements TokenFragmentView {
+public abstract class TokenFragment extends BaseFragment implements TokenView {
 
     private static final String tokenKey = "tokenInfo";
     private static final String qtumAddressKey = "qtumAddressKey";
@@ -48,7 +50,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
         return fragment;
     }
 
-    private TokenFragmentPresenter presenter;
+    private TokenPresenter presenter;
 
     @OnClick(R.id.bt_back)
     public void onBackClick() {
@@ -119,7 +121,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
     ShareDialogFragment shareDialog;
 
     @OnLongClick({R.id.tv_token_address, R.id.contract_address_value})
-    public boolean onAddressLongClick(){
+    public boolean onAddressLongClick() {
         ClipboardUtils.copyToClipBoard(getContext(), tokenAddress.getText().toString(), new ClipboardUtils.CopyCallback() {
             @Override
             public void onCopyToClipBoard() {
@@ -137,13 +139,18 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
 
     @OnClick(R.id.token_addr_btn)
     public void onTokenAddrClick() {
-        presenter.onReceiveClick();
+        BaseFragment receiveFragment = ReceiveFragment.newInstance(getContext(), presenter.getToken().getContractAddress(), getTokenBalance());
+        openFragment(receiveFragment);
     }
 
     @OnClick(R.id.iv_choose_address)
     public void onChooseAddressClick() {
-        presenter.onChooseAddressClick();
+        if (!TextUtils.isEmpty(getCurrency())) {
+            BaseFragment addressListFragment = AdressesListFragmentToken.newInstance(getContext(), getPresenter().getToken(), getCurrency());
+            openFragment(addressListFragment);
+        }
     }
+
 
     @Override
     public String getCurrency() {
@@ -152,11 +159,11 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
 
     @Override
     protected void createPresenter() {
-        presenter = new TokenFragmentPresenter(this);
+        presenter = new TokenPresenterImpl(this, new TokenInteractorImpl(getContext()));
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected TokenPresenter getPresenter() {
         return presenter;
     }
 
@@ -173,6 +180,9 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
 
         Token token = (Token) getArguments().getSerializable(tokenKey);
         presenter.setToken(token);
+        setBalance(token.getLastBalance().toPlainString());
+        setTokenAddress(token.getContractAddress());
+        setSenderAddress(token.getSenderAddress());
 
         collapseLinearLayout.requestLayout();
         headerPAdding = convertDpToPixel(16, getContext());
@@ -226,5 +236,53 @@ public abstract class TokenFragment extends BaseFragment implements TokenFragmen
         //if(!TextUtils.isEmpty(address)) {
         //senderAddrValue.setText(address);
         //}
+    }
+
+    @Override
+    public boolean isAbiEmpty(String abi) {
+        return TextUtils.isEmpty(abi);
+    }
+
+    @Override
+    public ContractManagementHelper.GetPropertyValueCallBack getTotalSupplyValueCallback() {
+        return new ContractManagementHelper.GetPropertyValueCallBack() {
+            @Override
+            public void onSuccess(String value) {
+                onContractPropertyUpdated(TokenFragment.totalSupply, presenter.onTotalSupplyPropertySuccess(getPresenter().getToken(), value));
+            }
+        };
+    }
+
+    @Override
+    public ContractManagementHelper.GetPropertyValueCallBack getDecimalsValueCallback() {
+        return new ContractManagementHelper.GetPropertyValueCallBack() {
+            @Override
+            public void onSuccess(String value) {
+                onContractPropertyUpdated(TokenFragment.decimals, value);
+                if (value != null) {
+                    getPresenter().onDecimalsPropertySuccess(value);
+                }
+            }
+        };
+    }
+
+    @Override
+    public ContractManagementHelper.GetPropertyValueCallBack getSymbolValueCallback() {
+        return new ContractManagementHelper.GetPropertyValueCallBack() {
+            @Override
+            public void onSuccess(String value) {
+                onContractPropertyUpdated(TokenFragment.symbol, value);
+            }
+        };
+    }
+
+    @Override
+    public ContractManagementHelper.GetPropertyValueCallBack getNameValueCallback() {
+        return new ContractManagementHelper.GetPropertyValueCallBack() {
+            @Override
+            public void onSuccess(String value) {
+                onContractPropertyUpdated(TokenFragment.name, value);
+            }
+        };
     }
 }

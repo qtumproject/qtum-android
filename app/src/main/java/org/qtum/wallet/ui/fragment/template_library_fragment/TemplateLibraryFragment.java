@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public abstract class TemplateLibraryFragment extends BaseFragment implements TemplateLibraryFragmentView{
+public abstract class TemplateLibraryFragment extends BaseFragment implements TemplateLibraryView {
 
     private static final String IS_TOKEN_LIBRARY = "is_token_library";
 
@@ -32,7 +32,7 @@ public abstract class TemplateLibraryFragment extends BaseFragment implements Te
         getActivity().onBackPressed();
     }
 
-    TemplateLibraryFragmentPresenter mTemplateLibraryFragmentPresenter;
+    TemplateLibraryPresenter mTemplateLibraryPresenterImpl;
 
     public static BaseFragment newInstance(Context context, boolean isTokenLibrary) {
         Bundle args = new Bundle();
@@ -44,12 +44,12 @@ public abstract class TemplateLibraryFragment extends BaseFragment implements Te
 
     @Override
     protected void createPresenter() {
-        mTemplateLibraryFragmentPresenter = new TemplateLibraryFragmentPresenter(this);
+        mTemplateLibraryPresenterImpl = new TemplateLibraryPresenterImpl(this, new TemplateLibraryInteractorImpl(getContext()));
     }
 
     @Override
-    protected TemplateLibraryFragmentPresenter getPresenter() {
-        return mTemplateLibraryFragmentPresenter;
+    protected TemplateLibraryPresenter getPresenter() {
+        return mTemplateLibraryPresenterImpl;
     }
 
     @Override
@@ -63,11 +63,11 @@ public abstract class TemplateLibraryFragment extends BaseFragment implements Te
         contractList.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    protected void initializeRecyclerView(List<ContractTemplate> contractFullTemplateList, int resId){
+    protected void initializeRecyclerView(List<ContractTemplate> contractFullTemplateList, int resId) {
         contractList.setAdapter(new TemplatesRecyclerAdapter(contractFullTemplateList, new TemplateSelectListener() {
             @Override
             public void onSelectContract(ContractTemplate contractTemplate) {
-                String abiInterface = FileStorageManager.getInstance().readAbiContract(getContext(),contractTemplate.getUuid());
+                String abiInterface = FileStorageManager.getInstance().readAbiContract(getContext(), contractTemplate.getUuid());
                 ((WatchContractFragment) getTargetFragment()).setABIInterfaceForResult(contractTemplate.getName(), abiInterface);
                 getMainActivity().onBackPressed();
             }

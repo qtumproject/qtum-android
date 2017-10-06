@@ -13,9 +13,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public abstract class BackupContractsFragment extends BaseFragment implements BackupContractsFragmentView {
+public abstract class BackupContractsFragment extends BaseFragment implements BackupContractsView {
     
-    private BackupContractsFragmentPresenter mBackupContractsFragmentPresenter;
+    private BackupContractsPresenterImpl mBackupContractsFragmentPresenter;
 
     @BindView(R.id.tv_file_size)
     FontTextView mTextViewFileSize;
@@ -40,11 +40,11 @@ public abstract class BackupContractsFragment extends BaseFragment implements Ba
     
     @Override
     protected void createPresenter() {
-        mBackupContractsFragmentPresenter = new BackupContractsFragmentPresenter(this);
+        mBackupContractsFragmentPresenter = new BackupContractsPresenterImpl(this);
     }
 
     @Override
-    protected BackupContractsFragmentPresenter getPresenter() {
+    protected BackupContractsPresenterImpl getPresenter() {
         return mBackupContractsFragmentPresenter;
     }
 

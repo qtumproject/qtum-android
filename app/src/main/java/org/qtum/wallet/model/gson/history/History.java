@@ -33,6 +33,7 @@ public class History {
     @SerializedName("vin")
     @Expose
     private List<Vin> vin = null;
+    private BigDecimal changeInBalance;
 
     /**
      * Constructor for unit tests
@@ -48,7 +49,26 @@ public class History {
         this.blockTime = blockTime;
     }
 
-    private BigDecimal changeInBalance;
+    /**
+     * Constructor for unit tests
+     */
+    public History(Long blockTime, List<Vout> vout, List<Vin> vin, BigDecimal changeInBalance, Integer blockHeight) {
+        this.blockTime = blockTime;
+        this.vout = vout;
+        this.vin = vin;
+        this.changeInBalance = changeInBalance;
+        this.blockHeight = blockHeight;
+    }
+
+    /**
+     * Constructor for unit tests
+     */
+    public History(List<Vout> vout, List<Vin> vin, BigDecimal changeInBalance, Integer blockHeight) {
+        this.vout = vout;
+        this.vin = vin;
+        this.changeInBalance = changeInBalance;
+        this.blockHeight = blockHeight;
+    }
 
     public Long getBlockTime() {
         return blockTime;

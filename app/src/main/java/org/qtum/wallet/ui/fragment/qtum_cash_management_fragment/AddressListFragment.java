@@ -80,7 +80,6 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
     }
 
     public void transfer(DeterministicKeyWithBalance keyWithBalanceTo, DeterministicKeyWithBalance keyWithBalanceFrom, String amountString) {
-//            , AddressListPresenterImpl.TransferListener listener) {
         if (TextUtils.isEmpty(amountString)) {
             setAlertDialog(getString(R.string.error),
                     getString(R.string.enter_valid_amount_value),
