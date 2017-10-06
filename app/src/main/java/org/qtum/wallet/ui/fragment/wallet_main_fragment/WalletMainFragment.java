@@ -2,6 +2,7 @@ package org.qtum.wallet.ui.fragment.wallet_main_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -9,19 +10,22 @@ import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
+import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenListener;
+import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.other_tokens.OtherTokensFragment;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 
 import butterknife.BindView;
 
 
-public abstract class WalletMainFragment extends BaseFragment implements WalletMainFragmentView {
+public abstract class WalletMainFragment extends BaseFragment implements WalletMainView {
 
     private WalletFragment mWalletFragment;
     private OtherTokensFragment mOtherTokensFragment;
+    private UpdateService mUpdateService;
 
     public static WalletMainFragment newInstance(Context context) {
         Bundle args = new Bundle();
@@ -30,7 +34,7 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
         return fragment;
     }
 
-    private WalletMainFragmentPresenterImpl mWalletMainFragmentPresenter;
+    private WalletMainPresenter mWalletMainPresenter;
 
     @BindView(org.qtum.wallet.R.id.view_pager)
     protected
@@ -38,12 +42,12 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
 
     @Override
     protected void createPresenter() {
-        mWalletMainFragmentPresenter = new WalletMainFragmentPresenterImpl(this);
+        mWalletMainPresenter = new WalletMainPresenterImpl(this, new WalletMainInteractorImpl(getContext()));
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
-        return mWalletMainFragmentPresenter;
+    protected WalletMainPresenter getPresenter() {
+        return mWalletMainPresenter;
     }
 
     @Override
@@ -54,8 +58,40 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getMainActivity().setIconChecked(0);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
+            @Override
+            public void onServiceConnectionChange(boolean isConnecting) {
+                if (isConnecting) {
+                    mUpdateService = getMainActivity().getUpdateService();
+                    mUpdateService.addTokenListener(new TokenListener() {
+                        @Override
+                        public void newToken() {
+                            getPresenter().checkOtherTokens();
+                        }
+                    });
+                }
+            }
+        });
+        getPresenter().checkOtherTokens();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUpdateService.removeTokenListener();
+    }
+
+    @Override
     public void showOtherTokens(boolean isShow) {
-        if(pager.getAdapter() != null) {
+        if (pager.getAdapter() != null) {
             ((FragmentAdapter) pager.getAdapter()).showOtherTokens(isShow);
         }
     }
@@ -73,21 +109,21 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
             return fragment;
         }
 
-       public WalletFragment getWalletFragment(){
+        public WalletFragment getWalletFragment() {
             return (WalletFragment) registeredFragments.get(0);
         }
 
-        OtherTokensFragment getOtherTokensFragment(){
+        OtherTokensFragment getOtherTokensFragment() {
             return (OtherTokensFragment) registeredFragments.get(1);
         }
 
-        public void showOtherTokens(boolean show){
-            NUM_ITEMS = (show)? 2 : 1;
+        public void showOtherTokens(boolean show) {
+            NUM_ITEMS = (show) ? 2 : 1;
             notifyDataSetChanged();
-            if(show){
+            if (show) {
                 showPageIndicator();
                 getOtherTokensFragment().notifyTokenChange();
-            }else{
+            } else {
                 hidePageIndicator();
             }
         }
@@ -120,10 +156,10 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mWalletFragment!=null){
+        if (mWalletFragment != null) {
             mWalletFragment.dismiss();
         }
-        if(mOtherTokensFragment !=null){
+        if (mOtherTokensFragment != null) {
             mOtherTokensFragment.dismiss();
         }
     }
