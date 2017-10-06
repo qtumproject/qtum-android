@@ -45,9 +45,6 @@
             </intent-filter>
         </activity>
 
-        <meta-data android:name="io.fabric.ApiKey" android:value="41db5a1ea3ca62a26f56f41e07085664e42f9f95">
-        </meta-data>
-
         <service
             android:name="org.qtum.wallet.dataprovider.services.update_service.UpdateService"
             android:enabled="true"
