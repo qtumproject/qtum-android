@@ -280,10 +280,12 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
-                    textViewChangeValue = true;
-                    double value = (mMinFee + (mSeekBarFee.getProgress() * stepFee)) / 100000000.;
-                    seekBarChangeValue = true;
-                    mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
+                    if(mSeekBarFee != null) {
+                        textViewChangeValue = true;
+                        double value = (mMinFee + (mSeekBarFee.getProgress() * stepFee)) / 100000000.;
+                        seekBarChangeValue = true;
+                        mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
+                    }
                 }
             }
         });

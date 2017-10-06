@@ -427,10 +427,12 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
-                    textViewChangeValue = true;
-                    double value = (mMinFee + (mSeekBar.getProgress() * step)) / 100000000.;
-                    seekBarChangeValue = true;
-                    mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
+                    if(mSeekBar != null) {
+                        textViewChangeValue = true;
+                        double value = (mMinFee + (mSeekBar.getProgress() * step)) / 100000000.;
+                        seekBarChangeValue = true;
+                        mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
+                    }
                 }
             }
         });
