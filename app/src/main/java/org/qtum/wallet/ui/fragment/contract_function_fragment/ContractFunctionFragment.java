@@ -7,10 +7,12 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +86,9 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
     int mMinFee;
     int mMaxFee;
     int stepFee = 100;
+
+    boolean seekBarChangeValue = false;
+    boolean textViewChangeValue = false;
 
     int mMinGasPrice;
     int mMaxGasPrice;
@@ -165,6 +170,10 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         mSeekBarFee.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(textViewChangeValue){
+                    textViewChangeValue=false;
+                    return;
+                }
                 double value = (mMinFee + (progress * stepFee)) / 100000000.;
                 mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
             }
@@ -233,6 +242,51 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
             mLinearLayoutSeekBarContainer.requestLayout();
         }
+
+        mTextInputEditTextFee.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(seekBarChangeValue){
+                    seekBarChangeValue = false;
+                    return;
+                }
+                if(!s.toString().isEmpty()) {
+                    Double fee = Double.valueOf(s.toString()) * 100000000;
+                    textViewChangeValue = true;
+                    int progress;
+                    if (fee < mMinFee) {
+                        progress = mMinFee / stepFee;
+                    } else if (fee > mMaxFee) {
+                        progress = mMaxFee / stepFee;
+                    } else {
+                        progress = fee.intValue() / stepFee;
+                    }
+                    mSeekBarFee.setProgress(progress);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mTextInputEditTextFee.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    textViewChangeValue = true;
+                    double value = (mMinFee + (mSeekBarFee.getProgress() * stepFee)) / 100000000.;
+                    seekBarChangeValue = true;
+                    mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
+                }
+            }
+        });
     }
 
     @Override
