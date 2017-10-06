@@ -135,6 +135,7 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
                 return;
             }
         }
+        getView().setAlertDialog(mContext.getString(org.qtum.wallet.R.string.token_not_found), "Ok", BaseFragment.PopUpType.error);
     }
 
     public void onCurrencyChoose(Currency currency) {
@@ -218,25 +219,8 @@ public class SendFragmentPresenterImpl extends BaseFragmentPresenterImpl impleme
 
     @Override
     public void onResponse(String publicAddress, double amount, String tokenAddress) {
-        String tokenName = validateTokenExistance(tokenAddress);
-        getView().updateData(publicAddress, amount, tokenName);
-    }
-
-    private String validateTokenExistance(String tokenAddress) {
-
-        if (TextUtils.isEmpty(tokenAddress)) {
-            return "";
-        }
-
-        TinyDB tdb = new TinyDB(mContext);
-        List<Token> tokenList = tdb.getTokenList();
-        for (Token token : tokenList) {
-            if (tokenAddress.equals(token.getContractAddress())) {
-                return token.getContractName();
-            }
-        }
-        getView().setAlertDialog(mContext.getString(org.qtum.wallet.R.string.token_not_found), "Ok", BaseFragment.PopUpType.error);
-        return "";
+        getView().updateData(publicAddress, amount);
+        searchAndSetUpCurrency(tokenAddress);
     }
 
     @Override

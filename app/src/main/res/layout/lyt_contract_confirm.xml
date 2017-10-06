@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:hint="@string/_fee"
-                android:inputType="textPersonName"
+                android:inputType="numberDecimal"
                 android:textColor="@color/colorPrimary"/>
         </android.support.design.widget.TextInputLayout>
 

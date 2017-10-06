@@ -216,10 +216,10 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
         if(!currency.equals("")){
             getPresenter().searchAndSetUpCurrency(currency);
         }
-
-        mLinearLayoutSeekBarContainer.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+        if(appLogoHeight==0) {
+            mLinearLayoutSeekBarContainer.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+        }
     }
-
     ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
@@ -423,6 +423,18 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
             }
         });
 
+        mTextInputEditTextFee.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    textViewChangeValue = true;
+                    double value = (mMinFee + (mSeekBar.getProgress() * step)) / 100000000.;
+                    seekBarChangeValue = true;
+                    mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
+                }
+            }
+        });
+
     }
 
     private void initializeAnim(){
@@ -440,13 +452,9 @@ public abstract class SendFragment extends BaseFragment implements SendFragmentV
     }
 
     @Override
-    public void updateData(String publicAddress, double amount, String tokenAddress) {
+    public void updateData(String publicAddress, double amount) {
         mTextInputEditTextAddress.setText(publicAddress);
         mTextInputEditTextAmount.setText(String.valueOf(amount));
-        if (!TextUtils.isEmpty(tokenAddress)) {
-            mLinearLayoutCurrency.setVisibility(View.VISIBLE);
-            mTextViewCurrency.setText(tokenAddress);
-        }
     }
 
     @Override

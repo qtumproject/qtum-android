@@ -11,7 +11,7 @@ interface SendFragmentView extends BaseFragmentView {
     void openInnerFragmentForResult(Fragment fragment);
     void qrCodeRecognitionToolBar();
     void sendToolBar();
-    void updateData(String publicAddress, double amount, String tokenAddress);
+    void updateData(String publicAddress, double amount);
     void errorRecognition();
     void updateBalance(String balance, String unconfirmedBalance);
     void setUpCurrencyField(Currency currency);
