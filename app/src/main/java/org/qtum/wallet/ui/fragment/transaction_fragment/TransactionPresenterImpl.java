@@ -8,12 +8,12 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-class TransactionPresenterImpl extends BaseFragmentPresenterImpl implements TransactionPresenter {
+public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implements TransactionPresenter {
 
     private TransactionView mTransactionView;
     private TransactionInteractor mTransactionInteractor;
 
-    TransactionPresenterImpl(TransactionView view, TransactionInteractor interactor) {
+    public TransactionPresenterImpl(TransactionView view, TransactionInteractor interactor) {
         mTransactionView = view;
         mTransactionInteractor = interactor;
     }

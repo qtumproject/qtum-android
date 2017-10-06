@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
 
-public class Vout extends TransactionInfo{
+public class Vout extends TransactionInfo {
 
     @SerializedName("value")
     @Expose
@@ -14,8 +14,21 @@ public class Vout extends TransactionInfo{
     @SerializedName("address")
     @Expose
     private String address;
-
     private boolean isOwnAddress = false;
+
+    /**
+     * Constructor for unit testing
+     */
+    public Vout() {
+
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Vout(String address) {
+        this.address = address;
+    }
 
     public boolean isOwnAddress() {
         return isOwnAddress;
