@@ -10,5 +10,4 @@ public interface TemplatesInteractor {
     List<ContractTemplate> getContractTemplates();
 
     int compareDates(String date, String date1);
-
 }

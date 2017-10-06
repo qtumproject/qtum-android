@@ -20,6 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -27,7 +28,7 @@ import rx.schedulers.Schedulers;
 public abstract class StoreCategoriesFragment extends BaseFragment implements StoreCategoriesView, SearchBarListener {
 
     private StoreCategoriesPresenter presenter;
-
+    private Subscription s;
     protected StoreCategoriesAdapter adapter;
 
     @OnClick(R.id.ibt_back)
@@ -60,7 +61,7 @@ public abstract class StoreCategoriesFragment extends BaseFragment implements St
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getPresenter().categoriesObservable()
+        s = getPresenter().categoriesObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<QstoreContractType>>() {
@@ -91,6 +92,14 @@ public abstract class StoreCategoriesFragment extends BaseFragment implements St
     @Override
     protected void createPresenter() {
         presenter = new StoreCategoriesPresenterImpl(this, new StoreCategoriesInteractorImpl(getContext()));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (s != null) {
+            s.unsubscribe();
+        }
     }
 
     @Override
