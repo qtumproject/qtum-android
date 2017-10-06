@@ -12,12 +12,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-class WalletMainPresenterImpl extends BaseFragmentPresenterImpl implements WalletMainPresenter {
+public class WalletMainPresenterImpl extends BaseFragmentPresenterImpl implements WalletMainPresenter {
 
     private WalletMainInteractor mWalletMainFragmentInteractor;
     private WalletMainView mWalletMainView;
 
-    WalletMainPresenterImpl(WalletMainView view, WalletMainInteractor interactor) {
+    public WalletMainPresenterImpl(WalletMainView view, WalletMainInteractor interactor) {
         mWalletMainView = view;
         mWalletMainFragmentInteractor = interactor;
     }
@@ -40,7 +40,7 @@ class WalletMainPresenterImpl extends BaseFragmentPresenterImpl implements Walle
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("TOKENS ERROR", "---------------- " + e.getMessage());
+                        e.printStackTrace();
                     }
 
                     @Override

@@ -17,7 +17,7 @@ class WalletMainInteractorImpl implements WalletMainInteractor {
 
     private WeakReference<Context> mContext;
 
-    WalletMainInteractorImpl(Context context) {
+    public WalletMainInteractorImpl(Context context) {
         this.mContext = new WeakReference<>(context);
     }
 

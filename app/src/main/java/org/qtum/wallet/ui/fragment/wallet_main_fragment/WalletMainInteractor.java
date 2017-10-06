@@ -7,7 +7,7 @@ import java.util.List;
 
 import rx.Observable;
 
-interface WalletMainInteractor {
+public interface WalletMainInteractor {
     Observable<List<Token>> getTokensObservable();
 
 }
