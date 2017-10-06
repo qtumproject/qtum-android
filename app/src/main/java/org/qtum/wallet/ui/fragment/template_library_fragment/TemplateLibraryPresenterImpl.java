@@ -15,7 +15,7 @@ public class TemplateLibraryPresenterImpl extends BaseFragmentPresenterImpl impl
     private TemplateLibraryInteractor mTemplateLibraryInteractor;
 
 
-    TemplateLibraryPresenterImpl(TemplateLibraryView view, TemplateLibraryInteractor interactor) {
+    public TemplateLibraryPresenterImpl(TemplateLibraryView view, TemplateLibraryInteractor interactor) {
         mTemplateLibraryView = view;
         mTemplateLibraryInteractor = interactor;
     }
