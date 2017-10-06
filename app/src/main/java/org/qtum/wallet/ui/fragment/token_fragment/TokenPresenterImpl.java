@@ -71,4 +71,11 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
     public String onTotalSupplyPropertySuccess(Token token, String value) {
         return getInteractor().handleTotalSupplyValue(token, value);
     }
+
+    /**
+     * Setter for unit testing
+     * */
+    public void setAbi(String abi) {
+        this.abi = abi;
+    }
 }

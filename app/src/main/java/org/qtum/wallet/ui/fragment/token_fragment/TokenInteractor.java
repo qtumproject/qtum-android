@@ -23,4 +23,6 @@ public interface TokenInteractor {
     Token setTokenDecimals(Token token, String value);
 
     String handleTotalSupplyValue(Token token, String value);
+
+
 }

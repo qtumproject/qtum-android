@@ -41,6 +41,21 @@ public class Token extends Contract {
         super(isSubscribe, contractAddress);
     }
 
+    /**
+     * Constructor for unit testing
+     */
+    public Token(Integer decimalUnits, BigDecimal lastBalance) {
+        this.decimalUnits = decimalUnits;
+        this.mLastBalance = lastBalance;
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Token(BigDecimal lastBalance) {
+        this.mLastBalance = lastBalance;
+    }
+
     public String getSymbol() {
         return symbol;
     }
