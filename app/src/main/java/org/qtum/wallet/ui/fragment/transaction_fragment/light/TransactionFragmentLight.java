@@ -3,6 +3,7 @@ package org.qtum.wallet.ui.fragment.transaction_fragment.light;
 import android.widget.ImageView;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
+
 import java.util.List;
 import butterknife.BindView;
 

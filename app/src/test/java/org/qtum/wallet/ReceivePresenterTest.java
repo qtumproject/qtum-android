@@ -1,6 +1,5 @@
 package org.qtum.wallet;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -10,13 +9,6 @@ import org.qtum.wallet.ui.fragment.receive_fragment.ReceivePresenterImpl;
 import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveView;
 
 import java.math.BigDecimal;
-
-import rx.Scheduler;
-import rx.android.plugins.RxAndroidPlugins;
-import rx.android.plugins.RxAndroidSchedulersHook;
-import rx.plugins.RxJavaPlugins;
-import rx.plugins.RxJavaSchedulersHook;
-import rx.schedulers.Schedulers;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
