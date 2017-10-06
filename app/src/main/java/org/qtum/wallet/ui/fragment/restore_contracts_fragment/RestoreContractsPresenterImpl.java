@@ -25,7 +25,7 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
 
     private Backup mBackup;
 
-    RestoreContractsPresenterImpl(RestoreContractsView view, RestoreContractsInteractor interactor) {
+    public RestoreContractsPresenterImpl(RestoreContractsView view, RestoreContractsInteractor interactor) {
         mRestoreContractsView = view;
         mRestoreContractsInteractor = interactor;
     }
@@ -243,14 +243,14 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
             return false;
         if (mBackup.getTemplates() != null) {
             for (TemplateJSON templateJSON : mBackup.getTemplates()) {
-                if (!templateJSON.getValidity()) {
+                if (!getInteractor().getTemplateValidity(templateJSON)) {
                     return false;
                 }
             }
         }
         if (mBackup.getContracts() != null) {
             for (ContractJSON contractJSON : mBackup.getContracts()) {
-                if (!contractJSON.getValidity()) {
+                if (!getInteractor().getContractValidity(contractJSON)) {
                     return false;
                 }
             }
@@ -278,5 +278,12 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
 
     public RestoreContractsInteractor getInteractor() {
         return mRestoreContractsInteractor;
+    }
+
+    /**
+     * Setter for unit testing
+     */
+    public void setBackup(Backup mBackup) {
+        this.mBackup = mBackup;
     }
 }

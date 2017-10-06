@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public interface RestoreContractsInteractor {
-    Backup getBackupFromFile(File restoreFile);
+    Backup getBackupFromFile(File restoreFile) throws Exception;
 
     List<ContractTemplate> getContractTemplates();
 
@@ -27,5 +27,9 @@ public interface RestoreContractsInteractor {
     void putTokenList(List<Token> tokenList);
 
     boolean validateContractCreationAddress(ContractJSON contractJSON, List<TemplateJSON> templates);
+
+    boolean getTemplateValidity(TemplateJSON templateJSON);
+
+    boolean getContractValidity(ContractJSON contractJSON);
 
 }

@@ -34,7 +34,7 @@ public class RestoreContractsInteractorImpl implements RestoreContractsInteracto
     }
 
     @Override
-    public Backup getBackupFromFile(File restoreFile) {
+    public Backup getBackupFromFile(File restoreFile) throws Exception {
         Gson gson = new Gson();
         return gson.fromJson(readFile(restoreFile), Backup.class);
     }
@@ -112,5 +112,15 @@ public class RestoreContractsInteractorImpl implements RestoreContractsInteracto
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean getTemplateValidity(TemplateJSON templateJSON) {
+        return templateJSON.getValidity();
+    }
+
+    @Override
+    public boolean getContractValidity(ContractJSON contractJSON) {
+        return contractJSON.getValidity();
     }
 }
