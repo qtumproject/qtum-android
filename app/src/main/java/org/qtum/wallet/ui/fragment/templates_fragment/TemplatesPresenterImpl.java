@@ -14,7 +14,7 @@ public class TemplatesPresenterImpl extends BaseFragmentPresenterImpl implements
     private final TemplatesView view;
     private final TemplatesInteractor interactor;
 
-    TemplatesPresenterImpl(TemplatesView view, TemplatesInteractor interactor) {
+    public TemplatesPresenterImpl(TemplatesView view, TemplatesInteractor interactor) {
         this.view = view;
         this.interactor = interactor;
     }
