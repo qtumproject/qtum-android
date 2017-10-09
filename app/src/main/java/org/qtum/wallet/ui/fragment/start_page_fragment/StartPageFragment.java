@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
+import org.qtum.wallet.ui.fragment.import_wallet_fragment.ImportWalletFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
@@ -19,9 +20,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public abstract class StartPageFragment extends BaseFragment implements StartPageFragmentView {
+public abstract class StartPageFragment extends BaseFragment implements StartPageView {
 
-    private StartPageFragmentPresenterImpl mStartPageFragmentPresenter;
+    private StartPagePresenter mStartPageFragmentPresenter;
 
     private static final String IS_LOGIN = "is_login";
 
@@ -45,26 +46,6 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     @BindView(R.id.root_layout)
     RelativeLayout rootLayout;
 
-    @OnClick({R.id.bt_import_wallet, R.id.bt_create_new, R.id.bt_login})
-    public void OnClick(View view) {
-        switch (view.getId()) {
-            case R.id.bt_create_new:
-                hideLoginButton();
-                getPresenter().createNewWallet();
-                break;
-            case R.id.bt_import_wallet:
-                hideLoginButton();
-                getPresenter().importWallet();
-                break;
-            case R.id.bt_login:
-                if (QtumSharedPreference.getInstance().getKeyGeneratedInstance(getContext())){
-                    BaseFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION, getContext());
-                    openFragment(fragment);
-                }
-                break;
-        }
-    }
-
     public static BaseFragment newInstance(boolean isLogin, Context context) {
         Bundle args = new Bundle();
         args.putBoolean(IS_LOGIN, isLogin);
@@ -73,13 +54,39 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
         return fragment;
     }
 
-    @Override
-    protected void createPresenter() {
-        mStartPageFragmentPresenter = new StartPageFragmentPresenterImpl(this);
+    @OnClick({R.id.bt_import_wallet, R.id.bt_create_new, R.id.bt_login})
+    public void OnClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_create_new:
+                hideLoginButton();
+
+                clearWallet();
+                BaseFragment pinFragment = PinFragment.newInstance(PinFragment.CREATING, getContext());
+                openFragment(pinFragment);
+                break;
+            case R.id.bt_import_wallet:
+                hideLoginButton();
+
+                clearWallet();
+                BaseFragment importWalletFragment = ImportWalletFragment.newInstance(getContext());
+                openFragment(importWalletFragment);
+                break;
+            case R.id.bt_login:
+                if (QtumSharedPreference.getInstance().getKeyGeneratedInstance(getContext())) {
+                    BaseFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION, getContext());
+                    openFragment(fragment);
+                }
+                break;
+        }
     }
 
     @Override
-    protected StartPageFragmentPresenterImpl getPresenter() {
+    protected void createPresenter() {
+        mStartPageFragmentPresenter = new StartPagePresenterImpl(this, new StartPageInteractorImpl(getContext()));
+    }
+
+    @Override
+    protected StartPagePresenter getPresenter() {
         return mStartPageFragmentPresenter;
     }
 
@@ -90,10 +97,17 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
 
     @Override
     public void initializeViews() {
-        if(getArguments().getBoolean(IS_LOGIN,false)){
+        if (getArguments().getBoolean(IS_LOGIN, false)) {
             BaseFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION, getContext());
             openFragment(fragment);
         }
+    }
+
+    private void clearWallet() {
+        getMainActivity().onLogout();
+        getMainActivity().stopUpdateService();
+
+        getPresenter().clearWallet();
     }
 
 
