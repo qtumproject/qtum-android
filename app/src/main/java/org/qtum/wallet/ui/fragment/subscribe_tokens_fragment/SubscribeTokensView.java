@@ -6,8 +6,10 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 import java.util.List;
 
 
-interface SubscribeTokensFragmentView extends BaseFragmentView {
+interface SubscribeTokensView extends BaseFragmentView {
     void setTokenList(List<Token> tokenList);
+
     List<Token> getTokenList();
+
     void setPlaceHolder();
 }
