@@ -13,7 +13,7 @@ public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implemen
     private MyContractsView mMyContractsView;
     private MyContractsInteractor mMyContractsInteractor;
 
-    MyContractsPresenterImpl(MyContractsView myContractsView, MyContractsInteractor myContractsInteractor) {
+    public MyContractsPresenterImpl(MyContractsView myContractsView, MyContractsInteractor myContractsInteractor) {
         mMyContractsView = myContractsView;
         mMyContractsInteractor = myContractsInteractor;
     }
