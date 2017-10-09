@@ -56,6 +56,14 @@ public class Token extends Contract {
         this.mLastBalance = lastBalance;
     }
 
+    /**
+     * Constructor for unit testing
+     */
+    public Token(boolean isSubscribe, Boolean isHasBeenCreated) {
+        super(isSubscribe);
+        this.mHasBeenCreated = isHasBeenCreated;
+    }
+
     public String getSymbol() {
         return symbol;
     }

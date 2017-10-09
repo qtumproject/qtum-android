@@ -8,20 +8,22 @@ import org.qtum.wallet.datastorage.TinyDB;
 import java.util.List;
 
 
-public class SubscribeTokensFragmentInteractor {
+public class SubscribeTokensInteractorImpl implements SubscribeTokensInteractor {
 
     private Context mContext;
 
-    public SubscribeTokensFragmentInteractor(Context context){
+    public SubscribeTokensInteractorImpl(Context context) {
         mContext = context;
     }
 
 
+    @Override
     public List<Token> getTokenList() {
         return (new TinyDB(mContext)).getTokenList();
     }
 
 
+    @Override
     public void saveTokenList(List<Token> tokenList) {
         (new TinyDB(mContext)).putTokenList(tokenList);
     }

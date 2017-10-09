@@ -12,7 +12,7 @@ import java.util.List;
  * Created by kirillvolkov on 03.08.17.
  */
 
-public class TokenAdressesAdapter extends RecyclerView.Adapter<TokenAddressViewHolder> {
+public class TokenAddressesAdapter extends RecyclerView.Adapter<TokenAddressViewHolder> {
 
     List<DeterministicKeyWithTokenBalance> items;
     int resId;
@@ -20,7 +20,7 @@ public class TokenAdressesAdapter extends RecyclerView.Adapter<TokenAddressViewH
     OnAddressTokenClickListener listener;
     int decimalUnits;
 
-    public TokenAdressesAdapter(List<DeterministicKeyWithTokenBalance> items, int resId, OnAddressTokenClickListener listener, String currency, int decimalUnits){
+    public TokenAddressesAdapter(List<DeterministicKeyWithTokenBalance> items, int resId, OnAddressTokenClickListener listener, String currency, int decimalUnits){
         this.items = items;
         this.resId = resId;
         this.listener = listener;
