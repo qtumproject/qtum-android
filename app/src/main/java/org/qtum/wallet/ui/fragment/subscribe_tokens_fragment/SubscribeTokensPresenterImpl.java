@@ -12,7 +12,7 @@ public class SubscribeTokensPresenterImpl extends BaseFragmentPresenterImpl impl
     private SubscribeTokensView mSubscribeTokensFragmentView;
     private SubscribeTokensInteractor mSubscribeTokensInteractorImpl;
 
-    SubscribeTokensPresenterImpl(SubscribeTokensView subscribeTokensFragmentView, SubscribeTokensInteractor subscribeTokensInteractor) {
+    public SubscribeTokensPresenterImpl(SubscribeTokensView subscribeTokensFragmentView, SubscribeTokensInteractor subscribeTokensInteractor) {
         mSubscribeTokensFragmentView = subscribeTokensFragmentView;
         mSubscribeTokensInteractorImpl = subscribeTokensInteractor;
     }
@@ -27,7 +27,9 @@ public class SubscribeTokensPresenterImpl extends BaseFragmentPresenterImpl impl
         super.initializeViews();
         List<Token> confirmedTokens = new ArrayList<>();
         for (Token token : getInteractor().getTokenList()) {
-            if (token.isHasBeenCreated()) confirmedTokens.add(token);
+            if (token.isHasBeenCreated()) {
+                confirmedTokens.add(token);
+            }
         }
         if (confirmedTokens.size() != 0) {
             getView().setTokenList(confirmedTokens);
