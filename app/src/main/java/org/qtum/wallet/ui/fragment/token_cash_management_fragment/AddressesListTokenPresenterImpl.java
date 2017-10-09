@@ -5,7 +5,6 @@ import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.token_balance.Balance;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
-import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListPresenterImpl;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.bitcoinj.crypto.DeterministicKey;
@@ -52,11 +51,11 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
         for (DeterministicKey item : getAddresses()) {
             DeterministicKeyWithTokenBalance deterministicKeyWithTokenBalance = new DeterministicKeyWithTokenBalance(item);
             items.add(deterministicKeyWithTokenBalance);
-            processTokenBalace(deterministicKeyWithTokenBalance, balance);
+            processTokenBalance(deterministicKeyWithTokenBalance, balance);
         }
     }
 
-    private void processTokenBalace(DeterministicKeyWithTokenBalance deterministicKeyWithTokenBalance, TokenBalance balance) {
+    private void processTokenBalance(DeterministicKeyWithTokenBalance deterministicKeyWithTokenBalance, TokenBalance balance) {
         for (Balance bal : balance.getBalances()) {
             if (deterministicKeyWithTokenBalance.getAddress().equals(bal.getAddress())) {
                 deterministicKeyWithTokenBalance.addBalance(bal.getBalance());
@@ -88,7 +87,8 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
     }
 
     @Override
-    public void transfer(DeterministicKeyWithTokenBalance keyWithBalanceTo, final DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String amountString, final AddressListPresenterImpl.TransferListener transferListener) {
+    public void transfer(DeterministicKeyWithTokenBalance keyWithBalanceTo,
+                         final DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String amountString) {
         if (!getInteractor().isAmountValid(amountString)) {
             getView().setAlertDialog(R.string.error,
                     R.string.enter_valid_amount_value,
@@ -107,14 +107,14 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
 
         getView().hideTransferDialog();
 
-        if (tokenBalance == null || tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()) == null
-                || tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()).getBalance().floatValue() < Float.valueOf(amountString)) {
+        if (tokenBalance == null || !getInteractor().isValidForAddress(tokenBalance, keyWithTokenBalanceFrom)
+                || !getInteractor().isValidBalance(tokenBalance, keyWithTokenBalanceFrom, amountString)) {
             getView().dismissProgressDialog();
             getView().setAlertDialog(R.string.error, R.string.you_have_insufficient_funds_for_this_transaction, "Ok", BaseFragment.PopUpType.error);
             return;
         }
 
-        getView().goToSendFragment(keyWithTokenBalanceFrom.getAddress(), keyWithBalanceTo.getAddress(), amountString, token.getContractAddress());
+        getView().goToSendFragment(keyWithTokenBalanceFrom, keyWithBalanceTo, amountString, token.getContractAddress());
     }
 
     public int getDecimalUnits() {
@@ -148,5 +148,13 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
     @Override
     public DeterministicKeyWithTokenBalance getKeyWithTokenBalanceFrom() {
         return keyWithTokenBalanceFrom;
+    }
+
+
+    /**
+     * Setter for unit testing
+     */
+    public void setKeysWithTokenBalance(List<DeterministicKeyWithTokenBalance> list) {
+        items = list;
     }
 }

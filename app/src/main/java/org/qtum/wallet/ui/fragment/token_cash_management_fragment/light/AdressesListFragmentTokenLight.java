@@ -80,31 +80,7 @@ public class AdressesListFragmentTokenLight extends AddressesListFragmentToken {
             @Override
             public void onClick(View v) {
                 setProgressDialog();
-                getPresenter().transfer(keyWithBalanceTo, getPresenter().getKeyWithTokenBalanceFrom(), mEditTextAmount.getText().toString(), new AddressListPresenterImpl.TransferListener() {
-                    @Override
-                    public void onError(String errorText) {
-                        setAlertDialog(getContext().getString(R.string.error), errorText, getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
-                    }
-
-                    @Override
-                    public void onSuccess() {
-                        dismissProgressDialog();
-                        mTransferDialog.dismiss();
-                        setAlertDialog(getContext().getString(R.string.complete),
-                                getContext().getString(R.string.payment_completed_successfully),
-                                getContext().getString(R.string.ok), BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
-                                    @Override
-                                    public void onButtonClick() {
-                                        getMainActivity().onBackPressed();
-                                    }
-
-                                    @Override
-                                    public void onButton2Click() {
-
-                                    }
-                                });
-                    }
-                });
+                getPresenter().transfer(keyWithBalanceTo, getPresenter().getKeyWithTokenBalanceFrom(), mEditTextAmount.getText().toString());
             }
         });
 

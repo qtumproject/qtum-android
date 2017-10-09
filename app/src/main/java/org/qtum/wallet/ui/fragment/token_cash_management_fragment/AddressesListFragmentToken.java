@@ -13,6 +13,7 @@ import android.view.View;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenBalanceChangeListener;
+import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
@@ -117,9 +118,9 @@ public abstract class AddressesListFragmentToken extends BaseFragment implements
     }
 
     @Override
-    public void goToSendFragment(String fromAddress, String toAddress, String amountString, String contractAddress) {
+    public void goToSendFragment(DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, DeterministicKeyWithTokenBalance keyWithBalanceTo, String amountString, String contractAddress) {
         getMainActivity().setIconChecked(3);
-        Fragment fragment = SendFragment.newInstance(fromAddress, toAddress, amountString, contractAddress, getContext());
+        Fragment fragment = SendFragment.newInstance(keyWithTokenBalanceFrom.getAddress(), keyWithBalanceTo.getAddress(), amountString, contractAddress, getContext());
         getMainActivity().setRootFragment(fragment);
         openRootFragment(fragment);
     }

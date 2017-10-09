@@ -4,7 +4,6 @@ import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
-import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListPresenterImpl;
 
 import java.util.List;
 
@@ -33,5 +32,5 @@ public interface AddressesListTokenPresenter extends BaseFragmentPresenter {
 
     DeterministicKeyWithTokenBalance getKeyWithTokenBalanceFrom();
 
-    void transfer(DeterministicKeyWithTokenBalance keyWithBalanceTo, DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String s, AddressListPresenterImpl.TransferListener transferListener);
+    void transfer(DeterministicKeyWithTokenBalance keyWithBalanceTo, DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String s);
 }

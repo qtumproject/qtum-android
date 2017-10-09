@@ -21,5 +21,5 @@ public interface AddressesListTokenView extends BaseFragmentView {
 
     void hideTransferDialog();
 
-    void goToSendFragment(String address, String address1, String amountString, String contractAddress);
+    void goToSendFragment(DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, DeterministicKeyWithTokenBalance keyWithBalanceTo, String amountString, String contractAddress);
 }
