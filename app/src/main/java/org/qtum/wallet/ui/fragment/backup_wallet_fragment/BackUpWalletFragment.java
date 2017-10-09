@@ -17,9 +17,9 @@ import org.qtum.wallet.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public abstract class BackUpWalletFragment extends BaseFragment implements BackUpWalletFragmentView {
+public abstract class BackUpWalletFragment extends BaseFragment implements BackUpWalletView {
 
-    private BackUpWalletFragmentPresenterImpl mBackUpWalletFragmentPresenter;
+    private BackUpWalletPresenter mBackUpWalletFragmentPresenter;
 
     private static final String IS_WALLET_CREATING = "is_wallet_creating";
     private static final String PIN = "pin";
@@ -86,11 +86,11 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
 
     @Override
     protected void createPresenter() {
-        mBackUpWalletFragmentPresenter = new BackUpWalletFragmentPresenterImpl(this);
+        mBackUpWalletFragmentPresenter = new BackUpWalletPresenterImpl(this, new BackUpWalletInteractorImpl(getContext()));
     }
 
     @Override
-    protected BackUpWalletFragmentPresenterImpl getPresenter() {
+    protected BackUpWalletPresenter getPresenter() {
         return mBackUpWalletFragmentPresenter;
     }
 

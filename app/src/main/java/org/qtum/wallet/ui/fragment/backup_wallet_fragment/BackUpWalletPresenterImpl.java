@@ -12,20 +12,20 @@ import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
-class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implements BackUpWalletFragmentPresenter {
+class BackUpWalletPresenterImpl extends BaseFragmentPresenterImpl implements BackUpWalletPresenter {
 
-    private BackUpWalletFragmentView mBackUpWalletFragmentView;
-    private BackUpWalletInteractorImpl mBackUpWalletInteractor;
+    private BackUpWalletView mBackUpWalletFragmentView;
+    private BackUpWalletInteractor mBackUpWalletInteractor;
     private String passphrase;
 
     private final String QTUM_PIN_ALIAS = "qtum_alias";
 
-    BackUpWalletFragmentPresenterImpl(BackUpWalletFragmentView backUpWalletFragmentView) {
+    BackUpWalletPresenterImpl(BackUpWalletView backUpWalletFragmentView, BackUpWalletInteractor backUpWalletInteractor) {
         mBackUpWalletFragmentView = backUpWalletFragmentView;
-        mBackUpWalletInteractor = new BackUpWalletInteractorImpl(getView().getContext());
+        mBackUpWalletInteractor = backUpWalletInteractor;
     }
 
-    private BackUpWalletInteractorImpl getInteractor() {
+    private BackUpWalletInteractor getInteractor() {
         return mBackUpWalletInteractor;
     }
 
@@ -42,7 +42,7 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
     }
 
     @Override
-    public BackUpWalletFragmentView getView() {
+    public BackUpWalletView getView() {
         return mBackUpWalletFragmentView;
     }
 
@@ -54,6 +54,7 @@ class BackUpWalletFragmentPresenterImpl extends BaseFragmentPresenterImpl implem
         getView().showToast();
     }
 
+    @Override
     public void chooseShareMethod(){
         Intent intentShareFile = new Intent(Intent.ACTION_SEND);
         intentShareFile.setType("text/plain");

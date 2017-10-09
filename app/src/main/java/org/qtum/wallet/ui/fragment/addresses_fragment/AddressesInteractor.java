@@ -5,6 +5,6 @@ import org.bitcoinj.crypto.DeterministicKey;
 
 import java.util.List;
 
-interface AddressesInteractor {
+public interface AddressesInteractor {
     List<DeterministicKey> getKeyList();
 }

@@ -1,8 +1,10 @@
 package org.qtum.wallet.ui.fragment.backup_contracts_fragment;
 
-/**
- * Created by max-v on 10/6/2017.
- */
+
+import java.io.File;
+
+import rx.Observable;
 
 public interface BackupContractsInteractor {
+    Observable<File> createBackUpFile();
 }
