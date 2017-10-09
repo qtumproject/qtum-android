@@ -33,6 +33,14 @@ public class Item {
         this.excepted = excepted;
     }
 
+    /**
+     * Constructor for unit testing
+     */
+    public Item(String excepted, int gasUsed) {
+        this.excepted = excepted;
+        this.gasUsed = gasUsed;
+    }
+
     public String getExcepted() {
         return excepted;
     }

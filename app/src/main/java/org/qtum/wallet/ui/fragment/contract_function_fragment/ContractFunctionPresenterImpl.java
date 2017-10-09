@@ -4,6 +4,7 @@ import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
+import org.qtum.wallet.model.gson.call_smart_contract_response.Item;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
@@ -81,12 +82,17 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
 
                     @Override
                     public void onNext(final ContractFunctionInteractorImpl.CallSmartContractRespWrapper respWrapper) {
-                        if (!respWrapper.getResponse().getItems().get(0).getExcepted().equals("None")) {
-                            getView().setAlertDialog(org.qtum.wallet.R.string.error, respWrapper.getResponse().getItems().get(0).getExcepted(), "Ok", BaseFragment.PopUpType.error);
+                        Item item = respWrapper.getResponse().getItems().get(0);
+                        if (!item.getExcepted().equals("None")) {
+                            getView().setAlertDialog(org.qtum.wallet.R.string.error,
+                                    item.getExcepted(), "Ok",
+                                    BaseFragment.PopUpType.error);
                             return;
                         }
-                        if (respWrapper.getResponse().getItems().get(0).getGasUsed() > gasLimit) {
-                            getView().setAlertDialog(org.qtum.wallet.R.string.error, respWrapper.getResponse().getItems().get(0).getExcepted(), "Ok", BaseFragment.PopUpType.error);
+                        if (item.getGasUsed() > gasLimit) {
+                            getView().setAlertDialog(org.qtum.wallet.R.string.error,
+                                    item.getExcepted(), "Ok",
+                                    BaseFragment.PopUpType.error);
                             return;
                         }
                         createTx(respWrapper.getAbiParams(), /*TODO callSmartContractResponse.getItems().get(0).getGasUsed()*/ gasLimit, gasPrice, fee,
@@ -127,7 +133,9 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        getView().setAlertDialog(getView().getContext().getResources().getString(org.qtum.wallet.R.string.error), e.getLocalizedMessage(), getView().getContext().getResources().getString(org.qtum.wallet.R.string.ok), BaseFragment.PopUpType.error);
+                        getView().setAlertDialog(org.qtum.wallet.R.string.error,
+                                e.getLocalizedMessage(), "Ok",
+                                BaseFragment.PopUpType.error);
                     }
 
                     @Override

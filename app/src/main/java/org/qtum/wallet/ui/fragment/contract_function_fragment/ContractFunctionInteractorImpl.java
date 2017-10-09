@@ -103,7 +103,7 @@ public class ContractFunctionInteractorImpl implements ContractFunctionInteracto
         return QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(code, 1));
     }
 
-    public class CallSmartContractRespWrapper {
+    public static class CallSmartContractRespWrapper {
         private String abiParams;
         private CallSmartContractResponse response;
 
