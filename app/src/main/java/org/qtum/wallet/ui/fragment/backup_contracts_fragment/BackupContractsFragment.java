@@ -40,7 +40,7 @@ public abstract class BackupContractsFragment extends BaseFragment implements Ba
     
     @Override
     protected void createPresenter() {
-        mBackupContractsFragmentPresenter = new BackupContractsPresenterImpl(this);
+        mBackupContractsFragmentPresenter = new BackupContractsPresenterImpl(this, new BackupContractsInteractorImpl(getContext()));
     }
 
     @Override

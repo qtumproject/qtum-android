@@ -19,7 +19,7 @@ public interface SendView extends BaseFragmentView {
 
     void sendToolBar();
 
-    void updateData(String publicAddress, double amount, String tokenAddress);
+    void updateData(String publicAddress, double amount);
 
     void errorRecognition();
 
@@ -66,4 +66,9 @@ public interface SendView extends BaseFragmentView {
     boolean isValidAvailableAddress(String availableAddress);
 
     TokenBalance getTokenBalance(String contractAddress);
+
+    void updateGasPrice(int minGasPrice, int maxGasPrice);
+    void updateGasLimit(int minGasLimit, int maxGasLimit);
+    int getGasPriceInput();
+    int getGasLimitInput();
 }

@@ -13,22 +13,23 @@ import org.bitcoinj.core.TransactionOutPoint;
 import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
-
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.datastorage.KeyStorage;
+import org.qtum.wallet.datastorage.QtumNetworkState;
+import org.qtum.wallet.datastorage.QtumSharedPreference;
+import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
+import org.qtum.wallet.model.gson.DGPInfo;
 import org.qtum.wallet.model.gson.FeePerKb;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
-import org.qtum.wallet.datastorage.KeyStorage;
-import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.CurrentNetParams;
-import org.qtum.wallet.datastorage.TinyDB;
 import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigDecimal;
@@ -47,19 +48,19 @@ import rx.schedulers.Schedulers;
 public class SendInteractorImpl implements SendInteractor {
 
     private Context mContext;
-    private FeePerKb mFeePerKb;
 
     public SendInteractorImpl(Context context) {
         mContext = context;
     }
 
-    public void setFeePerKb(FeePerKb feePerKb) {
-        mFeePerKb = feePerKb;
+    @Override
+    public FeePerKb getFeePerKb() {
+        return QtumNetworkState.newInstance().getFeePerKb();
     }
 
     @Override
-    public FeePerKb getFeePerKb() {
-        return mFeePerKb;
+    public DGPInfo getDGPInfo() {
+        return QtumNetworkState.newInstance().getDGPInfo();
     }
 
     @Override
@@ -98,15 +99,7 @@ public class SendInteractorImpl implements SendInteractor {
                 });
     }
 
-    public Observable<FeePerKb> getFeePerKbObservable() {
-        if (mFeePerKb != null) {
-            return Observable.just(mFeePerKb);
-        } else {
-            return QtumService.newInstance().getEstimateFeePerKb(2);
-        }
-    }
-
-    public void getUnspentOutputs(String address, final SendInteractorImpl.GetUnspentListCallBack callBack) {
+    public void getUnspentOutputs(String address, final GetUnspentListCallBack callBack) {
         if (address.equals("")) {
             getUnspentOutputs(callBack);
             return;
@@ -228,38 +221,21 @@ public class SendInteractorImpl implements SendInteractor {
 
     @Override
     public void sendTx(final String from, final String address, final String amount, final String fee, final SendTxCallBack callBack) {
-        getFeePerKbObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<FeePerKb>() {
-                    @Override
-                    public void onCompleted() {
 
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
+        createTx(from, address, amount, fee, getFeePerKb().getFeePerKb(), new CreateTxCallBack() {
+            @Override
+            public void onSuccess(String txHex) {
+                sendTx(txHex, callBack);
+            }
 
-                    }
+            @Override
+            public void onError(String error) {
+                callBack.onError(error);
+            }
+        });
 
-                    @Override
-                    public void onNext(FeePerKb s) {
-                        if (mFeePerKb == null) {
-                            setFeePerKb(s);
-                        }
-                        createTx(from, address, amount, fee, s.getFeePerKb(), new CreateTxCallBack() {
-                            @Override
-                            public void onSuccess(String txHex) {
-                                sendTx(txHex, callBack);
-                            }
 
-                            @Override
-                            public void onError(String error) {
-                                callBack.onError(error);
-                            }
-                        });
-                    }
-                });
     }
 
     @Override
@@ -333,13 +309,6 @@ public class SendInteractorImpl implements SendInteractor {
     }
 
     @Override
-    public void handleFeePerKbValue(FeePerKb feePerKb) {
-        if (getFeePerKb() == null) {
-            setFeePerKb(feePerKb);
-        }
-    }
-
-    @Override
     public String getValidatedFee(Double fee) {
         String pattern = "##0.00000000";
         DecimalFormat decimalFormat = new DecimalFormat(pattern);
@@ -347,10 +316,10 @@ public class SendInteractorImpl implements SendInteractor {
     }
 
     @Override
-    public String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, String fee) {
+    public String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice,String fee) {
         ContractBuilder contractBuilder = new ContractBuilder();
-        Script script = contractBuilder.createMethodScript(abiParams, gasLimit, contractAddress);
-        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, getFeePerKb().getFeePerKb(), fee, mContext);
+        Script script = contractBuilder.createMethodScript(abiParams, gasLimit, gasPrice,contractAddress);
+        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice,getFeePerKb().getFeePerKb(), fee, mContext);
     }
 
     @Override

@@ -24,8 +24,8 @@ public class PinFragmentLight extends PinFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        ((MainActivity)getActivity()).hideBottomNavigationView(org.qtum.wallet.R.color.title_color_light);
         isBottomNavigationViewVisible = ((MainActivity)getActivity()).isBottomNavigationViewVisible();
+        ((MainActivity)getActivity()).hideBottomNavigationView(org.qtum.wallet.R.color.title_color_light);
         waveView.setShapeType(WaveView.ShapeType.SQUARE);
         mWaveHelper = new WaveHelper(waveView);
     }
@@ -46,7 +46,7 @@ public class PinFragmentLight extends PinFragment {
     public void onDestroyView() {
         super.onDestroyView();
         if(isBottomNavigationViewVisible){
-            ((MainActivity)getActivity()).showBottomNavigationView(org.qtum.wallet.R.color.title_color_light);
+            ((MainActivity)getActivity()).showBottomNavigationView(false);
         }else{
             ((MainActivity)getActivity()).hideBottomNavigationView(org.qtum.wallet.R.color.title_color_light);
         }

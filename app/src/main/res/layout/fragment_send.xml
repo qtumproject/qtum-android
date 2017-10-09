@@ -23,50 +23,50 @@
             app:layout_collapseMode="pin"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-                <RelativeLayout
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/ibt_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_ibtn_back"
+                    android:paddingBottom="10dp"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="10dp"
+                    android:tint="@color/background"
+                    app:srcCompat="@drawable/ic_back_indicator" />
+
+                <org.qtum.wallet.utils.FontTextView
+                    android:id="@+id/tv_toolbar_send"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center"
+                    android:layout_centerVertical="true"
+                    android:text="@string/send"
+                    android:textColor="@color/background"
+                    android:textSize="@dimen/toolbar_text_size"
+                    app:typefaceAsset="@string/euclidFlexMedium" />
 
-                    <ImageButton
-                        android:id="@+id/ibt_back"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/background_ibtn_back"
-                        android:paddingBottom="10dp"
-                        android:layout_centerVertical="true"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingTop="10dp"
-                        android:tint="@color/background"
-                        app:srcCompat="@drawable/ic_back_indicator" />
-
-                    <org.qtum.wallet.utils.FontTextView
-                        android:id="@+id/tv_toolbar_send"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:gravity="center"
-                        android:layout_centerVertical="true"
-                        android:text="@string/send"
-                        android:textColor="@color/background"
-                        android:textSize="@dimen/toolbar_text_size"
-                        app:typefaceAsset="@string/euclidFlexMedium" />
-
-                    <ImageButton
-                        android:id="@+id/bt_qr_code"
-                        android:layout_width="36dp"
-                        android:padding="8dp"
-                        android:tint="@color/background"
-                        android:layout_height="36dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_margin="9dp"
-                        android:background="@drawable/background_pressed_alpha_white"
-                        android:scaleType="centerInside"
-                        app:srcCompat="@drawable/ic_qrcode"/>
+                <ImageButton
+                    android:id="@+id/bt_qr_code"
+                    android:layout_width="36dp"
+                    android:padding="8dp"
+                    android:tint="@color/background"
+                    android:layout_height="36dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="9dp"
+                    android:background="@drawable/background_pressed_alpha_white"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/ic_qrcode"/>
 
 
-                </RelativeLayout>
+            </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
 
@@ -94,183 +94,359 @@
                 layout="@layout/lyt_appbar_wallet_placeholder" />
         </FrameLayout>
 
-        <RelativeLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
             android:focusable="true"
-            android:layout_below="@+id/balance"
-            android:id="@+id/rl_send"
+            android:fillViewport="true"
+            android:layout_below="@id/balance"
             android:focusableInTouchMode="true"
-            android:padding="@dimen/activity_horizontal_margin"
             android:theme="@style/InputText">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_receivers_address"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="16dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:theme="@style/InputText"
-                android:focusable="true"
-                android:textColorHint="@color/colorPrimary">
+                android:padding="@dimen/activity_horizontal_margin"
+                android:layout_height="match_parent"
+                android:id="@+id/rl_send">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_receivers_address"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_receivers_address"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:theme="@style/InputText"
+                    android:focusable="true"
+                    android:textColorHint="@color/colorPrimary">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_receivers_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:hint="@string/receiver_s_address"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/colorPrimary"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_currency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:hint="@string/receiver_s_address"
-                    android:inputType="textPersonName"
-                    android:textColor="@color/colorPrimary"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_below="@+id/til_receivers_address"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:orientation="vertical"
+                    android:paddingBottom="16dp">
 
-            <LinearLayout
-                android:id="@+id/ll_currency"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/til_receivers_address"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:orientation="vertical"
-                android:paddingBottom="16dp">
+                    <org.qtum.wallet.utils.FontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12dp"
+                        android:paddingBottom="4dp"
+                        app:typefaceAsset="@string/simplonMonoRegular"
+                        android:textColor="@color/colorPrimary"
+                        android:text="Choose Token"/>
 
-                <org.qtum.wallet.utils.FontTextView
-                    android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <org.qtum.wallet.utils.FontTextView
+                            android:paddingBottom="4dp"
+                            app:typefaceAsset="@string/simplonMonoRegular"
+                            android:id="@+id/tv_currency"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimary"
+                            android:gravity="left"
+                            android:layout_weight="1"
+                            android:textSize="16sp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="12dp"
+                            android:tint="@color/colorPrimary"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/ic_rightarrow"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@color/colorPrimary"/>
+                </LinearLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_amount"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:paddingBottom="4dp"
-                    app:typefaceAsset="@string/simplonMonoRegular"
-                    android:textColor="@color/colorPrimary"
-                    android:text="Choose Token"/>
+                    android:layout_below="@+id/ll_currency"
+                    android:layout_marginBottom="16dp"
+                    android:textColorHint="@color/colorPrimary">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:hint="@string/amount"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/colorPrimary"/>
+                </android.support.design.widget.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
+                    android:layout_below="@+id/til_amount"
+                    android:layout_marginTop="13dp"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/ll_fee">
 
                     <org.qtum.wallet.utils.FontTextView
-                        android:paddingBottom="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_min_fee"
+                        android:layout_gravity="center"
                         app:typefaceAsset="@string/simplonMonoRegular"
-                        android:id="@+id/tv_currency"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <SeekBar
+                        android:id="@+id/seekBar"
+                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="left"
-                        android:layout_weight="1"
-                        android:textSize="16sp"/>
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:thumb="@drawable/seekbar_thumb"
+                        android:progressDrawable="@drawable/seekbar_progress"/>
 
-                    <ImageView
+                    <org.qtum.wallet.utils.FontTextView
                         android:layout_width="wrap_content"
-                        android:layout_height="12dp"
-                        android:tint="@color/colorPrimary"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        app:srcCompat="@drawable/ic_rightarrow"/>
+                        android:id="@+id/tv_max_fee"
+                        app:typefaceAsset="@string/simplonMonoRegular"
+                        android:textColor="@color/colorPrimary"/>
+
                 </LinearLayout>
 
-                <View
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_fee"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/colorPrimary"/>
-            </LinearLayout>
-
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_amount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ll_currency"
-                android:layout_marginBottom="16dp"
-                android:textColorHint="@color/colorPrimary">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_amount"
-                    android:layout_width="match_parent"
+                    android:layout_marginTop="13dp"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:hint="@string/amount"
-                    android:inputType="numberDecimal"
-                    android:textColor="@color/colorPrimary"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:theme="@style/InputText"
+                    android:focusable="true"
+                    android:textColorHint="@color/colorPrimary"
+                    android:layout_below="@+id/ll_fee"
+                    android:layout_alignParentStart="true">
 
-            <org.qtum.wallet.utils.FontButton
-                android:id="@+id/bt_send"
-                android:layout_width="200dp"
-                android:padding="10dp"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="16dp"
-                app:typeface="@string/simplonMonoRegular"
-                android:layout_marginRight="16dp"
-                android:background="@color/accent_red_color"
-                android:stateListAnimator="@null"
-                android:text="@string/send"
-                android:textAllCaps="true"
-                android:textColor="@color/background"
-                android:textSize="@dimen/button_text"/>
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_fee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:hint="@string/_fee"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/colorPrimary"/>
+                </android.support.design.widget.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/til_amount"
-                android:layout_marginTop="13dp"
-                android:layout_alignParentStart="true"
-                android:id="@+id/ll_fee">
-
-                <org.qtum.wallet.utils.FontTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tv_min_fee"
-                    android:layout_gravity="center"
-                    app:typefaceAsset="@string/simplonMonoRegular"
-                    android:textColor="@color/colorPrimary"/>
-
-                <SeekBar
-                    android:id="@+id/seekBar"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:thumb="@drawable/seekbar_thumb"
-                    android:progressDrawable="@drawable/seekbar_progress"/>
-
-                <org.qtum.wallet.utils.FontTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/tv_max_fee"
-                    app:typefaceAsset="@string/simplonMonoRegular"
-                    android:textColor="@color/colorPrimary"/>
-
-            </LinearLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_fee"
-                android:layout_width="match_parent"
-                android:layout_marginTop="13dp"
-                android:layout_height="wrap_content"
-                android:theme="@style/InputText"
-                android:focusable="true"
-                android:textColorHint="@color/colorPrimary"
-                android:layout_below="@+id/ll_fee"
-                android:layout_alignParentStart="true">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_fee"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:hint="@string/_fee"
-                    android:inputType="textPersonName"
-                    android:textColor="@color/colorPrimary"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:gravity="bottom"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/til_fee">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:id="@+id/gas_management_container">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:id="@+id/ll_gas_price_and_gas_limit">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <org.qtum.wallet.utils.FontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="Gas Price: "
+                                    app:typefaceAsset="@string/simplonMonoRegular"
+                                    android:textColor="@color/colorPrimary"/>
+                                <org.qtum.wallet.utils.FontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:id="@+id/tv_gas_price"
+                                    app:typefaceAsset="@string/simplonMonoRegular"
+                                    android:textColor="@color/colorAccent"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <org.qtum.wallet.utils.FontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="Gas Limit: "
+                                    app:typefaceAsset="@string/simplonMonoRegular"
+                                    android:textColor="@color/colorPrimary"/>
+                                <org.qtum.wallet.utils.FontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:id="@+id/tv_gas_limit"
+                                    app:typefaceAsset="@string/simplonMonoRegular"
+                                    android:textColor="@color/colorAccent"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/seek_bar_container"
+                            android:layout_below="@+id/ll_gas_price_and_gas_limit"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/ll_gas_price"
+                                android:layout_marginBottom="16dp"
+                                android:layout_above="@+id/til_fee"
+                                android:layout_alignParentStart="true">
+
+                                <org.qtum.wallet.utils.FontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/tv_min_gas_price"
+                                    android:layout_gravity="center"
+                                    app:typefaceAsset="@string/simplonMonoRegular"
+                                    android:textColor="@color/colorPrimary"/>
+
+                                <SeekBar
+                                    android:id="@+id/seekBar_gas_price"
+                                    android:layout_weight="1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:thumb="@drawable/seekbar_thumb"
+                                    android:progressDrawable="@drawable/seekbar_progress"/>
+
+                                <org.qtum.wallet.utils.FontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:id="@+id/tv_max_gas_price"
+                                    app:typefaceAsset="@string/simplonMonoRegular"
+                                    android:textColor="@color/colorPrimary"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/ll_gas_limit"
+                                android:layout_marginBottom="16dp"
+                                android:layout_alignParentStart="true">
+
+                                <org.qtum.wallet.utils.FontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/tv_min_gas_limit"
+                                    android:layout_gravity="center"
+                                    app:typefaceAsset="@string/simplonMonoRegular"
+                                    android:textColor="@color/colorPrimary"/>
+
+                                <SeekBar
+                                    android:id="@+id/seekBar_gas_limit"
+                                    android:layout_weight="1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:thumb="@drawable/seekbar_thumb"
+                                    android:progressDrawable="@drawable/seekbar_progress"/>
+
+                                <org.qtum.wallet.utils.FontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:id="@+id/tv_max_gas_limit"
+                                    app:typefaceAsset="@string/simplonMonoRegular"
+                                    android:textColor="@color/colorPrimary"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <org.qtum.wallet.utils.FontButton
+                            android:id="@+id/bt_edit_close"
+                            android:text="@string/edit"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@+id/seek_bar_container"
+                            android:padding="16dp"
+                            android:textSize="16sp"
+                            android:background="?attr/selectableItemBackground"
+                            android:textColor="@color/colorPrimary"
+                            app:typeface="@string/simplonMonoRegular"
+                            android:textAllCaps="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </RelativeLayout>
+
+                    <org.qtum.wallet.utils.FontButton
+                        android:id="@+id/bt_send"
+                        android:layout_width="200dp"
+                        android:padding="10dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        app:typeface="@string/simplonMonoRegular"
+                        android:layout_marginRight="16dp"
+                        android:background="@color/accent_red_color"
+                        android:text="@string/send"
+                        android:layout_marginBottom="16dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/background"
+                        android:textSize="@dimen/button_text"/>
+
+                </LinearLayout>
 
 
-        </RelativeLayout>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+
+
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

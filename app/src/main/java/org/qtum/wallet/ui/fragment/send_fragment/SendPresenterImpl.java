@@ -34,6 +34,12 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
     private double minFee;
     private double maxFee = 0.2;
 
+    private int minGasPrice;
+    private int maxGasPrice = 120;
+
+    private int minGasLimit = 100000;
+    private int maxGasLimit = 5000000;
+
     public SendPresenterImpl(SendView sendFragmentView, SendInteractor interactor) {
         mSendFragmentView = sendFragmentView;
         mSendBaseFragmentInteractor = interactor;
@@ -53,28 +59,12 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
         } else {
             getView().hideCurrencyField();
         }
-        getInteractor().getFeePerKbObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<FeePerKb>() {
-                    @Override
-                    public void onCompleted() {
+        minFee = getInteractor().getFeePerKb().getFeePerKb().doubleValue();
+        getView().updateFee(minFee,maxFee);
+        minGasPrice = getInteractor().getDGPInfo().getMingasprice();
+        getView().updateGasPrice(minGasPrice, maxGasPrice);
+        getView().updateGasLimit(minGasLimit, maxGasLimit);
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(FeePerKb feePerKb) {
-                        getInteractor().handleFeePerKbValue(feePerKb);
-
-                        minFee = feePerKb.getFeePerKb().doubleValue();
-                        getView().updateFee(minFee, maxFee);
-                    }
-                });
     }
 
     @Override
@@ -113,6 +103,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                 return;
             }
         }
+        getView().setAlertDialog(R.string.token_not_found, "Ok", BaseFragment.PopUpType.error);
     }
 
     @Override
@@ -138,22 +129,8 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
 
     @Override
     public void onResponse(String publicAddress, double amount, String tokenAddress) {
-        String tokenName = validateTokenExistance(tokenAddress);
-        getView().updateData(publicAddress, amount, tokenName);
-    }
-
-    private String validateTokenExistance(String tokenAddress) {
-        if (getView().isTokenEmpty(tokenAddress)) {
-            return "";
-        }
-
-        String contractName = getInteractor().validateTokenExistance(tokenAddress);
-        if (contractName != null) {
-            return contractName;
-        }
-
-        getView().setAlertDialog(org.qtum.wallet.R.string.token_not_found, "Ok", BaseFragment.PopUpType.error);
-        return "";
+        getView().updateData(publicAddress, amount);
+        searchAndSetUpCurrency(tokenAddress);
     }
 
     @Override
@@ -193,6 +170,8 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
         String amount = getView().getAmountInput();
         final double feeDouble = Double.valueOf(getView().getFeeInput());
         final String fee = validateFee(feeDouble);
+        int gasLimit = getView().getGasLimitInput();
+        int gasPrice = getView().getGasPriceInput();
 
         if (currency.getName().equals("Qtum " + getView().getStringValue(org.qtum.wallet.R.string.default_currency))) {
             getInteractor().sendTx(from, address, amount, fee, getView().getSendTransactionCallback());
@@ -236,7 +215,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                         return;
                     }
 
-                    createAbiMethodParams(address, resultAmount, token, fee);
+                    createAbiMethodParams(address, resultAmount, token, fee, gasPrice, gasLimit);
 
                     break;
                 }
@@ -245,7 +224,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
 
     }
 
-    private void createAbiMethodParams(String address, String resultAmount, final Token token, final String fee) {
+    private void createAbiMethodParams(String address, String resultAmount, final Token token, final String fee, final int gasPrice, final int gasLimit) {
         getInteractor().createAbiMethodParamsObservable(address, resultAmount, "transfer")
                 .flatMap(new Func1<String, Observable<CallSmartContractResponse>>() {
                     @Override
@@ -276,7 +255,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                                     response.getItems().get(0).getExcepted(), "Ok", BaseFragment.PopUpType.error);
                             return;
                         }
-                        createTx(params, token.getContractAddress(), availableAddress, /*TODO callSmartContractResponse.getItems().get(0).getGasUsed()*/ 2000000, fee);
+                        createTx(params, token.getContractAddress(), availableAddress, gasLimit, gasPrice, fee);
                     }
                 });
 
@@ -286,11 +265,11 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
         return getInteractor().getValidatedFee(fee);
     }
 
-    private void createTx(final String abiParams, final String contractAddress, String senderAddress, final int gasLimit, final String fee) {
+    private void createTx(final String abiParams, final String contractAddress, String senderAddress, final int gasLimit, final int gasPrice,final String fee) {
         getInteractor().getUnspentOutputs(senderAddress, new SendInteractorImpl.GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
-                String txHex = getInteractor().createTransactionHash(abiParams, contractAddress, unspentOutputs, gasLimit, fee);
+                String txHex = getInteractor().createTransactionHash(abiParams, contractAddress, unspentOutputs, gasLimit, gasPrice,fee);
                 getInteractor().sendTx(txHex, getView().getSendTransactionCallback());
             }
 

@@ -141,7 +141,7 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
 
     public void transfer(DeterministicKeyWithTokenBalance keyWithBalanceTo, final DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String amountString, final AddressListPresenterImpl.TransferListener transferListener) {
 
-        if(TextUtils.isEmpty(amountString)){
+        if (TextUtils.isEmpty(amountString)) {
             getView().setAlertDialog(getView().getContext().getResources().getString(R.string.error),
                     getView().getContext().getResources().getString(R.string.enter_valid_amount_value),
                     getView().getContext().getResources().getString(R.string.ok),
@@ -149,7 +149,7 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
             return;
         }
 
-        if(Float.valueOf(amountString) <= 0){
+        if (Float.valueOf(amountString) <= 0) {
             getView().setAlertDialog(getView().getContext().getResources().getString(R.string.error),
                     getView().getContext().getResources().getString(R.string.transaction_amount_cant_be_zero),
                     getView().getContext().getResources().getString(R.string.ok),
@@ -159,176 +159,16 @@ public class AdressesListFragmentTokenPresenter extends BaseFragmentPresenterImp
 
         getView().hideTransferDialog();
 
-        if (tokenBalance == null || tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()) == null || tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()).getBalance().floatValue() < Float.valueOf(amountString)){
+        if (tokenBalance == null || tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()) == null || tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()).getBalance().floatValue() < Float.valueOf(amountString)) {
             getView().dismissProgressDialog();
             getView().setAlertDialog(getView().getContext().getString(R.string.error), getView().getContext().getString(R.string.you_have_insufficient_funds_for_this_transaction), "Ok", BaseFragment.PopUpType.error);
             return;
         }
 
         getView().getMainActivity().setIconChecked(3);
-        Fragment fragment = SendFragment.newInstance(keyWithTokenBalanceFrom.getAddress(),keyWithBalanceTo.getAddress(),amountString,token.getContractAddress(),getView().getContext());
+        Fragment fragment = SendFragment.newInstance(keyWithTokenBalanceFrom.getAddress(), keyWithBalanceTo.getAddress(), amountString, token.getContractAddress(), getView().getContext());
         getView().getMainActivity().setRootFragment(fragment);
         getView().openRootFragment(fragment);
-
-//        String resultAmount = amountString;
-//
-//        if(token.getDecimalUnits() != null){
-//            resultAmount = String.valueOf((int)(Double.valueOf(amountString) * Math.pow(10, token.getDecimalUnits())));
-//            resultAmount = String.valueOf(Integer.valueOf(resultAmount));
-//        }
-//
-//        ContractBuilder contractBuilder = new ContractBuilder();
-//        List<ContractMethodParameter> contractMethodParameterList = new ArrayList<>();
-//        ContractMethodParameter contractMethodParameterAddressTo = new ContractMethodParameter("_to", "address", keyWithBalanceTo.getAddress());
-//        ContractMethodParameter contractMethodParameterAmount = new ContractMethodParameter("_value", "uint256", resultAmount);
-//        contractMethodParameterList.add(contractMethodParameterAddressTo);
-//        contractMethodParameterList.add(contractMethodParameterAmount);
-//        contractBuilder.createAbiMethodParams("transfer", contractMethodParameterList).subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<String>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        transferListener.onError(e.getMessage());
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(String s) {
-//                        createTx(s, token.getContractAddress(), keyWithTokenBalanceFrom.getAddress());
-//                    }
-//                });
-
-    }
-
-    private void createTx(final String abiParams, final String contractAddress, String senderAddress) {
-        getUnspentOutputs(senderAddress, new SendInteractorImpl.GetUnspentListCallBack() {
-            @Override
-            public void onSuccess(List<UnspentOutput> unspentOutputs) {
-
-                ContractBuilder contractBuilder = new ContractBuilder();
-                Script script = contractBuilder.createMethodScript(abiParams, /*TODO*/ 2000000,contractAddress);
-                sendTx(createTransactionHash(script, unspentOutputs), new SendInteractorImpl.SendTxCallBack() {
-                    @Override
-                    public void onSuccess() {
-                        getView().setAlertDialog(getView().getContext().getString(R.string.payment_completed_successfully), "Ok", BaseFragment.PopUpType.confirm);
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        getView().dismissProgressDialog();
-                        getView().setAlertDialog(getView().getContext().getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(String error) {
-                getView().dismissProgressDialog();
-                getView().setAlertDialog(getView().getContext().getString(R.string.error), error, "Ok", BaseFragment.PopUpType.error);
-            }
-        });
-
-    }
-
-    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs) {
-
-        Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
-        transaction.addOutput(Coin.ZERO, script);
-
-        UnspentOutput unspentOutput = null;
-
-        for (UnspentOutput output : unspentOutputs){
-            if (output.getAmount().doubleValue() > 1.0) {
-                unspentOutput = output;
-                break;
-            }
-        }
-
-        if (unspentOutput == null) {
-            throw new RuntimeException("You have insufficient funds for this transaction");
-        }
-
-        BigDecimal bitcoin = new BigDecimal(100000000);
-        ECKey myKey = keyWithTokenBalanceFrom.getKey();
-        transaction.addOutput(Coin.valueOf((long) (unspentOutput.getAmount().multiply(bitcoin).subtract(new BigDecimal("10000000")).doubleValue())),
-                myKey.toAddress(CurrentNetParams.getNetParams()));
-
-        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList(10)) {
-            if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
-                Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
-                TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
-                Script script2 = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
-                transaction.addSignedInput(outPoint, script2, deterministicKey, Transaction.SigHash.ALL, true);
-                break;
-            }
-        }
-
-        transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
-        transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
-
-        byte[] bytes = transaction.unsafeBitcoinSerialize();
-        return Hex.toHexString(bytes);
-    }
-
-    private void getUnspentOutputs(String address, final SendInteractorImpl.GetUnspentListCallBack callBack) {
-        QtumService.newInstance().getUnspentOutputs(address)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<UnspentOutput>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        callBack.onError("Get Unspent Outputs " + e.getMessage());
-                    }
-                    @Override
-                    public void onNext(List<UnspentOutput> unspentOutputs) {
-
-                        for(Iterator<UnspentOutput> iterator = unspentOutputs.iterator(); iterator.hasNext();){
-                            UnspentOutput unspentOutput = iterator.next();
-                            if(!unspentOutput.isOutputAvailableToPay()){
-                                iterator.remove();
-                            }
-                        }
-                        Collections.sort(unspentOutputs, new Comparator<UnspentOutput>() {
-                            @Override
-                            public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {
-                                return unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? -1 : 0;
-                            }
-                        });
-                        callBack.onSuccess(unspentOutputs);
-                    }
-                });
-    }
-
-    private void sendTx(String txHex, final SendInteractorImpl.SendTxCallBack callBack){
-        QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(txHex, 1))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<SendRawTransactionResponse>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        callBack.onError(e.getLocalizedMessage());
-                    }
-
-                    @Override
-                    public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
-                        callBack.onSuccess();
-                    }
-                });
     }
 
     public int getDecimalUnits() {

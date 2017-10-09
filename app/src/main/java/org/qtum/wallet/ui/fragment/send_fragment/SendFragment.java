@@ -11,9 +11,12 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -35,7 +38,9 @@ import org.qtum.wallet.ui.fragment.currency_fragment.CurrencyFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinDialogFragment;
 import org.qtum.wallet.ui.fragment.qr_code_recognition_fragment.QrCodeRecognitionFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
+import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.FontTextView;
+import org.qtum.wallet.utils.ResizeHeightAnimation;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -101,9 +106,55 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     @BindView(org.qtum.wallet.R.id.tv_placeholder_not_confirmed_balance_value)
     TextView placeHolderBalanceNotConfirmed;
 
+    @BindView(R.id.gas_management_container)
+    RelativeLayout mRelativeLayoutGasManagementContainer;
+
+    @BindView(R.id.tv_max_gas_price)
+    FontTextView mFontTextViewMaxGasPrice;
+    @BindView(R.id.tv_min_gas_price)
+    FontTextView mFontTextViewMinGasPrice;
+
+    @BindView(R.id.tv_max_gas_limit)
+    FontTextView mFontTextViewMaxGasLimit;
+    @BindView(R.id.tv_min_gas_limit)
+    FontTextView mFontTextViewMinGasLimit;
+
+    @BindView(R.id.tv_gas_price)
+    FontTextView mFontTextViewGasPrice;
+
+    @BindView(R.id.tv_gas_limit)
+    FontTextView mFontTextViewGasLimit;
+
+    @BindView(R.id.seekBar_gas_limit)
+    SeekBar mSeekBarGasLimit;
+    @BindView(R.id.seekBar_gas_price)
+    SeekBar mSeekBarGasPrice;
+
+    @BindView(R.id.bt_edit_close)
+    FontButton mFontButtonEditClose;
+    @BindView(R.id.seek_bar_container)
+    LinearLayout mLinearLayoutSeekBarContainer;
+
     int mMinFee;
     int mMaxFee;
     int step = 100;
+
+    boolean seekBarChangeValue = false;
+    boolean textViewChangeValue = false;
+
+    int mMinGasPrice;
+    int mMaxGasPrice;
+    int stepGasPrice = 5;
+
+    int mMinGasLimit;
+    int mMaxGasLimit;
+    int stepGasLimit = 100000;
+
+    private int appLogoHeight = 0;
+    private ResizeHeightAnimation mAnimForward;
+    private ResizeHeightAnimation mAnimBackward;
+    boolean showing = false;
+
     Currency mCurrency;
     AlertDialogCallBack mAlertDialogCallBack;
     View.OnTouchListener mOnTouchListener;
@@ -113,10 +164,6 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     protected SendPresenter sendBaseFragmentPresenter;
     private boolean sendFrom = false;
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -171,6 +218,10 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         if (OPEN_QR_CODE_FRAGMENT_FLAG) {
             openQrCodeFragment();
         }
+
+        if(appLogoHeight==0) {
+            mLinearLayoutSeekBarContainer.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+        }
     }
 
     @Override
@@ -188,7 +239,8 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     }
 
 
-    @OnClick({org.qtum.wallet.R.id.bt_qr_code, org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.ll_currency})
+
+    @OnClick({org.qtum.wallet.R.id.bt_qr_code, org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.ll_currency,R.id.bt_edit_close})
     public void onClick(View view) {
         switch (view.getId()) {
             case org.qtum.wallet.R.id.bt_qr_code:
@@ -199,6 +251,17 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                 break;
             case org.qtum.wallet.R.id.ll_currency:
                 onCurrencyClick();
+                break;
+            case R.id.bt_edit_close:
+                if(showing) {
+                    mLinearLayoutSeekBarContainer.startAnimation(mAnimBackward);
+                    mFontButtonEditClose.setText(R.string.edit);
+                    showing = !showing;
+                } else {
+                    mLinearLayoutSeekBarContainer.startAnimation(mAnimForward);
+                    mFontButtonEditClose.setText(R.string.close);
+                    showing = !showing;
+                }
                 break;
         }
     }
@@ -249,6 +312,16 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     }
 
     @Override
+    public int getGasPriceInput(){
+        return Integer.valueOf(mFontTextViewGasPrice.getText().toString());
+    }
+
+    @Override
+    public int getGasLimitInput(){
+        return Integer.valueOf(mFontTextViewGasLimit.getText().toString());
+    }
+
+    @Override
     public Currency getCurrency() {
         return mCurrency;
     }
@@ -273,6 +346,25 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         args.putString(CURRENCY, currency);
         sendFragment.setArguments(args);
         return sendFragment;
+    }
+
+    ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            if(mLinearLayoutSeekBarContainer.getHeight()!=0){
+                mLinearLayoutSeekBarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                appLogoHeight = mLinearLayoutSeekBarContainer.getHeight();
+                initializeAnim();
+                mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
+                mLinearLayoutSeekBarContainer.requestLayout();
+            }
+        }
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mLinearLayoutSeekBarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
     }
 
     @Override
@@ -367,8 +459,49 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(textViewChangeValue){
+                    textViewChangeValue=false;
+                    return;
+                }
                 double value = (mMinFee + (progress * step)) / 100000000.;
+                seekBarChangeValue = true;
                 mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        mSeekBarGasPrice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int value = (mMinGasPrice + (progress * stepGasPrice));
+                mFontTextViewGasPrice.setText(String.valueOf(value));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        mSeekBarGasLimit.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int value = (mMinGasLimit + (progress * stepGasLimit));
+                mFontTextViewGasLimit.setText(String.valueOf(value));
             }
 
             @Override
@@ -385,16 +518,86 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         mTextInputEditTextAddress.setOnTouchListener(mOnTouchListener);
         mLinearLayoutCurrency.setOnTouchListener(mOnTouchListener);
 
+        mTextInputEditTextFee.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(seekBarChangeValue){
+                    seekBarChangeValue = false;
+                    return;
+                }
+                if(!s.toString().isEmpty()) {
+                    Double fee = Double.valueOf(s.toString()) * 100000000;
+                    textViewChangeValue = true;
+                    int progress;
+                    if (fee < mMinFee) {
+                        progress = mMinFee / step;
+                    } else if (fee > mMaxFee) {
+                        progress = mMaxFee / step;
+                    } else {
+                        progress = fee.intValue() / step;
+                    }
+                    mSeekBar.setProgress(progress);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mTextInputEditTextFee.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    if(mSeekBar != null) {
+                        textViewChangeValue = true;
+                        double value = (mMinFee + (mSeekBar.getProgress() * step)) / 100000000.;
+                        seekBarChangeValue = true;
+                        mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void initializeAnim(){
+        mAnimForward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, 0, appLogoHeight);
+        mAnimForward.setDuration(300);
+        mAnimForward.setFillEnabled(true);
+        mAnimForward.setFillAfter(true);
+        //mAnimForward.setAnimationListener(this);
+
+        mAnimBackward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, appLogoHeight, 0);
+        mAnimBackward.setDuration(300);
+        mAnimBackward.setFillEnabled(true);
+        mAnimBackward.setFillAfter(true);
+        //mAnimBackward.setAnimationListener(this);
     }
 
     @Override
-    public void updateData(String publicAddress, double amount, String tokenAddress) {
-        mTextInputEditTextAddress.setText(publicAddress);
-        mTextInputEditTextAmount.setText(String.valueOf(amount));
-        if (!TextUtils.isEmpty(tokenAddress)) {
-            mLinearLayoutCurrency.setVisibility(View.VISIBLE);
-            mTextViewCurrency.setText(tokenAddress);
-        }
+    public void updateGasPrice(int minGasPrice, int maxGasPrice) {
+        mFontTextViewMaxGasPrice.setText(String.valueOf(maxGasPrice));
+        mFontTextViewMinGasPrice.setText(String.valueOf(minGasPrice));
+        mMinGasPrice = minGasPrice;
+        mMaxGasPrice = maxGasPrice;
+        mSeekBarGasPrice.setMax((mMaxGasPrice - mMinGasPrice) / stepGasPrice);
+    }
+
+    @Override
+    public void updateGasLimit(int minGasLimit, int maxGasLimit) {
+        mFontTextViewMaxGasLimit.setText(String.valueOf(maxGasLimit));
+        mFontTextViewMinGasLimit.setText(String.valueOf(minGasLimit));
+        mMinGasLimit = minGasLimit;
+        mMaxGasLimit = maxGasLimit;
+        mSeekBarGasLimit.setMax((mMaxGasLimit - mMinGasLimit) / stepGasLimit);
+        mSeekBarGasLimit.setProgress(1);
     }
 
     @Override
@@ -407,6 +610,11 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         mLinearLayoutCurrency.setVisibility(View.VISIBLE);
         mTextViewCurrency.setText(currency.getName());
         mCurrency = currency;
+        if(mCurrency.getName().equals("Qtum " + getString(R.string.default_currency))){
+            mRelativeLayoutGasManagementContainer.setVisibility(View.GONE);
+        }else{
+            mRelativeLayoutGasManagementContainer.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -423,6 +631,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     @Override
     public void hideCurrencyField() {
         mLinearLayoutCurrency.setVisibility(View.GONE);
+        mRelativeLayoutGasManagementContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -479,6 +688,13 @@ public abstract class SendFragment extends BaseFragment implements SendView {
             notConfirmedBalancePlaceholder.setVisibility(View.GONE);
         }
     }
+
+    @Override
+    public void updateData(String publicAddress, double amount) {
+        mTextInputEditTextAddress.setText(publicAddress);
+        mTextInputEditTextAmount.setText(String.valueOf(amount));
+    }
+
 
     private UpdateService getUpdateService() {
         return getMainActivity().getUpdateService();

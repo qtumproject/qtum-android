@@ -206,5 +206,7 @@
     <string name="insufficient_fee_lease_use_minimum_of">Insufficient fee. Please use minimum of </string>
     <string name="no_tokens_found">No Tokens Found</string>
     <string name="no_contracts_found">No Contracts Found</string>
+    <string name="close">Close</string>
+    <string name="edit">Edit</string>
 
 </resources>

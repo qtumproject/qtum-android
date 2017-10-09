@@ -13,14 +13,12 @@ import java.util.List;
 public abstract class ContractConfirmAdapter extends HFRecyclerView<ContractMethodParameter> {
 
     protected String mineAddress;
-    protected String fee;
 
     protected OnValueClick clickListener;
 
-    public ContractConfirmAdapter(List<ContractMethodParameter> params, String mineAddress, String fee, OnValueClick clickListener){
+    public ContractConfirmAdapter(List<ContractMethodParameter> params, String mineAddress, OnValueClick clickListener){
         super(params,false, true);
         this.mineAddress = mineAddress;
-        this.fee = fee;
         this.clickListener = clickListener;
     }
 
