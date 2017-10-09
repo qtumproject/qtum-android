@@ -18,7 +18,7 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
-import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AdressesListFragmentToken;
+import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AddressesListFragmentToken;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.token_fragment.dialogs.ShareDialogFragment;
@@ -146,7 +146,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
     @OnClick(R.id.iv_choose_address)
     public void onChooseAddressClick() {
         if (!TextUtils.isEmpty(getCurrency())) {
-            BaseFragment addressListFragment = AdressesListFragmentToken.newInstance(getContext(), getPresenter().getToken(), getCurrency());
+            BaseFragment addressListFragment = AddressesListFragmentToken.newInstance(getContext(), getPresenter().getToken(), getCurrency());
             openFragment(addressListFragment);
         }
     }

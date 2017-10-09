@@ -12,9 +12,14 @@ import java.util.List;
  * Created by kirillvolkov on 03.08.17.
  */
 
-public interface AdressesListFragmentTokenView extends BaseFragmentView {
+public interface AddressesListTokenView extends BaseFragmentView {
     void updateAddressList(List<DeterministicKeyWithTokenBalance> deterministicKeyWithBalance, String currency);
+
     UpdateService getSocketInstance();
+
     Handler getHandler();
+
     void hideTransferDialog();
+
+    void goToSendFragment(String address, String address1, String amountString, String contractAddress);
 }
