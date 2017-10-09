@@ -1,16 +1,19 @@
 package org.qtum.wallet.ui.fragment.addresses_fragment;
 
 
+import android.content.Context;
+
 import org.bitcoinj.crypto.DeterministicKey;
 import org.qtum.wallet.datastorage.KeyStorage;
 
 import java.util.List;
 
-class AddressesFragmentInteractorImpl implements AddressesFragmentInteractor {
+class AddressesInteractorImpl implements AddressesInteractor {
 
+    Context mContext;
 
-    AddressesFragmentInteractorImpl() {
-
+    AddressesInteractorImpl(Context context) {
+        mContext = context;
     }
 
     @Override

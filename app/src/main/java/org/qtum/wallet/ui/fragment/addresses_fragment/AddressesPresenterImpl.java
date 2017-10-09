@@ -6,36 +6,29 @@ import android.content.Context;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 
-class AddressesFragmentPresenterImpl extends BaseFragmentPresenterImpl implements AddressesFragmentPresenter{
+class AddressesPresenterImpl extends BaseFragmentPresenterImpl implements AddressesPresenter {
 
-    private AddressesFragmentView mAddressesFragmentView;
-    private AddressesFragmentInteractorImpl mAddressesFragmentInteractor;
+    private AddressesView mAddressesFragmentView;
+    private AddressesInteractor mAddressesFragmentInteractor;
 
-    AddressesFragmentPresenterImpl(AddressesFragmentView addressesFragmentView){
+    AddressesPresenterImpl(AddressesView addressesFragmentView, AddressesInteractor addressesFragmentInteractor){
         mAddressesFragmentView = addressesFragmentView;
-        mAddressesFragmentInteractor = new AddressesFragmentInteractorImpl();
+        mAddressesFragmentInteractor = addressesFragmentInteractor;
     }
 
     @Override
-    public AddressesFragmentView getView() {
+    public AddressesView getView() {
         return mAddressesFragmentView;
     }
 
-    private AddressesFragmentInteractorImpl getInteractor() {
+    private AddressesInteractor getInteractor() {
         return mAddressesFragmentInteractor;
-    }
-
-    @Override
-    public void onResume(Context context) {
-        super.onResume(context);
-
     }
 
     @Override
     public void onViewCreated() {
         super.onViewCreated();
         getView().updateAddressList(getInteractor().getKeyList());
-
     }
 
     @Override

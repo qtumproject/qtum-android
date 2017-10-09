@@ -34,9 +34,10 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
+class BackupContractsPresenterImpl extends BaseFragmentPresenterImpl implements BackupContractsPresenter{
 
-    private BackupContractsFragmentView mBackupContractsFragmentView;
+    private BackupContractsView mBackupContractsFragmentView;
+    private BackupContractsInteractor mBackupContractsInteractor;
     private Context mContext;
     private boolean PERMISION_GRANT = false;
 
@@ -44,8 +45,9 @@ class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
     private final String CHECK_PERMISSION_AND_BACKUP = "check_permission_and_backup";
     private final String CHECK_PERMISSION_AND_CREATE = "check_permission_and_create";
 
-    BackupContractsFragmentPresenter(BackupContractsFragmentView backupContractsFragmentView){
+    BackupContractsPresenterImpl(BackupContractsView backupContractsFragmentView, BackupContractsInteractor backupContractsInteractor){
         mBackupContractsFragmentView = backupContractsFragmentView;
+        mBackupContractsInteractor = backupContractsInteractor;
         mContext = getView().getContext();
     }
 
@@ -54,7 +56,7 @@ class BackupContractsFragmentPresenter extends BaseFragmentPresenterImpl {
     private File mBackUpFile;
 
     @Override
-    public BackupContractsFragmentView getView() {
+    public BackupContractsView getView() {
         return mBackupContractsFragmentView;
     }
 
