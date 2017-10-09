@@ -208,5 +208,6 @@
     <string name="no_contracts_found">No Contracts Found</string>
     <string name="close">Close</string>
     <string name="edit">Edit</string>
+    <string name="receive_version_error">Receive version error</string>
 
 </resources>

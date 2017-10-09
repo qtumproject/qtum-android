@@ -3,6 +3,8 @@ package org.qtum.wallet.ui.fragment.about_fragment;
 
 import android.content.pm.PackageManager;
 
+import org.qtum.wallet.R;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 public class AboutPresenterImpl extends BaseFragmentPresenterImpl implements AboutPresenter{
@@ -22,8 +24,8 @@ public class AboutPresenterImpl extends BaseFragmentPresenterImpl implements Abo
             int versionCode = getInteractor().getCodeVersion();
             String version = getInteractor().getVersion();
             getView().updateVersion(version, versionCode);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            getView().setAlertDialog(R.string.receive_version_error, R.string.cancel, BaseFragment.PopUpType.error);
         }
 
     }
