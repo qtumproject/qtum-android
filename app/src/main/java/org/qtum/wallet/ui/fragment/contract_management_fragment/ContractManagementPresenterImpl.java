@@ -1,5 +1,7 @@
 package org.qtum.wallet.ui.fragment.contract_management_fragment;
 
+import android.text.TextUtils;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.model.contract.ContractMethod;
@@ -9,12 +11,25 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import java.util.List;
 
 
-public class ContractManagementFragmentPresenter extends BaseFragmentPresenterImpl {
+public class ContractManagementPresenterImpl extends BaseFragmentPresenterImpl implements ContractManagementPresenter{
 
-    private ContractManagementFragmentView mContractManagementFragmentView;
+    private ContractManagementView mContractManagementFragmentView;
+    private ContractManagementInteractor mContractManagementInteractor;
 
-    ContractManagementFragmentPresenter(ContractManagementFragmentView contractManagementFragmentView){
+    ContractManagementPresenterImpl(ContractManagementView contractManagementFragmentView, ContractManagementInteractor contractManagementInteractor){
         mContractManagementFragmentView = contractManagementFragmentView;
+        mContractManagementInteractor = contractManagementInteractor;
+    }
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        if(!TextUtils.isEmpty(getView().getContractAddress())){
+            getAbiFromFile();
+        } else {
+            getView().setTitleText(R.string.contract_details);
+            getAbiFromString(getView().getContractABI());
+        }
     }
 
     public void getAbiFromFile(){
@@ -22,7 +37,7 @@ public class ContractManagementFragmentPresenter extends BaseFragmentPresenterIm
         if(contractMethodList != null) {
             getView().setRecyclerView(contractMethodList, true);
         } else {
-            getView().setAlertDialog(getView().getContext().getString(R.string.error),getView().getContext().getString(R.string.fail_to_get_contract_methods), BaseFragment.PopUpType.error);
+            getView().setAlertDialog(R.string.error,R.string.fail_to_get_contract_methods, BaseFragment.PopUpType.error);
         }
     }
 
@@ -31,13 +46,13 @@ public class ContractManagementFragmentPresenter extends BaseFragmentPresenterIm
         if(contractMethodList != null) {
             getView().setRecyclerView(contractMethodList, false);
         } else {
-            getView().setAlertDialog(getView().getContext().getString(R.string.error),getView().getContext().getString(R.string.fail_to_get_contract_methods), BaseFragment.PopUpType.error);
+            getView().setAlertDialog(R.string.error,R.string.fail_to_get_contract_methods, BaseFragment.PopUpType.error);
         }
     }
 
 
     @Override
-    public ContractManagementFragmentView getView() {
+    public ContractManagementView getView() {
         return mContractManagementFragmentView;
     }
 
