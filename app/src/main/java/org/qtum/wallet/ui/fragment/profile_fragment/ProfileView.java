@@ -7,4 +7,7 @@ public interface ProfileView extends BaseFragmentView {
     void startDialogFragmentForResult();
 
     void resetText();
+
+    boolean checkAvailabilityTouchId();
+
 }

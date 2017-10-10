@@ -45,4 +45,9 @@ class ProfileInteractorImpl implements ProfileInteractor {
     public boolean isTouchIdEnable() {
         return QtumSharedPreference.getInstance().isTouchIdEnable(mContext);
     }
+
+    @Override
+    public void saveTouchIdEnable(boolean isChecked) {
+        QtumSharedPreference.getInstance().saveTouchIdEnable(mContext, isChecked);
+    }
 }

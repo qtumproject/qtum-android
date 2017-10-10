@@ -12,4 +12,5 @@ public interface ProfileInteractor {
 
     boolean isTouchIdEnable();
 
+    void saveTouchIdEnable(boolean isChecked);
 }

@@ -1,7 +1,6 @@
 package org.qtum.wallet.ui.fragment.profile_fragment;
 
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
-import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import java.util.ArrayList;
@@ -20,13 +19,12 @@ public class ProfilePresenterImpl extends BaseFragmentPresenterImpl implements P
     }
 
     private void initSettingsData() {
-
         if (settingsData == null) {
             settingsData = new ArrayList<>();
             settingsData.add(new SettingObject(org.qtum.wallet.R.string.language, org.qtum.wallet.R.drawable.ic_language, 0));
             settingsData.add(new SettingObject(org.qtum.wallet.R.string.change_pin, org.qtum.wallet.R.drawable.ic_changepin, 1));
             settingsData.add(new SettingObject(org.qtum.wallet.R.string.wallet_backup, org.qtum.wallet.R.drawable.ic_backup, 1));
-            if (getView().getMainActivity().checkAvailabilityTouchId()) {
+            if (getView().checkAvailabilityTouchId()) {
                 settingsData.add(new SettingSwitchObject(org.qtum.wallet.R.string.touch_id, org.qtum.wallet.R.drawable.ic_touchid, 1,
                         getInteractor().isTouchIdEnable()));
             }
@@ -58,7 +56,7 @@ public class ProfilePresenterImpl extends BaseFragmentPresenterImpl implements P
 
     @Override
     public void onTouchIdSwitched(boolean isChecked) {
-        QtumSharedPreference.getInstance().saveTouchIdEnable(getView().getContext(), isChecked);
+        getInteractor().saveTouchIdEnable(isChecked);
     }
 
     @Override
@@ -69,5 +67,12 @@ public class ProfilePresenterImpl extends BaseFragmentPresenterImpl implements P
     @Override
     public void removeLanguageListener(LanguageChangeListener listener) {
         getInteractor().removeLanguageListener(listener);
+    }
+
+    /**
+     * Getter for unit testing
+     */
+    public SettingObject getSettingsItem() {
+        return settingsData.get(3);
     }
 }

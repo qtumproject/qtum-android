@@ -142,4 +142,8 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
         logOutDialogFragment.show(getFragmentManager(), LogOutDialogFragment.class.getCanonicalName());
     }
 
+    @Override
+    public boolean checkAvailabilityTouchId() {
+        return getMainActivity().checkAvailabilityTouchId();
+    }
 }
