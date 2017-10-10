@@ -1,6 +1,6 @@
 package org.qtum.wallet.ui.fragment.backup_wallet_fragment;
 
 
-interface BackUpWalletInteractor {
-    String getSeed();
+public interface BackUpWalletInteractor {
+    String getPassphrase(String pin);
 }

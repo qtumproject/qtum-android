@@ -6,5 +6,5 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 interface BackUpWalletPresenter extends BaseFragmentPresenter{
     void onCopyBrainCodeClick();
     void onContinueClick();
-    void chooseShareMethod();
+    void onShareClick();
 }

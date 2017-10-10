@@ -1,7 +1,10 @@
 package org.qtum.wallet.ui.fragment.backup_wallet_fragment;
 
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
@@ -16,6 +19,8 @@ import org.qtum.wallet.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 public abstract class BackUpWalletFragment extends BaseFragment implements BackUpWalletView {
 
@@ -43,7 +48,7 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
 
     @OnClick(R.id.bt_share)
     public void onShareClick() {
-        getPresenter().chooseShareMethod();
+        getPresenter().onShareClick();
     }
 
     @OnClick({R.id.bt_copy, R.id.bt_continue, R.id.ibt_back, R.id.bt_copy_brain_code})
@@ -119,19 +124,29 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
     }
 
     @Override
-    public String getBrainCode() {
-        return mTextViewBrainCode.getText().toString();
-    }
-
-
-    @Override
     public void showToast() {
         Toast.makeText(getContext(), getString(R.string.copied), Toast.LENGTH_SHORT).show();
-        //Snackbar.make(mCoordinatorLayout, getString(R.string.coped), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public String getPin() {
         return getArguments().getString(PIN);
+    }
+
+    @Override
+    public void copyToClipboard(String text) {
+        ClipboardManager clipboard = (ClipboardManager)getMainActivity().getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("label", text);
+        clipboard.setPrimaryClip(clip);
+    }
+
+    @Override
+    public void chooseShareMethod(String text) {
+        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+        intentShareFile.setType("text/plain");
+        intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                "Qtum Wallet Backup");
+        intentShareFile.putExtra(Intent.EXTRA_TEXT, text);
+        getMainActivity().startActivity(Intent.createChooser(intentShareFile, "Qtum Wallet Backup"));
     }
 }
