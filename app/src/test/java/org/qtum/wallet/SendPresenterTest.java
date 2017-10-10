@@ -1,116 +1,119 @@
-//package org.qtum.wallet;
-//
-//import org.junit.After;
-//import org.junit.Before;
-//import org.junit.Test;
-//import org.mockito.Matchers;
-//import org.mockito.Mock;
-//import org.mockito.MockitoAnnotations;
-//import org.qtum.wallet.model.Currency;
-//import org.qtum.wallet.model.CurrencyToken;
-//import org.qtum.wallet.model.contract.Token;
-//import org.qtum.wallet.model.gson.FeePerKb;
-//import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
-//import org.qtum.wallet.model.gson.call_smart_contract_response.Item;
-//import org.qtum.wallet.model.gson.token_balance.Balance;
-//import org.qtum.wallet.model.gson.token_balance.TokenBalance;
-//import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-//import org.qtum.wallet.ui.fragment.send_fragment.SendInteractor;
-//import org.qtum.wallet.ui.fragment.send_fragment.SendInteractorImpl;
-//import org.qtum.wallet.ui.fragment.send_fragment.SendPresenterImpl;
-//import org.qtum.wallet.ui.fragment.send_fragment.SendView;
-//
-//import java.math.BigDecimal;
-//import java.util.Arrays;
-//import java.util.Collections;
-//import java.util.List;
-//
-//import rx.Observable;
-//import rx.Scheduler;
-//import rx.android.plugins.RxAndroidPlugins;
-//import rx.android.plugins.RxAndroidSchedulersHook;
-//import rx.plugins.RxJavaPlugins;
-//import rx.plugins.RxJavaSchedulersHook;
-//import rx.schedulers.Schedulers;
-//
-//import static org.assertj.core.api.Java6Assertions.assertThat;
-//import static org.mockito.Matchers.any;
-//import static org.mockito.Matchers.anyDouble;
-//import static org.mockito.Matchers.anyInt;
-//import static org.mockito.Matchers.anyString;
-//import static org.mockito.Mockito.never;
-//import static org.mockito.Mockito.times;
-//import static org.mockito.Mockito.verify;
-//import static org.mockito.Mockito.when;
-//
-///**
-// * Created by drevnitskaya on 03.10.17.
-// */
-//
-//public class SendPresenterTest {
-//
-//    private static final String TEST_CURRENCY_VALUE = "Qtum";
-//    private static final List<Token> TEST_LIST_TOKENS = Arrays.asList(new Token(true, ""), new Token(true, TEST_CURRENCY_VALUE));
-//    private static final List<Token> TEST_LIST_TOKENS_WITH_UNSUBSCRIBED_ITEMS = Arrays.asList(new Token(true), new Token(true), new Token(true), new Token(false));
-//    private static final List<Token> TEST_EMPTY_LIST_TOKENS = Collections.emptyList();
-//    private static final FeePerKb TEST_FEE_PER_KB = new FeePerKb(new BigDecimal("10.0"));
-//    private static final double TEST_FEE_DEFAULT_VALUE = 0.0;
-//
-//    @Mock
-//    private SendView view;
-//    @Mock
-//    private SendInteractor interactor;
-//    private SendPresenterImpl presenter;
-//
-//    @Before
-//    public void init() {
-//        MockitoAnnotations.initMocks(this);
-//        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
-//            @Override
-//            public Scheduler getMainThreadScheduler() {
-//                return Schedulers.immediate();
-//            }
-//        });
-//        RxJavaPlugins.getInstance().registerSchedulersHook(new RxJavaSchedulersHook() {
-//            @Override
-//            public Scheduler getIOScheduler() {
-//                return Schedulers.immediate();
-//            }
-//        });
-//
-//        presenter = new SendPresenterImpl(view, interactor);
-//    }
-//
-//    @Test
-//    public void initialize_WithTokensFeeSuccess() {
-//        when(interactor.getTokenList())
-//                .thenReturn(TEST_LIST_TOKENS);
-//        when(interactor.getFeePerKbObservable())
-//                .thenReturn(Observable.just(TEST_FEE_PER_KB));
-//
-//        presenter.initializeViews();
-//
-//        verify(view, times(1)).setUpCurrencyField(anyInt());
-//        verify(interactor, times(1)).handleFeePerKbValue(Matchers.<FeePerKb>any());
-//        assertThat(presenter.getMinFee())
-//                .isEqualTo(Double.valueOf(TEST_FEE_PER_KB.getFeePerKb().toString()));
-//        verify(view, times(1)).updateFee(anyDouble(), anyDouble());
-//
-//        assertThat(presenter.getTokenList())
-//                .hasSize(2);
-//    }
-//
+package org.qtum.wallet;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.qtum.wallet.model.Currency;
+import org.qtum.wallet.model.CurrencyToken;
+import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.FeePerKb;
+import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
+import org.qtum.wallet.model.gson.call_smart_contract_response.Item;
+import org.qtum.wallet.model.gson.token_balance.Balance;
+import org.qtum.wallet.model.gson.token_balance.TokenBalance;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment.send_fragment.SendInteractor;
+import org.qtum.wallet.ui.fragment.send_fragment.SendInteractorImpl;
+import org.qtum.wallet.ui.fragment.send_fragment.SendPresenterImpl;
+import org.qtum.wallet.ui.fragment.send_fragment.SendView;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import rx.Observable;
+import rx.Scheduler;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.plugins.RxJavaPlugins;
+import rx.plugins.RxJavaSchedulersHook;
+import rx.schedulers.Schedulers;
+
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+/**
+ * Created by drevnitskaya on 03.10.17.
+ */
+
+public class SendPresenterTest {
+
+    private static final String TEST_CURRENCY_VALUE = "Qtum";
+    private static final List<Token> TEST_LIST_TOKENS = Arrays.asList(new Token(true, ""), new Token(true, TEST_CURRENCY_VALUE));
+    private static final List<Token> TEST_LIST_TOKENS_WITH_UNSUBSCRIBED_ITEMS = Arrays.asList(new Token(true), new Token(true), new Token(true), new Token(false));
+    private static final List<Token> TEST_EMPTY_LIST_TOKENS = Collections.emptyList();
+    private static final FeePerKb TEST_FEE_PER_KB = new FeePerKb(new BigDecimal("10.0"));
+    private static final double TEST_FEE_PER_KB_DOUBLE_VALUE = 10.0;
+    private static final int TEST_MIN_GAS_PRISE = 10;
+    private static final double TEST_FEE_DEFAULT_VALUE = 0.0;
+
+    @Mock
+    private SendView view;
+    @Mock
+    private SendInteractor interactor;
+    private SendPresenterImpl presenter;
+
+    @Before
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return Schedulers.immediate();
+            }
+        });
+        RxJavaPlugins.getInstance().registerSchedulersHook(new RxJavaSchedulersHook() {
+            @Override
+            public Scheduler getIOScheduler() {
+                return Schedulers.immediate();
+            }
+        });
+
+        presenter = new SendPresenterImpl(view, interactor);
+    }
+
+    @Test
+    public void initialize_WithTokensFeeSuccess() {
+        when(interactor.getTokenList())
+                .thenReturn(TEST_LIST_TOKENS);
+        when(interactor.getFeePerKbDoubleValue())
+                .thenReturn(TEST_FEE_PER_KB_DOUBLE_VALUE);
+        when(interactor.getMinGasPrice())
+                .thenReturn(TEST_MIN_GAS_PRISE);
+
+        presenter.initializeViews();
+
+        verify(view, times(1)).setUpCurrencyField(anyInt());
+        assertThat(presenter.getMinFee())
+                .isEqualTo(TEST_FEE_PER_KB_DOUBLE_VALUE);
+        verify(view, times(1)).updateFee(anyDouble(), anyDouble());
+        verify(view, times(1)).updateGasPrice(anyInt(), anyInt());
+        verify(view, times(1)).updateGasLimit(anyInt(), anyInt());
+
+        assertThat(presenter.getTokenList())
+                .hasSize(2);
+    }
+
+    //todo remove test?
 //    @Test
 //    public void initialize_WithTokensFeeError() {
 //        when(interactor.getTokenList())
 //                .thenReturn(TEST_LIST_TOKENS);
-//        when(interactor.getFeePerKbObservable())
-//                .thenReturn(Observable.<FeePerKb>error(new Throwable("Getting Fee error")));
 //
 //        presenter.initializeViews();
 //
 //        verify(view, times(1)).setUpCurrencyField(anyInt());
-//        verify(interactor, never()).handleFeePerKbValue(Matchers.<FeePerKb>any());
 //        assertThat(presenter.getMinFee())
 //                .isEqualTo(TEST_FEE_DEFAULT_VALUE);
 //        verify(view, never()).updateFee(anyDouble(), anyDouble());
@@ -120,16 +123,12 @@
 //    public void initialize_EmptyTokensFeeError() {
 //        when(interactor.getTokenList())
 //                .thenReturn(TEST_EMPTY_LIST_TOKENS);
-//        when(interactor.getFeePerKbObservable())
-//                .thenReturn(Observable.<FeePerKb>error(new Throwable("Getting Fee error")));
 //
 //        presenter.initializeViews();
 //
 //        verify(view, never()).setUpCurrencyField(anyInt());
 //        verify(view, times(1)).hideCurrencyField();
 //
-//
-//        verify(interactor, never()).handleFeePerKbValue(Matchers.<FeePerKb>any());
 //        assertThat(presenter.getMinFee())
 //                .isEqualTo(TEST_FEE_DEFAULT_VALUE);
 //        verify(view, never()).updateFee(anyDouble(), anyDouble());
@@ -139,8 +138,8 @@
 //    public void initialize_TokensWithUnsubscribedItems() {
 //        when(interactor.getTokenList())
 //                .thenReturn(TEST_LIST_TOKENS_WITH_UNSUBSCRIBED_ITEMS);
-//        when(interactor.getFeePerKbObservable())
-//                .thenReturn(Observable.<FeePerKb>error(new Throwable("Getting Fee error")));
+////        when(interactor.getFeePerKbObservable())
+////                .thenReturn(Observable.<FeePerKb>error(new Throwable("Getting Fee error")));
 //
 //        presenter.initializeViews();
 //
@@ -148,7 +147,7 @@
 //        verify(view, never()).hideCurrencyField();
 //
 //
-//        verify(interactor, never()).handleFeePerKbValue(Matchers.<FeePerKb>any());
+////        verify(interactor, never()).handleFeePerKbValue(Matchers.<FeePerKb>any());
 //        assertThat(presenter.getMinFee())
 //                .isEqualTo(TEST_FEE_DEFAULT_VALUE);
 //        verify(view, never()).updateFee(anyDouble(), anyDouble());
@@ -206,7 +205,7 @@
 //
 //        presenter.onResponse(TEST_ADDRESS, TEST_AMOUNT, TEST_TOKEN_ADDRESS);
 //
-//        verify(view, times(1)).updateData(anyString(), anyDouble(), anyString());
+//        verify(view, times(1)).updateData(anyString(), anyDouble());
 //        verify(view, never()).setAlertDialog(anyInt(), anyString(), (BaseFragment.PopUpType) any());
 //    }
 //
@@ -219,7 +218,7 @@
 //
 //        presenter.onResponse(TEST_ADDRESS, TEST_AMOUNT, TEST_TOKEN_ADDRESS);
 //
-//        verify(view, times(1)).updateData(anyString(), anyDouble(), anyString());
+//        verify(view, times(1)).updateData(anyString(), anyDouble());
 //        verify(view, times(1)).setAlertDialog(anyInt(), anyString(), (BaseFragment.PopUpType) any());
 //    }
 //
@@ -532,12 +531,12 @@
 //        verify(view, times(1)).getTokenBalance(anyString());
 //        verify(interactor, never()).getUnspentOutputs(anyString(), (SendInteractorImpl.GetUnspentListCallBack) any());
 //    }
-//
-//
-//    @After
-//    public void tearDown() {
-//        RxAndroidPlugins.getInstance().reset();
-//        RxJavaPlugins.getInstance().reset();
-//    }
-//
-//}
+
+
+    @After
+    public void tearDown() {
+        RxAndroidPlugins.getInstance().reset();
+        RxJavaPlugins.getInstance().reset();
+    }
+
+}

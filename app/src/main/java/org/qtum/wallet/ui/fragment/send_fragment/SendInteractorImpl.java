@@ -54,8 +54,8 @@ public class SendInteractorImpl implements SendInteractor {
     }
 
     @Override
-    public FeePerKb getFeePerKb() {
-        return QtumNetworkState.newInstance().getFeePerKb();
+    public double getFeePerKbDoubleValue() {
+        return QtumNetworkState.newInstance().getFeePerKb().getFeePerKb().doubleValue();
     }
 
     @Override
@@ -223,7 +223,7 @@ public class SendInteractorImpl implements SendInteractor {
     public void sendTx(final String from, final String address, final String amount, final String fee, final SendTxCallBack callBack) {
 
 
-        createTx(from, address, amount, fee, getFeePerKb().getFeePerKb(), new CreateTxCallBack() {
+        createTx(from, address, amount, fee, QtumNetworkState.newInstance().getFeePerKb().getFeePerKb(), new CreateTxCallBack() {
             @Override
             public void onSuccess(String txHex) {
                 sendTx(txHex, callBack);
@@ -316,10 +316,10 @@ public class SendInteractorImpl implements SendInteractor {
     }
 
     @Override
-    public String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice,String fee) {
+    public String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee) {
         ContractBuilder contractBuilder = new ContractBuilder();
-        Script script = contractBuilder.createMethodScript(abiParams, gasLimit, gasPrice,contractAddress);
-        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice,getFeePerKb().getFeePerKb(), fee, mContext);
+        Script script = contractBuilder.createMethodScript(abiParams, gasLimit, gasPrice, contractAddress);
+        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, QtumNetworkState.newInstance().getFeePerKb().getFeePerKb(), fee, mContext);
     }
 
     @Override
@@ -339,5 +339,10 @@ public class SendInteractorImpl implements SendInteractor {
         String hash = s.substring(0, s.length() - 64);
         hash = hash.concat("0000000000000000000000000000000000000000000000000000000000000000");
         return QtumService.newInstance().callSmartContract(token.getContractAddress(), new CallSmartContractRequest(new String[]{hash}));
+    }
+
+    @Override
+    public int getMinGasPrice() {
+        return getDGPInfo().getMingasprice();
     }
 }

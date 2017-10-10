@@ -1,18 +1,15 @@
 package org.qtum.wallet.ui.fragment.news_fragment;
 
-import org.qtum.wallet.model.gson.News;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
-import java.util.List;
+public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements NewsPresenter {
 
-class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl implements NewsFragmentPresenter {
+    private NewsView mNewsFragmentView;
+    private NewsInteractor mNewsFragmentInteractor;
 
-    private NewsFragmentView mNewsFragmentView;
-    private NewsFragmentInteractorImpl mNewsFragmentInteractor;
-
-    NewsFragmentPresenterImpl(NewsFragmentView newsFragmentView) {
+    public NewsPresenterImpl(NewsView newsFragmentView, NewsInteractor newsInteractor) {
         mNewsFragmentView = newsFragmentView;
-        mNewsFragmentInteractor = new NewsFragmentInteractorImpl();
+        mNewsFragmentInteractor = newsInteractor;
     }
 
     @Override
@@ -26,15 +23,14 @@ class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl implements New
     public void onDestroyView() {
         super.onDestroyView();
         getInteractor().unSubscribe();
-        getView().setAdapterNull();
     }
 
-    private NewsFragmentInteractorImpl getInteractor() {
+    private NewsInteractor getInteractor() {
         return mNewsFragmentInteractor;
     }
 
     @Override
-    public NewsFragmentView getView() {
+    public NewsView getView() {
         return mNewsFragmentView;
     }
 
@@ -51,15 +47,11 @@ class NewsFragmentPresenterImpl extends BaseFragmentPresenterImpl implements New
 
     private void loadAndUpdateNews() {
         getView().startRefreshAnimation();
-        getInteractor().getNewsList(new NewsFragmentInteractorImpl.GetNewsListCallBack() {
-            @Override
-            public void onSuccess(List<News> newsList) {
-                updateNews();
-            }
-        });
+        getInteractor().getNewsList(getView().getNewsCallback());
     }
 
-    private void updateNews() {
+    @Override
+    public void updateNews() {
         getView().updateNews(getInteractor().getNewsList());
     }
 

@@ -11,19 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import org.qtum.wallet.ui.fragment_factory.Factory;
+
 import com.squareup.picasso.Picasso;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.News;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public abstract class NewsFragment extends BaseFragment implements NewsFragmentView {
+public abstract class NewsFragment extends BaseFragment implements NewsView {
 
-    private NewsFragmentPresenterImpl mNewsFragmentPresenter;
+    private NewsPresenter mNewsFragmentPresenter;
     private NewsAdapter mNewsAdapter;
 
     @BindView(R.id.recycler_view)
@@ -40,11 +44,11 @@ public abstract class NewsFragment extends BaseFragment implements NewsFragmentV
 
     @Override
     protected void createPresenter() {
-        mNewsFragmentPresenter = new NewsFragmentPresenterImpl(this);
+        mNewsFragmentPresenter = new NewsPresenterImpl(this, new NewsInteractorImpl(getContext()));
     }
 
     @Override
-    protected NewsFragmentPresenterImpl getPresenter() {
+    protected NewsPresenter getPresenter() {
         return mNewsFragmentPresenter;
     }
 
@@ -194,5 +198,21 @@ public abstract class NewsFragment extends BaseFragment implements NewsFragmentV
         public int getItemCount() {
             return mNewsList.size();
         }
+    }
+
+    @Override
+    public NewsInteractorImpl.GetNewsListCallBack getNewsCallback() {
+        return new NewsInteractorImpl.GetNewsListCallBack() {
+            @Override
+            public void onSuccess(List<News> newsList) {
+                getPresenter().updateNews();
+            }
+        };
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        setAdapterNull();
     }
 }

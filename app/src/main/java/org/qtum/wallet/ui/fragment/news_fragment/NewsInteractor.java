@@ -5,7 +5,11 @@ import org.qtum.wallet.model.gson.News;
 import java.util.List;
 
 
-interface NewsFragmentInteractor {
-    void getNewsList(NewsFragmentInteractorImpl.GetNewsListCallBack callBack);
+public interface NewsInteractor {
+    void getNewsList(NewsInteractorImpl.GetNewsListCallBack callBack);
+
     List<News> getNewsList();
+
+    void unSubscribe();
+
 }
