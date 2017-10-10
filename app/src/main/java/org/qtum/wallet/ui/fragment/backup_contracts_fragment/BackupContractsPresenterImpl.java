@@ -1,6 +1,8 @@
 package org.qtum.wallet.ui.fragment.backup_contracts_fragment;
 
 
+import org.qtum.wallet.R;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import java.io.File;
@@ -9,12 +11,12 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
 
-class BackupContractsPresenterImpl extends BaseFragmentPresenterImpl implements BackupContractsPresenter {
+public class BackupContractsPresenterImpl extends BaseFragmentPresenterImpl implements BackupContractsPresenter {
 
     private BackupContractsView mBackupContractsFragmentView;
     private BackupContractsInteractor mBackupContractsInteractor;
 
-    BackupContractsPresenterImpl(BackupContractsView backupContractsFragmentView, BackupContractsInteractor backupContractsInteractor) {
+    public BackupContractsPresenterImpl(BackupContractsView backupContractsFragmentView, BackupContractsInteractor backupContractsInteractor) {
         mBackupContractsFragmentView = backupContractsFragmentView;
         mBackupContractsInteractor = backupContractsInteractor;
     }
@@ -51,7 +53,7 @@ class BackupContractsPresenterImpl extends BaseFragmentPresenterImpl implements 
 
                     @Override
                     public void onError(Throwable e) {
-
+                        getView().setAlertDialog(R.string.error,R.string.cancel, BaseFragment.PopUpType.error);
                     }
 
                     @Override
@@ -77,7 +79,7 @@ class BackupContractsPresenterImpl extends BaseFragmentPresenterImpl implements 
 
                     @Override
                     public void onError(Throwable e) {
-
+                        getView().setAlertDialog(R.string.error,R.string.cancel, BaseFragment.PopUpType.error);
                     }
 
                     @Override
@@ -86,17 +88,24 @@ class BackupContractsPresenterImpl extends BaseFragmentPresenterImpl implements 
                         getView().dismissProgressDialog();
                         getView().setUpFile(backUpFileSize);
                         mBackUpFile = file;
-
                         getView().checkPermissionForBackupFile();
                     }
                 });
 
     }
 
+    @Override
     public void permissionGrantedForChooseShareMethod() {
         if (mBackUpFile.exists()) {
             getView().chooseShareMethod(mBackUpFile.getAbsolutePath());
+        } else {
+            getView().setAlertDialog(R.string.error,R.string.cancel, BaseFragment.PopUpType.error);
         }
+    }
+
+    //setter for unit testing
+    public void setBackUpFile(File backUpFile) {
+        mBackUpFile = backUpFile;
     }
 
     private BackupContractsInteractor getInteractor() {
