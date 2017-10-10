@@ -7,8 +7,11 @@ import org.qtum.wallet.ui.fragment.qstore.categories.QstoreCategory;
 import java.util.List;
 
 public interface QStoreView extends BaseFragmentView {
-     void setCategories(List<QstoreCategory> categories);
-     void setSearchResult(List<QSearchItem> items);
-     void setSearchBarText(String text);
-     String getSeacrhBarText();
+    void setCategories(List<QstoreCategory> categories);
+
+    void setSearchResult(List<QSearchItem> items);
+
+    void setSearchBarText(String text);
+
+    String getSeacrhBarText();
 }
