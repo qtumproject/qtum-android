@@ -2,6 +2,7 @@ package org.qtum.wallet.ui.fragment.qstore;
 
 import android.content.Context;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.model.gson.qstore.QSearchItem;
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
@@ -37,5 +38,15 @@ public class QStoreInteractorImpl implements QStoreInteractor {
     public Observable<List<QstoreItem>> getTrendingNowObservable() {
         return QtumService.newInstance()
                 .getTrendingNow();
+    }
+
+    @Override
+    public String getTrendingString() {
+        return mContext.get().getString(R.string.trending_now);
+    }
+
+    @Override
+    public String getWhatsNewString() {
+        return mContext.get().getString(R.string.whats_new);
     }
 }

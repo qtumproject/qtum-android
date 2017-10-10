@@ -17,4 +17,9 @@ public interface QStoreInteractor {
     Observable<List<QstoreItem>> getWhatsNewObservable();
 
     Observable<List<QstoreItem>> getTrendingNowObservable();
+
+    String getTrendingString();
+
+    String getWhatsNewString();
+
 }

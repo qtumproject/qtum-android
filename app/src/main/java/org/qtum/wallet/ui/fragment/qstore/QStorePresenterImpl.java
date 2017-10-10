@@ -1,7 +1,6 @@
 package org.qtum.wallet.ui.fragment.qstore;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.model.gson.qstore.QSearchItem;
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
@@ -42,15 +41,17 @@ public class QStorePresenterImpl extends BaseFragmentPresenterImpl implements QS
         loadCategories();
     }
 
-    public void loadCategories() {
+    private void loadCategories() {
         getInteractor().getTrendingNowObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new Func1<List<QstoreItem>, Boolean>() {
                     @Override
                     public Boolean call(List<QstoreItem> qstoreItems) {
-                        QstoreCategory qstoreCategory = new QstoreCategory(getView().getContext().getString(R.string.trending_now), qstoreItems);
-                        categories.add(qstoreCategory);
-                        getView().setCategories(categories);
+                        if (!qstoreItems.isEmpty()) {
+                            QstoreCategory qstoreCategory = new QstoreCategory(getInteractor().getTrendingString(), qstoreItems);
+                            categories.add(qstoreCategory);
+                            getView().setCategories(categories);
+                        }
                         return true;
                     }
                 })
@@ -76,14 +77,17 @@ public class QStorePresenterImpl extends BaseFragmentPresenterImpl implements QS
 
                     @Override
                     public void onNext(List<QstoreItem> qstoreItems) {
-                        QstoreCategory qstoreCategory = new QstoreCategory(getView().getContext().getString(R.string.whats_new), qstoreItems);
-                        categories.add(qstoreCategory);
-                        getView().setCategories(categories);
+                        if (!qstoreItems.isEmpty()) {
+                            QstoreCategory qstoreCategory = new QstoreCategory(getInteractor().getWhatsNewString(), qstoreItems);
+                            categories.add(qstoreCategory);
+                            getView().setCategories(categories);
+                        }
 
                     }
                 });
     }
 
+    @Override
     public void searchItems(String tag, boolean byTag) {
         searchOffset = 0;
         getInteractor().searchContracts(searchOffset, EMPTY_TYPE, tag, byTag)
@@ -109,5 +113,12 @@ public class QStorePresenterImpl extends BaseFragmentPresenterImpl implements QS
 
     public QStoreInteractor getInteractor() {
         return interactor;
+    }
+
+    /**
+     * Getter for unit testing
+     */
+    public List<QstoreCategory> getCategories() {
+        return categories;
     }
 }
