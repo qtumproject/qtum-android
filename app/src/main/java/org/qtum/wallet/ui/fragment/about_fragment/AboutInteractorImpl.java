@@ -14,13 +14,13 @@ public class AboutInteractorImpl implements AboutInteractor{
     }
 
     @Override
-    public String getVersion() throws PackageManager.NameNotFoundException {
+    public String getVersion() throws Exception {
         PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
         return pInfo.versionName;
     }
 
     @Override
-    public int getCodeVersion() throws PackageManager.NameNotFoundException {
+    public int getCodeVersion() throws Exception{
         PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
         return pInfo.versionCode;
     }

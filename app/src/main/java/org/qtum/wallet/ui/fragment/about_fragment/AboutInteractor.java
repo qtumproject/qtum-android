@@ -1,11 +1,9 @@
 package org.qtum.wallet.ui.fragment.about_fragment;
 
 
-import android.content.pm.PackageManager;
+public interface AboutInteractor {
 
-interface AboutInteractor {
-
-    String getVersion() throws PackageManager.NameNotFoundException;
-    int getCodeVersion() throws PackageManager.NameNotFoundException;
+    String getVersion() throws Exception;
+    int getCodeVersion() throws Exception;
 
 }
