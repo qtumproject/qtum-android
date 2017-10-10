@@ -6,8 +6,12 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 import java.util.List;
 
-interface NewsFragmentView extends BaseFragmentView {
+public interface NewsView extends BaseFragmentView {
     void updateNews(List<News> newsList);
+
     void startRefreshAnimation();
+
     void setAdapterNull();
+
+    NewsInteractorImpl.GetNewsListCallBack getNewsCallback();
 }

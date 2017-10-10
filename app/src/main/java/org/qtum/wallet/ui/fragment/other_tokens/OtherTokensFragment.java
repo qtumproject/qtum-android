@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -17,7 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 
 
-public abstract class OtherTokensFragment extends BaseFragment implements OtherTokensView, OnTokenClickListener {
+public abstract class OtherTokensFragment extends BaseFragment implements OtherTokensView, OnTokenClickListener, UpdateSocketInstance {
 
     public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
@@ -26,7 +27,7 @@ public abstract class OtherTokensFragment extends BaseFragment implements OtherT
         return fragment;
     }
 
-    protected OtherTokensPresenterImpl presenter;
+    protected OtherTokensPresenter presenter;
 
     @BindView(R.id.recycler_view)
     protected
@@ -41,11 +42,11 @@ public abstract class OtherTokensFragment extends BaseFragment implements OtherT
 
     @Override
     protected void createPresenter() {
-        presenter = new OtherTokensPresenterImpl(this);
+        presenter = new OtherTokensPresenterImpl(this, new OtherTokensInteractorImpl(getContext()));
     }
 
     @Override
-    protected OtherTokensPresenterImpl getPresenter() {
+    protected OtherTokensPresenter getPresenter() {
         return presenter;
     }
 
@@ -53,7 +54,7 @@ public abstract class OtherTokensFragment extends BaseFragment implements OtherT
     public void initializeViews() {
         super.initializeViews();
         tokensList.setLayoutManager(new LinearLayoutManager(getContext()));
-        presenter.setTokenList();
+        presenter.notifyNewToken();
 
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -80,5 +81,10 @@ public abstract class OtherTokensFragment extends BaseFragment implements OtherT
             ((TokensAdapter) tokensList.getAdapter()).setTokens(tokensData);
             tokensList.getAdapter().notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public UpdateService getSocketInstance() {
+        return getMainActivity().getUpdateService();
     }
 }

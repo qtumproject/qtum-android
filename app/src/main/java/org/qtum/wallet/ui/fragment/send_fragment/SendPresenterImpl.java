@@ -4,7 +4,6 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.model.Currency;
 import org.qtum.wallet.model.CurrencyToken;
 import org.qtum.wallet.model.contract.Token;
-import org.qtum.wallet.model.gson.FeePerKb;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.model.gson.token_balance.Balance;
@@ -18,7 +17,6 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Observer;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func0;
@@ -59,9 +57,9 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
         } else {
             getView().hideCurrencyField();
         }
-        minFee = getInteractor().getFeePerKb().getFeePerKb().doubleValue();
-        getView().updateFee(minFee,maxFee);
-        minGasPrice = getInteractor().getDGPInfo().getMingasprice();
+        minFee = getInteractor().getFeePerKbDoubleValue();
+        getView().updateFee(minFee, maxFee);
+        minGasPrice = getInteractor().getMinGasPrice();
         getView().updateGasPrice(minGasPrice, maxGasPrice);
         getView().updateGasLimit(minGasLimit, maxGasLimit);
 
@@ -265,11 +263,11 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
         return getInteractor().getValidatedFee(fee);
     }
 
-    private void createTx(final String abiParams, final String contractAddress, String senderAddress, final int gasLimit, final int gasPrice,final String fee) {
+    private void createTx(final String abiParams, final String contractAddress, String senderAddress, final int gasLimit, final int gasPrice, final String fee) {
         getInteractor().getUnspentOutputs(senderAddress, new SendInteractorImpl.GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
-                String txHex = getInteractor().createTransactionHash(abiParams, contractAddress, unspentOutputs, gasLimit, gasPrice,fee);
+                String txHex = getInteractor().createTransactionHash(abiParams, contractAddress, unspentOutputs, gasLimit, gasPrice, fee);
                 getInteractor().sendTx(txHex, getView().getSendTransactionCallback());
             }
 

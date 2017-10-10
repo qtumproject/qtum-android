@@ -7,13 +7,14 @@ import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.NewsList;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
+import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 
 
-class ProfileFragmentInteractorImpl implements ProfileFragmentInteractor {
+class ProfileInteractorImpl implements ProfileInteractor {
 
     private Context mContext;
 
-    ProfileFragmentInteractorImpl(Context context){
+    ProfileInteractorImpl(Context context) {
         mContext = context;
     }
 
@@ -28,5 +29,25 @@ class ProfileFragmentInteractorImpl implements ProfileFragmentInteractor {
         db.clearTokenList();
         db.clearContractList();
         db.clearTemplateList();
+    }
+
+    @Override
+    public void setupLanguageChangeListener(LanguageChangeListener listener) {
+        QtumSharedPreference.getInstance().addLanguageListener(listener);
+    }
+
+    @Override
+    public void removeLanguageListener(LanguageChangeListener listener) {
+        QtumSharedPreference.getInstance().removeLanguageListener(listener);
+    }
+
+    @Override
+    public boolean isTouchIdEnable() {
+        return QtumSharedPreference.getInstance().isTouchIdEnable(mContext);
+    }
+
+    @Override
+    public void saveTouchIdEnable(boolean isChecked) {
+        QtumSharedPreference.getInstance().saveTouchIdEnable(mContext, isChecked);
     }
 }

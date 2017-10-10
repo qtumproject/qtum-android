@@ -13,7 +13,6 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.store_categories.StoreCategoriesFragment;
 import org.qtum.wallet.ui.fragment.store_contract.StoreContractFragment;
 import org.qtum.wallet.utils.FontCheckBox;
@@ -79,11 +78,11 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
 
     @Override
     protected void createPresenter() {
-        presenter = new QStorePresenter(this);
+        presenter = new QStorePresenterImpl(this, new QStoreInteractorImpl(getContext()));
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected QStorePresenter getPresenter() {
         return presenter;
     }
 

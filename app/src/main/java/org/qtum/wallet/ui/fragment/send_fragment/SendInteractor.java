@@ -30,17 +30,19 @@ public interface SendInteractor {
 
     String validateTokenExistance(String tokenAddress);
 
-    FeePerKb getFeePerKb();
-
     DGPInfo getDGPInfo();
 
     String getValidatedFee(Double fee);
 
-    String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice,String fee);
+    String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee);
 
     Observable<String> createAbiMethodParamsObservable(String address, String resultAmount, String transfer);
 
     Observable<CallSmartContractResponse> callSmartContractObservable(Token token, String s);
 
+
+    double getFeePerKbDoubleValue();
+
+    int getMinGasPrice();
 
 }

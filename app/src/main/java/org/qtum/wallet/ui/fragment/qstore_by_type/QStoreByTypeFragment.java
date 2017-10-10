@@ -92,11 +92,11 @@ public abstract class QStoreByTypeFragment extends BaseFragment implements QStor
 
     @Override
     protected void createPresenter() {
-        presenter = new QStoreByTypePresenter(this);
+        presenter = new QStoreByTypePresenterImpl(this, new QStoreByTypeInteractorImpl(getContext()));
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected QStoreByTypePresenter getPresenter() {
         return presenter;
     }
 

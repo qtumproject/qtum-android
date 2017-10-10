@@ -1,9 +1,12 @@
 package org.qtum.wallet.ui.fragment.news_fragment;
 
+import android.content.Context;
+
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.model.gson.News;
 import org.qtum.wallet.datastorage.NewsList;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import rx.Subscriber;
@@ -12,12 +15,13 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-class NewsFragmentInteractorImpl implements NewsFragmentInteractor {
+public class NewsInteractorImpl implements NewsInteractor {
 
+    private WeakReference<Context> mContext;
     private Subscription mSubscriptionNewsList = null;
 
-    NewsFragmentInteractorImpl() {
-
+    public NewsInteractorImpl(Context context) {
+        mContext = new WeakReference<>(context);
     }
 
     @Override
@@ -33,7 +37,7 @@ class NewsFragmentInteractorImpl implements NewsFragmentInteractor {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override
@@ -49,12 +53,13 @@ class NewsFragmentInteractorImpl implements NewsFragmentInteractor {
         return NewsList.getInstance().getNewsList();
     }
 
-    void unSubscribe() {
+    @Override
+    public void unSubscribe() {
         mSubscriptionNewsList.unsubscribe();
     }
 
 
-    interface GetNewsListCallBack {
+    public interface GetNewsListCallBack {
         void onSuccess(List<News> newsList);
     }
 }
