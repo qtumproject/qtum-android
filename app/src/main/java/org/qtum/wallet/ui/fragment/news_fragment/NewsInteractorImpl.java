@@ -59,7 +59,7 @@ public class NewsInteractorImpl implements NewsInteractor {
     }
 
 
-    interface GetNewsListCallBack {
+    public interface GetNewsListCallBack {
         void onSuccess(List<News> newsList);
     }
 }

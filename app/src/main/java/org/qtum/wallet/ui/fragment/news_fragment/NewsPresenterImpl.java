@@ -16,7 +16,12 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
     public void onViewCreated() {
         super.onViewCreated();
         loadAndUpdateNews();
+    }
 
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        updateNews();
     }
 
     @Override
@@ -32,12 +37,6 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
     @Override
     public NewsView getView() {
         return mNewsFragmentView;
-    }
-
-    @Override
-    public void initializeViews() {
-        super.initializeViews();
-        updateNews();
     }
 
     @Override
