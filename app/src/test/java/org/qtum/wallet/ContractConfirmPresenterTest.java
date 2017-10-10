@@ -1,17 +1,21 @@
 package org.qtum.wallet;
 
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
+import org.qtum.wallet.model.gson.SendRawTransactionRequest;
+import org.qtum.wallet.model.gson.SendRawTransactionResponse;
+import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.contract_confirm_fragment.ContractConfirmInteractor;
 import org.qtum.wallet.ui.fragment.contract_confirm_fragment.ContractConfirmPresenterImpl;
 import org.qtum.wallet.ui.fragment.contract_confirm_fragment.ContractConfirmView;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,11 +33,13 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ContractConfirmPresenterTest {
+
 
     @Mock
     ContractConfirmView view;
@@ -82,12 +88,60 @@ public class ContractConfirmPresenterTest {
 
     @Test
     public void onConfirm_createAbiConstructParams_Error(){
-        when(interactor.createAbiConstructParams(TEST_PARAMETRS,uiid)).thenReturn(Observable.<String>error(new Throwable()));//thenReturn(Observable.just(anyString()));
+        when(interactor.createAbiConstructParams(TEST_PARAMETRS,uiid)).thenReturn(Observable.<String>error(new Throwable()));
         presenter.setContractMethodParameterList(TEST_PARAMETRS);
         presenter.onConfirmContract(uiid,gas_limit,gas_price,fee);
         verify(view, times(1)).setAlertDialog(anyInt(),anyString(),anyString(),(BaseFragment.PopUpType) any());
 
     }
 
+    @Test
+    public void onConfirm_getUnspentOutputsForSeveralAddresses_Error(){
+        when(interactor.createAbiConstructParams(TEST_PARAMETRS,uiid)).thenReturn(Observable.just(anyString()));
+        when(interactor.getUnspentOutputsForSeveralAddresses()).thenReturn(Observable.<List<UnspentOutput>>error(new Throwable()));
+        presenter.setContractMethodParameterList(TEST_PARAMETRS);
+        presenter.onConfirmContract(uiid,gas_limit,gas_price,fee);
+        verify(view, times(1)).setAlertDialog(anyInt(),anyString(),anyString(),(BaseFragment.PopUpType) any());
+
+    }
+
+    private final static List<UnspentOutput> TEST_OUTPUTS = Arrays.asList(new UnspentOutput(600, true, new BigDecimal("12.0")),
+            new UnspentOutput(700, true, new BigDecimal("10.0")));
+    private static final String ABI_PARAMS = "abi_params";
+    private static final String TEST_HASH = "test_hash";
+
+    @Test
+    public void onConfirm_sendRawTransaction_Error(){
+        when(interactor.createAbiConstructParams(TEST_PARAMETRS,uiid)).thenReturn(Observable.just(ABI_PARAMS));
+        when(interactor.getUnspentOutputsForSeveralAddresses()).thenReturn(Observable.just(TEST_OUTPUTS));
+        when(interactor.createTransactionHash(ABI_PARAMS, TEST_OUTPUTS, gas_limit, gas_price, fee)).thenReturn(TEST_HASH);
+        when(interactor.sendRawTransaction((SendRawTransactionRequest)any())).thenReturn(Observable.<SendRawTransactionResponse>error(new Throwable()));
+        presenter.setContractMethodParameterList(TEST_PARAMETRS);
+        presenter.onConfirmContract(uiid,gas_limit,gas_price,fee);
+        verify(view, times(1)).setAlertDialog(anyInt(),anyString(),anyString(),(BaseFragment.PopUpType) any());
+
+    }
+
+    private final static String TX_HASH_TEST = "test_hash";
+
+    @Test
+    public void onConfirm_Success(){
+        SendRawTransactionResponse sendrawTransactionResponse = mock(SendRawTransactionResponse.class);
+        when(sendrawTransactionResponse.getTxid()).thenReturn(TX_HASH_TEST);
+        when(interactor.createAbiConstructParams(TEST_PARAMETRS,uiid)).thenReturn(Observable.just(ABI_PARAMS));
+        when(interactor.getUnspentOutputsForSeveralAddresses()).thenReturn(Observable.just(TEST_OUTPUTS));
+        when(interactor.createTransactionHash(ABI_PARAMS, TEST_OUTPUTS, gas_limit, gas_price, fee)).thenReturn(TEST_HASH);
+        when(interactor.sendRawTransaction((SendRawTransactionRequest)any())).thenReturn(Observable.just(sendrawTransactionResponse));
+        presenter.setContractMethodParameterList(TEST_PARAMETRS);
+        presenter.onConfirmContract(uiid,gas_limit,gas_price,fee);
+        verify(view, times(1)).setAlertDialog(anyInt(),anyString(),anyString(),(BaseFragment.PopUpType) any(), (BaseFragment.AlertDialogCallBack)any());
+
+    }
+
+    @After
+    public void tearDown() {
+        RxAndroidPlugins.getInstance().reset();
+        RxJavaPlugins.getInstance().reset();
+    }
 
 }

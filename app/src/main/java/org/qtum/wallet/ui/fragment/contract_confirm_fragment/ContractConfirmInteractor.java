@@ -13,10 +13,10 @@ import rx.Observable;
 
 public interface ContractConfirmInteractor {
     Observable<String> createAbiConstructParams(List<ContractMethodParameter> contractMethodParameterList,String uiid);
-    Observable<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses(List<String> addresses);
+    Observable<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses();
     Observable<SendRawTransactionResponse> sendRawTransaction(SendRawTransactionRequest sendRawTransactionRequest);
     void saveContract(String txid, String contractTemplateUiid, String contractName, String senderAddress);
-    String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee);
+    String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee);
     double getMinFee();
     int getMinGasPrice();
 }

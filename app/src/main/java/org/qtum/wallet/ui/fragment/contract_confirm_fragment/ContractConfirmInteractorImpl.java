@@ -5,6 +5,7 @@ import android.content.Context;
 
 import org.bitcoinj.script.Script;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumNetworkState;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.ContractTemplate;
@@ -36,8 +37,8 @@ class ContractConfirmInteractorImpl implements ContractConfirmInteractor{
     }
 
     @Override
-    public Observable<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses(List<String> addresses) {
-        return QtumService.newInstance().getUnspentOutputsForSeveralAddresses(addresses);
+    public Observable<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses() {
+        return QtumService.newInstance().getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses());
     }
 
     @Override
@@ -69,8 +70,9 @@ class ContractConfirmInteractorImpl implements ContractConfirmInteractor{
     }
 
     @Override
-    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee) {
+    public String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee) {
         ContractBuilder contractBuilder = new ContractBuilder();
+        Script script = contractBuilder.createConstructScript(abiParams, gasLimit, gasPrice);
         return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, QtumNetworkState.newInstance().getFeePerKb().getFeePerKb(), fee, mContext);
     }
 

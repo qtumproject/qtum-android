@@ -93,7 +93,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
 
     private void createTx(final String abiParams, final int gasLimit, final int gasPrice, final String fee) {
-        getInteractor().getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses())
+        getInteractor().getUnspentOutputsForSeveralAddresses()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<UnspentOutput>>() {
@@ -122,10 +122,8 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                                 return unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? -1 : 0;
                             }
                         });
-                        ContractBuilder contractBuilder = new ContractBuilder();
-                        Script script = contractBuilder.createConstructScript(abiParams, gasLimit, gasPrice);
 //TODO
-                        String hash = getInteractor().createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, fee);
+                        String hash = getInteractor().createTransactionHash(abiParams, unspentOutputs, gasLimit, gasPrice, fee);
                         sendTx(hash, "Stub!");
                     }
                 });
@@ -138,7 +136,6 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                 .subscribe(new Subscriber<SendRawTransactionResponse>() {
                     @Override
                     public void onCompleted() {
-                        getView().dismissProgressDialog();
                         getView().setAlertDialog(R.string.contract_created_successfully, "", "OK", BaseFragment.PopUpType.confirm, new BaseFragment.AlertDialogCallBack() {
                             @Override
                             public void onButtonClick() {
@@ -154,7 +151,6 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onError(Throwable e) {
-                        getView().dismissProgressDialog();
                         getView().setAlertDialog(R.string.error, e.getMessage(), "OK", BaseFragment.PopUpType.error);
                     }
 
