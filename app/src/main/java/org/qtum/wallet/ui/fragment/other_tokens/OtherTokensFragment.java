@@ -54,7 +54,7 @@ public abstract class OtherTokensFragment extends BaseFragment implements OtherT
     public void initializeViews() {
         super.initializeViews();
         tokensList.setLayoutManager(new LinearLayoutManager(getContext()));
-        presenter.setTokenList();
+        presenter.notifyNewToken();
 
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

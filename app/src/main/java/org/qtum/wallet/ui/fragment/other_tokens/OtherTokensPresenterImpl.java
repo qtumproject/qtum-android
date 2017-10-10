@@ -24,31 +24,8 @@ public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implemen
         return view;
     }
 
+    @Override
     public void notifyNewToken() {
-        getInteractor().getTokenObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Token>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(List<Token> tokens) {
-                        if (tokens != null && tokens.size() > 0) {
-                            getView().setTokensData(tokens);
-                        }
-                    }
-                });
-    }
-
-    public void setTokenList() {
         getInteractor().getTokenObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
