@@ -68,11 +68,4 @@ public class ProfilePresenterImpl extends BaseFragmentPresenterImpl implements P
     public void removeLanguageListener(LanguageChangeListener listener) {
         getInteractor().removeLanguageListener(listener);
     }
-
-    /**
-     * Getter for unit testing
-     */
-    public SettingObject getSettingsItem() {
-        return settingsData.get(3);
-    }
 }
