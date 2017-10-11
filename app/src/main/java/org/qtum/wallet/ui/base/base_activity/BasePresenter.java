@@ -11,9 +11,9 @@ public interface BasePresenter {
 
     void onStart(Context context);
 
-    void onResume(Context context);
+    void onResume();
 
-    void onPause(Context context);
+    void onPause();
 
     void onStop(Context context);
 

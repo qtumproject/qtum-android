@@ -56,7 +56,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void onResume() {
         super.onResume();
-        getPresenter().onResume(getActivity());
+        getPresenter().onResume();
     }
 
     @Override
@@ -301,7 +301,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     public void onPause() {
         super.onPause();
         hideKeyBoard();
-        getPresenter().onPause(getActivity());
+        getPresenter().onPause();
 
         dismissProgressDialog();
         dismissAlertDialog();

@@ -1,9 +1,6 @@
 package org.qtum.wallet.ui.fragment.contract_management_fragment;
 
-import android.text.TextUtils;
-
 import org.qtum.wallet.R;
-import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
@@ -16,7 +13,7 @@ public class ContractManagementPresenterImpl extends BaseFragmentPresenterImpl i
     private ContractManagementView mContractManagementFragmentView;
     private ContractManagementInteractor mContractManagementInteractor;
 
-    ContractManagementPresenterImpl(ContractManagementView contractManagementFragmentView, ContractManagementInteractor contractManagementInteractor){
+    public ContractManagementPresenterImpl(ContractManagementView contractManagementFragmentView, ContractManagementInteractor contractManagementInteractor){
         mContractManagementFragmentView = contractManagementFragmentView;
         mContractManagementInteractor = contractManagementInteractor;
     }
@@ -24,36 +21,34 @@ public class ContractManagementPresenterImpl extends BaseFragmentPresenterImpl i
     @Override
     public void initializeViews() {
         super.initializeViews();
-        if(!TextUtils.isEmpty(getView().getContractAddress())){
-            getAbiFromFile();
+        String contractAddress = getView().getContractAddress();
+        if(!contractAddress.isEmpty()){
+            String uiid = getView().getContractTemplateUiid();
+            List<ContractMethod> contractMethodList = getInteractor().getContractListByUiid(uiid);
+            if(contractMethodList != null) {
+                getView().setRecyclerView(contractMethodList, true);
+            } else {
+                getView().setAlertDialog(R.string.error,R.string.fail_to_get_contract_methods, BaseFragment.PopUpType.error);
+            }
         } else {
             getView().setTitleText(R.string.contract_details);
-            getAbiFromString(getView().getContractABI());
+            String abi = getView().getContractABI();
+            List<ContractMethod> contractMethodList = getInteractor().getContractListByAbi(abi);
+            if(contractMethodList != null) {
+                getView().setRecyclerView(contractMethodList, false);
+            } else {
+                getView().setAlertDialog(R.string.error,R.string.fail_to_get_contract_methods, BaseFragment.PopUpType.error);
+            }
         }
     }
-
-    public void getAbiFromFile(){
-        List<ContractMethod> contractMethodList = FileStorageManager.getInstance().getContractMethods(getView().getContext(),getView().getContractTemplateUiid());
-        if(contractMethodList != null) {
-            getView().setRecyclerView(contractMethodList, true);
-        } else {
-            getView().setAlertDialog(R.string.error,R.string.fail_to_get_contract_methods, BaseFragment.PopUpType.error);
-        }
-    }
-
-    public void getAbiFromString(String abi){
-        List<ContractMethod> contractMethodList = FileStorageManager.getInstance().getContractMethodsByAbiString(getView().getContext(), abi);
-        if(contractMethodList != null) {
-            getView().setRecyclerView(contractMethodList, false);
-        } else {
-            getView().setAlertDialog(R.string.error,R.string.fail_to_get_contract_methods, BaseFragment.PopUpType.error);
-        }
-    }
-
 
     @Override
     public ContractManagementView getView() {
         return mContractManagementFragmentView;
+    }
+
+    private ContractManagementInteractor getInteractor(){
+        return mContractManagementInteractor;
     }
 
 }

@@ -45,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     @Override
     protected void onResume() {
         super.onResume();
-        getPresenter().onResume(this);
+        getPresenter().onResume();
     }
 
     @Override
@@ -57,7 +57,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     @Override
     protected void onPause() {
         super.onPause();
-        getPresenter().onPause(this);
+        getPresenter().onPause();
     }
 
     @Override

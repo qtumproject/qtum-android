@@ -17,14 +17,14 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-class PinFragmentInteractorImpl implements PinFragmentInteractor {
+class PinInteractorImpl implements PinInteractor {
 
     private Context mContext;
     static boolean isDataLoaded = false;
     static String sPassphrase;
     private final String QTUM_PIN_ALIAS = "qtum_alias";
 
-    PinFragmentInteractorImpl(Context context) {
+    PinInteractorImpl(Context context) {
         mContext = context;
         try {
             KeyStoreHelper.createKeys(mContext,QTUM_PIN_ALIAS);

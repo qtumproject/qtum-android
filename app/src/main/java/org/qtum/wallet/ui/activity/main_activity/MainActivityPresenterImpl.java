@@ -96,12 +96,6 @@ class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivit
     }
 
     @Override
-    public void onResume(Context context) {
-        super.onResume(context);
-
-    }
-
-    @Override
     public void onPostResume(Context context) {
         super.onPostResume(context);
         if (mAuthenticationFlag && mCheckAuthenticationFlag && !mCheckAuthenticationShowFlag) {

@@ -1,39 +1,38 @@
 package org.qtum.wallet.ui.fragment.language_fragment;
 
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
-import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 
-class LanguageFragmentPresenter extends BaseFragmentPresenterImpl{
+public class LanguagePresenterImpl extends BaseFragmentPresenterImpl implements LanguagePresenter{
 
-    private LanguageFragmentView mLanguageFragmentView;
-    private LanguageFragmentInteractor mLanguageFragmentInteractor;
+    private LanguageView mLanguageFragmentView;
+    private LanguageInteractor mLanguageFragmentInteractor;
     private LanguageChangeListener mLanguageChangeListener;
 
-    LanguageFragmentPresenter(LanguageFragmentView languageFragmentView){
+    public LanguagePresenterImpl(LanguageView languageFragmentView, LanguageInteractor languageInteractor){
         mLanguageFragmentView = languageFragmentView;
-        mLanguageFragmentInteractor = new LanguageFragmentInteractor(getView().getContext());
+        mLanguageFragmentInteractor = languageInteractor;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        QtumSharedPreference.getInstance().removeLanguageListener(mLanguageChangeListener);
+        getInteractor().removeLanguageListener(mLanguageChangeListener);
     }
 
     @Override
-    public LanguageFragmentView getView() {
+    public LanguageView getView() {
         return mLanguageFragmentView;
     }
 
-    private LanguageFragmentInteractor getInteractor(){
+    private LanguageInteractor getInteractor(){
         return mLanguageFragmentInteractor;
     }
 
     @Override
-    public void onViewCreated() {
-        super.onViewCreated();
+    public void initializeViews() {
+        super.initializeViews();
         getView().setUpLanguagesList(getInteractor().getLanguagesList());
         mLanguageChangeListener = new LanguageChangeListener() {
             @Override
@@ -41,13 +40,15 @@ class LanguageFragmentPresenter extends BaseFragmentPresenterImpl{
                 getView().resetText();
             }
         };
-        QtumSharedPreference.getInstance().addLanguageListener(mLanguageChangeListener);
+        getInteractor().addLanguageListener(mLanguageChangeListener);
     }
 
+    @Override
     public String getCurrentLanguage(){
         return getInteractor().getLanguage();
     }
 
+    @Override
     public void setCurrentLanguage(String language){
         getInteractor().setLanguage(language);
     }

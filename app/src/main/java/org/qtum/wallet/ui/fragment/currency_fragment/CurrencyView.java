@@ -6,6 +6,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 import java.util.List;
 
-interface CurrencyFragmentView extends BaseFragmentView {
+public interface CurrencyView extends BaseFragmentView {
     void setCurrencyList(List<Currency> currencyList);
 }

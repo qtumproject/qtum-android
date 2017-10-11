@@ -23,7 +23,7 @@ public abstract class BasePresenterImpl implements BasePresenter {
     }
 
     @Override
-    public void onResume(Context context) {
+    public void onResume() {
 
     }
 
@@ -33,7 +33,7 @@ public abstract class BasePresenterImpl implements BasePresenter {
     }
 
     @Override
-    public void onPause(Context context) {
+    public void onPause() {
 
     }
 

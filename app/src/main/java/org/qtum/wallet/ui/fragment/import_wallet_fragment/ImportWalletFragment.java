@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 
+import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.FontButton;
@@ -16,11 +17,11 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public abstract class ImportWalletFragment extends BaseFragment implements ImportWalletFragmentView {
+public abstract class ImportWalletFragment extends BaseFragment implements ImportWalletView {
 
     private final int LAYOUT = org.qtum.wallet.R.layout.fragment_import_wallet;
 
-    private ImportWalletFragmentPresenterImpl mImportWalletFragmentPresenter;
+    private ImportWalletPresenter mImportWalletFragmentPresenter;
 
     @BindView(org.qtum.wallet.R.id.bt_cancel)
     FontButton mButtonCancel;
@@ -33,7 +34,7 @@ public abstract class ImportWalletFragment extends BaseFragment implements Impor
     public void onClick(View view) {
         switch (view.getId()) {
             case org.qtum.wallet.R.id.bt_cancel:
-                getPresenter().onCancelClick();
+                getMainActivity().onBackPressed();
                 break;
             case org.qtum.wallet.R.id.bt_import:
                 getPresenter().onImportClick(mEditTextYourBrainCode.getText().toString().trim());
@@ -50,12 +51,18 @@ public abstract class ImportWalletFragment extends BaseFragment implements Impor
 
     @Override
     protected void createPresenter() {
-        mImportWalletFragmentPresenter = new ImportWalletFragmentPresenterImpl(this);
+        mImportWalletFragmentPresenter = new ImportWalletPresenterImpl(this, new ImportWalletInteractorImpl(getContext()));
     }
 
     @Override
-    protected ImportWalletFragmentPresenterImpl getPresenter() {
+    protected ImportWalletPresenter getPresenter() {
         return mImportWalletFragmentPresenter;
+    }
+
+    @Override
+    public void openPinFragment(String passphrase, String action) {
+        BaseFragment pinFragment = PinFragment.newInstance(action,passphrase,getContext());
+        openRootFragment(pinFragment);
     }
 
     @Override
@@ -81,7 +88,6 @@ public abstract class ImportWalletFragment extends BaseFragment implements Impor
                 getPresenter().onPassphraseChange(editable.toString());
             }
         });
-
         showSoftInput();
     }
 

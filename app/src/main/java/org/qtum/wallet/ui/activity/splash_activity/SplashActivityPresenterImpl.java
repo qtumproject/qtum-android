@@ -29,8 +29,8 @@ class SplashActivityPresenterImpl extends BasePresenterImpl implements SplashAct
     }
 
     @Override
-    public void onResume(Context context) {
-        super.onResume(context);
+    public void onResume() {
+        super.onResume();
         getInteractor().getDGPInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

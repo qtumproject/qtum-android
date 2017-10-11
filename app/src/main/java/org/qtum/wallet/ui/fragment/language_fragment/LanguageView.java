@@ -7,7 +7,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 import java.util.List;
 
-interface LanguageFragmentView extends BaseFragmentView {
+public interface LanguageView extends BaseFragmentView {
     void setUpLanguagesList(List<Pair<String,String>> languagesList);
     void resetText();
 }
