@@ -3,6 +3,10 @@ package org.qtum.wallet.ui.fragment.pin_fragment;
 
 import android.content.Context;
 
+import org.bitcoinj.wallet.Wallet;
+
+import rx.Observable;
+
 public interface PinInteractor {
     String getPassword();
     void savePassword(String password);
@@ -10,7 +14,7 @@ public interface PinInteractor {
     byte[] getSaltPassphrase();
     String getTouchIdPassword();
     void saveTouchIdPassword(String password);
-    void loadWalletFromFile(PinInteractorImpl.LoadWalletFromFileCallBack callBack);
-    void createWallet(Context context, PinInteractorImpl.CreateWalletCallBack callBack);
+    Observable<Wallet> loadWalletFromFile();
+    Observable<String> createWallet();
     void setKeyGeneratedInstance(boolean isKeyGenerated);
 }

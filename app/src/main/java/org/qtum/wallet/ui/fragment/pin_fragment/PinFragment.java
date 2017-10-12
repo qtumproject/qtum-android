@@ -7,6 +7,7 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.alimuzaffar.lib.pin.PinEntryEditText;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.backup_wallet_fragment.BackUpWalletFragment;
+import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
 import org.qtum.wallet.ui.fragment.touch_id_preference_fragment.TouchIDPreferenceFragment;
 import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
@@ -67,14 +69,25 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_cancel:
-                onCancelClick();
+                getPresenter().cancel();
                 break;
         }
     }
 
-    void onCancelClick() {
+    @Override
+    public void onCancelClick() {
         getMainActivity().resetAuthFlags();
         openRootFragment(StartPageFragment.newInstance(false, getContext()));
+    }
+
+    @Override
+    public void setCheckAuthenticationShowFlag(boolean checkAuthenticationShowFlag) {
+        getMainActivity().setCheckAuthenticationShowFlag(checkAuthenticationShowFlag);
+    }
+
+    @Override
+    public void onBackPressed(){
+        getMainActivity().onBackPressed();
     }
 
     public static BaseFragment newInstance(String action, String passphrase, Context context) {
@@ -115,6 +128,16 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     }
 
     @Override
+    public void confirmError(@StringRes int resId) {
+        if (mWalletPin != null) {
+            mWalletPin.setText("");
+            tooltip.setText(resId);
+            tooltip.setTextColor(ContextCompat.getColor(getContext(), R.color.accent_red_color));
+            tooltip.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
     public void updateState(int state) {
         mWalletPin.setText("");
         tooltip.setText(state);
@@ -125,6 +148,11 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public boolean checkTouchIdEnable() {
         return getMainActivity().checkTouchIdEnable();
+    }
+
+    @Override
+    public boolean checkAvailabilityTouchId() {
+        return getMainActivity().checkAvailabilityTouchId();
     }
 
     @Override
@@ -333,9 +361,42 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     }
 
     @Override
+    public void openSendFragment(boolean qrCodeRecognition, String address, String amount, String tokenAddress) {
+        final BaseFragment sendFragment = SendFragment.newInstance(false, address, amount, tokenAddress, getContext());
+        getMainActivity().setRootFragment(sendFragment);
+        openRootFragment(sendFragment);
+    }
+
+    @Override
     public void openBackUpWalletFragment(boolean isWalletCreating, String pin) {
-        Fragment backUpWalletFragment = BackUpWalletFragment.newInstance(getContext(), false, pin);
-        getMainActivity().onBackPressed();
-        openFragment(backUpWalletFragment);
+        if(isWalletCreating){
+            Fragment backUpWalletFragment = BackUpWalletFragment.newInstance(getContext(), isWalletCreating, pin);
+            getMainActivity().onBackPressed();
+            openFragmentWithBackStack(backUpWalletFragment, backUpWalletFragment.getClass().getName());
+        } else {
+            Fragment backUpWalletFragment = BackUpWalletFragment.newInstance(getContext(), isWalletCreating, pin);
+            getMainActivity().onBackPressed();
+            openFragment(backUpWalletFragment);
+        }
+    }
+
+    @Override
+    public String getAddressForSendAction() {
+        return getMainActivity().getAddressForSendAction();
+    }
+
+    @Override
+    public String getAmountForSendAction() {
+        return getMainActivity().getAmountForSendAction();
+    }
+
+    @Override
+    public String getTokenForSendAction() {
+        return getMainActivity().getTokenForSendAction();
+    }
+
+    @Override
+    public void onLogin() {
+        getMainActivity().onLogin();
     }
 }

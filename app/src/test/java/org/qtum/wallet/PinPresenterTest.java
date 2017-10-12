@@ -62,6 +62,8 @@ public class PinPresenterTest {
         verify(view,times(1)).setToolBarTitle(anyInt());
     }
 
+
+
     @After
     public void tearDown() {
         RxAndroidPlugins.getInstance().reset();

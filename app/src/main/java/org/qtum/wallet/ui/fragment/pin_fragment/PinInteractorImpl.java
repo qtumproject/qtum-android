@@ -12,23 +12,18 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import rx.Observable;
 
 
 class PinInteractorImpl implements PinInteractor {
 
     private Context mContext;
-    static boolean isDataLoaded = false;
-    static String sPassphrase;
     private final String QTUM_PIN_ALIAS = "qtum_alias";
 
     PinInteractorImpl(Context context) {
         mContext = context;
         try {
             KeyStoreHelper.createKeys(mContext,QTUM_PIN_ALIAS);
-//            KeyStoreHelper.createKeys(mContext,QTUM_SALT_PASSPHRASE_ALIAS);
         } catch (NoSuchProviderException | NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         }
@@ -70,72 +65,18 @@ class PinInteractorImpl implements PinInteractor {
 
 
     @Override
-    public void loadWalletFromFile(final LoadWalletFromFileCallBack callBack) {
-        KeyStorage.getInstance()
-                .loadWalletFromFile(mContext)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Wallet>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Wallet wallet) {
-                        isDataLoaded = true;
-                        callBack.onSuccess();
-                    }
-                });
+    public Observable<Wallet> loadWalletFromFile() {
+        return KeyStorage.getInstance().loadWalletFromFile(mContext);
     }
 
     @Override
-    public void createWallet(Context context, final CreateWalletCallBack callBack) {
-        KeyStorage.getInstance()
-                .createWallet(mContext)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        callBack.OnError(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(String passphrase) {
-                        setKeyGeneratedInstance(true);
-                        isDataLoaded = true;
-                        sPassphrase = passphrase;
-                        callBack.onSuccess();
-                    }
-                });
+    public Observable<String> createWallet() {
+        return KeyStorage.getInstance().createWallet(mContext);
     }
 
     @Override
     public void setKeyGeneratedInstance(boolean isKeyGenerated) {
         QtumSharedPreference.getInstance().setKeyGeneratedInstance(mContext, isKeyGenerated);
-    }
-
-
-    interface CreateWalletCallBack {
-        void onSuccess();
-        void OnError(String message);
-
-    }
-
-    interface LoadWalletFromFileCallBack {
-        void onSuccess();
-        void OnError(String message);
     }
 
 }

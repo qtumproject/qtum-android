@@ -1,18 +1,12 @@
 package org.qtum.wallet.ui.fragment.pin_fragment;
 
+import org.bitcoinj.wallet.Wallet;
 import org.qtum.wallet.R;
-
-import org.qtum.wallet.utils.CryptoUtilsCompat;
-import org.qtum.wallet.utils.crypto.AESUtil;
-
-import org.qtum.wallet.ui.fragment.backup_wallet_fragment.BackUpWalletFragment;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
-import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
-import org.qtum.wallet.ui.fragment.touch_id_preference_fragment.TouchIDPreferenceFragment;
-import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
 import org.qtum.wallet.utils.CryptoUtils;
+import org.qtum.wallet.utils.CryptoUtilsCompat;
 import org.qtum.wallet.utils.FingerprintUtils;
+import org.qtum.wallet.utils.crypto.AESUtil;
 
 import javax.crypto.Cipher;
 
@@ -28,6 +22,8 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
     private String oldPin;
     private String pinHash;
     private String mAction;
+
+    private boolean isDataLoaded = false;
 
     private int[] CREATING_STATE;
     private int[] AUTHENTICATION_STATE;
@@ -61,67 +57,72 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                         updateState();
                         break;
                     case 1:
-                        if (pin.equals(pinRepeat) ) {
+                        if (pin.equals(pinRepeat)) {
                             getView().clearError();
                             getView().setProgressDialog();
                             getView().hideKeyBoard();
-                            getInteractor().createWallet(getView().getContext(), new PinInteractorImpl.CreateWalletCallBack() {
-                                @Override
-                                public void onSuccess() {
-                                    final BaseFragment fragment;
+                            getInteractor().createWallet()
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new Subscriber<String>() {
+                                        @Override
+                                        public void onCompleted() {
 
-                                    byte[] saltPassphrase = AESUtil.encryptToBytes(pinRepeat, PinInteractorImpl.sPassphrase);
-                                    getInteractor().saveSaltPassphrase(saltPassphrase);
+                                        }
 
-                                    if(getView().getMainActivity().checkAvailabilityTouchId()) {
-                                        fragment = TouchIDPreferenceFragment.newInstance(getView().getContext(), false, pinRepeat);
-                                    } else {
-                                        fragment = BackUpWalletFragment.newInstance(getView().getContext(), true, pinRepeat);
-                                    }
-                                    pinHash = CryptoUtilsCompat.generateSHA256String(pinRepeat);
-                                    if(getView().getMainActivity().checkAvailabilityTouchId()){
-                                        CryptoUtils.encodeInBackground(pinRepeat)
-                                                .subscribeOn(Schedulers.io())
-                                                .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(new Subscriber<String>() {
-                                                               @Override
-                                                               public void onCompleted() {
+                                        @Override
+                                        public void onError(Throwable e) {
 
-                                                               }
+                                        }
 
-                                                               @Override
-                                                               public void onError(Throwable e) {
+                                        @Override
+                                        public void onNext(String passphrase) {
+                                            getInteractor().setKeyGeneratedInstance(true);
+                                            isDataLoaded = true;
 
-                                                               }
+                                            byte[] saltPassphrase = AESUtil.encryptToBytes(pinRepeat, passphrase);
+                                            getInteractor().saveSaltPassphrase(saltPassphrase);
 
-                                                               @Override
-                                                               public void onNext(String s) {
+                                            pinHash = CryptoUtilsCompat.generateSHA256String(pinRepeat);
+                                            if (getView().checkAvailabilityTouchId()) {
+                                                CryptoUtils.encodeInBackground(pinRepeat)
+                                                        .subscribeOn(Schedulers.io())
+                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                        .subscribe(new Subscriber<String>() {
+                                                            @Override
+                                                            public void onCompleted() {
 
-                                                                   getInteractor().saveTouchIdPassword(s);
-                                                                   getInteractor().savePassword(pinHash);
-                                                                   getView().getMainActivity().onLogin();
-                                                                   getView().openRootFragment(fragment);
-                                                                   getView().dismissProgressDialog();
-                                                                   PinInteractorImpl.isDataLoaded = false;
-                                                               }
-                                                           });
-                                    } else {
-                                        getInteractor().savePassword(pinHash);
-                                        getView().getMainActivity().onLogin();
-                                        getView().dismiss();
-                                        getView().openFragmentWithBackStack(fragment, fragment.getClass().getName());
-                                        getView().dismissProgressDialog();
-                                        PinInteractorImpl.isDataLoaded = false;
-                                    }
-                                }
+                                                            }
 
-                                @Override
-                                public void OnError(String message) {
+                                                            @Override
+                                                            public void onError(Throwable e) {
 
-                                }
-                            });
+                                                            }
+
+                                                            @Override
+                                                            public void onNext(String s) {
+
+                                                                getInteractor().saveTouchIdPassword(s);
+                                                                getInteractor().savePassword(pinHash);
+                                                                getView().onLogin();
+                                                                getView().openTouchIDPreferenceFragment(false,pinRepeat);
+                                                                getView().dismissProgressDialog();
+                                                                isDataLoaded = false;
+                                                            }
+                                                        });
+                                            } else {
+                                                getInteractor().savePassword(pinHash);
+                                                getView().onLogin();
+                                                getView().dismiss();
+                                                getView().openBackUpWalletFragment(true,pinRepeat);
+                                                getView().dismissProgressDialog();
+                                                isDataLoaded = false;
+                                            }
+                                        }
+                                    });
+
                         } else {
-                            getView().confirmError(getView().getContext().getString(R.string.incorrect_repeated_pin));
+                            getView().confirmError(R.string.incorrect_repeated_pin);
                         }
                         break;
                 }
@@ -141,12 +142,12 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                             getView().clearError();
                             getView().setProgressDialog();
 
-                            byte[] saltPassphrase = AESUtil.encryptToBytes(pinRepeat,getView().getPassphrase());
+                            byte[] saltPassphrase = AESUtil.encryptToBytes(pinRepeat, getView().getPassphrase());
                             getInteractor().saveSaltPassphrase(saltPassphrase);
 
                             pinHash = CryptoUtilsCompat.generateSHA256String(pinRepeat);
 
-                            if(getView().getMainActivity().checkAvailabilityTouchId()){
+                            if (getView().checkAvailabilityTouchId()) {
                                 CryptoUtils.encodeInBackground(pinRepeat)
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
@@ -167,19 +168,19 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                                 getInteractor().saveTouchIdPassword(s);
                                                 getInteractor().setKeyGeneratedInstance(true);
                                                 getView().dismissProgressDialog();
-                                                getView().getMainActivity().onLogin();
+                                                getView().onLogin();
                                                 getView().openTouchIDPreferenceFragment(true, pinRepeat);
                                             }
                                         });
                             } else {
                                 getInteractor().savePassword(pinHash);
                                 getInteractor().setKeyGeneratedInstance(true);
-                                getView().getMainActivity().onLogin();
+                                getView().onLogin();
                                 getView().dismissProgressDialog();
                                 getView().openWalletMainFragment();
                             }
                         } else {
-                            getView().confirmError(getView().getContext().getString(R.string.incorrect_repeated_pin));
+                            getView().confirmError(R.string.incorrect_repeated_pin);
                         }
                         break;
                 }
@@ -192,29 +193,34 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                     String pinHashGenuine = getInteractor().getPassword();
                     if (pinHashEntered.equals(pinHashGenuine)) {
                         getView().clearError();
-                        final WalletMainFragment walletFragment = WalletMainFragment.newInstance(getView().getContext());
                         getView().setProgressDialog();
                         getView().hideKeyBoard();
-                        getInteractor().loadWalletFromFile(new PinInteractorImpl.LoadWalletFromFileCallBack() {
-                            @Override
-                            public void onSuccess() {
-                                getView().getMainActivity().setRootFragment(walletFragment);
-                                getView().getMainActivity().onLogin();
-                                ;
-                                getView().openRootFragment(walletFragment);
-                                getView().dismissProgressDialog();
-                                PinInteractorImpl.isDataLoaded = false;
-                            }
+                        getInteractor().loadWalletFromFile()
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Subscriber<Wallet>() {
+                                    @Override
+                                    public void onCompleted() {
 
-                            @Override
-                            public void OnError(String message) {
+                                    }
 
-                            }
-                        });
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(Wallet wallet) {
+                                        isDataLoaded = true;
+                                        getView().onLogin();
+                                        getView().dismissProgressDialog();
+                                        getView().openWalletMainFragment();
+                                    }
+                                });
                     } else {
-                        getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
+                        getView().confirmError(R.string.incorrect_pin);
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -226,10 +232,10 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 if (pinHashEntered.equals(pinHashGenuine)) {
                     getView().clearError();
                     getView().hideKeyBoard();
-                    getView().getMainActivity().setCheckAuthenticationShowFlag(false);
-                    getView().getMainActivity().onBackPressed();
+                    getView().setCheckAuthenticationShowFlag(false);
+                    getView().onBackPressed();
                 } else {
-                    getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
+                    getView().confirmError(R.string.incorrect_pin);
                 }
             }
             break;
@@ -240,10 +246,10 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 if (pinHashEntered.equals(pinHashGenuine)) {
                     getView().clearError();
                     getView().hideKeyBoard();
-                    getView().getMainActivity().setCheckAuthenticationShowFlag(false);
+                    getView().setCheckAuthenticationShowFlag(false);
                     getView().openBackUpWalletFragment(false, pin);
                 } else {
-                    getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
+                    getView().confirmError(R.string.incorrect_pin);
                 }
             }
             break;
@@ -253,33 +259,35 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 String pinHashGenuine = getInteractor().getPassword();
                 if (pinHashEntered.equals(pinHashGenuine)) {
                     getView().clearError();
-                    String address = getView().getMainActivity().getAddressForSendAction();
-                    String amount = getView().getMainActivity().getAmountForSendAction();
-                    String token = getView().getMainActivity().getTokenForSendAction();
-
-                    final BaseFragment sendFragment = SendFragment.newInstance(false, address, amount, token, getView().getContext());
-
+                    final String address = getView().getAddressForSendAction();
+                    final String amount = getView().getAmountForSendAction();
+                    final String token = getView().getTokenForSendAction();
                     getView().setProgressDialog();
                     getView().hideKeyBoard();
-                    getInteractor().loadWalletFromFile(new PinInteractorImpl.LoadWalletFromFileCallBack() {
-                        @Override
-                        public void onSuccess() {
+                    getInteractor().loadWalletFromFile()
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Subscriber<Wallet>() {
+                                @Override
+                                public void onCompleted() {
 
-                            getView().getMainActivity().setRootFragment(sendFragment);
-                            getView().getMainActivity().onLogin();
-                            getView().openRootFragment(sendFragment);
+                                }
 
-                            getView().dismissProgressDialog();
-                            PinInteractorImpl.isDataLoaded = false;
-                        }
+                                @Override
+                                public void onError(Throwable e) {
 
-                        @Override
-                        public void OnError(String message) {
+                                }
 
-                        }
-                    });
+                                @Override
+                                public void onNext(Wallet wallet) {
+                                    isDataLoaded = true;
+                                    getView().onLogin();
+                                    getView().dismissProgressDialog();
+                                    getView().openSendFragment(false, address, amount, token);
+                                }
+                            });
                 } else {
-                    getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
+                    getView().confirmError(R.string.incorrect_pin);
                 }
             }
             break;
@@ -295,7 +303,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                             getView().clearError();
                             updateState();
                         } else {
-                            getView().confirmError(getView().getContext().getString(R.string.incorrect_pin));
+                            getView().confirmError(R.string.incorrect_pin);
                         }
                         break;
                     case 1:
@@ -312,10 +320,10 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                             getInteractor().savePassword(pinHash);
                             byte[] oldSaltPassphrase = getInteractor().getSaltPassphrase();
                             String passphrase = AESUtil.decryptBytes(oldPin, oldSaltPassphrase);
-                            byte[] saltPassphrase = AESUtil.encryptToBytes(pinRepeat,passphrase);
+                            byte[] saltPassphrase = AESUtil.encryptToBytes(pinRepeat, passphrase);
                             getInteractor().saveSaltPassphrase(saltPassphrase);
 
-                            if(getView().getMainActivity().checkAvailabilityTouchId()){
+                            if (getView().checkAvailabilityTouchId()) {
                                 CryptoUtils.encodeInBackground(pinRepeat)
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
@@ -333,14 +341,14 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                             @Override
                                             public void onNext(String s) {
                                                 getInteractor().saveTouchIdPassword(s);
-                                                getView().getMainActivity().onBackPressed();
+                                                getView().onBackPressed();
                                             }
                                         });
                             } else {
-                                getView().getMainActivity().onBackPressed();
+                                getView().onBackPressed();
                             }
                         } else {
-                            getView().confirmError(getView().getContext().getString(R.string.incorrect_repeated_pin));
+                            getView().confirmError(R.string.incorrect_repeated_pin);
                         }
                         break;
                 }
@@ -355,15 +363,14 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
 
             case PinFragment.AUTHENTICATION:
             case PinFragment.AUTHENTICATION_AND_SEND:
-            case PinFragment.CHECK_AUTHENTICATION:
-            case PinFragment.AUTHENTICATION_FOR_PASSPHRASE:{
-                getView().finish();
-                break;
-            }
             case PinFragment.CREATING:
             case PinFragment.IMPORTING:
+            case PinFragment.AUTHENTICATION_FOR_PASSPHRASE:
+                getView().onCancelClick();
+                break;
+            case PinFragment.CHECK_AUTHENTICATION:
             case PinFragment.CHANGING: {
-                getView().getMainActivity().onBackPressed();
+                getView().onBackPressed();
                 break;
             }
         }
@@ -388,7 +395,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
             case PinFragment.AUTHENTICATION:
             case PinFragment.CHECK_AUTHENTICATION:
             case PinFragment.AUTHENTICATION_FOR_PASSPHRASE:
-                if(mTouchIdFlag && getView().isSensorStateAt(FingerprintUtils.mSensorState.READY)){
+                if (mTouchIdFlag && getView().isSensorStateAt(FingerprintUtils.mSensorState.READY)) {
                     titleID = R.string.confirm_fingerprint_or_pin;
                 } else {
                     titleID = R.string.enter_pin;
@@ -412,38 +419,32 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
     public void onResume() {
         super.onResume();
         updateState();
-        if (PinInteractorImpl.isDataLoaded) {
+        if (isDataLoaded) {
             switch (mAction) {
                 case PinFragment.CREATING: {
-                    BaseFragment backUpWalletFragment = BackUpWalletFragment.newInstance(getView().getContext(), true, pinRepeat);
                     getInteractor().savePassword(pinHash);
-                    getView().openRootFragment(backUpWalletFragment);
                     getView().dismissProgressDialog();
+                    getView().openBackUpWalletFragment(true, pinRepeat);
                     break;
                 }
                 case PinFragment.AUTHENTICATION: {
-                    WalletMainFragment walletFragment = WalletMainFragment.newInstance(getView().getContext());
-                    getView().getMainActivity().setRootFragment(walletFragment);
-                    getView().openRootFragment(walletFragment);
+                    getView().openWalletMainFragment();
                     getView().dismissProgressDialog();
                     break;
                 }
                 case PinFragment.AUTHENTICATION_AND_SEND: {
-                    String address = getView().getMainActivity().getAddressForSendAction();
-                    String amount = getView().getMainActivity().getAmountForSendAction();
-                    String token = getView().getMainActivity().getTokenForSendAction();
-
-                    final BaseFragment sendFragment = SendFragment.newInstance(false, address, amount,token, getView().getContext());
-                    getView().getMainActivity().setRootFragment(sendFragment);
-                    getView().openRootFragment(sendFragment);
+                    final String address = getView().getAddressForSendAction();
+                    final String amount = getView().getAmountForSendAction();
+                    final String token = getView().getTokenForSendAction();
+                    getView().openSendFragment(false, address, amount, token);
                     getView().dismissProgressDialog();
                     break;
                 }
             }
-            PinInteractorImpl.isDataLoaded = false;
+            isDataLoaded = false;
         }
 
-        if(mTouchIdFlag && (mAction.equals(PinFragment.AUTHENTICATION_AND_SEND) || mAction.equals(PinFragment.AUTHENTICATION) || mAction.equals(PinFragment.CHECK_AUTHENTICATION)) || mAction.equals(PinFragment.AUTHENTICATION_FOR_PASSPHRASE)){
+        if (mTouchIdFlag && (mAction.equals(PinFragment.AUTHENTICATION_AND_SEND) || mAction.equals(PinFragment.AUTHENTICATION) || mAction.equals(PinFragment.CHECK_AUTHENTICATION)) || mAction.equals(PinFragment.AUTHENTICATION_FOR_PASSPHRASE)) {
             getView().prepareSensor();
         }
 
