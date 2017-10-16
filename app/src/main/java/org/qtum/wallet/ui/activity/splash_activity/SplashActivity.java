@@ -25,7 +25,7 @@ import butterknife.BindView;
 
 public class SplashActivity extends BaseActivity implements SplashActivityView {
 
-    private SplashActivityPresenterImpl presenter;
+    private SplashActivityPresenter presenter;
     private static final int LAYOUT = R.layout.lyt_splash;
 
     @BindView(R.id.ic_app_logo)
@@ -131,11 +131,11 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
 
     @Override
     protected void createPresenter() {
-        presenter = new SplashActivityPresenterImpl(this);
+        presenter = new SplashActivityPresenterImpl(this, new SplashActivityInteractorImpl(getContext()));
     }
 
     @Override
-    protected SplashActivityPresenterImpl getPresenter() {
+    protected SplashActivityPresenter getPresenter() {
         return presenter;
     }
 

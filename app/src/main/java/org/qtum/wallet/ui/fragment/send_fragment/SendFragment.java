@@ -159,6 +159,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     AlertDialogCallBack mAlertDialogCallBack;
     View.OnTouchListener mOnTouchListener;
     private NetworkStateReceiver mNetworkStateReceiver;
+    private NetworkStateListener mNetworkStateListener;
     private UpdateService mUpdateService;
 
     protected SendPresenter sendBaseFragmentPresenter;
@@ -195,14 +196,14 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                 }
             }
         });
-
-        mNetworkStateReceiver = getMainActivity().getNetworkReceiver();
-        mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
+        mNetworkStateListener = new NetworkStateListener() {
             @Override
             public void onNetworkStateChanged(boolean networkConnectedFlag) {
                 getPresenter().updateNetworkSate(networkConnectedFlag);
             }
-        });
+        };
+        mNetworkStateReceiver = getMainActivity().getNetworkReceiver();
+        mNetworkStateReceiver.addNetworkStateListener(mNetworkStateListener);
     }
 
     @Override
@@ -227,7 +228,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mNetworkStateReceiver.removeNetworkStateListener();
+        mNetworkStateReceiver.removeNetworkStateListener(mNetworkStateListener);
         mUpdateService.removeBalanceChangeListener();
     }
 

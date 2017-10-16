@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 
+import org.qtum.wallet.ui.fragment.pin_fragment.PinAction;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -60,7 +61,7 @@ public abstract class ImportWalletFragment extends BaseFragment implements Impor
     }
 
     @Override
-    public void openPinFragment(String passphrase, String action) {
+    public void openPinFragment(String passphrase, PinAction action) {
         BaseFragment pinFragment = PinFragment.newInstance(action,passphrase,getContext());
         openRootFragment(pinFragment);
     }

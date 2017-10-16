@@ -10,6 +10,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.import_wallet_fragment.ImportWalletInteractor;
 import org.qtum.wallet.ui.fragment.import_wallet_fragment.ImportWalletPresenterImpl;
 import org.qtum.wallet.ui.fragment.import_wallet_fragment.ImportWalletView;
+import org.qtum.wallet.ui.fragment.pin_fragment.PinAction;
 
 import rx.Observable;
 import rx.Scheduler;
@@ -19,6 +20,7 @@ import rx.plugins.RxJavaPlugins;
 import rx.plugins.RxJavaSchedulersHook;
 import rx.schedulers.Schedulers;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -101,7 +103,7 @@ public class ImportWalletInteractorTest {
         presenter.setDataLoaded(true);
         presenter.onResume();
         verify(view,times(1)).dismissProgressDialog();
-        verify(view,times(1)).openPinFragment(anyString(),anyString());
+        verify(view,times(1)).openPinFragment(anyString(),(PinAction)any());
     }
 
     @Test
@@ -109,7 +111,7 @@ public class ImportWalletInteractorTest {
         presenter.setDataLoaded(false);
         presenter.onResume();
         verify(view,never()).dismissProgressDialog();
-        verify(view,never()).openPinFragment(anyString(),anyString());
+        verify(view,never()).openPinFragment(anyString(),(PinAction)any());
     }
 
     @Test
@@ -117,14 +119,14 @@ public class ImportWalletInteractorTest {
         when(interactor.importWallet(VALID_PASSPHRASE1)).thenReturn(Observable.just(VALID_PASSPHRASE1));
         presenter.onImportClick(VALID_PASSPHRASE1);
         verify(view,times(1)).dismissProgressDialog();
-        verify(view,times(1)).openPinFragment(anyString(),eq(VALID_PASSPHRASE1));
+        verify(view,times(1)).openPinFragment(eq(VALID_PASSPHRASE1),(PinAction)any());
     }
 
     @Test
     public void onImportClick_Error(){
         when(interactor.importWallet(VALID_PASSPHRASE1)).thenReturn(Observable.<String>error(new Throwable()));
         presenter.onImportClick(VALID_PASSPHRASE1);
-        verify(view,never()).openPinFragment(anyString(),eq(VALID_PASSPHRASE1));
+        verify(view,never()).openPinFragment(eq(VALID_PASSPHRASE1),(PinAction)any());
         verify(view,times(1)).setAlertDialog(anyInt(),anyInt(), eq(BaseFragment.PopUpType.error));
     }
 

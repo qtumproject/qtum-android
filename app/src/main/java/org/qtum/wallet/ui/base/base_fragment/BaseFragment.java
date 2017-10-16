@@ -311,7 +311,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createPresenter();
-        getPresenter().onCreate(getActivity());
+        getPresenter().onCreate();
     }
 
     @Override
@@ -333,13 +333,13 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().onStart(getActivity());
+        getPresenter().onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        getPresenter().onStop(getActivity());
+        getPresenter().onStop();
     }
 
     @Override

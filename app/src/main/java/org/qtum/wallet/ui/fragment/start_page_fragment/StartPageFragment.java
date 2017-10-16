@@ -19,6 +19,9 @@ import org.qtum.wallet.utils.FontButton;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION;
+import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CREATING;
+
 
 public abstract class StartPageFragment extends BaseFragment implements StartPageView {
 
@@ -59,9 +62,8 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
         switch (view.getId()) {
             case R.id.bt_create_new:
                 hideLoginButton();
-
                 clearWallet();
-                BaseFragment pinFragment = PinFragment.newInstance(PinFragment.CREATING, getContext());
+                BaseFragment pinFragment = PinFragment.newInstance(CREATING, getContext());
                 openFragment(pinFragment);
                 break;
             case R.id.bt_import_wallet:
@@ -73,7 +75,7 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
                 break;
             case R.id.bt_login:
                 if (QtumSharedPreference.getInstance().getKeyGeneratedInstance(getContext())) {
-                    BaseFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION, getContext());
+                    BaseFragment fragment = PinFragment.newInstance(AUTHENTICATION, getContext());
                     openFragment(fragment);
                 }
                 break;
@@ -98,7 +100,7 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     @Override
     public void initializeViews() {
         if (getArguments().getBoolean(IS_LOGIN, false)) {
-            BaseFragment fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION, getContext());
+            BaseFragment fragment = PinFragment.newInstance(AUTHENTICATION, getContext());
             openFragment(fragment);
         }
     }

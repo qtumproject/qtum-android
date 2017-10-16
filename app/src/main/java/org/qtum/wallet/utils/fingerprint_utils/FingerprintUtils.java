@@ -1,4 +1,4 @@
-package org.qtum.wallet.utils;
+package org.qtum.wallet.utils.fingerprint_utils;
 
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
@@ -10,38 +10,33 @@ import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 
 
 public final class FingerprintUtils {
+
     private FingerprintUtils() {
     }
 
-    public enum mSensorState {
-        NOT_BLOCKED,
-        NO_FINGERPRINTS,
-        READY
-    }
-
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private static mSensorState checkSensorState(@NonNull Context context) {
+    private static SensorState checkSensorState(@NonNull Context context) {
         KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         if (!keyguardManager.isKeyguardSecure()) {
-            return mSensorState.NOT_BLOCKED;
+            return SensorState.NOT_BLOCKED;
         }
 
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             if (!FingerprintManagerCompat.from(context).hasEnrolledFingerprints()) {
-                return mSensorState.NO_FINGERPRINTS;
+                return SensorState.NO_FINGERPRINTS;
             }
         } else {
             FingerprintManager fingerprintManager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
             if (!fingerprintManager.hasEnrolledFingerprints()) {
-                return mSensorState.NO_FINGERPRINTS;
+                return SensorState.NO_FINGERPRINTS;
             }
         }
 
-        return mSensorState.READY;
+        return SensorState.READY;
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static boolean isSensorStateAt(@NonNull mSensorState state, @NonNull Context context) {
+    public static boolean isSensorStateAt(@NonNull SensorState state, @NonNull Context context) {
         return checkSensorState(context) == state;
     }
 }

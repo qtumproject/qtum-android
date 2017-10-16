@@ -21,6 +21,9 @@ import org.qtum.wallet.utils.ThemeUtils;
 
 import butterknife.BindView;
 
+import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION_FOR_PASSPHRASE;
+import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CHANGING;
+
 /**
  * Created by kirillvolkov on 05.07.17.
  */
@@ -72,10 +75,10 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
                 fragment = LanguageFragment.newInstance(getContext());
                 break;
             case org.qtum.wallet.R.string.change_pin:
-                fragment = PinFragment.newInstance(PinFragment.CHANGING, getContext());
+                fragment = PinFragment.newInstance(CHANGING, getContext());
                 break;
             case org.qtum.wallet.R.string.wallet_backup:
-                fragment = PinFragment.newInstance(PinFragment.AUTHENTICATION_FOR_PASSPHRASE, getContext());
+                fragment = PinFragment.newInstance(AUTHENTICATION_FOR_PASSPHRASE, getContext());
                 break;
             case org.qtum.wallet.R.string.smart_contracts:
                 fragment = SmartContractsFragment.newInstance(getContext());

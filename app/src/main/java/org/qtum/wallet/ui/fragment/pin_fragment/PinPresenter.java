@@ -8,6 +8,6 @@ import javax.crypto.Cipher;
 interface PinPresenter extends BaseFragmentPresenter{
     void confirm(String password);
     void cancel();
-    void setAction(String action);
+    void setAction(PinAction action);
     void onAuthenticationSucceeded(Cipher cipher);
 }

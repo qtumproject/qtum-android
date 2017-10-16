@@ -52,7 +52,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     private boolean OPEN_QR_CODE_FRAGMENT_FLAG = false;
     private static final int REQUEST_CAMERA = 3;
-
+    private NetworkStateListener mNetworkStateListener;
     protected WalletPresenter mWalletFragmentPresenter;
     protected TransactionAdapter mTransactionAdapter;
     protected LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
@@ -138,12 +138,13 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         });
 
         mNetworkStateReceiver = getMainActivity().getNetworkReceiver();
-        mNetworkStateReceiver.addNetworkStateListener(new NetworkStateListener() {
+        mNetworkStateListener = new NetworkStateListener() {
             @Override
             public void onNetworkStateChanged(boolean networkConnectedFlag) {
                 getPresenter().onNetworkStateChanged(networkConnectedFlag);
             }
-        });
+        };
+        mNetworkStateReceiver.addNetworkStateListener(mNetworkStateListener);
     }
 
     public void initBalanceListener() {
@@ -171,7 +172,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mNetworkStateReceiver.removeNetworkStateListener();
+        mNetworkStateReceiver.removeNetworkStateListener(mNetworkStateListener);
         mUpdateService.removeTransactionListener();
         mUpdateService.removeBalanceChangeListener();
         getMainActivity().removePermissionResultListener();

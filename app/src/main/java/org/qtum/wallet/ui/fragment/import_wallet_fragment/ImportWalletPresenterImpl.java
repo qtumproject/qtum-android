@@ -13,6 +13,8 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.IMPORTING;
+
 
 public class ImportWalletPresenterImpl extends BaseFragmentPresenterImpl implements ImportWalletPresenter {
 
@@ -60,7 +62,7 @@ public class ImportWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
                         mPassphrase = passphrase;
                         getView().dismissProgressDialog();
                         isDataLoaded = false;
-                        getView().openPinFragment(PinFragment.IMPORTING, mPassphrase);
+                        getView().openPinFragment(mPassphrase, IMPORTING);
                     }
                 });
     }
@@ -100,7 +102,7 @@ public class ImportWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
         if (isDataLoaded) {
             getView().dismissProgressDialog();
             isDataLoaded = false;
-            getView().openPinFragment(PinFragment.IMPORTING, mPassphrase);
+            getView().openPinFragment(mPassphrase, IMPORTING);
         }
     }
 

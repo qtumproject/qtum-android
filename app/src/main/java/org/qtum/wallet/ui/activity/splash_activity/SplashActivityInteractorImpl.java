@@ -3,6 +3,7 @@ package org.qtum.wallet.ui.activity.splash_activity;
 import android.content.Context;
 
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.model.gson.DGPInfo;
 import org.qtum.wallet.model.gson.FeePerKb;
 
@@ -18,12 +19,7 @@ class SplashActivityInteractorImpl implements SplashActivityInteractor {
     }
 
     @Override
-    public Observable<DGPInfo> getDGPInfo() {
-        return QtumService.newInstance().getDGPInfo();
-    }
-
-    @Override
-    public Observable<FeePerKb> getFeePerKb() {
-        return QtumService.newInstance().getEstimateFeePerKb(2);
+    public void migrateDefaultContracts() {
+        FileStorageManager.getInstance().migrateDefaultContracts(mContext);
     }
 }

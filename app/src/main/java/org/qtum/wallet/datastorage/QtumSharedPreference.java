@@ -15,7 +15,6 @@ public class QtumSharedPreference {
     private static QtumSharedPreference sInstance = null;
 
     private final String QTUM_DATA_STORAGE = "qtum_data_storage";
-    private final String QTUM_WALLET_NAME = "qtum_wallet_name";
     private final String QTUM_WALLET_PASSWORD = "qtum_wallet_password";
     private final String QTUM_IS_KEY_GENERATED = "qtum_is_key_generated";
     private final String QTUM_LANGUAGE = "qtum_language";
@@ -34,17 +33,6 @@ public class QtumSharedPreference {
             sInstance = new QtumSharedPreference();
         }
         return sInstance;
-    }
-
-    public void saveWalletName(Context context, String name) {
-        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putString(QTUM_WALLET_NAME, name);
-        mEditor.apply();
-    }
-
-    public String getWalletName(Context context) {
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_WALLET_NAME, "");
     }
 
     public void saveTouchIdEnable(Context context, boolean isEnable) {
