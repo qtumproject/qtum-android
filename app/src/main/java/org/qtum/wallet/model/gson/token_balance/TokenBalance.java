@@ -2,6 +2,7 @@ package org.qtum.wallet.model.gson.token_balance;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,6 +14,17 @@ public class TokenBalance {
     @SerializedName("balances")
     @Expose
     private List<Balance> balances = null;
+
+    /**
+     * Constructor for unit testing
+     */
+    public TokenBalance() {
+
+    }
+
+    public TokenBalance(List<Balance> balances) {
+        this.balances = balances;
+    }
 
     public String getContractAddress() {
         return contractAddress;
@@ -26,10 +38,10 @@ public class TokenBalance {
         return balances;
     }
 
-    public Balance getBalanceForAddress(String contractAddress){
-        if(balances != null) {
+    public Balance getBalanceForAddress(String contractAddress) {
+        if (balances != null) {
             for (Balance b : balances) {
-                if(contractAddress.equals(b.getAddress())){
+                if (contractAddress.equals(b.getAddress())) {
                     return b;
                 }
             }
@@ -39,9 +51,9 @@ public class TokenBalance {
 
     public BigDecimal getMaxBalance() {
         BigDecimal maxBalance = new BigDecimal(0);
-        if(balances != null && balances.size() > 0){
-            for (Balance balance: balances) {
-                if(maxBalance.intValue() < balance.getBalance().intValue()){
+        if (balances != null && balances.size() > 0) {
+            for (Balance balance : balances) {
+                if (maxBalance.intValue() < balance.getBalance().intValue()) {
                     maxBalance = balance.getBalance();
                 }
             }
@@ -51,10 +63,10 @@ public class TokenBalance {
 
     public BigDecimal getTotalBalance() {
         BigDecimal summaryBalance = new BigDecimal(0);
-        if(balances != null && balances.size() > 0){
-            for (Balance balance: balances) {
-                if(balance.getBalance().intValue() > 0) {
-                   summaryBalance = summaryBalance.add(balance.getBalance());
+        if (balances != null && balances.size() > 0) {
+            for (Balance balance : balances) {
+                if (balance.getBalance().intValue() > 0) {
+                    summaryBalance = summaryBalance.add(balance.getBalance());
                 }
             }
         }

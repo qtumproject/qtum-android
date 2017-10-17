@@ -29,11 +29,24 @@ public class UnspentOutput {
     @SerializedName("is_stake")
     private boolean isStake;
 
-    public boolean isOutputAvailableToPay(){
-        if(isStake){
+    public boolean isOutputAvailableToPay() {
+        if (isStake) {
             return confirmations > 500;
         }
         return true;
+    }
+
+    public UnspentOutput() {
+
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public UnspentOutput(Integer confirmations, boolean isStake, BigDecimal amount) {
+        this.confirmations = confirmations;
+        this.isStake = isStake;
+        this.amount = amount;
     }
 
     public BigDecimal getAmount() {

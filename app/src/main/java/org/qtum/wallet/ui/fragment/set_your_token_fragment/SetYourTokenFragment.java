@@ -6,9 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.WindowManager;
 import android.widget.Button;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.ContractTemplate;
+import org.qtum.wallet.ui.fragment.contract_confirm_fragment.ContractConfirmFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
@@ -16,12 +18,12 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.utils.FontEditText;
 
 
-
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public abstract class SetYourTokenFragment extends BaseFragment implements SetYourTokenFragmentView, OnValidateParamsListener {
+public abstract class SetYourTokenFragment extends BaseFragment implements SetYourTokenView, OnValidateParamsListener {
 
     protected final static String CONTRACT_TEMPLATE_UIID = "mUiid";
 
@@ -32,12 +34,12 @@ public abstract class SetYourTokenFragment extends BaseFragment implements SetYo
     public static BaseFragment newInstance(Context context, String uiid) {
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, SetYourTokenFragment.class);
-        args.putString(CONTRACT_TEMPLATE_UIID,uiid);
+        args.putString(CONTRACT_TEMPLATE_UIID, uiid);
         fragment.setArguments(args);
         return fragment;
     }
 
-    protected SetYourTokenFragmentPresenterImpl presenter;
+    protected SetYourTokenPresenterImpl presenter;
 
     @BindView(R.id.recycler_view)
     protected
@@ -56,18 +58,19 @@ public abstract class SetYourTokenFragment extends BaseFragment implements SetYo
     Button confirmBtn;
 
     @OnClick(R.id.confirm)
-    public void onConfirmClick(){
-        if(adapter != null) {
+    public void onConfirmClick() {
+        if (adapter != null) {
             String name = mTextViewTemplateName.getText().toString();
-           if(adapter.validateMethods() && !name.isEmpty()) {
-               presenter.confirm(adapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_UIID), name);
-           }
+            if (adapter.validateMethods() && !name.isEmpty()) {
+                BaseFragment fragment = ContractConfirmFragment.newInstance(getContext(), adapter.getParams(), getArguments().getString(CONTRACT_TEMPLATE_UIID), name);
+                openFragment(fragment);
+            }
         }
     }
 
     @Override
     protected void createPresenter() {
-        presenter = new SetYourTokenFragmentPresenterImpl(this);
+        presenter = new SetYourTokenPresenterImpl(this, new SetYourTokenInteractorImpl(getContext()));
     }
 
     @Override
@@ -91,8 +94,8 @@ public abstract class SetYourTokenFragment extends BaseFragment implements SetYo
         String templateName = "";
         TinyDB tinyDB = new TinyDB(getContext());
         List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
-        for(ContractTemplate contractTemplate : contractTemplateList){
-            if(contractTemplate.getUuid().equals(templateUiid)) {
+        for (ContractTemplate contractTemplate : contractTemplateList) {
+            if (contractTemplate.getUuid().equals(templateUiid)) {
                 templateName = contractTemplate.getName();
                 break;
             }

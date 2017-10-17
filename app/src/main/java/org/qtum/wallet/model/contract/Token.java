@@ -21,27 +21,70 @@ public class Token extends Contract {
         this.mIsSubscribe = true;
     }
 
-    public String getSymbol(){
+    /**
+     * Default constructor for unit testing
+     */
+    public Token() {
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Token(boolean isSubscribe) {
+        super(isSubscribe);
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Token(boolean isSubscribe, String contractAddress) {
+        super(isSubscribe, contractAddress);
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Token(Integer decimalUnits, BigDecimal lastBalance) {
+        this.decimalUnits = decimalUnits;
+        this.mLastBalance = lastBalance;
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Token(BigDecimal lastBalance) {
+        this.mLastBalance = lastBalance;
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Token(boolean isSubscribe, Boolean isHasBeenCreated) {
+        super(isSubscribe);
+        this.mHasBeenCreated = isHasBeenCreated;
+    }
+
+    public String getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(String symbol){
+    public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 
-    public void setDecimalUnits(Integer decimalUnits){
+    public void setDecimalUnits(Integer decimalUnits) {
         this.decimalUnits = decimalUnits;
     }
 
-    public Integer getDecimalUnits(){
+    public Integer getDecimalUnits() {
         return this.decimalUnits;
     }
 
-    public void setLastBalance(BigDecimal balance){
+    public void setLastBalance(BigDecimal balance) {
         this.mLastBalance = balance;
     }
 
-    public BigDecimal getLastBalance(){
+    public BigDecimal getLastBalance() {
         return mLastBalance;
     }
 
@@ -53,7 +96,7 @@ public class Token extends Contract {
         mIsSubscribe = subscribe;
     }
 
-    public BigDecimal getTokenBalanceWithDecimalUnits(){
+    public BigDecimal getTokenBalanceWithDecimalUnits() {
         return mLastBalance.divide(new BigDecimal(Math.pow(10, (decimalUnits != null) ? decimalUnits.intValue() : 0)));
     }
 

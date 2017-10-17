@@ -1,7 +1,7 @@
 package org.qtum.wallet.ui.fragment.profile_fragment;
 
 
-class SettingSwitchObject extends SettingObject {
+public class SettingSwitchObject extends SettingObject {
 
     private boolean mIsChecked;
 

@@ -22,8 +22,9 @@ import org.qtum.wallet.utils.ThemeUtils;
 import org.qtum.wallet.utils.crypto.KeyStoreHelper;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.utils.CryptoUtils;
-import org.qtum.wallet.utils.FingerprintUtils;
+import org.qtum.wallet.utils.fingerprint_utils.FingerprintUtils;
 import org.qtum.wallet.utils.FontTextView;
+import org.qtum.wallet.utils.fingerprint_utils.SensorState;
 
 import javax.crypto.Cipher;
 
@@ -65,7 +66,7 @@ public class PinDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(mTouchIdFlag && FingerprintUtils.isSensorStateAt(FingerprintUtils.mSensorState.READY, getContext())) {
+        if(mTouchIdFlag && FingerprintUtils.isSensorStateAt(SensorState.READY, getContext())) {
             mTextViewToolBarTitle.setText(org.qtum.wallet.R.string.confirm_fingerprint_or_pin);
             prepareSensor();
         } else {
@@ -106,7 +107,7 @@ public class PinDialogFragment extends DialogFragment {
     }
 
     private void prepareSensor() {
-        if (FingerprintUtils.isSensorStateAt(FingerprintUtils.mSensorState.READY, getContext())) {
+        if (FingerprintUtils.isSensorStateAt(SensorState.READY, getContext())) {
             FingerprintManagerCompat.CryptoObject cryptoObject = CryptoUtils.getCryptoObject();
             if (cryptoObject != null) {
                 mFingerprintHelper = new FingerprintHelper(getContext());

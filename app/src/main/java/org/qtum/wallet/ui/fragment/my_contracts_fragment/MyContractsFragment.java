@@ -14,7 +14,6 @@ import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.contract_management_fragment.ContractManagementFragment;
 import org.qtum.wallet.utils.DateCalculator;
 import org.qtum.wallet.utils.FontTextView;
@@ -26,9 +25,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public abstract class MyContractsFragment extends BaseFragment implements MyContractsFragmentView {
+public abstract class MyContractsFragment extends BaseFragment implements MyContractsView {
 
-    private MyContractsFragmentPresenter mMyContractsFragmentPresenter;
+    private MyContractsPresenter mMyContractsPresenterImpl;
 
     @BindView(R.id.recycler_view)
     protected RecyclerView mRecyclerView;
@@ -39,7 +38,7 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
     FontTextView mFontTextViewPlaceHolder;
 
     @OnClick({R.id.ibt_back})
-    public void onClick(View view){
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ibt_back:
                 getActivity().onBackPressed();
@@ -58,7 +57,7 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
 
     @Override
     protected void createPresenter() {
-        mMyContractsFragmentPresenter = new MyContractsFragmentPresenter(this);
+        mMyContractsPresenterImpl = new MyContractsPresenterImpl(this, new MyContractsInteractorImpl(getContext()));
     }
 
     @Override
@@ -68,16 +67,16 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
     }
 
     @Override
-    public void setPlaceHolder(){
+    public void setPlaceHolder() {
         mFontTextViewPlaceHolder.setVisibility(View.VISIBLE);
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
-        return mMyContractsFragmentPresenter;
+    protected MyContractsPresenter getPresenter() {
+        return mMyContractsPresenterImpl;
     }
 
-    class ContractViewHolder extends RecyclerView.ViewHolder{
+    class ContractViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.title)
         FontTextView mTextViewTitle;
@@ -96,7 +95,7 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mContract.isHasBeenCreated()) {
+                    if (mContract.isHasBeenCreated()) {
                         BaseFragment contractManagementFragment = ContractManagementFragment.newInstance(getContext(), mContract.getUiid(), mContract.getContractAddress());
                         openFragment(contractManagementFragment);
                     }
@@ -104,11 +103,11 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
             });
         }
 
-        public void bindContract(Contract contract){
+        public void bindContract(Contract contract) {
             mContract = contract;
-            if(contract.getDate()!=null){
+            if (contract.getDate() != null) {
                 mTextViewDate.setText(DateCalculator.getShortDate(contract.getDate()));
-            }else{
+            } else {
                 mTextViewDate.setText(R.string.unconfirmed);
             }
             mTextViewTitle.setText(contract.getContractName());
@@ -119,12 +118,12 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
         }
     }
 
-    protected class ContractAdapter extends RecyclerView.Adapter<ContractViewHolder>{
+    protected class ContractAdapter extends RecyclerView.Adapter<ContractViewHolder> {
 
         List<Contract> mContractList;
         int mResId;
 
-        public ContractAdapter(List<Contract> contractList, int resId){
+        public ContractAdapter(List<Contract> contractList, int resId) {
             mContractList = contractList;
             mResId = resId;
         }

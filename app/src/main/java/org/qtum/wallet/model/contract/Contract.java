@@ -22,7 +22,7 @@ public class Contract implements Serializable {
     @SerializedName("isSubscribe")
     protected boolean mIsSubscribe;
 
-    public Contract(String contractAddress, String uiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName){
+    public Contract(String contractAddress, String uiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName) {
         this.mContractAddress = contractAddress;
         this.mUiid = uiid;
         this.mHasBeenCreated = hasBeenCreated;
@@ -30,6 +30,36 @@ public class Contract implements Serializable {
         this.mDate = date;
         this.mSenderAddress = senderAddress;
         this.mIsSubscribe = false;
+    }
+
+    /**
+     * Default constructor for unit testing
+     */
+    public Contract() {
+
+    }
+
+
+    /**
+     * Constructor for unit testing
+     */
+    public Contract(boolean isSubscribe) {
+        this.mIsSubscribe = isSubscribe;
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Contract(String contractAddress) {
+        this.mContractAddress = contractAddress;
+    }
+
+    /**
+     * Constructor for unit testing
+     */
+    public Contract(boolean isSubscribe, String contractAddress) {
+        this.mIsSubscribe = isSubscribe;
+        this.mContractAddress = contractAddress;
     }
 
     public String getContractAddress() {

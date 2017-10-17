@@ -2,12 +2,16 @@ package org.qtum.wallet.ui.fragment.qtum_cash_management_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.model.DeterministicKeyWithBalance;
+import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -16,7 +20,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public abstract class AddressListFragment extends BaseFragment implements AddressListFragmentView, OnAddressClickListener {
+public abstract class AddressListFragment extends BaseFragment implements AddressListView, OnAddressClickListener {
 
     @BindView(R.id.recycler_view)
     protected
@@ -25,6 +29,7 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
     protected AlertDialog mTransferDialog;
     protected boolean showTransferDialog = false;
 
+    AddressListPresenter mAddressListPresenter;
     protected AddressesWithBalanceAdapter mAddressesWithBalanceAdapter;
 
     @OnClick({R.id.ibt_back})
@@ -36,9 +41,6 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
         }
     }
 
-
-    AddressListFragmentPresenter mAddressListFragmentPresenter;
-
     public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, AddressListFragment.class);
@@ -48,12 +50,12 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
 
     @Override
     protected void createPresenter() {
-        mAddressListFragmentPresenter = new AddressListFragmentPresenter(this);
+        mAddressListPresenter = new AddressListPresenterImpl(this, new AddressListInteractorImpl(getContext()));
     }
 
     @Override
-    protected AddressListFragmentPresenter getPresenter() {
-        return mAddressListFragmentPresenter;
+    protected AddressListPresenter getPresenter() {
+        return mAddressListPresenter;
     }
 
     @Override
@@ -75,6 +77,29 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
                 }
             }
         });
+    }
+
+    public void transfer(DeterministicKeyWithBalance keyWithBalanceTo, DeterministicKeyWithBalance keyWithBalanceFrom, String amountString) {
+        if (TextUtils.isEmpty(amountString)) {
+            setAlertDialog(getString(R.string.error),
+                    getString(R.string.enter_valid_amount_value),
+                    getString(R.string.ok),
+                    BaseFragment.PopUpType.error);
+            return;
+        }
+
+        if (Float.valueOf(amountString) <= 0) {
+            setAlertDialog(getString(R.string.error),
+                    getString(R.string.transaction_amount_cant_be_zero),
+                    getString(R.string.ok),
+                    BaseFragment.PopUpType.error);
+            return;
+        }
+
+        getMainActivity().setIconChecked(3);
+        Fragment fragment = SendFragment.newInstance(keyWithBalanceFrom.getAddress(), keyWithBalanceTo.getAddress(), amountString, "", getContext());
+        getMainActivity().setRootFragment(fragment);
+        openRootFragment(fragment);
     }
 
     @Override

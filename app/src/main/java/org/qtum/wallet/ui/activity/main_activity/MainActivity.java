@@ -1,8 +1,12 @@
 package org.qtum.wallet.ui.activity.main_activity;
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 
 import android.content.res.Configuration;
@@ -10,8 +14,11 @@ import android.content.res.ColorStateList;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationItemView;
@@ -30,43 +37,80 @@ import android.widget.Toast;
 import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
+import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.ui.base.base_activity.BaseActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.news_fragment.NewsFragment;
+import org.qtum.wallet.ui.fragment.pin_fragment.PinAction;
+import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
+import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
+import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
 import org.qtum.wallet.utils.CustomContextWrapper;
 import org.qtum.wallet.utils.FontManager;
 
 import org.qtum.wallet.ui.fragment.profile_fragment.ProfileFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
+import org.qtum.wallet.utils.QtumIntent;
 import org.qtum.wallet.utils.ThemeUtils;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
 import butterknife.BindView;
 
+import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION_AND_SEND;
+
 public class MainActivity extends BaseActivity implements MainActivityView{
 
     private static final int LAYOUT = R.layout.activity_main;
     private static final int LAYOUT_LIGHT = R.layout.activity_main_light;
-    private MainActivityPresenterImpl mMainActivityPresenterImpl;
+    private MainActivityPresenter mMainActivityPresenterImpl;
     private ActivityResultListener mActivityResultListener;
     private PermissionsResultListener mPermissionsResultListener;
+
+    protected Fragment mRootFragment;
+    private Intent mIntent;
+    private NetworkStateReceiver mNetworkReceiver;
+    private UpdateService mUpdateService = null;
+    private NetworkStateListener mNetworkStateListener;
+
+    private String mAddressForSendAction;
+    private String mAmountForSendAction;
+    private String mTokenAddressForSendAction;
+    private List<MainActivity.OnServiceConnectionChangeListener> mServiceConnectionChangeListeners = new ArrayList<>();
+
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
+            mUpdateService.clearNotification();
+            mUpdateService.startMonitoring();
+            for (MainActivity.OnServiceConnectionChangeListener listener : mServiceConnectionChangeListeners) {
+                listener.onServiceConnectionChange(true);
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
 
     @Override
     protected void createPresenter() {
-        mMainActivityPresenterImpl = new MainActivityPresenterImpl(this);
+        mMainActivityPresenterImpl = new MainActivityPresenterImpl(this, new MainActivityInteractorImpl(getContext()));
     }
 
     @Override
-    protected MainActivityPresenterImpl getPresenter() {
+    protected MainActivityPresenter getPresenter() {
         return mMainActivityPresenterImpl;
     }
 
@@ -74,12 +118,50 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView((ThemeUtils.THEME_DARK.equals(ThemeUtils.currentTheme))? LAYOUT : LAYOUT_LIGHT);
+        mNetworkReceiver = new NetworkStateReceiver(getNetworkConnectedFlag());
+        registerReceiver(mNetworkReceiver,
+                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        getPresenter().processNewIntent(intent);
+        switch (intent.getAction()) {
+
+            case QtumIntent.OPEN_FROM_NOTIFICATION:
+                mRootFragment = WalletMainFragment.newInstance(getContext());
+                openRootFragment(mRootFragment);
+                setIconChecked(0);
+                break;
+            case QtumIntent.SEND_FROM_SDK:
+                mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
+                mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
+                mTokenAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_TOKEN);
+                if (getPresenter().getAuthenticationFlag()) {
+                    mRootFragment = SendFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction, mTokenAddressForSendAction, getContext());
+                    openRootFragment(mRootFragment);
+                    setIconChecked(3);
+                } else {
+                    Fragment fragment = PinFragment.newInstance(AUTHENTICATION_AND_SEND, getContext());
+                    openRootFragment(fragment);
+                }
+                break;
+
+            case NfcAdapter.ACTION_NDEF_DISCOVERED:
+                mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
+                mAmountForSendAction = "0.253";
+                if (getPresenter().getAuthenticationFlag()) {
+                    mRootFragment = SendFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction, mTokenAddressForSendAction, getContext());
+                    setIconChecked(3);
+                } else {
+                    mRootFragment = PinFragment.newInstance(AUTHENTICATION_AND_SEND, getContext());
+
+                }
+                openRootFragment(mRootFragment);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -88,15 +170,15 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     }
 
     public String getAddressForSendAction(){
-        return getPresenter().getAddressForSendAction();
+        return mAddressForSendAction;
     }
 
     public String getAmountForSendAction(){
-        return getPresenter().getAmountForSendAction();
+        return mAmountForSendAction;
     }
 
     public String getTokenForSendAction(){
-        return getPresenter().getTokenForSendAction();
+        return mTokenAddressForSendAction;
     }
 
     public void loadPermissions(String perm, int requestCode) {
@@ -134,24 +216,17 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     }
 
     @Override
-    public String getQtumAction() {
-        if(getIntent() != null){
-            return getIntent().getAction();
-        }
-        return null;
-    }
-
-    @Override
     public void showToast(String s) {
         Toast.makeText(this,s,Toast.LENGTH_SHORT).show();
     }
 
     public UpdateService getUpdateService(){
-        return getPresenter().getUpdateService();
+        return mUpdateService;
     }
 
     public void subscribeServiceConnectionChangeEvent(OnServiceConnectionChangeListener listener){
-        getPresenter().subscribeOnServiceConnectionChangeEvent(listener);
+        mServiceConnectionChangeListeners.add(listener);
+        listener.onServiceConnectionChange(mUpdateService != null);
     }
 
     public interface OnServiceConnectionChangeListener {
@@ -185,12 +260,12 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     }
 
 
-    @Override
-    public void setAdressAndAmount(String defineMinerAddress, String defineAmount, String tokenAddress) {
-        if (getSupportFragmentManager().findFragmentByTag(SendFragment.class.getCanonicalName()) == null && getPresenter().mAuthenticationFlag) {
-            openRootFragment(SendFragment.newInstance(false, defineMinerAddress, defineAmount, tokenAddress, getContext()));
-        }
-    }
+//    @Override
+//    public void setAdressAndAmount(String defineMinerAddress, String defineAmount, String tokenAddress) {
+//        if (getSupportFragmentManager().findFragmentByTag(SendFragment.class.getCanonicalName()) == null && getPresenter().getAuthenticationFlag()) {
+//            openRootFragment(SendFragment.newInstance(false, defineMinerAddress, defineAmount, tokenAddress, getContext()));
+//        }
+//    }
 
     public boolean checkTouchIdEnable() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -274,11 +349,61 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return getPresenter().onNavigationItemSelected(item);
+                switch (item.getItemId()) {
+                    case R.id.item_wallet:
+                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(WalletMainFragment.class.getSimpleName())) {
+                            popBackStack();
+                            return true;
+                        }
+                        mRootFragment = WalletMainFragment.newInstance(getContext());
+                        break;
+                    case R.id.item_profile:
+                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(ProfileFragment.class.getSimpleName())) {
+                            popBackStack();
+                            return true;
+                        }
+                        mRootFragment = ProfileFragment.newInstance(getContext());
+                        break;
+                    case R.id.item_news:
+                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(NewsFragment.class.getSimpleName())) {
+                            popBackStack();
+                            return true;
+                        }
+                        mRootFragment = NewsFragment.newInstance(getContext());
+                        break;
+                    case R.id.item_send:
+                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(SendFragment.class.getSimpleName())) {
+                            popBackStack();
+                            return true;
+                        }
+
+                        mRootFragment = SendFragment.newInstance(false, null, null, null, getContext());
+
+                        break;
+                    default:
+                        return false;
+                }
+                openRootFragment(mRootFragment);
+                return true;
             }
         });
 
-        getPresenter().processIntent(getIntent());
+        Intent intent = getIntent();
+        switch (intent.getAction()) {
+            case QtumIntent.SEND_FROM_SDK:
+                getPresenter().setSendFromIntent(true);
+                mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
+                mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
+                mTokenAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_TOKEN);
+                break;
+            case NfcAdapter.ACTION_NDEF_DISCOVERED:
+                getPresenter().setSendFromIntent(true);
+                mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
+                mAmountForSendAction = "1.431";
+                break;
+            default:
+                break;
+        }
 
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() { //Update wallet balance change listener
             @Override
@@ -300,6 +425,14 @@ public class MainActivity extends BaseActivity implements MainActivityView{
                 }
             }
         });
+
+        mNetworkStateListener = new NetworkStateListener() {
+            @Override
+            public void onNetworkStateChanged(boolean networkConnectedFlag) {
+                getPresenter().updateNetworkSate(networkConnectedFlag);
+            }
+        };
+        mNetworkReceiver.addNetworkStateListener(mNetworkStateListener);
     }
 
     @Override
@@ -333,7 +466,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(mActivityResultListener!=null){
-            getPresenter().setmCheckAuthenticationFlag(false);
+            getPresenter().setCheckAuthenticationFlag(false);
             mActivityResultListener.onActivityResult(requestCode,resultCode,data);
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -356,14 +489,15 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mNetworkReceiver.removeNetworkStateListener(mNetworkStateListener);
     }
 
     public void setRootFragment(Fragment rootFragment) {
-        getPresenter().setRootFragment(rootFragment);
+        mRootFragment = rootFragment;
     }
 
     public NetworkStateReceiver getNetworkReceiver(){
-        return getPresenter().getNetworkReceiver();
+        return mNetworkReceiver;
     }
 
     @Override
@@ -427,7 +561,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     protected void updateTheme() {
 
         setRootFragment(ProfileFragment.newInstance(this));
-        openRootFragment(getPresenter().mRootFragment);
+        openRootFragment(mRootFragment);
 
         if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)){
             mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
@@ -464,14 +598,46 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     }
 
     public void stopUpdateService(){
-        getPresenter().stopUpdateService();
+        if (mUpdateService != null) {
+            mUpdateService.stopMonitoring();
+            stopService(mIntent);
+        }
     }
 
     public void onLogin(){
         getPresenter().onLogin();
+        mIntent = new Intent(getContext(), UpdateService.class);
+        if (!isMyServiceRunning(UpdateService.class)) {
+            startService(mIntent);
+            if (mUpdateService != null) {
+                mUpdateService.startMonitoring();
+            } else {
+                bindService(mIntent, mServiceConnection, 0);
+            }
+        } else {
+            if (mUpdateService != null) {
+                mUpdateService.startMonitoring();
+            } else {
+                bindService(mIntent, mServiceConnection, 0);
+            }
+        }
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void onLogout(){
+        if (mUpdateService != null) {
+            mUpdateService.stopMonitoring();
+        }
         getPresenter().onLogout();
     }
 
@@ -491,6 +657,32 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     public void resetAuthFlags(){
         getPresenter().resetAuthFlags();
+    }
+
+    @Override
+    public void openPinFragmentRoot(PinAction action) {
+        Fragment fragment = PinFragment.newInstance(action, getContext());
+        openRootFragment(fragment);
+    }
+
+    @Override
+    public void openPinFragment(PinAction action) {
+        Fragment fragment = PinFragment.newInstance(action, getContext());
+        openFragment(fragment);
+    }
+
+    @Override
+    public void openStartPageFragment(boolean isLogin) {
+        Fragment fragment = StartPageFragment.newInstance(isLogin, getContext());
+        openRootFragment(fragment);
+    }
+
+    @Override
+    public void clearService() {
+        if (mUpdateService != null) {
+            unbindService(mServiceConnection);
+            unregisterReceiver(mNetworkReceiver);
+        }
     }
 
 }

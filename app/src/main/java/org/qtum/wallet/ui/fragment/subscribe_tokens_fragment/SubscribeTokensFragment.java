@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,13 +24,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public abstract class SubscribeTokensFragment extends BaseFragment implements SubscribeTokensFragmentView, SearchBarListener {
+public abstract class SubscribeTokensFragment extends BaseFragment implements SubscribeTokensView, SearchBarListener {
 
-    private SubscribeTokensFragmentPresenter mSubscribeTokensFragmentPresenter;
+    private AddressesListTokenPresenter mSubscribeTokensPresenterImpl;
     protected TokenAdapter mTokenAdapter;
     private String mSearchString;
     protected List<Token> mCurrentList;
@@ -53,7 +53,7 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
     FontTextView mFontTextViewPlaceHolder;
 
     @OnClick({org.qtum.wallet.R.id.ibt_back})
-    public void onClick(View view){
+    public void onClick(View view) {
         switch (view.getId()) {
             case org.qtum.wallet.R.id.ibt_back:
                 getActivity().onBackPressed();
@@ -70,12 +70,18 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
 
     @Override
     protected void createPresenter() {
-        mSubscribeTokensFragmentPresenter = new SubscribeTokensFragmentPresenter(this);
+        mSubscribeTokensPresenterImpl = new SubscribeTokensPresenterImpl(this, new SubscribeTokensInteractorImpl(getContext()));
     }
 
     @Override
-    protected SubscribeTokensFragmentPresenter getPresenter() {
-        return mSubscribeTokensFragmentPresenter;
+    protected AddressesListTokenPresenter getPresenter() {
+        return mSubscribeTokensPresenterImpl;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPresenter().saveTokens(getTokenList());
     }
 
     @Override
@@ -94,7 +100,7 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
         mFrameLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(b)
+                if (b)
                     hideKeyBoard();
             }
         });
@@ -102,7 +108,7 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
 
     @Override
     public List<Token> getTokenList() {
-        if(mTokenAdapter!=null) {
+        if (mTokenAdapter != null) {
             return mTokenAdapter.getTokenList();
         } else {
             return null;
@@ -116,7 +122,7 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
 
     @Override
     public void onDeactivate() {
-        if(mFrameLayoutBase != null) {
+        if (mFrameLayoutBase != null) {
             mFrameLayoutBase.requestFocus();
         }
         hideKeyBoard();
@@ -124,13 +130,13 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
 
     @Override
     public void onRequestSearch(String filter) {
-        if(filter.isEmpty()){
+        if (filter.isEmpty()) {
             mTokenAdapter.setFilter(mCurrentList);
         } else {
             mSearchString = filter.toLowerCase();
             List<Token> newList = new ArrayList<>();
-            for(Token currency: mCurrentList){
-                if(currency.getContractName().toLowerCase().contains(mSearchString))
+            for (Token currency : mCurrentList) {
+                if (currency.getContractName().toLowerCase().contains(mSearchString))
                     newList.add(currency);
             }
 
@@ -139,9 +145,9 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
             Collections.sort(newList, new Comparator<Token>() {
                 @Override
                 public int compare(Token token, Token token2) {
-                    if (token.getContractName().substring(0,searchStringSize).equals(mSearchString) && !token2.getContractName().substring(0,searchStringSize).equals(mSearchString)) {
+                    if (token.getContractName().substring(0, searchStringSize).equals(mSearchString) && !token2.getContractName().substring(0, searchStringSize).equals(mSearchString)) {
                         return -1;
-                    } else if (!token.getContractName().substring(0,searchStringSize).equals(mSearchString) && token2.getContractName().substring(0,searchStringSize).equals(mSearchString)) {
+                    } else if (!token.getContractName().substring(0, searchStringSize).equals(mSearchString) && token2.getContractName().substring(0, searchStringSize).equals(mSearchString)) {
                         return 1;
                     } else {
                         return 0;
@@ -153,7 +159,7 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
         }
     }
 
-    class TokenHolder extends RecyclerView.ViewHolder{
+    class TokenHolder extends RecyclerView.ViewHolder {
 
         @BindView(org.qtum.wallet.R.id.tv_single_string)
         TextView mTextViewCurrency;
@@ -166,23 +172,23 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
 
         TokenHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(getAdapterPosition()>=0) {
-                            mTokenAdapter.getTokenList().get(getAdapterPosition()).setSubscribe(!mToken.isSubscribe());
-                            mTokenAdapter.notifyItemChanged(getAdapterPosition());
-                        }
+                @Override
+                public void onClick(View view) {
+                    if (getAdapterPosition() >= 0) {
+                        mTokenAdapter.getTokenList().get(getAdapterPosition()).setSubscribe(!mToken.isSubscribe());
+                        mTokenAdapter.notifyItemChanged(getAdapterPosition());
                     }
-                });
+                }
+            });
         }
 
-        void bindToken(Token currency){
+        void bindToken(Token currency) {
             mTextViewCurrency.setText(currency.getContractName());
             mToken = currency;
-            if(currency.isSubscribe()){
+            if (currency.isSubscribe()) {
                 mImageViewCheckIndicator.setVisibility(View.VISIBLE);
             } else {
                 mImageViewCheckIndicator.setVisibility(View.GONE);
@@ -190,12 +196,12 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
         }
     }
 
-    public class TokenAdapter extends RecyclerView.Adapter<TokenHolder>{
+    public class TokenAdapter extends RecyclerView.Adapter<TokenHolder> {
 
         List<Token> mTokenList;
         int resId;
 
-        public TokenAdapter(List<Token> tokenList, int resId){
+        public TokenAdapter(List<Token> tokenList, int resId) {
             mTokenList = tokenList;
             this.resId = resId;
         }
@@ -217,7 +223,7 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
             return mTokenList.size();
         }
 
-        void setFilter(List<Token> newList){
+        void setFilter(List<Token> newList) {
             mTokenList = new ArrayList<>();
             mTokenList.addAll(newList);
             notifyDataSetChanged();

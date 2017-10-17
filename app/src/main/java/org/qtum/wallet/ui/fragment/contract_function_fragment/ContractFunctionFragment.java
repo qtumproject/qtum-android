@@ -38,9 +38,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public abstract class ContractFunctionFragment extends BaseFragment implements ContractFunctionFragmentView {
+public abstract class ContractFunctionFragment extends BaseFragment implements ContractFunctionView {
 
-    private ContractFunctionFragmentPresenter mContractFunctionFragmentPresenter;
+    private ContractFunctionPresenter mContractFunctionPresenterImpl;
     private final static String CONTRACT_TEMPLATE_UIID = "contract_template_uiid";
     private final static String METHOD_NAME = "method_name";
     private final static String CONTRACT_ADDRESS = "contract_address";
@@ -103,7 +103,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
     private ResizeHeightAnimation mAnimBackward;
     boolean showing = false;
 
-    @OnClick({org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.cancel, org.qtum.wallet.R.id.call,R.id.bt_edit_close})
+    @OnClick({org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.cancel, org.qtum.wallet.R.id.call, R.id.bt_edit_close})
     public void onClick(View view) {
         switch (view.getId()) {
             case org.qtum.wallet.R.id.cancel:
@@ -112,10 +112,10 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
                 break;
             case org.qtum.wallet.R.id.call:
                 getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_ADDRESS), mTextInputEditTextFee.getText().toString(),
-                        Integer.valueOf(mFontTextViewGasLimit.getText().toString()), Integer.valueOf(mFontTextViewGasPrice.getText().toString()),getArguments().getString(METHOD_NAME));
+                        Integer.valueOf(mFontTextViewGasLimit.getText().toString()), Integer.valueOf(mFontTextViewGasPrice.getText().toString()), getArguments().getString(METHOD_NAME));
                 break;
             case R.id.bt_edit_close:
-                if(showing) {
+                if (showing) {
                     mLinearLayoutSeekBarContainer.startAnimation(mAnimBackward);
                     mFontButtonEditClose.setText(R.string.edit);
                     showing = !showing;
@@ -128,7 +128,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         }
     }
 
-    private void initializeAnim(){
+    private void initializeAnim() {
         mAnimForward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, 0, appLogoHeight);
         mAnimForward.setDuration(300);
         mAnimForward.setFillEnabled(true);
@@ -155,12 +155,12 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
 
     @Override
     protected void createPresenter() {
-        mContractFunctionFragmentPresenter = new ContractFunctionFragmentPresenter(this);
+        mContractFunctionPresenterImpl = new ContractFunctionPresenterImpl(this, new ContractFunctionInteractorImpl(getContext()));
     }
 
     @Override
-    protected ContractFunctionFragmentPresenter getPresenter() {
-        return mContractFunctionFragmentPresenter;
+    protected ContractFunctionPresenter getPresenter() {
+        return mContractFunctionPresenterImpl;
     }
 
     @Override
@@ -170,8 +170,8 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         mSeekBarFee.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(textViewChangeValue){
-                    textViewChangeValue=false;
+                if (textViewChangeValue) {
+                    textViewChangeValue = false;
                     return;
                 }
                 double value = (mMinFee + (progress * stepFee)) / 100000000.;
@@ -225,19 +225,19 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             }
         });
 
-        if(mLinearLayoutSeekBarContainer.getHeight()==0) {
+        if (mLinearLayoutSeekBarContainer.getHeight() == 0) {
             mLinearLayoutSeekBarContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
                     mLinearLayoutSeekBarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    appLogoHeight = (appLogoHeight == 0) ?  mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
+                    appLogoHeight = (appLogoHeight == 0) ? mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
                     initializeAnim();
                     mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
                     mLinearLayoutSeekBarContainer.requestLayout();
                 }
             });
         } else {
-            appLogoHeight = (appLogoHeight == 0) ?  mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
+            appLogoHeight = (appLogoHeight == 0) ? mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
             initializeAnim();
             mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
             mLinearLayoutSeekBarContainer.requestLayout();
@@ -251,11 +251,11 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(seekBarChangeValue){
+                if (seekBarChangeValue) {
                     seekBarChangeValue = false;
                     return;
                 }
-                if(!s.toString().isEmpty()) {
+                if (!s.toString().isEmpty()) {
                     Double fee = Double.valueOf(s.toString()) * 100000000;
                     textViewChangeValue = true;
                     int progress;
@@ -279,8 +279,8 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         mTextInputEditTextFee.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(mSeekBarFee != null) {
+                if (!hasFocus) {
+                    if (mSeekBarFee != null) {
                         textViewChangeValue = true;
                         double value = (mMinFee + (mSeekBarFee.getProgress() * stepFee)) / 100000000.;
                         seekBarChangeValue = true;
