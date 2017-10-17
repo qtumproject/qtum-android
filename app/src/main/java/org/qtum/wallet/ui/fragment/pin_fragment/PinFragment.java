@@ -198,7 +198,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
         mWalletPin.setOnPinEnteredListener(new PinEntryEditText.OnPinEnteredListener() {
             @Override
             public void onPinEntered(CharSequence str) {
-                if (str.length() == 4) {
+                if (str.length() == 6) {
                     getPresenter().confirm(str.toString());
                 }
             }
@@ -364,11 +364,9 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     public void openBackUpWalletFragment(boolean isWalletCreating, String pin) {
         if(isWalletCreating){
             Fragment backUpWalletFragment = BackUpWalletFragment.newInstance(getContext(), isWalletCreating, pin);
-            getMainActivity().onBackPressed();
             openFragmentWithBackStack(backUpWalletFragment, backUpWalletFragment.getClass().getName());
         } else {
             Fragment backUpWalletFragment = BackUpWalletFragment.newInstance(getContext(), isWalletCreating, pin);
-            getMainActivity().onBackPressed();
             openFragment(backUpWalletFragment);
         }
     }

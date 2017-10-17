@@ -248,6 +248,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                     getView().clearError();
                     getView().hideKeyBoard();
                     getView().setCheckAuthenticationShowFlag(false);
+                    getView().onBackPressed();
                     getView().openBackUpWalletFragment(false, pin);
                 } else {
                     getView().confirmError(R.string.incorrect_pin);
