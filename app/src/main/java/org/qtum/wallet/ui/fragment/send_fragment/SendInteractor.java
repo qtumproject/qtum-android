@@ -22,8 +22,6 @@ public interface SendInteractor {
 
     void createTx(String from, String address, String amount, String fee, BigDecimal estimateFeePerKb, SendInteractorImpl.CreateTxCallBack callBack);
 
-    String getPassword();
-
     List<String> getAddresses();
 
     List<Token> getTokenList();
@@ -39,7 +37,6 @@ public interface SendInteractor {
     Observable<String> createAbiMethodParamsObservable(String address, String resultAmount, String transfer);
 
     Observable<CallSmartContractResponse> callSmartContractObservable(Token token, String s);
-
 
     double getFeePerKbDoubleValue();
 

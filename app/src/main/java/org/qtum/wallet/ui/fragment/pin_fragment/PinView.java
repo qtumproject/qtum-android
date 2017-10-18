@@ -25,6 +25,7 @@ public interface PinView extends BaseFragmentView {
     String getAddressForSendAction();
     String getAmountForSendAction();
     String getTokenForSendAction();
+    void setDigitPin(int digit);
     void onLogin();
     void onCancelClick();
     void onBackPressed();

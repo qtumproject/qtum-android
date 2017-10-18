@@ -2,8 +2,11 @@ package org.qtum.wallet.ui.fragment.pin_fragment;
 
 import org.bitcoinj.wallet.Wallet;
 import org.qtum.wallet.R;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.utils.fingerprint_utils.SensorState;
+
+import java.util.Calendar;
 
 import javax.crypto.Cipher;
 
@@ -49,6 +52,14 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
 
     @Override
     public void confirm(final String pin) {
+        Long banTime = getInteractor().getBanTime();
+        Long currentTime = Calendar.getInstance().getTimeInMillis();
+        Long remainingTimeOfBan =  currentTime - banTime;
+        if(remainingTimeOfBan>0){
+            int min = (int)Math.ceil(remainingTimeOfBan/60000.);
+            getView().setAlertDialog(R.string.error, R.string.cancel, BaseFragment.PopUpType.error);
+            return;
+        }
         switch (mAction) {
             case CREATING: {
                 switch (currentState) {
@@ -219,6 +230,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                     }
                                 });
                     } else {
+                        changeBanState();
                         getView().confirmError(R.string.incorrect_pin);
                     }
                 } catch (Exception e) {
@@ -236,6 +248,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                     getView().setCheckAuthenticationShowFlag(false);
                     getView().onBackPressed();
                 } else {
+                    changeBanState();
                     getView().confirmError(R.string.incorrect_pin);
                 }
             }
@@ -251,6 +264,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                     getView().onBackPressed();
                     getView().openBackUpWalletFragment(false, pin);
                 } else {
+                    changeBanState();
                     getView().confirmError(R.string.incorrect_pin);
                 }
             }
@@ -289,6 +303,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                 }
                             });
                 } else {
+                    changeBanState();
                     getView().confirmError(R.string.incorrect_pin);
                 }
             }
@@ -302,22 +317,23 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                         String pinHashGenuine = getInteractor().getPassword();
                         if (pinHashEntered.equals(pinHashGenuine)) {
                             currentState = 1;
+                            getView().setDigitPin(6);
                             getView().clearError();
                             updateState();
+
                         } else {
+                            changeBanState();
                             getView().confirmError(R.string.incorrect_pin);
                         }
                         break;
                     case 1:
                         pinRepeat = pin;
                         currentState = 2;
-                        getView().clearError();
                         updateState();
                         break;
                     case 2:
                         if (pin.equals(pinRepeat)) {
                             getView().clearError();
-
                             final String pinHash = getInteractor().generateSHA256String(pinRepeat);
                             getInteractor().savePassword(pinHash);
                             String passphrase = getInteractor().getUnSaltPassphrase(oldPin);
@@ -348,6 +364,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                 getView().onBackPressed();
                             }
                         } else {
+
                             getView().confirmError(R.string.incorrect_repeated_pin);
                         }
                         break;
@@ -389,6 +406,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
         switch (mAction) {
             case IMPORTING:
             case CREATING:
+                getView().setDigitPin(6);
                 titleID = R.string.create_pin;
                 break;
             case AUTHENTICATION_AND_SEND:
@@ -400,12 +418,23 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 } else {
                     titleID = R.string.enter_pin;
                 }
+                if(getInteractor().getSixDigitPassword().isEmpty()){
+                    getView().setDigitPin(4);
+                } else {
+                    getView().setDigitPin(6);
+                }
                 break;
             case CHANGING:
                 titleID = R.string.change_pin;
+                if(getInteractor().getSixDigitPassword().isEmpty()){
+                    getView().setDigitPin(4);
+                } else {
+                    getView().setDigitPin(6);
+                }
                 break;
         }
         getView().setToolBarTitle(titleID);
+
     }
 
     @Override
@@ -486,4 +515,15 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
         getView().setPin(decoded);
     }
 
+    private void changeBanState(){
+        int failedAttemptsCount = getInteractor().getFailedAttemptsCount();
+        failedAttemptsCount++;
+        if(failedAttemptsCount == 3){
+            Long currentTime = Calendar.getInstance().getTimeInMillis();
+            Long banTime = currentTime+10000;
+            getInteractor().setBanTime(banTime);
+            failedAttemptsCount = 0;
+        }
+        getInteractor().setFailedAttemptsCount(failedAttemptsCount);
+    }
 }
