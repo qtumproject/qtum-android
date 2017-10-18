@@ -126,7 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/ll_fee"
+                    android:layout_below="@+id/seekBar"
                     android:layout_marginTop="13dp"
                     android:focusable="true">
 
@@ -215,21 +215,12 @@
 
                     <org.qtum.wallet.utils.FontTextView
                         android:id="@+id/tv_min_fee"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         app:typefaceAsset="@string/proximaNovaRegular"/>
-
-                    <SeekBar
-                        android:id="@+id/seekBar"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1"
-                        android:progressDrawable="@drawable/seekbar_progress_light"
-                        android:thumb="@drawable/seekbar_thumb_light"/>
 
                     <org.qtum.wallet.utils.FontTextView
                         android:id="@+id/tv_max_fee"
@@ -240,6 +231,16 @@
                         app:typefaceAsset="@string/proximaNovaRegular"/>
 
                 </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_below="@+id/ll_fee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:progressDrawable="@drawable/seekbar_progress_light"
+                    android:thumb="@drawable/seekbar_thumb_light"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -252,10 +253,7 @@
                     <RelativeLayout
                         android:id="@+id/gas_management_container"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_above="@+id/bt_send"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingRight="@dimen/activity_horizontal_margin">
+                        android:layout_height="wrap_content">
 
                         <LinearLayout
                             android:id="@+id/ll_gas_price_and_gas_limit"
@@ -328,21 +326,12 @@
 
                                 <org.qtum.wallet.utils.FontTextView
                                     android:id="@+id/tv_min_gas_price"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:layout_gravity="center"
                                     android:textColor="@color/black"
                                     app:typefaceAsset="@string/proximaNovaRegular"/>
-
-                                <SeekBar
-                                    android:id="@+id/seekBar_gas_price"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="8dp"
-                                    android:layout_marginRight="8dp"
-                                    android:layout_weight="1"
-                                    android:progressDrawable="@drawable/seekbar_progress_light"
-                                    android:thumb="@drawable/seekbar_thumb_light"/>
 
                                 <org.qtum.wallet.utils.FontTextView
                                     android:id="@+id/tv_max_gas_price"
@@ -354,6 +343,15 @@
 
                             </LinearLayout>
 
+                            <SeekBar
+                                android:id="@+id/seekBar_gas_price"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                android:progressDrawable="@drawable/seekbar_progress_light"
+                                android:thumb="@drawable/seekbar_thumb_light"/>
+
                             <LinearLayout
                                 android:id="@+id/ll_gas_limit"
                                 android:layout_width="match_parent"
@@ -362,21 +360,12 @@
 
                                 <org.qtum.wallet.utils.FontTextView
                                     android:id="@+id/tv_min_gas_limit"
-                                    android:layout_width="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:textColor="@color/black"
                                     app:typefaceAsset="@string/proximaNovaRegular"/>
-
-                                <SeekBar
-                                    android:id="@+id/seekBar_gas_limit"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="8dp"
-                                    android:layout_marginRight="8dp"
-                                    android:layout_weight="1"
-                                    android:progressDrawable="@drawable/seekbar_progress_light"
-                                    android:thumb="@drawable/seekbar_thumb_light"/>
 
                                 <org.qtum.wallet.utils.FontTextView
                                     android:id="@+id/tv_max_gas_limit"
@@ -387,6 +376,16 @@
                                     app:typefaceAsset="@string/proximaNovaRegular"/>
 
                             </LinearLayout>
+
+                            <SeekBar
+                                android:id="@+id/seekBar_gas_limit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_weight="1"
+                                android:progressDrawable="@drawable/seekbar_progress_light"
+                                android:thumb="@drawable/seekbar_thumb_light"/>
 
 
                         </LinearLayout>

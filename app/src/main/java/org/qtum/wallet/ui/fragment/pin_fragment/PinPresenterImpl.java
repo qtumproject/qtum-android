@@ -107,7 +107,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                                                 getInteractor().saveTouchIdPassword(s);
                                                                 getInteractor().savePassword(pinHash);
                                                                 getView().onLogin();
-                                                                getView().openTouchIDPreferenceFragment(false,pinRepeat);
+                                                                getView().openTouchIDPreferenceFragment(false, pinRepeat);
                                                                 getView().dismissProgressDialog();
                                                                 isDataLoaded = false;
                                                             }
@@ -116,7 +116,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                                 getInteractor().savePassword(pinHash);
                                                 getView().onLogin();
                                                 getView().dismiss();
-                                                getView().openBackUpWalletFragment(true,pinRepeat);
+                                                getView().openBackUpWalletFragment(true, pinRepeat);
                                                 getView().dismissProgressDialog();
                                                 isDataLoaded = false;
                                             }
@@ -144,7 +144,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                             getView().clearError();
                             getView().setProgressDialog();
 
-                            getInteractor().savePassphraseSaltWithPin(pinRepeat,getView().getPassphrase());
+                            getInteractor().savePassphraseSaltWithPin(pinRepeat, getView().getPassphrase());
 
                             pinHash = getInteractor().generateSHA256String(pinRepeat);
 
