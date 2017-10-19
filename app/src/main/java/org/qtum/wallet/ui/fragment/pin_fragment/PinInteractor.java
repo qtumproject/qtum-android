@@ -18,4 +18,11 @@ public interface PinInteractor {
     Observable<String> encodeInBackground(String pin);
     String generateSHA256String(String pin);
     String getUnSaltPassphrase(String oldPin);
+    void saveSixDigitPassword(String password);
+    String getSixDigitPassword();
+    Integer getFailedAttemptsCount();
+    Long getBanTime();
+    void setFailedAttemptsCount(int failedAttemptsCount);
+    void setBanTime(long banTime);
+    String getBanPinString(int min);
 }

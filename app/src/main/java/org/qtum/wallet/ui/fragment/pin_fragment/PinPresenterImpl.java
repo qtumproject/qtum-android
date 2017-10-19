@@ -2,8 +2,11 @@ package org.qtum.wallet.ui.fragment.pin_fragment;
 
 import org.bitcoinj.wallet.Wallet;
 import org.qtum.wallet.R;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.utils.fingerprint_utils.SensorState;
+
+import java.util.Calendar;
 
 import javax.crypto.Cipher;
 
@@ -15,6 +18,8 @@ import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION_AND_SEND;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION_FOR_PASSPHRASE;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CHECK_AUTHENTICATION;
+import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CREATING;
+import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.IMPORTING;
 
 public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPresenter {
 
@@ -49,6 +54,17 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
 
     @Override
     public void confirm(final String pin) {
+        if(!mAction.equals(CREATING) || !mAction.equals(IMPORTING)) {
+            Long banTime = getInteractor().getBanTime();
+            Long currentTime = Calendar.getInstance().getTimeInMillis();
+            Long remainingTimeOfBan = banTime - currentTime;
+            if (remainingTimeOfBan > 0) {
+                int min = (int) Math.ceil(remainingTimeOfBan / 60000.);
+                getView().setAlertDialog(R.string.error, getInteractor().getBanPinString(min), R.string.cancel, BaseFragment.PopUpType.error);
+                getView().clearPin();
+                return;
+            }
+        }
         switch (mAction) {
             case CREATING: {
                 switch (currentState) {
@@ -192,7 +208,9 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 try {
                     String pinHashEntered = getInteractor().generateSHA256String(pin);
                     String pinHashGenuine = getInteractor().getPassword();
-                    if (pinHashEntered.equals(pinHashGenuine)) {
+                    boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
+                    changeBanState(isCorrect);
+                    if (isCorrect) {
                         getView().clearError();
                         getView().setProgressDialog();
                         getView().hideKeyBoard();
@@ -230,7 +248,9 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
             case CHECK_AUTHENTICATION: {
                 String pinHashEntered = getInteractor().generateSHA256String(pin);
                 String pinHashGenuine = getInteractor().getPassword();
-                if (pinHashEntered.equals(pinHashGenuine)) {
+                boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
+                changeBanState(isCorrect);
+                if (isCorrect) {
                     getView().clearError();
                     getView().hideKeyBoard();
                     getView().setCheckAuthenticationShowFlag(false);
@@ -244,7 +264,9 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
             case AUTHENTICATION_FOR_PASSPHRASE: {
                 String pinHashEntered = getInteractor().generateSHA256String(pin);
                 String pinHashGenuine = getInteractor().getPassword();
-                if (pinHashEntered.equals(pinHashGenuine)) {
+                boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
+                changeBanState(isCorrect);
+                if (isCorrect) {
                     getView().clearError();
                     getView().hideKeyBoard();
                     getView().setCheckAuthenticationShowFlag(false);
@@ -259,7 +281,9 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
             case AUTHENTICATION_AND_SEND: {
                 String pinHashEntered = getInteractor().generateSHA256String(pin);
                 String pinHashGenuine = getInteractor().getPassword();
-                if (pinHashEntered.equals(pinHashGenuine)) {
+                boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
+                changeBanState(isCorrect);
+                if (isCorrect) {
                     getView().clearError();
                     final String address = getView().getAddressForSendAction();
                     final String amount = getView().getAmountForSendAction();
@@ -300,24 +324,26 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                         oldPin = pin;
                         String pinHashEntered = getInteractor().generateSHA256String(pin);
                         String pinHashGenuine = getInteractor().getPassword();
-                        if (pinHashEntered.equals(pinHashGenuine)) {
+                        boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
+                        if (isCorrect) {
                             currentState = 1;
+                            getView().setDigitPin(6);
                             getView().clearError();
                             updateState();
+
                         } else {
                             getView().confirmError(R.string.incorrect_pin);
                         }
+                        changeBanState(isCorrect);
                         break;
                     case 1:
                         pinRepeat = pin;
                         currentState = 2;
-                        getView().clearError();
                         updateState();
                         break;
                     case 2:
                         if (pin.equals(pinRepeat)) {
                             getView().clearError();
-
                             final String pinHash = getInteractor().generateSHA256String(pinRepeat);
                             getInteractor().savePassword(pinHash);
                             String passphrase = getInteractor().getUnSaltPassphrase(oldPin);
@@ -348,6 +374,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                 getView().onBackPressed();
                             }
                         } else {
+
                             getView().confirmError(R.string.incorrect_repeated_pin);
                         }
                         break;
@@ -389,6 +416,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
         switch (mAction) {
             case IMPORTING:
             case CREATING:
+                getView().setDigitPin(6);
                 titleID = R.string.create_pin;
                 break;
             case AUTHENTICATION_AND_SEND:
@@ -400,12 +428,23 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 } else {
                     titleID = R.string.enter_pin;
                 }
+                if(getInteractor().getSixDigitPassword().isEmpty()){
+                    getView().setDigitPin(4);
+                } else {
+                    getView().setDigitPin(6);
+                }
                 break;
             case CHANGING:
                 titleID = R.string.change_pin;
+                if(getInteractor().getSixDigitPassword().isEmpty()){
+                    getView().setDigitPin(4);
+                } else {
+                    getView().setDigitPin(6);
+                }
                 break;
         }
         getView().setToolBarTitle(titleID);
+
     }
 
     @Override
@@ -486,4 +525,20 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
         getView().setPin(decoded);
     }
 
+    private void changeBanState(boolean isCorrect){
+        int failedAttemptsCount;
+        if(isCorrect) {
+            failedAttemptsCount = 0;
+        } else {
+            failedAttemptsCount = getInteractor().getFailedAttemptsCount();
+            failedAttemptsCount++;
+            if (failedAttemptsCount == 3) {
+                Long currentTime = Calendar.getInstance().getTimeInMillis();
+                Long banTime = currentTime + 10000;
+                getInteractor().setBanTime(banTime);
+                failedAttemptsCount = 0;
+            }
+        }
+        getInteractor().setFailedAttemptsCount(failedAttemptsCount);
+    }
 }

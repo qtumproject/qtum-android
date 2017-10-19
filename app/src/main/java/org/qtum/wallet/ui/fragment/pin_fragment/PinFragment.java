@@ -13,11 +13,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.alimuzaffar.lib.pin.PinEntryEditText;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.backup_wallet_fragment.BackUpWalletFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
@@ -27,6 +27,8 @@ import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.CryptoUtils;
+
+import org.qtum.wallet.utils.PinEntryEditText;
 import org.qtum.wallet.utils.fingerprint_utils.FingerprintUtils;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.fingerprint_utils.SensorState;
@@ -131,6 +133,11 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     }
 
     @Override
+    public void clearPin() {
+        mWalletPin.setText("");
+    }
+
+    @Override
     public void updateState(int state) {
         mWalletPin.setText("");
         tooltip.setText(state);
@@ -198,9 +205,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
         mWalletPin.setOnPinEnteredListener(new PinEntryEditText.OnPinEnteredListener() {
             @Override
             public void onPinEntered(CharSequence str) {
-                if (str.length() == 6) {
-                    getPresenter().confirm(str.toString());
-                }
+                getPresenter().confirm(str.toString());
             }
         });
     }
@@ -389,5 +394,12 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public void onLogin() {
         getMainActivity().onLogin();
+    }
+
+    @Override
+    public void setDigitPin(int digit) {
+        mWalletPin.setFilters(new InputFilter[] {
+                new InputFilter.LengthFilter(digit)
+        });
     }
 }

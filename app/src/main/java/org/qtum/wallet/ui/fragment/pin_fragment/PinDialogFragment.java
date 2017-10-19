@@ -166,7 +166,7 @@ public class PinDialogFragment extends DialogFragment {
 
     private void confirm(String pin){
         String pinHashEntered = CryptoUtilsCompat.generateSHA256String(pin);
-        String pinHashGenuine = KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, QtumSharedPreference.getInstance().getWalletPassword(getContext()));
+        String pinHashGenuine = KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, QtumSharedPreference.getInstance().getPassword(getContext()));
         if (pinHashEntered.equals(pinHashGenuine)) {
             clearError();
             mPinCallBack.onSuccess();

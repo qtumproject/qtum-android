@@ -280,12 +280,6 @@ public class SendInteractorImpl implements SendInteractor {
     }
 
     @Override
-    public String getPassword() {
-        return QtumSharedPreference.getInstance().getWalletPassword(mContext);
-    }
-
-
-    @Override
     public List<String> getAddresses() {
         return KeyStorage.getInstance().getAddresses();
     }

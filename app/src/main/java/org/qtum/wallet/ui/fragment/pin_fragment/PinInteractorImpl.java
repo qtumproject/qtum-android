@@ -3,6 +3,7 @@ package org.qtum.wallet.ui.fragment.pin_fragment;
 import android.content.Context;
 
 import org.bitcoinj.wallet.Wallet;
+import org.qtum.wallet.R;
 import org.qtum.wallet.utils.CryptoUtils;
 import org.qtum.wallet.utils.CryptoUtilsCompat;
 import org.qtum.wallet.utils.crypto.AESUtil;
@@ -36,14 +37,64 @@ class PinInteractorImpl implements PinInteractor {
 
     @Override
     public String getPassword() {
-        String encryptedPinHash = QtumSharedPreference.getInstance().getWalletPassword(mContext);
-        return KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, encryptedPinHash);
+        String sixDigitPassword = getSixDigitPassword();
+        if(!getSixDigitPassword().isEmpty()){
+            return sixDigitPassword;
+        } else {
+            return getFourDigitPassword();
+        }
     }
 
     @Override
     public void savePassword(String password) {
+        saveSixDigitPassword(password);
+    }
+
+
+    private String getFourDigitPassword() {
+        String encryptedPinHash = QtumSharedPreference.getInstance().getPassword(mContext);
+        return KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, encryptedPinHash);
+    }
+
+
+    private void saveFourDigitPassword(String password) {
         String encryptedPinHash = KeyStoreHelper.encrypt(QTUM_PIN_ALIAS,password);
-        QtumSharedPreference.getInstance().saveWalletPassword(mContext, encryptedPinHash);
+        QtumSharedPreference.getInstance().savePassword(mContext, encryptedPinHash);
+    }
+
+    @Override
+    public String getSixDigitPassword(){
+        String encryptedPinHash = QtumSharedPreference.getInstance().getSixDigitPassword(mContext);
+        if(encryptedPinHash.isEmpty()){
+            return encryptedPinHash;
+        }
+        return KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, encryptedPinHash);
+    }
+
+    @Override
+    public Integer getFailedAttemptsCount() {
+        return QtumSharedPreference.getInstance().getFailedAttemptsCount(mContext);
+    }
+
+    @Override
+    public Long getBanTime() {
+        return QtumSharedPreference.getInstance().getBanTime(mContext);
+    }
+
+    @Override
+    public void setFailedAttemptsCount(int failedAttemptsCount) {
+        QtumSharedPreference.getInstance().setFailedAttemptsCount(mContext, failedAttemptsCount);
+    }
+
+    @Override
+    public void setBanTime(long banTime) {
+        QtumSharedPreference.getInstance().setBanTime(mContext, banTime);
+    }
+
+    @Override
+    public void saveSixDigitPassword(String password) {
+        String encryptedPinHash = KeyStoreHelper.encrypt(QTUM_PIN_ALIAS,password);
+        QtumSharedPreference.getInstance().saveSixDigitPassword(mContext, encryptedPinHash);
     }
 
     @Override
@@ -68,7 +119,6 @@ class PinInteractorImpl implements PinInteractor {
     public void saveTouchIdPassword(String password) {
         QtumSharedPreference.getInstance().saveTouchIdPassword(mContext, password);
     }
-
 
     @Override
     public Observable<Wallet> loadWalletFromFile() {
@@ -104,5 +154,10 @@ class PinInteractorImpl implements PinInteractor {
     public String getUnSaltPassphrase(String oldPin) {
         byte[] oldSaltPassphrase = getSaltPassphrase();
         return AESUtil.decryptBytes(oldPin, oldSaltPassphrase);
+    }
+
+    @Override
+    public String getBanPinString(int min) {
+        return mContext.getString(R.string.sorry_please_try_again_in) + " " + min + " " + mContext.getString(R.string.minutes);
     }
 }

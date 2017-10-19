@@ -39,7 +39,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.alimuzaffar.lib.pin.PinEntryEditText
+        <org.qtum.wallet.utils.PinEntryEditText
             android:id="@+id/til_wallet_pin"
             android:layout_marginTop="64dp"
             android:layout_width="match_parent"

@@ -91,6 +91,11 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
+    public void setAlertDialog(@StringRes int titleResId, String message, @StringRes int buttonTextResId, PopUpType type) {
+        setAlertDialog(getString(titleResId), message, getString(buttonTextResId), type);
+    }
+
+    @Override
     public void setAlertDialog(@StringRes int titleResId, @StringRes int buttonTextResId, PopUpType type) {
         setAlertDialog(getString(titleResId), "", getString(buttonTextResId), type);
     }

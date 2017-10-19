@@ -209,5 +209,9 @@
     <string name="close">Close</string>
     <string name="edit">Edit</string>
     <string name="receive_version_error">Receive version error</string>
+    <string name="sorry_please_try_again_in">Sorry, Please try again in</string>
+    <string name="minutes">minutes</string>
+    <string name="warning">Warning</string>
+    <string name="you_are_about_to_exit_your_account_all_account_data_will_be_erased_from_the_device_please_make_sure_you_have_saved_backups_of_your_passphrase_and_required_contracts">You are about to exit your account. All account data will be erased from the device. Please make sure you have saved back-ups of your Passphrase and required Contracts</string>
 
 </resources>
