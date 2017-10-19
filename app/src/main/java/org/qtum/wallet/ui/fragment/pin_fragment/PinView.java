@@ -30,4 +30,5 @@ public interface PinView extends BaseFragmentView {
     void onCancelClick();
     void onBackPressed();
     void setCheckAuthenticationShowFlag(boolean checkAuthenticationShowFlag);
+    void clearPin();
 }

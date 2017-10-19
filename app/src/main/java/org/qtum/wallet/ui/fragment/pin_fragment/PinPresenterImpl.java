@@ -18,6 +18,8 @@ import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION_AND_SEND;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION_FOR_PASSPHRASE;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CHECK_AUTHENTICATION;
+import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CREATING;
+import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.IMPORTING;
 
 public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPresenter {
 
@@ -52,13 +54,16 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
 
     @Override
     public void confirm(final String pin) {
-        Long banTime = getInteractor().getBanTime();
-        Long currentTime = Calendar.getInstance().getTimeInMillis();
-        Long remainingTimeOfBan =  currentTime - banTime;
-        if(remainingTimeOfBan>0){
-            int min = (int)Math.ceil(remainingTimeOfBan/60000.);
-            getView().setAlertDialog(R.string.error, R.string.cancel, BaseFragment.PopUpType.error);
-            return;
+        if(!mAction.equals(CREATING) || !mAction.equals(IMPORTING)) {
+            Long banTime = getInteractor().getBanTime();
+            Long currentTime = Calendar.getInstance().getTimeInMillis();
+            Long remainingTimeOfBan = banTime - currentTime;
+            if (remainingTimeOfBan > 0) {
+                int min = (int) Math.ceil(remainingTimeOfBan / 60000.);
+                getView().setAlertDialog(R.string.error, getInteractor().getBanPinString(min), R.string.cancel, BaseFragment.PopUpType.error);
+                getView().clearPin();
+                return;
+            }
         }
         switch (mAction) {
             case CREATING: {
@@ -203,7 +208,9 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 try {
                     String pinHashEntered = getInteractor().generateSHA256String(pin);
                     String pinHashGenuine = getInteractor().getPassword();
-                    if (pinHashEntered.equals(pinHashGenuine)) {
+                    boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
+                    changeBanState(isCorrect);
+                    if (isCorrect) {
                         getView().clearError();
                         getView().setProgressDialog();
                         getView().hideKeyBoard();
@@ -230,7 +237,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                     }
                                 });
                     } else {
-                        changeBanState();
                         getView().confirmError(R.string.incorrect_pin);
                     }
                 } catch (Exception e) {
@@ -242,13 +248,14 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
             case CHECK_AUTHENTICATION: {
                 String pinHashEntered = getInteractor().generateSHA256String(pin);
                 String pinHashGenuine = getInteractor().getPassword();
-                if (pinHashEntered.equals(pinHashGenuine)) {
+                boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
+                changeBanState(isCorrect);
+                if (isCorrect) {
                     getView().clearError();
                     getView().hideKeyBoard();
                     getView().setCheckAuthenticationShowFlag(false);
                     getView().onBackPressed();
                 } else {
-                    changeBanState();
                     getView().confirmError(R.string.incorrect_pin);
                 }
             }
@@ -257,14 +264,15 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
             case AUTHENTICATION_FOR_PASSPHRASE: {
                 String pinHashEntered = getInteractor().generateSHA256String(pin);
                 String pinHashGenuine = getInteractor().getPassword();
-                if (pinHashEntered.equals(pinHashGenuine)) {
+                boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
+                changeBanState(isCorrect);
+                if (isCorrect) {
                     getView().clearError();
                     getView().hideKeyBoard();
                     getView().setCheckAuthenticationShowFlag(false);
                     getView().onBackPressed();
                     getView().openBackUpWalletFragment(false, pin);
                 } else {
-                    changeBanState();
                     getView().confirmError(R.string.incorrect_pin);
                 }
             }
@@ -273,7 +281,9 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
             case AUTHENTICATION_AND_SEND: {
                 String pinHashEntered = getInteractor().generateSHA256String(pin);
                 String pinHashGenuine = getInteractor().getPassword();
-                if (pinHashEntered.equals(pinHashGenuine)) {
+                boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
+                changeBanState(isCorrect);
+                if (isCorrect) {
                     getView().clearError();
                     final String address = getView().getAddressForSendAction();
                     final String amount = getView().getAmountForSendAction();
@@ -303,7 +313,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                 }
                             });
                 } else {
-                    changeBanState();
                     getView().confirmError(R.string.incorrect_pin);
                 }
             }
@@ -315,16 +324,17 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                         oldPin = pin;
                         String pinHashEntered = getInteractor().generateSHA256String(pin);
                         String pinHashGenuine = getInteractor().getPassword();
-                        if (pinHashEntered.equals(pinHashGenuine)) {
+                        boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
+                        if (isCorrect) {
                             currentState = 1;
                             getView().setDigitPin(6);
                             getView().clearError();
                             updateState();
 
                         } else {
-                            changeBanState();
                             getView().confirmError(R.string.incorrect_pin);
                         }
+                        changeBanState(isCorrect);
                         break;
                     case 1:
                         pinRepeat = pin;
@@ -515,14 +525,19 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
         getView().setPin(decoded);
     }
 
-    private void changeBanState(){
-        int failedAttemptsCount = getInteractor().getFailedAttemptsCount();
-        failedAttemptsCount++;
-        if(failedAttemptsCount == 3){
-            Long currentTime = Calendar.getInstance().getTimeInMillis();
-            Long banTime = currentTime+10000;
-            getInteractor().setBanTime(banTime);
+    private void changeBanState(boolean isCorrect){
+        int failedAttemptsCount;
+        if(isCorrect) {
             failedAttemptsCount = 0;
+        } else {
+            failedAttemptsCount = getInteractor().getFailedAttemptsCount();
+            failedAttemptsCount++;
+            if (failedAttemptsCount == 3) {
+                Long currentTime = Calendar.getInstance().getTimeInMillis();
+                Long banTime = currentTime + 10000;
+                getInteractor().setBanTime(banTime);
+                failedAttemptsCount = 0;
+            }
         }
         getInteractor().setFailedAttemptsCount(failedAttemptsCount);
     }

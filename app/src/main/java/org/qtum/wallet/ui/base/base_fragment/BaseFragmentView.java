@@ -45,6 +45,8 @@ public interface BaseFragmentView extends BaseContextView {
 
     void setAlertDialog(@StringRes int titleResId, String message, @StringRes int buttonTextResId, BaseFragment.PopUpType type, BaseFragment.AlertDialogCallBack callBack);
 
+    void setAlertDialog(@StringRes int titleResId, String message, @StringRes int buttonTextResId, BaseFragment.PopUpType type);
+
     void setAlertDialog(@StringRes int titleResId, @StringRes int messageResId, @StringRes int buttonTextResId, BaseFragment.PopUpType type);
 
     void setAlertDialog(String title, String message, String buttonText, String buttonText2, BaseFragment.PopUpType type, BaseFragment.AlertDialogCallBack callBack);

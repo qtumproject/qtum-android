@@ -3,6 +3,7 @@ package org.qtum.wallet.ui.fragment.pin_fragment;
 import android.content.Context;
 
 import org.bitcoinj.wallet.Wallet;
+import org.qtum.wallet.R;
 import org.qtum.wallet.utils.CryptoUtils;
 import org.qtum.wallet.utils.CryptoUtilsCompat;
 import org.qtum.wallet.utils.crypto.AESUtil;
@@ -155,5 +156,8 @@ class PinInteractorImpl implements PinInteractor {
         return AESUtil.decryptBytes(oldPin, oldSaltPassphrase);
     }
 
-
+    @Override
+    public String getBanPinString(int min) {
+        return mContext.getString(R.string.sorry_please_try_again_in) + " " + min + " " + mContext.getString(R.string.minutes);
+    }
 }

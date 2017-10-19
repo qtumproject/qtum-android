@@ -133,6 +133,11 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     }
 
     @Override
+    public void clearPin() {
+        mWalletPin.setText("");
+    }
+
+    @Override
     public void updateState(int state) {
         mWalletPin.setText("");
         tooltip.setText(state);

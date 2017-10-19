@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 import org.qtum.wallet.ui.fragment.about_fragment.AboutFragment;
@@ -28,7 +29,7 @@ import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CHANGING;
  * Created by kirillvolkov on 05.07.17.
  */
 
-public abstract class ProfileFragment extends BaseFragment implements ProfileView, LogOutDialogFragment.OnYesClickListener, OnSettingClickListener {
+public abstract class ProfileFragment extends BaseFragment implements ProfileView, OnSettingClickListener {
 
     @BindView(org.qtum.wallet.R.id.pref_list)
     protected RecyclerView prefList;
@@ -90,7 +91,17 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
                 fragment = AboutFragment.newInstance(getContext());
                 break;
             case org.qtum.wallet.R.string.log_out:
-                startDialogFragmentForResult();
+                setAlertDialog(getString(R.string.warning), getString(R.string.you_are_about_to_exit_your_account_all_account_data_will_be_erased_from_the_device_please_make_sure_you_have_saved_backups_of_your_passphrase_and_required_contracts), "Cancel", "Logout", PopUpType.error, new AlertDialogCallBack() {
+                    @Override
+                    public void onButtonClick() {
+
+                    }
+
+                    @Override
+                    public void onButton2Click() {
+                        onLogout();
+                    }
+                });
                 break;
             case org.qtum.wallet.R.string.switch_theme:
                 ThemeUtils.switchPreferencesTheme(getContext());
@@ -128,8 +139,7 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
         }
     }
 
-    @Override
-    public void onClick() {
+    public void onLogout() {
         getPresenter().clearWallet();
         getMainActivity().onLogout();
         mUpdateService = getMainActivity().getUpdateService();

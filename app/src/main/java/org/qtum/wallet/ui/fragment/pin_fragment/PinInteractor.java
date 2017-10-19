@@ -24,4 +24,5 @@ public interface PinInteractor {
     Long getBanTime();
     void setFailedAttemptsCount(int failedAttemptsCount);
     void setBanTime(long banTime);
+    String getBanPinString(int min);
 }
