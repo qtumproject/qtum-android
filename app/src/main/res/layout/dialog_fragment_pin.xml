@@ -29,7 +29,7 @@
                 android:layout_centerHorizontal="true"/>
 
 
-    <com.alimuzaffar.lib.pin.PinEntryEditText
+    <org.qtum.wallet.utils.PinEntryEditText
         android:id="@+id/til_wallet_pin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
