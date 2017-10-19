@@ -29,6 +29,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
     private String oldPin;
     private String pinHash;
     private PinAction mAction;
+    private final Long mBanTime = 600000L;
 
     private boolean isDataLoaded = false;
 
@@ -534,9 +535,10 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
             failedAttemptsCount++;
             if (failedAttemptsCount == 3) {
                 Long currentTime = Calendar.getInstance().getTimeInMillis();
-                Long banTime = currentTime + 10000;
+                Long banTime = currentTime + mBanTime;
                 getInteractor().setBanTime(banTime);
                 failedAttemptsCount = 0;
+                getView().setAlertDialog(R.string.error, getInteractor().getBanPinString(mBanTime.intValue()/60000), R.string.cancel, BaseFragment.PopUpType.error);
             }
         }
         getInteractor().setFailedAttemptsCount(failedAttemptsCount);

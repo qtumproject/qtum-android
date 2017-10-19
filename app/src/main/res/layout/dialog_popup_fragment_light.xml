@@ -52,7 +52,7 @@
         android:layout_centerHorizontal="true" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:layout_marginTop="16dp"
@@ -64,8 +64,10 @@
             android:id="@+id/bt_pop_up"
             android:background="@drawable/btn_sea_corner_background_light"
             android:padding="16dp"
-            android:paddingStart="48dp"
-            android:paddingEnd="48dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:maxLines="1"
+
             android:layout_marginEnd="16dp"
             android:text="@string/ok"
             android:textAllCaps="false"
@@ -77,8 +79,10 @@
             android:id="@+id/bt_pop_up2"
             android:background="@drawable/btn_sea_corner_background_light"
             android:padding="16dp"
-            android:paddingStart="48dp"
-            android:paddingEnd="48dp"
+            android:maxLines="1"
+            android:gravity="center"
+            android:layout_weight="1"
+
             android:text="@string/ok"
             android:textAllCaps="false"
             android:textColor="@color/white"

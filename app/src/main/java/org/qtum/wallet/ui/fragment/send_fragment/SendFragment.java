@@ -754,8 +754,9 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         }
 
         @Override
-        public void onError() {
-
+        public void onError(String error) {
+            hideKeyBoard();
+            setAlertDialog(R.string.warning,error,R.string.cancel,PopUpType.error);
         }
     };
 

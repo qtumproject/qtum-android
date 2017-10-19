@@ -152,7 +152,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
             if (!getView().isValidAmount()) {
                 return;
             }
-
+            getView().hideKeyBoard();
             getView().showPinDialog();
 
         } else {
