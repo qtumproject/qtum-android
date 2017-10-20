@@ -10,8 +10,8 @@ import java.util.Locale;
 
 public class DateCalculator {
 
-    public static String getShortDate(String dateInFormat){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-d HH:mm:ss",Locale.US);
+    public static String getShortDate(String dateInFormat) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-d HH:mm:ss", Locale.US);
         long date = 0;
         try {
             date = formatter.parse(dateInFormat).getTime();
@@ -24,8 +24,7 @@ public class DateCalculator {
         String dateString;
         if (delay < 60000) {
             dateString = delay / 1000 + " sec ago";
-        } else
-        if (delay < 3600000) {
+        } else if (delay < 3600000) {
             dateString = delay / 60000 + " min ago";
         } else {
 
@@ -47,14 +46,13 @@ public class DateCalculator {
         return dateString;
     }
 
-    public static String getShortDate(long timeInMills){
+    public static String getShortDate(long timeInMills) {
         long currentTime = (new Date()).getTime();
         long delay = currentTime - timeInMills;
         String dateString;
         if (delay < 60000) {
             dateString = delay / 1000 + " sec ago";
-        } else
-        if (delay < 3600000) {
+        } else if (delay < 3600000) {
             dateString = delay / 60000 + " min ago";
         } else {
 
@@ -70,33 +68,33 @@ public class DateCalculator {
                 SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
                 dateString = timeFormatter.format(dateTransaction);
             } else {
-                dateString = String.format(Locale.US, "%s, %d", calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US),calendar.get(Calendar.DAY_OF_MONTH));
+                dateString = String.format(Locale.US, "%s, %d", calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US), calendar.get(Calendar.DAY_OF_MONTH));
             }
         }
         return dateString;
     }
 
-    public static String getFullDate(long timeInMills){
+    public static String getFullDate(long timeInMills) {
         String dateString;
         Date dateTransaction = new Date(timeInMills);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateTransaction);
         SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
-        dateString = String.format(Locale.US, "%s, %d %s", calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US),calendar.get(Calendar.DAY_OF_MONTH), timeFormatter.format(dateTransaction));
+        dateString = String.format(Locale.US, "%s, %d %s", calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US), calendar.get(Calendar.DAY_OF_MONTH), timeFormatter.format(dateTransaction));
         return dateString;
     }
 
-    public static String getDateInFormat(Date date){
+    public static String getDateInFormat(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         return formatter.format(date);
     }
 
-    public static String getDateInFormat(Long date){
+    public static String getDateInFormat(Long date) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         return formatter.format(new Date(date));
     }
 
-    public static int equals(String date1, String date2){
+    public static int equals(String date1, String date2) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-d HH:mm:ss");
         long date1long = 0;
         long date2long = 0;
@@ -109,7 +107,7 @@ public class DateCalculator {
         return date1long > date2long ? -1 : date1long < date2long ? 1 : 0;
     }
 
-    public static String getCurrentDate(){
+    public static String getCurrentDate() {
         return getDateInFormat(new Date());
     }
 

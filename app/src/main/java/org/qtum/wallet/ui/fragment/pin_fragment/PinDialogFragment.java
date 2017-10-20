@@ -1,29 +1,37 @@
 package org.qtum.wallet.ui.fragment.pin_fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.alimuzaffar.lib.pin.PinEntryEditText;
-
+import org.qtum.wallet.R;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.CryptoUtilsCompat;
+import org.qtum.wallet.utils.PinEntryEditText;
 import org.qtum.wallet.utils.ThemeUtils;
 import org.qtum.wallet.utils.crypto.KeyStoreHelper;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.utils.CryptoUtils;
-import org.qtum.wallet.utils.FingerprintUtils;
+import org.qtum.wallet.utils.fingerprint_utils.FingerprintUtils;
 import org.qtum.wallet.utils.FontTextView;
+import org.qtum.wallet.utils.fingerprint_utils.SensorState;
+
+import java.util.Calendar;
 
 import javax.crypto.Cipher;
 
@@ -47,6 +55,7 @@ public class PinDialogFragment extends DialogFragment {
     private PinCallBack mPinCallBack;
     private boolean mTouchIdFlag;
     private FingerprintHelper mFingerprintHelper;
+    private final Long mBanTime = 600000L;
 
     @NonNull
     @Override
@@ -59,13 +68,60 @@ public class PinDialogFragment extends DialogFragment {
         if(dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
+        if(getSixDigitPassword().isEmpty()){
+            mWalletPin.setFilters(new InputFilter[] {
+                    new InputFilter.LengthFilter(4)
+            });
+        } else {
+            mWalletPin.setFilters(new InputFilter[] {
+                    new InputFilter.LengthFilter(6)
+            });
+        }
         return dialog;
+    }
+
+    private void hideKeyBoard() {
+        Activity activity = getActivity();
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            hideKeyBoard(activity, view);
+        }
+    }
+
+    public void hideKeyBoard(Activity activity, View view) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+    }
+
+
+    private String getSixDigitPassword(){
+        String encryptedPinHash = QtumSharedPreference.getInstance().getSixDigitPassword(getContext());
+        if(encryptedPinHash.isEmpty()){
+            return encryptedPinHash;
+        }
+        return KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, encryptedPinHash);
+    }
+
+    private String getPassword() {
+        String sixDigitPassword = getSixDigitPassword();
+        if(!getSixDigitPassword().isEmpty()){
+            return sixDigitPassword;
+        } else {
+            return getFourDigitPassword();
+        }
+    }
+
+    private String getFourDigitPassword() {
+        String encryptedPinHash = QtumSharedPreference.getInstance().getPassword(getContext());
+        return KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, encryptedPinHash);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(mTouchIdFlag && FingerprintUtils.isSensorStateAt(FingerprintUtils.mSensorState.READY, getContext())) {
+        mWalletPin.requestFocus();
+        if(mTouchIdFlag && FingerprintUtils.isSensorStateAt(SensorState.READY, getContext())) {
             mTextViewToolBarTitle.setText(org.qtum.wallet.R.string.confirm_fingerprint_or_pin);
             prepareSensor();
         } else {
@@ -75,9 +131,7 @@ public class PinDialogFragment extends DialogFragment {
         mWalletPin.setOnPinEnteredListener(new PinEntryEditText.OnPinEnteredListener() {
             @Override
             public void onPinEntered(CharSequence str) {
-                if (str.length() == 4) {
-                    confirm(str.toString());
-                }
+                confirm(str.toString());
             }
         });
 
@@ -106,7 +160,7 @@ public class PinDialogFragment extends DialogFragment {
     }
 
     private void prepareSensor() {
-        if (FingerprintUtils.isSensorStateAt(FingerprintUtils.mSensorState.READY, getContext())) {
+        if (FingerprintUtils.isSensorStateAt(SensorState.READY, getContext())) {
             FingerprintManagerCompat.CryptoObject cryptoObject = CryptoUtils.getCryptoObject();
             if (cryptoObject != null) {
                 mFingerprintHelper = new FingerprintHelper(getContext());
@@ -164,9 +218,21 @@ public class PinDialogFragment extends DialogFragment {
     }
 
     private void confirm(String pin){
+        Long banTime = QtumSharedPreference.getInstance().getBanTime(getContext());
+        Long currentTime = Calendar.getInstance().getTimeInMillis();
+        Long remainingTimeOfBan = banTime - currentTime;
+        if (remainingTimeOfBan > 0) {
+            int min = (int) Math.ceil(remainingTimeOfBan / 60000.);
+            hideKeyBoard();
+            dismiss();
+            mPinCallBack.onError(getString(R.string.sorry_please_try_again_in) + " " + min + " " + getString(R.string.minutes));
+            return;
+        }
         String pinHashEntered = CryptoUtilsCompat.generateSHA256String(pin);
-        String pinHashGenuine = KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, QtumSharedPreference.getInstance().getWalletPassword(getContext()));
-        if (pinHashEntered.equals(pinHashGenuine)) {
+        String pinHashGenuine = getPassword();
+        boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
+        changeBanState(isCorrect);
+        if (isCorrect) {
             clearError();
             mPinCallBack.onSuccess();
             dismiss();
@@ -175,6 +241,8 @@ public class PinDialogFragment extends DialogFragment {
         }
     }
 
+
+
     @Override
     public void onPause() {
         super.onPause();
@@ -182,6 +250,24 @@ public class PinDialogFragment extends DialogFragment {
             mFingerprintHelper.cancel();
         }
         dismiss();
+    }
+
+    private void changeBanState(boolean isCorrect){
+        int failedAttemptsCount;
+        if(isCorrect) {
+            failedAttemptsCount = 0;
+        } else {
+            failedAttemptsCount = QtumSharedPreference.getInstance().getFailedAttemptsCount(getContext());
+            failedAttemptsCount++;
+            if (failedAttemptsCount == 3) {
+                Long currentTime = Calendar.getInstance().getTimeInMillis();
+                Long banTime = currentTime + mBanTime;
+                QtumSharedPreference.getInstance().setBanTime(getContext(), banTime);
+                failedAttemptsCount = 0;
+                mPinCallBack.onError(getString(R.string.sorry_please_try_again_in) + " " + mBanTime.intValue()/60000 + " " + getString(R.string.minutes));
+            }
+        }
+        QtumSharedPreference.getInstance().setFailedAttemptsCount(getContext(),failedAttemptsCount);
     }
 
     public void addPinCallBack(PinCallBack callBack){
@@ -198,7 +284,7 @@ public class PinDialogFragment extends DialogFragment {
 
     public interface PinCallBack{
         void onSuccess();
-        void onError();
+        void onError(String error);
     }
 
 }

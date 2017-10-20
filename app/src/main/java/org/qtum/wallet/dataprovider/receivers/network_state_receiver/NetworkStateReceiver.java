@@ -9,10 +9,13 @@ import android.util.Log;
 
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class NetworkStateReceiver extends BroadcastReceiver {
 
-    private NetworkStateListener mNetworkStateListener;
+    private List<NetworkStateListener> mNetworkStateListenerList = new ArrayList<>();
     private boolean mInitialState;
 
     public NetworkStateReceiver(boolean initialState){
@@ -27,26 +30,26 @@ public class NetworkStateReceiver extends BroadcastReceiver {
             if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
                 mInitialState = true;
                 Log.i("app", "Network " + ni.getTypeName() + " connected");
-                if(mNetworkStateListener!=null) {
-                    mNetworkStateListener.onNetworkStateChanged(true);
+                for(NetworkStateListener networkStateListener : mNetworkStateListenerList){
+                    networkStateListener.onNetworkStateChanged(true);
                 }
             } else if (intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
                 Log.d("app", "There's no network connectivity");
                 mInitialState = false;
-                if(mNetworkStateListener!=null) {
-                    mNetworkStateListener.onNetworkStateChanged(false);
+                for(NetworkStateListener networkStateListener : mNetworkStateListenerList){
+                    networkStateListener.onNetworkStateChanged(false);
                 }
             }
         }
     }
 
     public void addNetworkStateListener(NetworkStateListener networkStateListener){
-        mNetworkStateListener = networkStateListener;
-        mNetworkStateListener.onNetworkStateChanged(mInitialState);
+        mNetworkStateListenerList.add(networkStateListener);
+        networkStateListener.onNetworkStateChanged(mInitialState);
     }
 
-    public void removeNetworkStateListener(){
-        mNetworkStateListener = null;
+    public void removeNetworkStateListener(NetworkStateListener networkStateListener){
+        mNetworkStateListenerList.remove(networkStateListener);
     }
 
 }

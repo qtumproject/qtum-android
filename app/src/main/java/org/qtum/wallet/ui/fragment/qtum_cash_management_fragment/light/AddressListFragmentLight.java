@@ -14,10 +14,8 @@ import android.widget.Spinner;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.DeterministicKeyWithBalance;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFragment;
-import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFragmentPresenter;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceAdapter;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceSpinnerAdapter;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.CurrentNetParams;
 import org.qtum.wallet.utils.FontTextView;
 
@@ -39,26 +37,26 @@ public class AddressListFragmentLight extends AddressListFragment {
 
     @Override
     public void onItemClick(DeterministicKeyWithBalance deterministicKeyWithBalance) {
-        List<DeterministicKeyWithBalance> deterministicKeyWithBalances = new ArrayList<>(getPresenter().mKeyWithBalanceList);
-            deterministicKeyWithBalances.remove(deterministicKeyWithBalance);
+        List<DeterministicKeyWithBalance> deterministicKeyWithBalances = new ArrayList<>(getPresenter().getKeyWithBalanceList());
+        deterministicKeyWithBalances.remove(deterministicKeyWithBalance);
         showTransferDialogFragment(deterministicKeyWithBalance, deterministicKeyWithBalances);
     }
 
-    protected void showTransferDialogFragment(final DeterministicKeyWithBalance keyWithBalanceTo, List<DeterministicKeyWithBalance> keyWithBalanceList){
+    protected void showTransferDialogFragment(final DeterministicKeyWithBalance keyWithBalanceTo, List<DeterministicKeyWithBalance> keyWithBalanceList) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_transfer_balance_fragment_light, null);
 
-        final TextInputEditText mEditTextAmount = (TextInputEditText)view.findViewById(R.id.et_amount);
+        final TextInputEditText mEditTextAmount = (TextInputEditText) view.findViewById(R.id.et_amount);
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner_transfer);
-        FontTextView mEditTextAddressTo = (FontTextView)view.findViewById(R.id.tv_address_to);
+        FontTextView mEditTextAddressTo = (FontTextView) view.findViewById(R.id.tv_address_to);
 
         mEditTextAddressTo.setText(keyWithBalanceTo.getKey().toAddress(CurrentNetParams.getNetParams()).toString());
 
-        AddressesWithBalanceSpinnerAdapter spinnerAdapter = new AddressesWithBalanceSpinnerAdapterLight(getContext(),keyWithBalanceList);
+        AddressesWithBalanceSpinnerAdapter spinnerAdapter = new AddressesWithBalanceSpinnerAdapterLight(getContext(), keyWithBalanceList);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                getPresenter().keyWithBalanceFrom = (DeterministicKeyWithBalance) spinner.getItemAtPosition(i);
+                getPresenter().setKeyWithBalanceFrom((DeterministicKeyWithBalance) spinner.getItemAtPosition(i));
             }
 
             @Override
@@ -78,31 +76,7 @@ public class AddressListFragmentLight extends AddressListFragment {
             @Override
             public void onClick(View v) {
                 setProgressDialog();
-                getPresenter().transfer(keyWithBalanceTo, getPresenter().keyWithBalanceFrom, mEditTextAmount.getText().toString(), new AddressListFragmentPresenter.TransferListener(){
-                    @Override
-                    public void onError(String errorText) {
-                        setAlertDialog(getContext().getString(R.string.error),errorText,getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
-                    }
-
-                    @Override
-                    public void onSuccess() {
-                        dismissProgressDialog();
-                        mTransferDialog.dismiss();
-                        setAlertDialog(getContext().getString(R.string.complete),
-                                getContext().getString(R.string.payment_completed_successfully),
-                                getContext().getString(R.string.ok), BaseFragment.PopUpType.confirm,new BaseFragment.AlertDialogCallBack(){
-                                    @Override
-                                    public void onButtonClick() {
-                                        getMainActivity().onBackPressed();
-                                    }
-
-                                    @Override
-                                    public void onButton2Click() {
-
-                                    }
-                                });
-                    }
-                });
+                transfer(keyWithBalanceTo, getPresenter().getKeyWithBalanceFrom(), mEditTextAmount.getText().toString());
             }
         });
 
@@ -111,7 +85,7 @@ public class AddressListFragmentLight extends AddressListFragment {
                 .setView(view)
                 .create();
 
-        if(mTransferDialog.getWindow() != null) {
+        if (mTransferDialog.getWindow() != null) {
             mTransferDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 

@@ -1,6 +1,7 @@
 package org.qtum.wallet.model;
 
 import com.google.gson.annotations.SerializedName;
+
 import org.qtum.wallet.model.backup.TemplateJSON;
 
 public class ContractTemplate {
@@ -15,7 +16,14 @@ public class ContractTemplate {
     @SerializedName("isFullContractTemplate")
     private boolean mIsFullContractTemplate;
 
-    public ContractTemplate(String name, String date, String contractType, String uuid){
+    /**
+     * Constructor for unit testing
+     */
+    public ContractTemplate() {
+
+    }
+
+    public ContractTemplate(String name, String date, String contractType, String uuid) {
         this.mName = name;
         this.mDate = date;
         this.mType = contractType;
@@ -23,7 +31,7 @@ public class ContractTemplate {
         mIsFullContractTemplate = true;
     }
 
-    public ContractTemplate(TemplateJSON templateJSON){
+    public ContractTemplate(TemplateJSON templateJSON) {
         this.mName = templateJSON.getName();
         this.mDate = templateJSON.getCreationDate();
         this.mType = templateJSON.getType();

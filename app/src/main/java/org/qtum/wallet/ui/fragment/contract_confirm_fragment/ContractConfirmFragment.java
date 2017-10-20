@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -102,7 +103,7 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
         return fragment;
     }
 
-    protected ContractConfirmPresenterImpl presenter;
+    protected ContractConfirmPresenter presenter;
     protected ContractConfirmAdapter adapter;
 
     @BindView(R.id.recycler_view)
@@ -271,7 +272,6 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
         mMinFee = Double.valueOf(minFee * 100000000).intValue();
         mMaxFee = Double.valueOf(maxFee * 100000000).intValue();
         mSeekBarFee.setMax((mMaxFee - mMinFee) / stepFee);
-        //mSeekBarFee.setProgress((int)(INITIAL_FEE*100000000));
     }
 
     @Override
@@ -303,16 +303,25 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
         int gasLimit = Integer.valueOf(mFontTextViewGasLimit.getText().toString());
         int gasPrice = Integer.valueOf(mFontTextViewGasPrice.getText().toString());
         String fee = mTextInputEditTextFee.getText().toString();
-        presenter.confirmContract(getArguments().getString(CONTRACT_TEMPLATE_UIID),gasLimit,gasPrice,fee);
+        getPresenter().onConfirmContract(getArguments().getString(CONTRACT_TEMPLATE_UIID),gasLimit,gasPrice,fee);
+    }
+
+    @Override
+    public void closeFragments() {
+        FragmentManager fm = getFragmentManager();
+        int count = fm.getBackStackEntryCount() - 2;
+        for (int i = 0; i < count; ++i) {
+            fm.popBackStack();
+        }
     }
 
     @Override
     protected void createPresenter() {
-        presenter = new ContractConfirmPresenterImpl(this);
+        presenter = new ContractConfirmPresenterImpl(this, new ContractConfirmInteractorImpl(getContext()));
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected ContractConfirmPresenter getPresenter() {
         return presenter;
     }
 

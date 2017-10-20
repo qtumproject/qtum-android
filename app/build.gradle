@@ -60,6 +60,7 @@ android {
         versionName "0.9"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -69,11 +70,11 @@ android {
         debug {
         }
     }
-    gradle.taskGraph.whenReady {taskGraph ->
-        if (taskGraph.hasTask(assembleRelease)) {
-            autoIncrementVersionCode()
-        }
-    }
+//    gradle.taskGraph.whenReady {taskGraph ->
+//        if (taskGraph.hasTask(assembleRelease)) {
+//            autoIncrementVersionCode()
+//        }
+//    }
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def apk = output.outputFile;
@@ -89,6 +90,10 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+    testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+    testCompile 'org.assertj:assertj-core:2.8.0'
+
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.github.designsters:android-fork-bitcoinj:1.0.10'

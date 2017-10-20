@@ -3,8 +3,8 @@ package org.qtum.wallet.ui.fragment.transaction_fragment.dark;
 import android.view.View;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragment.TransactionDetailFragment;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
+import org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragment.TransactionDetailFragment;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.util.List;

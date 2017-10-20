@@ -30,9 +30,9 @@ public class ContractConfirmFragmentDark extends ContractConfirmFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        presenter.setContractMethodParameterList((List<ContractMethodParameter>) getArguments().getSerializable(paramsKey));
+        getPresenter().setContractMethodParameterList((List<ContractMethodParameter>) getArguments().getSerializable(paramsKey));
         confirmList.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ContractConfirmAdapterDark(presenter.getContractMethodParameterList(),"4jhbr4hjb4l23342i4bn2kl4b2352l342k35bv235rl23", this);
+        adapter = new ContractConfirmAdapterDark(getPresenter().getContractMethodParameterList(),"4jhbr4hjb4l23342i4bn2kl4b2352l342k35bv235rl23", this);
         confirmList.setAdapter(adapter);
     }
 

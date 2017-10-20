@@ -16,7 +16,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
 
     protected abstract void createPresenter();
 
-    protected abstract BasePresenterImpl getPresenter();
+    protected abstract BasePresenter getPresenter();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
 
         super.onCreate(savedInstanceState);
         createPresenter();
-        getPresenter().onCreate(this);
+        getPresenter().onCreate();
     }
 
     @Override
@@ -33,43 +33,43 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
         super.onPostCreate(savedInstanceState);
         bindView();
         getPresenter().initializeViews();
-        getPresenter().onPostCreate(this);
+        getPresenter().onPostCreate();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        getPresenter().onStart(this);
+        getPresenter().onStart();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getPresenter().onResume(this);
+        getPresenter().onResume();
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        getPresenter().onPostResume(this);
+        getPresenter().onPostResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        getPresenter().onPause(this);
+        getPresenter().onPause();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        getPresenter().onStop(this);
+        getPresenter().onStop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        getPresenter().onDestroy(this);
+        getPresenter().onDestroy();
     }
 
     @Override

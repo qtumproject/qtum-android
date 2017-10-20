@@ -22,3 +22,9 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    mockitoVersion = "1.10.19"
+    hamcrestVersion = "1.3"
+}
+

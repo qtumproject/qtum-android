@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,9 +36,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public abstract class CurrencyFragment extends BaseFragment implements CurrencyFragmentView, SearchBarListener {
+public abstract class CurrencyFragment extends BaseFragment implements CurrencyView, SearchBarListener {
 
-    private CurrencyFragmentPresenterImpl mCurrencyFragmentPresenter;
+    private CurrencyPresenter mCurrencyFragmentPresenter;
     protected CurrencyAdapter mCurrencyAdapter;
     private String mSearchString;
     protected List<Currency> mCurrentList;
@@ -76,11 +75,11 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyF
 
     @Override
     protected void createPresenter() {
-        mCurrencyFragmentPresenter = new CurrencyFragmentPresenterImpl(this);
+        mCurrencyFragmentPresenter = new CurrencyPresenterImpl(this, new CurrencyInteractorImpl(getContext()));
     }
 
     @Override
-    protected CurrencyFragmentPresenterImpl getPresenter() {
+    protected CurrencyPresenter getPresenter() {
         return mCurrencyFragmentPresenter;
     }
 

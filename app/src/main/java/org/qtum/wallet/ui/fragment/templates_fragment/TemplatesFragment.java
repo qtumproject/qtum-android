@@ -7,9 +7,9 @@ import android.support.v7.widget.RecyclerView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.ContractTemplate;
+import org.qtum.wallet.ui.fragment.set_your_token_fragment.SetYourTokenFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public abstract class TemplatesFragment extends BaseFragment implements TemplatesFragmentView, TemplateSelectListener {
+public abstract class TemplatesFragment extends BaseFragment implements TemplatesView, TemplateSelectListener {
 
     public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
@@ -26,7 +26,7 @@ public abstract class TemplatesFragment extends BaseFragment implements Template
         return fragment;
     }
 
-    private TemplatesFragmentPresenterImpl presenter;
+    private TemplatesPresenter presenter;
 
     @BindView(R.id.recycler_view)
     RecyclerView contractList;
@@ -38,11 +38,11 @@ public abstract class TemplatesFragment extends BaseFragment implements Template
 
     @Override
     protected void createPresenter() {
-        presenter = new TemplatesFragmentPresenterImpl(this);
+        presenter = new TemplatesPresenterImpl(this, new TemplatesInteractorImpl(getContext()));
     }
 
     @Override
-    protected BaseFragmentPresenterImpl getPresenter() {
+    protected TemplatesPresenter getPresenter() {
         return presenter;
     }
 
@@ -52,12 +52,13 @@ public abstract class TemplatesFragment extends BaseFragment implements Template
         contractList.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    protected void initializeRecyclerView(List<ContractTemplate> contractFullTemplateList, int resId){
-        contractList.setAdapter(new TemplatesRecyclerAdapter(contractFullTemplateList,this, resId));
+    protected void initializeRecyclerView(List<ContractTemplate> contractFullTemplateList, int resId) {
+        contractList.setAdapter(new TemplatesRecyclerAdapter(contractFullTemplateList, this, resId));
     }
 
     @Override
     public void onSelectContract(ContractTemplate contractTemplate) {
-        presenter.openConstructorByName(contractTemplate.getUuid());
+        BaseFragment fragment = SetYourTokenFragment.newInstance(getContext(), contractTemplate.getUuid());
+        openFragment(fragment);
     }
 }

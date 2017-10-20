@@ -8,42 +8,42 @@ import android.os.Bundle;
 public abstract class BasePresenterImpl implements BasePresenter {
 
     @Override
-    public void onCreate(Context context) {
+    public void onCreate() {
 
     }
 
     @Override
-    public void onStart(Context context) {
+    public void onStart() {
 
     }
 
     @Override
-    public void onPostCreate(Context context) {
+    public void onPostCreate() {
 
     }
 
     @Override
-    public void onResume(Context context) {
+    public void onResume() {
 
     }
 
     @Override
-    public void onPostResume(Context context) {
+    public void onPostResume() {
 
     }
 
     @Override
-    public void onPause(Context context) {
+    public void onPause() {
 
     }
 
     @Override
-    public void onStop(Context context) {
+    public void onStop() {
 
     }
 
     @Override
-    public void onDestroy(Context context) {
+    public void onDestroy() {
 
     }
 

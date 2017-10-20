@@ -30,9 +30,9 @@ public class ReceiveFragmentLight extends ReceiveFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        getPresenter().setQrColors(ContextCompat.getColor(getContext(),R.color.qr_code_background), ContextCompat.getColor(getContext(),R.color.qr_code_tint_color));
-        mTilAmount.setTypeface(FontManager.getInstance().getFont(getResources().getString(R.string.proximaNovaRegular)));
-        mEtAmount.setTypeface(FontManager.getInstance().getFont(getResources().getString(R.string.proximaNovaSemibold)));
+        setQrColors(ContextCompat.getColor(getContext(),R.color.qr_code_background), ContextCompat.getColor(getContext(),R.color.qr_code_tint_color));
+        mTilAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaRegular)));
+        mEtAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaSemibold)));
     }
 
 

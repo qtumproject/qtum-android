@@ -21,7 +21,7 @@ public class StoreCategoriesAdapter extends RecyclerView.Adapter<StoreCategoryVi
         mListener = listener;
     }
 
-    public void updateItems(List<QstoreContractType> items){
+    public void updateItems(List<QstoreContractType> items) {
         this.items = items;
         notifyDataSetChanged();
     }

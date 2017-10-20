@@ -16,9 +16,9 @@ import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public abstract class AddressesFragment extends BaseFragment implements AddressesFragmentView, OnAddressClickListener {
+public abstract class AddressesFragment extends BaseFragment implements AddressesView, OnAddressClickListener {
 
-    private AddressesFragmentPresenterImpl mAddressesFragmentPresenter;
+    private AddressesPresenterImpl mAddressesFragmentPresenter;
     protected AddressesAdapter mAddressAdapter;
 
     @BindView(R.id.recycler_view)
@@ -44,11 +44,11 @@ public abstract class AddressesFragment extends BaseFragment implements Addresse
 
     @Override
     protected void createPresenter() {
-        mAddressesFragmentPresenter = new AddressesFragmentPresenterImpl(this);
+        mAddressesFragmentPresenter = new AddressesPresenterImpl(this, new AddressesInteractorImpl(getContext()));
     }
 
     @Override
-    protected AddressesFragmentPresenterImpl getPresenter() {
+    protected AddressesPresenterImpl getPresenter() {
         return mAddressesFragmentPresenter;
     }
 

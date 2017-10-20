@@ -5,21 +5,21 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
-interface BasePresenter {
+public interface BasePresenter {
 
-    void onCreate(Context context);
+    void onCreate();
 
-    void onStart(Context context);
+    void onStart();
 
-    void onResume(Context context);
+    void onResume();
 
-    void onPause(Context context);
+    void onPause();
 
-    void onStop(Context context);
+    void onStop();
 
-    void onDestroy(Context context);
+    void onDestroy();
 
-    void onPostCreate(Context context);
+    void onPostCreate();
 
     void initializeViews();
 
@@ -29,7 +29,7 @@ interface BasePresenter {
 
     void saveState(Bundle outState);
 
-    void onPostResume(Context context);
+    void onPostResume();
 
     void handleInitialArguments(Bundle arg);
 

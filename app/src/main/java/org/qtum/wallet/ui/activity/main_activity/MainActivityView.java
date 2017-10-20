@@ -3,6 +3,7 @@ package org.qtum.wallet.ui.activity.main_activity;
 import android.support.v4.app.Fragment;
 
 import org.qtum.wallet.ui.base.base_activity.BaseContextView;
+import org.qtum.wallet.ui.fragment.pin_fragment.PinAction;
 
 
 public interface MainActivityView extends BaseContextView {
@@ -11,9 +12,11 @@ public interface MainActivityView extends BaseContextView {
     void setIconChecked(int position);
     void resetMenuText();
     boolean getNetworkConnectedFlag();
-    void setAdressAndAmount(String defineMinerAddress, String defineAmount, String tokenAddress);
     void openFragment(Fragment fragment);
     MainActivity getActivity();
-    String getQtumAction();
     void showToast(String s);
+    void clearService();
+    void openPinFragmentRoot(PinAction action);
+    void openPinFragment(PinAction action);
+    void openStartPageFragment(boolean isLogin);
 }

@@ -19,7 +19,7 @@ import org.qtum.wallet.model.gson.qstore.QstoreContract;
 import org.qtum.wallet.model.gson.qstore.QstoreSourceCodeResponse;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
-import org.qtum.wallet.ui.fragment.send_fragment.SendFragmentInteractorImpl;
+import org.qtum.wallet.ui.fragment.send_fragment.SendInteractorImpl;
 import org.qtum.wallet.utils.CurrentNetParams;
 
 import org.bitcoinj.core.Address;
@@ -247,7 +247,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
     }
 
     private void payTransaсtion(String address, String amount){
-        sendTx(address, amount, new SendFragmentInteractorImpl.SendTxCallBack() {
+        sendTx(address, amount, new SendInteractorImpl.SendTxCallBack() {
             @Override
             public void onSuccess() {
                 QStoreStorage.getInstance(getView().getContext()).addPurchasedItem(getContract().id,qstoreBuyResponse);
@@ -266,8 +266,8 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
         });
     }
 
-    public void sendTx(String address, String amount, final SendFragmentInteractorImpl.SendTxCallBack callBack) {
-        createTx(address, amount, new SendFragmentInteractorImpl.CreateTxCallBack() {
+    public void sendTx(String address, String amount, final SendInteractorImpl.SendTxCallBack callBack) {
+        createTx(address, amount, new SendInteractorImpl.CreateTxCallBack() {
             @Override
             public void onSuccess(String txHex) {
                 sendTx(txHex, callBack);
@@ -280,7 +280,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
         });
     }
 
-    public void sendTx(String txHex, final SendFragmentInteractorImpl.SendTxCallBack callBack){
+    public void sendTx(String txHex, final SendInteractorImpl.SendTxCallBack callBack){
         QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(txHex, 1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -302,8 +302,8 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
                 });
     }
 
-    public void createTx(final String address, final String amountString, final SendFragmentInteractorImpl.CreateTxCallBack callBack) {
-        getUnspentOutputs(new SendFragmentInteractorImpl.GetUnspentListCallBack() {
+    public void createTx(final String address, final String amountString, final SendInteractorImpl.CreateTxCallBack callBack) {
+        getUnspentOutputs(new SendInteractorImpl.GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
                 Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
@@ -375,7 +375,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
         });
     }
 
-    public void getUnspentOutputs(final SendFragmentInteractorImpl.GetUnspentListCallBack callBack) {
+    public void getUnspentOutputs(final SendInteractorImpl.GetUnspentListCallBack callBack) {
         QtumService.newInstance().getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

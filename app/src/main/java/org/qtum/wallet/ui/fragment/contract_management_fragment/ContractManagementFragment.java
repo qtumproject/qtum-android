@@ -2,6 +2,7 @@ package org.qtum.wallet.ui.fragment.contract_management_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -23,9 +24,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public abstract class ContractManagementFragment extends BaseFragment implements ContractManagementFragmentView{
+public abstract class ContractManagementFragment extends BaseFragment implements ContractManagementView {
 
-    private ContractManagementFragmentPresenter mContractManagmentFragmentPresenter;
+    private ContractManagementPresenter mContractManagmentFragmentPresenter;
     private static final String CONTRACT_TEMPLATE_UIID = "contract_template_uiid";
     private static final String CONTRACT_ADDRESS = "contract_address";
     private static final String CONTRACT_ABI = "contract_abi";
@@ -70,27 +71,35 @@ public abstract class ContractManagementFragment extends BaseFragment implements
 
     @Override
     protected void createPresenter() {
-        mContractManagmentFragmentPresenter = new ContractManagementFragmentPresenter(this);
+        mContractManagmentFragmentPresenter = new ContractManagementPresenterImpl(this, new ContractManagementInteractorImpl(getContext()));
     }
 
     @Override
-    protected ContractManagementFragmentPresenter getPresenter() {
+    protected ContractManagementPresenter getPresenter() {
         return mContractManagmentFragmentPresenter;
     }
 
     @Override
     public void initializeViews() {
         super.initializeViews();
-        mContractAddress = getArguments().getString(CONTRACT_ADDRESS);
-        if(!TextUtils.isEmpty(mContractAddress)){
-            getPresenter().getAbiFromFile();
-        } else {
-            titleView.setText(getString(R.string.contract_details));
-            getPresenter().getAbiFromString(getArguments().getString(CONTRACT_ABI));
-        }
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         tvContractAddress.setText(mContractAddress);
+    }
+
+    @Override
+    public void setTitleText(@StringRes int resId) {
+        titleView.setText(resId);
+    }
+
+    @Override
+    public String getContractABI() {
+        return getArguments().getString(CONTRACT_ABI);
+    }
+
+    @Override
+    public String getContractAddress() {
+        return getArguments().getString(CONTRACT_ADDRESS);
     }
 
     @Override

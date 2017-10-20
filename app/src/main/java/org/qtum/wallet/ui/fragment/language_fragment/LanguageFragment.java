@@ -18,9 +18,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public abstract class LanguageFragment extends BaseFragment implements LanguageFragmentView, OnLanguageIntemClickListener{
+public abstract class LanguageFragment extends BaseFragment implements LanguageView, OnLanguageIntemClickListener{
 
-    private LanguageFragmentPresenter mLanguageFragmentPresenter;
+    private LanguagePresenter mLanguageFragmentPresenter;
     protected LanguageAdapter mLanguageAdapter;
     protected List<Pair<String,String>> mLanguagesList;
 
@@ -48,11 +48,11 @@ public abstract class LanguageFragment extends BaseFragment implements LanguageF
 
     @Override
     protected void createPresenter() {
-        mLanguageFragmentPresenter = new LanguageFragmentPresenter(this);
+        mLanguageFragmentPresenter = new LanguagePresenterImpl(this, new LanguageInteractorImpl(getContext()));
     }
 
     @Override
-    protected LanguageFragmentPresenter getPresenter() {
+    protected LanguagePresenter getPresenter() {
         return mLanguageFragmentPresenter;
     }
 

@@ -95,7 +95,7 @@ public class ContractJSON {
         this.isActive = isActive;
     }
 
-    public boolean getValidity(){
+    public boolean getValidity() {
         return !TextUtils.isEmpty(name) && !TextUtils.isEmpty(type) && !TextUtils.isEmpty(contractAddress) && !TextUtils.isEmpty(publishDate) && !TextUtils.isEmpty(template);
     }
 
