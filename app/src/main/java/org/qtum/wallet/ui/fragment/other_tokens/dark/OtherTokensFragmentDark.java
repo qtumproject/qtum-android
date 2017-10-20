@@ -28,7 +28,7 @@ public class OtherTokensFragmentDark extends OtherTokensFragment {
     @Override
     public void onTokenClick(int adapterPosition) {
         if (tokensList.getAdapter() != null) {
-            BaseFragment tokenFragment = TokenFragment.newInstance(getContext(), ((TokensAdapterLight) tokensList.getAdapter()).get(adapterPosition));
+            BaseFragment tokenFragment = TokenFragment.newInstance(getContext(), ((TokensAdapterDark) tokensList.getAdapter()).get(adapterPosition));
             openFragment(tokenFragment);
         }
     }

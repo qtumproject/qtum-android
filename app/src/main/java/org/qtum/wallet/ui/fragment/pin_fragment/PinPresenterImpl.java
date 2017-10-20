@@ -391,12 +391,12 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
 
             case AUTHENTICATION:
             case AUTHENTICATION_AND_SEND:
-            case CREATING:
+            case CHECK_AUTHENTICATION:
             case IMPORTING:
-            case AUTHENTICATION_FOR_PASSPHRASE:
                 getView().onCancelClick();
                 break;
-            case CHECK_AUTHENTICATION:
+            case AUTHENTICATION_FOR_PASSPHRASE:
+            case CREATING:
             case CHANGING: {
                 getView().onBackPressed();
                 break;
@@ -487,7 +487,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
         if (mTouchIdFlag && (mAction.equals(AUTHENTICATION_AND_SEND) || mAction.equals(AUTHENTICATION) || mAction.equals(CHECK_AUTHENTICATION)) || mAction.equals(AUTHENTICATION_FOR_PASSPHRASE)) {
             getView().prepareSensor();
         }
-
     }
 
     @Override

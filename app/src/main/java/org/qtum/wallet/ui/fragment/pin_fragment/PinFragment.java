@@ -179,7 +179,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     @Override
@@ -193,7 +193,6 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public void onResume() {
         super.onResume();
-        showSoftInput();
         mWalletPin.setFocusableInTouchMode(true);
         mWalletPin.requestFocus();
     }
@@ -402,4 +401,5 @@ public abstract class PinFragment extends BaseFragment implements PinView {
                 new InputFilter.LengthFilter(digit)
         });
     }
+
 }

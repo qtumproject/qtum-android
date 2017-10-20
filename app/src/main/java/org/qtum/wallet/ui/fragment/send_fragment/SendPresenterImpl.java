@@ -128,7 +128,9 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
     @Override
     public void onResponse(String publicAddress, double amount, String tokenAddress) {
         getView().updateData(publicAddress, amount);
-        searchAndSetUpCurrency(tokenAddress);
+        if(!tokenAddress.isEmpty()) {
+            searchAndSetUpCurrency(tokenAddress);
+        }
     }
 
     @Override
