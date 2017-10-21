@@ -1,14 +1,12 @@
 package org.qtum.wallet.ui.fragment.news_fragment;
 
-import org.qtum.wallet.model.gson.News;
+import org.qtum.wallet.model.news.RssFeed;
 
-import java.util.List;
+import rx.Observable;
 
 
 public interface NewsInteractor {
-    void getNewsList(NewsInteractorImpl.GetNewsListCallBack callBack);
-
-    List<News> getNewsList();
+    Observable<RssFeed> getMediumRssFeed(String channel);
 
     void unSubscribe();
 

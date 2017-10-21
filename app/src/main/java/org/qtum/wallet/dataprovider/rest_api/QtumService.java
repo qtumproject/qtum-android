@@ -10,7 +10,6 @@ import org.qtum.wallet.model.gson.QstoreContractType;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
-import org.qtum.wallet.model.gson.News;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
@@ -82,10 +81,6 @@ public class QtumService {
 
     public Observable<List<History>> getHistoryList(final String address, final int limit, final int offset) {
         return mServiceApi.getHistoryList(address, limit, offset);
-    }
-
-    public Observable<List<News>> getNews(final String lang) {
-        return mServiceApi.getNews(lang);
     }
 
     public Observable<BlockChainInfo> getBlockChainInfo() {

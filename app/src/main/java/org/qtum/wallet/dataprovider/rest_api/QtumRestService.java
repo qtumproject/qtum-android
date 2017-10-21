@@ -9,7 +9,6 @@ import org.qtum.wallet.model.gson.QstoreContractType;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
-import org.qtum.wallet.model.gson.News;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
@@ -39,9 +38,6 @@ interface QtumRestService {
 
     @GET("/history/{address}/{limit}/{offset}")
     Observable<List<History>> getHistoryList(@Path("address") String address, @Path("limit") int limit, @Path("offset") int offset);
-
-    @GET("/news/{lang}")
-    Observable<List<News>> getNews(@Path("lang") String lang);
 
     @GET("/blockchain/info")
     Observable<BlockChainInfo> getBlockChainInfo();

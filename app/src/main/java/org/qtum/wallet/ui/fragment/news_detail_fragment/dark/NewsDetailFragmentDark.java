@@ -1,14 +1,14 @@
-package org.qtum.wallet.ui.fragment.news_fragment.dark;
+package org.qtum.wallet.ui.fragment.news_detail_fragment.dark;
 
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
-import org.qtum.wallet.ui.fragment.news_fragment.NewsFragment;
+import org.qtum.wallet.ui.fragment.news_detail_fragment.NewsDetailFragment;
 
 
-public class NewsFragmentDark extends NewsFragment {
+public class NewsDetailFragmentDark extends NewsDetailFragment {
 
     @Override
     protected int getLayout() {
-        return org.qtum.wallet.R.layout.fragment_news;
+        return org.qtum.wallet.R.layout.fragment_news_detail;
     }
 
     @Override
