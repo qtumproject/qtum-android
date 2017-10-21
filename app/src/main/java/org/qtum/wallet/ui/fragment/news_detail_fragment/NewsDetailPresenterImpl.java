@@ -1,9 +1,9 @@
 package org.qtum.wallet.ui.fragment.news_detail_fragment;
 
-import org.jsoup.nodes.Element;
+
+import org.jsoup.select.Elements;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
-import java.util.List;
 
 
 public class NewsDetailPresenterImpl extends BaseFragmentPresenterImpl implements NewsDetailPresenter{
@@ -20,7 +20,8 @@ public class NewsDetailPresenterImpl extends BaseFragmentPresenterImpl implement
     public void initializeViews() {
         super.initializeViews();
         int newsPosition = getView().getNewsPosition();
-        List<Element> elements = getInteractor().getElements(newsPosition);
+        Elements elements = getInteractor().getElements(newsPosition);
+        getView().setupElements(elements);
     }
 
     @Override

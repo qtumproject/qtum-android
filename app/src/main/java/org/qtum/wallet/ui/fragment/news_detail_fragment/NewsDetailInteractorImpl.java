@@ -4,11 +4,11 @@ package org.qtum.wallet.ui.fragment.news_detail_fragment;
 import android.content.Context;
 
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.qtum.wallet.datastorage.NewsStorage;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
+
 
 public class NewsDetailInteractorImpl implements NewsDetailInteractor{
 
@@ -19,8 +19,8 @@ public class NewsDetailInteractorImpl implements NewsDetailInteractor{
     }
 
     @Override
-    public List<Element> getElements(int newsPosition) {
-        //Document document = NewsStorage.newInstance().getNews(newsPosition).getDocument();
-        return null;
+    public Elements getElements(int newsPosition) {
+        Document document = NewsStorage.newInstance().getNews(newsPosition).getDocument();
+        return  document.children();
     }
 }
