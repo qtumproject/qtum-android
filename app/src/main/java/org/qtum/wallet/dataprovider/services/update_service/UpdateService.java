@@ -50,9 +50,19 @@ import org.qtum.wallet.utils.QtumIntent;
 
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.security.cert.CertificateException;
+import javax.security.cert.X509Certificate;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -96,8 +106,35 @@ public class UpdateService extends Service {
         super.onCreate();
 
         try {
-            socket = IO.socket(CurrentNetParams.getUrl());
-        } catch (URISyntaxException e) {
+            SSLContext mySSLContext = SSLContext.getInstance("TLS");
+            HostnameVerifier myHostnameVerifier = new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            };
+           final TrustManager[] trustAllCerts= new TrustManager[] { new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
+
+                }
+
+                @Override
+                public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
+
+                }
+
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return new java.security.cert.X509Certificate[] {};
+                }
+            } };
+            mySSLContext.init(null, trustAllCerts, null);
+            IO.Options opts = new IO.Options();
+            opts.sslContext = mySSLContext;
+            opts.hostnameVerifier = myHostnameVerifier;
+
+            socket = IO.socket(CurrentNetParams.getUrl(), opts);
+        } catch (URISyntaxException | NoSuchAlgorithmException | KeyManagementException e) {
             e.printStackTrace();
         }
 
