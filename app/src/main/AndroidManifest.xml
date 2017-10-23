@@ -12,9 +12,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.faketouch"/>
-    <uses-feature android:required="false" android:name="android.hardware.touchscreen"/>
-
+    
     <application
         android:resizeableActivity="false"
         android:theme="@style/AppTheme"
@@ -29,11 +27,6 @@
             android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
-            </intent-filter>
         </activity>
 
         <activity
