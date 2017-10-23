@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.faketouch"/>
+    <uses-feature android:required="false" android:name="android.hardware.touchscreen"/>
 
     <application
         android:resizeableActivity="false"
