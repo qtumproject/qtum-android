@@ -9,12 +9,13 @@ import java.lang.ref.WeakReference;
 
 import rx.Observable;
 import rx.Subscription;
+import rx.internal.util.SubscriptionList;
 
 
 public class NewsInteractorImpl implements NewsInteractor {
 
     private WeakReference<Context> mContext;
-    private Subscription mSubscriptionNewsList = null;
+    private SubscriptionList mSubscriptionList = new SubscriptionList();
 
     public NewsInteractorImpl(Context context) {
         mContext = new WeakReference<>(context);
@@ -27,7 +28,7 @@ public class NewsInteractorImpl implements NewsInteractor {
 
     @Override
     public void unSubscribe() {
-        mSubscriptionNewsList.unsubscribe();
+        mSubscriptionList.clear();
     }
 
 }

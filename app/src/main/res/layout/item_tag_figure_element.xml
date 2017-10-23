@@ -9,11 +9,19 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:id="@+id/iv_image"/>
+
     <org.qtum.wallet.utils.FontTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
         app:typefaceAsset="@string/simplonMonoRegular"
-        android:id="@+id/tv_tag_p"/>
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center"
+        android:id="@+id/tv_figcaption"/>
 
 </LinearLayout>
