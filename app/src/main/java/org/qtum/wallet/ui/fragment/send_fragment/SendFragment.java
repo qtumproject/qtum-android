@@ -137,7 +137,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
 
     int mMinFee;
     int mMaxFee;
-    int step = 100;
+    int step = 1;
 
     boolean seekBarChangeValue = false;
     boolean textViewChangeValue = false;
@@ -658,7 +658,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         mMinFee = Double.valueOf(minFee * 100000000).intValue();
         mMaxFee = Double.valueOf(maxFee * 100000000).intValue();
         mSeekBar.setMax((mMaxFee - mMinFee) / step);
-        //mSeekBar.setProgress((int)(INITIAL_FEE*100000000));
+        mSeekBar.setProgress(9999000);
     }
 
     public void onResponse(String pubAddress, Double amount, String tokenAddress) {

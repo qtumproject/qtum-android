@@ -30,7 +30,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
     private boolean mNetworkConnectedFlag = false;
     private List<Token> mTokenList;
     private double minFee;
-    private double maxFee = 0.2;
+    private double maxFee = 1;
 
     private int minGasPrice;
     private int maxGasPrice = 120;

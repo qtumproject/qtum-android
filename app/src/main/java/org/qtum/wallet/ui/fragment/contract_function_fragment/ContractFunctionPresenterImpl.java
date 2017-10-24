@@ -27,7 +27,7 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
     private ContractFunctionInteractor mContractFunctionInteractor;
 
     private double minFee;
-    private double maxFee = 0.2;
+    private double maxFee = 1;
 
     private int minGasPrice;
     private int maxGasPrice = 120;

@@ -2,6 +2,8 @@ package org.qtum.wallet.ui.fragment.news_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,12 +31,12 @@ import butterknife.ButterKnife;
 public abstract class NewsFragment extends BaseFragment implements NewsView {
 
     private NewsPresenter mNewsFragmentPresenter;
-    private NewsAdapter mNewsAdapter;
+    protected NewsAdapter mNewsAdapter;
 
     @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    protected RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
@@ -75,13 +77,6 @@ public abstract class NewsFragment extends BaseFragment implements NewsView {
                 getPresenter().onRefresh();
             }
         });
-    }
-
-    @Override
-    public void updateNews(List<News> newses) {
-        mNewsAdapter = new NewsAdapter(newses);
-        mRecyclerView.setAdapter(mNewsAdapter);
-        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -127,15 +122,17 @@ public abstract class NewsFragment extends BaseFragment implements NewsView {
 
         private List<News> mNewsList;
         News mNews;
+        private @LayoutRes int mResId;
 
-        NewsAdapter(List<News> newsList) {
+        public NewsAdapter(List<News> newsList, @LayoutRes int resId) {
             mNewsList = newsList;
+            mResId = resId;
         }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-                View view = layoutInflater.inflate(R.layout.item_news, parent, false);
+                View view = layoutInflater.inflate(mResId, parent, false);
                 return new NewsHolder(view);
         }
 

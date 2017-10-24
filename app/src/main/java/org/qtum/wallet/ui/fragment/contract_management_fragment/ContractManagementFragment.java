@@ -50,7 +50,6 @@ public abstract class ContractManagementFragment extends BaseFragment implements
     }
 
     protected MethodAdapter mMethodAdapter;
-    protected String mContractAddress;
 
     public static BaseFragment newInstance(Context context, String contractTemplateUiid, String contractAddress) {
         Bundle args = new Bundle();
@@ -84,7 +83,8 @@ public abstract class ContractManagementFragment extends BaseFragment implements
         super.initializeViews();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        tvContractAddress.setText(mContractAddress);
+
+        tvContractAddress.setText(getContractAddress());
     }
 
     @Override
@@ -163,7 +163,7 @@ public abstract class ContractManagementFragment extends BaseFragment implements
             mTextViewPropertyName.setText(contractMethod.name);
             mContractMethod = contractMethod;
             if(needToGetValue) {
-                ContractManagementHelper.getPropertyValue(mContractAddress, mContractMethod, new ContractManagementHelper.GetPropertyValueCallBack() {
+                ContractManagementHelper.getPropertyValue(getContractAddress(), mContractMethod, new ContractManagementHelper.GetPropertyValueCallBack() {
                     @Override
                     public void onSuccess(String value) {
                         mProgressBar.setVisibility(View.GONE);
