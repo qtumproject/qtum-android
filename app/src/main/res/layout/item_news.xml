@@ -14,8 +14,7 @@
             android:id="@+id/iv_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_margin="8dp"
-            android:src="@drawable/ic_launcher"/>
+            android:layout_margin="8dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

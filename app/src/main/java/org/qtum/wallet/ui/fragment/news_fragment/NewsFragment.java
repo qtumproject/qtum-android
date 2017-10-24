@@ -110,7 +110,6 @@ public abstract class NewsFragment extends BaseFragment implements NewsFragmentV
                 Picasso
                         .with(getActivity())
                         .load(news.getImage())
-                        .error(R.drawable.ic_launcher)
                         .into(mImageViewImage);
             }
         }
@@ -140,7 +139,6 @@ public abstract class NewsFragment extends BaseFragment implements NewsFragmentV
                 Picasso
                         .with(getActivity())
                         .load(news.getImage())
-                        .error(R.drawable.ic_launcher)
                         .into(mImageViewImage);
             }
         }

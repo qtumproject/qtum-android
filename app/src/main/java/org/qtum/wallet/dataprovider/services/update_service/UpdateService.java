@@ -541,7 +541,7 @@ public class UpdateService extends Service {
                 .setSound(sound);
 
         if (android.os.Build.VERSION.SDK_INT <= 21) {
-            builder.setSmallIcon(R.drawable.ic_launcher);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
         } else {
             builder.setSmallIcon(R.drawable.logo);
         }
