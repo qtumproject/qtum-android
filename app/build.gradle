@@ -27,6 +27,9 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/rxjava.properties'
+        exclude 'lib/x86_64/darwin/libscrypt.dylib'
+        exclude 'lib/x86_64/freebsd/libscrypt.so'
+        exclude 'lib/x86_64/linux/libscrypt.so'
     }
 
     def appName = "QTUM"
@@ -52,6 +55,7 @@ android {
             throw new GradleException("Could not read version.properties!")
         }
     }
+
     defaultConfig {
         applicationId "org.qtum.wallet"
         minSdkVersion 19
@@ -60,10 +64,9 @@ android {
         versionName "0.9"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
-        ndk {
-            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "x86", "x86_64"
-        }
     }
+
+
     buildTypes {
         release {
             minifyEnabled false
