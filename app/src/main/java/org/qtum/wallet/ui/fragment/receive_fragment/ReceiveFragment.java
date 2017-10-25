@@ -178,12 +178,6 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        hideBottomNavView(false);
-    }
-
-    @Override
     public void onPause() {
         if (zoomDialog != null) {
             zoomDialog.dismiss();

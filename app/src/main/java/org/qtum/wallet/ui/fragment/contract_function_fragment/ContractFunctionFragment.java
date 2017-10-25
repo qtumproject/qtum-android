@@ -85,7 +85,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
 
     int mMinFee;
     int mMaxFee;
-    int stepFee = 100;
+    int stepFee = 1;
 
     boolean seekBarChangeValue = false;
     boolean textViewChangeValue = false;
@@ -298,7 +298,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         mMinFee = Double.valueOf(minFee * 100000000).intValue();
         mMaxFee = Double.valueOf(maxFee * 100000000).intValue();
         mSeekBarFee.setMax((mMaxFee - mMinFee) / stepFee);
-        //mSeekBarFee.setProgress((int)(INITIAL_FEE*100000000));
+        mSeekBarFee.setProgress(9999000);
     }
 
     @Override

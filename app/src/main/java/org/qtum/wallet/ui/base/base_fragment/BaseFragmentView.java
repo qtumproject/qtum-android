@@ -55,6 +55,8 @@ public interface BaseFragmentView extends BaseContextView {
 
     void showSoftInput();
 
+    void showSoftKeyboard(View view);
+
     void setFocusTextInput(View textInputEditText, View textInputLayout);
 
     void hideBottomNavView(boolean recolorStatusBar);

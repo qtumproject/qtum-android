@@ -110,8 +110,9 @@
             android:layout_alignParentStart="true">
 
             <org.qtum.wallet.utils.FontTextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_gravity="center"
                 android:id="@+id/tv_min_fee"
                 app:typefaceAsset="@string/proximaNovaRegular"
@@ -245,8 +246,9 @@
 
                         <org.qtum.wallet.utils.FontTextView
                             android:id="@+id/tv_min_gas_price"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:layout_gravity="center"
                             android:textColor="@color/black"
                             app:typefaceAsset="@string/proximaNovaRegular"/>
@@ -277,8 +279,9 @@
 
                         <org.qtum.wallet.utils.FontTextView
                             android:id="@+id/tv_min_gas_limit"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:layout_gravity="center"
                             android:textColor="@color/black"
                             app:typefaceAsset="@string/proximaNovaRegular"/>
