@@ -108,7 +108,6 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     private void clearWallet() {
         getMainActivity().onLogout();
         getMainActivity().stopUpdateService();
-
         getPresenter().clearWallet();
     }
 

@@ -15,7 +15,9 @@ import android.support.v4.os.CancellationSignal;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import org.qtum.wallet.R;
@@ -185,6 +187,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public void onPause() {
         super.onPause();
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         hideKeyBoard();
     }
 
@@ -195,6 +198,9 @@ public abstract class PinFragment extends BaseFragment implements PinView {
         super.onResume();
         mWalletPin.setFocusableInTouchMode(true);
         mWalletPin.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mWalletPin, InputMethodManager.SHOW_IMPLICIT);
+
     }
 
     @Override
