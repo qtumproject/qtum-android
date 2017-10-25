@@ -41,26 +41,25 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <android.support.v7.widget.RecyclerView
-                    android:minHeight="200dp"
-                    android:id="@+id/recycler_view"
-                    android:splitMotionEvents="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                <!--<android.support.v7.widget.RecyclerView-->
+                    <!--android:minHeight="200dp"-->
+                    <!--android:id="@+id/recycler_view"-->
+                    <!--android:splitMotionEvents="false"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content" />-->
 
                 <org.qtum.wallet.utils.FontTextView
-                    android:layout_alignTop="@+id/recycler_view"
-                    android:layout_alignBottom="@+id/recycler_view"
                     app:typefaceAsset="@string/proximaNovaRegular"
                     android:textColor="@color/grey70"
-                    android:layout_centerInParent="true"
                     android:gravity="center"
                     android:textSize="18sp"
                     android:text="@string/no_transaction_available_yet"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"/>
 
             </RelativeLayout>
 
@@ -74,43 +73,11 @@
         android:theme="@style/AppTheme.AppBarOverlay"
         app:layout_scrollFlags="scroll|snap">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="@android:color/transparent"
-            android:background="@color/title_color_light"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:statusBarScrim="?attr/colorPrimaryDark"
-            app:titleEnabled="false">
-
-            <FrameLayout
-                android:id="@+id/balance_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="56dp"
-                android:fitsSystemWindows="true"
-                app:layout_collapseMode="parallax">
-
-                <ImageView
-                    android:id="@+id/gradient_iv"
-                    android:src="@drawable/background_main"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <org.qtum.wallet.ui.wave_visualizer.WaveView
-                    android:id="@+id/wave_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <include layout="@layout/fragment_token_appbar_light" />
-
-            </FrameLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
+                android:background="@color/title_color_light"
                 android:layout_height="56dp"
                 app:contentInsetEnd="0dp"
                 app:contentInsetLeft="0dp"
@@ -193,7 +160,28 @@
                 </LinearLayout>
 
             </android.support.v7.widget.Toolbar>
-        </android.support.design.widget.CollapsingToolbarLayout>
+
+            <FrameLayout
+                android:id="@+id/balance_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax">
+
+                <ImageView
+                    android:id="@+id/gradient_iv"
+                    android:src="@drawable/background_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <org.qtum.wallet.ui.wave_visualizer.WaveView
+                    android:id="@+id/wave_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <include layout="@layout/fragment_token_appbar_light" />
+
+            </FrameLayout>
 
     </android.support.design.widget.AppBarLayout>
 

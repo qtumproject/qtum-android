@@ -21,12 +21,12 @@ public class TokenFragmentLight extends TokenFragment {
     WaveView waveView;
     private WaveHelper mWaveHelper;
 
-    @BindView(org.qtum.wallet.R.id.app_bar_placeholder) View appbarPlaceholder;
-    @BindView(org.qtum.wallet.R.id.tv_placeholder_balance_value)
-    TextView placeHolderBalance;
+//    @BindView(org.qtum.wallet.R.id.app_bar_placeholder) View appbarPlaceholder;
+//    @BindView(org.qtum.wallet.R.id.tv_placeholder_balance_value)
+//    TextView placeHolderBalance;
 
-    @BindView(org.qtum.wallet.R.id.tv_placeholder_currency_value)
-    TextView placeHolderCurrency;
+//    @BindView(org.qtum.wallet.R.id.tv_placeholder_currency_value)
+//    TextView placeHolderCurrency;
 
     @BindView(org.qtum.wallet.R.id.bt_share)
     ImageButton mShareBtn;
@@ -64,13 +64,13 @@ public class TokenFragmentLight extends TokenFragment {
                 mTokenTitle.setAlpha(testPercents);
                 balanceView.setAlpha(testPercents);
                 collapseLinearLayout.collapseFromPercents(percents);
-                appbarPlaceholder.setAlpha(testP2);
+                //appbarPlaceholder.setAlpha(testP2);
                 prevPercents = percents;
             }
 
         });
 
-        appbarPlaceholder.setVisibility(View.VISIBLE);
+        //appbarPlaceholder.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class TokenFragmentLight extends TokenFragment {
     @Override
     public void setBalance(String balance) {
         mTextViewBalance.setText(String.valueOf(balance));
-        placeHolderBalance.setText(String.valueOf(balance));
+        //placeHolderBalance.setText(String.valueOf(balance));
     }
 
     @Override
@@ -101,7 +101,7 @@ public class TokenFragmentLight extends TokenFragment {
                 decimalsValue.setText(propValue);
                 break;
             case symbol:
-                placeHolderCurrency.setText(propValue);
+                //placeHolderCurrency.setText(propValue);
                 mTextViewCurrency.setText(" " + propValue);
                 break;
             case name:
