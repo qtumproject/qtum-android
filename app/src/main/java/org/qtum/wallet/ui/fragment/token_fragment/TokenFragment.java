@@ -84,8 +84,8 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
     @BindView(R.id.fade_divider_root)
     RelativeLayout fadeDividerRoot;
 
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+//    @BindView(R.id.recycler_view)
+//    RecyclerView mRecyclerView;
 
     @BindView(R.id.app_bar)
     protected
@@ -180,14 +180,16 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
 
         Token token = (Token) getArguments().getSerializable(tokenKey);
         presenter.setToken(token);
-        setBalance(token.getLastBalance().toPlainString());
+        if(token.getLastBalance()!=null) {
+            setBalance(token.getLastBalance().toPlainString());
+        }
         setTokenAddress(token.getContractAddress());
         setSenderAddress(token.getSenderAddress());
 
         collapseLinearLayout.requestLayout();
         headerPAdding = convertDpToPixel(16, getContext());
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        //mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override
