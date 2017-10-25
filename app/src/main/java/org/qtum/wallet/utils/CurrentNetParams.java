@@ -14,6 +14,6 @@ public class CurrentNetParams {
     }
 
     public static String getUrl(){
-        return "https://walletapi.qtum.org";
+        return "http://163.172.251.4:5931/";
     }
 }
