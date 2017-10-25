@@ -2,6 +2,8 @@ package org.qtum.wallet.ui.fragment.news_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,12 +14,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.qtum.wallet.model.news.News;
+import org.qtum.wallet.ui.fragment.news_detail_fragment.NewsDetailFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 
 import com.squareup.picasso.Picasso;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.model.gson.News;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 
 import java.util.List;
@@ -28,12 +31,12 @@ import butterknife.ButterKnife;
 public abstract class NewsFragment extends BaseFragment implements NewsView {
 
     private NewsPresenter mNewsFragmentPresenter;
-    private NewsAdapter mNewsAdapter;
+    protected NewsAdapter mNewsAdapter;
 
     @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    protected RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
@@ -77,13 +80,6 @@ public abstract class NewsFragment extends BaseFragment implements NewsView {
     }
 
     @Override
-    public void updateNews(List<News> newsList) {
-        mNewsAdapter = new NewsAdapter(newsList);
-        mRecyclerView.setAdapter(mNewsAdapter);
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
     public void setAdapterNull() {
         mNewsAdapter = null;
     }
@@ -95,8 +91,8 @@ public abstract class NewsFragment extends BaseFragment implements NewsView {
 
     class NewsHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.iv_image)
-        ImageView mImageViewImage;
+        @BindView(R.id.tv_description)
+        TextView mTextViewDescription;
         @BindView(R.id.tv_title)
         TextView mTextViewTitle;
         @BindView(R.id.tv_date)
@@ -104,110 +100,53 @@ public abstract class NewsFragment extends BaseFragment implements NewsView {
 
         NewsHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BaseFragment newsDetailFragment = NewsDetailFragment.newInstance(getContext(),getAdapterPosition());
+                    openFragment(newsDetailFragment);
+                }
+            });
             ButterKnife.bind(this, itemView);
         }
 
         void bindNews(News news) {
             mTextViewTitle.setText(news.getTitle());
-            mTextViewDate.setText(news.getDate());
-            if (news.getImage() != null) {
-                Picasso
-                        .with(getActivity())
-                        .load(news.getImage())
-                        .error(R.drawable.ic_launcher)
-                        .into(mImageViewImage);
-            }
+            mTextViewDate.setText(news.getPubDate());
+            mTextViewDescription.setText(news.getDocument().select("p").get(0).text());
         }
     }
 
-    class NewsHeaderHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.iv_news_header)
-        ImageView mImageViewImage;
-        @BindView(R.id.tv_date_news_header)
-        TextView mTextViewDate;
-        @BindView(R.id.tv_title_news_header)
-        TextView mTextViewTitle;
-        @BindView(R.id.tv_short_text_news_header)
-        TextView mTextViewShortText;
-
-        NewsHeaderHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-
-        void bindNewsHeader(News news) {
-            mTextViewTitle.setText(news.getTitle());
-            mTextViewDate.setText(news.getDate());
-            mTextViewShortText.setText(news.getShort());
-            if (news.getImage() != null) {
-                Picasso
-                        .with(getActivity())
-                        .load(news.getImage())
-                        .error(R.drawable.ic_launcher)
-                        .into(mImageViewImage);
-            }
-        }
-    }
 
     public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private List<News> mNewsList;
         News mNews;
+        private @LayoutRes int mResId;
 
-        NewsAdapter(List<News> newsList) {
+        public NewsAdapter(List<News> newsList, @LayoutRes int resId) {
             mNewsList = newsList;
-        }
-
-        private final int TYPE_HEADER = 0;
-        private final int TYPE_ITEM = 1;
-
-        @Override
-        public int getItemViewType(int position) {
-            if (position == 0) {
-                return TYPE_HEADER;
-            }
-            return TYPE_ITEM;
+            mResId = resId;
         }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (viewType == TYPE_ITEM) {
                 LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-                View view = layoutInflater.inflate(R.layout.item_news, parent, false);
+                View view = layoutInflater.inflate(mResId, parent, false);
                 return new NewsHolder(view);
-            } else if (viewType == TYPE_HEADER) {
-                LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-                View view = layoutInflater.inflate(R.layout.item_header_news, parent, false);
-                return new NewsHeaderHolder(view);
-            }
-            throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             mNews = mNewsList.get(position);
-            if (holder instanceof NewsHolder) {
-                ((NewsHolder) holder).bindNews(mNews);
-            } else if (holder instanceof NewsHeaderHolder) {
-                ((NewsHeaderHolder) holder).bindNewsHeader(mNews);
-            }
+            ((NewsHolder) holder).bindNews(mNews);
+
         }
 
         @Override
         public int getItemCount() {
             return mNewsList.size();
         }
-    }
-
-    @Override
-    public NewsInteractorImpl.GetNewsListCallBack getNewsCallback() {
-        return new NewsInteractorImpl.GetNewsListCallBack() {
-            @Override
-            public void onSuccess(List<News> newsList) {
-                getPresenter().updateNews();
-            }
-        };
     }
 
     @Override

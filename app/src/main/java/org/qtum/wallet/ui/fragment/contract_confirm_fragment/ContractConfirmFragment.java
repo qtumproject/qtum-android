@@ -272,6 +272,7 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
         mMinFee = Double.valueOf(minFee * 100000000).intValue();
         mMaxFee = Double.valueOf(maxFee * 100000000).intValue();
         mSeekBarFee.setMax((mMaxFee - mMinFee) / stepFee);
+        mSeekBarFee.setProgress(9999000);
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.content.Context;
 
 import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
-import org.qtum.wallet.datastorage.NewsList;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 
@@ -33,7 +32,6 @@ public class StartPageInteractorImpl implements StartPageInteractor {
         KeyStorage.getInstance().clearKeyStorage();
         KeyStorage.getInstance().clearKeyFile(mContext.get());
         HistoryList.getInstance().clearHistoryList();
-        NewsList.getInstance().clearNewsList();
         TinyDB db = new TinyDB(mContext.get());
         db.clearTokenList();
         db.clearContractList();

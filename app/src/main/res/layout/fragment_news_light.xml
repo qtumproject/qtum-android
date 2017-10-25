@@ -53,47 +53,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-            <RelativeLayout
-                android:padding="16dp"
-                android:id="@+id/placeholder"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="300dp"
-                    android:layout_height="82dp"
-                    app:srcCompat="@drawable/ic_qtum_logo_with_text"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="135dp"/>
-
-                <org.qtum.wallet.utils.FontTextView
-                    android:textSize="18sp"
-                    android:textColor="@color/grey70"
-                    android:layout_above="@+id/link_news"
-                    app:typefaceAsset="@string/proximaNovaRegular"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/news_placeholder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <org.qtum.wallet.utils.FontTextView
-                    android:id="@+id/link_news"
-                    android:padding="8dp"
-                    android:background="@drawable/btn_sea_corner_background_light"
-                    android:layout_alignParentBottom="true"
-                    android:textSize="18sp"
-                    android:layout_centerHorizontal="true"
-                    app:typefaceAsset="@string/proximaNovaRegular"
-                    android:autoLink="web"
-                    android:textColorLink="@color/white"
-                    android:text="@string/news_placeholder_link"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </RelativeLayout>
-
         </FrameLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>

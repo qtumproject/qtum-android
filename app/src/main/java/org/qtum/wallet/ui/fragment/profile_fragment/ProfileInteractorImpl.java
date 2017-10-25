@@ -4,7 +4,6 @@ import android.content.Context;
 
 import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
-import org.qtum.wallet.datastorage.NewsList;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
@@ -24,7 +23,6 @@ class ProfileInteractorImpl implements ProfileInteractor {
         KeyStorage.getInstance().clearKeyFile(mContext);
         KeyStorage.getInstance().clearKeyStorage();
         HistoryList.getInstance().clearHistoryList();
-        NewsList.getInstance().clearNewsList();
         TinyDB db = new TinyDB(mContext);
         db.clearTokenList();
         db.clearContractList();

@@ -1,11 +1,18 @@
 package org.qtum.wallet.ui.fragment.news_fragment;
 
+import org.qtum.wallet.datastorage.NewsStorage;
+import org.qtum.wallet.model.news.RssFeed;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements NewsPresenter {
 
     private NewsView mNewsFragmentView;
     private NewsInteractor mNewsFragmentInteractor;
+    private final String MEDIUM_QTUM_CHANEL = "@qtum";
 
     public NewsPresenterImpl(NewsView newsFragmentView, NewsInteractor newsInteractor) {
         mNewsFragmentView = newsFragmentView;
@@ -13,15 +20,9 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
     }
 
     @Override
-    public void onViewCreated() {
-        super.onViewCreated();
-        loadAndUpdateNews();
-    }
-
-    @Override
     public void initializeViews() {
         super.initializeViews();
-        updateNews();
+        loadAndUpdateNews();
     }
 
     @Override
@@ -46,12 +47,26 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
 
     private void loadAndUpdateNews() {
         getView().startRefreshAnimation();
-        getInteractor().getNewsList(getView().getNewsCallback());
-    }
+        getInteractor().getMediumRssFeed(MEDIUM_QTUM_CHANEL)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<RssFeed>() {
+                    @Override
+                    public void onCompleted() {
 
-    @Override
-    public void updateNews() {
-        getView().updateNews(getInteractor().getNewsList());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(RssFeed rssFeed) {
+                        NewsStorage.newInstance().setNewses(rssFeed.getNewses());
+                        getView().updateNews(rssFeed.getNewses());
+                    }
+                });
     }
 
 }

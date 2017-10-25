@@ -17,7 +17,7 @@ public class Backup {
     @SerializedName("platform_version")
     @Expose
     private String platformVersion;
-    @SerializedName("file_version")
+    @SerializedName("backup_version")
     @Expose
     private String fileVersion;
     @SerializedName("contracts")
