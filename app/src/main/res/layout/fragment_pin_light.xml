@@ -40,6 +40,8 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <org.qtum.wallet.utils.PinEntryEditText
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:id="@+id/til_wallet_pin"
             android:layout_marginTop="64dp"
             android:layout_width="match_parent"

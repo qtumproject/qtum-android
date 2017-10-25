@@ -32,8 +32,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
@@ -65,7 +67,7 @@ import butterknife.BindView;
 
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION_AND_SEND;
 
-public class MainActivity extends BaseActivity implements MainActivityView{
+public class MainActivity extends BaseActivity implements MainActivityView {
 
     private static final int LAYOUT = R.layout.activity_main;
     private static final int LAYOUT_LIGHT = R.layout.activity_main_light;
@@ -117,7 +119,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((ThemeUtils.THEME_DARK.equals(ThemeUtils.currentTheme))? LAYOUT : LAYOUT_LIGHT);
+        setContentView((ThemeUtils.THEME_DARK.equals(ThemeUtils.currentTheme)) ? LAYOUT : LAYOUT_LIGHT);
         mNetworkReceiver = new NetworkStateReceiver(getNetworkConnectedFlag());
         registerReceiver(mNetworkReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -169,15 +171,15 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         super.onConfigurationChanged(newConfig);
     }
 
-    public String getAddressForSendAction(){
+    public String getAddressForSendAction() {
         return mAddressForSendAction;
     }
 
-    public String getAmountForSendAction(){
+    public String getAmountForSendAction() {
         return mAmountForSendAction;
     }
 
-    public String getTokenForSendAction(){
+    public String getTokenForSendAction() {
         return mTokenAddressForSendAction;
     }
 
@@ -185,7 +187,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
     }
 
-    public boolean checkPermission(String perm){
+    public boolean checkPermission(String perm) {
         return ContextCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -209,7 +211,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         hideKeyBoard();
         getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right)
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                 .add(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
                 .addToBackStack(null)
                 .commit();
@@ -217,14 +219,14 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     @Override
     public void showToast(String s) {
-        Toast.makeText(this,s,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
-    public UpdateService getUpdateService(){
+    public UpdateService getUpdateService() {
         return mUpdateService;
     }
 
-    public void subscribeServiceConnectionChangeEvent(OnServiceConnectionChangeListener listener){
+    public void subscribeServiceConnectionChangeEvent(OnServiceConnectionChangeListener listener) {
         mServiceConnectionChangeListeners.add(listener);
         listener.onServiceConnectionChange(mUpdateService != null);
     }
@@ -245,7 +247,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     @Override
     public void resetMenuText() {
-        int[] menuResources = new int[]{R.string.wallet,R.string.profile,R.string.news,R.string.send};
+        int[] menuResources = new int[]{R.string.wallet, R.string.profile, R.string.news, R.string.send};
         Menu menu = mBottomNavigationView.getMenu();
         for (int i = 0; i < menu.size(); i++) {
             menu.getItem(i).setTitle(getResources().getString(menuResources[i]));
@@ -269,7 +271,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     public boolean checkTouchIdEnable() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if(QtumSharedPreference.getInstance().isTouchIdEnable(getContext())) {
+            if (QtumSharedPreference.getInstance().isTouchIdEnable(getContext())) {
                 FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
                 return checkPermission(Manifest.permission.USE_FINGERPRINT) && fingerprintManager.isHardwareDetected();
             } else {
@@ -280,51 +282,51 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         }
     }
 
-    public boolean checkAvailabilityTouchId(){
+    public boolean checkAvailabilityTouchId() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
-                return checkPermission(Manifest.permission.USE_FINGERPRINT) && fingerprintManager.isHardwareDetected();
+            FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+            return checkPermission(Manifest.permission.USE_FINGERPRINT) && fingerprintManager.isHardwareDetected();
         } else {
             return false;
         }
     }
 
     public void showBottomNavigationView(boolean recolorStatusBar) {
-        if(mBottomNavigationView != null)
+        if (mBottomNavigationView != null)
             mBottomNavigationView.setVisibility(View.VISIBLE);
-        if(recolorStatusBar) {
+        if (recolorStatusBar) {
             recolorStatusBarBlue();
         }
     }
 
     public void hideBottomNavigationView(boolean recolorStatusBar) {
-        if(mBottomNavigationView != null)
+        if (mBottomNavigationView != null)
             mBottomNavigationView.setVisibility(View.GONE);
-        if(recolorStatusBar) {
+        if (recolorStatusBar) {
             recolorStatusBarBlack();
         }
     }
 
-    public void recolorStatusBarBlack(){
+    public void recolorStatusBarBlack() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.background));
         }
     }
 
-    public void recolorStatusBarBlue(){
+    public void recolorStatusBarBlue() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         }
     }
 
-    public boolean isBottomNavigationViewVisible(){
+    public boolean isBottomNavigationViewVisible() {
         return mBottomNavigationView.getVisibility() == View.VISIBLE;
     }
 
     public void showBottomNavigationView(int resColorId) {
-        if(mBottomNavigationView != null)
+        if (mBottomNavigationView != null)
             mBottomNavigationView.setVisibility(View.VISIBLE);
-        if(resColorId > 0) {
+        if (resColorId > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
             }
@@ -332,9 +334,9 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     }
 
     public void hideBottomNavigationView(int resColorId) {
-        if(mBottomNavigationView != null)
-        mBottomNavigationView.setVisibility(View.GONE);
-        if(resColorId > 0) {
+        if (mBottomNavigationView != null)
+            mBottomNavigationView.setVisibility(View.GONE);
+        if (resColorId > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
             }
@@ -344,7 +346,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     @Override
     public void initializeViews() {
 
-        initBottomNavViewWithFont((ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)? R.string.simplonMonoRegular : R.string.proximaNovaRegular));
+        initBottomNavViewWithFont((ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK) ? R.string.simplonMonoRegular : R.string.proximaNovaRegular));
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -411,12 +413,15 @@ public class MainActivity extends BaseActivity implements MainActivityView{
                 if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                     List<Fragment> fragments = getSupportFragmentManager().getFragments();
                     if (fragments != null) {
+                        if(startPageExists(fragments)){
+                           return;
+                        }
                         for (Fragment fr : fragments) {
-                            if (fr != null && fr.getClass() != null){
-                                if(fr instanceof WalletFragment) {
+                            if (fr != null && fr.getClass() != null) {
+                                if (fr instanceof WalletFragment) {
                                     ((WalletFragment) fr).initBalanceListener();
                                     showBottomNavigationView(false);
-                                } else if(fr instanceof NewsFragment) {
+                                } else if (fr instanceof NewsFragment) {
                                     showBottomNavigationView(false);
                                 }
                             }
@@ -435,12 +440,21 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         mNetworkReceiver.addNetworkStateListener(mNetworkStateListener);
     }
 
+    boolean startPageExists(List<Fragment> fragments){
+        for (Fragment fr : fragments) {
+            if(fr instanceof StartPageFragment){
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
     }
 
-    private void initBottomNavViewWithFont(int fontId){
+    private void initBottomNavViewWithFont(int fontId) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) mBottomNavigationView.getChildAt(0);
         try {
             Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
@@ -465,9 +479,9 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(mActivityResultListener!=null){
+        if (mActivityResultListener != null) {
             getPresenter().setCheckAuthenticationFlag(false);
-            mActivityResultListener.onActivityResult(requestCode,resultCode,data);
+            mActivityResultListener.onActivityResult(requestCode, resultCode, data);
         }
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -481,7 +495,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(mPermissionsResultListener!=null) {
+        if (mPermissionsResultListener != null) {
             mPermissionsResultListener.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
@@ -496,7 +510,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         mRootFragment = rootFragment;
     }
 
-    public NetworkStateReceiver getNetworkReceiver(){
+    public NetworkStateReceiver getNetworkReceiver() {
         return mNetworkReceiver;
     }
 
@@ -505,31 +519,31 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         super.attachBaseContext(CustomContextWrapper.wrap(newBase, QtumSharedPreference.getInstance().getLanguage(newBase)));
     }
 
-    public QtumApplication getQtumApplication(){
-        return (QtumApplication)getApplication();
+    public QtumApplication getQtumApplication() {
+        return (QtumApplication) getApplication();
     }
 
-    public void addActivityResultListener(ActivityResultListener activityResultListener){
+    public void addActivityResultListener(ActivityResultListener activityResultListener) {
         mActivityResultListener = activityResultListener;
     }
 
-    public void removeResultListener(){
+    public void removeResultListener() {
         mActivityResultListener = null;
     }
 
-    public void addPermissionResultListener(PermissionsResultListener permissionsResultListener){
+    public void addPermissionResultListener(PermissionsResultListener permissionsResultListener) {
         mPermissionsResultListener = permissionsResultListener;
     }
 
-    public void removePermissionResultListener(){
+    public void removePermissionResultListener() {
         mPermissionsResultListener = null;
     }
 
-    public interface ActivityResultListener{
+    public interface ActivityResultListener {
         void onActivityResult(int requestCode, int resultCode, Intent data);
     }
 
-    public interface PermissionsResultListener{
+    public interface PermissionsResultListener {
         void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults);
     }
 
@@ -537,25 +551,25 @@ public class MainActivity extends BaseActivity implements MainActivityView{
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 1 || getPresenter().isCheckAuthenticationShowFlag()) {
             ActivityCompat.finishAffinity(this);
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
 
-    public void setCheckAuthenticationShowFlag(boolean flag){
+    public void setCheckAuthenticationShowFlag(boolean flag) {
         getPresenter().setCheckAuthenticationShowFlag(flag);
-        if(mAuthenticationListener!=null && !flag){
+        if (mAuthenticationListener != null && !flag) {
             mAuthenticationListener.onAuthenticate();
         }
     }
 
     @Override
     public MainActivity getActivity() {
-            return this;
+        return this;
     }
 
-    private int[] blackThemeIcons = {R.drawable.ic_wallet,R.drawable.ic_profile,R.drawable.ic_news,R.drawable.ic_send};
-    private int[] lightThemeIcons = {R.drawable.ic_wallet_light,R.drawable.ic_profile_light,R.drawable.ic_news_light,R.drawable.ic_send_light};
+    private int[] blackThemeIcons = {R.drawable.ic_wallet, R.drawable.ic_profile, R.drawable.ic_news, R.drawable.ic_send};
+    private int[] lightThemeIcons = {R.drawable.ic_wallet_light, R.drawable.ic_profile_light, R.drawable.ic_news_light, R.drawable.ic_send_light};
 
     @Override
     protected void updateTheme() {
@@ -563,7 +577,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         setRootFragment(ProfileFragment.newInstance(this));
         openRootFragment(mRootFragment);
 
-        if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)){
+        if (ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)) {
             mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
             mBottomNavigationView.setItemBackgroundResource(R.drawable.bottom_nav_view_tab_background);
             mBottomNavigationView.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
@@ -579,7 +593,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
             resetNavBarIconsWithTheme(lightThemeIcons);
         }
 
-        initBottomNavViewWithFont((ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)? R.string.simplonMonoRegular : R.string.proximaNovaRegular));
+        initBottomNavViewWithFont((ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK) ? R.string.simplonMonoRegular : R.string.proximaNovaRegular));
 
     }
 
@@ -591,20 +605,20 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         menu.findItem(R.id.item_send).setIcon(icons[3]);
     }
 
-    public void recolorStatusBar(int color){
+    public void recolorStatusBar(int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), color));
         }
     }
 
-    public void stopUpdateService(){
+    public void stopUpdateService() {
         if (mUpdateService != null) {
             mUpdateService.stopMonitoring();
             stopService(mIntent);
         }
     }
 
-    public void onLogin(){
+    public void onLogin() {
         getPresenter().onLogin();
         mIntent = new Intent(getContext(), UpdateService.class);
         if (!isMyServiceRunning(UpdateService.class)) {
@@ -634,7 +648,7 @@ public class MainActivity extends BaseActivity implements MainActivityView{
         return false;
     }
 
-    public void onLogout(){
+    public void onLogout() {
         if (mUpdateService != null) {
             mUpdateService.stopMonitoring();
         }
@@ -643,19 +657,19 @@ public class MainActivity extends BaseActivity implements MainActivityView{
 
     AuthenticationListener mAuthenticationListener;
 
-    public void addAuthenticationListener(AuthenticationListener authenticationListener){
+    public void addAuthenticationListener(AuthenticationListener authenticationListener) {
         mAuthenticationListener = authenticationListener;
     }
 
-    public void removeAuthenticationListener(){
+    public void removeAuthenticationListener() {
         mAuthenticationListener = null;
     }
 
-    public interface AuthenticationListener{
+    public interface AuthenticationListener {
         void onAuthenticate();
     }
 
-    public void resetAuthFlags(){
+    public void resetAuthFlags() {
         getPresenter().resetAuthFlags();
     }
 
