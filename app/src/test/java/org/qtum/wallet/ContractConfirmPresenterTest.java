@@ -30,7 +30,6 @@ import rx.schedulers.Schedulers;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -48,7 +47,7 @@ public class ContractConfirmPresenterTest {
 
     ContractConfirmPresenterImpl presenter;
 
-    private final static double minFee = 0.2;
+    private final static float minFee = 0.2f;
     private final static int minGasPrice = 2;
 
     @Before
@@ -72,7 +71,7 @@ public class ContractConfirmPresenterTest {
 
     @Test
     public void initializeView_test(){
-        when(interactor.getMinFee()).thenReturn(minFee);
+        when(interactor.getFeePerKb()).thenReturn(minFee);
         when(interactor.getMinGasPrice()).thenReturn(minGasPrice);
         presenter.initializeViews();
         verify(view,times(1)).updateGasPrice(eq(minGasPrice),anyInt());

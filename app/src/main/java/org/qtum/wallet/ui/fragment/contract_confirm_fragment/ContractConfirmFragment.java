@@ -75,7 +75,7 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
 
     int mMinFee;
     int mMaxFee;
-    int stepFee = 100;
+    int stepFee = 1;
 
     int mMinGasPrice;
     int mMaxGasPrice;

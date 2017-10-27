@@ -24,7 +24,7 @@ import java.util.List;
  * Created by kirillvolkov on 03.08.17.
  */
 
-public class AdressesListFragmentTokenDark extends AddressesListFragmentToken {
+public class AddressesListFragmentTokenDark extends AddressesListFragmentToken {
     @Override
     protected int getLayout() {
         return org.qtum.wallet.R.layout.fragment_address_list;

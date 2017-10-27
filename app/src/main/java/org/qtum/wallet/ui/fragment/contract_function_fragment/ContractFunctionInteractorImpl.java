@@ -6,7 +6,7 @@ import org.bitcoinj.script.Script;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.datastorage.KeyStorage;
-import org.qtum.wallet.datastorage.QtumNetworkState;
+import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
@@ -42,13 +42,13 @@ public class ContractFunctionInteractorImpl implements ContractFunctionInteracto
     }
 
     @Override
-    public double getFeePerKbDouble() {
-        return QtumNetworkState.newInstance().getFeePerKb().getFeePerKb().doubleValue();
+    public BigDecimal getFeePerKb() {
+        return new BigDecimal(QtumSharedPreference.getInstance().getFeePerKb(mContext.get()));
     }
 
     @Override
     public int getMinGasPrice() {
-        return QtumNetworkState.newInstance().getDGPInfo().getMingasprice();
+        return QtumSharedPreference.getInstance().getMinGasPrice(mContext.get());
     }
 
     @Override
@@ -73,11 +73,6 @@ public class ContractFunctionInteractorImpl implements ContractFunctionInteracto
                 return wrapper;
             }
         });
-    }
-
-    @Override
-    public BigDecimal getFeePerKbValue() {
-        return QtumNetworkState.newInstance().getFeePerKb().getFeePerKb();
     }
 
     @Override

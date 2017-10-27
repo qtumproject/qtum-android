@@ -130,32 +130,34 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
 
     @Override
     public void onRequestSearch(String filter) {
-        if (filter.isEmpty()) {
-            mTokenAdapter.setFilter(mCurrentList);
-        } else {
-            mSearchString = filter.toLowerCase();
-            List<Token> newList = new ArrayList<>();
-            for (Token currency : mCurrentList) {
-                if (currency.getContractName().toLowerCase().contains(mSearchString))
-                    newList.add(currency);
-            }
-
-            final int searchStringSize = mSearchString.length();
-
-            Collections.sort(newList, new Comparator<Token>() {
-                @Override
-                public int compare(Token token, Token token2) {
-                    if (token.getContractName().substring(0, searchStringSize).equals(mSearchString) && !token2.getContractName().substring(0, searchStringSize).equals(mSearchString)) {
-                        return -1;
-                    } else if (!token.getContractName().substring(0, searchStringSize).equals(mSearchString) && token2.getContractName().substring(0, searchStringSize).equals(mSearchString)) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
+        if(mTokenAdapter!=null) {
+            if (filter.isEmpty()) {
+                mTokenAdapter.setFilter(mCurrentList);
+            } else {
+                mSearchString = filter.toLowerCase();
+                List<Token> newList = new ArrayList<>();
+                for (Token currency : mCurrentList) {
+                    if (currency.getContractName().toLowerCase().contains(mSearchString))
+                        newList.add(currency);
                 }
-            });
 
-            mTokenAdapter.setFilter(newList);
+                final int searchStringSize = mSearchString.length();
+
+                Collections.sort(newList, new Comparator<Token>() {
+                    @Override
+                    public int compare(Token token, Token token2) {
+                        if (token.getContractName().substring(0, searchStringSize).equals(mSearchString) && !token2.getContractName().substring(0, searchStringSize).equals(mSearchString)) {
+                            return -1;
+                        } else if (!token.getContractName().substring(0, searchStringSize).equals(mSearchString) && token2.getContractName().substring(0, searchStringSize).equals(mSearchString)) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                });
+
+                mTokenAdapter.setFilter(newList);
+            }
         }
     }
 

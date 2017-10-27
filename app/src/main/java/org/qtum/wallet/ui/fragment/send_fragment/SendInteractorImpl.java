@@ -16,14 +16,12 @@ import org.bitcoinj.script.Script;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.datastorage.KeyStorage;
-import org.qtum.wallet.datastorage.QtumNetworkState;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
 import org.qtum.wallet.model.gson.DGPInfo;
-import org.qtum.wallet.model.gson.FeePerKb;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
@@ -54,13 +52,8 @@ public class SendInteractorImpl implements SendInteractor {
     }
 
     @Override
-    public double getFeePerKbDoubleValue() {
-        return QtumNetworkState.newInstance().getFeePerKb().getFeePerKb().doubleValue();
-    }
-
-    @Override
-    public DGPInfo getDGPInfo() {
-        return QtumNetworkState.newInstance().getDGPInfo();
+    public BigDecimal getFeePerKb() {
+        return new BigDecimal(QtumSharedPreference.getInstance().getFeePerKb(mContext));
     }
 
     @Override
@@ -201,7 +194,7 @@ public class SendInteractorImpl implements SendInteractor {
                 byte[] bytes = transaction.unsafeBitcoinSerialize();
 
                 int txSizeInkB = (int) Math.ceil(bytes.length / 1024.);
-                BigDecimal minimumFee = estimateFeePerKb.multiply(new BigDecimal(txSizeInkB));
+                BigDecimal minimumFee = (estimateFeePerKb.multiply(new BigDecimal(txSizeInkB)));
                 if (minimumFee.doubleValue() > fee.doubleValue()) {
                     callBack.onError(mContext.getString(R.string.insufficient_fee_lease_use_minimum_of) + " " + minimumFee.toString() + " QTUM");
                     return;
@@ -223,7 +216,7 @@ public class SendInteractorImpl implements SendInteractor {
     public void sendTx(final String from, final String address, final String amount, final String fee, final SendTxCallBack callBack) {
 
 
-        createTx(from, address, amount, fee, QtumNetworkState.newInstance().getFeePerKb().getFeePerKb(), new CreateTxCallBack() {
+        createTx(from, address, amount, fee, getFeePerKb(), new CreateTxCallBack() {
             @Override
             public void onSuccess(String txHex) {
                 sendTx(txHex, callBack);
@@ -313,7 +306,7 @@ public class SendInteractorImpl implements SendInteractor {
     public String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee) {
         ContractBuilder contractBuilder = new ContractBuilder();
         Script script = contractBuilder.createMethodScript(abiParams, gasLimit, gasPrice, contractAddress);
-        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, QtumNetworkState.newInstance().getFeePerKb().getFeePerKb(), fee, mContext);
+        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, getFeePerKb(), fee, mContext);
     }
 
     @Override
@@ -337,6 +330,6 @@ public class SendInteractorImpl implements SendInteractor {
 
     @Override
     public int getMinGasPrice() {
-        return getDGPInfo().getMingasprice();
+        return QtumSharedPreference.getInstance().getMinGasPrice(mContext);
     }
 }

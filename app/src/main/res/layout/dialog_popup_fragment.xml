@@ -51,7 +51,8 @@
             android:text="@string/retry"
             android:textAllCaps="true"
             android:textColor="@color/black"
-            android:layout_marginEnd="32dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
             android:textSize="@dimen/button_text"/>
 
         <org.qtum.wallet.utils.FontButton
@@ -61,6 +62,8 @@
             android:padding="16dp"
             android:background="?attr/selectableItemBackground"
             android:text="@string/retry"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="@dimen/button_text"/>

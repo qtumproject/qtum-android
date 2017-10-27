@@ -6,7 +6,7 @@ import android.content.Context;
 import org.bitcoinj.script.Script;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.datastorage.KeyStorage;
-import org.qtum.wallet.datastorage.QtumNetworkState;
+import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.ContractTemplate;
 import org.qtum.wallet.model.contract.Contract;
@@ -17,6 +17,7 @@ import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.utils.ContractBuilder;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,16 +74,16 @@ class ContractConfirmInteractorImpl implements ContractConfirmInteractor{
     public String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee) {
         ContractBuilder contractBuilder = new ContractBuilder();
         Script script = contractBuilder.createConstructScript(abiParams, gasLimit, gasPrice);
-        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, QtumNetworkState.newInstance().getFeePerKb().getFeePerKb(), fee, mContext);
+        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, getFeePerKb(), fee, mContext);
     }
 
     @Override
-    public double getMinFee() {
-        return QtumNetworkState.newInstance().getFeePerKb().getFeePerKb().doubleValue();
+    public BigDecimal getFeePerKb() {
+        return new BigDecimal(QtumSharedPreference.getInstance().getFeePerKb(mContext));
     }
 
     @Override
     public int getMinGasPrice() {
-        return QtumNetworkState.newInstance().getDGPInfo().getMingasprice();
+        return QtumSharedPreference.getInstance().getMinGasPrice(mContext);
     }
 }

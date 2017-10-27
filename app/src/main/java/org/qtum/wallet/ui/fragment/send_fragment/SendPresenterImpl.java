@@ -57,7 +57,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
         } else {
             getView().hideCurrencyField();
         }
-        minFee = getInteractor().getFeePerKbDoubleValue();
+        minFee = getInteractor().getFeePerKb().doubleValue();
         getView().updateFee(minFee, maxFee);
         minGasPrice = getInteractor().getMinGasPrice();
         getView().updateGasPrice(minGasPrice, maxGasPrice);
@@ -144,7 +144,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
     @Override
     public void send() {
         if (mNetworkConnectedFlag) {
-            final double feeDouble = Double.valueOf(getView().getFeeInput());
+            final double feeDouble = Double.valueOf(getView().getFeeInput().replace(',', '.'));
             if (feeDouble < minFee || feeDouble > maxFee) {
                 getView().dismissProgressDialog();
                 getView().setAlertDialog(org.qtum.wallet.R.string.error, R.string.invalid_fee, "Ok", BaseFragment.PopUpType.error);

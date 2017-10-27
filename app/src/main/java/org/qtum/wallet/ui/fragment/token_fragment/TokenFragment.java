@@ -91,9 +91,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
     protected
     AppBarLayout mAppBarLayout;
 
-    @BindView(R.id.collapse_layout)
-    protected
-    StackCollapseLinearLayout collapseLinearLayout;
+
 
     @BindView(R.id.tv_token_address)
     FontTextView tokenAddress;
@@ -196,8 +194,6 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
         }
         setTokenAddress(token.getContractAddress());
         setSenderAddress(token.getSenderAddress());
-
-        collapseLinearLayout.requestLayout();
         headerPAdding = convertDpToPixel(16, getContext());
 
         //mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

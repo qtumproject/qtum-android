@@ -5,7 +5,6 @@ import android.content.Context;
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
-import org.qtum.wallet.datastorage.QtumNetworkState;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 import org.qtum.wallet.model.gson.DGPInfo;
@@ -17,6 +16,9 @@ import rx.Observable;
 class MainActivityInteractorImpl implements MainActivityInteractor {
 
     private Context mContext;
+
+    private boolean isDGPInfoLoaded = false;
+    private boolean isFeePerkbLoaded = false;
 
     MainActivityInteractorImpl(Context context){
         mContext = context;
@@ -40,12 +42,12 @@ class MainActivityInteractorImpl implements MainActivityInteractor {
 
     @Override
     public boolean isDGPInfoLoaded() {
-        return QtumNetworkState.newInstance().getDGPInfo()!=null;
+        return isDGPInfoLoaded;
     }
 
     @Override
     public boolean isFeePerkbLoaded() {
-        return QtumNetworkState.newInstance().getFeePerKb()!=null;
+        return isFeePerkbLoaded;
     }
 
     @Override
@@ -65,11 +67,13 @@ class MainActivityInteractorImpl implements MainActivityInteractor {
 
     @Override
     public void setDGPInfo(DGPInfo dgpInfo) {
-        QtumNetworkState.newInstance().setDGPInfo(dgpInfo);
+        isDGPInfoLoaded = true;
+        QtumSharedPreference.getInstance().setMinGasPrice(mContext,dgpInfo.getMingasprice());
     }
 
     @Override
     public void setFeePerKb(FeePerKb feePerKb) {
-        QtumNetworkState.newInstance().setFeePerKb(feePerKb);
+        isFeePerkbLoaded = true;
+        QtumSharedPreference.getInstance().setFeePerKb(mContext, feePerKb.getFeePerKb().toPlainString());
     }
 }

@@ -42,6 +42,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
 import org.qtum.wallet.ui.fragment.addresses_fragment.AddressesFragment;
@@ -293,6 +294,11 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
                     @Override
                     public void call(final String s) {
                         getPresenter().changeAmount(s);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        setAlertDialog(R.string.error,throwable.getMessage(),R.string.cancel,PopUpType.error);
                     }
                 });
 
