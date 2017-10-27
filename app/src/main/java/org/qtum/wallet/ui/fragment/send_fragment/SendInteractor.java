@@ -28,8 +28,6 @@ public interface SendInteractor {
 
     String validateTokenExistance(String tokenAddress);
 
-    DGPInfo getDGPInfo();
-
     String getValidatedFee(Double fee);
 
     String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee);
@@ -38,7 +36,7 @@ public interface SendInteractor {
 
     Observable<CallSmartContractResponse> callSmartContractObservable(Token token, String s);
 
-    double getFeePerKbDoubleValue();
+    BigDecimal getFeePerKb();
 
     int getMinGasPrice();
 

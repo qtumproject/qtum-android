@@ -1,16 +1,12 @@
 package org.qtum.wallet.ui.fragment.contract_confirm_fragment;
 
-import org.bitcoinj.script.Script;
 import org.qtum.wallet.R;
-import org.qtum.wallet.datastorage.KeyStorage;
-import org.qtum.wallet.datastorage.QtumNetworkState;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
-import org.qtum.wallet.utils.ContractBuilder;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -44,7 +40,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
     @Override
     public void initializeViews() {
         super.initializeViews();
-        minFee = getInteractor().getMinFee();
+        minFee = getInteractor().getFeePerKb().doubleValue();
         getView().updateFee(minFee, maxFee);
         minGasPrice = getInteractor().getMinGasPrice();
         getView().updateGasPrice(minGasPrice, maxGasPrice);
@@ -86,7 +82,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onNext(String s) {
-                        createTx(s, gasLimit, gasPrice, fee);
+                        createTx(s, gasLimit, gasPrice, fee.replace(',', '.'));
                     }
                 });
     }

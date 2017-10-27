@@ -5,9 +5,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.qtum.wallet.R;
+import org.qtum.wallet.utils.ClipboardUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnLongClick;
 
 /**
  * Created by kirillvolkov on 06.07.17.
@@ -22,6 +27,17 @@ public class AddressHolder extends RecyclerView.ViewHolder {
     protected ImageView mImageViewCheckIndicator;
     @BindView(org.qtum.wallet.R.id.ll_single_item)
     protected LinearLayout mLinearLayoutAddress;
+
+    @OnLongClick(R.id.tv_single_string)
+    public boolean onAddressLongClick() {
+        ClipboardUtils.copyToClipBoard(mTextViewAddress.getContext(), mTextViewAddress.getText().toString(), new ClipboardUtils.CopyCallback() {
+            @Override
+            public void onCopyToClipBoard() {
+                Toast.makeText(mTextViewAddress.getContext(),mTextViewAddress.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
+            }
+        });
+        return true;
+    }
 
     protected int defaultTextColor, selectedTextColor;
 

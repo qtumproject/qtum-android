@@ -118,9 +118,20 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
 
     ShareDialogFragment shareDialog;
 
-    @OnLongClick({R.id.tv_token_address, R.id.contract_address_value})
+    @OnLongClick(R.id.tv_token_address)
     public boolean onAddressLongClick() {
         ClipboardUtils.copyToClipBoard(getContext(), tokenAddress.getText().toString(), new ClipboardUtils.CopyCallback() {
+            @Override
+            public void onCopyToClipBoard() {
+                showToast(getString(R.string.copied));
+            }
+        });
+        return true;
+    }
+
+    @OnLongClick(R.id.contract_address_value)
+    public boolean onAContractLongClick() {
+        ClipboardUtils.copyToClipBoard(getContext(), contractAddress.getText().toString(), new ClipboardUtils.CopyCallback() {
             @Override
             public void onCopyToClipBoard() {
                 showToast(getString(R.string.copied));

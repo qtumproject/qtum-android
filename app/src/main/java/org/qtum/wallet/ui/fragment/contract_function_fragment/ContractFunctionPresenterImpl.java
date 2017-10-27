@@ -55,7 +55,7 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
                 break;
             }
         }
-        minFee = getInteractor().getFeePerKbDouble();
+        minFee = getInteractor().getFeePerKb().doubleValue();
         getView().updateFee(minFee, maxFee);
 
         minGasPrice = getInteractor().getMinGasPrice();
@@ -95,8 +95,8 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
                                     BaseFragment.PopUpType.error);
                             return;
                         }
-                        createTx(respWrapper.getAbiParams(), /*TODO callSmartContractResponse.getItems().get(0).getGasUsed()*/ gasLimit, gasPrice, fee,
-                                getInteractor().getFeePerKbValue(), contractAddress);
+                        createTx(respWrapper.getAbiParams(), /*TODO callSmartContractResponse.getItems().get(0).getGasUsed()*/ gasLimit, gasPrice, fee.replace(',', '.'),
+                                getInteractor().getFeePerKb(), contractAddress);
                     }
                 });
     }

@@ -7,13 +7,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.fragment.wallet_fragment.TransactionClickListener;
+import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.DateCalculator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnLongClick;
 
 /**
  * Created by kirillvolkov on 05.07.17.
@@ -31,6 +35,17 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
     ImageView mImageViewIcon;
     @BindView(R.id.ll_transaction)
     LinearLayout mLinearLayoutTransaction;
+
+    @OnLongClick(R.id.tv_id)
+    public boolean onIdLongClick() {
+        ClipboardUtils.copyToClipBoard(mTextViewID.getContext(), mTextViewID.getText().toString(), new ClipboardUtils.CopyCallback() {
+            @Override
+            public void onCopyToClipBoard() {
+                Toast.makeText(mTextViewID.getContext(),mTextViewID.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
+            }
+        });
+        return true;
+    }
 
     TransactionHolderLight(View itemView, final TransactionClickListener listener) {
         super(itemView);

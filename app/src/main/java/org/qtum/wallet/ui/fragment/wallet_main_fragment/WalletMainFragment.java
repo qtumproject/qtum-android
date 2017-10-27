@@ -86,7 +86,9 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mUpdateService.removeTokenListener();
+        if(mUpdateService!=null) {
+            mUpdateService.removeTokenListener();
+        }
     }
 
     @Override
