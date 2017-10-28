@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.fragment.backup_wallet_fragment.BackUpWalletFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
@@ -31,9 +32,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.CryptoUtils;
 
 import org.qtum.wallet.utils.PinEntryEditText;
-import org.qtum.wallet.utils.fingerprint_utils.FingerprintUtils;
 import org.qtum.wallet.utils.FontTextView;
-import org.qtum.wallet.utils.fingerprint_utils.SensorState;
 
 import javax.crypto.Cipher;
 
@@ -217,7 +216,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
 
     @Override
     public void prepareSensor() {
-            if (FingerprintUtils.isSensorStateAt(SensorState.READY, getContext())) {
+
                 if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
                     FingerprintManagerCompat.CryptoObject cryptoObject = CryptoUtils.getCryptoObject();
                     if (cryptoObject != null) {
@@ -237,7 +236,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
                         Toast.makeText(getContext(), "new fingerprint enrolled. enter pin again", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
+
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -332,8 +331,8 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     }
 
     @Override
-    public boolean isSensorStateAt(SensorState sensorState) {
-        return FingerprintUtils.isSensorStateAt(sensorState, getContext());
+    public void checkSensorState(MainActivity.SensorStateListener sensorStateListener) {
+        getMainActivity().checkSensorState(sensorStateListener);
     }
 
     @Override
