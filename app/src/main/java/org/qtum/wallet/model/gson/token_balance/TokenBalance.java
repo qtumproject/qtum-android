@@ -65,9 +65,7 @@ public class TokenBalance {
         BigDecimal summaryBalance = new BigDecimal(0);
         if (balances != null && balances.size() > 0) {
             for (Balance balance : balances) {
-                if (balance.getBalance().intValue() > 0) {
-                    summaryBalance = summaryBalance.add(balance.getBalance());
-                }
+                summaryBalance = summaryBalance.add(balance.getBalance());
             }
         }
         return summaryBalance;
