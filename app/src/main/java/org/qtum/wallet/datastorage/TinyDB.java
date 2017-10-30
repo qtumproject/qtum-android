@@ -49,7 +49,9 @@ import org.qtum.wallet.model.SharedTemplate;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.ContractTemplate;
+import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.utils.DateCalculator;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 
 public class TinyDB {
@@ -65,6 +67,7 @@ public class TinyDB {
     private final String TEMPLATE_UUID_LIST = "TEMPLATE_UUID_LIST";
     private final String SHARED_TEMPLATE_LIST = "SHARED_TEMPLATE_LIST";
     private final String UNCONFIRMED_CONTRACT_TX_HAS_LIST = "unconfirmed_contract_tx_hash_list";
+    private final String NEWS_LIST = "news_list";
 
     public TinyDB(Context appContext) {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
@@ -467,7 +470,6 @@ public class TinyDB {
 
         ArrayList<String> tokenStrings = getListString(TOKEN_LIST);
         ArrayList<Token> tokenArrayList = new ArrayList<>();
-
         for (String contractInfoString : tokenStrings) {
             Token token = gson.fromJson(contractInfoString, Token.class);
             if (token != null) {
@@ -476,6 +478,19 @@ public class TinyDB {
         }
 
         return tokenArrayList;
+    }
+
+    public List<News> getNewsList() {
+        Gson gson = new Gson();
+
+        ArrayList<String> newsStrings = getListString(NEWS_LIST);
+        ArrayList<News> newsArrayList = new ArrayList<>();
+        for (String newsString : newsStrings) {
+            News news = gson.fromJson(newsString, News.class);
+            newsArrayList.add(news);
+        }
+
+        return newsArrayList;
     }
 
     public Token setTokenDecimals(Token token, int decimalUnits) {
@@ -706,6 +721,15 @@ public class TinyDB {
             tokenStrings.add(gson.toJson(token));
         }
         putListString(TOKEN_LIST, tokenStrings);
+    }
+
+    public void putNewsList(List<News> newsList) {
+        Gson gson = new Gson();
+        ArrayList<String> newsStrings = new ArrayList<>();
+        for (News news : newsList) {
+            newsStrings.add(gson.toJson(news));
+        }
+        putListString(NEWS_LIST, newsStrings);
     }
 
     public void putContractTemplate(List<ContractTemplate> contractTemplateList) {
