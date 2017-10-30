@@ -1,6 +1,8 @@
 package org.qtum.wallet.model.news;
 
 
+import com.google.gson.annotations.SerializedName;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.simpleframework.xml.Element;
@@ -14,31 +16,33 @@ import java.util.Locale;
 @Root(name = "item", strict = false)
 public class News {
 
+    @SerializedName("encoded")
     @Element(name = "encoded")
     String contentEncoded;
 
+    @SerializedName("title")
     @Element(name = "title")
     String title;
 
+    @SerializedName("pubDate")
     @Element(name = "pubDate")
-    String pubDate;
+    String pubDate = "";
 
-    Document mDocument;
+    transient Document mDocument;
 
-    String formattedData = "";
-
-    SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
-
-    public String getContentEncoded() {
-        return contentEncoded;
-    }
+    transient String formattedData = "";
 
     public String getTitle() {
         return title;
     }
 
     public String getPubDate() {
+        return pubDate;
+    }
+
+    public String getFormattedPubDate() {
         if(formattedData.isEmpty()){
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
             Date date = null;
             try{
                 date = sdf.parse(pubDate);

@@ -2,7 +2,6 @@ package org.qtum.wallet.ui.fragment.news_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,14 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.ui.fragment.news_detail_fragment.NewsDetailFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
-
-import com.squareup.picasso.Picasso;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -112,7 +108,7 @@ public abstract class NewsFragment extends BaseFragment implements NewsView {
 
         void bindNews(News news) {
             mTextViewTitle.setText(news.getTitle());
-            mTextViewDate.setText(news.getPubDate());
+            mTextViewDate.setText(news.getFormattedPubDate());
             mTextViewDescription.setText(news.getDocument().select("p").get(0).text());
         }
     }

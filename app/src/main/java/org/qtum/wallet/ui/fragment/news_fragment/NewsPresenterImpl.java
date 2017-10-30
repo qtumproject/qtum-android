@@ -1,8 +1,11 @@
 package org.qtum.wallet.ui.fragment.news_fragment;
 
 import org.qtum.wallet.datastorage.NewsStorage;
+import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.model.news.RssFeed;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+
+import java.util.List;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -64,7 +67,26 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
                     @Override
                     public void onNext(RssFeed rssFeed) {
                         NewsStorage.newInstance().setNewses(rssFeed.getNewses());
-                        getView().updateNews(rssFeed.getNewses());
+
+                        List<News> newNews = rssFeed.getNewses();
+                        List<News> oldNews = getInteractor().getNewses();
+                        if(oldNews.size()==0){
+                            oldNews.addAll(newNews);
+                        }else {
+                            int pos = 0;
+                            News lastNews = oldNews.get(0);
+                            for (News news : newNews) {
+                                if (!news.getPubDate().equals(lastNews.getPubDate())) {
+                                    oldNews.add(pos, news);
+                                    pos++;
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                        getInteractor().setNewses(oldNews);
+                        getView().updateNews(oldNews);
+
                     }
                 });
     }

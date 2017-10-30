@@ -9,8 +9,6 @@ import org.mockito.MockitoAnnotations;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinInteractor;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinPresenterImpl;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinView;
-import org.qtum.wallet.utils.fingerprint_utils.FingerprintUtils;
-import org.qtum.wallet.utils.fingerprint_utils.SensorState;
 
 import javax.crypto.Cipher;
 

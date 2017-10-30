@@ -165,6 +165,13 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     protected SendPresenter sendBaseFragmentPresenter;
     private boolean sendFrom = false;
 
+    BalanceChangeListener mBalanceChangeListener = new BalanceChangeListener() {
+        @Override
+        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
+            getPresenter().handleBalanceChanges(unconfirmedBalance, balance);
+        }
+    };
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -175,14 +182,8 @@ public abstract class SendFragment extends BaseFragment implements SendView {
             public void onServiceConnectionChange(boolean isConnecting) {
                 if (isConnecting) {
                     mUpdateService = getUpdateService();
-                    mUpdateService.removeBalanceChangeListener();
 
-                    mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
-                        @Override
-                        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
-                            getPresenter().handleBalanceChanges(unconfirmedBalance, balance);
-                        }
-                    });
+                    mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
                 }
             }
         });
@@ -229,7 +230,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     public void onDestroyView() {
         super.onDestroyView();
         mNetworkStateReceiver.removeNetworkStateListener(mNetworkStateListener);
-        mUpdateService.removeBalanceChangeListener();
+        mUpdateService.removeBalanceChangeListener(mBalanceChangeListener);
     }
 
     private void isQrCodeRecognition(boolean isQrCodeRecognition) {

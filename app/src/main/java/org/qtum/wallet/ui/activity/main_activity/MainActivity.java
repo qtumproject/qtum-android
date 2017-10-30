@@ -424,7 +424,6 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                         for (Fragment fr : fragments) {
                             if (fr != null && fr.getClass() != null) {
                                 if (fr instanceof WalletFragment) {
-                                    ((WalletFragment) fr).initBalanceListener();
                                     showBottomNavigationView(false);
                                 } else if (fr instanceof NewsFragment) {
                                     showBottomNavigationView(false);

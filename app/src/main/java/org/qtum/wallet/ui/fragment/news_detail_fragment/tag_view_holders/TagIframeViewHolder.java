@@ -8,6 +8,8 @@ import org.jsoup.nodes.Element;
 import org.qtum.wallet.R;
 import org.qtum.wallet.utils.FontTextView;
 
+import java.net.URLDecoder;
+
 import butterknife.BindView;
 
 
@@ -22,8 +24,11 @@ public class TagIframeViewHolder extends TagViewHolder{
 
     @Override
     public void bindElement(Element element) {
-        //String s = URLDecoder.decode(element);
-        mTextView.setText(Html.fromHtml(element.html()));
-        mTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        String attr = element.attr("src");
+        attr = attr.substring(attr.indexOf("url=")+4);
+        attr = attr.substring(0,attr.indexOf("&image="));
+        String url = URLDecoder.decode(attr);
+        mTextView.setText(url);
+        //mTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

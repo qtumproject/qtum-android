@@ -18,6 +18,7 @@ apply plugin: 'io.fabric'
 repositories {
     maven { url 'https://maven.fabric.io/public' }
     maven { url "https://jitpack.io" }
+    google()
 }
 android {
     lintOptions {
@@ -33,7 +34,7 @@ android {
 
     def appName = "QTUM"
     compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    buildToolsVersion '26.0.2'
     def versionPropertiesFile = file('version.properties')
     def autoVersionCode
     if (versionPropertiesFile.canRead()) {
@@ -78,10 +79,8 @@ android {
 //        }
 //    }
     applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def apk = output.outputFile;
-            def newName = appName + "-${versionName}(${versionCode})-${variant.buildType.name}.apk";
-            output.outputFile = new File(apk.parentFile, newName);
+        variant.outputs.all {
+            outputFileName = appName + "-${versionName}(${versionCode})-${variant.buildType.name}.apk"
         }
     }
 }
@@ -97,25 +96,25 @@ dependencies {
         exclude group: 'stax', module: 'stax'
     }
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.4.0'
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
     testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
     testCompile 'org.assertj:assertj-core:2.8.0'
 
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:support-v4:25.4.0'
+    compile 'com.android.support:design:25.4.0'
     compile 'com.github.designsters:android-fork-bitcoinj:1.0.10'
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.google.zxing:core:3.2.1'
+    compile 'com.android.support:multidex:1.0.2'
+    compile 'com.google.zxing:core:3.3.0'
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.google.zxing:android-core:3.3.0'
     compile 'me.dm7.barcodescanner:zxing:1.8.4'
-    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxjava:1.2.2'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile('io.socket:socket.io-client:0.8.3') {
@@ -132,12 +131,12 @@ dependencies {
     compile 'com.baoyz.pullrefreshlayout:library:1.2.0'
     compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
     compile 'com.mikhaellopez:hfrecyclerview:1.0.0'
-    compile 'com.google.firebase:firebase-core:9.2.0'
-    compile 'com.google.firebase:firebase-messaging:9.2.0'
+    compile 'com.google.firebase:firebase-core:11.4.2'
+    compile 'com.google.firebase:firebase-messaging:11.4.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar'
     compile 'org.jsoup:jsoup:1.10.3'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
 }
 apply plugin: 'com.google.gms.google-services'

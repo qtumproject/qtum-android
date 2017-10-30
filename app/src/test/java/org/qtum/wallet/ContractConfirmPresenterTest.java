@@ -47,7 +47,7 @@ public class ContractConfirmPresenterTest {
 
     ContractConfirmPresenterImpl presenter;
 
-    private final static float minFee = 0.2f;
+    private final static BigDecimal minFee = new BigDecimal(0.2);
     private final static int minGasPrice = 2;
 
     @Before
@@ -75,7 +75,7 @@ public class ContractConfirmPresenterTest {
         when(interactor.getMinGasPrice()).thenReturn(minGasPrice);
         presenter.initializeViews();
         verify(view,times(1)).updateGasPrice(eq(minGasPrice),anyInt());
-        verify(view,times(1)).updateFee(eq(minFee), anyDouble());
+        verify(view,times(1)).updateFee(eq(minFee.doubleValue()), anyDouble());
         verify(view,times(1)).updateGasLimit(anyInt(),anyInt());
     }
 
