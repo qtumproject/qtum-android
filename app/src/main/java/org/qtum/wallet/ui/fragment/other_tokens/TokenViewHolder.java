@@ -13,6 +13,7 @@ import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenBalanceChangeListener;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
+import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontTextView;
 
@@ -109,7 +110,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
 
                 String s = token.getTokenBalanceWithDecimalUnits().toString();
 
-                tokenBalanceView.setText(String.valueOf(s));
+                tokenBalanceView.setText(ContractBuilder.getShortBigNumberRepresentation(s));
                 tokenBalanceView.setVisibility(View.VISIBLE);
             }
         });

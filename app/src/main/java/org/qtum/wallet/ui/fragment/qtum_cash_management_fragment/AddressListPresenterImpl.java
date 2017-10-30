@@ -37,12 +37,12 @@ public class AddressListPresenterImpl extends BaseFragmentPresenterImpl implemen
     private Action1<AddressListInteractorImpl.OutputWrapper> actionOnNext = new Action1<AddressListInteractorImpl.OutputWrapper>() {
         @Override
         public void call(AddressListInteractorImpl.OutputWrapper outputWrapper) {
-            for (Iterator<UnspentOutput> iterator = outputWrapper.getUnspentOutputs().iterator(); iterator.hasNext(); ) {
-                UnspentOutput unspentOutput = iterator.next();
-                if (!unspentOutput.isOutputAvailableToPay()) {
-                    iterator.remove();
-                }
-            }
+//            for (Iterator<UnspentOutput> iterator = outputWrapper.getUnspentOutputs().iterator(); iterator.hasNext(); ) {
+//                UnspentOutput unspentOutput = iterator.next();
+//                if (!unspentOutput.isOutputAvailableToPay()) {
+//                    iterator.remove();
+//                }
+//            }
             Collections.sort(outputWrapper.getUnspentOutputs(), new Comparator<UnspentOutput>() {
                 @Override
                 public int compare(UnspentOutput unspentOutput, UnspentOutput t1) {

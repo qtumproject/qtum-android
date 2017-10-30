@@ -33,8 +33,9 @@
 
     <LinearLayout
         android:id="@+id/ll_balance"
+        android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:minWidth="30dp"
@@ -44,17 +45,22 @@
         <org.qtum.wallet.utils.FontTextView
             android:id="@+id/token_balance"
             tools:text="0.0"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:gravity="center"
             android:textSize="14sp"
             android:textColor="@color/colorPrimary"
             app:typefaceAsset="@string/simplonMonoMedium"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
         <org.qtum.wallet.utils.FontTextView
             android:layout_marginStart="2dp"
             android:id="@+id/token_symbol"
             android:textSize="14sp"
             tools:text="s"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/colorPrimary"
             app:typefaceAsset="@string/simplonMonoMedium"
             android:layout_width="wrap_content"

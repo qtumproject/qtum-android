@@ -14,6 +14,8 @@ import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.utils.EditTextValidated;
 import org.qtum.wallet.utils.FontManager;
 
+import java.math.BigInteger;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -38,6 +40,8 @@ public abstract class InputViewHolder extends RecyclerView.ViewHolder implements
     private static int uint16 = (int) Math.pow(2,16);
     private static long uint32 = (long) Math.pow(2, 32);
     private static long uint64 = (long) Math.pow(2, 64);
+    private static BigInteger uint128 = new BigInteger("2").pow(128);
+    private static BigInteger uint256 = new BigInteger("2").pow(256);
 
     private ContractMethodParameter parameter;
 
@@ -64,9 +68,11 @@ public abstract class InputViewHolder extends RecyclerView.ViewHolder implements
                     case TYPE_UINT32:
                         return validateUINT(content, uint32);
                     case TYPE_UINT64:
-                    case TYPE_UINT128:
-                    case TYPE_UINT256:
                         return validateUINT(content, uint64);
+                    case TYPE_UINT128:
+                        return validateUINT(content, uint128);
+                    case TYPE_UINT256:
+                        return validateUINT(content, uint256);
 
                     default:
                         return ALLOW;
@@ -161,6 +167,18 @@ public abstract class InputViewHolder extends RecyclerView.ViewHolder implements
         try {
             long num = Long.parseLong(content);
             if (num > 0 && num < uint) {
+                return ALLOW;
+            }
+        } catch (Exception e) {
+            return DENY;
+        }
+        return DENY;
+    }
+
+    private String validateUINT(String content, BigInteger uint){
+        try {
+            BigInteger num = new BigInteger(content);
+            if ((num.compareTo(BigInteger.ZERO) > 0) && (num.compareTo(uint) < 0)) {
                 return ALLOW;
             }
         } catch (Exception e) {
