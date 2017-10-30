@@ -67,7 +67,7 @@ public class UpdateService extends Service {
     private final int DEFAULT_NOTIFICATION_ID = 101;
     private NotificationManager notificationManager;
     private TransactionListener mTransactionListener = null;
-    private BalanceChangeListener mBalanceChangeListener;
+    private List<BalanceChangeListener> mBalanceChangeListeners = new ArrayList<>();
     private HashMap<String,TokenBalanceChangeListener> mStringTokenBalanceChangeListenerHashMap = new HashMap<>();
     private HashMap<String, TokenBalance> mAllTokenBalanceList = new HashMap<>();
     private TokenListener mTokenListener;
@@ -136,8 +136,8 @@ public class UpdateService extends Service {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if (mBalanceChangeListener != null) {
-                        mBalanceChangeListener.onChangeBalance(unconfirmedBalance, balance);
+                    for(BalanceChangeListener balanceChangeListener : mBalanceChangeListeners){
+                        balanceChangeListener.onChangeBalance(unconfirmedBalance, balance);
                     }
                 } catch (ClassCastException e) {
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
@@ -534,7 +534,7 @@ public class UpdateService extends Service {
     }
 
     public void addBalanceChangeListener(BalanceChangeListener balanceChangeListener) {
-        mBalanceChangeListener = balanceChangeListener;
+        mBalanceChangeListeners.add(balanceChangeListener);
         if(balance!=null) {
             balanceChangeListener.onChangeBalance(unconfirmedBalance, balance);
         }
@@ -572,8 +572,8 @@ public class UpdateService extends Service {
         mStringTokenBalanceChangeListenerHashMap.remove(address);
     }
 
-    public void removeBalanceChangeListener() {
-        mBalanceChangeListener = null;
+    public void removeBalanceChangeListener(BalanceChangeListener balanceChangeListener) {
+        mBalanceChangeListeners.remove(balanceChangeListener);
     }
 
     public void clearNotification() {

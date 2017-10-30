@@ -11,6 +11,7 @@ import java.util.Calendar;
 import javax.crypto.Cipher;
 
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -31,6 +32,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
     private PinAction mAction;
     private final Long mBanTime = 600000L;
     private int titleID = 0;
+    private Subscription mSubscription;
 
     private boolean isDataLoaded = false;
 
@@ -81,7 +83,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                             getView().clearError();
                             getView().setProgressDialog();
                             getView().hideKeyBoard();
-                            getInteractor().createWallet()
+                            mSubscription = getInteractor().createWallet()
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(new Subscriber<String>() {
@@ -552,5 +554,13 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
             }
         }
         getInteractor().setFailedAttemptsCount(failedAttemptsCount);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(mSubscription!=null) {
+            mSubscription.unsubscribe();
+        }
     }
 }

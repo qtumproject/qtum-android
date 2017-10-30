@@ -162,21 +162,23 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
         super.onActivityCreated(savedInstanceState);
         if (getTokenBalance() == null) {
             mUpdateService = getMainActivity().getUpdateService();
-            mUpdateService.addBalanceChangeListener(new BalanceChangeListener() {
-                @Override
-                public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
-                    getMainActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            getPresenter().onBalanceChanged(unconfirmedBalance, balance);
-                        }
-                    });
-                }
-            });
+            mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
         } else {
             updateBalance(getTokenBalance(), null);
         }
     }
+
+    BalanceChangeListener mBalanceChangeListener = new BalanceChangeListener() {
+        @Override
+        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
+            getMainActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    getPresenter().onBalanceChanged(unconfirmedBalance, balance);
+                }
+            });
+        }
+    };
 
     @Override
     public void onPause() {
@@ -191,7 +193,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
         super.onDestroyView();
         hideKeyBoard();
         if (mUpdateService != null) {
-            mUpdateService.removeBalanceChangeListener();
+            mUpdateService.removeBalanceChangeListener(mBalanceChangeListener);
         }
     }
 

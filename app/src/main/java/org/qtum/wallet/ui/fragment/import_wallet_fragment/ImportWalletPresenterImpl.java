@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -22,6 +23,7 @@ public class ImportWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
     private ImportWalletInteractor mImportWalletFragmentInteractor;
     private boolean isDataLoaded = false;
     private String mPassphrase;
+    private Subscription mSubscription;
 
     public ImportWalletPresenterImpl(ImportWalletView importWalletFragmentView, ImportWalletInteractor importWalletInteractor) {
         mImportWalletFragmentView = importWalletFragmentView;
@@ -43,7 +45,7 @@ public class ImportWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
         getView().setProgressDialog();
         getView().hideKeyBoard();
         isDataLoaded = true;
-        getInteractor().importWallet(brainCode)
+        mSubscription = getInteractor().importWallet(brainCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<String>() {
@@ -103,6 +105,14 @@ public class ImportWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
             getView().dismissProgressDialog();
             isDataLoaded = false;
             getView().openPinFragment(mPassphrase, IMPORTING);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(mSubscription!=null){
+            mSubscription.unsubscribe();
         }
     }
 

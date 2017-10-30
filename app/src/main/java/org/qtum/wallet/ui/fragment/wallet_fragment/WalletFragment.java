@@ -174,7 +174,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         super.onDestroyView();
         mNetworkStateReceiver.removeNetworkStateListener(mNetworkStateListener);
         mUpdateService.removeTransactionListener();
-        mUpdateService.removeBalanceChangeListener();
+        mUpdateService.removeBalanceChangeListener(balanceListener);
         getMainActivity().removePermissionResultListener();
         setAdapterNull();
     }
