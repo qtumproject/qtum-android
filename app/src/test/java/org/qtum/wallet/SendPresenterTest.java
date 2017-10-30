@@ -87,7 +87,7 @@ public class SendPresenterTest {
     public void initialize_WithTokens() {
         when(interactor.getTokenList())
                 .thenReturn(TEST_LIST_TOKENS);
-        when(interactor.getFeePerKbDoubleValue())
+        when(interactor.getFeePerKb())
                 .thenReturn(TEST_FEE_PER_KB_DOUBLE_VALUE);
         when(interactor.getMinGasPrice())
                 .thenReturn(TEST_MIN_GAS_PRISE);
@@ -109,7 +109,7 @@ public class SendPresenterTest {
     public void initialize_EmptyTokens() {
         when(interactor.getTokenList())
                 .thenReturn(TEST_EMPTY_LIST_TOKENS);
-        when(interactor.getFeePerKbDoubleValue())
+        when(interactor.getFeePerKb())
                 .thenReturn(TEST_FEE_PER_KB_DOUBLE_VALUE);
 
         presenter.initializeViews();
@@ -130,7 +130,7 @@ public class SendPresenterTest {
     public void initialize_TokensWithUnsubscribedItems() {
         when(interactor.getTokenList())
                 .thenReturn(TEST_LIST_TOKENS_WITH_UNSUBSCRIBED_ITEMS);
-        when(interactor.getFeePerKbDoubleValue())
+        when(interactor.getFeePerKb())
                 .thenReturn(TEST_FEE_PER_KB_DOUBLE_VALUE);
 
         presenter.initializeViews();

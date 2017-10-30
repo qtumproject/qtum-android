@@ -97,7 +97,7 @@ public class Token extends Contract {
     }
 
     public BigDecimal getTokenBalanceWithDecimalUnits() {
-        return mLastBalance.divide(new BigDecimal(Math.pow(10, (decimalUnits != null) ? decimalUnits.intValue() : 0)));
+        return mLastBalance.divide(new BigDecimal(10).pow((decimalUnits != null) ? decimalUnits.intValue() : 0));
     }
 
 }

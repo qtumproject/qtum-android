@@ -63,7 +63,6 @@ public class TokenFragmentLight extends TokenFragment {
                 mIvChooseAddress.setAlpha(testPercents);
                 mTokenTitle.setAlpha(testPercents);
                 balanceView.setAlpha(testPercents);
-                collapseLinearLayout.collapseFromPercents(percents);
                 //appbarPlaceholder.setAlpha(testP2);
                 prevPercents = percents;
             }

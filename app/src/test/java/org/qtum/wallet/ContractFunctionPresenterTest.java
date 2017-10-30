@@ -82,7 +82,7 @@ public class ContractFunctionPresenterTest {
         when(interactor.getContractMethod(anyString()))
                 .thenReturn(Collections.<ContractMethod>emptyList());
 
-        when(interactor.getFeePerKbDouble())
+        when(interactor.getFeePerKb())
                 .thenReturn(TEST_FEE_DOUBLE);
         when(interactor.getMinGasPrice())
                 .thenReturn(TEST_MIN_GAS_PRISE);
@@ -109,7 +109,7 @@ public class ContractFunctionPresenterTest {
         when(interactor.getContractMethod(anyString()))
                 .thenReturn(TEST_METHODS);
 
-        when(interactor.getFeePerKbDouble())
+        when(interactor.getFeePerKb())
                 .thenReturn(TEST_FEE_DOUBLE);
         when(interactor.getMinGasPrice())
                 .thenReturn(TEST_MIN_GAS_PRISE);

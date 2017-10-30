@@ -7,6 +7,7 @@ import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import rx.Observable;
@@ -17,6 +18,6 @@ public interface ContractConfirmInteractor {
     Observable<SendRawTransactionResponse> sendRawTransaction(SendRawTransactionRequest sendRawTransactionRequest);
     void saveContract(String txid, String contractTemplateUiid, String contractName, String senderAddress);
     String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee);
-    double getMinFee();
+    BigDecimal getFeePerKb();
     int getMinGasPrice();
 }

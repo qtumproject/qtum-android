@@ -17,7 +17,7 @@ public class AESUtil {
 
 	public static byte[] encryptToBytes(String key, String src) {
 		try {
-			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
 			cipher.init(Cipher.ENCRYPT_MODE, makeKey(key), makeIv());
 			return cipher.doFinal(src.getBytes());
 		} catch (Exception e) {
@@ -28,7 +28,7 @@ public class AESUtil {
 	public static String decryptBytes(String key, byte[] src) {
 		String decrypted = "";
 		try {
-			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
 			cipher.init(Cipher.DECRYPT_MODE, makeKey(key), makeIv());
 			decrypted = new String(cipher.doFinal(src));
 		} catch (Exception e) {

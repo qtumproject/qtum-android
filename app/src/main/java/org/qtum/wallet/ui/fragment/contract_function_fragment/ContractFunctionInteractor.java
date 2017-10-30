@@ -17,15 +17,13 @@ import rx.Observable;
 public interface ContractFunctionInteractor {
     List<ContractMethod> getContractMethod(String contractTemplateUiid);
 
-    double getFeePerKbDouble();
+    BigDecimal getFeePerKb();
 
     int getMinGasPrice();
 
     Observable<ContractFunctionInteractorImpl.CallSmartContractRespWrapper> callSmartContractObservable(String methodName,
                                                                                                         List<ContractMethodParameter> contractMethodParameterList,
                                                                                                         String contractAddress);
-
-    BigDecimal getFeePerKbValue();
 
     Observable<List<UnspentOutput>> unspentOutputsForSeveralAddrObservable();
 

@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.CryptoUtilsCompat;
 import org.qtum.wallet.utils.PinEntryEditText;
@@ -27,9 +28,8 @@ import org.qtum.wallet.utils.ThemeUtils;
 import org.qtum.wallet.utils.crypto.KeyStoreHelper;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.utils.CryptoUtils;
-import org.qtum.wallet.utils.fingerprint_utils.FingerprintUtils;
 import org.qtum.wallet.utils.FontTextView;
-import org.qtum.wallet.utils.fingerprint_utils.SensorState;
+
 
 import java.util.Calendar;
 
@@ -121,9 +121,18 @@ public class PinDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
         mWalletPin.requestFocus();
-        if(mTouchIdFlag && FingerprintUtils.isSensorStateAt(SensorState.READY, getContext())) {
-            mTextViewToolBarTitle.setText(org.qtum.wallet.R.string.confirm_fingerprint_or_pin);
-            prepareSensor();
+        if(mTouchIdFlag) {
+            ((MainActivity)getActivity()).checkSensorState(new MainActivity.SensorStateListener() {
+                @Override
+                public void onRequest(MainActivity.SensorState sensorState) {
+                    if(sensorState == MainActivity.SensorState.READY){
+                        mTextViewToolBarTitle.setText(org.qtum.wallet.R.string.confirm_fingerprint_or_pin);
+                        prepareSensor();
+                    } else {
+                        mTextViewToolBarTitle.setText(org.qtum.wallet.R.string.enter_pin);
+                    }
+                }
+            });
         } else {
             mTextViewToolBarTitle.setText(org.qtum.wallet.R.string.enter_pin);
         }
@@ -160,7 +169,6 @@ public class PinDialogFragment extends DialogFragment {
     }
 
     private void prepareSensor() {
-        if (FingerprintUtils.isSensorStateAt(SensorState.READY, getContext())) {
             FingerprintManagerCompat.CryptoObject cryptoObject = CryptoUtils.getCryptoObject();
             if (cryptoObject != null) {
                 mFingerprintHelper = new FingerprintHelper(getContext());
@@ -169,7 +177,7 @@ public class PinDialogFragment extends DialogFragment {
                 //TODO: make
                 Toast.makeText(getContext(), "new fingerprint enrolled. enter pin again", Toast.LENGTH_SHORT).show();
             }
-        }
+
     }
 
     private class FingerprintHelper extends FingerprintManagerCompat.AuthenticationCallback {

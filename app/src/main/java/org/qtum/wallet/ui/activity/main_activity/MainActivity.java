@@ -1,7 +1,9 @@
 package org.qtum.wallet.ui.activity.main_activity;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
+import android.app.KeyguardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +30,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -74,6 +77,8 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     private MainActivityPresenter mMainActivityPresenterImpl;
     private ActivityResultListener mActivityResultListener;
     private PermissionsResultListener mPermissionsResultListener;
+
+    private final int REQUEST_FINGERPRINT = 1000;
 
     protected Fragment mRootFragment;
     private Intent mIntent;
@@ -135,32 +140,32 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                 openRootFragment(mRootFragment);
                 setIconChecked(0);
                 break;
-            case QtumIntent.SEND_FROM_SDK:
-                mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
-                mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
-                mTokenAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_TOKEN);
-                if (getPresenter().getAuthenticationFlag()) {
-                    mRootFragment = SendFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction, mTokenAddressForSendAction, getContext());
-                    openRootFragment(mRootFragment);
-                    setIconChecked(3);
-                } else {
-                    Fragment fragment = PinFragment.newInstance(AUTHENTICATION_AND_SEND, getContext());
-                    openRootFragment(fragment);
-                }
-                break;
-
-            case NfcAdapter.ACTION_NDEF_DISCOVERED:
-                mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
-                mAmountForSendAction = "0.253";
-                if (getPresenter().getAuthenticationFlag()) {
-                    mRootFragment = SendFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction, mTokenAddressForSendAction, getContext());
-                    setIconChecked(3);
-                } else {
-                    mRootFragment = PinFragment.newInstance(AUTHENTICATION_AND_SEND, getContext());
-
-                }
-                openRootFragment(mRootFragment);
-                break;
+//            case QtumIntent.SEND_FROM_SDK:
+//                mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
+//                mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
+//                mTokenAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_TOKEN);
+//                if (getPresenter().getAuthenticationFlag()) {
+//                    mRootFragment = SendFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction, mTokenAddressForSendAction, getContext());
+//                    openRootFragment(mRootFragment);
+//                    setIconChecked(3);
+//                } else {
+//                    Fragment fragment = PinFragment.newInstance(AUTHENTICATION_AND_SEND, getContext());
+//                    openRootFragment(fragment);
+//                }
+//                break;
+//
+//            case NfcAdapter.ACTION_NDEF_DISCOVERED:
+//                mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
+//                mAmountForSendAction = "0.253";
+//                if (getPresenter().getAuthenticationFlag()) {
+//                    mRootFragment = SendFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction, mTokenAddressForSendAction, getContext());
+//                    setIconChecked(3);
+//                } else {
+//                    mRootFragment = PinFragment.newInstance(AUTHENTICATION_AND_SEND, getContext());
+//
+//                }
+//                openRootFragment(mRootFragment);
+//                break;
             default:
                 break;
         }
@@ -697,6 +702,58 @@ public class MainActivity extends BaseActivity implements MainActivityView {
             unbindService(mServiceConnection);
             unregisterReceiver(mNetworkReceiver);
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public void checkSensorState(final SensorStateListener sensorStateListener) {
+        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        if (!keyguardManager.isKeyguardSecure()) {
+            sensorStateListener.onRequest(SensorState.NOT_BLOCKED);
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (!FingerprintManagerCompat.from(this).hasEnrolledFingerprints()) {
+                sensorStateListener.onRequest(SensorState.NO_FINGERPRINTS);
+            } else {
+                sensorStateListener.onRequest(SensorState.READY);
+            }
+        } else {
+            final FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(Context.FINGERPRINT_SERVICE);
+            if(checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED) {
+                if (!fingerprintManager.hasEnrolledFingerprints()) {
+                    sensorStateListener.onRequest(SensorState.NO_FINGERPRINTS);
+                } else {
+                    sensorStateListener.onRequest(SensorState.READY);
+                }
+            } else {
+                loadPermissions(Manifest.permission.USE_FINGERPRINT, REQUEST_FINGERPRINT);
+                addPermissionResultListener(new PermissionsResultListener() {
+                    @Override
+                    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+                        if (requestCode == REQUEST_FINGERPRINT) {
+                            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                                if (!fingerprintManager.hasEnrolledFingerprints()) {
+                                    sensorStateListener.onRequest(SensorState.NO_FINGERPRINTS);
+                                } else {
+                                    sensorStateListener.onRequest(SensorState.READY);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    public interface SensorStateListener{
+        void onRequest(SensorState sensorState);
+    }
+
+    public enum SensorState {
+        NOT_BLOCKED,
+        NO_FINGERPRINTS,
+        READY
     }
 
 }

@@ -2,8 +2,8 @@ package org.qtum.wallet.ui.fragment.pin_fragment;
 
 import android.support.annotation.StringRes;
 
+import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
-import org.qtum.wallet.utils.fingerprint_utils.SensorState;
 
 
 public interface PinView extends BaseFragmentView {
@@ -16,7 +16,7 @@ public interface PinView extends BaseFragmentView {
     void prepareSensor();
     boolean checkTouchIdEnable();
     String getPassphrase();
-    boolean isSensorStateAt(SensorState sensorState);
+    void checkSensorState(MainActivity.SensorStateListener sensorStateListener);
     void openTouchIDPreferenceFragment(boolean isImporting, String pin);
     void openWalletMainFragment();
     void openBackUpWalletFragment(boolean isWalletCreating, String pin);

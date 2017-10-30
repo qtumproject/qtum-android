@@ -2,9 +2,9 @@ package org.qtum.wallet.ui.fragment.pin_fragment;
 
 import org.bitcoinj.wallet.Wallet;
 import org.qtum.wallet.R;
+import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
-import org.qtum.wallet.utils.fingerprint_utils.SensorState;
 
 import java.util.Calendar;
 
@@ -30,6 +30,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
     private String pinHash;
     private PinAction mAction;
     private final Long mBanTime = 600000L;
+    private int titleID = 0;
 
     private boolean isDataLoaded = false;
 
@@ -413,7 +414,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
     public void initializeViews() {
         super.initializeViews();
         mTouchIdFlag = getView().checkTouchIdEnable();
-        int titleID = 0;
         switch (mAction) {
             case IMPORTING:
             case CREATING:
@@ -424,8 +424,17 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
             case AUTHENTICATION:
             case CHECK_AUTHENTICATION:
             case AUTHENTICATION_FOR_PASSPHRASE:
-                if (mTouchIdFlag && getView().isSensorStateAt(SensorState.READY)) {
-                    titleID = R.string.confirm_fingerprint_or_pin;
+                if (mTouchIdFlag) {
+                     getView().checkSensorState(new MainActivity.SensorStateListener() {
+                        @Override
+                        public void onRequest(MainActivity.SensorState sensorState) {
+                            if(sensorState == MainActivity.SensorState.READY){
+                                titleID = R.string.confirm_fingerprint_or_pin;
+                            } else {
+                                titleID = R.string.enter_pin;
+                            }
+                        }
+                    });
                 } else {
                     titleID = R.string.enter_pin;
                 }
@@ -462,9 +471,11 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
         if (isDataLoaded) {
             switch (mAction) {
                 case CREATING: {
-                    getInteractor().savePassword(pinHash);
-                    getView().dismissProgressDialog();
-                    getView().openBackUpWalletFragment(true, pinRepeat);
+                    if(pinHash!=null) {
+                        getInteractor().savePassword(pinHash);
+                        getView().dismissProgressDialog();
+                        getView().openBackUpWalletFragment(true, pinRepeat);
+                    }
                     break;
                 }
                 case AUTHENTICATION: {

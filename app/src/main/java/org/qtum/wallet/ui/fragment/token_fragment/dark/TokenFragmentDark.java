@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
 import org.qtum.wallet.utils.ResizeWidthAnimation;
+import org.qtum.wallet.utils.StackCollapseLinearLayout;
 
 import butterknife.BindView;
 
@@ -18,6 +19,10 @@ public class TokenFragmentDark extends TokenFragment {
 
     @BindView(R.id.fade_divider)
     View fadeDivider;
+
+    @BindView(R.id.collapse_layout)
+    protected
+    StackCollapseLinearLayout collapseLinearLayout;
 
     @Override
     protected int getLayout() {
@@ -74,6 +79,7 @@ public class TokenFragmentDark extends TokenFragment {
             }
 
         });
+        collapseLinearLayout.requestLayout();
         doDividerCollapse();
     }
 
