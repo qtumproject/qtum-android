@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
+import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.ResizeWidthAnimation;
 import org.qtum.wallet.utils.StackCollapseLinearLayout;
 
@@ -115,7 +116,7 @@ public class TokenFragmentDark extends TokenFragment {
     public void onContractPropertyUpdated(String propName, String propValue) {
         switch (propName){
             case totalSupply:
-                totalSupplyValue.setText(propValue);
+                totalSupplyValue.setText(ContractBuilder.getShortBigNumberRepresentation(propValue));
                 break;
             case decimals:
                 decimalsValue.setText(propValue);

@@ -24,6 +24,7 @@ import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
+import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.SearchBar;
@@ -216,7 +217,11 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyV
                 @Override
                 public void run() {
                     spinner.setVisibility(View.GONE);
-                    mTextViewCurrencyBalance.setText(String.valueOf(((CurrencyToken) mCurrency).getToken().getTokenBalanceWithDecimalUnits()));
+                    mTextViewCurrencyBalance.setText(
+                            ContractBuilder.getShortBigNumberRepresentation(
+                                    String.valueOf(((CurrencyToken) mCurrency).getToken().getTokenBalanceWithDecimalUnits())
+                            )
+                    );
                     mTextViewCurrencyBalance.setVisibility(View.VISIBLE);
                 }
             });

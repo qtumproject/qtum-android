@@ -218,6 +218,7 @@ public class UpdateService extends Service {
                 JSONObject data = (JSONObject) args[0];
                 TokenBalance tokenBalance = gson.fromJson(data.toString(), TokenBalance.class);
                 updateTokenBalance(tokenBalance);
+                Log.d("TOKEN BALANCE:", String.format("ADDRESS = %s, BALANACE = %s", tokenBalance.getContractAddress(), tokenBalance.getTotalBalance()));
             }
         }).on("contract_purchase", new Emitter.Listener() {
             @Override

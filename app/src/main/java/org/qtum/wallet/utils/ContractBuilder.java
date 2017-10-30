@@ -38,11 +38,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -181,7 +185,7 @@ public class ContractBuilder {
                 if (paramsList.size() > 0) {
                     String arrayLength = (TextUtils.isEmpty(arrayTypeAndLength.second)) ? String.valueOf(paramsList.size()) : arrayTypeAndLength.second;
                     stringParams += appendNumericPattern(arrayLength);
-                    for (String item : paramsList){
+                    for (String item : paramsList) {
                         stringParams += appendArrayParameter(arrayTypeAndLength.first, item);
                     }
                 }
@@ -190,12 +194,12 @@ public class ContractBuilder {
         return stringParams;
     }
 
-    private String appendArrayParameter(String type, String param){
+    private String appendArrayParameter(String type, String param) {
         if (type.contains(TYPE_INT)) {
             return appendNumericPattern(convertToByteCode(new BigInteger(param)));
         } else if (type.contains(TYPE_BOOL)) {
             return appendBoolean(param);
-        }else if (type.contains(TYPE_ADDRESS)) {
+        } else if (type.contains(TYPE_ADDRESS)) {
             return appendAddressPattern(param);
         }
         return "";
@@ -316,11 +320,11 @@ public class ContractBuilder {
         byte[] version = Hex.decode("04000000");
 
         byte[] arrayGasLimit = org.spongycastle.util.Arrays.reverse((new BigInteger(String.valueOf(gasLimitInt))).toByteArray());
-        byte[] gasLimit = new byte[]{0,0,0,0,0,0,0,0};
+        byte[] gasLimit = new byte[]{0, 0, 0, 0, 0, 0, 0, 0};
         System.arraycopy(arrayGasLimit, 0, gasLimit, 0, arrayGasLimit.length);
 
         byte[] arrayGasPrice = org.spongycastle.util.Arrays.reverse((new BigInteger(String.valueOf(gasPriceInt))).toByteArray());
-        byte[] gasPrice = new byte[]{0,0,0,0,0,0,0,0};
+        byte[] gasPrice = new byte[]{0, 0, 0, 0, 0, 0, 0, 0};
         System.arraycopy(arrayGasPrice, 0, gasPrice, 0, arrayGasPrice.length);
 
         byte[] data = Hex.decode(abiParams);
@@ -350,16 +354,16 @@ public class ContractBuilder {
         return new Script(program);
     }
 
-    public Script createMethodScript(String abiParams, int gasLimitInt, int gasPriceInt,String _contractAddress) throws RuntimeException {
+    public Script createMethodScript(String abiParams, int gasLimitInt, int gasPriceInt, String _contractAddress) throws RuntimeException {
 
         byte[] version = Hex.decode("04000000");
 
         byte[] arrayGasLimit = org.spongycastle.util.Arrays.reverse((new BigInteger(String.valueOf(gasLimitInt))).toByteArray());
-        byte[] gasLimit = new byte[]{0,0,0,0,0,0,0,0};
+        byte[] gasLimit = new byte[]{0, 0, 0, 0, 0, 0, 0, 0};
         System.arraycopy(arrayGasLimit, 0, gasLimit, 0, arrayGasLimit.length);
 
         byte[] arrayGasPrice = org.spongycastle.util.Arrays.reverse((new BigInteger(String.valueOf(gasPriceInt))).toByteArray());
-        byte[] gasPrice = new byte[]{0,0,0,0,0,0,0,0};
+        byte[] gasPrice = new byte[]{0, 0, 0, 0, 0, 0, 0, 0};
         System.arraycopy(arrayGasPrice, 0, gasPrice, 0, arrayGasPrice.length);
 
         byte[] data = Hex.decode(abiParams);
@@ -392,7 +396,7 @@ public class ContractBuilder {
         return new Script(program);
     }
 
-    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice,BigDecimal feePerKb, String feeString, Context context) {
+    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String feeString, Context context) {
 
         Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
         transaction.addOutput(Coin.ZERO, script);
@@ -430,10 +434,10 @@ public class ContractBuilder {
 
         byte[] bytes = transaction.unsafeBitcoinSerialize();
 
-        int txSizeInkB = (int) Math.ceil(bytes.length/1024.);
+        int txSizeInkB = (int) Math.ceil(bytes.length / 1024.);
         BigDecimal minimumFee = (feePerKb.multiply(new BigDecimal(txSizeInkB)));
-        if(minimumFee.doubleValue() > fee.doubleValue()){
-            throw new RuntimeException(context.getString(R.string.insufficient_fee_lease_use_minimum_of) +" "+ minimumFee.toString() + " QTUM");
+        if (minimumFee.doubleValue() > fee.doubleValue()) {
+            throw new RuntimeException(context.getString(R.string.insufficient_fee_lease_use_minimum_of) + " " + minimumFee.toString() + " QTUM");
         }
 
         return Hex.toHexString(bytes);
@@ -599,6 +603,26 @@ public class ContractBuilder {
         ripemd160Digest.doFinal(out2, 0);
 
         return Hex.toHexString(out2);
+    }
+
+    public static String getShortBigNumberRepresentation(String value, int maxLength) {
+        if (value.length() > maxLength) {
+            BigDecimal number = new BigDecimal(value);
+            NumberFormat formatter = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
+            return formatter.format(number);
+        } else {
+            return value;
+        }
+    }
+
+    public static String getShortBigNumberRepresentation(String value) {
+        if (value.length() > 10) {
+            BigDecimal number = new BigDecimal(value);
+            NumberFormat formatter = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
+            return formatter.format(number);
+        } else {
+            return value;
+        }
     }
 
 }
