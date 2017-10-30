@@ -218,7 +218,7 @@ public class UpdateService extends Service {
                 JSONObject data = (JSONObject) args[0];
                 TokenBalance tokenBalance = gson.fromJson(data.toString(), TokenBalance.class);
                 updateTokenBalance(tokenBalance);
-                Log.d("TOKEN BALANCE:", String.format("ADDRESS = %s, BALANACE = %s", tokenBalance.getContractAddress(), tokenBalance.getTotalBalance()));
+
             }
         }).on("contract_purchase", new Emitter.Listener() {
             @Override
@@ -255,14 +255,7 @@ public class UpdateService extends Service {
     private void updateTokenBalance(TokenBalance tokenBalance){
         TokenBalance tokenBalanceFromList = mAllTokenBalanceList.get(tokenBalance.getContractAddress());
         if(tokenBalanceFromList != null){
-            for (Balance b : tokenBalanceFromList.getBalances()){
-                for (Balance b2 : tokenBalance.getBalances()){
-                    if(b.getAddress().equals(b2.getAddress())){
-                        b.setBalance(b2.getBalance());
-                        break;
-                    }
-                }
-            }
+            tokenBalanceFromList.setBalances(tokenBalance.getBalances());
         } else {
             mAllTokenBalanceList.put(tokenBalance.getContractAddress(),tokenBalance);
         }
