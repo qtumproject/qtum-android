@@ -185,6 +185,7 @@
     <string name="insufficient_fee_lease_use_minimum_of">交易费不足。请使用至少</string>
 
     <string name="no_transaction_available_yet">当前没有有效交易</string>
+    <string name="amount_too_big">Amount Value Too Big</string>
 
 
 </resources>

@@ -12,6 +12,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,7 +129,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
     @Override
     public void onResponse(String publicAddress, double amount, String tokenAddress) {
         getView().updateData(publicAddress, amount);
-        if(!tokenAddress.isEmpty()) {
+        if (!tokenAddress.isEmpty()) {
             searchAndSetUpCurrency(tokenAddress);
         }
     }
@@ -162,6 +163,13 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
         }
     }
 
+    public boolean isAmountValid(String amount) {
+        BigDecimal bigAmount = new BigDecimal(amount);
+        BigDecimal pattern = new BigDecimal("2").pow(256);
+
+        return bigAmount.compareTo(pattern) < 0;
+    }
+
     @Override
     public void onPinSuccess() {
         Currency currency = getView().getCurrency();
@@ -174,7 +182,11 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
         int gasPrice = getView().getGasPriceInput();
 
         if (currency.getName().equals("Qtum " + getView().getStringValue(org.qtum.wallet.R.string.default_currency))) {
-            getInteractor().sendTx(from, address, amount, fee, getView().getSendTransactionCallback());
+            if(isAmountValid(amount)) {
+                getInteractor().sendTx(from, address, amount, fee, getView().getSendTransactionCallback());
+            } else {
+                getView().setAlertDialog(getView().getContext().getString(R.string.amount_too_big), getView().getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
+            }
         } else {
             for (final Token token : mTokenList) {
                 String contractAddress = token.getContractAddress();
@@ -185,6 +197,10 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                     if (token.getDecimalUnits() != null) {
                         resultAmount = String.valueOf((int) (Double.valueOf(amount) * Math.pow(10, token.getDecimalUnits())));
                         resultAmount = String.valueOf(Integer.valueOf(resultAmount));
+                    }
+
+                    if(!isAmountValid(resultAmount)){
+                        getView().setAlertDialog(getView().getContext().getString(R.string.amount_too_big), getView().getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
                     }
 
                     TokenBalance tokenBalance = getView().getTokenBalance(contractAddress);
