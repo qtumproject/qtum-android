@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.ContractTemplate;
@@ -87,12 +90,19 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
         @BindView(R.id.contract_type)
         FontTextView mTextViewContractType;
 
+        @BindView(R.id.main_container)
+        RelativeLayout mRelativeLayout;
+
+        @BindView(R.id.ll_unsubscribe)
+        LinearLayout mLinearLayoutUnsubscribe;
+
         Contract mContract;
 
         public ContractViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
+
+            mRelativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mContract.isHasBeenCreated()) {
@@ -103,8 +113,14 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
             });
         }
 
-        public void bindContract(Contract contract) {
+        public void bindContract(Contract contract, final ContractItemListener contractItemListener) {
             mContract = contract;
+            mLinearLayoutUnsubscribe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    contractItemListener.onUnsubscribeClick(mContract);
+                }
+            });
             if (contract.getDate() != null) {
                 mTextViewDate.setText(DateCalculator.getShortDate(contract.getDate()));
             } else {
@@ -122,10 +138,12 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
 
         List<Contract> mContractList;
         int mResId;
+        ContractItemListener mContractItemListener;
 
-        public ContractAdapter(List<Contract> contractList, int resId) {
+        public ContractAdapter(List<Contract> contractList, int resId, ContractItemListener contractItemListener) {
             mContractList = contractList;
             mResId = resId;
+            mContractItemListener = contractItemListener;
         }
 
         @Override
@@ -137,13 +155,22 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
 
         @Override
         public void onBindViewHolder(ContractViewHolder holder, int position) {
-            holder.bindContract(mContractList.get(position));
+            holder.bindContract(mContractList.get(position),mContractItemListener);
         }
 
         @Override
         public int getItemCount() {
             return mContractList.size();
         }
+
+        public void setContractList(List<Contract> contractList) {
+            mContractList = contractList;
+        }
     }
 
+    @Override
+    public void updateRecyclerView(List<Contract> contracts) {
+        mContractAdapter.setContractList(contracts);
+        mContractAdapter.notifyDataSetChanged();
+    }
 }

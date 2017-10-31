@@ -2,6 +2,7 @@ package org.qtum.wallet.ui.fragment.my_contracts_fragment.light;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Contract;
+import org.qtum.wallet.ui.fragment.my_contracts_fragment.ContractItemListener;
 import org.qtum.wallet.ui.fragment.my_contracts_fragment.MyContractsFragment;
 
 import java.util.List;
@@ -15,8 +16,8 @@ public class MyContractsFragmentLight extends MyContractsFragment{
     }
 
     @Override
-    public void updateRecyclerView(List<Contract> contractList) {
-        mContractAdapter = new ContractAdapter(contractList, R.layout.lyt_contract_list_item_light);
+    public void setUpRecyclerView(List<Contract> contractList, ContractItemListener contractItemListener) {
+        mContractAdapter = new ContractAdapter(contractList, R.layout.item_contract_list_light,contractItemListener);
         mRecyclerView.setAdapter(mContractAdapter);
     }
 

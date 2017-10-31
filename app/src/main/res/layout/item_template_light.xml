@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/root_layout"
+                android:clickable="true"
+                android:background="@drawable/list_item_background_selector_light"
+                android:layout_width="match_parent"
+                android:layout_height="65dp">
+
+    <org.qtum.wallet.utils.FontTextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:maxLines="1"
+        android:text="@string/about"
+        android:gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:textSize="18sp"
+        app:typefaceAsset="@string/proximaNovaRegular"
+        android:textColor="@color/bottom_nav_view_item_color"
+        android:ellipsize="end"
+        android:layout_height="match_parent" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/arrow"
+        app:srcCompat="@drawable/ic_setting_arrow"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:scaleType="center"
+        android:layout_marginEnd="8dp"
+        android:tint="@color/grey"
+        android:layout_width="16dp"
+        android:layout_height="16dp" />
+
+    <org.qtum.wallet.utils.FontTextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:text="@string/about"
+        android:textSize="16sp"
+        app:typefaceAsset="@string/proximaNovaLight"
+        android:textColor="@color/bottom_nav_view_item_color"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/arrow"/>
+
+    <org.qtum.wallet.utils.FontTextView
+        android:id="@+id/contract_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:text="@string/about"
+        android:background="@drawable/btn_sea_corner_background_light"
+        app:typefaceAsset="@string/proximaNovaRegular"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:layout_above="@+id/arrow"
+        android:layout_toEndOf="@+id/title"/>
+
+    <View
+        android:layout_alignParentBottom="true"
+        android:background="@color/bottom_nav_bar_color_light"
+        android:layout_marginStart="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+</RelativeLayout>
