@@ -3,6 +3,7 @@ package org.qtum.wallet.ui.fragment.news_fragment;
 import org.qtum.wallet.datastorage.NewsStorage;
 import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.model.news.RssFeed;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import java.util.List;
@@ -16,16 +17,11 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
     private NewsView mNewsFragmentView;
     private NewsInteractor mNewsFragmentInteractor;
     private final String MEDIUM_QTUM_CHANEL = "@qtum";
+    private boolean mNetworkConnectedFlag = false;
 
     public NewsPresenterImpl(NewsView newsFragmentView, NewsInteractor newsInteractor) {
         mNewsFragmentView = newsFragmentView;
         mNewsFragmentInteractor = newsInteractor;
-    }
-
-    @Override
-    public void initializeViews() {
-        super.initializeViews();
-        loadAndUpdateNews();
     }
 
     @Override
@@ -45,7 +41,25 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
 
     @Override
     public void onRefresh() {
-        loadAndUpdateNews();
+        if (mNetworkConnectedFlag) {
+            loadAndUpdateNews();
+        } else {
+            getView().setAlertDialog(org.qtum.wallet.R.string.no_internet_connection,
+                    org.qtum.wallet.R.string.please_check_your_network_settings,
+                    org.qtum.wallet.R.string.ok,
+                    BaseFragment.PopUpType.error);
+            getView().stopRefreshRecyclerAnimation();
+        }
+    }
+
+    @Override
+    public void onNetworkStateChanged(boolean networkConnectedFlag) {
+        mNetworkConnectedFlag = networkConnectedFlag;
+        if (networkConnectedFlag) {
+            loadAndUpdateNews();
+        } else {
+            getView().updateNews(getInteractor().getNewses());
+        }
     }
 
     private void loadAndUpdateNews() {
