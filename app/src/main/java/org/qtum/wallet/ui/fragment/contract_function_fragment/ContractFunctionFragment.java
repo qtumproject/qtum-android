@@ -30,6 +30,7 @@ import org.qtum.wallet.utils.FontManager;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.ResizeHeightAnimation;
 
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -351,6 +352,8 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         private int uint16 = (int) Math.pow(2, 16);
         private long uint32 = (long) Math.pow(2, 32);
         private long uint64 = (long) Math.pow(2, 64);
+        private BigInteger uint128 = new BigInteger("2").pow(128);
+        private BigInteger uint256 = new BigInteger("2").pow(256);
 
         private ContractMethodParameter parameter;
 
@@ -369,9 +372,11 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
                         case TYPE_UINT32:
                             return validateUINT(content, uint32);
                         case TYPE_UINT64:
-                        case TYPE_UINT128:
-                        case TYPE_UINT256:
                             return validateUINT(content, uint64);
+                        case TYPE_UINT128:
+                            return validateUINT(content, uint128);
+                        case TYPE_UINT256:
+                            return validateUINT(content, uint256);
 
                         default:
                             parameter.setValue(content);
@@ -475,6 +480,18 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
                 long num = Long.parseLong(content);
                 if (num > 0 && num < uint) {
                     parameter.setValue(String.valueOf(num));
+                    return ALLOW;
+                }
+            } catch (Exception e) {
+                return DENY;
+            }
+            return DENY;
+        }
+
+        private String validateUINT(String content, BigInteger uint){
+            try {
+                BigInteger num = new BigInteger(content);
+                if ((num.compareTo(BigInteger.ZERO) > 0) && (num.compareTo(uint) < 0)) {
                     return ALLOW;
                 }
             } catch (Exception e) {
