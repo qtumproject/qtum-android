@@ -2,6 +2,7 @@ package org.qtum.wallet.ui.fragment.token_fragment;
 
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+import org.qtum.wallet.utils.ContractBuilder;
 
 public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements TokenPresenter {
 
@@ -20,13 +21,14 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
         super.initializeViews();
         setQtumAddress();
 
-        getInteractor().setupPropertyTotalSupplyValue(token, getView().getTotalSupplyValueCallback());
+
 
         if (token.getDecimalUnits() == null) {
             getInteractor().setupPropertyDecimalsValue(token, getView().getDecimalsValueCallback());
         } else {
             getView().onContractPropertyUpdated(TokenFragment.decimals, String.valueOf(token.getDecimalUnits()));
-            getView().setBalance(token.getTokenBalanceWithDecimalUnits().toString());
+            getView().setBalance(ContractBuilder.getShortBigNumberRepresentation(token.getTokenBalanceWithDecimalUnits().toString()));
+            getInteractor().setupPropertyTotalSupplyValue(token, getView().getTotalSupplyValueCallback());
         }
 
         getInteractor().setupPropertySymbolValue(token, getView().getSymbolValueCallback());
@@ -64,7 +66,8 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
     @Override
     public void onDecimalsPropertySuccess(String value) {
         token = getInteractor().setTokenDecimals(token, value);
-        getView().setBalance(token.getTokenBalanceWithDecimalUnits().toString());
+        getView().setBalance(ContractBuilder.getShortBigNumberRepresentation(token.getTokenBalanceWithDecimalUnits().toString()));
+        getInteractor().setupPropertyTotalSupplyValue(token, getView().getTotalSupplyValueCallback());
     }
 
     @Override

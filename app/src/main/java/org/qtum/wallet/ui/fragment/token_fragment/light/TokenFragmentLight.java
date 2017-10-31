@@ -9,6 +9,7 @@ import android.widget.TextView;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
 import org.qtum.wallet.ui.wave_visualizer.WaveHelper;
 import org.qtum.wallet.ui.wave_visualizer.WaveView;
+import org.qtum.wallet.utils.ContractBuilder;
 
 import butterknife.BindView;
 
@@ -94,7 +95,7 @@ public class TokenFragmentLight extends TokenFragment {
     public void onContractPropertyUpdated(String propName, String propValue) {
         switch (propName){
             case totalSupply:
-                totalSupplyValue.setText(propValue);
+                totalSupplyValue.setText(ContractBuilder.getShortBigNumberRepresentation(propValue));
                 break;
             case decimals:
                 decimalsValue.setText(propValue);
