@@ -7,4 +7,5 @@ public interface NewsPresenter extends BaseFragmentPresenter {
 
     void onRefresh();
 
+    void onNetworkStateChanged(boolean networkConnectedFlag);
 }

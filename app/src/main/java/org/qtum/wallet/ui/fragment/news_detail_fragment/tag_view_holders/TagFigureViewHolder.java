@@ -19,6 +19,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 
 public class TagFigureViewHolder extends TagViewHolder {
@@ -39,7 +40,8 @@ public class TagFigureViewHolder extends TagViewHolder {
         if(mSubscription!=null) {
             mSubscription.unsubscribe();
         }
-        mSubscription = Observable.fromCallable(new Callable<Bitmap>() {
+        mImageView.setImageBitmap(null);
+        mSubscription = (Observable.fromCallable(new Callable<Bitmap>() {
             @Override
             public Bitmap call() throws Exception {
                 return Picasso.with(mImageView.getContext()).load(element.select("img").attr("src")).get();
@@ -65,12 +67,15 @@ public class TagFigureViewHolder extends TagViewHolder {
                         multiplier = Integer.valueOf(bitmap.getWidth()).doubleValue() / resizeWidth;
                         resizeHeight = Double.valueOf(Math.ceil(bitmap.getHeight() / multiplier)).intValue();
 
+                        mImageView.getLayoutParams().width = resizeWidth;
+                        mImageView.getLayoutParams().height = resizeHeight;
+
                         Picasso.with(mImageView.getContext())
                                 .load(element.select("img").attr("src"))
                                 .resize(resizeWidth, resizeHeight)
                                 .centerInside()
                                 .into(mImageView);
                     }
-                });
+                }));
     }
 }

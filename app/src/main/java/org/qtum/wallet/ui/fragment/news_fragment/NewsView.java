@@ -13,4 +13,6 @@ public interface NewsView extends BaseFragmentView {
     void setAdapterNull();
 
     void updateNews(List<News> newses);
+
+    void stopRefreshRecyclerAnimation();
 }
