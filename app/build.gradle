@@ -138,5 +138,7 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.3'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
+
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
 }
 apply plugin: 'com.google.gms.google-services'
