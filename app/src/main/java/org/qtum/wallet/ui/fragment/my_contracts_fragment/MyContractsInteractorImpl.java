@@ -2,6 +2,7 @@ package org.qtum.wallet.ui.fragment.my_contracts_fragment;
 
 import android.content.Context;
 
+import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
@@ -45,5 +46,15 @@ public class MyContractsInteractorImpl implements MyContractsInteractor {
     public void setTokens(List<Token> tokens) {
         TinyDB tinyDB = new TinyDB(mContext.get());
         tinyDB.putTokenList(tokens);
+    }
+
+    @Override
+    public boolean isShowWizard() {
+        return QtumSharedPreference.getInstance().getShowContractsDeleteUnsubscribeWizard(mContext.get());
+    }
+
+    @Override
+    public void setShowWizard(boolean isShow) {
+        QtumSharedPreference.getInstance().setShowContractsDeleteUnsubscribeWizard(mContext.get(), isShow);
     }
 }

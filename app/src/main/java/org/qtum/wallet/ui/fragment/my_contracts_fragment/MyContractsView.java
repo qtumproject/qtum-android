@@ -11,5 +11,7 @@ public interface MyContractsView extends BaseFragmentView {
 
     void setPlaceHolder();
 
+    void showWizard();
+
     void updateRecyclerView(List<Contract> contracts);
 }
