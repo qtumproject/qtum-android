@@ -1,6 +1,6 @@
 package org.qtum.wallet.ui.fragment.qtum_cash_management_fragment;
 
-import org.qtum.wallet.model.DeterministicKeyWithBalance;
+import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 
 import java.util.List;
@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface AddressListPresenter extends BaseFragmentPresenter {
 
-    DeterministicKeyWithBalance getKeyWithBalanceFrom();
+    AddressWithBalance getKeyWithBalanceFrom();
 
-    void setKeyWithBalanceFrom(DeterministicKeyWithBalance keyWithBalanceFrom);
+    void setKeyWithBalanceFrom(AddressWithBalance keyWithBalanceFrom);
 
-    List<DeterministicKeyWithBalance> getKeyWithBalanceList();
+    List<AddressWithBalance> getAddressWithBalanceList();
 }

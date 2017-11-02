@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment.my_contracts_fragment.ContractItemListener;
 import org.qtum.wallet.ui.fragment.my_contracts_fragment.MyContractsInteractor;
 import org.qtum.wallet.ui.fragment.my_contracts_fragment.MyContractsPresenterImpl;
 import org.qtum.wallet.ui.fragment.my_contracts_fragment.MyContractsView;
@@ -60,7 +61,7 @@ public class MyContractsPresenterTest {
 
         verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
 
-        verify(view, never()).setUpRecyclerView(anyList());
+        verify(view, never()).setUpRecyclerView(anyList(),(ContractItemListener)any());
         verify(view, never()).setPlaceHolder();
     }
 
@@ -71,7 +72,7 @@ public class MyContractsPresenterTest {
 
         presenter.initializeViews();
 
-        verify(view, times(1)).setUpRecyclerView(anyList());
+        verify(view, times(1)).setUpRecyclerView(anyList(), (ContractItemListener)any());
 
         verify(view, never()).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
         verify(view, never()).setPlaceHolder();

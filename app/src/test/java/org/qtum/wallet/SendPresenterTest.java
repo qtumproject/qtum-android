@@ -54,7 +54,7 @@ public class SendPresenterTest {
     private static final List<Token> TEST_LIST_TOKENS_WITH_UNSUBSCRIBED_ITEMS = Arrays.asList(new Token(true), new Token(true), new Token(true), new Token(false));
     private static final List<Token> TEST_EMPTY_LIST_TOKENS = Collections.emptyList();
     private static final FeePerKb TEST_FEE_PER_KB = new FeePerKb(new BigDecimal("10.0"));
-    private static final double TEST_FEE_PER_KB_DOUBLE_VALUE = 10.0;
+    private static final BigDecimal TEST_FEE_PER_KB_DOUBLE_VALUE = new BigDecimal(10.0);
     private static final int TEST_MIN_GAS_PRISE = 10;
     private static final double TEST_FEE_DEFAULT_VALUE = 0.0;
 

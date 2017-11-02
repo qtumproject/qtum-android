@@ -10,7 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.model.DeterministicKeyWithBalance;
+import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
@@ -79,7 +79,7 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
         });
     }
 
-    public void transfer(DeterministicKeyWithBalance keyWithBalanceTo, DeterministicKeyWithBalance keyWithBalanceFrom, String amountString) {
+    public void transfer(AddressWithBalance keyWithBalanceTo, AddressWithBalance keyWithBalanceFrom, String amountString) {
         if (TextUtils.isEmpty(amountString)) {
             setAlertDialog(getString(R.string.error),
                     getString(R.string.enter_valid_amount_value),

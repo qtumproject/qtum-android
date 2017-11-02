@@ -72,7 +72,7 @@ public class ContractFunctionPresenterTest {
     }
 
     private final String TEST_UUID = "uuid";
-    private final double TEST_FEE_DOUBLE = 2.0;
+    private final BigDecimal TEST_FEE_DOUBLE = new BigDecimal("2.0");
     private final int TEST_MIN_GAS_PRISE = 2;
 
     @Test
@@ -178,7 +178,7 @@ public class ContractFunctionPresenterTest {
     public void onCallClick_ValidSmartContractResp_CreateTxError() {
         when(interactor.callSmartContractObservable(anyString(), anyList(), anyString()))
                 .thenReturn(Observable.just(TEST_RIGHT_RESP_WRAPPER));
-        when(interactor.getFeePerKbValue())
+        when(interactor.getFeePerKb())
                 .thenReturn(new BigDecimal("12"));
         when(interactor.unspentOutputsForSeveralAddrObservable())
                 .thenReturn(Observable.<List<UnspentOutput>>error(new Throwable("Unspent outputs error")));
@@ -197,7 +197,7 @@ public class ContractFunctionPresenterTest {
     public void onCallClick_CreateTxSuccess_SendTxError() {
         when(interactor.callSmartContractObservable(anyString(), anyList(), anyString()))
                 .thenReturn(Observable.just(TEST_RIGHT_RESP_WRAPPER));
-        when(interactor.getFeePerKbValue())
+        when(interactor.getFeePerKb())
                 .thenReturn(new BigDecimal("12"));
 
         when(interactor.unspentOutputsForSeveralAddrObservable())
@@ -220,7 +220,7 @@ public class ContractFunctionPresenterTest {
     public void onCallClick_CreateTxSuccess_SendTxSuccess() {
         when(interactor.callSmartContractObservable(anyString(), anyList(), anyString()))
                 .thenReturn(Observable.just(TEST_RIGHT_RESP_WRAPPER));
-        when(interactor.getFeePerKbValue())
+        when(interactor.getFeePerKb())
                 .thenReturn(new BigDecimal("12"));
 
         when(interactor.unspentOutputsForSeveralAddrObservable())

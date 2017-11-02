@@ -8,6 +8,9 @@ import java.math.BigDecimal;
 
 public class UnspentOutput {
 
+    @SerializedName("address")
+    @Expose
+    private String address;
     @SerializedName("amount")
     @Expose
     private BigDecimal amount;
@@ -47,6 +50,10 @@ public class UnspentOutput {
         this.confirmations = confirmations;
         this.isStake = isStake;
         this.amount = amount;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public BigDecimal getAmount() {

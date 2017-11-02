@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.model.DeterministicKeyWithBalance;
+import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFragment;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceAdapter;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceSpinnerAdapter;
@@ -30,33 +30,33 @@ public class AddressListFragmentDark extends AddressListFragment {
     }
 
     @Override
-    public void updateAddressList(List<DeterministicKeyWithBalance> deterministicKeyWithBalance) {
+    public void updateAddressList(List<AddressWithBalance> deterministicKeyWithBalance) {
         mAddressesWithBalanceAdapter = new AddressesWithBalanceAdapter(deterministicKeyWithBalance, this, R.layout.item_address);
         mRecyclerView.setAdapter(mAddressesWithBalanceAdapter);
     }
 
     @Override
-    public void onItemClick(DeterministicKeyWithBalance deterministicKeyWithBalance) {
-        List<DeterministicKeyWithBalance> deterministicKeyWithBalances = new ArrayList<>(getPresenter().getKeyWithBalanceList());
+    public void onItemClick(AddressWithBalance deterministicKeyWithBalance) {
+        List<AddressWithBalance> deterministicKeyWithBalances = new ArrayList<>(getPresenter().getAddressWithBalanceList());
         deterministicKeyWithBalances.remove(deterministicKeyWithBalance);
         showTransferDialogFragment(deterministicKeyWithBalance, deterministicKeyWithBalances);
     }
 
-    protected void showTransferDialogFragment(final DeterministicKeyWithBalance keyWithBalanceTo, List<DeterministicKeyWithBalance> keyWithBalanceList) {
+    protected void showTransferDialogFragment(final AddressWithBalance keyWithBalanceTo, List<AddressWithBalance> keyWithBalanceList) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_transfer_balance_fragment, null);
 
         final TextInputEditText mEditTextAmount = (TextInputEditText) view.findViewById(R.id.et_amount);
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner_transfer);
         FontTextView mEditTextAddressTo = (FontTextView) view.findViewById(R.id.tv_address_to);
 
-        mEditTextAddressTo.setText(keyWithBalanceTo.getKey().toAddress(CurrentNetParams.getNetParams()).toString());
+        mEditTextAddressTo.setText(keyWithBalanceTo.getAddress());
 
         AddressesWithBalanceSpinnerAdapter spinnerAdapter = new AddressesWithBalanceSpinnerAdapterDark(getContext(), keyWithBalanceList);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                getPresenter().setKeyWithBalanceFrom((DeterministicKeyWithBalance) spinner.getItemAtPosition(i));
+                getPresenter().setKeyWithBalanceFrom((AddressWithBalance) spinner.getItemAtPosition(i));
             }
 
             @Override
