@@ -10,10 +10,10 @@ public class CurrentNetParams {
     public  CurrentNetParams(){}
 
     public static NetworkParameters getNetParams(){
-        return QtumTestNetParams.get();
+        return QtumMainNetParams.get();
     }
 
     public static String getUrl(){
-        return "http://163.172.251.4:5931/";
+        return "https://walletapi.qtum.org/";
     }
 }

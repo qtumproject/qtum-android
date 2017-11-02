@@ -55,6 +55,7 @@ android {
             throw new GradleException("Could not read version.properties!")
         }
     }
+
     defaultConfig {
         applicationId "org.qtum.wallet"
         minSdkVersion 19
@@ -65,10 +66,13 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
         }
         debug {
         }

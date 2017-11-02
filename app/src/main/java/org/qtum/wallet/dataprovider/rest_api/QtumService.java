@@ -1,6 +1,9 @@
 package org.qtum.wallet.dataprovider.rest_api;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.qtum.wallet.model.gson.BlockChainInfo;
 
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
@@ -22,9 +25,22 @@ import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.model.gson.qstore.QstoreSourceCodeResponse;
 import org.qtum.wallet.utils.CurrentNetParams;
 
+
+import java.math.BigDecimal;
+import java.security.KeyStore;
+import java.security.SecureRandom;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -47,24 +63,74 @@ public class QtumService {
     }
 
     private QtumService() {
+        try {
+            final TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        @Override
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType){
+                        }
 
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                        @Override
+                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType){
 
-        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(interceptor)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .build();
+                        }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(CurrentNetParams.getUrl())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(okHttpClient)
-                .build();
+                        @Override
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                            return new java.security.cert.X509Certificate[]{};
+                        }
+                    }
+            };
 
-        mServiceApi = retrofit.create(QtumRestService.class);
+            // Install the all-trusting trust manager
+
+            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient.Builder client = new OkHttpClient.Builder();
+            client.interceptors().add(httpLoggingInterceptor);
+            client.readTimeout(180, TimeUnit.SECONDS);
+            client.connectTimeout(180, TimeUnit.SECONDS);
+
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(null, null);
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(keyStore);
+            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+            keyManagerFactory.init(keyStore, "keystore_pass".toCharArray());
+            sslContext.init(null, trustAllCerts, new SecureRandom());
+            client.sslSocketFactory(sslContext.getSocketFactory())
+                    .hostnameVerifier(new HostnameVerifier() {
+                        @Override
+                        public boolean verify(String hostname, SSLSession session) {
+                            return true;
+                        }
+                    });
+
+            Gson gson = new GsonBuilder().setLenient().create();
+
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(interceptor)
+                    .readTimeout(10, TimeUnit.SECONDS)
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .build();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(CurrentNetParams.getUrl())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .client(client.build())
+                    .build();
+
+            mServiceApi = retrofit.create(QtumRestService.class);
+        } catch (Exception e){
+
+        }
     }
 
     public Observable<List<UnspentOutput>> getUnspentOutputs(final String address) {
