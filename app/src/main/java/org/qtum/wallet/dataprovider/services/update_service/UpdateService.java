@@ -49,6 +49,8 @@ import org.qtum.wallet.utils.DateCalculator;
 import org.qtum.wallet.utils.QtumIntent;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,8 +133,8 @@ public class UpdateService extends Service {
                     JSONObject data = (JSONObject) args[0];
 
                     try {
-                        unconfirmedBalance = (new BigDecimal(data.getString("unconfirmedBalance"))).divide(new BigDecimal("100000000"));
-                        balance = (new BigDecimal(data.getString("balance"))).divide(new BigDecimal("100000000"));
+                        unconfirmedBalance = (new BigDecimal(data.getString("unconfirmedBalance"))).divide(new BigDecimal("100000000"), MathContext.DECIMAL128);
+                        balance = (new BigDecimal(data.getString("balance"))).divide(new BigDecimal("100000000"), MathContext.DECIMAL128);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

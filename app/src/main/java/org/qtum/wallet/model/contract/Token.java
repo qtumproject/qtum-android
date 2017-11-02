@@ -4,6 +4,8 @@ package org.qtum.wallet.model.contract;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 public class Token extends Contract {
 
@@ -97,7 +99,7 @@ public class Token extends Contract {
     }
 
     public BigDecimal getTokenBalanceWithDecimalUnits() {
-        return mLastBalance.divide(new BigDecimal(10).pow((decimalUnits != null) ? decimalUnits.intValue() : 0));
+        return mLastBalance.divide(new BigDecimal(10).pow((decimalUnits != null) ? decimalUnits.intValue() : 0), MathContext.DECIMAL128);
     }
 
 }

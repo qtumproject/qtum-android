@@ -7,6 +7,7 @@ import android.widget.Toast;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.DeterministicKeyWithBalance;
 import org.qtum.wallet.utils.ClipboardUtils;
+import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.FontTextView;
 
 import butterknife.BindView;
@@ -62,7 +63,7 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
         mDeterministicKeyWithBalance = deterministicKeyWithBalance;
         mTextViewAddress.setText(deterministicKeyWithBalance.getAddress());
 
-        mTextViewAddressBalance.setText(deterministicKeyWithBalance.getBalance().toString());
+        mTextViewAddressBalance.setText(ContractBuilder.getShortBigNumberRepresentation(deterministicKeyWithBalance.getBalance().toString()));
         mTextViewSymbol.setText(" QTUM");
     }
 }
