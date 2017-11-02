@@ -10,6 +10,7 @@ import android.support.v7.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import org.qtum.wallet.QtumApplication;
+import org.qtum.wallet.R;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.utils.QtumIntent;
 
@@ -37,7 +38,7 @@ public class QtumFirebaseMessagingService extends FirebaseMessagingService {
                 .setWhen(System.currentTimeMillis());
 
         if (android.os.Build.VERSION.SDK_INT <= 21) {
-            builder.setSmallIcon(org.qtum.wallet.R.drawable.ic_launcher);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
         } else {
             builder.setSmallIcon(org.qtum.wallet.R.drawable.logo);
         }

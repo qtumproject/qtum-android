@@ -16,6 +16,6 @@ public class TemplateLibraryFragmentLight extends TemplateLibraryFragment{
 
     @Override
     public void setUpTemplateList(List<ContractTemplate> contractTemplateList) {
-        initializeRecyclerView(contractTemplateList, R.layout.lyt_contract_list_item_light);
+        initializeRecyclerView(contractTemplateList, R.layout.item_template_light);
     }
 }

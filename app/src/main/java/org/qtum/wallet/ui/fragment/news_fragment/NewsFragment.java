@@ -146,9 +146,9 @@ public abstract class NewsFragment extends BaseFragment implements NewsView {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-                View view = layoutInflater.inflate(mResId, parent, false);
-                return new NewsHolder(view);
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+            View view = layoutInflater.inflate(mResId, parent, false);
+            return new NewsHolder(view);
         }
 
         @Override

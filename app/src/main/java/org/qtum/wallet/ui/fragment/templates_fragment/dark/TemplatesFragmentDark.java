@@ -15,6 +15,6 @@ public class TemplatesFragmentDark extends TemplatesFragment {
 
     @Override
     public void setUpTemplateList(List<ContractTemplate> contractTemplateList) {
-        initializeRecyclerView(contractTemplateList, org.qtum.wallet.R.layout.lyt_contract_list_item);
+        initializeRecyclerView(contractTemplateList, org.qtum.wallet.R.layout.item_template);
     }
 }

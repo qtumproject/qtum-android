@@ -1,17 +1,29 @@
 package org.qtum.wallet.ui.fragment.my_contracts_fragment;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.view.MotionEventCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.ContractTemplate;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.datastorage.TinyDB;
+import org.qtum.wallet.ui.activity.main_activity.MainActivity;
+import org.qtum.wallet.ui.activity.main_activity.WizardDialogFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.contract_management_fragment.ContractManagementFragment;
@@ -34,8 +46,12 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
 
     protected ContractAdapter mContractAdapter;
 
+
     @BindView(R.id.place_holder)
     FontTextView mFontTextViewPlaceHolder;
+
+    WizardDialogFragment wizardDialogFragment;
+    private boolean isShowWizard = false;
 
     @OnClick({R.id.ibt_back})
     public void onClick(View view) {
@@ -64,6 +80,14 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
     public void initializeViews() {
         super.initializeViews();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        getMainActivity().addAuthenticationListener(new MainActivity.AuthenticationListener() {
+            @Override
+            public void onAuthenticate() {
+                if (isShowWizard) {
+                    wizardDialogFragment.show(getFragmentManager(), WizardDialogFragment.class.getCanonicalName());
+                }
+            }
+        });
     }
 
     @Override
@@ -87,12 +111,19 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
         @BindView(R.id.contract_type)
         FontTextView mTextViewContractType;
 
+        @BindView(R.id.main_container)
+        RelativeLayout mRelativeLayout;
+
+        @BindView(R.id.ll_unsubscribe)
+        LinearLayout mLinearLayoutUnsubscribe;
+
         Contract mContract;
 
         public ContractViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
+
+            mRelativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mContract.isHasBeenCreated()) {
@@ -103,8 +134,14 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
             });
         }
 
-        public void bindContract(Contract contract) {
+        public void bindContract(Contract contract, final ContractItemListener contractItemListener) {
             mContract = contract;
+            mLinearLayoutUnsubscribe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    contractItemListener.onUnsubscribeClick(mContract);
+                }
+            });
             if (contract.getDate() != null) {
                 mTextViewDate.setText(DateCalculator.getShortDate(contract.getDate()));
             } else {
@@ -122,10 +159,12 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
 
         List<Contract> mContractList;
         int mResId;
+        ContractItemListener mContractItemListener;
 
-        public ContractAdapter(List<Contract> contractList, int resId) {
+        public ContractAdapter(List<Contract> contractList, int resId, ContractItemListener contractItemListener) {
             mContractList = contractList;
             mResId = resId;
+            mContractItemListener = contractItemListener;
         }
 
         @Override
@@ -137,13 +176,35 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
 
         @Override
         public void onBindViewHolder(ContractViewHolder holder, int position) {
-            holder.bindContract(mContractList.get(position));
+            holder.bindContract(mContractList.get(position),mContractItemListener);
         }
 
         @Override
         public int getItemCount() {
             return mContractList.size();
         }
+
+        public void setContractList(List<Contract> contractList) {
+            mContractList = contractList;
+        }
     }
 
+    @Override
+    public void updateRecyclerView(List<Contract> contracts) {
+        mContractAdapter.setContractList(contracts);
+        mContractAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showWizard() {
+        wizardDialogFragment = new WizardDialogFragment();
+        isShowWizard = true;
+        wizardDialogFragment.setTargetFragment(this, 5000);
+        wizardDialogFragment.show(getFragmentManager(),WizardDialogFragment.class.getCanonicalName());
+    }
+
+    public void onWizardCanceled(){
+        isShowWizard = false;
+        getPresenter().onWizardClose();
+    }
 }
