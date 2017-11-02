@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
@@ -80,6 +81,9 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
             appLogoHeight = (appLogoHeight == 0) ? appLogo.getHeight() : appLogoHeight;
             DoTransition();
         }
+
+        startHandler = new Handler();
+        startHandler.postDelayed(startRunnable,2000);
     }
 
     private void DoTransition(){
@@ -105,10 +109,26 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
     protected void updateTheme() {
     }
 
+    Handler startHandler;
+    Runnable startRunnable = new Runnable() {
+        @Override
+        public void run() {
+            startApp();
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(startHandler != null) {
+            startHandler.removeCallbacks(startRunnable);
+        }
+        super.onDestroy();
     }
 
     @Override
