@@ -10,6 +10,8 @@ import org.qtum.wallet.utils.ContractManagementHelper;
 
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 /**
  * Created by drevnitskaya on 06.10.17.
@@ -61,7 +63,7 @@ public class TokenInteractorImpl implements TokenInteractor {
     public String handleTotalSupplyValue(Token token, String value) {
         BigDecimal bigDecimalTotalSupply = new BigDecimal(value);
         if (token.getDecimalUnits() != null) {
-            BigDecimal divide = bigDecimalTotalSupply.divide(new BigDecimal(Math.pow(10, token.getDecimalUnits())));
+            BigDecimal divide = bigDecimalTotalSupply.divide(new BigDecimal(Math.pow(10, token.getDecimalUnits())), MathContext.DECIMAL128);
             value = divide.toPlainString();
         }
 

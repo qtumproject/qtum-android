@@ -195,6 +195,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public void onResume() {
         super.onResume();
+        setSoftMode();
         mWalletPin.setFocusableInTouchMode(true);
         mWalletPin.requestFocus();
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);

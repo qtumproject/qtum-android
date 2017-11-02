@@ -16,7 +16,7 @@ public class SplashActivityPresenterImpl extends BasePresenterImpl implements Sp
     @Override
     public void initializeViews() {
         getInteractor().migrateDefaultContracts();
-        getView().startApp();
+        getView().initializeViews();
     }
 
     @Override

@@ -7,9 +7,12 @@ import android.widget.Toast;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
 import org.qtum.wallet.utils.ClipboardUtils;
+import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,7 +76,15 @@ public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
         this.item = item;
         mTextViewAddress.setText(item.getAddress());
 
-        mTextViewAddressBalance.setText((item.getBalance() != null) ? String.valueOf(item.getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)))) : "0");
+        try {
+            mTextViewAddressBalance.setText(
+                    ContractBuilder.getShortBigNumberRepresentation(
+                            (item.getBalance() != null) ? String.valueOf(item.getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0"
+                    )
+            );
+        }catch (Exception e){
+            String message = e.getMessage();
+        }
         mTextViewSymbol.setText(String.format(" %s", currency));
     }
 }

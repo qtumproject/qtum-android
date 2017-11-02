@@ -10,9 +10,11 @@ import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
+import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
 
 /**
@@ -55,7 +57,11 @@ public abstract class AddressesWithTokenBalanceSpinnerAdapter extends BaseAdapte
         final FontTextView textViewBalance = (FontTextView) view.findViewById(R.id.address_balance);
         final FontTextView textViewSymbol = (FontTextView) view.findViewById(R.id.address_symbol);
         textViewSymbol.setText(String.format(" %s", currency));
-        textViewBalance.setText((mKeyWithBalanceList.get(position).getBalance() != null)? String.valueOf(mKeyWithBalanceList.get(position).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)))) : "0");
+        textViewBalance.setText(
+                ContractBuilder.getShortBigNumberRepresentation(
+                        (mKeyWithBalanceList.get(position).getBalance() != null)? String.valueOf(mKeyWithBalanceList.get(position).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0"
+                )
+        );
         textViewAddress.setText(mKeyWithBalanceList.get(position).getAddress());
 
         return view;

@@ -12,6 +12,7 @@ import android.widget.SpinnerAdapter;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.model.gson.UnspentOutput;
+import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.math.BigDecimal;
@@ -59,7 +60,7 @@ public abstract class AddressesWithBalanceSpinnerAdapter extends BaseAdapter imp
         }
 
         textViewSymbol.setText(" QTUM");
-        textViewBalance.setText(balance.toString());
+        textViewBalance.setText(ContractBuilder.getShortBigNumberRepresentation(balance.toString()));
 
         textViewAddress.setText(mKeyWithBalanceList.get(position).getAddress());
 

@@ -38,6 +38,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -401,7 +403,7 @@ public class ContractBuilder {
         Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
         transaction.addOutput(Coin.ZERO, script);
         BigDecimal fee = new BigDecimal(feeString);
-        BigDecimal gasFee = (new BigDecimal(gasLimit)).multiply(new BigDecimal(gasPrice)).divide(new BigDecimal(100000000));
+        BigDecimal gasFee = (new BigDecimal(gasLimit)).multiply(new BigDecimal(gasPrice)).divide(new BigDecimal(100000000), MathContext.DECIMAL128);
         UnspentOutput unspentOutput = null;
         for (UnspentOutput unspentOutput1 : unspentOutputs) {
             if (unspentOutput1.getAmount().doubleValue() > fee.add(gasFee).doubleValue()) {
