@@ -47,16 +47,25 @@ public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implemen
     @Override
     public void initializeViews() {
         super.initializeViews();
+
         List<Contract> contractList = getInteractor().getContracts();
         if (contractList != null) {
             if (contractList.size() != 0) {
                 getView().setUpRecyclerView(contractList, mContractItemListener);
+                if(getInteractor().isShowWizard()){
+                    getView().showWizard();
+                }
             } else {
                 getView().setPlaceHolder();
             }
         } else {
             getView().setAlertDialog(R.string.error, R.string.fail_to_get_contracts, BaseFragment.PopUpType.error);
         }
+    }
+
+    @Override
+    public void onWizardClose() {
+        getInteractor().setShowWizard(false);
     }
 
     @Override

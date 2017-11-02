@@ -7,4 +7,5 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
  */
 
 public interface MyContractsPresenter extends BaseFragmentPresenter {
+    void onWizardClose();
 }

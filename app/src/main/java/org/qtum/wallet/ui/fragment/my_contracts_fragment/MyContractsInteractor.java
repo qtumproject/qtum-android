@@ -12,4 +12,6 @@ public interface MyContractsInteractor {
     List<Token> getTokens();
     void setContractWithoutTokens(List<Contract> contracts);
     void setTokens(List<Token> tokens);
+    boolean isShowWizard();
+    void setShowWizard(boolean isShow);
 }

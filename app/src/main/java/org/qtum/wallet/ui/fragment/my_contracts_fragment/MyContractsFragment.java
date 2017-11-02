@@ -1,13 +1,20 @@
 package org.qtum.wallet.ui.fragment.my_contracts_fragment;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.view.MotionEventCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -15,6 +22,8 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.model.ContractTemplate;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.datastorage.TinyDB;
+import org.qtum.wallet.ui.activity.main_activity.MainActivity;
+import org.qtum.wallet.ui.activity.main_activity.WizardDialogFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.contract_management_fragment.ContractManagementFragment;
@@ -37,8 +46,12 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
 
     protected ContractAdapter mContractAdapter;
 
+
     @BindView(R.id.place_holder)
     FontTextView mFontTextViewPlaceHolder;
+
+    WizardDialogFragment wizardDialogFragment;
+    private boolean isShowWizard = false;
 
     @OnClick({R.id.ibt_back})
     public void onClick(View view) {
@@ -67,6 +80,14 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
     public void initializeViews() {
         super.initializeViews();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        getMainActivity().addAuthenticationListener(new MainActivity.AuthenticationListener() {
+            @Override
+            public void onAuthenticate() {
+                if (isShowWizard) {
+                    wizardDialogFragment.show(getFragmentManager(), WizardDialogFragment.class.getCanonicalName());
+                }
+            }
+        });
     }
 
     @Override
@@ -172,5 +193,18 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
     public void updateRecyclerView(List<Contract> contracts) {
         mContractAdapter.setContractList(contracts);
         mContractAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showWizard() {
+        wizardDialogFragment = new WizardDialogFragment();
+        isShowWizard = true;
+        wizardDialogFragment.setTargetFragment(this, 5000);
+        wizardDialogFragment.show(getFragmentManager(),WizardDialogFragment.class.getCanonicalName());
+    }
+
+    public void onWizardCanceled(){
+        isShowWizard = false;
+        getPresenter().onWizardClose();
     }
 }
