@@ -38,7 +38,6 @@
             android:theme="@style/SplashTheme"
             android:name="org.qtum.wallet.ui.activity.splash_activity.SplashActivity"
             android:noHistory="true"
-            android:windowSoftInputMode="adjustPan|stateAlwaysVisible"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
