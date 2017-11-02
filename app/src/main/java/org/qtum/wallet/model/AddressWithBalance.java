@@ -6,26 +6,17 @@ import org.qtum.wallet.utils.CurrentNetParams;
 import org.bitcoinj.crypto.DeterministicKey;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class DeterministicKeyWithBalance {
-    private DeterministicKey mKey;
-    private List<UnspentOutput> mUnspentOutputList;
+public class AddressWithBalance {
+    private List<UnspentOutput> mUnspentOutputList = new ArrayList<>();
     private String mAddress;
     private BigDecimal mBalance;
     
-    public DeterministicKeyWithBalance(DeterministicKey key){
-        mKey = key;
-        mAddress = key.toAddress(CurrentNetParams.getNetParams()).toString();
-    }
-
-    public DeterministicKey getKey() {
-        return mKey;
-    }
-
-    public void setKey(DeterministicKey key) {
-        mKey = key;
+    public AddressWithBalance(String address){
+        mAddress = address;
     }
 
     public List<UnspentOutput> getUnspentOutputList() {
@@ -34,6 +25,10 @@ public class DeterministicKeyWithBalance {
 
     public void setUnspentOutputList(List<UnspentOutput> unspentOutputList) {
         mUnspentOutputList = unspentOutputList;
+    }
+
+    public void setUnspentOutput(UnspentOutput unspentOutput){
+        mUnspentOutputList.add(unspentOutput);
     }
 
     public String getAddress() {
@@ -45,6 +40,12 @@ public class DeterministicKeyWithBalance {
     }
 
     public BigDecimal getBalance() {
+        if(mBalance == null) {
+            mBalance = new BigDecimal(0.0);
+            for (UnspentOutput unspentOutput : mUnspentOutputList) {
+                mBalance = mBalance.add(unspentOutput.getAmount());
+            }
+        }
         return mBalance;
     }
 

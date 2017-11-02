@@ -22,7 +22,7 @@ public class ContractManagementPresenterImpl extends BaseFragmentPresenterImpl i
     public void initializeViews() {
         super.initializeViews();
         String contractAddress = getView().getContractAddress();
-        if(!contractAddress.isEmpty()){
+        if(contractAddress!=null && !contractAddress.isEmpty()){
             String uiid = getView().getContractTemplateUiid();
             List<ContractMethod> contractMethodList = getInteractor().getContractListByUiid(uiid);
             if(contractMethodList != null) {

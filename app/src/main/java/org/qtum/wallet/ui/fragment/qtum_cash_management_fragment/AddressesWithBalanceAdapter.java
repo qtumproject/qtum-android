@@ -5,18 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.qtum.wallet.model.DeterministicKeyWithBalance;
+import org.qtum.wallet.model.AddressWithBalance;
 
 import java.util.List;
 
 
 public class AddressesWithBalanceAdapter extends RecyclerView.Adapter<AddressWithBalanceHolder> {
 
-    protected List<DeterministicKeyWithBalance> mDeterministicKeyWithBalance;
+    protected List<AddressWithBalance> mDeterministicKeyWithBalance;
     protected OnAddressClickListener listener;
     private int mResID;
 
-    public AddressesWithBalanceAdapter(List<DeterministicKeyWithBalance> deterministicKeys, OnAddressClickListener listener, int resId) {
+    public AddressesWithBalanceAdapter(List<AddressWithBalance> deterministicKeys, OnAddressClickListener listener, int resId) {
         mDeterministicKeyWithBalance = deterministicKeys;
         this.listener = listener;
         mResID = resId;

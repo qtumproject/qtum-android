@@ -18,6 +18,6 @@ class AddressesInteractorImpl implements AddressesInteractor {
 
     @Override
     public List<DeterministicKey> getKeyList() {
-        return KeyStorage.getInstance().getKeyList(10);
+        return KeyStorage.getInstance().getKeyList();
     }
 }

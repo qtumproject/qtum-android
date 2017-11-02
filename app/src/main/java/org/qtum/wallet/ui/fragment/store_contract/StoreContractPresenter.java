@@ -342,7 +342,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
 
                 for (UnspentOutput unspentOutput : unspentOutputs) {
                     if(unspentOutput.getAmount().doubleValue() != 0.0)
-                        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList(100)) {
+                        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
                             if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
                                 Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
                                 TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);

@@ -95,7 +95,7 @@ public class KeyStorage implements Serializable {
                 } catch (UnreadableWalletException e) {
                     e.printStackTrace();
                 }
-                getKeyList(ADDRESSES_COUNT);
+                getKeyList();
                 subscriber.onNext(sWallet);
             }
         });
@@ -127,7 +127,7 @@ public class KeyStorage implements Serializable {
                 }
                 try {
                     sWallet.saveToFile(mFile);
-                    getKeyList(ADDRESSES_COUNT);
+                    getKeyList();
                     subscriber.onNext(mnemonicCode);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -155,7 +155,7 @@ public class KeyStorage implements Serializable {
                 }
                 try {
                     sWallet.saveToFile(mFile);
-                    getKeyList(ADDRESSES_COUNT);
+                    getKeyList();
                     subscriber.onNext(seedString);
 
                 } catch (IOException e) {
@@ -165,7 +165,7 @@ public class KeyStorage implements Serializable {
         });
     }
 
-    public List<DeterministicKey> getKeyList(int numberOfKeys) {
+    public List<DeterministicKey> getKeyList() {
         if (mDeterministicKeyList == null) {
             mDeterministicKeyList = new ArrayList<>(ADDRESSES_COUNT);
             mAddressesList = new ArrayList<>();
@@ -183,7 +183,7 @@ public class KeyStorage implements Serializable {
     }
 
     public String getCurrentAddress() {
-        return getKeyList(ADDRESSES_COUNT).get(sCurrentKeyPosition).toAddress(CurrentNetParams.getNetParams()).toString();
+        return getKeyList().get(sCurrentKeyPosition).toAddress(CurrentNetParams.getNetParams()).toString();
     }
 
     public List<String> getAddresses() {
@@ -191,7 +191,7 @@ public class KeyStorage implements Serializable {
     }
 
     public DeterministicKey getCurrentKey() {
-        return getKeyList(ADDRESSES_COUNT).get(sCurrentKeyPosition);
+        return getKeyList().get(sCurrentKeyPosition);
     }
 
     public void setCurrentKeyPosition(int currentKeyPosition) {

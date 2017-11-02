@@ -172,8 +172,8 @@ public class SendInteractorImpl implements SendInteractor {
 
                 for (UnspentOutput unspentOutput : unspentOutputs) {
                     if (unspentOutput.getAmount().doubleValue() != 0.0)
-                        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList(100)) {
-                            if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
+                        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
+                            if (deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString().equals(unspentOutput.getAddress())) {
                                 Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
                                 TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
                                 Script script = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));

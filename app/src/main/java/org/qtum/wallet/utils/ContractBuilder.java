@@ -421,7 +421,7 @@ public class ContractBuilder {
         transaction.addOutput(Coin.valueOf((long) (unspentOutput.getAmount().multiply(bitcoin).subtract(fee.add(gasFee).multiply(bitcoin)).doubleValue())),
                 myKey.toAddress(CurrentNetParams.getNetParams()));
 
-        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList(10)) {
+        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
             if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
                 Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
                 TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);

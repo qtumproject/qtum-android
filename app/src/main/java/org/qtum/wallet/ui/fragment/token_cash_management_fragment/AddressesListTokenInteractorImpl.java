@@ -11,9 +11,6 @@ import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-/**
- * Created by drevnitskaya on 09.10.17.
- */
 
 public class AddressesListTokenInteractorImpl implements AddressesListTokenInteractor {
 
@@ -35,7 +32,7 @@ public class AddressesListTokenInteractorImpl implements AddressesListTokenInter
 
     @Override
     public List<DeterministicKey> getKeys(int i) {
-        return KeyStorage.getInstance().getKeyList(10);
+        return KeyStorage.getInstance().getKeyList();
     }
 
     @Override
