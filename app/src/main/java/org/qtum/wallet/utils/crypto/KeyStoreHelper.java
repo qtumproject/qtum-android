@@ -6,8 +6,11 @@ import android.os.Build;
 import android.security.KeyPairGeneratorSpec;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
+
+import org.qtum.wallet.datastorage.QtumSharedPreference;
 
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
@@ -228,6 +231,14 @@ public class KeyStoreHelper {
 
         String SIGNATURE_SHA256withRSA = "SHA256withRSA";
         String SIGNATURE_SHA512withRSA = "SHA512withRSA";
+    }
+
+    private final static String QTUM_PIN_ALIAS = "qtum_alias";
+
+    public static String getSeed(Context context,@NonNull String pin){
+        String cryptoSaltPassphrase = QtumSharedPreference.getInstance().getSeed(context);
+        byte[] saltPassphrase = KeyStoreHelper.decryptToBytes(QTUM_PIN_ALIAS,cryptoSaltPassphrase);
+        return AESUtil.decryptBytes(pin,saltPassphrase);
     }
 
 }

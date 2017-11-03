@@ -80,6 +80,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                         break;
                     case 1:
                         if (pin.equals(pinRepeat)) {
+                            getView().saveCode(pin);
                             getView().clearError();
                             getView().setProgressDialog();
                             getView().hideKeyBoard();
@@ -161,6 +162,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                         break;
                     case 1:
                         if (pin.equals(pinRepeat)) {
+                            getView().saveCode(pin);
                             getView().clearError();
                             getView().setProgressDialog();
 
@@ -215,13 +217,14 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                     boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
                     changeBanState(isCorrect);
                     if (isCorrect) {
+                        getView().saveCode(pin);
                         getView().clearError();
                         getView().setProgressDialog();
                         getView().hideKeyBoard();
-                        getInteractor().loadWalletFromFile()
+                        getInteractor().loadWallet(pin)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Subscriber<Wallet>() {
+                                .subscribe(new Subscriber<String>() {
                                     @Override
                                     public void onCompleted() {
 
@@ -233,7 +236,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                     }
 
                                     @Override
-                                    public void onNext(Wallet wallet) {
+                                    public void onNext(String seed) {
                                         isDataLoaded = true;
                                         getView().onLogin();
                                         getView().dismissProgressDialog();
@@ -255,6 +258,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
                 changeBanState(isCorrect);
                 if (isCorrect) {
+                    getView().saveCode(pin);
                     getView().clearError();
                     getView().hideKeyBoard();
                     getView().setCheckAuthenticationShowFlag(false);
@@ -271,6 +275,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
                 changeBanState(isCorrect);
                 if (isCorrect) {
+                    getView().saveCode(pin);
                     getView().clearError();
                     getView().hideKeyBoard();
                     getView().setCheckAuthenticationShowFlag(false);
@@ -288,16 +293,17 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
                 changeBanState(isCorrect);
                 if (isCorrect) {
+                    getView().saveCode(pin);
                     getView().clearError();
                     final String address = getView().getAddressForSendAction();
                     final String amount = getView().getAmountForSendAction();
                     final String token = getView().getTokenForSendAction();
                     getView().setProgressDialog();
                     getView().hideKeyBoard();
-                    getInteractor().loadWalletFromFile()
+                    getInteractor().loadWallet(pin)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Subscriber<Wallet>() {
+                            .subscribe(new Subscriber<String>() {
                                 @Override
                                 public void onCompleted() {
 
@@ -309,7 +315,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                 }
 
                                 @Override
-                                public void onNext(Wallet wallet) {
+                                public void onNext(String seed) {
                                     isDataLoaded = true;
                                     getView().onLogin();
                                     getView().dismissProgressDialog();
@@ -348,6 +354,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                     case 2:
                         if (pin.equals(pinRepeat)) {
                             getView().clearError();
+                            getView().saveCode(pinRepeat);
                             final String pinHash = getInteractor().generateSHA256String(pinRepeat);
                             getInteractor().savePassword(pinHash);
                             String passphrase = getInteractor().getUnSaltPassphrase(oldPin);

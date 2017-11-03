@@ -65,41 +65,41 @@ public class KeyStorage implements Serializable {
         file.delete();
     }
 
-    public Observable<Wallet> loadWalletFromFile(Context context) {
-        mFile = new File(context.getFilesDir().getPath() + "/key_storage");
-        return Observable.create(new Observable.OnSubscribe<Wallet>() {
-            @Override
-            public void call(Subscriber<? super Wallet> subscriber) {
-                try {
-                    sWallet = Wallet.loadFromFile(mFile, new WalletExtension() {
-                        @Override
-                        public String getWalletExtensionID() {
-                            return null;
-                        }
-
-                        @Override
-                        public boolean isWalletExtensionMandatory() {
-                            return false;
-                        }
-
-                        @Override
-                        public byte[] serializeWalletExtension() {
-                            return new byte[0];
-                        }
-
-                        @Override
-                        public void deserializeWalletExtension(Wallet containingWallet, byte[] data) throws Exception {
-
-                        }
-                    });
-                } catch (UnreadableWalletException e) {
-                    e.printStackTrace();
-                }
-                getKeyList(ADDRESSES_COUNT);
-                subscriber.onNext(sWallet);
-            }
-        });
-    }
+//    public Observable<Wallet> loadWalletFromFile(Context context) {
+//        mFile = new File(context.getFilesDir().getPath() + "/key_storage");
+//        return Observable.create(new Observable.OnSubscribe<Wallet>() {
+//            @Override
+//            public void call(Subscriber<? super Wallet> subscriber) {
+//                try {
+//                    sWallet = Wallet.loadFromFile(mFile, new WalletExtension() {
+//                        @Override
+//                        public String getWalletExtensionID() {
+//                            return null;
+//                        }
+//
+//                        @Override
+//                        public boolean isWalletExtensionMandatory() {
+//                            return false;
+//                        }
+//
+//                        @Override
+//                        public byte[] serializeWalletExtension() {
+//                            return new byte[0];
+//                        }
+//
+//                        @Override
+//                        public void deserializeWalletExtension(Wallet containingWallet, byte[] data) throws Exception {
+//
+//                        }
+//                    });
+//                } catch (UnreadableWalletException e) {
+//                    e.printStackTrace();
+//                }
+//                getKeyList(ADDRESSES_COUNT);
+//                subscriber.onNext(sWallet);
+//            }
+//        });
+//    }
 
     public Observable<String> createWallet(final Context context) {
         mFile = new File(context.getFilesDir().getPath() + "/key_storage");
@@ -125,13 +125,9 @@ public class KeyStorage implements Serializable {
                     sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
 
                 }
-                try {
-                    sWallet.saveToFile(mFile);
-                    getKeyList(ADDRESSES_COUNT);
-                    subscriber.onNext(mnemonicCode);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                //sWallet.saveToFile(mFile);
+                getKeyList(ADDRESSES_COUNT);
+                subscriber.onNext(mnemonicCode);
             }
         });
     }
@@ -153,14 +149,10 @@ public class KeyStorage implements Serializable {
                 if (seed != null) {
                     sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
                 }
-                try {
-                    sWallet.saveToFile(mFile);
-                    getKeyList(ADDRESSES_COUNT);
-                    subscriber.onNext(seedString);
+                //sWallet.saveToFile(mFile);
+                getKeyList(ADDRESSES_COUNT);
+                subscriber.onNext(seedString);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         });
     }

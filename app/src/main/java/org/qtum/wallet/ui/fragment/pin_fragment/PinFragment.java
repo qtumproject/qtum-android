@@ -408,4 +408,8 @@ public abstract class PinFragment extends BaseFragment implements PinView {
         });
     }
 
+    @Override
+    public void saveCode(String code) {
+        ((MainActivity)getActivity()).getPresenter().setCode(code);
+    }
 }
