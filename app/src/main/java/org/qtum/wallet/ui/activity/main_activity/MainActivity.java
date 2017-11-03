@@ -121,12 +121,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
                 mUpdateService.clearNotification();
-                mUpdateService.startMonitoring(KeyStoreHelper.getSeed(MainActivity.this, getPresenter().getCode()), new UpdateService.StartMonitoringCallback() {
-                    @Override
-                    public void onSuccess() {
-                        getPresenter().setCode(null);
-                    }
-                });
+                mUpdateService.startMonitoring();
                 for (MainActivity.OnServiceConnectionChangeListener listener : mServiceConnectionChangeListeners) {
                     listener.onServiceConnectionChange(true);
                 }
@@ -637,23 +632,13 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         if (!isMyServiceRunning(UpdateService.class)) {
             startService(mIntent);
             if (mUpdateService != null) {
-                mUpdateService.startMonitoring(KeyStoreHelper.getSeed(MainActivity.this, getPresenter().getCode()), new UpdateService.StartMonitoringCallback() {
-                    @Override
-                    public void onSuccess() {
-                        getPresenter().setCode(null);
-                    }
-                });
+                mUpdateService.startMonitoring();
             } else {
                 bindService(mIntent, mServiceConnection, 0);
             }
         } else {
             if (mUpdateService != null) {
-                mUpdateService.startMonitoring(KeyStoreHelper.getSeed(MainActivity.this, getPresenter().getCode()), new UpdateService.StartMonitoringCallback() {
-                    @Override
-                    public void onSuccess() {
-                        getPresenter().setCode(null);
-                    }
-                });
+                mUpdateService.startMonitoring();
             } else {
                 bindService(mIntent, mServiceConnection, 0);
             }

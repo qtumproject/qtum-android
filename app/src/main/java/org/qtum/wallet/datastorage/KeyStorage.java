@@ -34,12 +34,7 @@ public class KeyStorage implements Serializable {
     private List<String> mAddressesList;
     private Wallet sWallet = null;
     private int sCurrentKeyPosition = 0;
-    private File mFile;
     private final int ADDRESSES_COUNT = 10;
-
-    public static void setUpKeyStorage(KeyStorage kStorage){
-        sKeyStorage = kStorage;
-    }
 
     public static KeyStorage getInstance() {
         if (sKeyStorage == null) {
@@ -67,8 +62,7 @@ public class KeyStorage implements Serializable {
         }
     }
 
-    public Observable<String> createWallet(final Context context) {
-        mFile = new File(context.getFilesDir().getPath() + "/key_storage");
+    public Observable<String> createWallet() {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
@@ -87,23 +81,16 @@ public class KeyStorage implements Serializable {
                     e.printStackTrace();
                 }
                 if (seed != null) {
-                    NetworkParameters netParams = CurrentNetParams.getNetParams();
                     sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
 
                 }
-                try {
-                    sWallet.saveToFile(mFile);
-                    getKeyList();
-                    subscriber.onNext(mnemonicCode);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                getKeyList();
+                subscriber.onNext(mnemonicCode);
             }
         });
     }
 
-    public Observable<String> importWallet(final String seedString, final Context context) {
-        mFile = new File(context.getFilesDir().getPath() + "/key_storage");
+    public Observable<String> importWallet(final String seedString) {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
@@ -119,14 +106,8 @@ public class KeyStorage implements Serializable {
                 if (seed != null) {
                     sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
                 }
-                try {
-                    sWallet.saveToFile(mFile);
-                    getKeyList();
-                    subscriber.onNext(seedString);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                getKeyList();
+                subscriber.onNext(seedString);
             }
         });
     }

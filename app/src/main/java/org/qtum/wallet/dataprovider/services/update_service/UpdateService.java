@@ -455,52 +455,14 @@ public class UpdateService extends Service {
         return START_NOT_STICKY;
     }
 
-    private void loadWallet(final LoadWalletCallBack callback, String mnemonic) {
-        KeyStorage.getInstance().importWallet(mnemonic, getBaseContext())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-
-                    @Override
-                    public void onNext(String seed) {
-                        callback.onSuccess();
-                    }
-                });
-    }
-
-    interface LoadWalletCallBack {
-        void onSuccess();
-    }
-
-    public interface StartMonitoringCallback {
-        void onSuccess();
-    }
-
-    public void startMonitoring(final String mnemonic, final StartMonitoringCallback callback) {
+    public void startMonitoring() {
         if (!monitoringFlag) {
-            if (mAddresses != null) {
-                socket.connect();
-                monitoringFlag = true;
-                callback.onSuccess();
-            } else {
-                loadWallet(new LoadWalletCallBack() {
-                    @Override
-                    public void onSuccess() {
-                        mAddresses = new JSONArray();
-                        for (String address : KeyStorage.getInstance().getAddresses()) {
-                            mAddresses.put(address);
-                        }
-                        startMonitoring(mnemonic, callback);
-                    }
-                }, mnemonic);
+            mAddresses = new JSONArray();
+            for (String address : KeyStorage.getInstance().getAddresses()) {
+                mAddresses.put(address);
             }
+            socket.connect();
+            monitoringFlag = true;
         }
     }
 

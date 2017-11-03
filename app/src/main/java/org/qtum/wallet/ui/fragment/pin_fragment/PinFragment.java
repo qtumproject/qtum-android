@@ -407,9 +407,4 @@ public abstract class PinFragment extends BaseFragment implements PinView {
                 new InputFilter.LengthFilter(digit)
         });
     }
-
-    @Override
-    public void saveCode(String code) {
-        ((MainActivity)getActivity()).getPresenter().setCode(code);
-    }
 }

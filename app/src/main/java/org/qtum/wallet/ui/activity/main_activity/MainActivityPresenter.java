@@ -13,6 +13,4 @@ public interface MainActivityPresenter extends BasePresenter{
     boolean getAuthenticationFlag();
     boolean isCheckAuthenticationShowFlag();
     void updateNetworkSate(boolean networkConnectedFlag);
-    String getCode();
-    void setCode(String code);
 }
