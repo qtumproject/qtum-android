@@ -24,16 +24,6 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
     private boolean mCheckAuthenticationShowFlag = false;
     private boolean mSendFromIntent = false;
 
-    @Override
-    public String getCode() {
-        return code;
-    }
-
-    @Override
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     private String code;
 
     private LanguageChangeListener mLanguageChangeListener;

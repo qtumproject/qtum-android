@@ -80,7 +80,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                         break;
                     case 1:
                         if (pin.equals(pinRepeat)) {
-                            getView().saveCode(pin);
                             getView().clearError();
                             getView().setProgressDialog();
                             getView().hideKeyBoard();
@@ -162,7 +161,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                         break;
                     case 1:
                         if (pin.equals(pinRepeat)) {
-                            getView().saveCode(pin);
                             getView().clearError();
                             getView().setProgressDialog();
 
@@ -217,7 +215,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                     boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
                     changeBanState(isCorrect);
                     if (isCorrect) {
-                        getView().saveCode(pin);
                         getView().clearError();
                         getView().setProgressDialog();
                         getView().hideKeyBoard();
@@ -258,7 +255,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
                 changeBanState(isCorrect);
                 if (isCorrect) {
-                    getView().saveCode(pin);
                     getView().clearError();
                     getView().hideKeyBoard();
                     getView().setCheckAuthenticationShowFlag(false);
@@ -275,7 +271,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
                 changeBanState(isCorrect);
                 if (isCorrect) {
-                    getView().saveCode(pin);
                     getView().clearError();
                     getView().hideKeyBoard();
                     getView().setCheckAuthenticationShowFlag(false);
@@ -293,7 +288,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 boolean isCorrect = pinHashEntered.equals(pinHashGenuine);
                 changeBanState(isCorrect);
                 if (isCorrect) {
-                    getView().saveCode(pin);
                     getView().clearError();
                     final String address = getView().getAddressForSendAction();
                     final String amount = getView().getAmountForSendAction();
@@ -354,7 +348,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                     case 2:
                         if (pin.equals(pinRepeat)) {
                             getView().clearError();
-                            getView().saveCode(pinRepeat);
                             final String pinHash = getInteractor().generateSHA256String(pinRepeat);
                             getInteractor().savePassword(pinHash);
                             String passphrase = getInteractor().getUnSaltPassphrase(oldPin);

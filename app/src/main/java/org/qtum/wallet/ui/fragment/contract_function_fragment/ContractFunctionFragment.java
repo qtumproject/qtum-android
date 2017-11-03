@@ -361,30 +361,36 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
                 String content = etParam.getText().toString() + source;
-                if (!TextUtils.isEmpty(content)) {
-                    switch (parameter.getType()) {
-                        case TYPE_INT:
-                            return validateINT(content);
-                        case TYPE_UINT8:
-                            return validateUINT(content, uint8);
-                        case TYPE_UINT16:
-                            return validateUINT(content, uint16);
-                        case TYPE_UINT32:
-                            return validateUINT(content, uint32);
-                        case TYPE_UINT64:
-                            return validateUINT(content, uint64);
-                        case TYPE_UINT128:
-                            return validateUINT(content, uint128);
-                        case TYPE_UINT256:
-                            return validateUINT(content, uint256);
 
-                        default:
-                            parameter.setValue(content);
-                            return ALLOW;
-                    }
-                } else {
-                    return ALLOW;
-                }
+
+                parameter.setValue(content);
+                return ALLOW;
+
+
+//                if (!TextUtils.isEmpty(content)) {
+//                    switch (parameter.getType()) {
+//                        case TYPE_INT:
+//                            return validateINT(content);
+//                        case TYPE_UINT8:
+//                            return validateUINT(content, uint8);
+//                        case TYPE_UINT16:
+//                            return validateUINT(content, uint16);
+//                        case TYPE_UINT32:
+//                            return validateUINT(content, uint32);
+//                        case TYPE_UINT64:
+//                            return validateUINT(content, uint64);
+//                        case TYPE_UINT128:
+//                            return validateUINT(content, uint128);
+//                        case TYPE_UINT256:
+//                            return validateUINT(content, uint256);
+//
+//                        default:
+//                            parameter.setValue(content);
+//                            return ALLOW;
+//                    }
+//                } else {
+//                    return ALLOW;
+//                }
             }
         };
 
