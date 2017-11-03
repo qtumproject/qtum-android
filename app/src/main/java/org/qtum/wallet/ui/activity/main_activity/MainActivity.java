@@ -61,6 +61,7 @@ import org.qtum.wallet.ui.fragment.profile_fragment.ProfileFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.utils.QtumIntent;
 import org.qtum.wallet.utils.ThemeUtils;
+import org.qtum.wallet.utils.crypto.KeyStoreHelper;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -92,22 +93,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     private String mTokenAddressForSendAction;
     private List<MainActivity.OnServiceConnectionChangeListener> mServiceConnectionChangeListeners = new ArrayList<>();
 
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
-            mUpdateService.clearNotification();
-            mUpdateService.startMonitoring();
-            for (MainActivity.OnServiceConnectionChangeListener listener : mServiceConnectionChangeListeners) {
-                listener.onServiceConnectionChange(true);
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-
-        }
-    };
+    private ServiceConnection mServiceConnection;
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
@@ -118,7 +104,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     }
 
     @Override
-    protected MainActivityPresenter getPresenter() {
+    public MainActivityPresenter getPresenter() {
         return mMainActivityPresenterImpl;
     }
 
@@ -129,6 +115,28 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         mNetworkReceiver = new NetworkStateReceiver(getNetworkConnectedFlag());
         registerReceiver(mNetworkReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+        mServiceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
+                mUpdateService.clearNotification();
+                mUpdateService.startMonitoring(KeyStoreHelper.getSeed(MainActivity.this, getPresenter().getCode()), new UpdateService.StartMonitoringCallback() {
+                    @Override
+                    public void onSuccess() {
+                        getPresenter().setCode(null);
+                    }
+                });
+                for (MainActivity.OnServiceConnectionChangeListener listener : mServiceConnectionChangeListeners) {
+                    listener.onServiceConnectionChange(true);
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+
+            }
+        };
     }
 
     @Override
@@ -629,13 +637,23 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         if (!isMyServiceRunning(UpdateService.class)) {
             startService(mIntent);
             if (mUpdateService != null) {
-                mUpdateService.startMonitoring();
+                mUpdateService.startMonitoring(KeyStoreHelper.getSeed(MainActivity.this, getPresenter().getCode()), new UpdateService.StartMonitoringCallback() {
+                    @Override
+                    public void onSuccess() {
+                        getPresenter().setCode(null);
+                    }
+                });
             } else {
                 bindService(mIntent, mServiceConnection, 0);
             }
         } else {
             if (mUpdateService != null) {
-                mUpdateService.startMonitoring();
+                mUpdateService.startMonitoring(KeyStoreHelper.getSeed(MainActivity.this, getPresenter().getCode()), new UpdateService.StartMonitoringCallback() {
+                    @Override
+                    public void onSuccess() {
+                        getPresenter().setCode(null);
+                    }
+                });
             } else {
                 bindService(mIntent, mServiceConnection, 0);
             }

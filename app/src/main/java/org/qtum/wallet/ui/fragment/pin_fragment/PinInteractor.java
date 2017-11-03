@@ -11,7 +11,6 @@ public interface PinInteractor {
     byte[] getSaltPassphrase();
     String getTouchIdPassword();
     void saveTouchIdPassword(String password);
-    Observable<Wallet> loadWalletFromFile();
     Observable<String> createWallet();
     void setKeyGeneratedInstance(boolean isKeyGenerated);
     String decode(String encoded,Cipher cipher);
@@ -25,4 +24,5 @@ public interface PinInteractor {
     void setFailedAttemptsCount(int failedAttemptsCount);
     void setBanTime(long banTime);
     String getBanPinString(int min);
+    Observable<String> loadWallet(String code);
 }

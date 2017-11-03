@@ -121,11 +121,6 @@ class PinInteractorImpl implements PinInteractor {
     }
 
     @Override
-    public Observable<Wallet> loadWalletFromFile() {
-        return KeyStorage.getInstance().loadWalletFromFile(mContext);
-    }
-
-    @Override
     public Observable<String> createWallet() {
         return KeyStorage.getInstance().createWallet(mContext);
     }
@@ -159,5 +154,10 @@ class PinInteractorImpl implements PinInteractor {
     @Override
     public String getBanPinString(int min) {
         return mContext.getString(R.string.sorry_please_try_again_in) + " " + min + " " + mContext.getString(R.string.minutes);
+    }
+
+    @Override
+    public Observable<String> loadWallet(String code) {
+        return KeyStorage.getInstance().importWallet(KeyStoreHelper.getSeed(mContext, code),mContext);
     }
 }

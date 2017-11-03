@@ -62,43 +62,9 @@ public class KeyStorage implements Serializable {
 
     public void clearKeyFile(Context context){
         File file = new File(context.getFilesDir().getPath() + "/key_storage");
-        file.delete();
-    }
-
-    public Observable<Wallet> loadWalletFromFile(Context context) {
-        mFile = new File(context.getFilesDir().getPath() + "/key_storage");
-        return Observable.create(new Observable.OnSubscribe<Wallet>() {
-            @Override
-            public void call(Subscriber<? super Wallet> subscriber) {
-                try {
-                    sWallet = Wallet.loadFromFile(mFile, new WalletExtension() {
-                        @Override
-                        public String getWalletExtensionID() {
-                            return null;
-                        }
-
-                        @Override
-                        public boolean isWalletExtensionMandatory() {
-                            return false;
-                        }
-
-                        @Override
-                        public byte[] serializeWalletExtension() {
-                            return new byte[0];
-                        }
-
-                        @Override
-                        public void deserializeWalletExtension(Wallet containingWallet, byte[] data) throws Exception {
-
-                        }
-                    });
-                } catch (UnreadableWalletException e) {
-                    e.printStackTrace();
-                }
-                getKeyList();
-                subscriber.onNext(sWallet);
-            }
-        });
+        if(file.exists()) {
+            file.delete();
+        }
     }
 
     public Observable<String> createWallet(final Context context) {

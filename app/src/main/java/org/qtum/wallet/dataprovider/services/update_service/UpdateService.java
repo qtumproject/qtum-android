@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.bitcoinj.wallet.Wallet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +40,6 @@ import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenBalanceChangeListener;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.qstore.ContractPurchase;
-import org.qtum.wallet.model.gson.token_balance.Balance;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.CurrentNetParams;
@@ -50,7 +48,6 @@ import org.qtum.wallet.utils.QtumIntent;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -63,8 +60,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import javax.security.cert.CertificateException;
-import javax.security.cert.X509Certificate;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -460,11 +455,11 @@ public class UpdateService extends Service {
         return START_NOT_STICKY;
     }
 
-    private void loadWalletFromFile(final LoadWalletFromFileCallBack callback) {
-        KeyStorage.getInstance().loadWalletFromFile(getBaseContext())
+    private void loadWallet(final LoadWalletCallBack callback, String mnemonic) {
+        KeyStorage.getInstance().importWallet(mnemonic, getBaseContext())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Wallet>() {
+                .subscribe(new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -474,32 +469,37 @@ public class UpdateService extends Service {
                     }
 
                     @Override
-                    public void onNext(Wallet wallet) {
+                    public void onNext(String seed) {
                         callback.onSuccess();
                     }
                 });
     }
 
-    interface LoadWalletFromFileCallBack {
+    interface LoadWalletCallBack {
         void onSuccess();
     }
 
-    public void startMonitoring() {
+    public interface StartMonitoringCallback {
+        void onSuccess();
+    }
+
+    public void startMonitoring(final String mnemonic, final StartMonitoringCallback callback) {
         if (!monitoringFlag) {
             if (mAddresses != null) {
                 socket.connect();
                 monitoringFlag = true;
+                callback.onSuccess();
             } else {
-                loadWalletFromFile(new LoadWalletFromFileCallBack() {
+                loadWallet(new LoadWalletCallBack() {
                     @Override
                     public void onSuccess() {
                         mAddresses = new JSONArray();
                         for (String address : KeyStorage.getInstance().getAddresses()) {
                             mAddresses.put(address);
                         }
-                        startMonitoring();
+                        startMonitoring(mnemonic, callback);
                     }
-                });
+                }, mnemonic);
             }
         }
     }
