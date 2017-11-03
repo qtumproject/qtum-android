@@ -86,8 +86,15 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
 
         Pattern pattern = Pattern.compile("qtum:(.*?)\\?");
         Matcher matcher = pattern.matcher(result.getText());
-        if (matcher.find())
-           receiveAddr = matcher.group(1);
+        if (matcher.find()) {
+            receiveAddr = matcher.group(1);
+        } else {
+            pattern = Pattern.compile("qtum:(.*?)$");
+            matcher = pattern.matcher(result.getText());
+            if (matcher.find()) {
+                receiveAddr = matcher.group(1);
+            }
+        }
 
         pattern = Pattern.compile("tokenAddress=(.*?)$");
         matcher = pattern.matcher(result.getText());
