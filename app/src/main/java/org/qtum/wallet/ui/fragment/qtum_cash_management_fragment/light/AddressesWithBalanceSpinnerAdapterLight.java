@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.model.DeterministicKeyWithBalance;
+import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceSpinnerAdapter;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class AddressesWithBalanceSpinnerAdapterLight extends AddressesWithBalanceSpinnerAdapter {
 
-    public AddressesWithBalanceSpinnerAdapterLight(@NonNull Context context, List<DeterministicKeyWithBalance> keyWithBalanceList) {
+    public AddressesWithBalanceSpinnerAdapterLight(@NonNull Context context, List<AddressWithBalance> keyWithBalanceList) {
         super(context, keyWithBalanceList);
     }
 

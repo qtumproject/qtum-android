@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.qtum.wallet.model.DeterministicKeyWithBalance;
+import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceSpinnerAdapter;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AddressesWithBalanceSpinnerAdapterDark extends AddressesWithBalanceSpinnerAdapter {
 
-    public AddressesWithBalanceSpinnerAdapterDark(@NonNull Context context, List<DeterministicKeyWithBalance> keyWithBalanceList) {
+    public AddressesWithBalanceSpinnerAdapterDark(@NonNull Context context, List<AddressWithBalance> keyWithBalanceList) {
         super(context, keyWithBalanceList);
     }
 

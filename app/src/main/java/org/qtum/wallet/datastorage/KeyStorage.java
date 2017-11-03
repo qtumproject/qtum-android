@@ -62,44 +62,10 @@ public class KeyStorage implements Serializable {
 
     public void clearKeyFile(Context context){
         File file = new File(context.getFilesDir().getPath() + "/key_storage");
-        file.delete();
+        if(file.exists()) {
+            file.delete();
+        }
     }
-
-//    public Observable<Wallet> loadWalletFromFile(Context context) {
-//        mFile = new File(context.getFilesDir().getPath() + "/key_storage");
-//        return Observable.create(new Observable.OnSubscribe<Wallet>() {
-//            @Override
-//            public void call(Subscriber<? super Wallet> subscriber) {
-//                try {
-//                    sWallet = Wallet.loadFromFile(mFile, new WalletExtension() {
-//                        @Override
-//                        public String getWalletExtensionID() {
-//                            return null;
-//                        }
-//
-//                        @Override
-//                        public boolean isWalletExtensionMandatory() {
-//                            return false;
-//                        }
-//
-//                        @Override
-//                        public byte[] serializeWalletExtension() {
-//                            return new byte[0];
-//                        }
-//
-//                        @Override
-//                        public void deserializeWalletExtension(Wallet containingWallet, byte[] data) throws Exception {
-//
-//                        }
-//                    });
-//                } catch (UnreadableWalletException e) {
-//                    e.printStackTrace();
-//                }
-//                getKeyList(ADDRESSES_COUNT);
-//                subscriber.onNext(sWallet);
-//            }
-//        });
-//    }
 
     public Observable<String> createWallet(final Context context) {
         mFile = new File(context.getFilesDir().getPath() + "/key_storage");
@@ -125,9 +91,13 @@ public class KeyStorage implements Serializable {
                     sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
 
                 }
-                //sWallet.saveToFile(mFile);
-                getKeyList(ADDRESSES_COUNT);
-                subscriber.onNext(mnemonicCode);
+                try {
+                    sWallet.saveToFile(mFile);
+                    getKeyList();
+                    subscriber.onNext(mnemonicCode);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -149,15 +119,19 @@ public class KeyStorage implements Serializable {
                 if (seed != null) {
                     sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
                 }
-                //sWallet.saveToFile(mFile);
-                getKeyList(ADDRESSES_COUNT);
-                subscriber.onNext(seedString);
+                try {
+                    sWallet.saveToFile(mFile);
+                    getKeyList();
+                    subscriber.onNext(seedString);
 
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    public List<DeterministicKey> getKeyList(int numberOfKeys) {
+    public List<DeterministicKey> getKeyList() {
         if (mDeterministicKeyList == null) {
             mDeterministicKeyList = new ArrayList<>(ADDRESSES_COUNT);
             mAddressesList = new ArrayList<>();
@@ -175,7 +149,7 @@ public class KeyStorage implements Serializable {
     }
 
     public String getCurrentAddress() {
-        return getKeyList(ADDRESSES_COUNT).get(sCurrentKeyPosition).toAddress(CurrentNetParams.getNetParams()).toString();
+        return getKeyList().get(sCurrentKeyPosition).toAddress(CurrentNetParams.getNetParams()).toString();
     }
 
     public List<String> getAddresses() {
@@ -183,7 +157,7 @@ public class KeyStorage implements Serializable {
     }
 
     public DeterministicKey getCurrentKey() {
-        return getKeyList(ADDRESSES_COUNT).get(sCurrentKeyPosition);
+        return getKeyList().get(sCurrentKeyPosition);
     }
 
     public void setCurrentKeyPosition(int currentKeyPosition) {
