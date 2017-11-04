@@ -16,9 +16,6 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by drevnitskaya on 05.10.17.
- */
 
 public class WatchContractInteractorImpl implements WatchContractInteractor {
 
@@ -63,7 +60,7 @@ public class WatchContractInteractorImpl implements WatchContractInteractor {
                 DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
         TinyDB tinyDB = new TinyDB(mContext.get());
         List<Token> tokenList = tinyDB.getTokenList();
-        Token token = new Token(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "Stub!", name);
+        Token token = new Token(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "", name);
         tokenList.add(token);
         tinyDB.putTokenList(tokenList);
 
@@ -76,7 +73,7 @@ public class WatchContractInteractorImpl implements WatchContractInteractor {
                 DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
         TinyDB tinyDB = new TinyDB(mContext.get());
         List<Contract> contractList = tinyDB.getContractListWithoutToken();
-        Contract contract = new Contract(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "Stub!", name);
+        Contract contract = new Contract(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "", name);
         contractList.add(contract);
         tinyDB.putContractListWithoutToken(contractList);
     }

@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.contract_function_fragment;
 
+import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
@@ -23,11 +24,13 @@ public interface ContractFunctionInteractor {
 
     Observable<ContractFunctionInteractorImpl.CallSmartContractRespWrapper> callSmartContractObservable(String methodName,
                                                                                                         List<ContractMethodParameter> contractMethodParameterList,
-                                                                                                        String contractAddress);
+                                                                                                        Contract contract);
 
     Observable<List<UnspentOutput>> unspentOutputsForSeveralAddrObservable();
 
     String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String fee, final String contractAddress);
 
     Observable<SendRawTransactionResponse> sendRawTransactionObservable(String code);
+
+    Contract getContractByAddress(String address);
 }

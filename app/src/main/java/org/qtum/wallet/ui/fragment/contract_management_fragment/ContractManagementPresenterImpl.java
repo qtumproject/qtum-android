@@ -1,6 +1,7 @@
 package org.qtum.wallet.ui.fragment.contract_management_fragment;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
@@ -51,4 +52,8 @@ public class ContractManagementPresenterImpl extends BaseFragmentPresenterImpl i
         return mContractManagementInteractor;
     }
 
+    @Override
+    public Contract getContractByAddress(String contractAddress){
+        return getInteractor().getContractByAddress(contractAddress);
+    }
 }

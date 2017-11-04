@@ -72,7 +72,7 @@ public class ContractManagementHelper {
 
     }
 
-    public static void getPropertyValue(final String contractAddress, final ContractMethod contractMethod, final GetPropertyValueCallBack callBack) {
+    public static void getPropertyValue(final Contract contract, final ContractMethod contractMethod, final GetPropertyValueCallBack callBack) {
         getHash(contractMethod.name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -89,7 +89,7 @@ public class ContractManagementHelper {
 
                     @Override
                     public void onNext(String[] hashes) {
-                        QtumService.newInstance().callSmartContract(contractAddress, new CallSmartContractRequest(hashes))
+                        QtumService.newInstance().callSmartContract(contract.getContractAddress(), new CallSmartContractRequest(hashes, contract.getSenderAddress()))
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Subscriber<CallSmartContractResponse>() {

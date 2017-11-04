@@ -322,10 +322,9 @@ public class SendInteractorImpl implements SendInteractor {
     }
 
     @Override
-    public Observable<CallSmartContractResponse> callSmartContractObservable(Token token, String s) {
-        String hash = s.substring(0, s.length() - 64);
-        hash = hash.concat("0000000000000000000000000000000000000000000000000000000000000000");
-        return QtumService.newInstance().callSmartContract(token.getContractAddress(), new CallSmartContractRequest(new String[]{hash}));
+    public Observable<CallSmartContractResponse> callSmartContractObservable(Token token, String hash, String fromAddress) {
+
+        return QtumService.newInstance().callSmartContract(token.getContractAddress(), new CallSmartContractRequest(new String[]{hash},fromAddress));
     }
 
     @Override

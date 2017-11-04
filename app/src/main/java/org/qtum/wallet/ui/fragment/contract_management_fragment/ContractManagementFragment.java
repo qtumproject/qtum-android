@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import org.qtum.wallet.R;
+import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -102,6 +103,10 @@ public abstract class ContractManagementFragment extends BaseFragment implements
         return getArguments().getString(CONTRACT_ADDRESS);
     }
 
+    Contract getContractByAddress(String contractAddress){
+        return getPresenter().getContractByAddress(contractAddress);
+    }
+
     @Override
     public String getContractTemplateUiid() {
         return getArguments().getString(CONTRACT_TEMPLATE_UIID);
@@ -163,7 +168,7 @@ public abstract class ContractManagementFragment extends BaseFragment implements
             mTextViewPropertyName.setText(contractMethod.name);
             mContractMethod = contractMethod;
             if(needToGetValue) {
-                ContractManagementHelper.getPropertyValue(getContractAddress(), mContractMethod, new ContractManagementHelper.GetPropertyValueCallBack() {
+                ContractManagementHelper.getPropertyValue(getContractByAddress(getContractAddress()), mContractMethod, new ContractManagementHelper.GetPropertyValueCallBack() {
                     @Override
                     public void onSuccess(String value) {
                         mProgressBar.setVisibility(View.GONE);
