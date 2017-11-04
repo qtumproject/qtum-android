@@ -108,7 +108,7 @@ dependencies {
 
     compile 'com.android.support:support-v4:25.4.0'
     compile 'com.android.support:design:25.4.0'
-    compile 'com.github.designsters:android-fork-bitcoinj:1.0.10'
+    compile 'com.github.designsters:android-fork-bitcoinj:1.0.11'
     compile 'com.android.support:multidex:1.0.2'
     compile 'com.google.zxing:core:3.3.0'
     compile 'com.jakewharton:butterknife:8.4.0'

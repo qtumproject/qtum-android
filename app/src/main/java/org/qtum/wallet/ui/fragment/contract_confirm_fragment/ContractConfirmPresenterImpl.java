@@ -1,6 +1,7 @@
 package org.qtum.wallet.ui.fragment.contract_confirm_fragment;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.model.TransactionHashWithSender;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
@@ -119,8 +120,8 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                             }
                         });
 //TODO
-                        String hash = getInteractor().createTransactionHash(abiParams, unspentOutputs, gasLimit, gasPrice, fee);
-                        sendTx(hash, "Stub!");
+                        TransactionHashWithSender transactionHash = getInteractor().createTransactionHash(abiParams, unspentOutputs, gasLimit, gasPrice, fee);
+                        sendTx(transactionHash.getTransactionHash(), transactionHash.getSender());
                     }
                 });
     }

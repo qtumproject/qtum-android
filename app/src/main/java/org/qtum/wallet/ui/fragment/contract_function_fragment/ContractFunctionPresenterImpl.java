@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.contract_function_fragment;
 
+import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
@@ -66,7 +67,8 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
     @Override
     public void onCallClick(List<ContractMethodParameter> contractMethodParameterList, final String contractAddress, final String fee, final int gasLimit, final int gasPrice, String methodName) {
         getView().setProgressDialog();
-        getInteractor().callSmartContractObservable(methodName, contractMethodParameterList, contractAddress)
+        Contract contract = getInteractor().getContractByAddress(contractAddress);
+        getInteractor().callSmartContractObservable(methodName, contractMethodParameterList, contract)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ContractFunctionInteractorImpl.CallSmartContractRespWrapper>() {
