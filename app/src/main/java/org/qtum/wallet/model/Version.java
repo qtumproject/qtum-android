@@ -1,7 +1,6 @@
 package org.qtum.wallet.model;
 
 
-
 public class Version {
 
     private String versionName;
@@ -19,4 +18,5 @@ public class Version {
     public String getVersionName() {
         return versionName;
     }
+
 }
