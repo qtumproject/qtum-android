@@ -14,14 +14,13 @@
         android:textSize="16sp"
         android:textColor="@color/colorPrimary"
         android:text="@string/token_name"
-        android:gravity="left|center_vertical"
-        android:layout_toStartOf="@+id/ll_balance"
+        android:gravity="start|center_vertical"
         android:maxLines="1"
         android:ellipsize="end"
         app:typefaceAsset="@string/simplonMonoRegular"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="32dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
     <View
@@ -31,9 +30,10 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_balance"
         android:gravity="center"
+        android:layout_toEndOf="@+id/token_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
@@ -45,16 +45,18 @@
         <org.qtum.wallet.utils.FontTextView
             android:id="@+id/token_balance"
             tools:text="0.0"
+            android:layout_toStartOf="@+id/token_symbol"
             android:maxLines="1"
             android:ellipsize="end"
-            android:gravity="center"
+            android:gravity="end|center_vertical"
             android:textSize="14sp"
             android:textColor="@color/colorPrimary"
             app:typefaceAsset="@string/simplonMonoMedium"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <org.qtum.wallet.utils.FontTextView
+            android:layout_alignParentEnd="true"
             android:layout_marginStart="2dp"
             android:id="@+id/token_symbol"
             android:textSize="14sp"
@@ -62,11 +64,12 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:textColor="@color/colorPrimary"
+            android:gravity="center"
             app:typefaceAsset="@string/simplonMonoMedium"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/spinner"

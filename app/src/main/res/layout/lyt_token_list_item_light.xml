@@ -20,8 +20,7 @@
         app:typefaceAsset="@string/proximaNovaRegular"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_toStartOf="@+id/ll_balance"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
     <View
@@ -34,7 +33,8 @@
 
 
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_toEndOf="@+id/token_name"
         android:id="@+id/ll_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,18 +50,21 @@
             android:layout_marginEnd="4dp"
             android:textColor="@color/bottom_nav_bar_text_color_light"
             app:typefaceAsset="@string/proximaNovaSemibold"
-            android:layout_width="wrap_content"
+            android:layout_toStartOf="@+id/token_symbol"
+            android:gravity="end"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <org.qtum.wallet.utils.FontTextView
             android:id="@+id/token_symbol"
+            android:layout_alignParentEnd="true"
             android:textSize="14sp"
             android:textColor="@color/bottom_nav_bar_text_color_light"
             app:typefaceAsset="@string/proximaNovaSemibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/spinner"
