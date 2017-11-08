@@ -405,29 +405,43 @@ public class ContractBuilder {
         transaction.addOutput(Coin.ZERO, script);
         BigDecimal fee = new BigDecimal(feeString);
         BigDecimal gasFee = (new BigDecimal(gasLimit)).multiply(new BigDecimal(gasPrice)).divide(new BigDecimal(100000000), MathContext.DECIMAL128);
-        UnspentOutput unspentOutput = null;
-        for (UnspentOutput unspentOutput1 : unspentOutputs) {
-            if (unspentOutput1.getAmount().doubleValue() > fee.add(gasFee).doubleValue()) {
-                unspentOutput = unspentOutput1;
+        BigDecimal totalFee = fee.add(gasFee);
+        BigDecimal amountFromOutput = new BigDecimal("0.0");
+        BigDecimal overFlow = new BigDecimal("0.0");
+        for (UnspentOutput unspentOutput : unspentOutputs) {
+            overFlow = overFlow.add(unspentOutput.getAmount());
+            if (overFlow.doubleValue() >= totalFee.doubleValue()) {
                 break;
             }
         }
-
-        if (unspentOutput == null) {
+        if (overFlow.doubleValue() < totalFee.doubleValue()) {
             throw new RuntimeException("You have insufficient funds for this transaction");
         }
+        BigDecimal delivery = overFlow.subtract(totalFee);
+
 
         BigDecimal bitcoin = new BigDecimal(100000000);
-        ECKey myKey = KeyStorage.getInstance().getCurrentKey();
-        transaction.addOutput(Coin.valueOf((long) (unspentOutput.getAmount().multiply(bitcoin).subtract(fee.add(gasFee).multiply(bitcoin)).doubleValue())),
-                myKey.toAddress(CurrentNetParams.getNetParams()));
 
-        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
-            if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
-                Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
-                TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
-                Script script2 = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
-                transaction.addSignedInput(outPoint, script2, deterministicKey, Transaction.SigHash.ALL, true);
+        ECKey myKey = KeyStorage.getInstance().getCurrentKey();
+
+        if (delivery.doubleValue() != 0.0) {
+            transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), myKey.toAddress(CurrentNetParams.getNetParams()));
+        }
+
+
+        for (UnspentOutput unspentOutput : unspentOutputs) {
+            if (unspentOutput.getAmount().doubleValue() != 0.0)
+                for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
+                    if (deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString().equals(unspentOutput.getAddress())) {
+                        Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
+                        TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
+                        Script script2 = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
+                        transaction.addSignedInput(outPoint, script2, deterministicKey, Transaction.SigHash.ALL, true);
+                        amountFromOutput = amountFromOutput.add(unspentOutput.getAmount());
+                        break;
+                    }
+                }
+            if (amountFromOutput.doubleValue() >= totalFee.doubleValue()) {
                 break;
             }
         }
@@ -452,29 +466,43 @@ public class ContractBuilder {
         transaction.addOutput(Coin.ZERO, script);
         BigDecimal fee = new BigDecimal(feeString);
         BigDecimal gasFee = (new BigDecimal(gasLimit)).multiply(new BigDecimal(gasPrice)).divide(new BigDecimal(100000000), MathContext.DECIMAL128);
-        UnspentOutput unspentOutput = null;
-        for (UnspentOutput unspentOutput1 : unspentOutputs) {
-            if (unspentOutput1.getAmount().doubleValue() > fee.add(gasFee).doubleValue()) {
-                unspentOutput = unspentOutput1;
+        BigDecimal totalFee = fee.add(gasFee);
+        BigDecimal amountFromOutput = new BigDecimal("0.0");
+        BigDecimal overFlow = new BigDecimal("0.0");
+        for (UnspentOutput unspentOutput : unspentOutputs) {
+            overFlow = overFlow.add(unspentOutput.getAmount());
+            if (overFlow.doubleValue() >= totalFee.doubleValue()) {
                 break;
             }
         }
-
-        if (unspentOutput == null) {
+        if (overFlow.doubleValue() < totalFee.doubleValue()) {
             throw new RuntimeException("You have insufficient funds for this transaction");
         }
+        BigDecimal delivery = overFlow.subtract(totalFee);
+
 
         BigDecimal bitcoin = new BigDecimal(100000000);
-        ECKey myKey = KeyStorage.getInstance().getCurrentKey();
-        transaction.addOutput(Coin.valueOf((long) (unspentOutput.getAmount().multiply(bitcoin).subtract(fee.add(gasFee).multiply(bitcoin)).doubleValue())),
-                myKey.toAddress(CurrentNetParams.getNetParams()));
 
-        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
-            if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
-                Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
-                TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
-                Script script2 = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
-                transaction.addSignedInput(outPoint, script2, deterministicKey, Transaction.SigHash.ALL, true);
+        ECKey myKey = KeyStorage.getInstance().getCurrentKey();
+
+        if (delivery.doubleValue() != 0.0) {
+            transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), myKey.toAddress(CurrentNetParams.getNetParams()));
+        }
+
+
+        for (UnspentOutput unspentOutput : unspentOutputs) {
+            if (unspentOutput.getAmount().doubleValue() != 0.0)
+                for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
+                    if (deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString().equals(unspentOutput.getAddress())) {
+                        Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
+                        TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
+                        Script script2 = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
+                        transaction.addSignedInput(outPoint, script2, deterministicKey, Transaction.SigHash.ALL, true);
+                        amountFromOutput = amountFromOutput.add(unspentOutput.getAmount());
+                        break;
+                    }
+                }
+            if (amountFromOutput.doubleValue() >= totalFee.doubleValue()) {
                 break;
             }
         }
