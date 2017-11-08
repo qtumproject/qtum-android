@@ -175,18 +175,19 @@ public class ContractFunctionPresenterTest {
     private final ContractFunctionInteractorImpl.CallSmartContractRespWrapper TEST_RIGHT_RESP_WRAPPER =
             new ContractFunctionInteractorImpl.CallSmartContractRespWrapper("code", new CallSmartContractResponse(TEST_RIGHT_ITEMS));
 
+    String TEST_ADDRESS = "test_address";
     @Test
     public void onCallClick_ValidSmartContractResp_CreateTxError() {
         when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
                 .thenReturn(Observable.just(TEST_RIGHT_RESP_WRAPPER));
         when(interactor.getFeePerKb())
                 .thenReturn(new BigDecimal("12"));
-        when(interactor.unspentOutputsForSeveralAddrObservable())
+        when(interactor.unspentOutputsForAddressObservable(TEST_ADDRESS))
                 .thenReturn(Observable.<List<UnspentOutput>>error(new Throwable("Unspent outputs error")));
 
         presenter.onCallClick(TEST_PARAMETRS, "address", "fee", TEST_PARAM_GAS_LIMIT, 2, "method name");
 
-        verify(interactor, times(1)).unspentOutputsForSeveralAddrObservable();
+        verify(interactor, times(1)).unspentOutputsForAddressObservable(TEST_ADDRESS);
         verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any());
         verify(view, never()).dismissProgressDialog();
     }
@@ -201,7 +202,7 @@ public class ContractFunctionPresenterTest {
         when(interactor.getFeePerKb())
                 .thenReturn(new BigDecimal("12"));
 
-        when(interactor.unspentOutputsForSeveralAddrObservable())
+        when(interactor.unspentOutputsForAddressObservable(TEST_ADDRESS))
                 .thenReturn(Observable.just(TEST_OUTPUTS));
 
         when(interactor.createTransactionHash(anyString(), anyList(), anyInt(), anyInt(), (BigDecimal) any(), anyString(), anyString()))
@@ -211,7 +212,7 @@ public class ContractFunctionPresenterTest {
 
         presenter.onCallClick(TEST_PARAMETRS, "address", "fee", TEST_PARAM_GAS_LIMIT, 2, "method name");
 
-        verify(interactor, times(1)).unspentOutputsForSeveralAddrObservable();
+        verify(interactor, times(1)).unspentOutputsForAddressObservable(TEST_ADDRESS);
         verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any());
 
         verify(view, never()).dismissProgressDialog();
@@ -224,7 +225,7 @@ public class ContractFunctionPresenterTest {
         when(interactor.getFeePerKb())
                 .thenReturn(new BigDecimal("12"));
 
-        when(interactor.unspentOutputsForSeveralAddrObservable())
+        when(interactor.unspentOutputsForAddressObservable(TEST_ADDRESS))
                 .thenReturn(Observable.just(TEST_OUTPUTS));
 
         when(interactor.createTransactionHash(anyString(), anyList(), anyInt(), anyInt(), (BigDecimal) any(), anyString(), anyString()))
