@@ -26,6 +26,7 @@
             android:layout_height="24dp" />
 
         <TextView
+            android:id="@+id/txt_transfer"
             android:textSize="12sp"
             android:textColor="@color/bottom_nav_bar_text_color_light"
             android:layout_toEndOf="@+id/iv_transfer"
@@ -34,9 +35,10 @@
             android:gravity="center_vertical"
             android:layout_height="match_parent" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/ll_balance"
-            android:layout_width="wrap_content"
+            android:layout_toEndOf="@+id/txt_transfer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
@@ -45,8 +47,11 @@
             android:orientation="horizontal">
 
             <org.qtum.wallet.utils.FontTextView
+                android:layout_marginStart="8dp"
                 android:id="@+id/address_balance"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="end"
+                android:layout_toStartOf="@+id/address_symbol"
                 android:layout_height="wrap_content"
                 android:textColor="@color/bottom_nav_bar_text_color_light"
                 android:textSize="18sp"
@@ -55,14 +60,16 @@
 
             <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/address_symbol"
+                android:gravity="center"
+                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textColor="@color/bottom_nav_bar_text_color_light_alpha_60"
                 android:textSize="14sp"
                 app:typefaceAsset="@string/proximaNovaRegular"
                 tools:text="@string/qtum" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 

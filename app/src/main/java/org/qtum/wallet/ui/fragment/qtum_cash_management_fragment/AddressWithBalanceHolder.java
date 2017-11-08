@@ -3,18 +3,16 @@ package org.qtum.wallet.ui.fragment.qtum_cash_management_fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
-
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.utils.ClipboardUtils;
-import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.FontTextView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
 
@@ -63,7 +61,14 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
         mDeterministicKeyWithBalance = deterministicKeyWithBalance;
         mTextViewAddress.setText(deterministicKeyWithBalance.getAddress());
 
-        mTextViewAddressBalance.setText(ContractBuilder.getShortBigNumberRepresentation(deterministicKeyWithBalance.getBalance().toString()));
+        String balance = deterministicKeyWithBalance.getBalance().toString();
+
+        if(mTextViewAddressBalance.getLayoutParams().width == WRAP_CONTENT){
+            mTextViewAddressBalance.setLongNumberText(balance, itemView.getContext().getResources().getDisplayMetrics().widthPixels/2);
+        } else {
+            mTextViewAddressBalance.setLongNumberText(balance);
+        }
+
         mTextViewSymbol.setText(" QTUM");
     }
 }

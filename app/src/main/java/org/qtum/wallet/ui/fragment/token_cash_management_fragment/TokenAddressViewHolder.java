@@ -19,6 +19,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 /**
  * Created by kirillvolkov on 03.08.17.
  */
@@ -76,15 +78,14 @@ public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
         this.item = item;
         mTextViewAddress.setText(item.getAddress());
 
-        try {
-            mTextViewAddressBalance.setText(
-                    ContractBuilder.getShortBigNumberRepresentation(
-                            (item.getBalance() != null) ? String.valueOf(item.getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0"
-                    )
-            );
-        }catch (Exception e){
-            String message = e.getMessage();
+        String balance = (item.getBalance() != null) ? String.valueOf(item.getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0";
+
+        if(mTextViewAddressBalance.getLayoutParams().width == WRAP_CONTENT){
+            mTextViewAddressBalance.setLongNumberText(balance, itemView.getContext().getResources().getDisplayMetrics().widthPixels/2);
+        } else {
+            mTextViewAddressBalance.setLongNumberText(balance);
         }
+
         mTextViewSymbol.setText(String.format(" %s", currency));
     }
 }
