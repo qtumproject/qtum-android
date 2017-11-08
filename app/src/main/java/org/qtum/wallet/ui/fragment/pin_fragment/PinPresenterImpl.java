@@ -497,7 +497,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
             isDataLoaded = false;
         }
 
-        if (mTouchIdFlag && (mAction.equals(AUTHENTICATION_AND_SEND) || mAction.equals(AUTHENTICATION) || mAction.equals(CHECK_AUTHENTICATION)) || mAction.equals(AUTHENTICATION_FOR_PASSPHRASE)) {
+        if (mTouchIdFlag && (mAction.equals(AUTHENTICATION_AND_SEND) || mAction.equals(AUTHENTICATION) || mAction.equals(CHECK_AUTHENTICATION) || mAction.equals(AUTHENTICATION_FOR_PASSPHRASE))) {
             getView().prepareSensor();
         }
     }
