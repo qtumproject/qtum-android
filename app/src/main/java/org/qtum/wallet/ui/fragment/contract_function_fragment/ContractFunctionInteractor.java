@@ -26,7 +26,7 @@ public interface ContractFunctionInteractor {
                                                                                                         List<ContractMethodParameter> contractMethodParameterList,
                                                                                                         Contract contract);
 
-    Observable<List<UnspentOutput>> unspentOutputsForSeveralAddrObservable();
+    Observable<List<UnspentOutput>> unspentOutputsForAddressObservable(String address);
 
     String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String fee, final String contractAddress);
 

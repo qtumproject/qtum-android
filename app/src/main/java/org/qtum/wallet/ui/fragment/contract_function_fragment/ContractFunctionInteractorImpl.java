@@ -75,11 +75,11 @@ public class ContractFunctionInteractorImpl implements ContractFunctionInteracto
     }
 
     @Override
-    public Observable<List<UnspentOutput>> unspentOutputsForSeveralAddrObservable() {
+    public Observable<List<UnspentOutput>> unspentOutputsForAddressObservable(final String address) {
         return Observable.defer(new Func0<Observable<List<UnspentOutput>>>() {
             @Override
             public Observable<List<UnspentOutput>> call() {
-                return QtumService.newInstance().getUnspentOutputsForSeveralAddresses(KeyStorage.getInstance().getAddresses());
+                return QtumService.newInstance().getUnspentOutputs(address);
             }
         });
     }

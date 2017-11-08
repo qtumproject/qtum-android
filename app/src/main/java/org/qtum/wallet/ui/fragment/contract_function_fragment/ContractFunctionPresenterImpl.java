@@ -67,7 +67,7 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
     @Override
     public void onCallClick(List<ContractMethodParameter> contractMethodParameterList, final String contractAddress, final String fee, final int gasLimit, final int gasPrice, String methodName) {
         getView().setProgressDialog();
-        Contract contract = getInteractor().getContractByAddress(contractAddress);
+        final Contract contract = getInteractor().getContractByAddress(contractAddress);
         getInteractor().callSmartContractObservable(methodName, contractMethodParameterList, contract)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -98,14 +98,14 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
                             return;
                         }
                         createTx(respWrapper.getAbiParams(), /*TODO callSmartContractResponse.getItems().get(0).getGasUsed()*/ gasLimit, gasPrice, fee.replace(',', '.'),
-                                getInteractor().getFeePerKb(), contractAddress);
+                                getInteractor().getFeePerKb(), contract);
                     }
                 });
     }
 
 
-    private void createTx(final String abiParams, final int gasLimit, final int gasPrice, final String fee, final BigDecimal feePerKb, final String contractAddress) {
-        getInteractor().unspentOutputsForSeveralAddrObservable()
+    private void createTx(final String abiParams, final int gasLimit, final int gasPrice, final String fee, final BigDecimal feePerKb, final Contract contract) {
+        getInteractor().unspentOutputsForAddressObservable(contract.getSenderAddress())
                 .flatMap(new Func1<List<UnspentOutput>, Observable<SendRawTransactionResponse>>() {
                     @Override
                     public Observable<SendRawTransactionResponse> call(List<UnspentOutput> unspentOutputs) {
@@ -121,7 +121,7 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
                                 return unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? -1 : 0;
                             }
                         });
-                        return sendTx(getInteractor().createTransactionHash(abiParams, unspentOutputs, gasLimit, gasPrice, feePerKb, fee, contractAddress));
+                        return sendTx(getInteractor().createTransactionHash(abiParams, unspentOutputs, gasLimit, gasPrice, feePerKb, fee, contract.getContractAddress()));
                     }
                 })
                 .subscribeOn(Schedulers.io())
