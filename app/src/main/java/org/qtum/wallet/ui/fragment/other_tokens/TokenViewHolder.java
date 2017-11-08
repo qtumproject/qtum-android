@@ -114,7 +114,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
 
                 String s = token.getTokenBalanceWithDecimalUnits().toString();
 
-                tokenBalanceView.setText(ContractBuilder.getShortBigNumberRepresentation(s));
+                tokenBalanceView.setLongNumberText(s, itemView.getContext().getResources().getDisplayMetrics().widthPixels/2);
                 tokenBalanceView.setVisibility(View.VISIBLE);
             }
         });

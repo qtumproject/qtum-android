@@ -16,7 +16,7 @@
         app:typefaceAsset="@string/proximaNovaRegular" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ll_balance"
         android:orientation="horizontal">
@@ -50,7 +50,7 @@
         style="@style/appbar_wallet_alpha_title"/>
 
     <org.qtum.wallet.utils.FontTextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:textColor="@color/white"

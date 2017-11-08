@@ -2,10 +2,13 @@ package org.qtum.wallet.ui.fragment.token_fragment.light;
 
 import android.support.design.widget.AppBarLayout;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
 import org.qtum.wallet.ui.wave_visualizer.WaveHelper;
 import org.qtum.wallet.ui.wave_visualizer.WaveView;
@@ -37,6 +40,9 @@ public class TokenFragmentLight extends TokenFragment {
 
     @BindView(org.qtum.wallet.R.id.tv_token_name)
     TextView mTokenTitle;
+
+    @BindView(R.id.ll_balance)
+    LinearLayout llBalance;
 
     @Override
     protected int getLayout() {
@@ -86,16 +92,22 @@ public class TokenFragmentLight extends TokenFragment {
     }
 
     @Override
-    public void setBalance(String balance) {
-        mTextViewBalance.setText(String.valueOf(balance));
-        //placeHolderBalance.setText(String.valueOf(balance));
+    public void setBalance(final String balance) {
+        llBalance.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                llBalance.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mTextViewBalance.setLongNumberText(balance, llBalance.getWidth() * 2/3);
+                //placeHolderBalance.setText(String.valueOf(balance));
+            }
+        });
     }
 
     @Override
     public void onContractPropertyUpdated(String propName, String propValue) {
         switch (propName){
             case totalSupply:
-                totalSupplyValue.setText(ContractBuilder.getShortBigNumberRepresentation(propValue));
+                totalSupplyValue.setText(ContractBuilder.getShortBigNumberRepresentation(propValue, 10));
                 break;
             case decimals:
                 decimalsValue.setText(propValue);

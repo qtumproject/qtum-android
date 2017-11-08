@@ -220,7 +220,7 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyV
                     mTextViewCurrencyBalance.setText(
                             ContractBuilder.getShortBigNumberRepresentation(
                                     String.valueOf(((CurrencyToken) mCurrency).getToken().getTokenBalanceWithDecimalUnits())
-                            )
+                            ,10)
                     );
                     mTextViewCurrencyBalance.setVisibility(View.VISIBLE);
                 }
