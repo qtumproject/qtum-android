@@ -60,7 +60,7 @@ public abstract class AddressesWithBalanceSpinnerAdapter extends BaseAdapter imp
         }
 
         textViewSymbol.setText(" QTUM");
-        textViewBalance.setText(ContractBuilder.getShortBigNumberRepresentation(balance.toString()));
+        textViewBalance.setLongNumberText(balance.toString(), textViewBalance.getContext().getResources().getDisplayMetrics().widthPixels/2);
 
         textViewAddress.setText(mKeyWithBalanceList.get(position).getAddress());
 

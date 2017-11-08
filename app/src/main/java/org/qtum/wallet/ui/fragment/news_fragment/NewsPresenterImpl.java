@@ -1,5 +1,7 @@
 package org.qtum.wallet.ui.fragment.news_fragment;
 
+import android.util.Log;
+
 import org.qtum.wallet.datastorage.NewsStorage;
 import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.model.news.RssFeed;
@@ -59,6 +61,7 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
             loadAndUpdateNews();
         } else {
             getView().updateNews(getInteractor().getNewses());
+            NewsStorage.newInstance().setNewses(getInteractor().getNewses());
         }
     }
 
@@ -75,34 +78,35 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override
                     public void onNext(RssFeed rssFeed) {
-                        NewsStorage.newInstance().setNewses(rssFeed.getNewses());
+
 
                         List<News> newNews = rssFeed.getNewses();
                         List<News> oldNews = getInteractor().getNewses();
-                        if(oldNews.size()==0){
+
+                        if (oldNews.size() == 0) {
                             oldNews.addAll(newNews);
-                        }else {
-                            int pos = 0;
-                            News lastNews = oldNews.get(0);
-                            for (News news : newNews) {
-                                if (!news.getPubDate().equals(lastNews.getPubDate())) {
-                                    oldNews.add(pos, news);
-                                    pos++;
-                                } else {
-                                    break;
-                                }
-                            }
+                        } else {
+                            mergeNews(oldNews,newNews);
                         }
+
+                        NewsStorage.newInstance().setNewses(oldNews);
                         getInteractor().setNewses(oldNews);
                         getView().updateNews(oldNews);
 
                     }
                 });
+    }
+
+    private void mergeNews(List<News> olds, List<News> news) {
+        for (News n : news) {
+            if (!n.containsIn(olds)) {
+                olds.add(n);
+            }
+        }
     }
 
 }

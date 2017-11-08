@@ -11,6 +11,7 @@ import org.simpleframework.xml.Root;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @Root(name = "item", strict = false)
@@ -59,5 +60,19 @@ public class News {
             mDocument = Jsoup.parse(contentEncoded);
         }
         return mDocument;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((News)obj).getTitle().equals(getTitle()) && ((News)obj).contentEncoded.equals(contentEncoded);
+    }
+
+    public boolean containsIn(List<News> news){
+        for (News n : news) {
+            if(n.equals(this)){
+                return true;
+            }
+        }
+        return false;
     }
 }

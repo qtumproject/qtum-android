@@ -57,11 +57,8 @@ public abstract class AddressesWithTokenBalanceSpinnerAdapter extends BaseAdapte
         final FontTextView textViewBalance = (FontTextView) view.findViewById(R.id.address_balance);
         final FontTextView textViewSymbol = (FontTextView) view.findViewById(R.id.address_symbol);
         textViewSymbol.setText(String.format(" %s", currency));
-        textViewBalance.setText(
-                ContractBuilder.getShortBigNumberRepresentation(
-                        (mKeyWithBalanceList.get(position).getBalance() != null)? String.valueOf(mKeyWithBalanceList.get(position).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0"
-                )
-        );
+        String balance = (mKeyWithBalanceList.get(position).getBalance() != null)? String.valueOf(mKeyWithBalanceList.get(position).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0";
+        textViewBalance.setLongNumberText(balance, textViewBalance.getContext().getResources().getDisplayMetrics().widthPixels/2);
         textViewAddress.setText(mKeyWithBalanceList.get(position).getAddress());
 
         return view;

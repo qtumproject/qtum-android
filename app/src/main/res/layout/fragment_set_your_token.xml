@@ -90,6 +90,7 @@
                 app:srcCompat="@drawable/ic_token2"/>
 
             <org.qtum.wallet.utils.FontEditText
+                android:inputType="textNoSuggestions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusableInTouchMode="true"
