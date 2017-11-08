@@ -661,4 +661,14 @@ public class ContractBuilder {
         return formatter.format(number);
     }
 
+    public static String getShortBigNumberRepresentation(String value, int maxNumbers) {
+        if(value.length() > maxNumbers) {
+            BigDecimal number = new BigDecimal(value);
+            NumberFormat formatter = new DecimalFormat("0.##E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
+            return formatter.format(number);
+        } else {
+            return value;
+        }
+    }
+
 }

@@ -53,7 +53,8 @@
                 app:typefaceAsset="@string/proximaNovaSemibold"
                 android:textSize="18sp"
                 android:textColor="@color/switch_on"
-                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <org.qtum.wallet.utils.FontTextView

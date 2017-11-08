@@ -27,7 +27,7 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
             getInteractor().setupPropertyDecimalsValue(token, getView().getDecimalsValueCallback());
         } else {
             getView().onContractPropertyUpdated(TokenFragment.decimals, String.valueOf(token.getDecimalUnits()));
-            getView().setBalance(ContractBuilder.getShortBigNumberRepresentation(token.getTokenBalanceWithDecimalUnits().toString()));
+            getView().setBalance(token.getTokenBalanceWithDecimalUnits().toString());
             getInteractor().setupPropertyTotalSupplyValue(token, getView().getTotalSupplyValueCallback());
         }
 
@@ -66,7 +66,7 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
     @Override
     public void onDecimalsPropertySuccess(String value) {
         token = getInteractor().setTokenDecimals(token, value);
-        getView().setBalance(ContractBuilder.getShortBigNumberRepresentation(token.getTokenBalanceWithDecimalUnits().toString()));
+        getView().setBalance(token.getTokenBalanceWithDecimalUnits().toString());
         getInteractor().setupPropertyTotalSupplyValue(token, getView().getTotalSupplyValueCallback());
     }
 
