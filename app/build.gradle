@@ -8,7 +8,7 @@ buildscript {
         // can be updated quickly in response to Android tooling updates
         // We recommend changing it to the latest version from our changelog:
         // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
-        classpath 'io.fabric.tools:gradle:1.22.1'
+        classpath 'io.fabric.tools:gradle:1.24.4'
     }
 }
 //

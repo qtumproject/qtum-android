@@ -55,13 +55,6 @@ public class KeyStorage implements Serializable {
         sKeyStorage = null;
     }
 
-    public void clearKeyFile(Context context){
-        File file = new File(context.getFilesDir().getPath() + "/key_storage");
-        if(file.exists()) {
-            file.delete();
-        }
-    }
-
     public Observable<String> createWallet() {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override

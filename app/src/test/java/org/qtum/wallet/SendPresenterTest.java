@@ -330,7 +330,7 @@ public class SendPresenterTest {
 
         when(interactor.createAbiMethodParamsObservable(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.just("test"));
-        when(interactor.callSmartContractObservable((Token) any(), anyString()))
+        when(interactor.callSmartContractObservable((Token) any(), anyString(),anyString()))
                 .thenReturn(Observable.just(new CallSmartContractResponse(Arrays.asList(new Item("Test")))));
 
         presenter.setTokenList(Arrays.asList(TEST_TOKEN));
@@ -367,7 +367,7 @@ public class SendPresenterTest {
 
         when(interactor.createAbiMethodParamsObservable(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.just("test"));
-        when(interactor.callSmartContractObservable((Token) any(), anyString()))
+        when(interactor.callSmartContractObservable((Token) any(), anyString(),anyString()))
                 .thenReturn(Observable.just(new CallSmartContractResponse(Arrays.asList(new Item("None")))));
 
         presenter.setTokenList(Arrays.asList(TEST_TOKEN));
@@ -406,7 +406,7 @@ public class SendPresenterTest {
 
         when(interactor.createAbiMethodParamsObservable(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.just("test"));
-        when(interactor.callSmartContractObservable((Token) any(), anyString()))
+        when(interactor.callSmartContractObservable((Token) any(), anyString(),anyString()))
                 .thenReturn(Observable.just(new CallSmartContractResponse(Arrays.asList(new Item("Test")))));
 
         presenter.setTokenList(Arrays.asList(TEST_TOKEN));
@@ -445,7 +445,7 @@ public class SendPresenterTest {
 
         when(interactor.createAbiMethodParamsObservable(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.just("test"));
-        when(interactor.callSmartContractObservable((Token) any(), anyString()))
+        when(interactor.callSmartContractObservable((Token) any(), anyString(),anyString()))
                 .thenReturn(Observable.just(new CallSmartContractResponse(Arrays.asList(new Item("None")))));
 
         presenter.setTokenList(Arrays.asList(TEST_TOKEN));
@@ -482,7 +482,7 @@ public class SendPresenterTest {
 
         when(interactor.createAbiMethodParamsObservable(anyString(), anyString(), anyString()))
                 .thenReturn(Observable.just("test"));
-        when(interactor.callSmartContractObservable((Token) any(), anyString()))
+        when(interactor.callSmartContractObservable((Token) any(), anyString(),anyString()))
                 .thenReturn(Observable.<CallSmartContractResponse>error(new Throwable("Params creation error")));
 
         presenter.setTokenList(Arrays.asList(TEST_TOKEN));

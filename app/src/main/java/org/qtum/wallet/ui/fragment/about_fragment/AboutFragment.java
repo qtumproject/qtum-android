@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import org.qtum.wallet.model.Version;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.FontTextView;
@@ -36,8 +37,8 @@ public abstract class AboutFragment extends BaseFragment implements AboutView {
     }
 
     @Override
-    public void updateVersion(String version, int codeVersion) {
-        String footer = getString(org.qtum.wallet.R.string._2017_qtum_n_skynet_testnet_version) + "Version " + version + "(" + String.valueOf(codeVersion) + ")";
+    public void updateVersion(Version version) {
+        String footer = getString(org.qtum.wallet.R.string._2017_qtum_n_skynet_testnet_version) + "Version " + version.getVersionName() + "(" + String.valueOf(version.getVersionCode()) + ")";
         mTextViewQtumVersion.setText(footer);
     }
 
