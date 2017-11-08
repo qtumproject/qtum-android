@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
@@ -126,7 +127,7 @@ public class ContractFunctionPresenterTest {
 
     @Test
     public void onCallClick_Error() {
-        when(interactor.callSmartContractObservable(anyString(), anyList(), anyString()))
+        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
                 .thenReturn(Observable.error(new Throwable("Error")));
 
         presenter.onCallClick(TEST_PARAMETRS, "address", "fee", 2, 2, "method name");
@@ -142,7 +143,7 @@ public class ContractFunctionPresenterTest {
 
     @Test
     public void onCallClick_ItemExceptedNotNoneError() {
-        when(interactor.callSmartContractObservable(anyString(), anyList(), anyString()))
+        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
                 .thenReturn(Observable.just(TEST_WRONG_RESP_WRAPPER));
 
         presenter.onCallClick(TEST_PARAMETRS, "address", "fee", 2, 2, "method name");
@@ -160,7 +161,7 @@ public class ContractFunctionPresenterTest {
 
     @Test
     public void onCallClick_WrongGasUsedError() {
-        when(interactor.callSmartContractObservable(anyString(), anyList(), anyString()))
+        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
                 .thenReturn(Observable.just(TEST_WRONG_GAS_RESP_WRAPPER));
 
         presenter.onCallClick(TEST_PARAMETRS, "address", "fee", TEST_PARAM_GAS_LIMIT, 2, "method name");
@@ -176,7 +177,7 @@ public class ContractFunctionPresenterTest {
 
     @Test
     public void onCallClick_ValidSmartContractResp_CreateTxError() {
-        when(interactor.callSmartContractObservable(anyString(), anyList(), anyString()))
+        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
                 .thenReturn(Observable.just(TEST_RIGHT_RESP_WRAPPER));
         when(interactor.getFeePerKb())
                 .thenReturn(new BigDecimal("12"));
@@ -195,7 +196,7 @@ public class ContractFunctionPresenterTest {
 
     @Test
     public void onCallClick_CreateTxSuccess_SendTxError() {
-        when(interactor.callSmartContractObservable(anyString(), anyList(), anyString()))
+        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
                 .thenReturn(Observable.just(TEST_RIGHT_RESP_WRAPPER));
         when(interactor.getFeePerKb())
                 .thenReturn(new BigDecimal("12"));
@@ -218,7 +219,7 @@ public class ContractFunctionPresenterTest {
 
     @Test
     public void onCallClick_CreateTxSuccess_SendTxSuccess() {
-        when(interactor.callSmartContractObservable(anyString(), anyList(), anyString()))
+        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
                 .thenReturn(Observable.just(TEST_RIGHT_RESP_WRAPPER));
         when(interactor.getFeePerKb())
                 .thenReturn(new BigDecimal("12"));

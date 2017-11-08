@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.qtum.wallet.model.Version;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.about_fragment.AboutInteractor;
 import org.qtum.wallet.ui.fragment.about_fragment.AboutPresenterImpl;
@@ -41,7 +42,7 @@ public class AboutPresenterTest {
         when(interactor.getCodeVersion()).thenReturn(TEST_CODE_VERSION);
         when(interactor.getVersion()).thenReturn(TEST_VERSION);
         presenter.initializeViews();
-        verify(view, times(1)).updateVersion(TEST_VERSION, TEST_CODE_VERSION);
+        verify(view, times(1)).updateVersion(new Version(TEST_VERSION, TEST_CODE_VERSION));
     }
 
     @Test

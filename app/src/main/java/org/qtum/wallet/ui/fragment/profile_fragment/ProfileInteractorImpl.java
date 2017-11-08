@@ -20,7 +20,6 @@ class ProfileInteractorImpl implements ProfileInteractor {
     @Override
     public void clearWallet() {
         QtumSharedPreference.getInstance().clear(mContext);
-        KeyStorage.getInstance().clearKeyFile(mContext);
         KeyStorage.getInstance().clearKeyStorage();
         HistoryList.getInstance().clearHistoryList();
         TinyDB db = new TinyDB(mContext);

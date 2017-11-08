@@ -26,7 +26,6 @@ public class QtumSharedPreference {
     private final String BAN_TIME = "ban_time";
     private final String FAILED_ATTEMPTS_COUNT = "failed_attempts_count";
     private final String MIN_GAS_PRICE = "min_gas_price";
-    private final String SHOW_CONTRACTS_DELETE_UNSUBSCRIBE_WIZARD = "show_contracts_delete_unsubscribe_wizard";
     private final String FEE_PER_KB = "fee_per_kb";
 
     private List<LanguageChangeListener> mLanguageChangeListeners;
@@ -186,14 +185,4 @@ public class QtumSharedPreference {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(FEE_PER_KB, "0.00001");
     }
 
-    public void setShowContractsDeleteUnsubscribeWizard(Context context, boolean isShow) {
-        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putBoolean(SHOW_CONTRACTS_DELETE_UNSUBSCRIBE_WIZARD, isShow);
-        mEditor.apply();
-    }
-
-    public boolean getShowContractsDeleteUnsubscribeWizard(Context context) {
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getBoolean(SHOW_CONTRACTS_DELETE_UNSUBSCRIBE_WIZARD, true);
-    }
 }

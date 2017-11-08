@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.qtum.wallet.model.TransactionHashWithSender;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
@@ -108,12 +109,13 @@ public class ContractConfirmPresenterTest {
             new UnspentOutput(700, true, new BigDecimal("10.0")));
     private static final String ABI_PARAMS = "abi_params";
     private static final String TEST_HASH = "test_hash";
+    private static final String TEST_SENDER_ADDRESS = "test_address";
 
     @Test
     public void onConfirm_sendRawTransaction_Error(){
         when(interactor.createAbiConstructParams(TEST_PARAMETRS,uiid)).thenReturn(Observable.just(ABI_PARAMS));
         when(interactor.getUnspentOutputsForSeveralAddresses()).thenReturn(Observable.just(TEST_OUTPUTS));
-        when(interactor.createTransactionHash(ABI_PARAMS, TEST_OUTPUTS, gas_limit, gas_price, fee)).thenReturn(TEST_HASH);
+        when(interactor.createTransactionHash(ABI_PARAMS, TEST_OUTPUTS, gas_limit, gas_price, fee)).thenReturn(new TransactionHashWithSender(TEST_HASH,TEST_SENDER_ADDRESS));
         when(interactor.sendRawTransaction((SendRawTransactionRequest)any())).thenReturn(Observable.<SendRawTransactionResponse>error(new Throwable()));
         presenter.setContractMethodParameterList(TEST_PARAMETRS);
         presenter.onConfirmContract(uiid,gas_limit,gas_price,fee);
@@ -129,7 +131,7 @@ public class ContractConfirmPresenterTest {
         when(sendrawTransactionResponse.getTxid()).thenReturn(TX_HASH_TEST);
         when(interactor.createAbiConstructParams(TEST_PARAMETRS,uiid)).thenReturn(Observable.just(ABI_PARAMS));
         when(interactor.getUnspentOutputsForSeveralAddresses()).thenReturn(Observable.just(TEST_OUTPUTS));
-        when(interactor.createTransactionHash(ABI_PARAMS, TEST_OUTPUTS, gas_limit, gas_price, fee)).thenReturn(TEST_HASH);
+        when(interactor.createTransactionHash(ABI_PARAMS, TEST_OUTPUTS, gas_limit, gas_price, fee)).thenReturn(new TransactionHashWithSender(TEST_HASH,TEST_SENDER_ADDRESS));
         when(interactor.sendRawTransaction((SendRawTransactionRequest)any())).thenReturn(Observable.just(sendrawTransactionResponse));
         presenter.setContractMethodParameterList(TEST_PARAMETRS);
         presenter.onConfirmContract(uiid,gas_limit,gas_price,fee);
