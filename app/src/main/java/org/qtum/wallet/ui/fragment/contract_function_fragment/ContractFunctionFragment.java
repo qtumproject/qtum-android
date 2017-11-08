@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -531,5 +532,11 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         public int getItemCount() {
             return params.size();
         }
+    }
+
+    @Override
+    public void setSoftMode() {
+        super.setSoftMode();
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
     }
 }
