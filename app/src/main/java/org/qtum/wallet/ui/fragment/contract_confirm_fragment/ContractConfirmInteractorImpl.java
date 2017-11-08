@@ -9,6 +9,7 @@ import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.ContractTemplate;
+import org.qtum.wallet.model.TransactionHashWithSender;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.contract.Token;
@@ -82,10 +83,10 @@ class ContractConfirmInteractorImpl implements ContractConfirmInteractor{
     }
 
     @Override
-    public String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee) {
+    public TransactionHashWithSender createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee) {
         ContractBuilder contractBuilder = new ContractBuilder();
         Script script = contractBuilder.createConstructScript(abiParams, gasLimit, gasPrice);
-        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, getFeePerKb(), fee, mContext);
+        return contractBuilder.createTransactionHashForCreateContract(script, unspentOutputs, gasLimit, gasPrice, getFeePerKb(), fee, mContext);
     }
 
     @Override

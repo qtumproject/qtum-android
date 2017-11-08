@@ -246,7 +246,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                     @Override
                     public Observable<CallSmartContractResponse> call(String s) {
                         params = s;
-                        return getInteractor().callSmartContractObservable(token, s);
+                        return getInteractor().callSmartContractObservable(token, s, availableAddress);
                     }
                 })
                 .subscribeOn(Schedulers.io())

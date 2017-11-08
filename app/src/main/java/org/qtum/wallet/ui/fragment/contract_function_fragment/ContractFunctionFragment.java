@@ -493,6 +493,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             try {
                 BigInteger num = new BigInteger(content);
                 if ((num.compareTo(BigInteger.ZERO) > 0) && (num.compareTo(uint) < 0)) {
+                    parameter.setValue(String.valueOf(num));
                     return ALLOW;
                 }
             } catch (Exception e) {

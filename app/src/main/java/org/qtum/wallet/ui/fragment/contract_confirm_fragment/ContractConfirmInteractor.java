@@ -2,6 +2,7 @@ package org.qtum.wallet.ui.fragment.contract_confirm_fragment;
 
 
 import org.bitcoinj.script.Script;
+import org.qtum.wallet.model.TransactionHashWithSender;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
@@ -17,7 +18,7 @@ public interface ContractConfirmInteractor {
     Observable<List<UnspentOutput>> getUnspentOutputsForSeveralAddresses();
     Observable<SendRawTransactionResponse> sendRawTransaction(SendRawTransactionRequest sendRawTransactionRequest);
     void saveContract(String txid, String contractTemplateUiid, String contractName, String senderAddress);
-    String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee);
+    TransactionHashWithSender createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee);
     BigDecimal getFeePerKb();
     int getMinGasPrice();
 }
