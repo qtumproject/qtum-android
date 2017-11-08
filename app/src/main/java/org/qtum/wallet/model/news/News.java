@@ -61,18 +61,4 @@ public class News {
         }
         return mDocument;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        return ((News)obj).getTitle().equals(getTitle()) && ((News)obj).contentEncoded.equals(contentEncoded);
-    }
-
-    public boolean containsIn(List<News> news){
-        for (News n : news) {
-            if(n.equals(this)){
-                return true;
-            }
-        }
-        return false;
-    }
 }

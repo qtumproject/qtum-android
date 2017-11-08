@@ -6,6 +6,8 @@ import android.util.Pair;
 
 import com.google.gson.Gson;
 
+import org.bitcoinj.core.Address;
+import org.bitcoinj.core.AddressFormatException;
 import org.qtum.wallet.R;
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.datastorage.KeyStorage;
@@ -422,15 +424,20 @@ public class ContractBuilder {
 
         BigDecimal bitcoin = new BigDecimal(100000000);
 
-        ECKey myKey = KeyStorage.getInstance().getCurrentKey();
+        Address myAddress;
+        try {
+            myAddress = Address.fromBase58(CurrentNetParams.getNetParams(), unspentOutputs.get(0).getAddress());
+        } catch (AddressFormatException a) {
+            throw new RuntimeException(mContext.getString(org.qtum.wallet.R.string.invalid_qtum_address));
+        }
 
         if (delivery.doubleValue() != 0.0) {
-            transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), myKey.toAddress(CurrentNetParams.getNetParams()));
+            transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), myAddress);
         }
 
 
         for (UnspentOutput unspentOutput : unspentOutputs) {
-            if (unspentOutput.getAmount().doubleValue() != 0.0)
+
                 for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
                     if (deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString().equals(unspentOutput.getAddress())) {
                         Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
@@ -483,15 +490,20 @@ public class ContractBuilder {
 
         BigDecimal bitcoin = new BigDecimal(100000000);
 
-        ECKey myKey = KeyStorage.getInstance().getCurrentKey();
+        Address myAddress;
+        try {
+            myAddress = Address.fromBase58(CurrentNetParams.getNetParams(), unspentOutputs.get(0).getAddress());
+        } catch (AddressFormatException a) {
+            throw new RuntimeException(mContext.getString(org.qtum.wallet.R.string.invalid_qtum_address));
+        }
 
         if (delivery.doubleValue() != 0.0) {
-            transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), myKey.toAddress(CurrentNetParams.getNetParams()));
+            transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), myAddress);
         }
 
 
         for (UnspentOutput unspentOutput : unspentOutputs) {
-            if (unspentOutput.getAmount().doubleValue() != 0.0)
+
                 for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
                     if (deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString().equals(unspentOutput.getAddress())) {
                         Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));

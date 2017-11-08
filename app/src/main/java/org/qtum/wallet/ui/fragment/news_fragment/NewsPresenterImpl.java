@@ -83,30 +83,29 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
                     @Override
                     public void onNext(RssFeed rssFeed) {
 
-
                         List<News> newNews = rssFeed.getNewses();
                         List<News> oldNews = getInteractor().getNewses();
-
-                        if (oldNews.size() == 0) {
+                        if(oldNews.size()==0){
                             oldNews.addAll(newNews);
-                        } else {
-                            mergeNews(oldNews,newNews);
+                        }else {
+                            int pos = 0;
+                            News lastNews = oldNews.get(0);
+                            for (News news : newNews) {
+                                if (!news.getPubDate().equals(lastNews.getPubDate())) {
+                                    oldNews.add(pos, news);
+                                    pos++;
+                                } else {
+                                    break;
+                                }
+                            }
                         }
-
-                        NewsStorage.newInstance().setNewses(oldNews);
+                        NewsStorage.newInstance().setNewses(rssFeed.getNewses());
                         getInteractor().setNewses(oldNews);
                         getView().updateNews(oldNews);
 
+
                     }
                 });
-    }
-
-    private void mergeNews(List<News> olds, List<News> news) {
-        for (News n : news) {
-            if (!n.containsIn(olds)) {
-                olds.add(n);
-            }
-        }
     }
 
 }
