@@ -99,6 +99,7 @@
             android:layout_below="@+id/step">
 
             <org.qtum.wallet.utils.FontEditText
+                android:inputType="textNoSuggestions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/ic_token"

@@ -30,6 +30,10 @@ public class NewsStorage {
     }
 
     public News getNews(int position){
-        return mNewses.get(position);
+        if(mNewses != null && mNewses.size() > position) {
+            return mNewses.get(position);
+        } else {
+            return null;
+        }
     }
 }

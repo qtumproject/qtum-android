@@ -6,6 +6,7 @@ import android.content.Context;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.qtum.wallet.datastorage.NewsStorage;
+import org.qtum.wallet.model.news.News;
 
 import java.lang.ref.WeakReference;
 
@@ -20,7 +21,12 @@ public class NewsDetailInteractorImpl implements NewsDetailInteractor{
 
     @Override
     public Elements getElements(int newsPosition) {
-        Document document = NewsStorage.newInstance().getNews(newsPosition).getDocument();
-        return  document.body().children();
+        News news = NewsStorage.newInstance().getNews(newsPosition);
+        if(news != null) {
+            Document document = news.getDocument();
+            return document != null ? document.body().children() : null;
+        } else {
+            return null;
+        }
     }
 }
