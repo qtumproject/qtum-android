@@ -683,24 +683,10 @@ public class ContractBuilder {
         return Hex.toHexString(out2);
     }
 
-    public static String getShortBigNumberRepresentation(String value, int maxLength) {
-        if (value.length() > maxLength) {
-            BigDecimal number = new BigDecimal(value);
-            NumberFormat formatter = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
-            return formatter.format(number);
-        } else {
-            return value;
-        }
-    }
-
     public static String getShortBigNumberRepresentation(String value) {
-        if (value.length() > 10) {
-            BigDecimal number = new BigDecimal(value);
-            NumberFormat formatter = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
-            return formatter.format(number);
-        } else {
-            return value;
-        }
+        BigDecimal number = new BigDecimal(value);
+        NumberFormat formatter = new DecimalFormat("0.##E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
+        return formatter.format(number);
     }
 
 }

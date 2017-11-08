@@ -361,7 +361,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
                 String content = etParam.getText().toString() + source;
-
+                parameter.setValue(content);
                 if (!TextUtils.isEmpty(content)) {
                     switch (parameter.getType()) {
                         case TYPE_INT:
