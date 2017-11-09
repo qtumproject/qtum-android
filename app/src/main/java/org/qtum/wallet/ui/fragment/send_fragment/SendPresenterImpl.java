@@ -227,6 +227,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                         }
                     }
 
+
                     if (!getView().isValidAvailableAddress(availableAddress)) {
                         return;
                     }
