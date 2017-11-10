@@ -33,7 +33,7 @@ android {
     }
 
     def appName = "QTUM"
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
     def versionPropertiesFile = file('version.properties')
     def autoVersionCode
@@ -59,7 +59,7 @@ android {
     defaultConfig {
         applicationId "org.qtum.wallet"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode autoVersionCode
         versionName "0.9"
         vectorDrawables.useSupportLibrary = true
@@ -100,14 +100,14 @@ dependencies {
         exclude group: 'stax', module: 'stax'
     }
 
-    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support:appcompat-v7:26.1.0'
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
     testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
     testCompile 'org.assertj:assertj-core:2.8.0'
 
-    compile 'com.android.support:support-v4:25.4.0'
-    compile 'com.android.support:design:25.4.0'
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support:design:26.1.0'
     compile 'com.github.designsters:android-fork-bitcoinj:1.0.11'
     compile 'com.android.support:multidex:1.0.2'
     compile 'com.google.zxing:core:3.3.0'
