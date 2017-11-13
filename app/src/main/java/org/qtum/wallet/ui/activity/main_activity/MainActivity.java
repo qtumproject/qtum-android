@@ -46,6 +46,7 @@ import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStat
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
+import org.qtum.wallet.ui.activity.splash_activity.SplashActivity;
 import org.qtum.wallet.ui.base.base_activity.BaseActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.news_fragment.NewsFragment;
@@ -111,7 +112,14 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState!=null){
+            finish();
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            Log.d("BEST_TEST", savedInstanceState.toString());
+        }
         setContentView((ThemeUtils.THEME_DARK.equals(ThemeUtils.currentTheme)) ? LAYOUT : LAYOUT_LIGHT);
+        bindView();
         mNetworkReceiver = new NetworkStateReceiver(getNetworkConnectedFlag());
         registerReceiver(mNetworkReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));

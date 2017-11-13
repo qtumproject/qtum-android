@@ -323,7 +323,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bindView(view);
         getPresenter().initializeViews();
         getPresenter().getView().setSoftMode();
         getPresenter().onViewCreated();
@@ -332,7 +331,9 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(getLayout(), container, false);
+        View view = inflater.inflate(getLayout(), container, false);
+        bindView(view);
+        return view;
     }
 
 

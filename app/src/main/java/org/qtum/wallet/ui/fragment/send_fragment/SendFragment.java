@@ -290,6 +290,12 @@ public abstract class SendFragment extends BaseFragment implements SendView {
 
     @OnClick(R.id.bt_send)
     public void onSendClick() {
+        if(mSeekBar != null) {
+            textViewChangeValue = true;
+            double value = (mMinFee + (mSeekBar.getProgress() * step)) / 100000000.;
+            seekBarChangeValue = true;
+            mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
+        }
         getPresenter().send();
     }
 
@@ -537,7 +543,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                     textViewChangeValue = true;
                     int progress;
                     if (fee < mMinFee) {
-                        progress = mMinFee / step;
+                        progress = 0;
                     } else if (fee > mMaxFee) {
                         progress = mMaxFee / step;
                     } else {
