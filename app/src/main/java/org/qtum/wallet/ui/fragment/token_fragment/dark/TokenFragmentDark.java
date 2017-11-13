@@ -109,14 +109,14 @@ public class TokenFragmentDark extends TokenFragment {
 
     @Override
     public void setBalance(String balance) {
-        mTextViewBalance.setLongNumberText(balance, getResources().getDisplayMetrics().widthPixels/2);
+        mTextViewBalance.setLongNumberText(balance, getResources().getDisplayMetrics().widthPixels*2/3);
     }
 
     @Override
     public void onContractPropertyUpdated(String propName, String propValue) {
         switch (propName){
             case totalSupply:
-                totalSupplyValue.setLongNumberText(propValue, getResources().getDisplayMetrics().widthPixels/2);
+                totalSupplyValue.setLongNumberText(propValue, getResources().getDisplayMetrics().widthPixels*2/3);
                 break;
             case decimals:
                 decimalsValue.setText(propValue);
