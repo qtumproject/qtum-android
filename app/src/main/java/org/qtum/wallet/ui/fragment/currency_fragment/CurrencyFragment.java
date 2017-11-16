@@ -217,11 +217,7 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyV
                 @Override
                 public void run() {
                     spinner.setVisibility(View.GONE);
-                    mTextViewCurrencyBalance.setText(
-                            ContractBuilder.getShortBigNumberRepresentation(
-                                    String.valueOf(((CurrencyToken) mCurrency).getToken().getTokenBalanceWithDecimalUnits())
-                            ,10)
-                    );
+                    mTextViewCurrencyBalance.setLongNumberText(String.valueOf(((CurrencyToken) mCurrency).getToken().getTokenBalanceWithDecimalUnits()));
                     mTextViewCurrencyBalance.setVisibility(View.VISIBLE);
                 }
             });

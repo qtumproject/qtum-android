@@ -21,8 +21,6 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
         super.initializeViews();
         setQtumAddress();
 
-
-
         if (token.getDecimalUnits() == null) {
             getInteractor().setupPropertyDecimalsValue(token, getView().getDecimalsValueCallback());
         } else {
