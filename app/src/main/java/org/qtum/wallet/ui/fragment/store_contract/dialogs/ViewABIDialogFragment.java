@@ -1,25 +1,25 @@
 package org.qtum.wallet.ui.fragment.store_contract.dialogs;
 
 import android.app.Dialog;
-        import android.graphics.drawable.ColorDrawable;
-        import android.os.Bundle;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-        import android.support.v7.app.AppCompatDialogFragment;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
+import android.support.v7.app.AppCompatDialogFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-        import org.qtum.wallet.R;
+import org.qtum.wallet.R;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-        import butterknife.OnClick;
+import butterknife.OnClick;
 
 
-public class ViewSourceCodeDialogFragment extends AppCompatDialogFragment {
+public class ViewABIDialogFragment extends AppCompatDialogFragment {
 
     public static final String ABI = "CONTRACT_ABI";
 
