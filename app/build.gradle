@@ -1,3 +1,6 @@
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 //fabric.io
 buildscript {
     repositories {
@@ -20,7 +23,11 @@ repositories {
     maven { url "https://jitpack.io" }
     google()
 }
+
 android {
+
+    flavorDimensions "default"
+
     lintOptions {
         disable 'MissingTranslation'
     }
@@ -32,61 +39,54 @@ android {
         exclude 'lib/x86_64/darwin/libscrypt.dylib'
     }
 
-    def appName = "QTUM"
+    Properties buildProps
+
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
-    def versionPropertiesFile = file('version.properties')
-    def autoVersionCode
-    if (versionPropertiesFile.canRead()) {
-        def Properties versionProps = new Properties()
-        versionProps.load(new FileInputStream(versionPropertiesFile))
-        autoVersionCode = versionProps['VERSION_CODE'].toInteger()
-    } else {
-        throw new GradleException("Could not read version.properties!")
-    }
-    ext.autoIncrementVersionCode = {
-        if (versionPropertiesFile.canRead()) {
-            def Properties versionProps = new Properties()
-            versionProps.load(new FileInputStream(versionPropertiesFile))
-            autoVersionCode = versionProps['VERSION_CODE'].toInteger() + 1
-            versionProps['VERSION_CODE'] = autoVersionCode.toString()
-            versionProps.store(versionPropertiesFile.newWriter(), null)
-        } else {
-            throw new GradleException("Could not read version.properties!")
-        }
-    }
 
     defaultConfig {
         applicationId "org.qtum.wallet"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode autoVersionCode
-        versionName "0.9"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {}
+    }
 
+    productFlavors {
+        production {
+            buildProps = getBuildProperties("production")
+            versionCode buildProps['VERSION_CODE'].toInteger()
+            versionName buildProps['VERSION_NAME'].toString()
+            buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
+            versionNameSuffix "-prod"
         }
-        debug {
+        development {
+            applicationIdSuffix ".debug"
+            buildProps = getBuildProperties("development")
+            versionCode buildProps['VERSION_CODE'].toInteger()
+            versionName buildProps['VERSION_NAME'].toString()
+            buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
+            versionNameSuffix "-dev"
+        }
+        apptest {
+            applicationIdSuffix ".test"
+            buildProps = getBuildProperties("apptest")
+            versionCode buildProps['VERSION_CODE'].toInteger()
+            versionName buildProps['VERSION_NAME'].toString()
+            buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
+            versionNameSuffix "-test"
         }
     }
-//    gradle.taskGraph.whenReady {taskGraph ->
-//        if (taskGraph.hasTask(assembleRelease)) {
-//            autoIncrementVersionCode()
-//        }
-//    }
-    applicationVariants.all { variant ->
-        variant.outputs.all {
-            outputFileName = appName + "-${versionName}(${versionCode})-${variant.buildType.name}.apk"
-        }
-    }
+
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -94,7 +94,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile ('com.squareup.retrofit2:converter-simplexml:2.0.0-beta3'){
+    compile('com.squareup.retrofit2:converter-simplexml:2.0.0-beta3') {
         exclude group: 'xpp3', module: 'xpp3'
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'stax', module: 'stax'
@@ -146,3 +146,41 @@ dependencies {
     compile "com.daimajia.swipelayout:library:1.2.0@aar"
 }
 apply plugin: 'com.google.gms.google-services'
+
+task(gitInfo) {
+    ext.count = getGitCount()
+    ext.branch = getGitBranch()
+
+    println "COUNT " + ext.count
+    println "BRANCH " + ext.branch
+}
+
+def getBuildProperties(buildType) {
+    def propertiesFile = file("Configs/" + buildType + ".properties")
+    if (propertiesFile.canRead()) {
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(propertiesFile))
+        return versionProps
+    } else {
+        propertiesFile = file("Configs/production.properties")
+        if (propertiesFile.canRead()) {
+            Properties versionProps = new Properties()
+            versionProps.load(new FileInputStream(propertiesFile))
+            return versionProps
+        } else {
+            throw new GradleException(".properties not found")
+        }
+    }
+}
+
+def getGitBranch() {
+    def cmd = "git rev-parse --abbrev-ref HEAD"
+    def proc = cmd.execute()
+    proc.text.trim()
+}
+
+def getGitCount() {
+    def cmd = "git rev-list HEAD --count"
+    def proc = cmd.execute()
+    proc.text.trim()
+}
