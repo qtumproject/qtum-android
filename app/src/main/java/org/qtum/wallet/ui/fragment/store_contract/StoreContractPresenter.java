@@ -116,7 +116,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
 
                         @Override
                         public void onNext(QstoreSourceCodeResponse o) {
-                            getView().openAbiViewer(o.sourceCode);
+                            getView().openSourceCode(o.sourceCode);
                         }
                     });
         }

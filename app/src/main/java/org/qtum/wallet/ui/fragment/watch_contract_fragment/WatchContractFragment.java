@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
@@ -251,5 +252,12 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
 
             }
         };
+    }
+
+
+    @Override
+    public void setSoftMode() {
+        super.setSoftMode();
+        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 }
