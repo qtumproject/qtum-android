@@ -16,6 +16,8 @@ import org.qtum.wallet.utils.DateCalculator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnLongClick;
+import rx.Subscriber;
+import rx.Subscription;
 
 /**
  * Created by kirillvolkov on 05.07.17.
@@ -35,6 +37,7 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
     ImageView mImageViewIcon;
     @BindView(R.id.ll_transaction)
     LinearLayout mLinearLayoutTransaction;
+    Subscription mSubscription;
 
     @OnLongClick(R.id.tv_id)
     public boolean onIdLongClick() {
@@ -58,10 +61,29 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    void bindTransactionData(History history) {
-
+    void bindTransactionData(final History history) {
+        if(mSubscription!=null){
+            mSubscription.unsubscribe();
+        }
         if(history.getBlockTime() != null) {
+            mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(Object o) {
+                    mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime()*1000L));
+                }
+            });
             mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime()*1000L));
+
         } else {
             mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.unconfirmed));
         }
