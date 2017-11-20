@@ -14,6 +14,7 @@ import org.qtum.wallet.ui.fragment.about_fragment.AboutView;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,14 +37,14 @@ public class AboutPresenterTest {
 
         presenter = new AboutPresenterImpl(view, interactor);
     }
-//TODO: in process
-//    @Test
-//    public void updateVersion_Success() throws Exception {
-//        when(interactor.getCodeVersion()).thenReturn(TEST_CODE_VERSION);
-//        when(interactor.getVersion()).thenReturn(TEST_VERSION);
-//        presenter.initializeViews();
-//        verify(view, times(1)).updateVersion(new Version(TEST_VERSION, TEST_CODE_VERSION));
-//    }
+
+    @Test
+    public void updateVersion_Success() throws Exception {
+        when(interactor.getCodeVersion()).thenReturn(TEST_CODE_VERSION);
+        when(interactor.getVersion()).thenReturn(TEST_VERSION);
+        presenter.initializeViews();
+        verify(view, times(1)).updateVersion(eq(new Version(TEST_VERSION, TEST_CODE_VERSION)));
+    }
 
     @Test
     public void updateVersion_versionError() throws Exception {

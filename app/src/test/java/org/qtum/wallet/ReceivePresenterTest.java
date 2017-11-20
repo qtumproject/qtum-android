@@ -16,11 +16,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by drevnitskaya on 05.10.17.
- */
 
 public class ReceivePresenterTest {
+
     @Mock
     private ReceiveView view;
     @Mock

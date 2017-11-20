@@ -19,14 +19,15 @@ public class NewsInteractorImpl implements NewsInteractor {
 
     private WeakReference<Context> mContext;
     private SubscriptionList mSubscriptionList = new SubscriptionList();
+    private final String MEDIUM_QTUM_CHANEL = "@qtum";
 
     public NewsInteractorImpl(Context context) {
         mContext = new WeakReference<>(context);
     }
 
     @Override
-    public Observable<RssFeed> getMediumRssFeed(String channel) {
-        return MediumService.getInstance().getRssFeed(channel);
+    public Observable<RssFeed> getMediumRssFeed() {
+        return MediumService.getInstance().getRssFeed(MEDIUM_QTUM_CHANEL);
     }
 
     @Override

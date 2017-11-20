@@ -9,6 +9,8 @@ import org.qtum.wallet.ui.fragment.backup_wallet_fragment.BackUpWalletInteractor
 import org.qtum.wallet.ui.fragment.backup_wallet_fragment.BackUpWalletPresenterImpl;
 import org.qtum.wallet.ui.fragment.backup_wallet_fragment.BackUpWalletView;
 
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,17 +40,22 @@ public class BackUpWalletPresenterTests {
         presenter.initializeViews();
         verify(view,times(1)).setBrainCode(passphrase);
     }
-//TODO: in process
-//    @Test
-//    public void onCopyBrainCodeClick_test() {
-//        presenter.onCopyBrainCodeClick();
-//        verify(view,times(1)).copyToClipboard(passphrase);
-//        verify(view,times(1)).showToast();
-//    }
-//
-//    @Test
-//    public void onShareClick_test(){
-//        verify(view,times(1)).chooseShareMethod(passphrase);
-//    }
+
+    @Test
+    public void onCopyBrainCodeClick_test() {
+        when(interactor.getPassphrase(anyString())).thenReturn(passphrase);
+        presenter.initializeViews();
+        presenter.onCopyBrainCodeClick();
+        verify(view,times(1)).copyToClipboard(passphrase);
+        verify(view,times(1)).showToast();
+    }
+
+    @Test
+    public void onShareClick_test(){
+        when(interactor.getPassphrase(anyString())).thenReturn(passphrase);
+        presenter.initializeViews();
+        presenter.onShareClick();
+        verify(view,times(1)).chooseShareMethod(passphrase);
+    }
 
 }

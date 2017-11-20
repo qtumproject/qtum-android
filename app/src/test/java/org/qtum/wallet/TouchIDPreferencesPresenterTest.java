@@ -11,9 +11,6 @@ import org.qtum.wallet.ui.fragment.touch_id_preference_fragment.TouchIDPreferenc
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-/**
- * Created by drevnitskaya on 06.10.17.
- */
 
 public class TouchIDPreferencesPresenterTest {
 
