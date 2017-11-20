@@ -8,7 +8,6 @@ import org.qtum.wallet.model.gson.qstore.QSearchItem;
 
 import java.util.List;
 
-
 public class StoreSearchAdapter extends RecyclerView.Adapter<StoreSearchViewHolder> {
 
     private List<QSearchItem> items;
@@ -23,7 +22,7 @@ public class StoreSearchAdapter extends RecyclerView.Adapter<StoreSearchViewHold
         this.resId = resId;
     }
 
-    public void updateItems(List<QSearchItem> items){
+    public void updateItems(List<QSearchItem> items) {
         this.items = items;
         notifyDataSetChanged();
     }

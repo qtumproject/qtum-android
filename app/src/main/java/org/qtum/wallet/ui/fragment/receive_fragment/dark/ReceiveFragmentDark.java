@@ -4,10 +4,6 @@ import android.support.v4.content.ContextCompat;
 
 import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
 
-/**
- * Created by kirillvolkov on 06.07.17.
- */
-
 public class ReceiveFragmentDark extends ReceiveFragment {
 
     @Override
@@ -20,5 +16,4 @@ public class ReceiveFragmentDark extends ReceiveFragment {
         super.initializeViews();
         setQrColors(ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.colorPrimary), ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.background));
     }
-
 }

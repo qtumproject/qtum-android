@@ -5,7 +5,6 @@ import org.qtum.wallet.ui.fragment.contract_management_fragment.ContractManageme
 
 import java.util.List;
 
-
 public class ContractManagementFragmentLight extends ContractManagementFragment {
 
     @Override
@@ -18,6 +17,5 @@ public class ContractManagementFragmentLight extends ContractManagementFragment 
         mMethodAdapter = new MethodAdapter(contractMethodList, org.qtum.wallet.R.layout.item_contract_property_light, org.qtum.wallet.R.layout.item_contract_method_light, needToGetValue);
         mRecyclerView.setAdapter(mMethodAdapter);
     }
-
 }
 

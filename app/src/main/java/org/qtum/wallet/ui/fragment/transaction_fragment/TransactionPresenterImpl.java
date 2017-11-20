@@ -38,15 +38,12 @@ public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implemen
         }
         List<String> listTo = new ArrayList<>();
         List<String> listFrom = new ArrayList<>();
-
         for (Vout vout : history.getVout()) {
             listTo.add(vout.getAddress());
         }
-
         for (Vin vin : history.getVin()) {
             listFrom.add(vin.getAddress());
         }
-
         getView().setUpTransactionData(history.getChangeInBalance().toString(), dateString,
                 listFrom, listTo, history.getBlockHeight() > 0);
     }

@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-
 public class ContractMethodParameter implements Serializable {
 
     @SerializedName("name")
@@ -19,19 +18,19 @@ public class ContractMethodParameter implements Serializable {
 
     private String displayName;
 
-    public ContractMethodParameter(String name, String type){
+    public ContractMethodParameter(String name, String type) {
         this.name = name;
         this.type = type;
     }
 
-    public ContractMethodParameter(String name, String type, String value){
+    public ContractMethodParameter(String name, String type, String value) {
         this.name = name;
         this.type = type;
-        this. value = value;
+        this.value = value;
     }
 
     public String getName() {
-        return TextUtils.isEmpty(name)? type : name;
+        return TextUtils.isEmpty(name) ? type : name;
     }
 
     public void setName(String name) {

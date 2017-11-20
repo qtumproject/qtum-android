@@ -12,10 +12,6 @@ import org.qtum.wallet.ui.fragment.other_tokens.UpdateSocketInstance;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 06.07.17.
- */
-
 public class TokensAdapterDark extends TokensAdapter {
 
     public TokensAdapterDark(List<Token> tokens, UpdateSocketInstance socketInstance, OnTokenClickListener listener) {
@@ -24,7 +20,7 @@ public class TokensAdapterDark extends TokensAdapter {
 
     @Override
     public TokenViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TokenViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_token_list_item, parent, false), socketInstace,parent.getContext(), listener);
+        return new TokenViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.lyt_token_list_item, parent, false), socketInstace, parent.getContext(), listener);
     }
 
     @Override

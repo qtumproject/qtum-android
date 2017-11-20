@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.watch_contract_fragment;
 
-
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +28,7 @@ public class TemplateHolder extends RecyclerView.ViewHolder {
         super(itemView);
         handler = new Handler();
         this.selectionColor = selectionColor;
-        ButterKnife.bind(this,itemView);
+        ButterKnife.bind(this, itemView);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,19 +36,16 @@ public class TemplateHolder extends RecyclerView.ViewHolder {
                 listener.onTemplateClick(mContractTemplate);
             }
         });
-
         defaultDrawable = mButton.getBackground();
     }
 
-    public void onBind(ContractTemplate contractTemplate){
+    public void onBind(ContractTemplate contractTemplate) {
         mButton.setText(contractTemplate.getName());
         mContractTemplate = contractTemplate;
-
-        if(contractTemplate.isSelectedABI()){
+        if (contractTemplate.isSelectedABI()) {
             mButton.setBackgroundResource(selectionColor);
         } else {
             mButton.setBackground(defaultDrawable);
         }
     }
-
 }

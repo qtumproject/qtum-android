@@ -7,12 +7,10 @@ public class StartPagePresenterImpl extends BaseFragmentPresenterImpl implements
     private StartPageView mStartPageView;
     private StartPageInteractor mStartPagerInteractor;
 
-
     public StartPagePresenterImpl(StartPageView startPageView, StartPageInteractor startPageInteractor) {
         mStartPageView = startPageView;
         mStartPagerInteractor = startPageInteractor;
     }
-
 
     @Override
     public StartPageView getView() {

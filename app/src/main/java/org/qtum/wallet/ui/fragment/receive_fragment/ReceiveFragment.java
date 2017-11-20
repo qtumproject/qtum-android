@@ -300,7 +300,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        setAlertDialog(R.string.error,throwable.getMessage(),R.string.cancel,PopUpType.error);
+                        setAlertDialog(R.string.error, throwable.getMessage(), R.string.cancel, PopUpType.error);
                     }
                 });
 
@@ -469,15 +469,12 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
         try {
             Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
             hints.put(EncodeHintType.MARGIN, 0);
-
             bitMatrix = new MultiFormatWriter().encode(
                     Value,
                     BarcodeFormat.QR_CODE,
                     QRCodeWidth, QRCodeWidth, hints
             );
-
         } catch (IllegalArgumentException Illegalargumentexception) {
-
             return null;
         }
         int bitMatrixWidth = bitMatrix.getWidth();
@@ -486,15 +483,10 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
 
         for (int y = 0; y < bitMatrixHeight; y++) {
             int offset = y * bitMatrixWidth;
-
             for (int x = 0; x < bitMatrixWidth; x++) {
-
                 boolean isDataPixel = bitMatrix.get(x, y);
-
                 getPresenter().calcModuleWidth(isDataPixel, x, y);
-
-                pixels[offset + x] = isDataPixel ?
-                        qrCodeColor : qrBackColor;
+                pixels[offset + x] = isDataPixel ? qrCodeColor : qrBackColor;
             }
         }
 
@@ -508,10 +500,8 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
                 }
             }
         }
-
         Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
         bitmap.setPixels(pixels, 0, QRCodeWidth, 0, 0, bitMatrixWidth, bitMatrixHeight);
-
         return bitmap;
     }
 

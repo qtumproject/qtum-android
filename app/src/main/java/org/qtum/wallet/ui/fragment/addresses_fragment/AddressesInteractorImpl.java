@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.addresses_fragment;
 
-
 import android.content.Context;
 
 import org.bitcoinj.crypto.DeterministicKey;

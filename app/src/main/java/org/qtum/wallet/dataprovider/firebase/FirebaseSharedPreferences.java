@@ -15,7 +15,7 @@ public class FirebaseSharedPreferences {
 
     private FireBaseTokenRefreshListener mFireBaseTokenRefreshListener;
 
-    private FirebaseSharedPreferences(){
+    private FirebaseSharedPreferences() {
     }
 
     public static FirebaseSharedPreferences getInstance() {
@@ -25,31 +25,31 @@ public class FirebaseSharedPreferences {
         return sInstance;
     }
 
-    public void saveFirebaseToken(Context context, String token){
+    public void saveFirebaseToken(Context context, String token) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(FIREBASE_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        String prevToken = mSharedPreferences.getString(CURRENT_TOKEN,null);
-        mEditor.putString(PREV_TOKEN,prevToken);
+        String prevToken = mSharedPreferences.getString(CURRENT_TOKEN, null);
+        mEditor.putString(PREV_TOKEN, prevToken);
         mEditor.putString(CURRENT_TOKEN, token);
         mEditor.apply();
-        if(mFireBaseTokenRefreshListener != null) {
+        if (mFireBaseTokenRefreshListener != null) {
             mFireBaseTokenRefreshListener.onRefresh(prevToken, token);
         }
     }
 
-    public String[] getFirebaseTokens(Context context){
+    public String[] getFirebaseTokens(Context context) {
         String[] firebaseTokens = new String[2];
         SharedPreferences mSharedPreferences = context.getSharedPreferences(FIREBASE_DATA_STORAGE, Context.MODE_PRIVATE);
-        firebaseTokens[0] = mSharedPreferences.getString(PREV_TOKEN,null);
-        firebaseTokens[1] = mSharedPreferences.getString(CURRENT_TOKEN,null);
+        firebaseTokens[0] = mSharedPreferences.getString(PREV_TOKEN, null);
+        firebaseTokens[1] = mSharedPreferences.getString(CURRENT_TOKEN, null);
         return firebaseTokens;
     }
 
-    public void addFirebaseTokenRefreshListener(FireBaseTokenRefreshListener fireBaseTokenRefreshListener){
+    public void addFirebaseTokenRefreshListener(FireBaseTokenRefreshListener fireBaseTokenRefreshListener) {
         mFireBaseTokenRefreshListener = fireBaseTokenRefreshListener;
     }
 
-    public void removeFirebaseTokenRefreshListener(){
+    public void removeFirebaseTokenRefreshListener() {
         mFireBaseTokenRefreshListener = null;
     }
 

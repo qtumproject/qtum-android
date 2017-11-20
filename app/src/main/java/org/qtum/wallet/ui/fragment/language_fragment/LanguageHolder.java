@@ -11,10 +11,6 @@ import org.qtum.wallet.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by kirillvolkov on 07.07.17.
- */
-
 public abstract class LanguageHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.tv_single_string)

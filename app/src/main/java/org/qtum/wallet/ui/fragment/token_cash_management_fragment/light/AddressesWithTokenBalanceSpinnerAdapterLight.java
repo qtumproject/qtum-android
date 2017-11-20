@@ -12,10 +12,6 @@ import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AddressesWithT
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 03.08.17.
- */
-
 public class AddressesWithTokenBalanceSpinnerAdapterLight extends AddressesWithTokenBalanceSpinnerAdapter {
 
     public AddressesWithTokenBalanceSpinnerAdapterLight(@NonNull Context context, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, String currency, int decimalUnits) {

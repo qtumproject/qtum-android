@@ -23,10 +23,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * Created by kirillvolkov on 03.08.17.
- */
-
 public abstract class AddressesListFragmentToken extends BaseFragment implements AddressesListTokenView, OnAddressTokenClickListener {
 
     public static final String TOKEN = "token_item";

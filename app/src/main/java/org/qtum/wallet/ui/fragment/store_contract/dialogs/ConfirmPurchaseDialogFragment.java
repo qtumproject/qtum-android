@@ -18,7 +18,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public class ConfirmPurchaseDialogFragment extends AppCompatDialogFragment {
 
     public static final String CONTRACT = "CONTRACT";
@@ -36,13 +35,13 @@ public class ConfirmPurchaseDialogFragment extends AppCompatDialogFragment {
     FontTextView tvMinerAddress;
 
     @OnClick(org.qtum.wallet.R.id.btn_cancel)
-    public void onCancelClick(){
+    public void onCancelClick() {
         dismiss();
     }
 
     @OnClick(org.qtum.wallet.R.id.btn_confirm)
-    public void onConfirmClick(){
-        if(listener != null){
+    public void onConfirmClick() {
+        if (listener != null) {
             listener.onPurchaseConfirm();
         }
         dismiss();
@@ -50,7 +49,7 @@ public class ConfirmPurchaseDialogFragment extends AppCompatDialogFragment {
 
     PurchaseClickListener listener;
 
-    public void setOnPurchaseListener(PurchaseClickListener listener){
+    public void setOnPurchaseListener(PurchaseClickListener listener) {
         this.listener = listener;
     }
 
@@ -58,7 +57,7 @@ public class ConfirmPurchaseDialogFragment extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        if(dialog.getWindow()!=null) {
+        if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
         return dialog;
@@ -67,7 +66,7 @@ public class ConfirmPurchaseDialogFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate((ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? org.qtum.wallet.R.layout.lyt_confirm_purchase : org.qtum.wallet.R.layout.lyt_confirm_purchase_light), container, false);
+        View view = inflater.inflate((ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK) ? org.qtum.wallet.R.layout.lyt_confirm_purchase : org.qtum.wallet.R.layout.lyt_confirm_purchase_light), container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -77,7 +76,7 @@ public class ConfirmPurchaseDialogFragment extends AppCompatDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         QstoreContract c = (QstoreContract) getArguments().getSerializable(CONTRACT);
 
-        if(c != null) {
+        if (c != null) {
             tvContractName.setText(c.name);
             tvContractType.setText(c.type);
             tvPrice.setText(String.valueOf(c.price));

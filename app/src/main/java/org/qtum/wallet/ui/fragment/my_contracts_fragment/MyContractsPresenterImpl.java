@@ -9,7 +9,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import java.util.Iterator;
 import java.util.List;
 
-
 public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implements MyContractsPresenter {
 
     private MyContractsView mMyContractsView;
@@ -24,8 +23,8 @@ public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implemen
         @Override
         public void onUnsubscribeClick(Contract contract) {
             List<Contract> contractListWithoutTokens = getInteractor().getContractsWithoutTokens();
-            for(Iterator<Contract> contractIterator = contractListWithoutTokens.iterator();contractIterator.hasNext();){
-                if(contract.getContractAddress().equals(contractIterator.next().getContractAddress())){
+            for (Iterator<Contract> contractIterator = contractListWithoutTokens.iterator(); contractIterator.hasNext(); ) {
+                if (contract.getContractAddress().equals(contractIterator.next().getContractAddress())) {
                     contractIterator.remove();
                     getInteractor().setContractWithoutTokens(contractListWithoutTokens);
                     getView().updateRecyclerView(getInteractor().getContracts());
@@ -33,8 +32,8 @@ public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implemen
                 }
             }
             List<Token> tokens = getInteractor().getTokens();
-            for(Iterator<Token> tokenIterator = tokens.iterator();tokenIterator.hasNext();){
-                if(contract.getContractAddress().equals(tokenIterator.next().getContractAddress())){
+            for (Iterator<Token> tokenIterator = tokens.iterator(); tokenIterator.hasNext(); ) {
+                if (contract.getContractAddress().equals(tokenIterator.next().getContractAddress())) {
                     tokenIterator.remove();
                     getInteractor().setTokens(tokens);
                     getView().updateRecyclerView(getInteractor().getContracts());
@@ -52,7 +51,7 @@ public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implemen
         if (contractList != null) {
             if (contractList.size() != 0) {
                 getView().setUpRecyclerView(contractList, mContractItemListener);
-                if(getInteractor().isShowWizard()){
+                if (getInteractor().isShowWizard()) {
                     getView().showWizard();
                 }
             } else {

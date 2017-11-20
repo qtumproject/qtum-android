@@ -6,7 +6,6 @@ import org.qtum.wallet.ui.fragment.templates_fragment.TemplatesFragment;
 
 import java.util.List;
 
-
 public class TemplatesFragmentLight extends TemplatesFragment {
 
     @Override
@@ -18,5 +17,4 @@ public class TemplatesFragmentLight extends TemplatesFragment {
     public void setUpTemplateList(List<ContractTemplate> contractTemplateList) {
         initializeRecyclerView(contractTemplateList, R.layout.item_template_light);
     }
-
 }

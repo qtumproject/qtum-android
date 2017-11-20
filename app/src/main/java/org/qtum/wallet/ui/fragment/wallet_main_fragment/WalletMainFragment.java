@@ -20,7 +20,6 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 
 import butterknife.BindView;
 
-
 public abstract class WalletMainFragment extends BaseFragment implements WalletMainView {
 
     private WalletFragment mWalletFragment;
@@ -86,7 +85,7 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(mUpdateService!=null) {
+        if (mUpdateService != null) {
             mUpdateService.removeTokenListener();
         }
     }
@@ -129,8 +128,7 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
                 hidePageIndicator();
             }
         }
-
-
+        
         public FragmentAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }

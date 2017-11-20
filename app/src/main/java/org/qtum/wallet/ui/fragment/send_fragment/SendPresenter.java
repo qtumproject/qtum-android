@@ -21,5 +21,4 @@ public interface SendPresenter extends BaseFragmentPresenter {
     void handleBalanceChanges(BigDecimal unconfirmedBalance, BigDecimal balance);
 
     void onPinSuccess();
-
 }

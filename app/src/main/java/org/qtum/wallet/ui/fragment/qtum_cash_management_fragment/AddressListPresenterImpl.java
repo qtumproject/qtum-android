@@ -40,19 +40,17 @@ public class AddressListPresenterImpl extends BaseFragmentPresenterImpl implemen
                 .subscribe(new Subscriber<List<UnspentOutput>>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
-                        for(UnspentOutput unspentOutput : unspentOutputs) {
+                        for (UnspentOutput unspentOutput : unspentOutputs) {
                             for (AddressWithBalance addressWithBalance : mAddressWithBalanceList) {
-                                if(unspentOutput.getAddress().equals(addressWithBalance.getAddress())){
+                                if (unspentOutput.getAddress().equals(addressWithBalance.getAddress())) {
                                     addressWithBalance.setUnspentOutput(unspentOutput);
                                     break;
                                 }
@@ -65,8 +63,8 @@ public class AddressListPresenterImpl extends BaseFragmentPresenterImpl implemen
 
     }
 
-    private void initAddressesWithBalanceList(List<String> addresses){
-        for(String address : addresses){
+    private void initAddressesWithBalanceList(List<String> addresses) {
+        for (String address : addresses) {
             mAddressWithBalanceList.add(new AddressWithBalance(address));
         }
     }

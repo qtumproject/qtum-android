@@ -7,11 +7,12 @@ import java.util.List;
 
 import rx.Observable;
 
-
 public interface NewsInteractor {
     Observable<RssFeed> getMediumRssFeed(String channel);
-    List<News> getNewses();
-    void setNewses(List<News> newses);
-    void unSubscribe();
 
+    List<News> getNewses();
+
+    void setNewses(List<News> newses);
+
+    void unSubscribe();
 }

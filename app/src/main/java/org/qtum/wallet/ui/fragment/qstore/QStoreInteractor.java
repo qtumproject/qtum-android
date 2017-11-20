@@ -7,10 +7,6 @@ import java.util.List;
 
 import rx.Observable;
 
-/**
- * Created by drevnitskaya on 10.10.17.
- */
-
 public interface QStoreInteractor {
     Observable<List<QSearchItem>> searchContracts(int searchOffset, String emptyType, String tag, boolean byTag);
 
@@ -21,5 +17,4 @@ public interface QStoreInteractor {
     String getTrendingString();
 
     String getWhatsNewString();
-
 }

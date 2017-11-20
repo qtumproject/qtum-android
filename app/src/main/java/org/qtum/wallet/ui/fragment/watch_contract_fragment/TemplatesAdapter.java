@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.watch_contract_fragment;
 
-
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,14 +36,14 @@ public class TemplatesAdapter extends RecyclerView.Adapter<TemplateHolder> {
     }
 
     public void setSelection(int position) {
-        for (int i = 0; i < mContractTemplates.size(); i ++){
+        for (int i = 0; i < mContractTemplates.size(); i++) {
             mContractTemplates.get(i).setSelectedABI(i == position);
         }
         notifyDataSetChanged();
     }
 
     public void setSelection(String templateName) {
-        for (ContractTemplate item : mContractTemplates){
+        for (ContractTemplate item : mContractTemplates) {
             item.setSelectedABI(templateName.equals(item.getName()));
         }
         notifyDataSetChanged();

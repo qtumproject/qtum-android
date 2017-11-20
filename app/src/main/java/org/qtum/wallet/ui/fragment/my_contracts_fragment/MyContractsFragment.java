@@ -1,20 +1,12 @@
 package org.qtum.wallet.ui.fragment.my_contracts_fragment;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -36,7 +28,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public abstract class MyContractsFragment extends BaseFragment implements MyContractsView {
 
     private MyContractsPresenter mMyContractsPresenterImpl;
@@ -45,7 +36,6 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
     protected RecyclerView mRecyclerView;
 
     protected ContractAdapter mContractAdapter;
-
 
     @BindView(R.id.place_holder)
     FontTextView mFontTextViewPlaceHolder;
@@ -63,9 +53,7 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
     }
 
     public static BaseFragment newInstance(Context context) {
-
         Bundle args = new Bundle();
-
         BaseFragment fragment = Factory.instantiateFragment(context, MyContractsFragment.class);
         fragment.setArguments(args);
         return fragment;
@@ -176,7 +164,7 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
 
         @Override
         public void onBindViewHolder(ContractViewHolder holder, int position) {
-            holder.bindContract(mContractList.get(position),mContractItemListener);
+            holder.bindContract(mContractList.get(position), mContractItemListener);
         }
 
         @Override
@@ -200,10 +188,10 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
         wizardDialogFragment = new WizardDialogFragment();
         isShowWizard = true;
         wizardDialogFragment.setTargetFragment(this, 5000);
-        wizardDialogFragment.show(getFragmentManager(),WizardDialogFragment.class.getCanonicalName());
+        wizardDialogFragment.show(getFragmentManager(), WizardDialogFragment.class.getCanonicalName());
     }
 
-    public void onWizardCanceled(){
+    public void onWizardCanceled() {
         isShowWizard = false;
         getPresenter().onWizardClose();
     }

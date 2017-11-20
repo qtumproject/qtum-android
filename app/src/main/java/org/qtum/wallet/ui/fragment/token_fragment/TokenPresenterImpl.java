@@ -2,7 +2,6 @@ package org.qtum.wallet.ui.fragment.token_fragment;
 
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
-import org.qtum.wallet.utils.ContractBuilder;
 
 public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements TokenPresenter {
 
@@ -73,9 +72,6 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
         return getInteractor().handleTotalSupplyValue(token, value);
     }
 
-    /**
-     * Setter for unit testing
-     * */
     public void setAbi(String abi) {
         this.abi = abi;
     }

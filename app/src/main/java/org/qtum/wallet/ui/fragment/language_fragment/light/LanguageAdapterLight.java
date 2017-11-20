@@ -11,10 +11,6 @@ import org.qtum.wallet.ui.fragment.language_fragment.OnLanguageIntemClickListene
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 07.07.17.
- */
-
 public class LanguageAdapterLight extends LanguageAdapter {
 
     protected LanguageAdapterLight(List<Pair<String, String>> languagesList, OnLanguageIntemClickListener listener) {
@@ -31,6 +27,6 @@ public class LanguageAdapterLight extends LanguageAdapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         mLanguage = mLanguagesList.get(position);
-        ((LanguageHolderLight)holder).bindLanguage(mLanguage);
+        ((LanguageHolderLight) holder).bindLanguage(mLanguage);
     }
 }

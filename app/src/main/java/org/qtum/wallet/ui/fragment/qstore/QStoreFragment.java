@@ -29,8 +29,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
-
-public abstract class QStoreFragment extends BaseFragment implements QStoreView, StoreItemClickListener{
+public abstract class QStoreFragment extends BaseFragment implements QStoreView, StoreItemClickListener {
 
     private QStorePresenter presenter;
 
@@ -38,7 +37,7 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
     protected StoreSearchAdapter searchAdapter;
 
     @OnClick(R.id.ibt_back)
-    public void onBackClick(){
+    public void onBackClick() {
         getActivity().onBackPressed();
     }
 
@@ -175,10 +174,9 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
     }
 
 
-    public void setSearchTag(String tag){
+    public void setSearchTag(String tag) {
         cbByName.setChecked(false);
         cbByTag.setChecked(true);
         setSearchBarText(tag);
     }
-
 }

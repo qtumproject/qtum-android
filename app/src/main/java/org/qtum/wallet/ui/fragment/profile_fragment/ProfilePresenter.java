@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.profile_fragment;
 
-
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 
@@ -16,5 +15,4 @@ public interface ProfilePresenter extends BaseFragmentPresenter {
     void setupLanguageChangeListener(LanguageChangeListener listener);
 
     void removeLanguageListener(LanguageChangeListener listener);
-
 }

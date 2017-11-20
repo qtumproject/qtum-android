@@ -3,10 +3,6 @@ package org.qtum.wallet.ui.fragment.token_fragment;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.utils.ContractManagementHelper;
 
-/**
- * Created by drevnitskaya on 06.10.17.
- */
-
 public interface TokenInteractor {
     String getCurrentAddress();
 
@@ -23,6 +19,4 @@ public interface TokenInteractor {
     Token setTokenDecimals(Token token, String value);
 
     String handleTotalSupplyValue(Token token, String value);
-
-
 }

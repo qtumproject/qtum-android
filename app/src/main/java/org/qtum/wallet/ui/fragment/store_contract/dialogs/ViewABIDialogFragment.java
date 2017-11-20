@@ -18,18 +18,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public class ViewABIDialogFragment extends AppCompatDialogFragment {
 
     public static final String ABI = "CONTRACT_ABI";
 
     @OnClick(R.id.btn_cancel)
-    public void onCancelClick(){
+    public void onCancelClick() {
         dismiss();
     }
 
     @OnClick(R.id.btn_copy)
-    public void onConfirmClick(){
+    public void onConfirmClick() {
         dismiss();
     }
 
@@ -40,7 +39,7 @@ public class ViewABIDialogFragment extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        if(dialog.getWindow()!=null) {
+        if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
         return dialog;
@@ -49,7 +48,7 @@ public class ViewABIDialogFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? R.layout.lyt_view_source_code_popup : R.layout.lyt_view_source_code_popup_light, container, false);
+        View view = inflater.inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK) ? R.layout.lyt_view_source_code_popup : R.layout.lyt_view_source_code_popup_light, container, false);
         ButterKnife.bind(this, view);
         return view;
     }

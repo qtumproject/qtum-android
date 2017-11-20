@@ -11,7 +11,6 @@ import org.qtum.wallet.model.gson.qstore.QSearchItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class StoreSearchViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.icon)
@@ -23,7 +22,7 @@ public class StoreSearchViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.cost)
     TextView cost;
 
-    public StoreSearchViewHolder(final View itemView, final StoreItemClickListener listener){
+    public StoreSearchViewHolder(final View itemView, final StoreItemClickListener listener) {
         super(itemView);
         ButterKnife.bind(this, itemView);
 
@@ -37,7 +36,7 @@ public class StoreSearchViewHolder extends RecyclerView.ViewHolder {
 
     private QSearchItem item;
 
-    public void bind(QSearchItem item){
+    public void bind(QSearchItem item) {
         this.item = item;
         icon.setImageResource(item.getIcon());
         title.setText(item.name);

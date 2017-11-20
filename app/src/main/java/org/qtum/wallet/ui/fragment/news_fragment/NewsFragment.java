@@ -18,7 +18,6 @@ import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.N
 import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.ui.fragment.news_detail_fragment.NewsDetailFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
-
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 
@@ -118,7 +117,7 @@ public abstract class NewsFragment extends BaseFragment implements NewsView {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    BaseFragment newsDetailFragment = NewsDetailFragment.newInstance(getContext(),getAdapterPosition());
+                    BaseFragment newsDetailFragment = NewsDetailFragment.newInstance(getContext(), getAdapterPosition());
                     openFragment(newsDetailFragment);
                 }
             });
@@ -131,13 +130,13 @@ public abstract class NewsFragment extends BaseFragment implements NewsView {
             mTextViewDescription.setText(news.getDocument().select("p").get(0).text());
         }
     }
-
-
+    
     public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private List<News> mNewsList;
         News mNews;
-        private @LayoutRes int mResId;
+        private @LayoutRes
+        int mResId;
 
         public NewsAdapter(List<News> newsList, @LayoutRes int resId) {
             mNewsList = newsList;

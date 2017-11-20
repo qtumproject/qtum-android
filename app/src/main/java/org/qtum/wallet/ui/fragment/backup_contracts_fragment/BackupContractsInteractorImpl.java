@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.backup_contracts_fragment;
 
-
 import android.content.Context;
 import android.os.Environment;
 
@@ -25,11 +24,11 @@ import java.util.concurrent.Callable;
 
 import rx.Observable;
 
-public class BackupContractsInteractorImpl implements BackupContractsInteractor{
+public class BackupContractsInteractorImpl implements BackupContractsInteractor {
 
     Context mContext;
 
-    public BackupContractsInteractorImpl(Context context){
+    public BackupContractsInteractorImpl(Context context) {
         mContext = context;
     }
 
@@ -43,29 +42,29 @@ public class BackupContractsInteractorImpl implements BackupContractsInteractor{
                 List<TemplateJSON> templateJSONList = new ArrayList<>();
 
                 List<ContractTemplate> contractTemplateList = tinyDB.getContractTemplateList();
-                for(ContractTemplate contractTemplate : contractTemplateList){
+                for (ContractTemplate contractTemplate : contractTemplateList) {
                     String source = FileStorageManager.getInstance().readSourceContract(mContext, contractTemplate.getUuid());
-                    String bytecode = FileStorageManager.getInstance().readByteCodeContract(mContext,contractTemplate.getUuid());
-                    String abi = FileStorageManager.getInstance().readAbiContract(mContext,contractTemplate.getUuid());
-                    TemplateJSON templateJSON = new TemplateJSON(source,bytecode,contractTemplate.getUuid(),contractTemplate.getDate(),abi,contractTemplate.getContractType(),contractTemplate.getName());
+                    String bytecode = FileStorageManager.getInstance().readByteCodeContract(mContext, contractTemplate.getUuid());
+                    String abi = FileStorageManager.getInstance().readAbiContract(mContext, contractTemplate.getUuid());
+                    TemplateJSON templateJSON = new TemplateJSON(source, bytecode, contractTemplate.getUuid(), contractTemplate.getDate(), abi, contractTemplate.getContractType(), contractTemplate.getName());
                     templateJSONList.add(templateJSON);
                 }
 
                 List<ContractJSON> contractList1 = new ArrayList<>();
 
                 List<Contract> contractList = tinyDB.getContractList();
-                for(Contract contract : contractList){
+                for (Contract contract : contractList) {
                     String contractTemplateType = tinyDB.getContractTemplateByUiid(contract.getUiid()).getContractType();
-                    ContractJSON contract1 = new ContractJSON(contract.getContractName(),contract.getSenderAddress(),contract.getContractAddress(),contractTemplateType,contract.getDate(),contract.getUiid(),contract.isSubscribe());
+                    ContractJSON contract1 = new ContractJSON(contract.getContractName(), contract.getSenderAddress(), contract.getContractAddress(), contractTemplateType, contract.getDate(), contract.getUiid(), contract.isSubscribe());
                     contractList1.add(contract1);
                 }
 
-                Backup backup = new Backup(DateCalculator.getCurrentDate(), templateJSONList,String.valueOf(android.os.Build.VERSION.SDK_INT),"test",contractList1,"android");
+                Backup backup = new Backup(DateCalculator.getCurrentDate(), templateJSONList, String.valueOf(android.os.Build.VERSION.SDK_INT), "test", contractList1, "android");
                 Gson gson = new Gson();
                 String backupData = gson.toJson(backup);
 
                 String fileName = "qtum_backup_file.json";
-                File backupFile = new File(Environment.getExternalStorageDirectory(),fileName);
+                File backupFile = new File(Environment.getExternalStorageDirectory(), fileName);
 
                 try {
                     FileOutputStream fOut;

@@ -11,7 +11,6 @@ import org.qtum.wallet.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class TemplateViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(org.qtum.wallet.R.id.title)
@@ -31,7 +30,6 @@ public class TemplateViewHolder extends RecyclerView.ViewHolder {
     public TemplateViewHolder(View itemView, final TemplateSelectListener listener) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-
         rootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,13 +39,9 @@ public class TemplateViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(ContractTemplate contractTemplate) {
-
         mContractTemplate = contractTemplate;
-
         title.setText(contractTemplate.getName());
-
         date.setText(DateCalculator.getShortDate(contractTemplate.getDate()));
-
         contractType.setText(contractTemplate.getContractType().toUpperCase());
     }
 }

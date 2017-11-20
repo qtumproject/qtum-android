@@ -57,11 +57,8 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     private static final String TOKEN = "tokenAddr";
     private static final String AMOUNT = "amount";
     private static final String CURRENCY = "currency";
-
     private static final String ADDRESS_FROM = "address_from";
-
     private final double INITIAL_FEE = 0.1;
-
 
     @BindView(org.qtum.wallet.R.id.et_receivers_address)
     protected TextInputEditText mTextInputEditTextAddress;
@@ -172,7 +169,6 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         }
     };
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -182,7 +178,6 @@ public abstract class SendFragment extends BaseFragment implements SendView {
             public void onServiceConnectionChange(boolean isConnecting) {
                 if (isConnecting) {
                     mUpdateService = getUpdateService();
-
                     mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
                 }
             }
@@ -216,12 +211,10 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         if (!currency.equals("")) {
             getPresenter().searchAndSetUpCurrency(currency);
         }
-
         if (OPEN_QR_CODE_FRAGMENT_FLAG) {
             openQrCodeFragment();
         }
-
-        if(appLogoHeight==0) {
+        if (appLogoHeight == 0) {
             mLinearLayoutSeekBarContainer.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
         }
     }
@@ -240,9 +233,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         }
     }
 
-
-
-    @OnClick({org.qtum.wallet.R.id.bt_qr_code, org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.ll_currency,R.id.bt_edit_close})
+    @OnClick({org.qtum.wallet.R.id.bt_qr_code, org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.ll_currency, R.id.bt_edit_close})
     public void onClick(View view) {
         switch (view.getId()) {
             case org.qtum.wallet.R.id.bt_qr_code:
@@ -255,7 +246,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                 onCurrencyClick();
                 break;
             case R.id.bt_edit_close:
-                if(showing) {
+                if (showing) {
                     mLinearLayoutSeekBarContainer.startAnimation(mAnimBackward);
                     mFontButtonEditClose.setText(R.string.edit);
                     showing = !showing;
@@ -290,7 +281,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
 
     @OnClick(R.id.bt_send)
     public void onSendClick() {
-        if(mSeekBar != null) {
+        if (mSeekBar != null) {
             textViewChangeValue = true;
             double value = (mMinFee + (mSeekBar.getProgress() * step)) / 100000000.;
             seekBarChangeValue = true;
@@ -320,12 +311,12 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     }
 
     @Override
-    public int getGasPriceInput(){
+    public int getGasPriceInput() {
         return Integer.valueOf(mFontTextViewGasPrice.getText().toString());
     }
 
     @Override
-    public int getGasLimitInput(){
+    public int getGasLimitInput() {
         return Integer.valueOf(mFontTextViewGasLimit.getText().toString());
     }
 
@@ -359,7 +350,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
-            if(mLinearLayoutSeekBarContainer.getHeight()!=0){
+            if (mLinearLayoutSeekBarContainer.getHeight() != 0) {
                 mLinearLayoutSeekBarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 appLogoHeight = mLinearLayoutSeekBarContainer.getHeight();
                 initializeAnim();
@@ -419,7 +410,6 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         mAlertDialogCallBack = new AlertDialogCallBack() {
             @Override
             public void onButtonClick() {
-
             }
 
             @Override
@@ -463,12 +453,11 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         mTextInputEditTextAmount.setText(amount);
         mTextInputEditTextAddress.setText(address);
 
-        //mTextInputEditTextFee.setText(String.valueOf(INITIAL_FEE));
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(textViewChangeValue){
-                    textViewChangeValue=false;
+                if (textViewChangeValue) {
+                    textViewChangeValue = false;
                     return;
                 }
                 double value = (mMinFee + (progress * step)) / 100000000.;
@@ -478,12 +467,10 @@ public abstract class SendFragment extends BaseFragment implements SendView {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -496,12 +483,10 @@ public abstract class SendFragment extends BaseFragment implements SendView {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -514,12 +499,10 @@ public abstract class SendFragment extends BaseFragment implements SendView {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -529,16 +512,15 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         mTextInputEditTextFee.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(seekBarChangeValue){
+                if (seekBarChangeValue) {
                     seekBarChangeValue = false;
                     return;
                 }
-                if(!s.toString().isEmpty()) {
+                if (!s.toString().isEmpty()) {
                     Double fee = Double.valueOf(s.toString()) * 100000000;
                     textViewChangeValue = true;
                     int progress;
@@ -555,15 +537,14 @@ public abstract class SendFragment extends BaseFragment implements SendView {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
         mTextInputEditTextFee.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(mSeekBar != null) {
+                if (!hasFocus) {
+                    if (mSeekBar != null) {
                         textViewChangeValue = true;
                         double value = (mMinFee + (mSeekBar.getProgress() * step)) / 100000000.;
                         seekBarChangeValue = true;
@@ -572,21 +553,18 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                 }
             }
         });
-
     }
 
-    private void initializeAnim(){
+    private void initializeAnim() {
         mAnimForward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, 0, appLogoHeight);
         mAnimForward.setDuration(300);
         mAnimForward.setFillEnabled(true);
         mAnimForward.setFillAfter(true);
-        //mAnimForward.setAnimationListener(this);
 
         mAnimBackward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, appLogoHeight, 0);
         mAnimBackward.setDuration(300);
         mAnimBackward.setFillEnabled(true);
         mAnimBackward.setFillAfter(true);
-        //mAnimBackward.setAnimationListener(this);
     }
 
     @Override
@@ -618,9 +596,9 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         mLinearLayoutCurrency.setVisibility(View.VISIBLE);
         mTextViewCurrency.setText(currency.getName());
         mCurrency = currency;
-        if(mCurrency.getName().equals("Qtum " + getString(R.string.default_currency))){
+        if (mCurrency.getName().equals("Qtum " + getString(R.string.default_currency))) {
             mRelativeLayoutGasManagementContainer.setVisibility(View.GONE);
-        }else{
+        } else {
             mRelativeLayoutGasManagementContainer.setVisibility(View.VISIBLE);
         }
     }
@@ -665,7 +643,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         mMinFee = Double.valueOf(minFee * 100000000).intValue();
         mMaxFee = Double.valueOf(maxFee * 100000000).intValue();
         mSeekBar.setMax((mMaxFee - mMinFee) / step);
-        mSeekBar.setProgress(10000000-mMinFee);
+        mSeekBar.setProgress(10000000 - mMinFee);
     }
 
     public void onResponse(String pubAddress, Double amount, String tokenAddress) {
@@ -702,7 +680,6 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         mTextInputEditTextAddress.setText(publicAddress);
         mTextInputEditTextAmount.setText(String.valueOf(amount));
     }
-
 
     private UpdateService getUpdateService() {
         return getMainActivity().getUpdateService();
@@ -763,10 +740,9 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         @Override
         public void onError(String error) {
             hideKeyBoard();
-            setAlertDialog(R.string.warning,error,R.string.cancel,PopUpType.error);
+            setAlertDialog(R.string.warning, error, R.string.cancel, PopUpType.error);
         }
     };
-
 
     private SendInteractorImpl.SendTxCallBack sendCallback = new SendInteractorImpl.SendTxCallBack() {
         @Override

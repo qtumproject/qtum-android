@@ -1,9 +1,7 @@
 package org.qtum.wallet.ui.base.base_activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 
 public interface BasePresenter {
 
@@ -36,5 +34,4 @@ public interface BasePresenter {
     void startActivity(Intent intent);
 
     BaseContextView getView();
-
 }

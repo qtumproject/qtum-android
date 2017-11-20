@@ -10,10 +10,6 @@ import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.ui.fragment.language_fragment.LanguageHolder;
 import org.qtum.wallet.ui.fragment.language_fragment.OnLanguageIntemClickListener;
 
-/**
- * Created by kirillvolkov on 07.07.17.
- */
-
 public class LanguageHolderDark extends LanguageHolder {
     public LanguageHolderDark(View itemView, OnLanguageIntemClickListener listener) {
         super(itemView, listener);

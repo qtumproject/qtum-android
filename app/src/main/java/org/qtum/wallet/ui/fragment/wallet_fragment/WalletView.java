@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment;
 
-
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
@@ -30,5 +29,4 @@ public interface WalletView extends BaseFragmentView {
     WalletInteractorImpl.GetHistoryListCallBack getHistoryCallback();
 
     void openTransactionsFragment(int position);
-
 }

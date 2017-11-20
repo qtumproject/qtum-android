@@ -1,9 +1,5 @@
 package org.qtum.wallet.ui.wave_visualizer;
 
-/**
- * Created by kirillvolkov on 11.07.17.
- */
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -46,16 +42,10 @@ public class WaveView extends View {
         SQUARE
     }
 
-    // if true, the shader will display the wave
     private boolean mShowWave;
-
-    // shader containing repeated waves
     private BitmapShader mWaveShader;
-    // shader matrix
     private Matrix mShaderMatrix;
-    // paint to draw wave
     private Paint mViewPaint;
-    // paint to draw border
     private Paint mBorderPaint;
 
     private float mDefaultAmplitude;
@@ -217,9 +207,6 @@ public class WaveView extends View {
         Paint wavePaint = new Paint();
         wavePaint.setStrokeWidth(2);
         wavePaint.setAntiAlias(true);
-
-        // Draw default waves into the bitmap
-        // y=Asin(ωx+φ)+h
         final int endX = getWidth() + 1;
         final int endY = getHeight() + 1;
 
@@ -239,35 +226,24 @@ public class WaveView extends View {
         for (int beginX = 0; beginX < endX; beginX++) {
             canvas.drawLine(beginX, waveY[(beginX + wave2Shift) % endX] - getHeight() / 10, beginX, endY, wavePaint);
         }
-
-        // use the bitamp to create the shader
         mWaveShader = new BitmapShader(bitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP);
         mViewPaint.setShader(mWaveShader);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // modify paint shader according to mShowWave state
         if (mShowWave && mWaveShader != null) {
-            // first call after mShowWave, assign it to our paint
             if (mViewPaint.getShader() == null) {
                 mViewPaint.setShader(mWaveShader);
             }
-
-            // sacle shader according to mWaveLengthRatio and mAmplitudeRatio
-            // this decides the size(mWaveLengthRatio for width, mAmplitudeRatio for height) of waves
             mShaderMatrix.setScale(
                     mWaveLengthRatio / DEFAULT_WAVE_LENGTH_RATIO,
                     mAmplitudeRatio / DEFAULT_AMPLITUDE_RATIO,
                     0,
                     mDefaultWaterLevel);
-            // translate shader according to mWaveShiftRatio and mWaterLevelRatio
-            // this decides the start position(mWaveShiftRatio for x, mWaterLevelRatio for y) of waves
             mShaderMatrix.postTranslate(
                     mWaveShiftRatio * getWidth(),
                     (DEFAULT_WATER_LEVEL_RATIO - mWaterLevelRatio) * getHeight());
-
-            // assign matrix to invalidate the shader
             mWaveShader.setLocalMatrix(mShaderMatrix);
 
             float borderWidth = mBorderPaint == null ? 0f : mBorderPaint.getStrokeWidth();

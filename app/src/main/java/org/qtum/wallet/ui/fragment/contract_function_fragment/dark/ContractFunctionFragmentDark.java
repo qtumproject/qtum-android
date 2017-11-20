@@ -6,7 +6,6 @@ import org.qtum.wallet.ui.fragment.contract_function_fragment.ContractFunctionFr
 
 import java.util.List;
 
-
 public class ContractFunctionFragmentDark extends ContractFunctionFragment {
 
     @Override
@@ -16,8 +15,7 @@ public class ContractFunctionFragmentDark extends ContractFunctionFragment {
 
     @Override
     public void setUpParameterList(List<ContractMethodParameter> contractMethodParameterList) {
-        mParameterAdapter = new ParameterAdapter(contractMethodParameterList,R.layout.lyt_constructor_input);
+        mParameterAdapter = new ParameterAdapter(contractMethodParameterList, R.layout.lyt_constructor_input);
         mParameterList.setAdapter(mParameterAdapter);
     }
-
 }

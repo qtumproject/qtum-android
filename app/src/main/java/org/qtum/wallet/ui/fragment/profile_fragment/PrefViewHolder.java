@@ -6,6 +6,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.utils.FontTextView;
@@ -48,7 +49,7 @@ public class PrefViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(final SettingObject setting) {
-        if(setting instanceof SettingSwitchObject){
+        if (setting instanceof SettingSwitchObject) {
             arrow.setVisibility(View.INVISIBLE);
             mSwitch.setVisibility(View.VISIBLE);
             mSwitch.setChecked(((SettingSwitchObject) setting).isChecked());
@@ -59,7 +60,7 @@ public class PrefViewHolder extends RecyclerView.ViewHolder {
                 }
             });
             mSwitch.setChecked(QtumSharedPreference.getInstance().isTouchIdEnable(title.getContext()));
-        }else{
+        } else {
             mSwitch.setVisibility(View.INVISIBLE);
             arrow.setVisibility(View.VISIBLE);
         }

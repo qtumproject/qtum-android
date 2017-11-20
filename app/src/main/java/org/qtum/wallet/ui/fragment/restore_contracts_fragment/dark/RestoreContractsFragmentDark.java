@@ -6,10 +6,6 @@ import android.view.View;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.restore_contracts_fragment.RestoreContractsFragment;
 
-/**
- * Created by kirillvolkov on 25.07.17.
- */
-
 public class RestoreContractsFragmentDark extends RestoreContractsFragment {
 
     @Override
@@ -24,7 +20,7 @@ public class RestoreContractsFragmentDark extends RestoreContractsFragment {
         mTextViewFileSize.setText(size);
         mImageViewRestoreIcon.setClickable(true);
         mFrameLayoutBackUpFile.setClickable(false);
-        mImageViewRestoreIcon.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_delete));
+        mImageViewRestoreIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_delete));
     }
 
     @Override
@@ -33,6 +29,6 @@ public class RestoreContractsFragmentDark extends RestoreContractsFragment {
         mTextViewFileSize.setVisibility(View.GONE);
         mImageViewRestoreIcon.setClickable(false);
         mFrameLayoutBackUpFile.setClickable(true);
-        mImageViewRestoreIcon.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_attach));
+        mImageViewRestoreIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_attach));
     }
 }

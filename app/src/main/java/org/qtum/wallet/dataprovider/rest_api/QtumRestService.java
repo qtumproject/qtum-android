@@ -30,7 +30,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
-
 interface QtumRestService {
 
     @GET("/outputs/unspent/{address}")
@@ -69,8 +68,7 @@ interface QtumRestService {
     @GET("/contracts/{count}/{offset}")
     Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset, @Query("type") String type, @Query("name") String name); //by name
 
-
-     @GET("/contracts/{contract_id}")
+    @GET("/contracts/{contract_id}")
     Observable<QstoreContract> getContract(@Path("contract_id") String contractId);
 
     @POST("/contracts/{contract_id}/source-code")
@@ -96,5 +94,4 @@ interface QtumRestService {
 
     @GET("/blockchain/dgpinfo")
     Observable<DGPInfo> getDGPInfo();
-
 }

@@ -3,7 +3,6 @@ package org.qtum.wallet.ui.fragment.token_fragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 import org.qtum.wallet.utils.ContractManagementHelper;
 
-
 public interface TokenView extends BaseFragmentView {
     void setBalance(String balance);
 
@@ -28,5 +27,4 @@ public interface TokenView extends BaseFragmentView {
     ContractManagementHelper.GetPropertyValueCallBack getDecimalsValueCallback();
 
     ContractManagementHelper.GetPropertyValueCallBack getTotalSupplyValueCallback();
-
 }

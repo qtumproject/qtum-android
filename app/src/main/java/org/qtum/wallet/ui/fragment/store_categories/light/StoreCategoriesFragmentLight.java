@@ -7,12 +7,6 @@ import org.qtum.wallet.ui.fragment.store_categories.StoreCategoryViewHolder;
 
 import java.util.List;
 
-import butterknife.BindView;
-
-/**
- * Created by kirillvolkov on 18.08.17.
- */
-
 public class StoreCategoriesFragmentLight extends StoreCategoriesFragment {
 
     @Override

@@ -22,7 +22,6 @@ import butterknife.OnClick;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CREATING;
 
-
 public abstract class StartPageFragment extends BaseFragment implements StartPageView {
 
     private StartPagePresenter mStartPageFragmentPresenter;
@@ -110,6 +109,4 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
         getMainActivity().stopUpdateService();
         getPresenter().clearWallet();
     }
-
-
 }

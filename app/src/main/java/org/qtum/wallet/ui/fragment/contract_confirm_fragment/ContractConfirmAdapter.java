@@ -5,10 +5,10 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.mikhaellopez.hfrecyclerview.HFRecyclerView;
+
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 
 import java.util.List;
-
 
 public abstract class ContractConfirmAdapter extends HFRecyclerView<ContractMethodParameter> {
 
@@ -16,8 +16,8 @@ public abstract class ContractConfirmAdapter extends HFRecyclerView<ContractMeth
 
     protected OnValueClick clickListener;
 
-    public ContractConfirmAdapter(List<ContractMethodParameter> params, String mineAddress, OnValueClick clickListener){
-        super(params,false, true);
+    public ContractConfirmAdapter(List<ContractMethodParameter> params, String mineAddress, OnValueClick clickListener) {
+        super(params, false, true);
         this.mineAddress = mineAddress;
         this.clickListener = clickListener;
     }

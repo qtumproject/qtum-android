@@ -9,6 +9,7 @@ import android.support.v7.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
 import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
@@ -17,9 +18,10 @@ import org.qtum.wallet.utils.QtumIntent;
 public class QtumFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "FCM Service";
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        if(QtumApplication.instance == null) {
+        if (QtumApplication.instance == null) {
             sendNotification("", "QTUM", remoteMessage.getNotification().getBody());
         }
     }

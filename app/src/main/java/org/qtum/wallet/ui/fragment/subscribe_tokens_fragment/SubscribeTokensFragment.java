@@ -117,7 +117,6 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
 
     @Override
     public void onActivate() {
-
     }
 
     @Override
@@ -130,7 +129,7 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
 
     @Override
     public void onRequestSearch(String filter) {
-        if(mTokenAdapter!=null) {
+        if (mTokenAdapter != null) {
             if (filter.isEmpty()) {
                 mTokenAdapter.setFilter(mCurrentList);
             } else {
@@ -140,9 +139,7 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
                     if (currency.getContractName().toLowerCase().contains(mSearchString))
                         newList.add(currency);
                 }
-
                 final int searchStringSize = mSearchString.length();
-
                 Collections.sort(newList, new Comparator<Token>() {
                     @Override
                     public int compare(Token token, Token token2) {
@@ -155,7 +152,6 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
                         }
                     }
                 });
-
                 mTokenAdapter.setFilter(newList);
             }
         }

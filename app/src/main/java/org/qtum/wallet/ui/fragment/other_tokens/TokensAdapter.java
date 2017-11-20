@@ -7,7 +7,6 @@ import org.qtum.wallet.model.contract.Token;
 
 import java.util.List;
 
-
 public abstract class TokensAdapter extends RecyclerView.Adapter<TokenViewHolder> {
 
     protected final UpdateSocketInstance socketInstace;

@@ -24,10 +24,13 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
 
     @BindView(org.qtum.wallet.R.id.tv_value)
     TextView mTextViewValue;
+
     @BindView(org.qtum.wallet.R.id.tv_received_time)
     TextView mTextViewReceivedTime;
+
     @BindView(org.qtum.wallet.R.id.view_pager_transaction)
     ViewPager mViewPager;
+
     @BindView(org.qtum.wallet.R.id.app_bar)
     AppBarLayout mAppBarLayout;
 
@@ -89,7 +92,6 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
     protected void setTransactionData(String value, String receivedTime) {
         if (mViewPager.getAdapter() == null) {
             mTextViewValue.setText(value);
-
             mTextViewReceivedTime.setText(receivedTime);
             TransactionPagerAdapter transactionPagerAdapter = new TransactionPagerAdapter(getFragmentManager());
             mViewPager.setAdapter(transactionPagerAdapter);
@@ -114,7 +116,6 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
             });
         }
     }
-
 
     private class TransactionPagerAdapter extends FragmentStatePagerAdapter {
 

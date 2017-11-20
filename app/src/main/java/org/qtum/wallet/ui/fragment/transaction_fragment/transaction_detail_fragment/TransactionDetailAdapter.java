@@ -6,16 +6,11 @@ import org.qtum.wallet.model.gson.history.TransactionInfo;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 11.07.17.
- */
-
-
-public abstract class TransactionDetailAdapter extends RecyclerView.Adapter<TransactionDetailHolder>{
+public abstract class TransactionDetailAdapter extends RecyclerView.Adapter<TransactionDetailHolder> {
 
     private List<TransactionInfo> mTransactionInfoList;
 
-    protected TransactionDetailAdapter(List<TransactionInfo> transactionInfoList){
+    protected TransactionDetailAdapter(List<TransactionInfo> transactionInfoList) {
         mTransactionInfoList = transactionInfoList;
     }
 

@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.receive_fragment;
 
-
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 
 import java.math.BigDecimal;

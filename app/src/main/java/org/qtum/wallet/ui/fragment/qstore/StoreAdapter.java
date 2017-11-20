@@ -8,7 +8,6 @@ import org.qtum.wallet.ui.fragment.qstore.categories.QstoreCategory;
 
 import java.util.List;
 
-
 public class StoreAdapter extends RecyclerView.Adapter<StoreViewHolder> {
 
     private List<QstoreCategory> items;
@@ -17,7 +16,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreViewHolder> {
 
     int catResId, itemResId;
 
-    public StoreAdapter(List<QstoreCategory> items, StoreItemClickListener listener, int catResId, int itemResId){
+    public StoreAdapter(List<QstoreCategory> items, StoreItemClickListener listener, int catResId, int itemResId) {
         this.items = items;
         this.listener = listener;
         this.catResId = catResId;

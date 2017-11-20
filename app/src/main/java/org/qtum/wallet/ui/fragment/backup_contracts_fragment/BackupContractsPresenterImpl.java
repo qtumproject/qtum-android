@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.backup_contracts_fragment;
 
+import android.support.v4.content.FileProvider;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -9,7 +10,6 @@ import java.io.File;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-
 
 public class BackupContractsPresenterImpl extends BaseFragmentPresenterImpl implements BackupContractsPresenter {
 
@@ -53,7 +53,7 @@ public class BackupContractsPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onError(Throwable e) {
-                        getView().setAlertDialog(R.string.error,R.string.cancel, BaseFragment.PopUpType.error);
+                        getView().setAlertDialog(R.string.error, R.string.cancel, BaseFragment.PopUpType.error);
                     }
 
                     @Override
@@ -79,7 +79,7 @@ public class BackupContractsPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onError(Throwable e) {
-                        getView().setAlertDialog(R.string.error,R.string.cancel, BaseFragment.PopUpType.error);
+                        getView().setAlertDialog(R.string.error, R.string.cancel, BaseFragment.PopUpType.error);
                     }
 
                     @Override
@@ -97,13 +97,18 @@ public class BackupContractsPresenterImpl extends BaseFragmentPresenterImpl impl
     @Override
     public void permissionGrantedForChooseShareMethod() {
         if (mBackUpFile.exists()) {
-            getView().chooseShareMethod(mBackUpFile.getAbsolutePath());
+            String authority = "com.pixelplex.FileProvider";
+            getView()
+                    .chooseShareMethod(
+                            FileProvider.getUriForFile(
+                                    getView().getContext(),
+                                    authority,
+                                    mBackUpFile).toString());
         } else {
-            getView().setAlertDialog(R.string.error,R.string.cancel, BaseFragment.PopUpType.error);
+            getView().setAlertDialog(R.string.error, R.string.cancel, BaseFragment.PopUpType.error);
         }
     }
 
-    //setter for unit testing
     public void setBackUpFile(File backUpFile) {
         mBackUpFile = backUpFile;
     }

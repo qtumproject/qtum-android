@@ -24,8 +24,7 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
-public abstract class SourceCodeFragment extends BaseFragment implements SourceCodeView{
+public abstract class SourceCodeFragment extends BaseFragment implements SourceCodeView {
 
     protected final static String SOURCE_CODE = "source_code";
 
@@ -44,7 +43,6 @@ public abstract class SourceCodeFragment extends BaseFragment implements SourceC
     }
 
     public static BaseFragment newInstance(Context context, String sourceCode) {
-
         Bundle args = new Bundle();
         args.putString(SOURCE_CODE, sourceCode);
         BaseFragment fragment = Factory.instantiateFragment(context, SourceCodeFragment.class);
@@ -62,7 +60,7 @@ public abstract class SourceCodeFragment extends BaseFragment implements SourceC
         return mSourceCodePresenter;
     }
 
-    protected SpannableString formatCode(String sourceCode, @ColorRes int codeReserveWord, @ColorRes int codeType, @ColorRes int codeComment){
+    protected SpannableString formatCode(String sourceCode, @ColorRes int codeReserveWord, @ColorRes int codeType, @ColorRes int codeComment) {
         Pattern r = Pattern.compile("\\n(\\s+)");
         Matcher m = r.matcher(sourceCode);
         StringBuffer sb = new StringBuffer();
@@ -72,10 +70,7 @@ public abstract class SourceCodeFragment extends BaseFragment implements SourceC
         m.appendTail(sb);
         sourceCode = sb.toString();
 
-
-
         SpannableString spannableSourceCode = new SpannableString(sourceCode);
-
         Pattern pattern = Pattern.compile("[-+]?\\b\\d+\\b");
         Matcher matcher = pattern.matcher(spannableSourceCode.toString());
         int start = 0;
@@ -118,51 +113,35 @@ public abstract class SourceCodeFragment extends BaseFragment implements SourceC
             start = matcher.end();
         }
 
-
         int len = sourceCode.length();
         char[] buffer = sourceCode.toCharArray();
-
-
         ArrayList<Integer> openningBracersPositions = new ArrayList<>();
         HashMap<Integer, HashSet<Location>> threeOfFunctionDict = new HashMap<>();
-
-
         int closureBracersCount = 0;
-
         for (int i = 0; i < len; i++) {
-
             if (buffer[i] == '{') {
-
                 openningBracersPositions.add(i);
             } else if (buffer[i] == '}') {
-
                 closureBracersCount++;
                 int openingBracerIndex = openningBracersPositions.size() - closureBracersCount;
-
                 if (openingBracerIndex < openningBracersPositions.size() - 1 || openingBracerIndex >= 0) {
-
                     int location = openningBracersPositions.get(openingBracerIndex);
-
                     HashSet<Location> set = threeOfFunctionDict.get(openingBracerIndex);
-
                     if (set == null) {
                         set = new HashSet<>();
                         threeOfFunctionDict.put(openingBracerIndex, set);
                     }
-
                     set.add(new Location(location, i));
                     closureBracersCount--;
                     openningBracersPositions.remove(openingBracerIndex);
                 }
             }
         }
-
-        for(HashMap.Entry<Integer, HashSet<Location>> integerHashSetEntry : threeOfFunctionDict.entrySet()){
-            for(Location location : integerHashSetEntry.getValue()) {
-                spannableSourceCode.setSpan(new LeadingMarginSpan.Standard(64 * (integerHashSetEntry.getKey()+1)), location.getLocationStart(), location.getLocationEnd(), 0);
+        for (HashMap.Entry<Integer, HashSet<Location>> integerHashSetEntry : threeOfFunctionDict.entrySet()) {
+            for (Location location : integerHashSetEntry.getValue()) {
+                spannableSourceCode.setSpan(new LeadingMarginSpan.Standard(64 * (integerHashSetEntry.getKey() + 1)), location.getLocationStart(), location.getLocationEnd(), 0);
             }
         }
-
         return spannableSourceCode;
     }
 }

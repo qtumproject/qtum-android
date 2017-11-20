@@ -1,6 +1,5 @@
 package org.qtum.wallet.model.gson.token_balance;
 
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,7 +15,6 @@ public class Balance {
     private BigDecimal balance;
 
     public Balance() {
-
     }
 
     /**
@@ -49,5 +47,4 @@ public class Balance {
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
-
 }

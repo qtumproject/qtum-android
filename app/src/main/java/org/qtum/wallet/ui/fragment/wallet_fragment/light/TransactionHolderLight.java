@@ -21,10 +21,6 @@ import butterknife.OnLongClick;
 import rx.Subscriber;
 import rx.Subscription;
 
-/**
- * Created by kirillvolkov on 05.07.17.
- */
-
 public class TransactionHolderLight extends RecyclerView.ViewHolder {
 
     @BindView(R.id.tv_value)
@@ -44,7 +40,7 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
         ClipboardUtils.copyToClipBoard(mTextViewID.getContext(), mTextViewID.getText().toString(), new ClipboardUtils.CopyCallback() {
             @Override
             public void onCopyToClipBoard() {
-                Toast.makeText(mTextViewID.getContext(),mTextViewID.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mTextViewID.getContext(), mTextViewID.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
             }
         });
         return true;
@@ -62,7 +58,7 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
     }
 
     void bindTransactionData(final History history) {
-        if(mSubscription!=null){
+        if (mSubscription != null) {
             mSubscription.unsubscribe();
         }
         mLinearLayoutTransaction.setBackgroundResource(android.R.color.transparent);
@@ -73,38 +69,34 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
             mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
         }
 
-        if(history.getBlockTime() != null) {
+        if (history.getBlockTime() != null) {
             mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {
                 @Override
                 public void onCompleted() {
-
                 }
 
                 @Override
                 public void onError(Throwable e) {
-
                 }
 
                 @Override
                 public void onNext(Object o) {
-                    mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime()*1000L));
+                    mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
                 }
             });
-            mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime()*1000L));
+            mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
         } else {
             mImageViewIcon.setImageResource(R.drawable.ic_confirmation_loader);
             mTextViewDate.setText(R.string.confirmation);
             mLinearLayoutTransaction.setBackgroundResource(R.color.bottom_nav_bar_color_light);
         }
-
         mTextViewID.setText(history.getTxHash());
         mTextViewValue.setText(getSpannedBalance(history.getChangeInBalance().toString() + " QTUM"));
     }
 
-    private SpannableString getSpannedBalance(String balance){
-
-        SpannableString span =  new SpannableString(balance);
-        if(balance.length() > 4) {
+    private SpannableString getSpannedBalance(String balance) {
+        SpannableString span = new SpannableString(balance);
+        if (balance.length() > 4) {
             span.setSpan(new RelativeSizeSpan(.6f), balance.length() - 4, balance.length(), 0);
         }
         return span;

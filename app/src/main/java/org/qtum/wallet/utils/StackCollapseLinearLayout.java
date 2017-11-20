@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-
 public class StackCollapseLinearLayout extends LinearLayout {
 
     public StackCollapseLinearLayout(Context context) {
@@ -53,11 +52,11 @@ public class StackCollapseLinearLayout extends LinearLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
-        InitialHeight = (InitialHeight < 0)? b - t : InitialHeight;
+        InitialHeight = (InitialHeight < 0) ? b - t : InitialHeight;
 
         super.onLayout(changed, l, t, r, b);
 
-        if(childYPositions.size() == 0) {
+        if (childYPositions.size() == 0) {
 
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
@@ -65,7 +64,7 @@ public class StackCollapseLinearLayout extends LinearLayout {
             }
         }
 
-        if(prevHeight > b - t) {
+        if (prevHeight > b - t) {
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
                 if (child.getY() + child.getHeight() > getHeight()) {
@@ -73,22 +72,22 @@ public class StackCollapseLinearLayout extends LinearLayout {
                 }
             }
         } else {
-            if(childYPositions.size() != 0) {
+            if (childYPositions.size() != 0) {
                 for (int i = 0; i < getChildCount(); i++) {
                     View child = getChildAt(i);
                     if (childYPositions.get(i) > child.getY()) {
                         float pos = getHeight() - child.getHeight();
-                        if(i == 0){
-                            if(pos <= 0){
-                                setChildPositionDelta(child,pos);
+                        if (i == 0) {
+                            if (pos <= 0) {
+                                setChildPositionDelta(child, pos);
                             } else {
-                                setChildPositionDelta(child,0);
+                                setChildPositionDelta(child, 0);
                             }
                         } else {
-                            if(pos <= getChildAt(i - 1).getY() + getChildAt(i - 1).getHeight()){
-                                setChildPositionDelta(child,pos);
+                            if (pos <= getChildAt(i - 1).getY() + getChildAt(i - 1).getHeight()) {
+                                setChildPositionDelta(child, pos);
                             } else {
-                                setChildPositionDelta(child,getChildAt(i - 1).getY() + getChildAt(i - 1).getHeight());
+                                setChildPositionDelta(child, getChildAt(i - 1).getY() + getChildAt(i - 1).getHeight());
                             }
                         }
                         break;

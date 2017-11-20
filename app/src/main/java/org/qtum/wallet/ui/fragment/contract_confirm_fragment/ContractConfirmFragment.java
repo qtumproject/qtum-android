@@ -19,7 +19,6 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.ResizeHeightAnimation;
@@ -31,8 +30,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
-public abstract class ContractConfirmFragment extends BaseFragment implements  ContractConfirmView, OnValueClick{
+public abstract class ContractConfirmFragment extends BaseFragment implements ContractConfirmView, OnValueClick {
 
     protected static final String paramsKey = "params";
     private static final String CONTRACT_TEMPLATE_UIID = "mUiid";
@@ -96,7 +94,7 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
     public static BaseFragment newInstance(Context context, List<ContractMethodParameter> params, String uiid, String name) {
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, ContractConfirmFragment.class);
-        args.putSerializable(paramsKey,(ArrayList)params);
+        args.putSerializable(paramsKey, (ArrayList) params);
         args.putString(CONTRACT_TEMPLATE_UIID, uiid);
         args.putString(CONTRACT_NAME, name);
         fragment.setArguments(args);
@@ -111,8 +109,8 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
     RecyclerView confirmList;
 
     @OnClick(R.id.bt_edit_close)
-    public void onEditCloseClick(){
-        if(showing) {
+    public void onEditCloseClick() {
+        if (showing) {
             mLinearLayoutSeekBarContainer.startAnimation(mAnimBackward);
             mFontButtonEditClose.setText(R.string.edit);
             showing = !showing;
@@ -123,18 +121,16 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
         }
     }
 
-    private void initializeAnim(){
+    private void initializeAnim() {
         mAnimForward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, 0, appLogoHeight);
         mAnimForward.setDuration(300);
         mAnimForward.setFillEnabled(true);
         mAnimForward.setFillAfter(true);
-        //mAnimForward.setAnimationListener(this);
 
         mAnimBackward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, appLogoHeight, 0);
         mAnimBackward.setDuration(300);
         mAnimBackward.setFillEnabled(true);
         mAnimBackward.setFillAfter(true);
-        //mAnimBackward.setAnimationListener(this);
     }
 
     @Override
@@ -144,8 +140,8 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
         mSeekBarFee.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(textViewChangeValue){
-                    textViewChangeValue=false;
+                if (textViewChangeValue) {
+                    textViewChangeValue = false;
                     return;
                 }
                 double value = (mMinFee + (progress * stepFee)) / 100000000.;
@@ -154,12 +150,10 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -172,12 +166,10 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -190,28 +182,26 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
-        if(mLinearLayoutSeekBarContainer.getHeight()==0) {
+        if (mLinearLayoutSeekBarContainer.getHeight() == 0) {
             mLinearLayoutSeekBarContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
                     mLinearLayoutSeekBarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    appLogoHeight = (appLogoHeight == 0) ?  mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
+                    appLogoHeight = (appLogoHeight == 0) ? mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
                     initializeAnim();
                     mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
                     mLinearLayoutSeekBarContainer.requestLayout();
                 }
             });
         } else {
-            appLogoHeight = (appLogoHeight == 0) ?  mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
+            appLogoHeight = (appLogoHeight == 0) ? mLinearLayoutSeekBarContainer.getHeight() : appLogoHeight;
             initializeAnim();
             mLinearLayoutSeekBarContainer.getLayoutParams().height = 0;
             mLinearLayoutSeekBarContainer.requestLayout();
@@ -220,16 +210,15 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
         mTextInputEditTextFee.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(seekBarChangeValue){
+                if (seekBarChangeValue) {
                     seekBarChangeValue = false;
                     return;
                 }
-                if(!s.toString().isEmpty()) {
+                if (!s.toString().isEmpty()) {
                     Double fee = Double.valueOf(s.toString()) * 100000000;
                     textViewChangeValue = true;
                     int progress;
@@ -246,15 +235,14 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
         mTextInputEditTextFee.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(mSeekBarFee!=null) {
+                if (!hasFocus) {
+                    if (mSeekBarFee != null) {
                         textViewChangeValue = true;
                         double value = (mMinFee + (mSeekBarFee.getProgress() * stepFee)) / 100000000.;
                         seekBarChangeValue = true;
@@ -272,7 +260,7 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
         mMinFee = Double.valueOf(minFee * 100000000).intValue();
         mMaxFee = Double.valueOf(maxFee * 100000000).intValue();
         mSeekBarFee.setMax((mMaxFee - mMinFee) / stepFee);
-        mSeekBarFee.setProgress(10000000-mMinFee);
+        mSeekBarFee.setProgress(10000000 - mMinFee);
     }
 
     @Override
@@ -300,11 +288,11 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
     }
 
     @OnClick(R.id.confirm)
-    public void onConfirmClick(){
+    public void onConfirmClick() {
         int gasLimit = Integer.valueOf(mFontTextViewGasLimit.getText().toString());
         int gasPrice = Integer.valueOf(mFontTextViewGasPrice.getText().toString());
         String fee = mTextInputEditTextFee.getText().toString();
-        getPresenter().onConfirmContract(getArguments().getString(CONTRACT_TEMPLATE_UIID),gasLimit,gasPrice,fee);
+        getPresenter().onConfirmContract(getArguments().getString(CONTRACT_TEMPLATE_UIID), gasLimit, gasPrice, fee);
     }
 
     @Override
@@ -337,12 +325,11 @@ public abstract class ContractConfirmFragment extends BaseFragment implements  C
 
     @Override
     public void makeToast(String s) {
-        Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), s, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public QtumApplication getApplication() {
         return getMainActivity().getQtumApplication();
     }
-
 }

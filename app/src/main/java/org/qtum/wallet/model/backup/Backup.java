@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-
 public class Backup {
 
     @SerializedName("date_create")

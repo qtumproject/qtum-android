@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.profile_fragment;
 
-
 public class SettingObject {
 
     public SettingObject(int title, int image, int section) {

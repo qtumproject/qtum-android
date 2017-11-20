@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
-
 public interface BaseContextView {
-
     void startActivity(Intent intent);
 
     void startActivityForResult(Intent intent, int requestCode);
@@ -22,5 +20,4 @@ public interface BaseContextView {
     Context getContext();
 
     void finish();
-
 }

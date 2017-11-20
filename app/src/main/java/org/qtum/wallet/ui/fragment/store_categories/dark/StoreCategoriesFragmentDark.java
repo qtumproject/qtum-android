@@ -5,15 +5,8 @@ import org.qtum.wallet.model.gson.QstoreContractType;
 import org.qtum.wallet.ui.fragment.store_categories.StoreCategoriesAdapter;
 import org.qtum.wallet.ui.fragment.store_categories.StoreCategoriesFragment;
 import org.qtum.wallet.ui.fragment.store_categories.StoreCategoryViewHolder;
-import org.qtum.wallet.utils.SearchBar;
 
 import java.util.List;
-
-import butterknife.BindView;
-
-/**
- * Created by kirillvolkov on 18.08.17.
- */
 
 public class StoreCategoriesFragmentDark extends StoreCategoriesFragment {
 

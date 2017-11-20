@@ -19,7 +19,6 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         mWalletFragmentInteractor = interactor;
     }
 
-
     @Override
     public void notifyHeader() {
         String pubKey = getInteractor().getAddress();
@@ -124,9 +123,6 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         getInteractor().unSubscribe();
     }
 
-    /***
-     * Setter for unit tests
-     */
     public void setNetworkConnectedFlag(boolean mNetworkConnectedFlag) {
         this.mNetworkConnectedFlag = mNetworkConnectedFlag;
     }

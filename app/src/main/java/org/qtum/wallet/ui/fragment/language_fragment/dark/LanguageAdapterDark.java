@@ -5,14 +5,12 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.language_fragment.LanguageAdapter;
 import org.qtum.wallet.ui.fragment.language_fragment.OnLanguageIntemClickListener;
-import java.util.List;
 
-/**
- * Created by kirillvolkov on 07.07.17.
- */
+import java.util.List;
 
 public class LanguageAdapterDark extends LanguageAdapter {
 
@@ -30,6 +28,6 @@ public class LanguageAdapterDark extends LanguageAdapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         mLanguage = mLanguagesList.get(position);
-        ((LanguageHolderDark)holder).bindLanguage(mLanguage);
+        ((LanguageHolderDark) holder).bindLanguage(mLanguage);
     }
 }

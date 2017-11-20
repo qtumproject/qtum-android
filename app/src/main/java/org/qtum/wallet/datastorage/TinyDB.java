@@ -1,24 +1,3 @@
-/*
- * Copyright 2014 KC Ochibili
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/*
- *  The "‚‗‚" character is not a comma, it is the SINGLE LOW-9 QUOTATION MARK unicode 201A
- *  and unicode 2017 that are used for separating the mItems in a list.
- */
-
 package org.qtum.wallet.datastorage;
 
 import java.io.File;
@@ -30,8 +9,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
-//import com.google.gson.Gson;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -51,8 +28,6 @@ import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.ContractTemplate;
 import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.utils.DateCalculator;
-import org.xmlpull.v1.XmlPullParserFactory;
-
 
 public class TinyDB {
 
@@ -85,7 +60,6 @@ public class TinyDB {
             bitmapFromPath = BitmapFactory.decodeFile(path);
 
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         }
 

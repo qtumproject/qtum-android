@@ -10,10 +10,6 @@ import org.qtum.wallet.ui.fragment.set_your_token_fragment.OnValidateParamsListe
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 25.07.17.
- */
-
 public class ConstructorAdapterLight extends ConstructorAdapter {
 
     public ConstructorAdapterLight(List<ContractMethodParameter> params, OnValidateParamsListener listener) {

@@ -12,10 +12,6 @@ import java.util.List;
 
 import rx.Observable;
 
-/**
- * Created by drevnitskaya on 10.10.17.
- */
-
 public class QStoreInteractorImpl implements QStoreInteractor {
     private WeakReference<Context> mContext;
 

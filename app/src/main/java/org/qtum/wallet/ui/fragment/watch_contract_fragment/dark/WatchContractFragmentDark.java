@@ -9,10 +9,6 @@ import org.qtum.wallet.utils.FontManager;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 25.07.17.
- */
-
 public class WatchContractFragmentDark extends WatchContractFragment {
 
     @Override
@@ -23,10 +19,8 @@ public class WatchContractFragmentDark extends WatchContractFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-
         mTilContractName.setTypeface(FontManager.getInstance().getFont(getResources().getString(R.string.simplonMonoRegular)));
         mTilContractAddress.setTypeface(FontManager.getInstance().getFont(getResources().getString(R.string.simplonMonoRegular)));
-
         mEditTextContractName.setTypeface(FontManager.getInstance().getFont(getResources().getString(R.string.simplonMonoMedium)));
         mEditTextContractAddress.setTypeface(FontManager.getInstance().getFont(getResources().getString(R.string.simplonMonoMedium)));
     }
@@ -34,7 +28,5 @@ public class WatchContractFragmentDark extends WatchContractFragment {
     @Override
     public void setUpTemplatesList(List<ContractTemplate> contractTemplateList, OnTemplateClickListener listener) {
         mRecyclerViewTemplates.setAdapter(new TemplatesAdapter(contractTemplateList, listener, R.layout.item_template_chips, R.color.accent_red_color));
-
     }
-
 }

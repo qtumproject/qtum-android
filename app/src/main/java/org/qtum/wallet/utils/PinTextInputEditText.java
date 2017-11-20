@@ -6,14 +6,12 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
 import android.view.View;
 
-
 public class PinTextInputEditText extends TextInputEditText {
 
     private char defaultHintChar = '■';
 
     public PinTextInputEditText(Context context) {
         super(context);
-
     }
 
     public PinTextInputEditText(Context context, AttributeSet attrs) {
@@ -33,15 +31,19 @@ public class PinTextInputEditText extends TextInputEditText {
 
         private class PasswordCharSequence implements CharSequence {
             private CharSequence mSource;
+
             public PasswordCharSequence(CharSequence source) {
                 mSource = source; // Store char sequence
             }
+
             public char charAt(int index) {
                 return defaultHintChar; // This is the important part
             }
+
             public int length() {
                 return mSource.length(); // Return default
             }
+
             public CharSequence subSequence(int start, int end) {
                 return mSource.subSequence(start, end); // Return default
             }

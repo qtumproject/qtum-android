@@ -1,13 +1,11 @@
 package org.qtum.wallet.ui.fragment.profile_fragment;
 
-
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-
 
 public class LogOutDialogFragment extends DialogFragment {
 
@@ -32,10 +30,9 @@ public class LogOutDialogFragment extends DialogFragment {
                     }
                 })
                 .create();
-
     }
 
-    public interface OnYesClickListener{
+    public interface OnYesClickListener {
         void onClick();
     }
 }

@@ -20,14 +20,12 @@ import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -36,7 +34,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,38 +59,29 @@ import org.qtum.wallet.ui.fragment.profile_fragment.ProfileFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.utils.QtumIntent;
 import org.qtum.wallet.utils.ThemeUtils;
-import org.qtum.wallet.utils.crypto.KeyStoreHelper;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 import butterknife.BindView;
 
-import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION_AND_SEND;
-
 public class MainActivity extends BaseActivity implements MainActivityView {
-
     private static final int LAYOUT = R.layout.activity_main;
     private static final int LAYOUT_LIGHT = R.layout.activity_main_light;
     private MainActivityPresenter mMainActivityPresenterImpl;
     private ActivityResultListener mActivityResultListener;
     private PermissionsResultListener mPermissionsResultListener;
-
     private final int REQUEST_FINGERPRINT = 1000;
-
     protected Fragment mRootFragment;
     private Intent mIntent;
     private NetworkStateReceiver mNetworkReceiver;
     private UpdateService mUpdateService = null;
     private NetworkStateListener mNetworkStateListener;
-
     private String mAddressForSendAction;
     private String mAmountForSendAction;
     private String mTokenAddressForSendAction;
     private List<MainActivity.OnServiceConnectionChangeListener> mServiceConnectionChangeListeners = new ArrayList<>();
-
     private ServiceConnection mServiceConnection;
 
     @BindView(R.id.bottom_navigation_view)
@@ -112,7 +100,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
             finish();
             Intent intent = new Intent(this, SplashActivity.class);
             startActivity(intent);
@@ -146,38 +134,11 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         switch (intent.getAction()) {
-
             case QtumIntent.OPEN_FROM_NOTIFICATION:
                 mRootFragment = WalletMainFragment.newInstance(getContext());
                 openRootFragment(mRootFragment);
                 setIconChecked(0);
                 break;
-//            case QtumIntent.SEND_FROM_SDK:
-//                mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
-//                mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
-//                mTokenAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_TOKEN);
-//                if (getPresenter().getAuthenticationFlag()) {
-//                    mRootFragment = SendFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction, mTokenAddressForSendAction, getContext());
-//                    openRootFragment(mRootFragment);
-//                    setIconChecked(3);
-//                } else {
-//                    Fragment fragment = PinFragment.newInstance(AUTHENTICATION_AND_SEND, getContext());
-//                    openRootFragment(fragment);
-//                }
-//                break;
-//
-//            case NfcAdapter.ACTION_NDEF_DISCOVERED:
-//                mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
-//                mAmountForSendAction = "0.253";
-//                if (getPresenter().getAuthenticationFlag()) {
-//                    mRootFragment = SendFragment.newInstance(false, mAddressForSendAction, mAmountForSendAction, mTokenAddressForSendAction, getContext());
-//                    setIconChecked(3);
-//                } else {
-//                    mRootFragment = PinFragment.newInstance(AUTHENTICATION_AND_SEND, getContext());
-//
-//                }
-//                openRootFragment(mRootFragment);
-//                break;
             default:
                 break;
         }
@@ -278,14 +239,6 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-
-//    @Override
-//    public void setAdressAndAmount(String defineMinerAddress, String defineAmount, String tokenAddress) {
-//        if (getSupportFragmentManager().findFragmentByTag(SendFragment.class.getCanonicalName()) == null && getPresenter().getAuthenticationFlag()) {
-//            openRootFragment(SendFragment.newInstance(false, defineMinerAddress, defineAmount, tokenAddress, getContext()));
-//        }
-//    }
-
     public boolean checkTouchIdEnable() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (QtumSharedPreference.getInstance().isTouchIdEnable(getContext())) {
@@ -302,7 +255,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     public boolean checkAvailabilityTouchId() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
-            return checkPermission(Manifest.permission.USE_FINGERPRINT) && fingerprintManager.isHardwareDetected();
+            return fingerprintManager != null && (checkPermission(Manifest.permission.USE_FINGERPRINT) && fingerprintManager.isHardwareDetected());
         } else {
             return false;
         }
@@ -430,8 +383,8 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                 if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                     List<Fragment> fragments = getSupportFragmentManager().getFragments();
                     if (fragments != null) {
-                        if(startPageExists(fragments)){
-                           return;
+                        if (startPageExists(fragments)) {
+                            return;
                         }
                         for (Fragment fr : fragments) {
                             if (fr != null && fr.getClass() != null) {
@@ -456,9 +409,9 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         mNetworkReceiver.addNetworkStateListener(mNetworkStateListener);
     }
 
-    boolean startPageExists(List<Fragment> fragments){
+    boolean startPageExists(List<Fragment> fragments) {
         for (Fragment fr : fragments) {
-            if(fr instanceof StartPageFragment){
+            if (fr instanceof StartPageFragment) {
                 return true;
             }
         }
@@ -500,7 +453,6 @@ public class MainActivity extends BaseActivity implements MainActivityView {
             mActivityResultListener.onActivityResult(requestCode, resultCode, data);
         }
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     @Override
@@ -608,9 +560,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
             recolorStatusBar(R.color.title_color_light);
             resetNavBarIconsWithTheme(lightThemeIcons);
         }
-
         initBottomNavViewWithFont((ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK) ? R.string.simplonMonoRegular : R.string.proximaNovaRegular));
-
     }
 
     public void resetNavBarIconsWithTheme(int[] icons) {
@@ -731,7 +681,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
             }
         } else {
             final FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(Context.FINGERPRINT_SERVICE);
-            if(checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED) {
                 if (!fingerprintManager.hasEnrolledFingerprints()) {
                     sensorStateListener.onRequest(SensorState.NO_FINGERPRINTS);
                 } else {
@@ -757,7 +707,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         }
     }
 
-    public interface SensorStateListener{
+    public interface SensorStateListener {
         void onRequest(SensorState sensorState);
     }
 
@@ -766,5 +716,4 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         NO_FINGERPRINTS,
         READY
     }
-
 }

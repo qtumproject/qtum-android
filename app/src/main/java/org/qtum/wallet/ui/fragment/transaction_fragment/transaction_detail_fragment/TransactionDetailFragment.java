@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragment;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class TransactionDetailFragment extends Fragment implements TransactionDetailFragmentView{
+public abstract class TransactionDetailFragment extends Fragment implements TransactionDetailFragmentView {
 
     public static final int ACTION_FROM = 0;
     public static final int ACTION_TO = 1;
@@ -33,8 +32,8 @@ public abstract class TransactionDetailFragment extends Fragment implements Tran
 
     public static Fragment newInstance(Context context, int action, int position) {
         Bundle args = new Bundle();
-        args.putInt(ACTION,action);
-        args.putInt(POSITION,position);
+        args.putInt(ACTION, action);
+        args.putInt(POSITION, position);
         Fragment fragment = Factory.instantiateDefaultFragment(context, TransactionDetailFragment.class);
         fragment.setArguments(args);
         return fragment;
@@ -49,7 +48,7 @@ public abstract class TransactionDetailFragment extends Fragment implements Tran
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_transaction_detail,container,false);
+        View view = inflater.inflate(R.layout.fragment_transaction_detail, container, false);
         return view;
     }
 
@@ -68,7 +67,7 @@ public abstract class TransactionDetailFragment extends Fragment implements Tran
         mUnbinder.unbind();
     }
 
-    private TransactionDetailFragmentPresenter getPresenter(){
+    private TransactionDetailFragmentPresenter getPresenter() {
         return mTransactionFragmentPresenter;
     }
 }

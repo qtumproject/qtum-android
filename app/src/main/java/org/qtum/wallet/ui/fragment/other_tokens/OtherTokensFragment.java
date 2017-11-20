@@ -17,7 +17,6 @@ import java.util.List;
 
 import butterknife.BindView;
 
-
 public abstract class OtherTokensFragment extends BaseFragment implements OtherTokensView, OnTokenClickListener, UpdateSocketInstance {
 
     public static BaseFragment newInstance(Context context) {

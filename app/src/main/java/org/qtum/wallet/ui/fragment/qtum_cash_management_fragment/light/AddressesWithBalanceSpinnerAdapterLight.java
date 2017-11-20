@@ -12,10 +12,6 @@ import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBa
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 01.08.17.
- */
-
 public class AddressesWithBalanceSpinnerAdapterLight extends AddressesWithBalanceSpinnerAdapter {
 
     public AddressesWithBalanceSpinnerAdapterLight(@NonNull Context context, List<AddressWithBalance> keyWithBalanceList) {

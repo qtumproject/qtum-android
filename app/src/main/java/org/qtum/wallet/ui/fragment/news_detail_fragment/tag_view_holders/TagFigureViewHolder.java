@@ -10,7 +10,6 @@ import org.jsoup.nodes.Element;
 import org.qtum.wallet.R;
 import org.qtum.wallet.utils.FontTextView;
 
-import java.io.IOException;
 import java.util.concurrent.Callable;
 
 import butterknife.BindView;
@@ -19,8 +18,6 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
-
 
 public class TagFigureViewHolder extends TagViewHolder {
 
@@ -37,7 +34,7 @@ public class TagFigureViewHolder extends TagViewHolder {
     @Override
     public void bindElement(final Element element) {
         mTextViewFigcaption.setText(element.select("figcaption").text());
-        if(mSubscription!=null) {
+        if (mSubscription != null) {
             mSubscription.unsubscribe();
         }
         mImageView.setImageBitmap(null);
@@ -51,12 +48,10 @@ public class TagFigureViewHolder extends TagViewHolder {
                 .subscribe(new Subscriber<Bitmap>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override

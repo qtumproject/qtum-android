@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.language_fragment;
 
-
 import android.util.Pair;
 
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
@@ -12,7 +11,7 @@ public interface LanguageInteractor {
 
     void setLanguage(String language);
 
-    List<Pair<String,String>> getLanguagesList();
+    List<Pair<String, String>> getLanguagesList();
 
     void removeLanguageListener(LanguageChangeListener languageChangeListener);
 

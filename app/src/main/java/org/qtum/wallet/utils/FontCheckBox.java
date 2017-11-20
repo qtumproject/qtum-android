@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 
-
 public class FontCheckBox extends AppCompatCheckBox {
     public FontCheckBox(Context context) {
         this(context, null);
@@ -43,5 +42,4 @@ public class FontCheckBox extends AppCompatCheckBox {
             }
         }
     }
-
 }

@@ -7,10 +7,6 @@ import org.qtum.wallet.ui.fragment.qstore_by_type.StoreSearchAdapter;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 17.08.17.
- */
-
 public class QStoreByTypeFragmentLight extends QStoreByTypeFragment {
 
     @Override

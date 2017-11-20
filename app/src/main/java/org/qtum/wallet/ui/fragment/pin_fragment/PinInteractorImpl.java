@@ -2,13 +2,11 @@ package org.qtum.wallet.ui.fragment.pin_fragment;
 
 import android.content.Context;
 
-import org.bitcoinj.wallet.Wallet;
 import org.qtum.wallet.R;
 import org.qtum.wallet.utils.CryptoUtils;
 import org.qtum.wallet.utils.CryptoUtilsCompat;
 import org.qtum.wallet.utils.crypto.AESUtil;
 import org.qtum.wallet.utils.crypto.KeyStoreHelper;
-
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 
@@ -20,7 +18,6 @@ import javax.crypto.Cipher;
 
 import rx.Observable;
 
-
 class PinInteractorImpl implements PinInteractor {
 
     private Context mContext;
@@ -29,7 +26,7 @@ class PinInteractorImpl implements PinInteractor {
     PinInteractorImpl(Context context) {
         mContext = context;
         try {
-            KeyStoreHelper.createKeys(mContext,QTUM_PIN_ALIAS);
+            KeyStoreHelper.createKeys(mContext, QTUM_PIN_ALIAS);
         } catch (NoSuchProviderException | NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         }
@@ -38,7 +35,7 @@ class PinInteractorImpl implements PinInteractor {
     @Override
     public String getPassword() {
         String sixDigitPassword = getSixDigitPassword();
-        if(!getSixDigitPassword().isEmpty()){
+        if (!getSixDigitPassword().isEmpty()) {
             return sixDigitPassword;
         } else {
             return getFourDigitPassword();
@@ -56,16 +53,15 @@ class PinInteractorImpl implements PinInteractor {
         return KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, encryptedPinHash);
     }
 
-
     private void saveFourDigitPassword(String password) {
-        String encryptedPinHash = KeyStoreHelper.encrypt(QTUM_PIN_ALIAS,password);
+        String encryptedPinHash = KeyStoreHelper.encrypt(QTUM_PIN_ALIAS, password);
         QtumSharedPreference.getInstance().savePassword(mContext, encryptedPinHash);
     }
 
     @Override
-    public String getSixDigitPassword(){
+    public String getSixDigitPassword() {
         String encryptedPinHash = QtumSharedPreference.getInstance().getSixDigitPassword(mContext);
-        if(encryptedPinHash.isEmpty()){
+        if (encryptedPinHash.isEmpty()) {
             return encryptedPinHash;
         }
         return KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, encryptedPinHash);
@@ -93,21 +89,21 @@ class PinInteractorImpl implements PinInteractor {
 
     @Override
     public void saveSixDigitPassword(String password) {
-        String encryptedPinHash = KeyStoreHelper.encrypt(QTUM_PIN_ALIAS,password);
+        String encryptedPinHash = KeyStoreHelper.encrypt(QTUM_PIN_ALIAS, password);
         QtumSharedPreference.getInstance().saveSixDigitPassword(mContext, encryptedPinHash);
     }
 
     @Override
     public void savePassphraseSaltWithPin(String pin, String passphrase) {
         byte[] saltPassphrase = AESUtil.encryptToBytes(pin, passphrase);
-        String encryptedSaltPassphrase = KeyStoreHelper.encryptBytes(QTUM_PIN_ALIAS,saltPassphrase);
+        String encryptedSaltPassphrase = KeyStoreHelper.encryptBytes(QTUM_PIN_ALIAS, saltPassphrase);
         QtumSharedPreference.getInstance().saveSeed(mContext, encryptedSaltPassphrase);
     }
 
     @Override
     public byte[] getSaltPassphrase() {
         String encryptedSaltPassphrase = QtumSharedPreference.getInstance().getSeed(mContext);
-        return KeyStoreHelper.decryptToBytes(QTUM_PIN_ALIAS,encryptedSaltPassphrase);
+        return KeyStoreHelper.decryptToBytes(QTUM_PIN_ALIAS, encryptedSaltPassphrase);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment;
 
-
 import org.qtum.wallet.model.gson.history.History;
 
 import java.util.List;
@@ -19,6 +18,4 @@ public interface WalletInteractor {
     Integer setHistory(History history);
 
     void unSubscribe();
-
-
 }

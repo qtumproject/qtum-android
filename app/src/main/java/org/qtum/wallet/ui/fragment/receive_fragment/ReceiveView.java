@@ -7,7 +7,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 import rx.Subscription;
 
-
 public interface ReceiveView extends BaseFragmentView {
     void setQrCode(Bitmap bitmap);
 

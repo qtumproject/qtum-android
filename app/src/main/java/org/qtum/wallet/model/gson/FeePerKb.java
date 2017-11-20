@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
 
-
 public class FeePerKb {
     @SerializedName("fee_per_kb")
     BigDecimal feePerKb;
@@ -13,7 +12,6 @@ public class FeePerKb {
      * Constructors for unit testing
      */
     public FeePerKb() {
-
     }
 
     public FeePerKb(BigDecimal feePerKb) {

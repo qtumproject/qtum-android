@@ -7,10 +7,8 @@ import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.model.Currency;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
-import org.qtum.wallet.ui.fragment.pin_fragment.PinDialogFragment;
 
 import java.math.BigDecimal;
-
 
 public interface SendView extends BaseFragmentView {
     void openInnerFragmentForResult(Fragment fragment);
@@ -68,7 +66,10 @@ public interface SendView extends BaseFragmentView {
     TokenBalance getTokenBalance(String contractAddress);
 
     void updateGasPrice(int minGasPrice, int maxGasPrice);
+
     void updateGasLimit(int minGasLimit, int maxGasLimit);
+
     int getGasPriceInput();
+
     int getGasLimitInput();
 }

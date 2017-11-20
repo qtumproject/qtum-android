@@ -11,9 +11,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import rx.Observable;
-import rx.Subscription;
 import rx.internal.util.SubscriptionList;
-
 
 public class NewsInteractorImpl implements NewsInteractor {
 
@@ -45,5 +43,4 @@ public class NewsInteractorImpl implements NewsInteractor {
     public void unSubscribe() {
         mSubscriptionList.clear();
     }
-
 }

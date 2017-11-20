@@ -5,24 +5,23 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 import org.qtum.wallet.utils.ResizeWidthAnimation;
 
 import java.util.List;
-import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 05.07.17.
- */
+import butterknife.BindView;
 
 public class WalletFragmentDark extends WalletFragment {
 
     float headerPAdding = 0;
     float prevPercents = 1;
 
-    @BindView(R.id.fade_divider) View fadeDivider;
+    @BindView(R.id.fade_divider)
+    View fadeDivider;
 
     @BindView(R.id.page_indicator)
     public View pagerIndicator;
@@ -37,7 +36,7 @@ public class WalletFragmentDark extends WalletFragment {
     boolean expanded = false;
 
     public void doDividerExpand() {
-        if(!expanded) {
+        if (!expanded) {
             expanded = true;
             fadeDivider.clearAnimation();
             fadeDivider.setVisibility(View.VISIBLE);
@@ -50,7 +49,7 @@ public class WalletFragmentDark extends WalletFragment {
     }
 
     public void doDividerCollapse() {
-        if(expanded) {
+        if (expanded) {
             fadeDivider.clearAnimation();
             fadeDivider.setVisibility(View.INVISIBLE);
             ViewGroup.LayoutParams lp = fadeDivider.getLayoutParams();
@@ -71,7 +70,7 @@ public class WalletFragmentDark extends WalletFragment {
 
         showBottomNavView(R.color.primary_text_color);
 
-        headerPAdding = convertDpToPixel(16,getContext());
+        headerPAdding = convertDpToPixel(16, getContext());
 
         uncomfirmedBalanceValue.setVisibility(View.GONE);
         uncomfirmedBalanceTitle.setVisibility(View.GONE);
@@ -133,7 +132,6 @@ public class WalletFragmentDark extends WalletFragment {
                 }
             }
         });
-
     }
 
     public int getTotalRange() {
@@ -141,7 +139,7 @@ public class WalletFragmentDark extends WalletFragment {
     }
 
     protected void animateText(float percents, View view, float fringe) {
-        if(percents > fringe) {
+        if (percents > fringe) {
             view.setScaleX(percents);
             view.setScaleY(percents);
         } else {
@@ -152,14 +150,14 @@ public class WalletFragmentDark extends WalletFragment {
 
     @Override
     public void updateHistory(List<History> historyList) {
-        super.updateHistory(new TransactionAdapterDark(historyList,getAdapterListener()));
+        super.updateHistory(new TransactionAdapterDark(historyList, getAdapterListener()));
     }
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
         try {
-            balanceValue.setText(String.format("%s QTUM",balance));
-            if(unconfirmedBalance != null) {
+            balanceValue.setText(String.format("%s QTUM", balance));
+            if (unconfirmedBalance != null) {
                 uncomfirmedBalanceValue.setVisibility(View.VISIBLE);
                 uncomfirmedBalanceTitle.setVisibility(View.VISIBLE);
                 uncomfirmedBalanceValue.setText(String.format("%s QTUM", unconfirmedBalance));
@@ -167,7 +165,7 @@ public class WalletFragmentDark extends WalletFragment {
                 uncomfirmedBalanceValue.setVisibility(View.GONE);
                 uncomfirmedBalanceTitle.setVisibility(View.GONE);
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             Log.d("WalletFragmentDark", "updateBalance: " + e.getMessage());
         }
     }

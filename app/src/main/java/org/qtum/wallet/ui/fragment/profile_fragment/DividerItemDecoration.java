@@ -12,7 +12,6 @@ import android.view.View;
 
 import java.util.List;
 
-
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
@@ -41,9 +40,9 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        super.getItemOffsets(outRect,view,parent,state);
+        super.getItemOffsets(outRect, view, parent, state);
         int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount-1; i++) {
+        for (int i = 0; i < childCount - 1; i++) {
             int pos = parent.getChildAdapterPosition(parent.getChildAt(i));
             if (settings.get(pos).getSectionNumber() != settings.get(pos + 1).getSectionNumber()) {
                 outRect.top = sectionDivider.getIntrinsicHeight();
@@ -59,7 +58,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         int right = parent.getWidth() - parent.getPaddingRight();
 
         int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount-1; i++) {
+        for (int i = 0; i < childCount - 1; i++) {
             View child = parent.getChildAt(i);
 
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
@@ -79,7 +78,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
                     sectionDivider.setBounds(left, top, right, bottom);
                     sectionDivider.draw(c);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 Log.d("TAG", e.getMessage());
             }
         }

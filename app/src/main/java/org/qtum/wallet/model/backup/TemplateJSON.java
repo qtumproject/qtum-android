@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-
 public class TemplateJSON {
 
     @SerializedName("source")
@@ -96,12 +95,11 @@ public class TemplateJSON {
         this.name = name;
     }
 
-    public boolean isFull(){
+    public boolean isFull() {
         return (!TextUtils.isEmpty(bytecode) && !TextUtils.isEmpty(abi) || !TextUtils.isEmpty(source));
     }
 
-    public boolean getValidity(){
+    public boolean getValidity() {
         return (!TextUtils.isEmpty(source) || !TextUtils.isEmpty(abi)) && !TextUtils.isEmpty(uuid) && !TextUtils.isEmpty(creationDate) && !TextUtils.isEmpty(type) && !TextUtils.isEmpty(name);
     }
-
 }

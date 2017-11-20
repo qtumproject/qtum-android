@@ -1,4 +1,3 @@
-
 package org.qtum.wallet.model.gson.history;
 
 import com.google.gson.annotations.Expose;
@@ -20,7 +19,6 @@ public class Vin extends TransactionInfo {
      * Constructor for unit testing
      */
     public Vin() {
-
     }
 
     /**
@@ -53,5 +51,4 @@ public class Vin extends TransactionInfo {
     public void setAddress(String address) {
         this.address = address;
     }
-
 }

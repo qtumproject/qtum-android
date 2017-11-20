@@ -5,11 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import org.jsoup.select.Elements;
 import org.qtum.wallet.ui.fragment.news_detail_fragment.tag_view_holders.TagViewHolder;
 
-
-public abstract class ElementsAdapter extends RecyclerView.Adapter<TagViewHolder>{
+public abstract class ElementsAdapter extends RecyclerView.Adapter<TagViewHolder> {
 
     private Elements mElements;
-
     private final String TAG_P = "p";
     protected final int TYPE_TAG_P = 1;
     private final String TAG_FIGURE = "figure";
@@ -26,24 +24,24 @@ public abstract class ElementsAdapter extends RecyclerView.Adapter<TagViewHolder
     private final String TAG_IFRAME = "iframe";
     protected final int TYPE_TAG_IFRAME = 6;
 
-    public ElementsAdapter(Elements elements){
+    public ElementsAdapter(Elements elements) {
         mElements = elements;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(mElements.get(position).tag().getName().equals(TAG_P)){
+        if (mElements.get(position).tag().getName().equals(TAG_P)) {
             return TYPE_TAG_P;
-        } else if(mElements.get(position).tag().getName().equals(TAG_FIGURE)){
+        } else if (mElements.get(position).tag().getName().equals(TAG_FIGURE)) {
             return TYPE_TAG_FIGURE;
-        } else if(mElements.get(position).tag().getName().equals(TAG_HR)){
+        } else if (mElements.get(position).tag().getName().equals(TAG_HR)) {
             return TYPE_TAG_HR;
-        } else if(mElements.get(position).tag().getName().equals(TAG_UL)){
+        } else if (mElements.get(position).tag().getName().equals(TAG_UL)) {
             return TYPE_TAG_UL;
         } else if (mElements.get(position).tag().getName().equals(TAG_H1) || mElements.get(position).tag().getName().equals(TAG_H2) ||
-                mElements.get(position).tag().getName().equals(TAG_H3) || mElements.get(position).tag().getName().equals(TAG_H4)){
+                mElements.get(position).tag().getName().equals(TAG_H3) || mElements.get(position).tag().getName().equals(TAG_H4)) {
             return TYPE_TAG_H;
-        } else if (mElements.get(position).tag().getName().equals(TAG_IFRAME)){
+        } else if (mElements.get(position).tag().getName().equals(TAG_IFRAME)) {
             return TYPE_TAG_IFRAME;
         }
         return TYPE_TAG_P;

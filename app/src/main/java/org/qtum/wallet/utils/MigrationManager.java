@@ -1,6 +1,5 @@
 package org.qtum.wallet.utils;
 
-
 import android.content.Context;
 
 import org.qtum.wallet.datastorage.TinyDB;
@@ -15,15 +14,15 @@ public class MigrationManager {
     private final int migrateVersion_09_93 = 93;
     List<Integer> migrations = new ArrayList<>();
 
-    public MigrationManager(){
+    public MigrationManager() {
         migrations.add(migrateVersion_09_93);
     }
 
-    public int makeMigration(int currentVersion, int migrationVersion, Context context){
+    public int makeMigration(int currentVersion, int migrationVersion, Context context) {
         int newMigrationVersion = migrationVersion;
-        for(Integer version : migrations){
-            if(version>migrationVersion){
-                if(!migrate(version, context)){
+        for (Integer version : migrations) {
+            if (version > migrationVersion) {
+                if (!migrate(version, context)) {
                     return newMigrationVersion;
                 }
                 newMigrationVersion = version;
@@ -32,8 +31,8 @@ public class MigrationManager {
         return currentVersion;
     }
 
-    private boolean migrate(int version, Context context){
-        switch (version){
+    private boolean migrate(int version, Context context) {
+        switch (version) {
             case migrateVersion_09_93:
                 renameSenderAddress(context);
                 clearKeyFile(context);
@@ -43,20 +42,19 @@ public class MigrationManager {
         }
     }
 
-    private void clearKeyFile(Context context){
+    private void clearKeyFile(Context context) {
         File file = new File(context.getFilesDir().getPath() + "/key_storage");
-        if(file.exists()) {
+        if (file.exists()) {
             file.delete();
         }
     }
 
-    private void renameSenderAddress(Context context){
+    private void renameSenderAddress(Context context) {
         TinyDB tinyDB = new TinyDB(context);
-        for(Contract contract : tinyDB.getContractList()){
-            if(contract.getSenderAddress().equals("Stub!")){
+        for (Contract contract : tinyDB.getContractList()) {
+            if (contract.getSenderAddress().equals("Stub!")) {
                 contract.setSenderAddress("");
             }
         }
     }
-
 }

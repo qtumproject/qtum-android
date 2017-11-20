@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-
 public class TemplatesPresenterImpl extends BaseFragmentPresenterImpl implements TemplatesPresenter {
 
     private final TemplatesView view;

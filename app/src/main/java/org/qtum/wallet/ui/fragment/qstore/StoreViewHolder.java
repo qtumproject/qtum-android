@@ -11,7 +11,6 @@ import org.qtum.wallet.ui.fragment.qstore.categories.QstoreCategory;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class StoreViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(org.qtum.wallet.R.id.section_name)
@@ -37,7 +36,7 @@ public class StoreViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(QstoreCategory item) {
         sectionName.setText(item.getTitle());
-        manager = new GridLayoutManager(list.getContext(),(item.getItems().size() <= 5)? 1 : item.getItems().size() / 5, LinearLayoutManager.HORIZONTAL,false);
+        manager = new GridLayoutManager(list.getContext(), (item.getItems().size() <= 5) ? 1 : item.getItems().size() / 5, LinearLayoutManager.HORIZONTAL, false);
         list.setLayoutManager(manager);
         adapter = new StoreTokensAdapter(item.getItems(), listener, itemResId);
         list.setAdapter(adapter);

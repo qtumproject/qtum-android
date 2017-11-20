@@ -8,14 +8,13 @@ import org.qtum.wallet.model.ContractTemplate;
 
 import java.util.List;
 
-
 public class TemplatesRecyclerAdapter extends RecyclerView.Adapter<TemplateViewHolder> {
 
     private List<ContractTemplate> list;
     private TemplateSelectListener listener;
     private int mResId;
 
-    public TemplatesRecyclerAdapter(List<ContractTemplate> list, TemplateSelectListener listener, int resId){
+    public TemplatesRecyclerAdapter(List<ContractTemplate> list, TemplateSelectListener listener, int resId) {
         this.list = list;
         this.listener = listener;
         this.mResId = resId;
@@ -23,7 +22,7 @@ public class TemplatesRecyclerAdapter extends RecyclerView.Adapter<TemplateViewH
 
     @Override
     public TemplateViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TemplateViewHolder(LayoutInflater.from(parent.getContext()).inflate(mResId, parent, false),listener);
+        return new TemplateViewHolder(LayoutInflater.from(parent.getContext()).inflate(mResId, parent, false), listener);
     }
 
     @Override

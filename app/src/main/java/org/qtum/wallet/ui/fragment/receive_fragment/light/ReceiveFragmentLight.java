@@ -10,10 +10,6 @@ import org.qtum.wallet.utils.FontManager;
 
 import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 06.07.17.
- */
-
 public class ReceiveFragmentLight extends ReceiveFragment {
 
     @BindView(R.id.til_amount)
@@ -30,10 +26,8 @@ public class ReceiveFragmentLight extends ReceiveFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        setQrColors(ContextCompat.getColor(getContext(),R.color.qr_code_background), ContextCompat.getColor(getContext(),R.color.qr_code_tint_color));
+        setQrColors(ContextCompat.getColor(getContext(), R.color.qr_code_background), ContextCompat.getColor(getContext(), R.color.qr_code_tint_color));
         mTilAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaRegular)));
         mEtAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaSemibold)));
     }
-
-
 }

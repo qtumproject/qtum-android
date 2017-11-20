@@ -7,12 +7,11 @@ import android.widget.Toast;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
 import org.qtum.wallet.utils.ClipboardUtils;
-import org.qtum.wallet.utils.ContractBuilder;
+
 import org.qtum.wallet.utils.FontTextView;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,10 +19,6 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-
-/**
- * Created by kirillvolkov on 03.08.17.
- */
 
 public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
 
@@ -41,18 +36,18 @@ public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
     OnAddressTokenClickListener listener;
 
     @OnLongClick(R.id.address_name)
-    public boolean onAddressLongClick(){
+    public boolean onAddressLongClick() {
         ClipboardUtils.copyToClipBoard(mTextViewAddress.getContext(), mTextViewAddress.getText().toString(), new ClipboardUtils.CopyCallback() {
             @Override
             public void onCopyToClipBoard() {
-                Toast.makeText(mTextViewAddress.getContext(), mTextViewAddress.getContext().getString(R.string.copied),Toast.LENGTH_SHORT).show();
+                Toast.makeText(mTextViewAddress.getContext(), mTextViewAddress.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
             }
         });
         return true;
     }
 
     @OnClick(R.id.address_name)
-    public void onAddressClick(){
+    public void onAddressClick() {
         listener.onItemClick(item);
     }
 
@@ -77,15 +72,12 @@ public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
     public void bind(DeterministicKeyWithTokenBalance item) {
         this.item = item;
         mTextViewAddress.setText(item.getAddress());
-
         String balance = (item.getBalance() != null) ? String.valueOf(item.getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0";
-
-        if(mTextViewAddressBalance.getLayoutParams().width == WRAP_CONTENT){
-            mTextViewAddressBalance.setLongNumberText(balance, itemView.getContext().getResources().getDisplayMetrics().widthPixels/2);
+        if (mTextViewAddressBalance.getLayoutParams().width == WRAP_CONTENT) {
+            mTextViewAddressBalance.setLongNumberText(balance, itemView.getContext().getResources().getDisplayMetrics().widthPixels / 2);
         } else {
             mTextViewAddressBalance.setLongNumberText(balance);
         }
-
         mTextViewSymbol.setText(String.format(" %s", currency));
     }
 }

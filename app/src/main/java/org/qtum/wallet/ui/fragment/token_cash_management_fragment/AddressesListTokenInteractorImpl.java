@@ -11,7 +11,6 @@ import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-
 public class AddressesListTokenInteractorImpl implements AddressesListTokenInteractor {
 
     private WeakReference<Context> mContext;

@@ -5,10 +5,6 @@ import android.view.View;
 
 import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
 
-/**
- * Created by kirillvolkov on 06.07.17.
- */
-
 public class StartPageFragmentDark extends StartPageFragment {
     @Override
     protected int getLayout() {
@@ -27,5 +23,4 @@ public class StartPageFragmentDark extends StartPageFragment {
         mButtonCreateNew.setBackgroundColor(ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.accent_red_color));
         mButtonCreateNew.setTextColor(ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.background));
     }
-
 }

@@ -5,9 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.qtum.wallet.R;
 
-
 public class QstoreContractType {
-
     @SerializedName("_id")
     @Expose
     private String id;
@@ -35,7 +33,7 @@ public class QstoreContractType {
     }
 
     public int getIcon() {
-        switch (type){
+        switch (type) {
             case "QRC20 Token":
                 return icon = R.drawable.ic_supertoken;
             case "Smart Contract":
@@ -46,5 +44,4 @@ public class QstoreContractType {
                 return icon = R.drawable.ic_smart_contract;
         }
     }
-
 }

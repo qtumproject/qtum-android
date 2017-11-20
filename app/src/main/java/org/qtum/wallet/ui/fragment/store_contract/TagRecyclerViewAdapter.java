@@ -4,17 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-/**
- * Created by kirillvolkov on 09.08.17.
- */
-
 public class TagRecyclerViewAdapter extends RecyclerView.Adapter<TagViewHolder> {
 
     String[] tags;
     TagClickListener listener;
     private int resId;
 
-    public TagRecyclerViewAdapter(String[] tags, TagClickListener listener, int resId){
+    public TagRecyclerViewAdapter(String[] tags, TagClickListener listener, int resId) {
         this.tags = tags;
         this.listener = listener;
         this.resId = resId;

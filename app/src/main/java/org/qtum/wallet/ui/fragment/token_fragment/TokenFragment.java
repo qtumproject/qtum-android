@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -25,12 +23,10 @@ import org.qtum.wallet.ui.fragment.token_fragment.dialogs.ShareDialogFragment;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontTextView;
-import org.qtum.wallet.utils.StackCollapseLinearLayout;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-
 
 public abstract class TokenFragment extends BaseFragment implements TokenView {
 
@@ -57,41 +53,33 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
         getActivity().onBackPressed();
     }
 
-    //HEADER
     @BindView(R.id.ll_balance)
     protected LinearLayout mLinearLayoutBalance;
+
     @BindView(R.id.tv_balance)
     protected FontTextView mTextViewBalance;
+
     @BindView(R.id.tv_currency)
-    protected
-    FontTextView mTextViewCurrency;
+    protected FontTextView mTextViewCurrency;
+
     @BindView(R.id.available_balance_title)
-    protected
-    FontTextView balanceTitle;
+    protected FontTextView balanceTitle;
 
     @BindView(R.id.tv_unconfirmed_balance)
-    protected
-    FontTextView uncomfirmedBalanceValue;
+    protected FontTextView uncomfirmedBalanceValue;
+
     @BindView(R.id.unconfirmed_balance_title)
-    protected
-    FontTextView uncomfirmedBalanceTitle;
-    //HEADER
+    protected FontTextView uncomfirmedBalanceTitle;
 
     @BindView(R.id.balance_view)
-    protected
-    FrameLayout balanceView;
+    protected FrameLayout balanceView;
 
     @BindView(R.id.fade_divider_root)
     RelativeLayout fadeDividerRoot;
 
-//    @BindView(R.id.recycler_view)
-//    RecyclerView mRecyclerView;
-
     @BindView(R.id.app_bar)
     protected
     AppBarLayout mAppBarLayout;
-
-
 
     @BindView(R.id.tv_token_address)
     FontTextView tokenAddress;
@@ -109,9 +97,6 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
     @BindView(R.id.decimal_units_value)
     protected
     FontTextView decimalsValue;
-//
-//    @BindView(R.id.sender_address_value)
-//    FontTextView senderAddrValue;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -160,7 +145,6 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
         }
     }
 
-
     @Override
     public String getCurrency() {
         return mTextViewCurrency.getText().toString().trim();
@@ -189,14 +173,12 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
 
         Token token = (Token) getArguments().getSerializable(tokenKey);
         presenter.setToken(token);
-        if(token.getLastBalance()!=null) {
+        if (token.getLastBalance() != null) {
             setBalance(token.getLastBalance().toPlainString());
         }
         setTokenAddress(token.getContractAddress());
         setSenderAddress(token.getSenderAddress());
         headerPAdding = convertDpToPixel(16, getContext());
-
-        //mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override
@@ -242,9 +224,6 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
 
     @Override
     public void setSenderAddress(String address) {
-        //if(!TextUtils.isEmpty(address)) {
-        //senderAddrValue.setText(address);
-        //}
     }
 
     @Override

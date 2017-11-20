@@ -5,10 +5,6 @@ import org.qtum.wallet.model.contract.Contract;
 
 import java.util.List;
 
-/**
- * Created by drevnitskaya on 05.10.17.
- */
-
 public interface WatchContractInteractor {
     List<ContractTemplate> getContractTemplates();
 

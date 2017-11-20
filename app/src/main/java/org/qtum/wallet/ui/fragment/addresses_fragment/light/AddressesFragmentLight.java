@@ -6,14 +6,10 @@ import org.bitcoinj.crypto.DeterministicKey;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 06.07.17.
- */
-
 public class AddressesFragmentLight extends AddressesFragment {
     @Override
     protected int getLayout() {
-        return  R.layout.fragment_addresses_light;
+        return R.layout.fragment_addresses_light;
     }
 
     @Override
@@ -21,5 +17,4 @@ public class AddressesFragmentLight extends AddressesFragment {
         mAddressAdapter = new AddressesAdapterLight(deterministicKeys, this);
         mRecyclerView.setAdapter(mAddressAdapter);
     }
-
 }

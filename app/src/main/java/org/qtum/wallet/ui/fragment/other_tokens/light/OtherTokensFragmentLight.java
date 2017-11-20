@@ -7,10 +7,6 @@ import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 06.07.17.
- */
-
 public class OtherTokensFragmentLight extends OtherTokensFragment {
 
     @Override

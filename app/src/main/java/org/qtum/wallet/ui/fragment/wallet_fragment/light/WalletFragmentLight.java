@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
@@ -15,22 +16,32 @@ import org.qtum.wallet.ui.wave_visualizer.WaveHelper;
 import org.qtum.wallet.ui.wave_visualizer.WaveView;
 
 import java.util.List;
-import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 05.07.17.
- */
+import butterknife.BindView;
 
 public class WalletFragmentLight extends WalletFragment {
 
-    @BindView(R.id.app_bar_placeholder) View appbarPlaceholder;
-    @BindView(R.id.not_confirmed_balance_view) View notConfirmedBalancePlaceholder;
-    @BindView(R.id.tv_placeholder_balance_value) TextView placeHolderBalance;
-    @BindView(R.id.tv_placeholder_not_confirmed_balance_value) TextView placeHolderBalanceNotConfirmed;
-    @BindView(R.id.balance_view) FrameLayout waveContainer;
-    @BindView(R.id.gradient_iv) ImageView mGrIv;
+    @BindView(R.id.app_bar_placeholder)
+    View appbarPlaceholder;
 
-    @BindView(R.id.wave_view) WaveView waveView;
+    @BindView(R.id.not_confirmed_balance_view)
+    View notConfirmedBalancePlaceholder;
+
+    @BindView(R.id.tv_placeholder_balance_value)
+    TextView placeHolderBalance;
+
+    @BindView(R.id.tv_placeholder_not_confirmed_balance_value)
+    TextView placeHolderBalanceNotConfirmed;
+
+    @BindView(R.id.balance_view)
+    FrameLayout waveContainer;
+
+    @BindView(R.id.gradient_iv)
+    ImageView mGrIv;
+
+    @BindView(R.id.wave_view)
+    WaveView waveView;
+
     private WaveHelper mWaveHelper;
 
     @Override
@@ -38,17 +49,14 @@ public class WalletFragmentLight extends WalletFragment {
         return R.layout.fragment_wallet_light;
     }
 
-    @BindView(R.id.iv_choose_address) ImageView mIvChooseAddr;
-
+    @BindView(R.id.iv_choose_address)
+    ImageView mIvChooseAddr;
 
     @Override
     public void initializeViews() {
         super.initializeViews();
-
-        updateBalance("0","0");
-
+        updateBalance("0", "0");
         showBottomNavView(R.color.title_color_light);
-
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -62,12 +70,9 @@ public class WalletFragmentLight extends WalletFragment {
                             }
                         }
                     }
-
                     percents = (((getTotalRange() - Math.abs(verticalOffset)) * 1.0f) / getTotalRange());
-
                     float testPercents = percents - (1 - percents);
                     float testP2 = (percents >= .8f) ? 0 : (1 - percents) - percents;
-
                     balanceView.setAlpha(testPercents);
                     mButtonQrCode.setAlpha(testPercents);
                     mTextViewWalletName.setAlpha(testPercents);
@@ -77,11 +82,9 @@ public class WalletFragmentLight extends WalletFragment {
                 }
             }
         });
-
         appbarPlaceholder.setVisibility(View.VISIBLE);
         waveView.setShapeType(WaveView.ShapeType.SQUARE);
         mWaveHelper = new WaveHelper(waveView);
-
     }
 
     @Override
@@ -103,38 +106,35 @@ public class WalletFragmentLight extends WalletFragment {
 
     @Override
     public void updateHistory(List<History> historyList) {
-        super.updateHistory(new TransactionAdapterLight(historyList,getAdapterListener()));
+        super.updateHistory(new TransactionAdapterLight(historyList, getAdapterListener()));
     }
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
         try {
-
-        balanceValue.setText(getSpannedBalance(String.format("%s QTUM",balance)));
-        placeHolderBalance.setText(getSpannedBalance(String.format("%s QTUM",balance)));
-        if(unconfirmedBalance != null) {
-            notConfirmedBalancePlaceholder.setVisibility(View.VISIBLE);
-            uncomfirmedBalanceValue.setVisibility(View.VISIBLE);
-            uncomfirmedBalanceTitle.setVisibility(View.VISIBLE);
-            uncomfirmedBalanceValue.setText(getSpannedBalance(String.format("%s QTUM", unconfirmedBalance)));
-            placeHolderBalanceNotConfirmed.setText(getSpannedBalance(String.format("%s QTUM", unconfirmedBalance)));
-        } else {
-            notConfirmedBalancePlaceholder.setVisibility(View.GONE);
-            uncomfirmedBalanceValue.setVisibility(View.GONE);
-            uncomfirmedBalanceTitle.setVisibility(View.GONE);
-        }
-        } catch (NullPointerException e){
+            balanceValue.setText(getSpannedBalance(String.format("%s QTUM", balance)));
+            placeHolderBalance.setText(getSpannedBalance(String.format("%s QTUM", balance)));
+            if (unconfirmedBalance != null) {
+                notConfirmedBalancePlaceholder.setVisibility(View.VISIBLE);
+                uncomfirmedBalanceValue.setVisibility(View.VISIBLE);
+                uncomfirmedBalanceTitle.setVisibility(View.VISIBLE);
+                uncomfirmedBalanceValue.setText(getSpannedBalance(String.format("%s QTUM", unconfirmedBalance)));
+                placeHolderBalanceNotConfirmed.setText(getSpannedBalance(String.format("%s QTUM", unconfirmedBalance)));
+            } else {
+                notConfirmedBalancePlaceholder.setVisibility(View.GONE);
+                uncomfirmedBalanceValue.setVisibility(View.GONE);
+                uncomfirmedBalanceTitle.setVisibility(View.GONE);
+            }
+        } catch (NullPointerException e) {
             Log.d("WalletFragmentLight", "updateBalance: " + e.getMessage());
         }
     }
 
-    private SpannableString getSpannedBalance(String balance){
-
-        SpannableString span =  new SpannableString(balance);
-        if(balance.length() > 4) {
+    private SpannableString getSpannedBalance(String balance) {
+        SpannableString span = new SpannableString(balance);
+        if (balance.length() > 4) {
             span.setSpan(new RelativeSizeSpan(.6f), balance.length() - 4, balance.length(), 0);
         }
         return span;
     }
-
 }

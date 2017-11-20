@@ -8,7 +8,6 @@ import org.qtum.wallet.model.gson.qstore.QstoreItem;
 
 import java.util.List;
 
-
 class StoreTokensAdapter extends RecyclerView.Adapter<StoreTokenViewHolder> {
 
     private List<QstoreItem> items;
@@ -17,7 +16,7 @@ class StoreTokensAdapter extends RecyclerView.Adapter<StoreTokenViewHolder> {
 
     int itemResId;
 
-    public StoreTokensAdapter(List<QstoreItem> items, StoreItemClickListener listener, int itemResId){
+    public StoreTokensAdapter(List<QstoreItem> items, StoreItemClickListener listener, int itemResId) {
         this.items = items;
         this.listener = listener;
         this.itemResId = itemResId;
@@ -37,5 +36,4 @@ class StoreTokensAdapter extends RecyclerView.Adapter<StoreTokenViewHolder> {
     public int getItemCount() {
         return items.size();
     }
-
 }

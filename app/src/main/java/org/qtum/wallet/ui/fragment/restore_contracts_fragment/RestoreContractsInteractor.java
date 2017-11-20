@@ -10,15 +10,10 @@ import org.qtum.wallet.model.contract.Token;
 import java.io.File;
 import java.util.List;
 
-/**
- * Created by drevnitskaya on 06.10.17.
- */
-
 public interface RestoreContractsInteractor {
     Backup getBackupFromFile(File restoreFile) throws Exception;
 
     List<ContractTemplate> getContractTemplates();
-
 
     ContractTemplate importTemplate(TemplateJSON templateJSON, List<ContractTemplate> templates);
 
@@ -31,5 +26,4 @@ public interface RestoreContractsInteractor {
     boolean getTemplateValidity(TemplateJSON templateJSON);
 
     boolean getContractValidity(ContractJSON contractJSON);
-
 }

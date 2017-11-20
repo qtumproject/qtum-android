@@ -1,19 +1,16 @@
 package org.qtum.wallet.ui.fragment.about_fragment;
 
-
-import android.content.pm.PackageManager;
-
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.Version;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
-public class AboutPresenterImpl extends BaseFragmentPresenterImpl implements AboutPresenter{
+public class AboutPresenterImpl extends BaseFragmentPresenterImpl implements AboutPresenter {
 
     private AboutView mAboutFragmentView;
     private AboutInteractor mAboutInteractor;
 
-    public AboutPresenterImpl(AboutView aboutFragmentView, AboutInteractor aboutInteractor){
+    public AboutPresenterImpl(AboutView aboutFragmentView, AboutInteractor aboutInteractor) {
         mAboutFragmentView = aboutFragmentView;
         mAboutInteractor = aboutInteractor;
     }
@@ -36,7 +33,7 @@ public class AboutPresenterImpl extends BaseFragmentPresenterImpl implements Abo
         return mAboutFragmentView;
     }
 
-    private AboutInteractor getInteractor(){
+    private AboutInteractor getInteractor() {
         return mAboutInteractor;
     }
 }

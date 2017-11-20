@@ -8,18 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
-import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
-
-/**
- * Created by kirillvolkov on 03.08.17.
- */
 
 public abstract class AddressesWithTokenBalanceSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
@@ -52,15 +48,14 @@ public abstract class AddressesWithTokenBalanceSpinnerAdapter extends BaseAdapte
 
     public View getCustomView(int position, @Nullable int resId, @NonNull ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(resId,parent,false);
+        View view = layoutInflater.inflate(resId, parent, false);
         FontTextView textViewAddress = (FontTextView) view.findViewById(R.id.address_name);
         final FontTextView textViewBalance = (FontTextView) view.findViewById(R.id.address_balance);
         final FontTextView textViewSymbol = (FontTextView) view.findViewById(R.id.address_symbol);
         textViewSymbol.setText(String.format(" %s", currency));
-        String balance = (mKeyWithBalanceList.get(position).getBalance() != null)? String.valueOf(mKeyWithBalanceList.get(position).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0";
-        textViewBalance.setLongNumberText(balance, textViewBalance.getContext().getResources().getDisplayMetrics().widthPixels/2);
+        String balance = (mKeyWithBalanceList.get(position).getBalance() != null) ? String.valueOf(mKeyWithBalanceList.get(position).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0";
+        textViewBalance.setLongNumberText(balance, textViewBalance.getContext().getResources().getDisplayMetrics().widthPixels / 2);
         textViewAddress.setText(mKeyWithBalanceList.get(position).getAddress());
-
         return view;
     }
 }

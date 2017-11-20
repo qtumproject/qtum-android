@@ -3,14 +3,13 @@ package org.qtum.wallet.ui.fragment.language_fragment;
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
-
-public class LanguagePresenterImpl extends BaseFragmentPresenterImpl implements LanguagePresenter{
+public class LanguagePresenterImpl extends BaseFragmentPresenterImpl implements LanguagePresenter {
 
     private LanguageView mLanguageFragmentView;
     private LanguageInteractor mLanguageFragmentInteractor;
     private LanguageChangeListener mLanguageChangeListener;
 
-    public LanguagePresenterImpl(LanguageView languageFragmentView, LanguageInteractor languageInteractor){
+    public LanguagePresenterImpl(LanguageView languageFragmentView, LanguageInteractor languageInteractor) {
         mLanguageFragmentView = languageFragmentView;
         mLanguageFragmentInteractor = languageInteractor;
     }
@@ -26,7 +25,7 @@ public class LanguagePresenterImpl extends BaseFragmentPresenterImpl implements 
         return mLanguageFragmentView;
     }
 
-    private LanguageInteractor getInteractor(){
+    private LanguageInteractor getInteractor() {
         return mLanguageFragmentInteractor;
     }
 
@@ -44,13 +43,12 @@ public class LanguagePresenterImpl extends BaseFragmentPresenterImpl implements 
     }
 
     @Override
-    public String getCurrentLanguage(){
+    public String getCurrentLanguage() {
         return getInteractor().getLanguage();
     }
 
     @Override
-    public void setCurrentLanguage(String language){
+    public void setCurrentLanguage(String language) {
         getInteractor().setLanguage(language);
     }
-
 }

@@ -9,7 +9,6 @@ import android.util.Log;
 
 import org.qtum.wallet.R;
 
-
 public class FontEditText extends android.support.v7.widget.AppCompatEditText {
     public FontEditText(Context context) {
         this(context, null);

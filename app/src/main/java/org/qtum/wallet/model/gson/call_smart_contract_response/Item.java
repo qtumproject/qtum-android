@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Item {
 
-
     @SerializedName("hash")
     @Expose
     private String hash;
@@ -23,7 +22,6 @@ public class Item {
      * Constructor for unit testing
      */
     public Item() {
-
     }
 
     /**
@@ -64,5 +62,4 @@ public class Item {
     public void setOutput(String output) {
         this.output = output;
     }
-
 }

@@ -10,8 +10,7 @@ import org.qtum.wallet.utils.FontTextView;
 
 import butterknife.BindView;
 
-
-public class TagPViewHolder extends TagViewHolder{
+public class TagPViewHolder extends TagViewHolder {
 
     @BindView(R.id.tv_tag_p)
     FontTextView mTextView;

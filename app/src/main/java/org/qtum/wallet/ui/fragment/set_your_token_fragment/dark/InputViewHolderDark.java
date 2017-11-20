@@ -6,10 +6,6 @@ import org.qtum.wallet.ui.fragment.set_your_token_fragment.InputViewHolder;
 import org.qtum.wallet.ui.fragment.set_your_token_fragment.OnValidateParamsListener;
 import org.qtum.wallet.utils.FontManager;
 
-/**
- * Created by kirillvolkov on 25.07.17.
- */
-
 public class InputViewHolderDark extends InputViewHolder {
 
     public InputViewHolderDark(View itemView, OnValidateParamsListener listener) {

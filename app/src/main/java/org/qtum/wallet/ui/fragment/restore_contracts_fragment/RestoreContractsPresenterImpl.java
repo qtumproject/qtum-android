@@ -21,8 +21,6 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
     private RestoreContractsView mRestoreContractsView;
     private RestoreContractsInteractor mRestoreContractsInteractor;
     private boolean restoreTemplates, restoreContracts, restoreTokens;
-
-
     private Backup mBackup;
 
     public RestoreContractsPresenterImpl(RestoreContractsView view, RestoreContractsInteractor interactor) {
@@ -80,7 +78,6 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
                             }
                         }
                     }
-
                     String templatesCount = String.valueOf(templatesCountInt);
                     String contractsCount = String.valueOf(contractsCountInt);
                     String tokensCount = String.valueOf(tokensCountInt);
@@ -123,7 +120,6 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
                                 }
                             }
                         }
-
                         getInteractor().putListWithoutToken(contractList);
                     }
 
@@ -142,7 +138,6 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
                                 }
                             }
                         }
-
                         getInteractor().putTokenList(tokenList);
                     }
 
@@ -212,7 +207,6 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
                         }
                     }
                     getInteractor().putListWithoutToken(contractList);
-
                 } else {
                     List<Token> tokenList = new ArrayList<>();
                     for (TemplateJSON templateJSON : mBackup.getTemplates()) {
@@ -228,11 +222,8 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
                             }
                         }
                     }
-
                     getInteractor().putTokenList(tokenList);
                 }
-
-
                 return true;
             }
         });
@@ -264,7 +255,6 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
             }
             mBackup.setContracts(contractJSONList);
         }
-
         return true;
     }
 
@@ -280,9 +270,6 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
         return mRestoreContractsInteractor;
     }
 
-    /**
-     * Setter for unit testing
-     */
     public void setBackup(Backup mBackup) {
         this.mBackup = mBackup;
     }

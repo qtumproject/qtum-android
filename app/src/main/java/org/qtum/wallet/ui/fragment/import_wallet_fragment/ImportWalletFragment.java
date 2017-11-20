@@ -17,7 +17,6 @@ import org.qtum.wallet.utils.FontEditText;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
 public abstract class ImportWalletFragment extends BaseFragment implements ImportWalletView {
 
     private final int LAYOUT = org.qtum.wallet.R.layout.fragment_import_wallet;
@@ -62,7 +61,7 @@ public abstract class ImportWalletFragment extends BaseFragment implements Impor
 
     @Override
     public void openPinFragment(String passphrase, PinAction action) {
-        BaseFragment pinFragment = PinFragment.newInstance(action,passphrase,getContext());
+        BaseFragment pinFragment = PinFragment.newInstance(action, passphrase, getContext());
         openRootFragment(pinFragment);
     }
 
@@ -76,12 +75,10 @@ public abstract class ImportWalletFragment extends BaseFragment implements Impor
         mEditTextYourBrainCode.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override

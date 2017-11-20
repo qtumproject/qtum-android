@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.qstore.categories;
 
-
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
 
 import java.util.List;

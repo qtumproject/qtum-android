@@ -10,10 +10,6 @@ import java.util.List;
 
 import rx.Observable;
 
-/**
- * Created by drevnitskaya on 06.10.17.
- */
-
 public class StoreCategoriesInteractorImpl implements StoreCategoriesInteractor {
     private WeakReference<Context> mContext;
 

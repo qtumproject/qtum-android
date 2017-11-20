@@ -18,11 +18,11 @@ import org.qtum.wallet.ui.base.base_activity.BaseActivity;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.utils.QtumIntent;
 import org.qtum.wallet.utils.ThemeUtils;
+
 import com.transitionseverywhere.ChangeClipBounds;
 import com.transitionseverywhere.TransitionManager;
 
 import butterknife.BindView;
-
 
 public class SplashActivity extends BaseActivity implements SplashActivityView {
 
@@ -59,7 +59,7 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
 
     @Override
     public void initializeViews() {
-        if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)) {
+        if (ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)) {
             appLogoWhite.setVisibility(View.INVISIBLE);
             recolorStatusBar(R.color.background);
             waitText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
@@ -83,25 +83,25 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
         }
 
         startHandler = new Handler();
-        startHandler.postDelayed(startRunnable,2000);
+        startHandler.postDelayed(startRunnable, 2000);
     }
 
-    private void DoTransition(){
+    private void DoTransition() {
         TransitionManager.endTransitions(rootLayout);
-        appLogo.setClipBounds(new Rect(0,0,appLogoHeight,appLogoHeight));
+        appLogo.setClipBounds(new Rect(0, 0, appLogoHeight, appLogoHeight));
 
-        if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_LIGHT)){
-            appName.setClipBounds(new Rect(0,0,appName.getWidth(),appName.getHeight()));
-            lytLight.setClipBounds(new Rect(0,0,getResources().getDisplayMetrics().widthPixels,0));
+        if (ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_LIGHT)) {
+            appName.setClipBounds(new Rect(0, 0, appName.getWidth(), appName.getHeight()));
+            lytLight.setClipBounds(new Rect(0, 0, getResources().getDisplayMetrics().widthPixels, 0));
         }
 
         TransitionManager.beginDelayedTransition(rootLayout, clip);
-        appLogo.setClipBounds(new Rect(0,0,appLogoHeight,0));
+        appLogo.setClipBounds(new Rect(0, 0, appLogoHeight, 0));
 
-        if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_LIGHT)){
+        if (ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_LIGHT)) {
             lytLight.setVisibility(View.VISIBLE);
-            appName.setClipBounds(new Rect(0,0,appName.getWidth(),0));
-            lytLight.setClipBounds(new Rect(0,0,getResources().getDisplayMetrics().widthPixels,getResources().getDisplayMetrics().heightPixels));
+            appName.setClipBounds(new Rect(0, 0, appName.getWidth(), 0));
+            lytLight.setClipBounds(new Rect(0, 0, getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels));
         }
     }
 
@@ -126,7 +126,7 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
 
     @Override
     protected void onDestroy() {
-        if(startHandler != null) {
+        if (startHandler != null) {
             startHandler.removeCallbacks(startRunnable);
         }
         super.onDestroy();
@@ -137,14 +137,14 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
         super.onPostCreate(savedInstanceState);
         clip = new ChangeClipBounds();
         clip.addTarget(appLogo);
-        if(ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_LIGHT)){
+        if (ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_LIGHT)) {
             clip.addTarget(appName);
             clip.addTarget(lytLight);
         }
         clip.setDuration(2000);
     }
 
-    public void recolorStatusBar(int color){
+    public void recolorStatusBar(int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), color));
         }

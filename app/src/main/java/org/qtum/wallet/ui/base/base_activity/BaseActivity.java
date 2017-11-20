@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
 import org.qtum.wallet.utils.ThemeUtils;
 
 import butterknife.ButterKnife;
@@ -21,7 +22,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-        ThemeUtils.setAppTheme(this,ThemeUtils.getCurrentTheme(this));
+        ThemeUtils.setAppTheme(this, ThemeUtils.getCurrentTheme(this));
 
         super.onCreate(savedInstanceState);
         createPresenter();
@@ -135,7 +136,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
 
     protected abstract void updateTheme();
 
-    public void reloadActivity(){
+    public void reloadActivity() {
         updateTheme();
     }
 }

@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.backup_wallet_fragment;
 
-
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -135,7 +134,7 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
 
     @Override
     public void copyToClipboard(String text) {
-        ClipboardManager clipboard = (ClipboardManager)getMainActivity().getSystemService(CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) getMainActivity().getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", text);
         clipboard.setPrimaryClip(clip);
     }

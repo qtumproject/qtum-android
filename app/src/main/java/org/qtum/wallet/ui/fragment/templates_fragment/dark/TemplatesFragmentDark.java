@@ -5,7 +5,6 @@ import org.qtum.wallet.ui.fragment.templates_fragment.TemplatesFragment;
 
 import java.util.List;
 
-
 public class TemplatesFragmentDark extends TemplatesFragment {
 
     @Override

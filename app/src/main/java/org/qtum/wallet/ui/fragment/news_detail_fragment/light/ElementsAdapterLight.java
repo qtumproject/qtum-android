@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.news_detail_fragment.light;
 
-
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -22,7 +21,7 @@ public class ElementsAdapterLight extends ElementsAdapter {
 
     @Override
     public TagViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        switch (viewType){
+        switch (viewType) {
             case TYPE_TAG_P:
                 return new TagPViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tag_p_element_light, parent, false));
             case TYPE_TAG_FIGURE:
@@ -30,7 +29,7 @@ public class ElementsAdapterLight extends ElementsAdapter {
             case TYPE_TAG_HR:
                 return new TagHrViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tag_hr_element_light, parent, false));
             case TYPE_TAG_UL:
-                return new TagUlViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tag_ul_element_light, parent, false),R.layout.item_tag_li_element_light);
+                return new TagUlViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tag_ul_element_light, parent, false), R.layout.item_tag_li_element_light);
             case TYPE_TAG_H:
                 return new TagPViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tag_h_element_light, parent, false));
             case TYPE_TAG_IFRAME:
@@ -38,5 +37,4 @@ public class ElementsAdapterLight extends ElementsAdapter {
         }
         return null;
     }
-
 }

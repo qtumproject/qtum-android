@@ -4,7 +4,6 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
 
-
 public class PinFragmentDark extends PinFragment {
     @Override
     protected int getLayout() {
@@ -16,17 +15,17 @@ public class PinFragmentDark extends PinFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        isBottomNavigationViewVisible = ((MainActivity)getActivity()).isBottomNavigationViewVisible();
-        ((MainActivity)getActivity()).hideBottomNavigationView(R.color.background);
+        isBottomNavigationViewVisible = ((MainActivity) getActivity()).isBottomNavigationViewVisible();
+        ((MainActivity) getActivity()).hideBottomNavigationView(R.color.background);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(isBottomNavigationViewVisible){
-            ((MainActivity)getActivity()).showBottomNavigationView(true);
-        }else{
-            ((MainActivity)getActivity()).hideBottomNavigationView(R.color.background);
+        if (isBottomNavigationViewVisible) {
+            ((MainActivity) getActivity()).showBottomNavigationView(true);
+        } else {
+            ((MainActivity) getActivity()).hideBottomNavigationView(R.color.background);
         }
     }
 }

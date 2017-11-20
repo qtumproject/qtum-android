@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.language_fragment;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,11 +17,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public abstract class LanguageFragment extends BaseFragment implements LanguageView, OnLanguageIntemClickListener{
+public abstract class LanguageFragment extends BaseFragment implements LanguageView, OnLanguageIntemClickListener {
 
     private LanguagePresenter mLanguageFragmentPresenter;
     protected LanguageAdapter mLanguageAdapter;
-    protected List<Pair<String,String>> mLanguagesList;
+    protected List<Pair<String, String>> mLanguagesList;
 
     @BindView(R.id.recycler_view)
     protected
@@ -66,12 +65,10 @@ public abstract class LanguageFragment extends BaseFragment implements LanguageV
         mTextViewToolBarLanguage.setText(R.string.language);
     }
 
-
-
-    private int findLanguagePosition(String currentLanguage){
+    private int findLanguagePosition(String currentLanguage) {
         int pos = 0;
-        for(Pair<String,String> lang : mLanguagesList){
-            if(lang.first.equals(currentLanguage)){
+        for (Pair<String, String> lang : mLanguagesList) {
+            if (lang.first.equals(currentLanguage)) {
                 return pos;
             }
             pos++;
@@ -82,7 +79,7 @@ public abstract class LanguageFragment extends BaseFragment implements LanguageV
     @Override
     public void onLanguageIntemClick(int adapterPosition) {
         int oldPosition = findLanguagePosition(getPresenter().getCurrentLanguage());
-        if(oldPosition != adapterPosition){
+        if (oldPosition != adapterPosition) {
             getPresenter().setCurrentLanguage(mLanguageAdapter.mLanguagesList.get(adapterPosition).first);
             mLanguageAdapter.notifyItemChanged(oldPosition);
             mLanguageAdapter.notifyItemChanged(adapterPosition);

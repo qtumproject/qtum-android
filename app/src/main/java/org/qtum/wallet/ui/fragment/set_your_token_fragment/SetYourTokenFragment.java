@@ -17,7 +17,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import org.qtum.wallet.utils.FontEditText;
 
-
 import java.util.List;
 
 import butterknife.BindView;

@@ -20,7 +20,6 @@ public class ContractTemplate {
      * Constructor for unit testing
      */
     public ContractTemplate() {
-
     }
 
     public ContractTemplate(String name, String date, String contractType, String uuid) {

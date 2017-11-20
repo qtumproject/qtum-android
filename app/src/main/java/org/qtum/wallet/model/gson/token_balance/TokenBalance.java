@@ -19,7 +19,6 @@ public class TokenBalance {
      * Constructor for unit testing
      */
     public TokenBalance() {
-
     }
 
     public TokenBalance(List<Balance> balances) {
@@ -74,5 +73,4 @@ public class TokenBalance {
     public void setBalances(List<Balance> balances) {
         this.balances = balances;
     }
-
 }

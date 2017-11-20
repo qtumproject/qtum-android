@@ -4,7 +4,6 @@ import org.qtum.wallet.model.gson.history.TransactionInfo;
 
 import java.util.List;
 
-
 interface TransactionDetailFragmentView {
     void setUpRecyclerView(List<TransactionInfo> transactionInfoList);
 }

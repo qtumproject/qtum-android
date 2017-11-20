@@ -98,5 +98,4 @@ public class ContractJSON {
     public boolean getValidity() {
         return !TextUtils.isEmpty(name) && !TextUtils.isEmpty(type) && !TextUtils.isEmpty(contractAddress) && !TextUtils.isEmpty(publishDate) && !TextUtils.isEmpty(template);
     }
-
 }

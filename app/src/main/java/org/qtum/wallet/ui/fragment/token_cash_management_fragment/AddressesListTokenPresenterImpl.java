@@ -12,11 +12,6 @@ import org.bitcoinj.crypto.DeterministicKey;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created by kirillvolkov on 03.08.17.
- */
-
 public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl implements Runnable, AddressesListTokenPresenter {
 
     private AddressesListTokenView view;
@@ -96,7 +91,6 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
                     BaseFragment.PopUpType.error);
             return;
         }
-
         if (Float.valueOf(amountString) <= 0) {
             getView().setAlertDialog(R.string.error,
                     R.string.transaction_amount_cant_be_zero,
@@ -104,7 +98,6 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
                     BaseFragment.PopUpType.error);
             return;
         }
-
         getView().hideTransferDialog();
 
         if (tokenBalance == null || !getInteractor().isValidForAddress(tokenBalance, keyWithTokenBalanceFrom)
@@ -113,7 +106,6 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
             getView().setAlertDialog(R.string.error, R.string.you_have_insufficient_funds_for_this_transaction, "Ok", BaseFragment.PopUpType.error);
             return;
         }
-
         getView().goToSendFragment(keyWithTokenBalanceFrom, keyWithBalanceTo, amountString, token.getContractAddress());
     }
 
@@ -150,10 +142,6 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
         return keyWithTokenBalanceFrom;
     }
 
-
-    /**
-     * Setter for unit testing
-     */
     public void setKeysWithTokenBalance(List<DeterministicKeyWithTokenBalance> list) {
         items = list;
     }

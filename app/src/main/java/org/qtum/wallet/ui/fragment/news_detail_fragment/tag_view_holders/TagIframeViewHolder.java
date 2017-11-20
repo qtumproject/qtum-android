@@ -1,7 +1,5 @@
 package org.qtum.wallet.ui.fragment.news_detail_fragment.tag_view_holders;
 
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 
 import org.jsoup.nodes.Element;
@@ -12,8 +10,7 @@ import java.net.URLDecoder;
 
 import butterknife.BindView;
 
-
-public class TagIframeViewHolder extends TagViewHolder{
+public class TagIframeViewHolder extends TagViewHolder {
 
     @BindView(R.id.tv_tag_p)
     FontTextView mTextView;
@@ -25,10 +22,9 @@ public class TagIframeViewHolder extends TagViewHolder{
     @Override
     public void bindElement(Element element) {
         String attr = element.attr("src");
-        attr = attr.substring(attr.indexOf("url=")+4);
-        attr = attr.substring(0,attr.indexOf("&image="));
+        attr = attr.substring(attr.indexOf("url=") + 4);
+        attr = attr.substring(0, attr.indexOf("&image="));
         String url = URLDecoder.decode(attr);
         mTextView.setText(url);
-        //mTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

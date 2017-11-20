@@ -52,7 +52,6 @@ import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -66,9 +65,7 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
 
 public class UpdateService extends Service {
 
@@ -76,7 +73,7 @@ public class UpdateService extends Service {
     private NotificationManager notificationManager;
     private TransactionListener mTransactionListener = null;
     private List<BalanceChangeListener> mBalanceChangeListeners = new ArrayList<>();
-    private HashMap<String,TokenBalanceChangeListener> mStringTokenBalanceChangeListenerHashMap = new HashMap<>();
+    private HashMap<String, TokenBalanceChangeListener> mStringTokenBalanceChangeListenerHashMap = new HashMap<>();
     private HashMap<String, TokenBalance> mAllTokenBalanceList = new HashMap<>();
     private TokenListener mTokenListener;
     private ContractPurchaseListener mContractPurchaseListener;
@@ -111,7 +108,7 @@ public class UpdateService extends Service {
                     return true;
                 }
             };
-           final TrustManager[] trustAllCerts= new TrustManager[] { new X509TrustManager() {
+            final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
                 @Override
                 public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
 
@@ -123,9 +120,9 @@ public class UpdateService extends Service {
                 }
 
                 public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return new java.security.cert.X509Certificate[] {};
+                    return new java.security.cert.X509Certificate[]{};
                 }
-            } };
+            }};
             mySSLContext.init(null, trustAllCerts, null);
             IO.Options opts = new IO.Options();
             opts.sslContext = mySSLContext;
@@ -156,7 +153,7 @@ public class UpdateService extends Service {
             @Override
             public void call(Object... args) {
 
-            subscribeSocket();
+                subscribeSocket();
 
             }
         }).on("balance_changed", new Emitter.Listener() {
@@ -171,7 +168,7 @@ public class UpdateService extends Service {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    for(BalanceChangeListener balanceChangeListener : mBalanceChangeListeners){
+                    for (BalanceChangeListener balanceChangeListener : mBalanceChangeListeners) {
                         balanceChangeListener.onChangeBalance(unconfirmedBalance, balance);
                     }
                 } catch (ClassCastException e) {
@@ -185,7 +182,7 @@ public class UpdateService extends Service {
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(), History.class);
 
-                if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
+                if (history.getContractHasBeenCreated() != null && history.getContractHasBeenCreated() && history.getBlockTime() != null) {
 
                     String txHash = history.getTxHash();
                     String contractAddress = ContractBuilder.generateContractAddress(txHash);
@@ -195,10 +192,10 @@ public class UpdateService extends Service {
                     boolean done = false;
 
                     List<Contract> contractList = tinyDB.getContractListWithoutToken();
-                    for(Contract contract : contractList){
-                        if(contract.getContractAddress()!=null && contract.getContractAddress().equals(contractAddress)){
+                    for (Contract contract : contractList) {
+                        if (contract.getContractAddress() != null && contract.getContractAddress().equals(contractAddress)) {
                             contract.setHasBeenCreated(true);
-                            contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
+                            contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime() * 1000L));
                             done = true;
                             ArrayList<String> unconfirmedContractTxHashList = tinyDB.getUnconfirmedContractTxHasList();
                             unconfirmedContractTxHashList.remove(history.getTxHash());
@@ -208,12 +205,12 @@ public class UpdateService extends Service {
                     }
                     tinyDB.putContractListWithoutToken(contractList);
 
-                    if(!done){
+                    if (!done) {
                         List<Token> tokenList = tinyDB.getTokenList();
-                        for(Token token : tokenList){
-                            if(token.getContractAddress()!=null && token.getContractAddress().equals(contractAddress)){
+                        for (Token token : tokenList) {
+                            if (token.getContractAddress() != null && token.getContractAddress().equals(contractAddress)) {
                                 token.setHasBeenCreated(true);
-                                token.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
+                                token.setDate(DateCalculator.getDateInFormat(history.getBlockTime() * 1000L));
                                 ArrayList<String> unconfirmedContractTxHashList = tinyDB.getUnconfirmedContractTxHasList();
                                 unconfirmedContractTxHashList.remove(history.getTxHash());
                                 tinyDB.putUnconfirmedContractTxHashList(unconfirmedContractTxHashList);
@@ -221,7 +218,7 @@ public class UpdateService extends Service {
                             }
                         }
                         tinyDB.putTokenList(tokenList);
-                        if(mTokenListener!=null) {
+                        if (mTokenListener != null) {
                             mTokenListener.newToken();
                         }
                     }
@@ -270,7 +267,7 @@ public class UpdateService extends Service {
                     }
                 });
 
-                if(mContractPurchaseListener != null){
+                if (mContractPurchaseListener != null) {
                     mContractPurchaseListener.onContractPurchased(objectData);
                 }
 
@@ -278,7 +275,7 @@ public class UpdateService extends Service {
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Log.d("socket","disconnect");
+                Log.d("socket", "disconnect");
             }
         });
 
@@ -286,40 +283,37 @@ public class UpdateService extends Service {
     }
 
 
-
-    private void updateTokenBalance(TokenBalance tokenBalance){
+    private void updateTokenBalance(TokenBalance tokenBalance) {
         TokenBalance tokenBalanceFromList = mAllTokenBalanceList.get(tokenBalance.getContractAddress());
-        if(tokenBalanceFromList != null){
+        if (tokenBalanceFromList != null) {
             tokenBalanceFromList.setBalances(tokenBalance.getBalances());
         } else {
-            mAllTokenBalanceList.put(tokenBalance.getContractAddress(),tokenBalance);
+            mAllTokenBalanceList.put(tokenBalance.getContractAddress(), tokenBalance);
         }
 
         TokenBalanceChangeListener tokenBalanceChangeListener = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
-        if(tokenBalanceChangeListener!=null){
+        if (tokenBalanceChangeListener != null) {
             tokenBalanceChangeListener.onBalanceChange(tokenBalance);
         }
     }
 
     private void checkPurchaseContract() {
-        for(final PurchaseItem purchaseItem : QStoreStorage.getInstance(getApplicationContext()).getNonPayedContracts()){
+        for (final PurchaseItem purchaseItem : QStoreStorage.getInstance(getApplicationContext()).getNonPayedContracts()) {
             QtumService.newInstance()
-                    .isPaidByRequestId(purchaseItem.getContractId(),purchaseItem.getRequestId())
+                    .isPaidByRequestId(purchaseItem.getContractId(), purchaseItem.getRequestId())
                     .subscribeOn(Schedulers.io())
                     .subscribe(new Subscriber<ContractPurchase>() {
                         @Override
                         public void onCompleted() {
-
                         }
 
                         @Override
                         public void onError(Throwable e) {
-
                         }
 
                         @Override
                         public void onNext(ContractPurchase contractPurchase) {
-                            if(contractPurchase.getPayedAt() != null){
+                            if (contractPurchase.getPayedAt() != null) {
                                 QStoreStorage.getInstance(getApplicationContext()).setPurchaseItemBuyStatus(purchaseItem.getContractId(), PurchaseItem.PAID_STATUS);
 
                                 BoughtContractBuilder boughtContractBuilder = new BoughtContractBuilder();
@@ -330,7 +324,7 @@ public class UpdateService extends Service {
                                     }
                                 });
 
-                                if(mContractPurchaseListener != null){
+                                if (mContractPurchaseListener != null) {
                                     mContractPurchaseListener.onContractPurchased(contractPurchase);
                                 }
                             }
@@ -343,34 +337,32 @@ public class UpdateService extends Service {
     private void checkConfirmContract() {
         final TinyDB tinyDB = new TinyDB(getApplicationContext());
         final ArrayList<String> unconfirmedContractTxHashList = tinyDB.getUnconfirmedContractTxHasList();
-        for(final String unconfirmedContractTxHash : unconfirmedContractTxHashList){
+        for (final String unconfirmedContractTxHash : unconfirmedContractTxHashList) {
             QtumService.newInstance()
                     .getTransaction(unconfirmedContractTxHash)
                     .subscribeOn(Schedulers.io())
                     .subscribe(new Subscriber<History>() {
                         @Override
                         public void onCompleted() {
-
                         }
 
                         @Override
                         public void onError(Throwable e) {
-
                         }
 
                         @Override
                         public void onNext(History history) {
-                            if(history.getContractHasBeenCreated()!=null && history.getContractHasBeenCreated() && history.getBlockTime() != null){
+                            if (history.getContractHasBeenCreated() != null && history.getContractHasBeenCreated() && history.getBlockTime() != null) {
 
                                 String contractAddress = ContractBuilder.generateContractAddress(unconfirmedContractTxHash);
 
                                 boolean done = false;
 
                                 List<Contract> contractList = tinyDB.getContractListWithoutToken();
-                                for(Contract contract : contractList){
-                                    if(contract.getContractAddress()!=null && contract.getContractAddress().equals(contractAddress)){
+                                for (Contract contract : contractList) {
+                                    if (contract.getContractAddress() != null && contract.getContractAddress().equals(contractAddress)) {
                                         contract.setHasBeenCreated(true);
-                                        contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
+                                        contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime() * 1000L));
                                         done = true;
                                         unconfirmedContractTxHashList.remove(history.getTxHash());
                                         tinyDB.putUnconfirmedContractTxHashList(unconfirmedContractTxHashList);
@@ -379,19 +371,19 @@ public class UpdateService extends Service {
                                 }
                                 tinyDB.putContractListWithoutToken(contractList);
 
-                                if(!done){
+                                if (!done) {
                                     List<Token> tokenList = tinyDB.getTokenList();
-                                    for(Token token : tokenList){
-                                        if(token.getContractAddress()!=null && token.getContractAddress().equals(contractAddress)){
+                                    for (Token token : tokenList) {
+                                        if (token.getContractAddress() != null && token.getContractAddress().equals(contractAddress)) {
                                             token.setHasBeenCreated(true);
-                                            token.setDate(DateCalculator.getDateInFormat(history.getBlockTime()*1000L));
+                                            token.setDate(DateCalculator.getDateInFormat(history.getBlockTime() * 1000L));
                                             unconfirmedContractTxHashList.remove(history.getTxHash());
                                             tinyDB.putUnconfirmedContractTxHashList(unconfirmedContractTxHashList);
                                             break;
                                         }
                                     }
                                     tinyDB.putTokenList(tokenList);
-                                    if(mTokenListener!=null) {
+                                    if (mTokenListener != null) {
                                         mTokenListener.newToken();
                                     }
                                 }
@@ -403,48 +395,48 @@ public class UpdateService extends Service {
         }
     }
 
-    private void subscribeSocket(){
-        subscribeBalanceChange(mFirebasePrevToken,mFirebaseCurrentToken);
-        for(Contract contract : (new TinyDB(getApplicationContext())).getContractList()){
-            subscribeTokenBalanceChange(contract.getContractAddress(),mFirebasePrevToken,mFirebaseCurrentToken);
+    private void subscribeSocket() {
+        subscribeBalanceChange(mFirebasePrevToken, mFirebaseCurrentToken);
+        for (Contract contract : (new TinyDB(getApplicationContext())).getContractList()) {
+            subscribeTokenBalanceChange(contract.getContractAddress(), mFirebasePrevToken, mFirebaseCurrentToken);
         }
         subscribeStoreContracts();
     }
 
-    private void subscribeStoreContracts(){
+    private void subscribeStoreContracts() {
         for (PurchaseItem purchaseItem : QStoreStorage.getInstance(getApplicationContext()).getNonPayedContracts()) {
             socket.emit("subscribe", "contract_purchase", purchaseItem.getRequestId());
         }
     }
 
-    public void subscribeStoreContract(String id){
+    public void subscribeStoreContract(String id) {
         socket.emit("subscribe", "contract_purchase", id);
     }
 
-    public void subscribeTokenBalanceChange(String tokenAddress){
+    public void subscribeTokenBalanceChange(String tokenAddress) {
         subscribeTokenBalanceChange(tokenAddress, mFirebasePrevToken, mFirebaseCurrentToken);
     }
 
-    private void subscribeTokenBalanceChange(String tokenAddress, String prevToken, String currentToken){
+    private void subscribeTokenBalanceChange(String tokenAddress, String prevToken, String currentToken) {
         JSONObject jsonObject = new JSONObject();
         JSONObject jsonObjectToken = new JSONObject();
         try {
-            jsonObject.put("contract_address",tokenAddress);
-            jsonObject.put("addresses",mAddresses);
+            jsonObject.put("contract_address", tokenAddress);
+            jsonObject.put("addresses", mAddresses);
 
-            jsonObjectToken.put("notificationToken",currentToken);
-            jsonObjectToken.put("prevToken",prevToken);
+            jsonObjectToken.put("notificationToken", currentToken);
+            jsonObjectToken.put("prevToken", prevToken);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        socket.emit("subscribe","token_balance_change",jsonObject, jsonObjectToken);
+        socket.emit("subscribe", "token_balance_change", jsonObject, jsonObjectToken);
     }
 
-    private void subscribeBalanceChange(String prevToken, String currentToken){
+    private void subscribeBalanceChange(String prevToken, String currentToken) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("notificationToken",currentToken);
-            jsonObject.put("prevToken",prevToken);
+            jsonObject.put("notificationToken", currentToken);
+            jsonObject.put("prevToken", prevToken);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -491,7 +483,6 @@ public class UpdateService extends Service {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentIntent(contentIntent)
-                //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
                 .setAutoCancel(true)
                 .setTicker(Ticker)
                 .setContentTitle(Title)
@@ -531,40 +522,40 @@ public class UpdateService extends Service {
 
     public void addBalanceChangeListener(BalanceChangeListener balanceChangeListener) {
         mBalanceChangeListeners.add(balanceChangeListener);
-        if(balance!=null) {
+        if (balance != null) {
             balanceChangeListener.onChangeBalance(unconfirmedBalance, balance);
         }
     }
 
-    public void addTokenListener(TokenListener tokenListener){
+    public void addTokenListener(TokenListener tokenListener) {
         mTokenListener = tokenListener;
     }
 
-    public void removeTokenListener(){
+    public void removeTokenListener() {
         mTokenListener = null;
     }
 
-    public void setContractPurchaseListener(ContractPurchaseListener contractPurchaseListener){
+    public void setContractPurchaseListener(ContractPurchaseListener contractPurchaseListener) {
         this.mContractPurchaseListener = contractPurchaseListener;
     }
 
-    public void removeContractPurchaseListener(){
+    public void removeContractPurchaseListener() {
         this.mContractPurchaseListener = null;
     }
 
-    public void addTokenBalanceChangeListener(String address, TokenBalanceChangeListener tokenBalanceChangeListener){
-        mStringTokenBalanceChangeListenerHashMap.put(address,tokenBalanceChangeListener);
+    public void addTokenBalanceChangeListener(String address, TokenBalanceChangeListener tokenBalanceChangeListener) {
+        mStringTokenBalanceChangeListenerHashMap.put(address, tokenBalanceChangeListener);
         TokenBalance tokenBalance = mAllTokenBalanceList.get(address);
-        if(tokenBalance!=null){
+        if (tokenBalance != null) {
             tokenBalanceChangeListener.onBalanceChange(tokenBalance);
         }
     }
 
-    public TokenBalance getTokenBalance(String address){
+    public TokenBalance getTokenBalance(String address) {
         return mAllTokenBalanceList.get(address);
     }
 
-    public void removeTokenBalanceChangeListener(String address){
+    public void removeTokenBalanceChangeListener(String address) {
         mStringTokenBalanceChangeListenerHashMap.remove(address);
     }
 

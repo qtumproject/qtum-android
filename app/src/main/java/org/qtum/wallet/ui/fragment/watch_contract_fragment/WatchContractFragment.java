@@ -36,16 +36,22 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
 
     @BindView(org.qtum.wallet.R.id.et_contract_name)
     protected TextInputEditText mEditTextContractName;
+
     @BindView(org.qtum.wallet.R.id.et_contract_address)
     protected TextInputEditText mEditTextContractAddress;
+
     @BindView(org.qtum.wallet.R.id.et_abi_interface)
     protected EditText mEditTextABIInterface;
+
     @BindView(org.qtum.wallet.R.id.tv_toolbar_watch)
     protected FontTextView mTextViewToolbar;
+
     @BindView(org.qtum.wallet.R.id.rv_templates)
     protected RecyclerView mRecyclerViewTemplates;
+
     @BindView(org.qtum.wallet.R.id.til_contract_name)
     protected TextInputLayout mTilContractName;
+
     @BindView(org.qtum.wallet.R.id.til_contract_address)
     protected TextInputLayout mTilContractAddress;
 
@@ -79,14 +85,11 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
         } else {
             mTextViewToolbar.setText(getString(org.qtum.wallet.R.string.watch_contract));
         }
-
         ChipsLayoutManager chipsLayoutManager = ChipsLayoutManager.newBuilder(getContext())
                 .build();
         mRecyclerViewTemplates.setLayoutManager(chipsLayoutManager);
-
         mEditTextABIInterface.setHorizontallyScrolling(false);
         mEditTextABIInterface.setMaxLines(Integer.MAX_VALUE);
-
         mEditTextABIInterface.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -249,11 +252,9 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
 
             @Override
             public void onButton2Click() {
-
             }
         };
     }
-
 
     @Override
     public void setSoftMode() {

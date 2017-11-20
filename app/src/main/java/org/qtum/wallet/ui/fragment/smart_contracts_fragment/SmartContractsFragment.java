@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.smart_contracts_fragment;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,7 +24,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
 public abstract class SmartContractsFragment extends BaseFragment implements OnSettingClickListener, SmartContractsView {
 
     private SmartContractsPresenterImpl presenter;
@@ -36,14 +34,12 @@ public abstract class SmartContractsFragment extends BaseFragment implements OnS
     @OnClick(R.id.ibt_back)
 
     public void onClick() {
-
         getActivity().onBackPressed();
     }
 
     private PrefAdapter adapter;
 
     public static BaseFragment newInstance(Context context) {
-
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, SmartContractsFragment.class);
         fragment.setArguments(args);
@@ -88,13 +84,11 @@ public abstract class SmartContractsFragment extends BaseFragment implements OnS
                 BaseFragment backupContractsFragment = BackupContractsFragment.newInstance(getContext());
                 openFragment(backupContractsFragment);
                 break;
-
         }
     }
 
     @Override
     public void onSwitchChange(int key, boolean isChecked) {
-
     }
 
 
@@ -107,5 +101,4 @@ public abstract class SmartContractsFragment extends BaseFragment implements OnS
     protected SmartContractsPresenterImpl getPresenter() {
         return presenter;
     }
-
 }

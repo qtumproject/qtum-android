@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.activity.main_activity;
 
-
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 import org.qtum.wallet.model.gson.DGPInfo;
 import org.qtum.wallet.model.gson.FeePerKb;
@@ -13,7 +12,6 @@ import rx.schedulers.Schedulers;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION_AND_SEND;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CHECK_AUTHENTICATION;
 
-
 public class MainActivityPresenterImpl extends BasePresenterImpl implements MainActivityPresenter {
 
     private MainActivityView mMainActivityView;
@@ -23,8 +21,6 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
     private boolean mCheckAuthenticationFlag = false;
     private boolean mCheckAuthenticationShowFlag = false;
     private boolean mSendFromIntent = false;
-
-    private String code;
 
     private LanguageChangeListener mLanguageChangeListener;
 
@@ -57,7 +53,7 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
         }
     }
 
-    public void setCheckAuthenticationFlag(boolean check){
+    public void setCheckAuthenticationFlag(boolean check) {
         this.mCheckAuthenticationFlag = check;
     }
 
@@ -82,7 +78,6 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
     public void onLogin() {
         mAuthenticationFlag = true;
     }
-
 
     @Override
     public void onLogout() {
@@ -119,20 +114,18 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
 
     @Override
     public void updateNetworkSate(boolean networkConnectedFlag) {
-        if(networkConnectedFlag){
-            if(!getInteractor().isDGPInfoLoaded()){
+        if (networkConnectedFlag) {
+            if (!getInteractor().isDGPInfoLoaded()) {
                 getInteractor().getDGPInfo()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Subscriber<DGPInfo>() {
                             @Override
                             public void onCompleted() {
-
                             }
 
                             @Override
                             public void onError(Throwable e) {
-
                             }
 
                             @Override
@@ -141,19 +134,17 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
                             }
                         });
             }
-            if(!getInteractor().isFeePerkbLoaded()){
+            if (!getInteractor().isFeePerkbLoaded()) {
                 getInteractor().getFeePerKb()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Subscriber<FeePerKb>() {
                             @Override
                             public void onCompleted() {
-
                             }
 
                             @Override
                             public void onError(Throwable e) {
-
                             }
 
                             @Override
@@ -182,5 +173,4 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
         getView().clearService();
         getInteractor().removeLanguageChangeListener(mLanguageChangeListener);
     }
-
 }

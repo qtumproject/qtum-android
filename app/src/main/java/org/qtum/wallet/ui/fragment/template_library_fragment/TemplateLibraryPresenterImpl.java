@@ -8,12 +8,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-
 public class TemplateLibraryPresenterImpl extends BaseFragmentPresenterImpl implements TemplateLibraryPresenter {
 
     private TemplateLibraryView mTemplateLibraryView;
     private TemplateLibraryInteractor mTemplateLibraryInteractor;
-
 
     public TemplateLibraryPresenterImpl(TemplateLibraryView view, TemplateLibraryInteractor interactor) {
         mTemplateLibraryView = view;
@@ -37,7 +35,6 @@ public class TemplateLibraryPresenterImpl extends BaseFragmentPresenterImpl impl
                     contractFullTemplateList.add(contractTemplate);
                 }
             }
-
             Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
                 @Override
                 public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
@@ -50,7 +47,6 @@ public class TemplateLibraryPresenterImpl extends BaseFragmentPresenterImpl impl
                     contractFullTemplateList.add(contractTemplate);
                 }
             }
-
             Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
                 @Override
                 public int compare(ContractTemplate contractInfo, ContractTemplate t1) {

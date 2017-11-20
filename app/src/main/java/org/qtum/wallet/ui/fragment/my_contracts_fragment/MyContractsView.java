@@ -5,7 +5,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 import java.util.List;
 
-
 public interface MyContractsView extends BaseFragmentView {
     void setUpRecyclerView(List<Contract> contractList, ContractItemListener contractItemListener);
 
