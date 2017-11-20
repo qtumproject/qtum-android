@@ -38,27 +38,27 @@ public class TokenFragmentDark extends TokenFragment {
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                percents = (((getTotalRange() - Math.abs(verticalOffset))*1.0f)/getTotalRange());
+                percents = (((getTotalRange() - Math.abs(verticalOffset)) * 1.0f) / getTotalRange());
 
-                balanceView.setAlpha((percents>0.5f)? percents : 1 - percents);
+                balanceView.setAlpha((percents > 0.5f) ? percents : 1 - percents);
 
-                if(percents == 0){
+                if (percents == 0) {
                     doDividerExpand();
                 } else {
                     doDividerCollapse();
                 }
 
-                final float textPercent = (percents >= .5f)? percents : .5f;
-                final float textPercent3f = (percents >= .3f)? percents : .3f;
+                final float textPercent = (percents >= .5f) ? percents : .5f;
+                final float textPercent3f = (percents >= .3f) ? percents : .3f;
 
-                if(uncomfirmedBalanceTitle.getVisibility() == View.VISIBLE) {
+                if (uncomfirmedBalanceTitle.getVisibility() == View.VISIBLE) {
                     animateText(percents, mLinearLayoutBalance, .5f);
                     mLinearLayoutBalance.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (mLinearLayoutBalance.getWidth() * textPercent) / 2) - mLinearLayoutBalance.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
                     mLinearLayoutBalance.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - mLinearLayoutBalance.getHeight() * percents - mLinearLayoutBalance.getHeight() * (1 - percents));
 
                     animateText(percents, balanceTitle, .7f);
                     balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
-                    balanceTitle.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - balanceTitle.getHeight() * (1 - percents) );
+                    balanceTitle.setY(balanceView.getHeight() / 2 - balanceTitle.getHeight() * percents - balanceTitle.getHeight() * (1 - percents));
 
                     animateText(percents, uncomfirmedBalanceValue, .5f);
                     uncomfirmedBalanceValue.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (uncomfirmedBalanceValue.getWidth() * textPercent) / 2) - uncomfirmedBalanceValue.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
@@ -69,11 +69,11 @@ public class TokenFragmentDark extends TokenFragment {
                 } else {
                     animateText(percents, balanceTitle, .7f);
                     balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
-                    balanceTitle.setY(balanceView.getHeight() / 2 + balanceTitle.getHeight() / 2 * percents - balanceTitle.getHeight() / 2 * (1-percents));
+                    balanceTitle.setY(balanceView.getHeight() / 2 + balanceTitle.getHeight() / 2 * percents - balanceTitle.getHeight() / 2 * (1 - percents));
 
                     animateText(percents, mLinearLayoutBalance, .5f);
                     mLinearLayoutBalance.setX(balanceView.getWidth() - (balanceView.getWidth() / 2 * percents + (mLinearLayoutBalance.getWidth() * textPercent) / 2) - mLinearLayoutBalance.getWidth() * (1 - textPercent) - headerPAdding * (1 - percents));
-                    mLinearLayoutBalance.setY(balanceView.getHeight() / 2 - mLinearLayoutBalance.getHeight() * percents - mLinearLayoutBalance.getHeight() / 2 * (1-percents));
+                    mLinearLayoutBalance.setY(balanceView.getHeight() / 2 - mLinearLayoutBalance.getHeight() * percents - mLinearLayoutBalance.getHeight() / 2 * (1 - percents));
                 }
                 collapseLinearLayout.collapseFromPercents(percents);
                 prevPercents = percents;
@@ -85,7 +85,7 @@ public class TokenFragmentDark extends TokenFragment {
     }
 
     protected void doDividerExpand() {
-        if(!expanded) {
+        if (!expanded) {
             expanded = true;
             fadeDivider.clearAnimation();
             ResizeWidthAnimation anim = new ResizeWidthAnimation(fadeDivider, getResources().getDisplayMetrics().widthPixels);
@@ -97,7 +97,7 @@ public class TokenFragmentDark extends TokenFragment {
     }
 
     protected void doDividerCollapse() {
-        if(expanded) {
+        if (expanded) {
             fadeDivider.clearAnimation();
             fadeDivider.setVisibility(View.INVISIBLE);
             ViewGroup.LayoutParams lp = fadeDivider.getLayoutParams();
@@ -109,14 +109,14 @@ public class TokenFragmentDark extends TokenFragment {
 
     @Override
     public void setBalance(String balance) {
-        mTextViewBalance.setLongNumberText(balance, getResources().getDisplayMetrics().widthPixels/2);
+        mTextViewBalance.setLongNumberText(balance, getResources().getDisplayMetrics().widthPixels * 2 / 3);
     }
 
     @Override
     public void onContractPropertyUpdated(String propName, String propValue) {
-        switch (propName){
+        switch (propName) {
             case totalSupply:
-                totalSupplyValue.setLongNumberText(propValue, getResources().getDisplayMetrics().widthPixels/2);
+                totalSupplyValue.setLongNumberText(propValue, getResources().getDisplayMetrics().widthPixels * 2 / 3);
                 break;
             case decimals:
                 decimalsValue.setText(propValue);

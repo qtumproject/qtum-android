@@ -68,7 +68,9 @@ public class KeyStoreHelper {
                 .setSubject(new X500Principal("CN=" + alias))
                 .setSerialNumber(BigInteger.valueOf(Math.abs(alias.hashCode())))
                 // Date range of validity for the generated pair.
-                .setStartDate(start.getTime()).setEndDate(end.getTime())
+                .setKeySize(1024)
+                .setStartDate(start.getTime())
+                .setEndDate(end.getTime())
                 .build();
 
         KeyPairGenerator kpGenerator = KeyPairGenerator.getInstance(
@@ -77,7 +79,6 @@ public class KeyStoreHelper {
         kpGenerator.initialize(spec);
         KeyPair kp = kpGenerator.generateKeyPair();
         Log.d(TAG, "Public Key is: " + kp.getPublic().toString());
-
     }
 
     @TargetApi(Build.VERSION_CODES.M)

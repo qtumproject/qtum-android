@@ -19,7 +19,7 @@ public class AESUtil {
 		try {
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
 			cipher.init(Cipher.ENCRYPT_MODE, makeKey(key), makeIv());
-			return cipher.doFinal(src.getBytes());
+			return cipher.update(src.getBytes());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -30,7 +30,7 @@ public class AESUtil {
 		try {
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
 			cipher.init(Cipher.DECRYPT_MODE, makeKey(key), makeIv());
-			decrypted = new String(cipher.doFinal(src));
+			decrypted = new String(cipher.update(src));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
