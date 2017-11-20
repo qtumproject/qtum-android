@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinInteractor;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinPresenterImpl;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinView;
@@ -65,12 +66,11 @@ public class PinPresenterTest {
 
     @Test
     public void initialize_view(){
-        //TODO
-//        when(view.checkTouchIdEnable()).thenReturn(true);
-//        when(view.checkSensorState((SensorState)any())).thenReturn(true);
-//        presenter.setAction(AUTHENTICATION);
-//        presenter.initializeViews();
-//        verify(view,times(1)).setToolBarTitle(anyInt());
+        when(view.checkTouchIdEnable()).thenReturn(true);
+        when(interactor.getSixDigitPassword()).thenReturn("");
+        presenter.setAction(AUTHENTICATION);
+        presenter.initializeViews();
+        verify(view,times(1)).setToolBarTitle(anyInt());
     }
 
     private String TOUCH_ID_PASSWORD = "touch_id_password";

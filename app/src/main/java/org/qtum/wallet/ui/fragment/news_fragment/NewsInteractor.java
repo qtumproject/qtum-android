@@ -9,7 +9,7 @@ import rx.Observable;
 
 
 public interface NewsInteractor {
-    Observable<RssFeed> getMediumRssFeed(String channel);
+    Observable<RssFeed> getMediumRssFeed();
     List<News> getNewses();
     void setNewses(List<News> newses);
     void unSubscribe();

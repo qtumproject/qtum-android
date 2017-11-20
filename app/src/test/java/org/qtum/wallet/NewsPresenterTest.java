@@ -4,19 +4,21 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.qtum.wallet.model.news.RssFeed;
 import org.qtum.wallet.ui.fragment.news_fragment.NewsInteractor;
 import org.qtum.wallet.ui.fragment.news_fragment.NewsInteractorImpl;
 import org.qtum.wallet.ui.fragment.news_fragment.NewsPresenterImpl;
 import org.qtum.wallet.ui.fragment.news_fragment.NewsView;
 
+import java.util.Observable;
+
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-/**
- * Created by drevnitskaya on 10.10.17.
- */
 
 public class NewsPresenterTest {
 
@@ -32,28 +34,12 @@ public class NewsPresenterTest {
 
         presenter = new NewsPresenterImpl(view, interactor);
     }
-//TODO: in process
-//    @Test
-//    public void loadNewsTest() {
-//        presenter.onViewCreated();
-//
-//        verify(view, times(1)).startRefreshAnimation();
-//        //verify(interactor, times(1)).getNewsList((NewsInteractorImpl.GetNewsListCallBack) any());
-//    }
-//
-//    @Test
-//    public void initialize() {
-//        presenter.initializeViews();
-//
-//        verify(view, times(1)).updateNews(anyList());
-//    }
-//
-//    @Test
-//    public void onRefresh() {
-//        presenter.onRefresh();
-//
-//        verify(view, times(1)).startRefreshAnimation();
-//        //verify(interactor, times(1)).getNewsList((NewsInteractorImpl.GetNewsListCallBack) any());
-//    }
+
+    @Test
+    public void onNetworkStateChangedFalse() {
+        presenter.onNetworkStateChanged(false);
+
+        verify(view, times(1)).updateNews(anyList());
+    }
 
 }

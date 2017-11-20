@@ -22,9 +22,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by drevnitskaya on 09.10.17.
- */
 
 public class MyContractsPresenterTest {
 
