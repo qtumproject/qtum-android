@@ -6,13 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import org.qtum.wallet.R;
+import org.qtum.wallet.ui.fragment.source_code.SourceCodeFragment;
+import org.qtum.wallet.ui.fragment.store_contract.dialogs.ViewABIDialogFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.contract_management_fragment.ContractManagementFragment;
 import org.qtum.wallet.ui.fragment.qstore.QStoreFragment;
 import org.qtum.wallet.ui.fragment.store_contract.dialogs.ConfirmPurchaseDialogFragment;
 import org.qtum.wallet.ui.fragment.store_contract.dialogs.PurchaseClickListener;
-import org.qtum.wallet.ui.fragment.store_contract.dialogs.ViewSourceCodeDialogFragment;
 import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.FontTextView;
 
@@ -28,7 +29,7 @@ public abstract class StoreContractFragment extends BaseFragment implements Stor
     private StoreContractPresenter presenter;
 
     private ConfirmPurchaseDialogFragment confirmPurchase;
-    private ViewSourceCodeDialogFragment sourceCodeDialogFragment;
+    private ViewABIDialogFragment ABIDialogFragment;
 
     public static BaseFragment newInstance(Context context, String id) {
         Bundle args = new Bundle();
@@ -100,13 +101,20 @@ public abstract class StoreContractFragment extends BaseFragment implements Stor
     }
 
     @Override
+    public void openSourceCode(String sourceCode) {
+        BaseFragment sourceCodeFragment = SourceCodeFragment.newInstance(getContext(), sourceCode);
+        openFragment(sourceCodeFragment);
+    }
+
+    @Override
     public void openAbiViewer(String abi) {
         Bundle args = new Bundle();
-        args.putString(ViewSourceCodeDialogFragment.ABI,abi);
-        sourceCodeDialogFragment = new ViewSourceCodeDialogFragment();
-        sourceCodeDialogFragment.setArguments(args);
-        sourceCodeDialogFragment.show(getFragmentManager(), sourceCodeDialogFragment.getClass().getCanonicalName());
+        args.putString(ViewABIDialogFragment.ABI,abi);
+        ABIDialogFragment = new ViewABIDialogFragment();
+        ABIDialogFragment.setArguments(args);
+        ABIDialogFragment.show(getFragmentManager(), ABIDialogFragment.getClass().getCanonicalName());
     }
+
 
     @Override
     public void openDetails(String abi) {

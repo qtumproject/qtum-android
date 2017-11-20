@@ -13,6 +13,7 @@
     <color name="white_alpha80">#ccffffff</color>
     <color name="white_alpha20">#33ffffff</color>
     <color name="alpha">#00ffffff</color>
+    <color name="code_regular_code">#c5c5c5</color>
 
     <!--NEW DESIGN COLORS-->
 
@@ -49,5 +50,14 @@
     <color name="chip_selected">#3696c8</color>
     <color name="chip_normal">#5cb6e5</color>
     <color name="qstore_background">#edf6f8</color>
+
+    <color name="code_type">#e5f783</color>
+    <color name="code_reserve_word">#0096ff</color>
+    <color name="code_comment">#8aca80</color>
+
+    <color name="code_reserve_word_light">#3560ff</color>
+    <color name="code_comment_light">#6fc29c</color>
+    <color name="code_type_light">#36b9c8</color>
+
 
 </resources>

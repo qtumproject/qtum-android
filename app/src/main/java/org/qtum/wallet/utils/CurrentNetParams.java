@@ -14,7 +14,9 @@ public class CurrentNetParams {
     }
 
     public static String getUrl(){
+
         return "http://593-qtum-walletapi.pixelplex-test.by"; //DEV NET
-        //return "http://145.239.197.39:5931/";
+
     }
+
 }
