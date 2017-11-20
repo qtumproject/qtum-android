@@ -16,7 +16,6 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
 
     private NewsView mNewsFragmentView;
     private NewsInteractor mNewsFragmentInteractor;
-    private final String MEDIUM_QTUM_CHANEL = "@qtum";
     private boolean mNetworkConnectedFlag = false;
 
     public NewsPresenterImpl(NewsView newsFragmentView, NewsInteractor newsInteractor) {
@@ -65,7 +64,7 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
 
     private void loadAndUpdateNews() {
         getView().startRefreshAnimation();
-        getInteractor().getMediumRssFeed(MEDIUM_QTUM_CHANEL)
+        getInteractor().getMediumRssFeed()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<RssFeed>() {

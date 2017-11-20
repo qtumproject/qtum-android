@@ -8,7 +8,8 @@ import java.util.List;
 import rx.Observable;
 
 public interface NewsInteractor {
-    Observable<RssFeed> getMediumRssFeed(String channel);
+
+    Observable<RssFeed> getMediumRssFeed();
 
     List<News> getNewses();
 

@@ -41,9 +41,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by drevnitskaya on 09.10.17.
- */
 
 public class ContractFunctionPresenterTest {
 
@@ -175,70 +172,6 @@ public class ContractFunctionPresenterTest {
     private final ContractFunctionInteractorImpl.CallSmartContractRespWrapper TEST_RIGHT_RESP_WRAPPER =
             new ContractFunctionInteractorImpl.CallSmartContractRespWrapper("code", new CallSmartContractResponse(TEST_RIGHT_ITEMS));
 
-    String TEST_ADDRESS = "test_address";
-    //TODO: in process
-//    @Test
-//    public void onCallClick_ValidSmartContractResp_CreateTxError() {
-//        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
-//                .thenReturn(Observable.just(TEST_RIGHT_RESP_WRAPPER));
-//        when(interactor.getFeePerKb())
-//                .thenReturn(new BigDecimal("12"));
-//        when(interactor.unspentOutputsForAddressObservable(TEST_ADDRESS))
-//                .thenReturn(Observable.<List<UnspentOutput>>error(new Throwable("Unspent outputs error")));
-//
-//        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", TEST_PARAM_GAS_LIMIT, 2, "method name");
-//
-//        verify(interactor, times(1)).unspentOutputsForAddressObservable(TEST_ADDRESS);
-//        verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any());
-//        verify(view, never()).dismissProgressDialog();
-//    }
-//
-//    private final List<UnspentOutput> TEST_OUTPUTS = Arrays.asList(new UnspentOutput(600, true, new BigDecimal("12.0")),
-//            new UnspentOutput(700, true, new BigDecimal("10.0")));
-//
-//    @Test
-//    public void onCallClick_CreateTxSuccess_SendTxError() {
-//        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
-//                .thenReturn(Observable.just(TEST_RIGHT_RESP_WRAPPER));
-//        when(interactor.getFeePerKb())
-//                .thenReturn(new BigDecimal("12"));
-//
-//        when(interactor.unspentOutputsForAddressObservable(TEST_ADDRESS))
-//                .thenReturn(Observable.just(TEST_OUTPUTS));
-//
-//        when(interactor.createTransactionHash(anyString(), anyList(), anyInt(), anyInt(), (BigDecimal) any(), anyString(), anyString()))
-//                .thenReturn("hash");
-//        when(interactor.sendRawTransactionObservable(anyString()))
-//                .thenReturn(Observable.<SendRawTransactionResponse>error(new Throwable("Send raw transaction error")));
-//
-//        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", TEST_PARAM_GAS_LIMIT, 2, "method name");
-//
-//        verify(interactor, times(1)).unspentOutputsForAddressObservable(TEST_ADDRESS);
-//        verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any());
-//
-//        verify(view, never()).dismissProgressDialog();
-//    }
-//
-//    @Test
-//    public void onCallClick_CreateTxSuccess_SendTxSuccess() {
-//        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
-//                .thenReturn(Observable.just(TEST_RIGHT_RESP_WRAPPER));
-//        when(interactor.getFeePerKb())
-//                .thenReturn(new BigDecimal("12"));
-//
-//        when(interactor.unspentOutputsForAddressObservable(TEST_ADDRESS))
-//                .thenReturn(Observable.just(TEST_OUTPUTS));
-//
-//        when(interactor.createTransactionHash(anyString(), anyList(), anyInt(), anyInt(), (BigDecimal) any(), anyString(), anyString()))
-//                .thenReturn("hash");
-//        when(interactor.sendRawTransactionObservable(anyString()))
-//                .thenReturn(Observable.just(new SendRawTransactionResponse()));
-//
-//        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", TEST_PARAM_GAS_LIMIT, 2, "method name");
-//
-//        verify(view, times(1)).dismissProgressDialog();
-//        verify(view, never()).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any());
-//    }
 
     @After
     public void tearDown() {

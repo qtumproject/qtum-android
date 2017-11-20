@@ -44,6 +44,7 @@ public class AddressListPresenterImpl extends BaseFragmentPresenterImpl implemen
 
                     @Override
                     public void onError(Throwable e) {
+                        getView().dismissProgressDialog();
                     }
 
                     @Override

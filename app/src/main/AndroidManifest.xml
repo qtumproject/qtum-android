@@ -24,7 +24,7 @@
 
         <provider
             android:name="org.qtum.wallet.utils.GenericFileProvider"
-            android:authorities="com.pixelplex.FileProvider"
+            android:authorities="org.qtum.wallet.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

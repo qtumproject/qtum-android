@@ -20,9 +20,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by drevnitskaya on 06.10.17.
- */
 
 public class TokenPresenterTest {
 
