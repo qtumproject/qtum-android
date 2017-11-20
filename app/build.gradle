@@ -160,7 +160,7 @@ def getBuildProperties(buildType) {
         versionProps.load(new FileInputStream(propertiesFile))
         return versionProps
     } else {
-        propertiesFile = file("Configs/production.properties")
+        propertiesFile = file("Configs/prod.properties")
         if (propertiesFile.canRead()) {
             Properties versionProps = new Properties()
             versionProps.load(new FileInputStream(propertiesFile))
