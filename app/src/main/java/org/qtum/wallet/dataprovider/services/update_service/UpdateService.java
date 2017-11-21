@@ -91,6 +91,12 @@ public class UpdateService extends Service {
     private UpdateBinder mUpdateBinder = new UpdateBinder();
     String[] firebaseTokens;
 
+    private static UpdateService instance;
+
+    public UpdateService getInstance(){
+        return instance;
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

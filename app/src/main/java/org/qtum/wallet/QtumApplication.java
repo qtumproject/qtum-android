@@ -1,7 +1,10 @@
 package org.qtum.wallet;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 
@@ -14,9 +17,19 @@ import org.qtum.wallet.utils.MigrationManager;
 
 import io.fabric.sdk.android.Fabric;
 
-public class QtumApplication extends MultiDexApplication {
+public class QtumApplication extends MultiDexApplication{
 
     public static QtumApplication instance;
+
+    private WearableMessagingProvider wearableMessagingProvider;
+
+    public WearableMessagingProvider getWearableMessagingProvider() {
+        return wearableMessagingProvider;
+    }
+
+    public void setWearableMessagingProvider(WearableMessagingProvider provider){
+        this.wearableMessagingProvider = provider;
+    }
 
     @Override
     public void onCreate() {

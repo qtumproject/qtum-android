@@ -39,10 +39,13 @@ import android.widget.Toast;
 
 import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.R;
+import org.qtum.wallet.WearableMessagingProvider;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
+import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
+import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.activity.splash_activity.SplashActivity;
 import org.qtum.wallet.ui.base.base_activity.BaseActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -66,7 +69,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity implements MainActivityView {
+public class MainActivity extends BaseActivity implements MainActivityView, WearableMessagingProvider {
     private static final int LAYOUT = R.layout.activity_main;
     private static final int LAYOUT_LIGHT = R.layout.activity_main_light;
     private MainActivityPresenter mMainActivityPresenterImpl;
@@ -115,11 +118,14 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         mServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
-                mUpdateService.clearNotification();
-                mUpdateService.startMonitoring();
-                for (MainActivity.OnServiceConnectionChangeListener listener : mServiceConnectionChangeListeners) {
-                    listener.onServiceConnectionChange(true);
+                if(iBinder instanceof UpdateService.UpdateBinder) {
+                    QtumApplication.instance.setWearableMessagingProvider(MainActivity.this);
+                    mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
+                    mUpdateService.clearNotification();
+                    mUpdateService.startMonitoring();
+                    for (MainActivity.OnServiceConnectionChangeListener listener : mServiceConnectionChangeListeners) {
+                        listener.onServiceConnectionChange(true);
+                    }
                 }
             }
 
@@ -715,5 +721,11 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         NOT_BLOCKED,
         NO_FINGERPRINTS,
         READY
+    }
+
+
+    @Override
+    public List<History> getOperations() {
+        return HistoryList.getInstance().getHistoryList();
     }
 }
