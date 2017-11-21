@@ -9,7 +9,6 @@ import org.qtum.wallet.ui.fragment.qstore.categories.QstoreCategory;
 
 import java.util.List;
 
-
 public class QStoreFragmentLight extends QStoreFragment {
 
     @Override
@@ -22,7 +21,6 @@ public class QStoreFragmentLight extends QStoreFragment {
         storeAdapter = new StoreAdapter(categories, this, R.layout.lyt_store_list_item_light, R.layout.lyt_store_token_list_item_light);
         contentList.setAdapter(storeAdapter);
     }
-
 
     @Override
     public void setSearchResult(List<QSearchItem> items) {

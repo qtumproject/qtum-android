@@ -1,17 +1,11 @@
 package org.qtum.wallet.utils.sha3;
 
-
-
 import org.spongycastle.util.encoders.Hex;
 
 import java.math.BigInteger;
 
 import static org.spongycastle.util.Arrays.reverse;
 
-
-/**
- * @author romus
- */
 public class Keccak {
 
     private static final int DEFAULT_PERMUTATION_WIDTH = 1600;
@@ -24,40 +18,40 @@ public class Keccak {
     /**
      * round constants RC[i]
      */
-    private BigInteger[] RC = new BigInteger[] {
-        new BigInteger("0000000000000001", 16),
-        new BigInteger("0000000000008082", 16),
-        new BigInteger("800000000000808A", 16),
-        new BigInteger("8000000080008000", 16),
-        new BigInteger("000000000000808B", 16),
-        new BigInteger("0000000080000001", 16),
-        new BigInteger("8000000080008081", 16),
-        new BigInteger("8000000000008009", 16),
-        new BigInteger("000000000000008A", 16),
-        new BigInteger("0000000000000088", 16),
-        new BigInteger("0000000080008009", 16),
-        new BigInteger("000000008000000A", 16),
-        new BigInteger("000000008000808B", 16),
-        new BigInteger("800000000000008B", 16),
-        new BigInteger("8000000000008089", 16),
-        new BigInteger("8000000000008003", 16),
-        new BigInteger("8000000000008002", 16),
-        new BigInteger("8000000000000080", 16),
-        new BigInteger("000000000000800A", 16),
-        new BigInteger("800000008000000A", 16),
-        new BigInteger("8000000080008081", 16),
-        new BigInteger("8000000000008080", 16),
-        new BigInteger("0000000080000001", 16),
-        new BigInteger("8000000080008008", 16)
+    private BigInteger[] RC = new BigInteger[]{
+            new BigInteger("0000000000000001", 16),
+            new BigInteger("0000000000008082", 16),
+            new BigInteger("800000000000808A", 16),
+            new BigInteger("8000000080008000", 16),
+            new BigInteger("000000000000808B", 16),
+            new BigInteger("0000000080000001", 16),
+            new BigInteger("8000000080008081", 16),
+            new BigInteger("8000000000008009", 16),
+            new BigInteger("000000000000008A", 16),
+            new BigInteger("0000000000000088", 16),
+            new BigInteger("0000000080008009", 16),
+            new BigInteger("000000008000000A", 16),
+            new BigInteger("000000008000808B", 16),
+            new BigInteger("800000000000008B", 16),
+            new BigInteger("8000000000008089", 16),
+            new BigInteger("8000000000008003", 16),
+            new BigInteger("8000000000008002", 16),
+            new BigInteger("8000000000000080", 16),
+            new BigInteger("000000000000800A", 16),
+            new BigInteger("800000008000000A", 16),
+            new BigInteger("8000000080008081", 16),
+            new BigInteger("8000000000008080", 16),
+            new BigInteger("0000000080000001", 16),
+            new BigInteger("8000000080008008", 16)
     };
 
     //	The rotation offsets r[x,y].
-    private int[][] r = new int[][] {
-        {0, 36, 3, 41, 18},
-        {1, 44, 10, 45, 2},
-        {62, 6, 43, 15, 61},
-        {28, 55, 25, 21, 56},
-        {27, 20, 39, 8, 14}
+    private int[][] r = new int[][]{
+            {0, 36, 3, 41, 18},
+            {1, 44, 10, 45, 2},
+            {62, 6, 43, 15, 61},
+            {28, 55, 25, 21, 56},
+            {27, 20, 39, 8, 14}
     };
 
     private int w;
@@ -125,7 +119,6 @@ public class Keccak {
         for (int i = 0; i < n; i++) {
             A = roundB(A, RC[i]);
         }
-
         return A;
     }
 
@@ -190,7 +183,6 @@ public class Keccak {
             tmpValue = tmpValue.setBit(64 + shift);
             retValue = tmpValue.and(retValue);
         }
-
         return retValue;
     }
 
@@ -234,7 +226,6 @@ public class Keccak {
             }
 
         }
-
         return arrayM;
     }
 
@@ -257,5 +248,4 @@ public class Keccak {
         int l = (int) (Math.log(w) / Math.log(2));
         n = 12 + 2 * l;
     }
-
 }

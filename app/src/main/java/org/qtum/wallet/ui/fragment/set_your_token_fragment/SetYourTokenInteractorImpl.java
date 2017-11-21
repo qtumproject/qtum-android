@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.set_your_token_fragment;
 
-
 import android.content.Context;
 
 import org.qtum.wallet.datastorage.FileStorageManager;

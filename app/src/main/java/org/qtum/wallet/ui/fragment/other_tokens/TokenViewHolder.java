@@ -7,13 +7,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenBalanceChangeListener;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
-import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontTextView;
 
@@ -55,13 +55,13 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
         });
     }
 
-    public void bind (Token token) {
+    public void bind(Token token) {
 
         tokenName.setText("");
         tokenBalanceView.setText("0.0");
         mTextViewSymbol.setText("");
 
-        if(this.token != null) {
+        if (this.token != null) {
             socketInstance.getSocketInstance().removeTokenBalanceChangeListener(token.getContractAddress());
         }
 
@@ -71,7 +71,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
             @Override
             public void onSuccess(String value) {
                 spinner.setVisibility(View.GONE);
-                if(TextUtils.isEmpty(tokenBalanceView.getText().toString())){
+                if (TextUtils.isEmpty(tokenBalanceView.getText().toString())) {
                     tokenBalanceView.setVisibility(View.VISIBLE);
                     tokenBalanceView.setText("0.0");
                 }
@@ -83,7 +83,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
         tokenName.setText(token.getContractName());
         tokenBalanceView.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
-        socketInstance.getSocketInstance().addTokenBalanceChangeListener(token.getContractAddress(),this);
+        socketInstance.getSocketInstance().addTokenBalanceChangeListener(token.getContractAddress(), this);
     }
 
     @SuppressLint("DefaultLocale")
@@ -114,7 +114,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
 
                 String s = token.getTokenBalanceWithDecimalUnits().toString();
 
-                tokenBalanceView.setLongNumberText(s, itemView.getContext().getResources().getDisplayMetrics().widthPixels/2);
+                tokenBalanceView.setLongNumberText(s, itemView.getContext().getResources().getDisplayMetrics().widthPixels / 2);
                 tokenBalanceView.setVisibility(View.VISIBLE);
             }
         });

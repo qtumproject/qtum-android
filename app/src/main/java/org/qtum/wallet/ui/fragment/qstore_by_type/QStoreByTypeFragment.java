@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.store_categories.StoreCategoriesFragment;
 import org.qtum.wallet.ui.fragment.store_contract.StoreContractFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
@@ -29,7 +28,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-
 
 public abstract class QStoreByTypeFragment extends BaseFragment implements QStoreByTypeView, StoreItemClickListener {
 
@@ -200,5 +198,4 @@ public abstract class QStoreByTypeFragment extends BaseFragment implements QStor
         cbByTag.setChecked(true);
         setSearchBarText(tag);
     }
-
 }

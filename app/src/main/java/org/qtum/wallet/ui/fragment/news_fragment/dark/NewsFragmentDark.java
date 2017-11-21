@@ -7,7 +7,6 @@ import org.qtum.wallet.ui.fragment.news_fragment.NewsFragment;
 
 import java.util.List;
 
-
 public class NewsFragmentDark extends NewsFragment {
 
     @Override
@@ -17,7 +16,7 @@ public class NewsFragmentDark extends NewsFragment {
 
     @Override
     public void initializeViews() {
-        ((MainActivity)getActivity()).showBottomNavigationView(org.qtum.wallet.R.color.colorPrimary);
+        ((MainActivity) getActivity()).showBottomNavigationView(org.qtum.wallet.R.color.colorPrimary);
         super.initializeViews();
     }
 

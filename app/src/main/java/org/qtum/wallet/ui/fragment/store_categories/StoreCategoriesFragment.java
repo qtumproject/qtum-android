@@ -24,7 +24,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-
 public abstract class StoreCategoriesFragment extends BaseFragment implements StoreCategoriesView, SearchBarListener {
 
     private StoreCategoriesPresenter presenter;
@@ -67,7 +66,6 @@ public abstract class StoreCategoriesFragment extends BaseFragment implements St
                 .subscribe(new Subscriber<List<QstoreContractType>>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -109,12 +107,10 @@ public abstract class StoreCategoriesFragment extends BaseFragment implements St
 
     @Override
     public void onActivate() {
-
     }
 
     @Override
     public void onDeactivate() {
-
     }
 
     @Override

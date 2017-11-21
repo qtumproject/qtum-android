@@ -2,7 +2,6 @@ package org.qtum.wallet.ui.activity.splash_activity;
 
 import org.qtum.wallet.ui.base.base_activity.BasePresenterImpl;
 
-
 public class SplashActivityPresenterImpl extends BasePresenterImpl implements SplashActivityPresenter {
 
     private SplashActivityView mMainActivityView;
@@ -24,7 +23,7 @@ public class SplashActivityPresenterImpl extends BasePresenterImpl implements Sp
         return mMainActivityView;
     }
 
-    public SplashActivityInteractor getInteractor(){
+    public SplashActivityInteractor getInteractor() {
         return mMainActivityInteractor;
     }
 }

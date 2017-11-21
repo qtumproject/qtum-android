@@ -10,7 +10,6 @@ import org.qtum.wallet.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class ContractConfirmViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(org.qtum.wallet.R.id.name)

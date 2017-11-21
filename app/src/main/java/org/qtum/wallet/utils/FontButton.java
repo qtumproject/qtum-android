@@ -9,7 +9,6 @@ import android.util.Log;
 
 import org.qtum.wallet.R;
 
-
 public class FontButton extends android.support.v7.widget.AppCompatButton {
     public FontButton(Context context) {
         this(context, null);

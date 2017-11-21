@@ -8,12 +8,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import butterknife.BindView;
-
-/**
- * Created by kirillvolkov on 25.07.17.
- */
-
 public class SubscribeTokensFragmentLight extends SubscribeTokensFragment {
 
     @Override
@@ -27,9 +21,9 @@ public class SubscribeTokensFragmentLight extends SubscribeTokensFragment {
         Collections.sort(tokenList, new Comparator<Token>() {
             @Override
             public int compare(Token token, Token t1) {
-                if(token.isSubscribe() && !t1.isSubscribe()){
+                if (token.isSubscribe() && !t1.isSubscribe()) {
                     return -1;
-                } else if(!token.isSubscribe() && t1.isSubscribe()){
+                } else if (!token.isSubscribe() && t1.isSubscribe()) {
                     return 1;
                 } else {
                     return 0;

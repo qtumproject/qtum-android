@@ -6,17 +6,16 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import org.jsoup.select.Elements;
-import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.news_detail_fragment.tag_view_holders.TagLiViewHolder;
 import org.qtum.wallet.ui.fragment.news_detail_fragment.tag_view_holders.TagViewHolder;
 
-
-public class LiTagAdapter extends RecyclerView.Adapter<TagViewHolder>{
+public class LiTagAdapter extends RecyclerView.Adapter<TagViewHolder> {
 
     Elements mElements;
-    @LayoutRes int mResId;
+    @LayoutRes
+    int mResId;
 
-    public LiTagAdapter(Elements elements, @LayoutRes int resId){
+    public LiTagAdapter(Elements elements, @LayoutRes int resId) {
         mElements = elements;
         mResId = resId;
     }

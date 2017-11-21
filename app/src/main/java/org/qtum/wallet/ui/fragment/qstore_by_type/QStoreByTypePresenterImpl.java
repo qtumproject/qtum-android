@@ -9,7 +9,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-
 public class QStoreByTypePresenterImpl extends BaseFragmentPresenterImpl implements QStoreByTypePresenter {
 
     private QStoreByTypeView view;

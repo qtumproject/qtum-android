@@ -3,12 +3,7 @@ package org.qtum.wallet.model.gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by max-v on 10/4/2017.
- */
-
 public class DGPInfo {
-
     @SerializedName("maxblocksize")
     @Expose
     private Integer maxblocksize;

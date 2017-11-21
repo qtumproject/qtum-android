@@ -19,7 +19,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
 public abstract class AddressListFragment extends BaseFragment implements AddressListView, OnAddressClickListener {
 
     @BindView(R.id.recycler_view)

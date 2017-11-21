@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.news_detail_fragment;
 
-
 import android.content.Context;
 
 import org.jsoup.nodes.Document;
@@ -10,19 +9,18 @@ import org.qtum.wallet.model.news.News;
 
 import java.lang.ref.WeakReference;
 
-
-public class NewsDetailInteractorImpl implements NewsDetailInteractor{
+public class NewsDetailInteractorImpl implements NewsDetailInteractor {
 
     WeakReference<Context> mContext;
 
-    public NewsDetailInteractorImpl(Context context){
-        mContext = new WeakReference<Context>(context);
+    public NewsDetailInteractorImpl(Context context) {
+        mContext = new WeakReference<>(context);
     }
 
     @Override
     public Elements getElements(int newsPosition) {
         News news = NewsStorage.newInstance().getNews(newsPosition);
-        if(news != null) {
+        if (news != null) {
             Document document = news.getDocument();
             return document != null ? document.body().children() : null;
         } else {

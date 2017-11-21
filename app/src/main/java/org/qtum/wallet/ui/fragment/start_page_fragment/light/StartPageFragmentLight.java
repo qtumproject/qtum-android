@@ -9,13 +9,10 @@ import org.qtum.wallet.ui.wave_visualizer.WaveView;
 
 import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 06.07.17.
- */
-
 public class StartPageFragmentLight extends StartPageFragment {
 
-    @BindView(R.id.wave_view) WaveView waveView;
+    @BindView(R.id.wave_view)
+    WaveView waveView;
     private WaveHelper mWaveHelper;
 
     @Override
@@ -47,5 +44,4 @@ public class StartPageFragmentLight extends StartPageFragment {
     public void hideLoginButton() {
         mButtonLogin.setVisibility(View.GONE);
     }
-
 }

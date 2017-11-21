@@ -1,11 +1,7 @@
 package org.qtum.wallet.datastorage;
 
-
-import android.content.Context;
-
 import com.google.common.collect.ImmutableList;
 
-import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.crypto.ChildNumber;
 import org.bitcoinj.crypto.DeterministicHierarchy;
 import org.bitcoinj.crypto.DeterministicKey;
@@ -13,19 +9,15 @@ import org.bitcoinj.crypto.HDUtils;
 import org.bitcoinj.wallet.DeterministicSeed;
 import org.bitcoinj.wallet.UnreadableWalletException;
 import org.bitcoinj.wallet.Wallet;
-import org.bitcoinj.wallet.WalletExtension;
 import org.qtum.wallet.utils.DictionaryWords;
 import org.qtum.wallet.utils.CurrentNetParams;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
-
 
 public class KeyStorage implements Serializable {
 
@@ -44,7 +36,6 @@ public class KeyStorage implements Serializable {
     }
 
     private KeyStorage() {
-
     }
 
     public void setWallet(Wallet wallet) {
@@ -110,11 +101,11 @@ public class KeyStorage implements Serializable {
             mDeterministicKeyList = new ArrayList<>(ADDRESSES_COUNT);
             mAddressesList = new ArrayList<>();
             List<ChildNumber> pathParent = new ArrayList<>();
-            pathParent.add(new ChildNumber(88,true));
-            pathParent.add(new ChildNumber(0,true));
+            pathParent.add(new ChildNumber(88, true));
+            pathParent.add(new ChildNumber(0, true));
             for (int i = 0; i < ADDRESSES_COUNT; i++) {
                 ImmutableList<ChildNumber> path = HDUtils.append(pathParent, new ChildNumber(i, true));
-                DeterministicKey k = sWallet.getActiveKeyChain().getKeyByPath(path,true);
+                DeterministicKey k = sWallet.getActiveKeyChain().getKeyByPath(path, true);
                 mDeterministicKeyList.add(k);
                 mAddressesList.add(k.toAddress(CurrentNetParams.getNetParams()).toString());
             }

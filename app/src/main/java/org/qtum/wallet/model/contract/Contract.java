@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-
 public class Contract implements Serializable {
 
     @SerializedName("contractAddress")
@@ -36,7 +35,6 @@ public class Contract implements Serializable {
      * Default constructor for unit testing
      */
     public Contract() {
-
     }
 
 

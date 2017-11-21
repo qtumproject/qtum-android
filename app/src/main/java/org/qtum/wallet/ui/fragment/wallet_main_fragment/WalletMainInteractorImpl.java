@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.wallet_main_fragment;
 
-
 import android.content.Context;
 
 import org.qtum.wallet.datastorage.TinyDB;
@@ -29,7 +28,6 @@ class WalletMainInteractorImpl implements WalletMainInteractor {
                 TinyDB tinyDB = new TinyDB(mContext.get());
                 List<Token> tokenList = tinyDB.getTokenList();
                 List<Token> tokens = new ArrayList<>();
-
                 for (Token token : tokenList) {
                     if (token.isHasBeenCreated() && token.isSubscribe()) {
                         tokens.add(token);

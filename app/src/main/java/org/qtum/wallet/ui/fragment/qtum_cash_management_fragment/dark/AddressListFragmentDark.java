@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.dark;
 
-
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,7 +15,6 @@ import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFragment;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceAdapter;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceSpinnerAdapter;
-import org.qtum.wallet.utils.CurrentNetParams;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.util.ArrayList;

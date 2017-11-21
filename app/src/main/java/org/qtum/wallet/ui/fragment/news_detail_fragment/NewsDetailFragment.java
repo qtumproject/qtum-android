@@ -13,8 +13,7 @@ import org.qtum.wallet.ui.fragment_factory.Factory;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-
-public abstract class NewsDetailFragment extends BaseFragment implements NewsDetailView{
+public abstract class NewsDetailFragment extends BaseFragment implements NewsDetailView {
 
     private NewsDetailPresenter mNewsDetailPresenter;
     private static final String NEWS_POSITION = "news_position";
@@ -25,7 +24,7 @@ public abstract class NewsDetailFragment extends BaseFragment implements NewsDet
 
     public static BaseFragment newInstance(Context context, int newsPosition) {
         Bundle args = new Bundle();
-        BaseFragment fragment = Factory.instantiateFragment(context,NewsDetailFragment.class) ;
+        BaseFragment fragment = Factory.instantiateFragment(context, NewsDetailFragment.class);
         args.putInt(NEWS_POSITION, newsPosition);
         fragment.setArguments(args);
         return fragment;
@@ -61,5 +60,4 @@ public abstract class NewsDetailFragment extends BaseFragment implements NewsDet
     public int getNewsPosition() {
         return getArguments().getInt(NEWS_POSITION);
     }
-
 }

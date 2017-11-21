@@ -1,11 +1,9 @@
-
 package org.qtum.wallet.model.gson;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class BlockChainInfo {
-
     @SerializedName("version")
     @Expose
     private Integer version;
@@ -171,5 +169,4 @@ public class BlockChainInfo {
     public void setErrors(String errors) {
         this.errors = errors;
     }
-
 }

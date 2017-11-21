@@ -11,7 +11,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-
 class ImportWalletInteractorImpl implements ImportWalletInteractor {
 
     private WeakReference<Context> mContext;

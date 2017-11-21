@@ -1,6 +1,5 @@
 package org.qtum.wallet.datastorage;
 
-
 import org.qtum.wallet.model.news.News;
 
 import java.util.List;
@@ -11,7 +10,6 @@ public class NewsStorage {
     private List<News> mNewses;
 
     private NewsStorage(){
-
     }
 
     public static NewsStorage newInstance(){

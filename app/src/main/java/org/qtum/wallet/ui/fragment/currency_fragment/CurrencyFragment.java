@@ -24,7 +24,6 @@ import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
-import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.SearchBar;
@@ -161,7 +160,6 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyV
                     getActivity().onBackPressed();
                 }
             });
-
         }
 
         void bindCurrency(Currency currency) {
@@ -173,7 +171,7 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyV
             mCurrency = currency;
             mTextViewCurrencyName.setText(currency.getName());
             if (mCurrency instanceof CurrencyToken) {
-                token = ((CurrencyToken)mCurrency).getToken();
+                token = ((CurrencyToken) mCurrency).getToken();
                 ContractManagementHelper.getPropertyValue(TokenFragment.symbol, ((CurrencyToken) mCurrency).getToken(), getContext(), new ContractManagementHelper.GetPropertyValueCallBack() {
                     @Override
                     public void onSuccess(String value) {
@@ -184,7 +182,7 @@ public abstract class CurrencyFragment extends BaseFragment implements CurrencyV
                 mTextViewCurrencyBalance.setVisibility(View.GONE);
                 spinner.setVisibility(View.VISIBLE);
 
-                mUpdateService.addTokenBalanceChangeListener(token.getContractAddress(),this);
+                mUpdateService.addTokenBalanceChangeListener(token.getContractAddress(), this);
 
             } else {
                 mTextViewCurrencyBalance.setVisibility(View.GONE);

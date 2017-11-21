@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import org.qtum.wallet.R;
 
-
 public class SearchBar extends RelativeLayout implements View.OnClickListener{
 
     private View view;
@@ -98,28 +97,22 @@ public class SearchBar extends RelativeLayout implements View.OnClickListener{
                 }
             }
         });
-
         resizeAnimation = new ResizeAnimation(input);
         resizeAnimation.setDuration(300);
-
         setOnClickListener(this);
-
         cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 input.clearFocus();
             }
         });
-
         input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -148,21 +141,18 @@ public class SearchBar extends RelativeLayout implements View.OnClickListener{
                 } else {
                     placeholderText.animate().alpha(1).setDuration(300).start();
                     placeholder.animate().x(getWidth()/2 - placeholder.getWidth()/2).setDuration(300).start();
-
                     cancel.animate().alpha(0).setDuration(300).withEndAction(new Runnable() {
                         @Override
                         public void run() {
                             cancel.setVisibility(INVISIBLE);
                         }
                     }).start();
-
                     clearSearch.animate().alpha(0).setDuration(100).withEndAction(new Runnable() {
                         @Override
                         public void run() {
                             clearSearch.setVisibility(INVISIBLE);
                         }
                     }).start();
-
                     hideKeyboard();
                     resizeAnimation.setParams(initialInputWidth - cancel.getWidth(), initialInputWidth);
                 }
@@ -186,11 +176,9 @@ public class SearchBar extends RelativeLayout implements View.OnClickListener{
         }
     }
 
-
     @Override
     public void onClick(View v) {
         if(!isActive) {
-
         }
     }
 }

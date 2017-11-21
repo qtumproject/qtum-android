@@ -4,10 +4,6 @@ import android.content.Context;
 import android.support.design.widget.TextInputEditText;
 import android.util.AttributeSet;
 
-/**
- * Created by kirillvolkov on 12.07.17.
- */
-
 public class EditTextValidated extends TextInputEditText {
 
     private EditTextValidateListener mOnImeBack;
@@ -27,7 +23,7 @@ public class EditTextValidated extends TextInputEditText {
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
-        if(mOnImeBack != null){
+        if (mOnImeBack != null) {
             mOnImeBack.onValidate(text.toString());
         }
     }
@@ -37,7 +33,6 @@ public class EditTextValidated extends TextInputEditText {
     }
 
     public interface EditTextValidateListener {
-       void onValidate(String text);
+        void onValidate(String text);
     }
-
 }

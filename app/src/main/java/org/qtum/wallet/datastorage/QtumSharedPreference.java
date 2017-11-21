@@ -1,7 +1,6 @@
 package org.qtum.wallet.datastorage;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 
@@ -10,7 +9,6 @@ import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 
 public class QtumSharedPreference {
     private static QtumSharedPreference sInstance = null;
@@ -132,7 +130,7 @@ public class QtumSharedPreference {
         Configuration configuration = new Configuration();
         configuration.locale = locale;
         context.getResources().updateConfiguration(configuration, null);
-        for(LanguageChangeListener languageChangeListener : mLanguageChangeListeners){
+        for (LanguageChangeListener languageChangeListener : mLanguageChangeListeners) {
             languageChangeListener.onLanguageChange();
         }
     }
@@ -155,11 +153,11 @@ public class QtumSharedPreference {
         mEditor.apply();
     }
 
-    public void addLanguageListener(LanguageChangeListener languageChangeListener){
+    public void addLanguageListener(LanguageChangeListener languageChangeListener) {
         mLanguageChangeListeners.add(languageChangeListener);
     }
 
-    public void removeLanguageListener(LanguageChangeListener languageChangeListener){
+    public void removeLanguageListener(LanguageChangeListener languageChangeListener) {
         mLanguageChangeListeners.remove(languageChangeListener);
     }
 
@@ -184,5 +182,4 @@ public class QtumSharedPreference {
     public String getFeePerKb(Context context) {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(FEE_PER_KB, "0.00001");
     }
-
 }

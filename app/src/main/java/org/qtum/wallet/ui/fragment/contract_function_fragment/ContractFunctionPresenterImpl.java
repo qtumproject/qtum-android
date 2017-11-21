@@ -21,7 +21,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-
 public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl implements ContractFunctionPresenter {
 
     private ContractFunctionView mContractMethodFragmentView;
@@ -74,7 +73,6 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
                 .subscribe(new Subscriber<ContractFunctionInteractorImpl.CallSmartContractRespWrapper>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -129,7 +127,6 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
                 .subscribe(new Subscriber<SendRawTransactionResponse>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override

@@ -1,9 +1,5 @@
 package org.qtum.wallet.ui.wave_visualizer;
 
-/**
- * Created by kirillvolkov on 11.07.17.
- */
-
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -42,8 +38,6 @@ public class WaveHelper {
         waveWidthAnim.setInterpolator(new LinearInterpolator());
         animators.add(waveWidthAnim);
 
-        // horizontal animation.
-        // wave waves infinitely.
         ObjectAnimator waveShiftAnim = ObjectAnimator.ofFloat(
                 mWaveView, "waveShiftRatio", 0f, 1f);
         waveShiftAnim.setRepeatCount(ValueAnimator.INFINITE);
@@ -51,8 +45,6 @@ public class WaveHelper {
         waveShiftAnim.setInterpolator(new LinearInterpolator());
         animators.add(waveShiftAnim);
 
-        // vertical animation.
-        // water level increases from 0 to center of WaveView
         ObjectAnimator waterLevelAnim = ObjectAnimator.ofFloat(
                 mWaveView, "waterLevelRatio", .4f, .5f);
         waterLevelAnim.setDuration(10000);
@@ -61,8 +53,6 @@ public class WaveHelper {
         waterLevelAnim.setRepeatMode(ValueAnimator.REVERSE);
         animators.add(waterLevelAnim);
 
-        // amplitude animation.
-        // wave grows big then grows small, repeatedly
         ObjectAnimator amplitudeAnim = ObjectAnimator.ofFloat(
                 mWaveView, "amplitudeRatio", 0.05f, 0.12f);
         amplitudeAnim.setRepeatCount(ValueAnimator.INFINITE);
@@ -77,7 +67,6 @@ public class WaveHelper {
 
     public void cancel() {
         if (mAnimatorSet != null) {
-//            mAnimatorSet.cancel();
             mAnimatorSet.end();
         }
     }

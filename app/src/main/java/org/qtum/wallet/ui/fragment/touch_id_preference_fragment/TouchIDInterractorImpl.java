@@ -6,10 +6,6 @@ import org.qtum.wallet.datastorage.QtumSharedPreference;
 
 import java.lang.ref.WeakReference;
 
-/**
- * Created by drevnitskaya on 06.10.17.
- */
-
 public class TouchIDInterractorImpl implements TouchIDInterractor {
     private WeakReference<Context> mContext;
 

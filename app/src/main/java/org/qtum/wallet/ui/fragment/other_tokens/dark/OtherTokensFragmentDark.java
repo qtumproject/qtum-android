@@ -4,14 +4,9 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.other_tokens.OtherTokensFragment;
-import org.qtum.wallet.ui.fragment.other_tokens.light.TokensAdapterLight;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
 
 import java.util.List;
-
-/**
- * Created by kirillvolkov on 06.07.17.
- */
 
 public class OtherTokensFragmentDark extends OtherTokensFragment {
 

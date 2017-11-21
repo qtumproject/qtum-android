@@ -9,14 +9,9 @@ import org.qtum.wallet.ui.fragment.addresses_fragment.AddressHolder;
 import org.qtum.wallet.ui.fragment.addresses_fragment.AddressesAdapter;
 import org.qtum.wallet.ui.fragment.addresses_fragment.OnAddressClickListener;
 import org.qtum.wallet.utils.CurrentNetParams;
-
 import org.bitcoinj.crypto.DeterministicKey;
 
 import java.util.List;
-
-/**
- * Created by kirillvolkov on 06.07.17.
- */
 
 public class AddressesAdapterLight extends AddressesAdapter {
 
@@ -34,6 +29,6 @@ public class AddressesAdapterLight extends AddressesAdapter {
     @Override
     public void onBindViewHolder(AddressHolder holder, int position) {
         mAddress = mDeterministicKeys.get(position).toAddress(CurrentNetParams.getNetParams()).toString();
-        ((AddressHolderLight)holder).bindAddress(mAddress, position);
+        ((AddressHolderLight) holder).bindAddress(mAddress, position);
     }
 }

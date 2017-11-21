@@ -4,10 +4,6 @@ import org.qtum.wallet.model.ContractTemplate;
 
 import java.util.List;
 
-/**
- * Created by drevnitskaya on 06.10.17.
- */
-
 public interface TemplateLibraryInteractor {
     List<ContractTemplate> getContactTemplates();
 

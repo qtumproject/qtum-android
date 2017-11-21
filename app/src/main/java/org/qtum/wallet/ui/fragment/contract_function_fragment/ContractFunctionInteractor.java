@@ -11,10 +11,6 @@ import java.util.List;
 
 import rx.Observable;
 
-/**
- * Created by drevnitskaya on 09.10.17.
- */
-
 public interface ContractFunctionInteractor {
     List<ContractMethod> getContractMethod(String contractTemplateUiid);
 

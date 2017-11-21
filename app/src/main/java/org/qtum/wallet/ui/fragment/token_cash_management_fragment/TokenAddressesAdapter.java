@@ -4,13 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
 
 import java.util.List;
-
-/**
- * Created by kirillvolkov on 03.08.17.
- */
 
 public class TokenAddressesAdapter extends RecyclerView.Adapter<TokenAddressViewHolder> {
 
@@ -20,7 +17,7 @@ public class TokenAddressesAdapter extends RecyclerView.Adapter<TokenAddressView
     OnAddressTokenClickListener listener;
     int decimalUnits;
 
-    public TokenAddressesAdapter(List<DeterministicKeyWithTokenBalance> items, int resId, OnAddressTokenClickListener listener, String currency, int decimalUnits){
+    public TokenAddressesAdapter(List<DeterministicKeyWithTokenBalance> items, int resId, OnAddressTokenClickListener listener, String currency, int decimalUnits) {
         this.items = items;
         this.resId = resId;
         this.listener = listener;

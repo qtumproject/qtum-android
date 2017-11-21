@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.qstore;
 
-import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.qstore.QSearchItem;
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
@@ -14,7 +13,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-
 
 public class QStorePresenterImpl extends BaseFragmentPresenterImpl implements QStorePresenter {
 
@@ -67,7 +65,6 @@ public class QStorePresenterImpl extends BaseFragmentPresenterImpl implements QS
                 .subscribe(new Subscriber<List<QstoreItem>>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -96,7 +93,6 @@ public class QStorePresenterImpl extends BaseFragmentPresenterImpl implements QS
                 .subscribe(new Subscriber<List<QSearchItem>>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -115,9 +111,6 @@ public class QStorePresenterImpl extends BaseFragmentPresenterImpl implements QS
         return interactor;
     }
 
-    /**
-     * Getter for unit testing
-     */
     public List<QstoreCategory> getCategories() {
         return categories;
     }

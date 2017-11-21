@@ -6,17 +6,14 @@ import android.view.ViewGroup;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
-import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.ResizeWidthAnimation;
 import org.qtum.wallet.utils.StackCollapseLinearLayout;
 
 import butterknife.BindView;
 
-
 public class TokenFragmentDark extends TokenFragment {
 
     private final int LAYOUT = R.layout.lyt_token_fragment;
-
 
     @BindView(R.id.fade_divider)
     View fadeDivider;
@@ -33,21 +30,16 @@ public class TokenFragmentDark extends TokenFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-
-        //mSwipeRefreshLayout.setEnabled(false);
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 percents = (((getTotalRange() - Math.abs(verticalOffset)) * 1.0f) / getTotalRange());
-
                 balanceView.setAlpha((percents > 0.5f) ? percents : 1 - percents);
-
                 if (percents == 0) {
                     doDividerExpand();
                 } else {
                     doDividerCollapse();
                 }
-
                 final float textPercent = (percents >= .5f) ? percents : .5f;
                 final float textPercent3f = (percents >= .3f) ? percents : .3f;
 
@@ -129,5 +121,4 @@ public class TokenFragmentDark extends TokenFragment {
                 break;
         }
     }
-
 }

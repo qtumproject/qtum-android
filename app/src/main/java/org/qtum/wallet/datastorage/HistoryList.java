@@ -41,5 +41,4 @@ public class HistoryList {
     public void setTotalItem(int totalItem) {
         this.mTotalItem = totalItem;
     }
-
 }

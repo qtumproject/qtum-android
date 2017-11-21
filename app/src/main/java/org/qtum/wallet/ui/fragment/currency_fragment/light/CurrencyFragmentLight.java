@@ -5,12 +5,6 @@ import org.qtum.wallet.ui.fragment.currency_fragment.CurrencyFragment;
 
 import java.util.List;
 
-import butterknife.BindView;
-
-/**
- * Created by kirillvolkov on 25.07.17.
- */
-
 public class CurrencyFragmentLight extends CurrencyFragment {
 
     @Override

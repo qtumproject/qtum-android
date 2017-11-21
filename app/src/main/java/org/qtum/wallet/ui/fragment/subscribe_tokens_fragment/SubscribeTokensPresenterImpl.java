@@ -6,7 +6,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class SubscribeTokensPresenterImpl extends BaseFragmentPresenterImpl implements AddressesListTokenPresenter {
 
     private SubscribeTokensView mSubscribeTokensFragmentView;

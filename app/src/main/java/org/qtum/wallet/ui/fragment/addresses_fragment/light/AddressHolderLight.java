@@ -8,10 +8,6 @@ import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.ui.fragment.addresses_fragment.AddressHolder;
 import org.qtum.wallet.ui.fragment.addresses_fragment.OnAddressClickListener;
 
-/**
- * Created by kirillvolkov on 06.07.17.
- */
-
 public class AddressHolderLight extends AddressHolder {
 
     protected AddressHolderLight(View itemView, OnAddressClickListener listener) {
@@ -24,7 +20,7 @@ public class AddressHolderLight extends AddressHolder {
             mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(mLinearLayoutAddress.getContext(), R.color.qr_code_background));
         } else {
             mImageViewCheckIndicator.setVisibility(View.GONE);
-            mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(mLinearLayoutAddress.getContext(),android.R.color.transparent));
+            mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(mLinearLayoutAddress.getContext(), android.R.color.transparent));
         }
         mTextViewAddress.setText(address);
     }

@@ -6,16 +6,12 @@ import android.util.Base64;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * Created by kirillvolkov on 31.07.17.
- */
-
 public class CryptoUtilsCompat {
 
-    public static String generateSHA256String(String inputString){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-           return CryptoUtils.generateSHA256String(inputString);
-        }else {
+    public static String generateSHA256String(String inputString) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return CryptoUtils.generateSHA256String(inputString);
+        } else {
             try {
                 return SHA256(inputString);
             } catch (NoSuchAlgorithmException e) {

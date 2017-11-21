@@ -11,10 +11,6 @@ import java.util.List;
 
 import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 11.07.17.
- */
-
 public class TransactionFragmentDark extends TransactionFragment {
 
     @BindView(R.id.tv_time_type)
@@ -28,7 +24,7 @@ public class TransactionFragmentDark extends TransactionFragment {
     @Override
     public void setUpTransactionData(String value, String receivedTime, List<String> from, List<String> to, boolean confirmed) {
         setTransactionData(value, receivedTime);
-        notConfFlag.setVisibility((!confirmed)? View.VISIBLE : View.INVISIBLE);
+        notConfFlag.setVisibility((!confirmed) ? View.VISIBLE : View.INVISIBLE);
 
         if (Double.valueOf(value) > 0) {
             mTextViewTimeType.setText(R.string.received_time);
@@ -40,7 +36,7 @@ public class TransactionFragmentDark extends TransactionFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        switch (getArguments().getInt(TransactionDetailFragment.ACTION)){
+        switch (getArguments().getInt(TransactionDetailFragment.ACTION)) {
             case TransactionDetailFragment.ACTION_FROM:
                 mTextViewTimeType.setText(R.string.received_time);
                 break;

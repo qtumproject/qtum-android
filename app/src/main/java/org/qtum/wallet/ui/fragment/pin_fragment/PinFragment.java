@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.pin_fragment;
 
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.hardware.fingerprint.FingerprintManager;
@@ -15,7 +14,6 @@ import android.support.v4.os.CancellationSignal;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -30,7 +28,6 @@ import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.CryptoUtils;
-
 import org.qtum.wallet.utils.PinEntryEditText;
 import org.qtum.wallet.utils.FontTextView;
 
@@ -38,7 +35,6 @@ import javax.crypto.Cipher;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
 
 public abstract class PinFragment extends BaseFragment implements PinView {
 
@@ -82,7 +78,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         getMainActivity().onBackPressed();
     }
 
@@ -218,30 +214,29 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public void prepareSensor() {
 
-                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
-                    FingerprintManagerCompat.CryptoObject cryptoObject = CryptoUtils.getCryptoObject();
-                    if (cryptoObject != null) {
-                        mFingerprintHelper = new FingerprintHelper(getContext());
-                        mFingerprintHelper.startAuth(cryptoObject);
-                    } else {
-                        //TODO: make
-                        Toast.makeText(getContext(), "new fingerprint enrolled. enter pin again", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    FingerprintManager.CryptoObject cryptoObject = CryptoUtils.getCryptoObjectCompat23();
-                    if (cryptoObject != null) {
-                        mFingerPrintHelperCompat23 = new FingerPrintHelperCompat23(getContext());
-                        mFingerPrintHelperCompat23.startAuth(cryptoObject);
-                    } else {
-                        //TODO: make
-                        Toast.makeText(getContext(), "new fingerprint enrolled. enter pin again", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            FingerprintManagerCompat.CryptoObject cryptoObject = CryptoUtils.getCryptoObject();
+            if (cryptoObject != null) {
+                mFingerprintHelper = new FingerprintHelper(getContext());
+                mFingerprintHelper.startAuth(cryptoObject);
+            } else {
+                //TODO: make
+                Toast.makeText(getContext(), "new fingerprint enrolled. enter pin again", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            FingerprintManager.CryptoObject cryptoObject = CryptoUtils.getCryptoObjectCompat23();
+            if (cryptoObject != null) {
+                mFingerPrintHelperCompat23 = new FingerPrintHelperCompat23(getContext());
+                mFingerPrintHelperCompat23.startAuth(cryptoObject);
+            } else {
+                //TODO: make
+                Toast.makeText(getContext(), "new fingerprint enrolled. enter pin again", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    public class FingerPrintHelperCompat23 extends FingerprintManager.AuthenticationCallback{
+    public class FingerPrintHelperCompat23 extends FingerprintManager.AuthenticationCallback {
 
         private Context mContext;
         private android.os.CancellationSignal mCancellationSignal;
@@ -259,7 +254,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
         void startAuth(FingerprintManager.CryptoObject cryptoObject) {
             mCancellationSignal = new android.os.CancellationSignal();
             FingerprintManager manager = (FingerprintManager) mContext.getSystemService(Context.FINGERPRINT_SERVICE);
-            manager.authenticate(cryptoObject, mCancellationSignal, 0,  this, null);
+            manager.authenticate(cryptoObject, mCancellationSignal, 0, this, null);
         }
 
         @Override
@@ -285,7 +280,6 @@ public abstract class PinFragment extends BaseFragment implements PinView {
             super.onAuthenticationSucceeded(result);
             Cipher cipher = result.getCryptoObject().getCipher();
             getPresenter().onAuthenticationSucceeded(cipher);
-
         }
     }
 
@@ -339,7 +333,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public void onStop() {
         super.onStop();
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             if (mFingerprintHelper != null) {
                 mFingerprintHelper.cancel();
             }
@@ -351,7 +345,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     }
 
     @Override
-    public void openTouchIDPreferenceFragment(boolean isImporting, String pin ){
+    public void openTouchIDPreferenceFragment(boolean isImporting, String pin) {
         Fragment fragment = TouchIDPreferenceFragment.newInstance(getContext(), isImporting, pin);
         openRootFragment(fragment);
     }
@@ -372,7 +366,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
 
     @Override
     public void openBackUpWalletFragment(boolean isWalletCreating, String pin) {
-        if(isWalletCreating){
+        if (isWalletCreating) {
             Fragment backUpWalletFragment = BackUpWalletFragment.newInstance(getContext(), isWalletCreating, pin);
             openFragmentWithBackStack(backUpWalletFragment, backUpWalletFragment.getClass().getName());
         } else {
@@ -403,7 +397,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
 
     @Override
     public void setDigitPin(int digit) {
-        mWalletPin.setFilters(new InputFilter[] {
+        mWalletPin.setFilters(new InputFilter[]{
                 new InputFilter.LengthFilter(digit)
         });
     }

@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.util.List;
 
-
 public class History {
 
     @SerializedName("block_time")
@@ -39,7 +38,6 @@ public class History {
      * Constructor for unit tests
      */
     public History() {
-
     }
 
     /**

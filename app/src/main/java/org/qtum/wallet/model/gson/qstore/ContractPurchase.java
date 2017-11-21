@@ -2,7 +2,6 @@ package org.qtum.wallet.model.gson.qstore;
 
 import com.google.gson.annotations.SerializedName;
 
-
 public class ContractPurchase {
 
     @SerializedName("contract_id")

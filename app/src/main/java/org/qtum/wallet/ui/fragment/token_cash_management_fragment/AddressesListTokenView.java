@@ -8,10 +8,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 03.08.17.
- */
-
 public interface AddressesListTokenView extends BaseFragmentView {
     void updateAddressList(List<DeterministicKeyWithTokenBalance> deterministicKeyWithBalance, String currency);
 

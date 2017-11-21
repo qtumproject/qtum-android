@@ -33,7 +33,6 @@ public class WatchContractPresenterImpl extends BaseFragmentPresenterImpl implem
                     contractFullTemplateList.add(contractTemplate);
                 }
             }
-
             Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
                 @Override
                 public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
@@ -46,7 +45,6 @@ public class WatchContractPresenterImpl extends BaseFragmentPresenterImpl implem
                     contractFullTemplateList.add(contractTemplate);
                 }
             }
-
             Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
                 @Override
                 public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
@@ -65,12 +63,10 @@ public class WatchContractPresenterImpl extends BaseFragmentPresenterImpl implem
     @Override
     public void onOkClick(String name, String address, String ABIInterface, boolean isToken) {
         getView().setProgressDialog();
-
         if (!getInteractor().isValidContractAddress(address)) {
             getView().setAlertDialog(R.string.invalid_token_address, R.string.ok, BaseFragment.PopUpType.error);
             return;
         }
-
         List<Contract> allContractList = getInteractor().getContracts();
         for (Contract contract : allContractList) {
             if (contract.getContractAddress().equals(address)) {

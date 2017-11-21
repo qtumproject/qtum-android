@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.receive_fragment;
 
-
 import java.math.BigDecimal;
 
 public interface ReceiveInteractor {
@@ -15,5 +14,4 @@ public interface ReceiveInteractor {
     String formatBalance(String balanceString);
 
     String formatUnconfirmedBalance(BigDecimal unconfirmedBalance);
-
 }

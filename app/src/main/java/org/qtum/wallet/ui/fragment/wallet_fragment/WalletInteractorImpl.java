@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment;
 
-
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
@@ -32,7 +31,6 @@ public class WalletInteractorImpl implements WalletInteractor {
         return HistoryList.getInstance().getHistoryList();
     }
 
-
     @Override
     public void getHistoryList(final int STATE, int limit, int offest, final GetHistoryListCallBack callBack) {
 
@@ -43,7 +41,6 @@ public class WalletInteractorImpl implements WalletInteractor {
                 .subscribe(new Subscriber<HistoryResponse>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -53,11 +50,9 @@ public class WalletInteractorImpl implements WalletInteractor {
 
                     @Override
                     public void onNext(HistoryResponse historyResponse) {
-
                         for (History history : historyResponse.getItems()) {
                             calculateChangeInBalance(history, addresses);
                         }
-
                         switch (STATE) {
                             case UPDATE_STATE: {
                                 HistoryList.getInstance().setHistoryList(historyResponse.getItems());
@@ -70,9 +65,7 @@ public class WalletInteractorImpl implements WalletInteractor {
                                 callBack.onSuccess();
                                 break;
                             }
-
                         }
-
                     }
                 }));
     }

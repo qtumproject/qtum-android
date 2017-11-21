@@ -1,7 +1,5 @@
 package org.qtum.wallet.ui.fragment.news_fragment;
 
-import android.util.Log;
-
 import org.qtum.wallet.datastorage.NewsStorage;
 import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.model.news.RssFeed;
@@ -72,7 +70,6 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
                 .subscribe(new Subscriber<RssFeed>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -81,12 +78,11 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
 
                     @Override
                     public void onNext(RssFeed rssFeed) {
-
                         List<News> newNews = rssFeed.getNewses();
                         List<News> oldNews = getInteractor().getNewses();
-                        if(oldNews.size()==0){
+                        if (oldNews.size() == 0) {
                             oldNews.addAll(newNews);
-                        }else {
+                        } else {
                             int pos = 0;
                             News lastNews = oldNews.get(0);
                             for (News news : newNews) {
@@ -101,9 +97,7 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
                         NewsStorage.newInstance().setNewses(rssFeed.getNewses());
                         getInteractor().setNewses(oldNews);
                         getView().updateNews(oldNews);
-
                     }
                 });
     }
-
 }

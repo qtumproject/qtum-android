@@ -6,7 +6,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 import java.util.List;
 
-
 public interface WatchContractView extends BaseFragmentView {
     void setABIInterface(String name, String abiInterface);
 
@@ -21,5 +20,4 @@ public interface WatchContractView extends BaseFragmentView {
     void subscribeTokenBalanceChanges(String contractAddress);
 
     BaseFragment.AlertDialogCallBack getAlertCallback();
-
 }

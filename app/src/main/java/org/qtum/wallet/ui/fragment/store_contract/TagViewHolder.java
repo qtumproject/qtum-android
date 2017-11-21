@@ -8,10 +8,6 @@ import org.qtum.wallet.utils.FontButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by kirillvolkov on 09.08.17.
- */
-
 public class TagViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(org.qtum.wallet.R.id.bt_title)
@@ -30,7 +26,7 @@ public class TagViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void bind(String tag){
+    public void bind(String tag) {
         tagValue = tag;
         title.setText(String.format("#%s", tagValue));
     }

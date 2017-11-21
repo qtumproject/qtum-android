@@ -5,7 +5,6 @@ import org.qtum.wallet.ui.fragment.set_your_token_fragment.SetYourTokenFragment;
 
 import java.util.List;
 
-
 public class SetYourTokenFragmentLight extends SetYourTokenFragment {
 
     private final int LAYOUT = org.qtum.wallet.R.layout.fragment_set_your_token_light;
@@ -20,5 +19,4 @@ public class SetYourTokenFragmentLight extends SetYourTokenFragment {
         adapter = new ConstructorAdapterLight(params, this);
         constructorList.setAdapter(adapter);
     }
-
 }

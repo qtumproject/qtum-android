@@ -11,10 +11,6 @@ import org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragm
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 11.07.17.
- */
-
 public class TransactionDetailAdapterDark extends TransactionDetailAdapter {
     TransactionDetailAdapterDark(List<TransactionInfo> transactionInfoList) {
         super(transactionInfoList);

@@ -1,7 +1,6 @@
 package org.qtum.wallet.dataprovider.medium_rss_feed;
 
 import org.qtum.wallet.model.news.RssFeed;
-import org.qtum.wallet.utils.CurrentNetParams;
 
 import java.util.concurrent.TimeUnit;
 
@@ -12,21 +11,20 @@ import retrofit2.SimpleXmlConverterFactory;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import rx.Observable;
 
-
 public class MediumService {
 
     private static MediumService sMediumService;
     private final String MEDIUM_BASE_URL = "https://medium.com/";
     private MediumRssFeedService mMediumRssFeedService;
 
-    public static MediumService getInstance(){
-        if(sMediumService == null){
+    public static MediumService getInstance() {
+        if (sMediumService == null) {
             sMediumService = new MediumService();
         }
         return sMediumService;
     }
 
-    private MediumService(){
+    private MediumService() {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -48,7 +46,7 @@ public class MediumService {
 
     }
 
-    public Observable<RssFeed> getRssFeed(String channel){
+    public Observable<RssFeed> getRssFeed(String channel) {
         return mMediumRssFeedService.getRssFeed(channel);
     }
 

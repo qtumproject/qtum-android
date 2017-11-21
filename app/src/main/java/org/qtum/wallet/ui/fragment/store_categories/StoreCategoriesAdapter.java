@@ -8,7 +8,6 @@ import org.qtum.wallet.model.gson.QstoreContractType;
 
 import java.util.List;
 
-
 public class StoreCategoriesAdapter extends RecyclerView.Adapter<StoreCategoryViewHolder> {
 
     private List<QstoreContractType> items;

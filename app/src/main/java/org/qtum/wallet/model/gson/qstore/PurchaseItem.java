@@ -2,19 +2,13 @@ package org.qtum.wallet.model.gson.qstore;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by max-v on 8/24/2017.
- */
-
-public class PurchaseItem{
-
+public class PurchaseItem {
     public static final String NON_PAID_STATUS = "NON_PAID_STATUS";
     public static final String PAID_STATUS = "PAID_STATUS";
     public static final String PENDING_STATUS = "PENDING_STATUS";
-
     public String payStatus = PENDING_STATUS;
 
-    public PurchaseItem(String contractId, QstoreBuyResponse buyResponse){
+    public PurchaseItem(String contractId, QstoreBuyResponse buyResponse) {
         this.contractId = contractId;
         this.accessToken = buyResponse.accessToken;
         this.address = buyResponse.address;

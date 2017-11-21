@@ -10,10 +10,6 @@ import org.qtum.wallet.ui.fragment.profile_fragment.SettingObject;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 07.07.17.
- */
-
 public class PrefAdapterLight extends PrefAdapter {
     public PrefAdapterLight(List<SettingObject> settings, OnSettingClickListener listener, int resId) {
         super(settings, listener, resId);

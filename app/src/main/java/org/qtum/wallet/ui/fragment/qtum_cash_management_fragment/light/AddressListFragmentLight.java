@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.light;
 
-
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,7 +15,6 @@ import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFragment;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceAdapter;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceSpinnerAdapter;
-import org.qtum.wallet.utils.CurrentNetParams;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.util.ArrayList;
@@ -44,13 +42,10 @@ public class AddressListFragmentLight extends AddressListFragment {
 
     protected void showTransferDialogFragment(final AddressWithBalance keyWithBalanceTo, List<AddressWithBalance> keyWithBalanceList) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_transfer_balance_fragment_light, null);
-
         final TextInputEditText mEditTextAmount = (TextInputEditText) view.findViewById(R.id.et_amount);
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner_transfer);
         FontTextView mEditTextAddressTo = (FontTextView) view.findViewById(R.id.tv_address_to);
-
         mEditTextAddressTo.setText(keyWithBalanceTo.getAddress());
-
         AddressesWithBalanceSpinnerAdapter spinnerAdapter = new AddressesWithBalanceSpinnerAdapterLight(getContext(), keyWithBalanceList);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragment;
 
-
 import android.os.Bundle;
 
 import org.qtum.wallet.model.gson.history.History;
@@ -48,6 +47,5 @@ class TransactionDetailFragmentPresenter {
             }
             getView().setUpRecyclerView(transactionInfoList);
         }
-
     }
 }

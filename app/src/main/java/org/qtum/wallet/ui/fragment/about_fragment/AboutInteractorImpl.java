@@ -1,15 +1,12 @@
 package org.qtum.wallet.ui.fragment.about_fragment;
 
-
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
-public class AboutInteractorImpl implements AboutInteractor{
-
+public class AboutInteractorImpl implements AboutInteractor {
     private Context mContext;
 
-    AboutInteractorImpl(Context context){
+    AboutInteractorImpl(Context context) {
         mContext = context;
     }
 
@@ -20,7 +17,7 @@ public class AboutInteractorImpl implements AboutInteractor{
     }
 
     @Override
-    public int getCodeVersion() throws Exception{
+    public int getCodeVersion() throws Exception {
         PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
         return pInfo.versionCode;
     }

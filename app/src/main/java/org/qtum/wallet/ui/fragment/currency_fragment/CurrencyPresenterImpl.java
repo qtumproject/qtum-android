@@ -1,15 +1,13 @@
 package org.qtum.wallet.ui.fragment.currency_fragment;
 
-
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
-
 
 public class CurrencyPresenterImpl extends BaseFragmentPresenterImpl implements CurrencyPresenter {
 
     private CurrencyView mCurrencyFragmentView;
     private CurrencyInteractor mCurrencyFragmentInteractor;
 
-    public CurrencyPresenterImpl(CurrencyView currencyFragmentView, CurrencyInteractor currencyFragmentInteractor){
+    public CurrencyPresenterImpl(CurrencyView currencyFragmentView, CurrencyInteractor currencyFragmentInteractor) {
         mCurrencyFragmentView = currencyFragmentView;
         mCurrencyFragmentInteractor = currencyFragmentInteractor;
     }

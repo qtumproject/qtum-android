@@ -41,7 +41,6 @@ import javax.crypto.spec.PSource;
 
 import rx.Observable;
 
-
 @TargetApi(Build.VERSION_CODES.M)
 public final class CryptoUtils {
     private static final String TAG = CryptoUtils.class.getSimpleName();
@@ -112,7 +111,6 @@ public final class CryptoUtils {
         return false;
     }
 
-
     @TargetApi(Build.VERSION_CODES.M)
     private static boolean getKeyPairGenerator() {
         try {
@@ -123,7 +121,6 @@ public final class CryptoUtils {
         }
         return false;
     }
-
 
     @SuppressLint("GetInstance")
     private static boolean getCipher() {
@@ -146,7 +143,6 @@ public final class CryptoUtils {
 
     }
 
-
     @TargetApi(Build.VERSION_CODES.M)
     private static boolean generateNewKey() {
 
@@ -168,11 +164,9 @@ public final class CryptoUtils {
         return false;
     }
 
-
     private static boolean initCipher(int mode) {
         try {
             sKeyStore.load(null);
-
             switch (mode) {
                 case Cipher.ENCRYPT_MODE:
                     initEncodeCipher(mode);
@@ -182,13 +176,11 @@ public final class CryptoUtils {
                     initDecodeCipher(mode);
                     break;
                 default:
-                    return false; //this cipher is only for encode\decode
+                    return false;
             }
             return true;
-
         } catch (KeyPermanentlyInvalidatedException exception) {
             deleteInvalidKey();
-
         } catch (KeyStoreException | CertificateException | UnrecoverableKeyException | IOException |
                 NoSuchAlgorithmException | InvalidKeyException | InvalidKeySpecException | InvalidAlgorithmParameterException e) {
             e.printStackTrace();
@@ -203,13 +195,8 @@ public final class CryptoUtils {
 
     private static void initEncodeCipher(int mode) throws KeyStoreException, InvalidKeySpecException, NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException {
         PublicKey key = sKeyStore.getCertificate(KEY_ALIAS).getPublicKey();
-
-        // workaround for using public key
-        // from https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.html
         PublicKey unrestricted = KeyFactory.getInstance(key.getAlgorithm()).generatePublic(new X509EncodedKeySpec(key.getEncoded()));
-        // from https://code.google.com/p/android/issues/detail?id=197719
         OAEPParameterSpec spec = new OAEPParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA1, PSource.PSpecified.DEFAULT);
-
         sCipher.init(mode, unrestricted, spec);
     }
 
@@ -239,7 +226,7 @@ public final class CryptoUtils {
         return null;
     }
 
-    public static String generateSHA256String(String inputString){
+    public static String generateSHA256String(String inputString) {
         byte[] input = Hex.decode(inputString);
 
         SHA256Digest sha256Digest = new SHA256Digest();
@@ -249,7 +236,5 @@ public final class CryptoUtils {
 
         return Hex.toHexString(out);
     }
-
-
 }
 

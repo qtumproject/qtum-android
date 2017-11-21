@@ -5,10 +5,6 @@ import org.qtum.wallet.ui.fragment.profile_fragment.DividerItemDecoration;
 import org.qtum.wallet.ui.fragment.profile_fragment.light.PrefAdapterLight;
 import org.qtum.wallet.ui.fragment.profile_fragment.ProfileFragment;
 
-/**
- * Created by kirillvolkov on 05.07.17.
- */
-
 public class ProfileFragmentDark extends ProfileFragment {
 
     private PrefAdapterLight adapter;
@@ -31,11 +27,5 @@ public class ProfileFragmentDark extends ProfileFragment {
     @Override
     public void resetText() {
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onDestroyView() {
-        //prefList.removeItemDecoration(dividerItemDecoration);
-        super.onDestroyView();
     }
 }

@@ -14,13 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnLongClick;
 
-/**
- * Created by kirillvolkov on 06.07.17.
- */
-
-
 public class AddressHolder extends RecyclerView.ViewHolder {
-
     @BindView(org.qtum.wallet.R.id.tv_single_string)
     protected TextView mTextViewAddress;
     @BindView(org.qtum.wallet.R.id.iv_check_indicator)
@@ -33,7 +27,7 @@ public class AddressHolder extends RecyclerView.ViewHolder {
         ClipboardUtils.copyToClipBoard(mTextViewAddress.getContext(), mTextViewAddress.getText().toString(), new ClipboardUtils.CopyCallback() {
             @Override
             public void onCopyToClipBoard() {
-                Toast.makeText(mTextViewAddress.getContext(),mTextViewAddress.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mTextViewAddress.getContext(), mTextViewAddress.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
             }
         });
         return true;

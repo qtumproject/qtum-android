@@ -11,7 +11,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 
 import butterknife.OnClick;
 
-
 public abstract class TouchIDPreferenceFragment extends BaseFragment implements TouchIDPreferenceView {
 
     private static final String IS_IMPORTING = "is_importing";

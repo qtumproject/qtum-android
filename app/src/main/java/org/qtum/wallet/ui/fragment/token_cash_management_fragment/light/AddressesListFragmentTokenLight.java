@@ -11,19 +11,13 @@ import android.widget.Spinner;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
-import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListPresenterImpl;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AddressesListFragmentToken;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.TokenAddressesAdapter;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.CurrentNetParams;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by kirillvolkov on 03.08.17.
- */
 
 public class AddressesListFragmentTokenLight extends AddressesListFragmentToken {
     @Override
@@ -48,13 +42,10 @@ public class AddressesListFragmentTokenLight extends AddressesListFragmentToken 
 
     protected void showTransferDialogFragment(final DeterministicKeyWithTokenBalance keyWithBalanceTo, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, int decimalUnits) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_transfer_balance_fragment_light, null);
-
         final TextInputEditText mEditTextAmount = (TextInputEditText) view.findViewById(R.id.et_amount);
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner_transfer);
         FontTextView mEditTextAddressTo = (FontTextView) view.findViewById(R.id.tv_address_to);
-
         mEditTextAddressTo.setText(keyWithBalanceTo.getKey().toAddress(CurrentNetParams.getNetParams()).toString());
-
         AddressesWithTokenBalanceSpinnerAdapterLight spinnerAdapter = new AddressesWithTokenBalanceSpinnerAdapterLight(getContext(), keyWithBalanceList, getPresenter().getCurrency(), decimalUnits);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -65,7 +56,6 @@ public class AddressesListFragmentTokenLight extends AddressesListFragmentToken 
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 

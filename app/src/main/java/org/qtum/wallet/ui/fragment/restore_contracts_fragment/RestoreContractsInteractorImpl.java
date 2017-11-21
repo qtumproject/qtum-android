@@ -21,10 +21,6 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-/**
- * Created by drevnitskaya on 06.10.17.
- */
-
 public class RestoreContractsInteractorImpl implements RestoreContractsInteractor {
 
     private WeakReference<Context> mContext;

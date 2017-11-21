@@ -4,10 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import org.qtum.wallet.R;
 
-/**
- * Created by kirillvolkov on 09.08.17.
- */
-
 public class QstoreItem {
 
     @SerializedName("_id")
@@ -32,7 +28,7 @@ public class QstoreItem {
     public String createDate;
 
     public int getIcon() {
-        switch (type){
+        switch (type) {
             case "QRC20 Token":
                 return R.drawable.ic_supertoken;
             case "Smart Contract":
@@ -43,5 +39,4 @@ public class QstoreItem {
                 return R.drawable.ic_smart_contract;
         }
     }
-
 }

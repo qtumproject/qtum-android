@@ -1,18 +1,13 @@
 package org.qtum.wallet.ui.fragment.backup_wallet_fragment;
 
-
-import org.qtum.wallet.utils.crypto.AESUtil;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
-
 
 public class BackUpWalletPresenterImpl extends BaseFragmentPresenterImpl implements BackUpWalletPresenter {
 
     private BackUpWalletView mBackUpWalletFragmentView;
     private BackUpWalletInteractor mBackUpWalletInteractor;
     private String passphrase;
-
-
 
     public BackUpWalletPresenterImpl(BackUpWalletView backUpWalletFragmentView, BackUpWalletInteractor backUpWalletInteractor) {
         mBackUpWalletFragmentView = backUpWalletFragmentView;
@@ -43,7 +38,7 @@ public class BackUpWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
     }
 
     @Override
-    public void onShareClick(){
+    public void onShareClick() {
         getView().chooseShareMethod(passphrase);
     }
 

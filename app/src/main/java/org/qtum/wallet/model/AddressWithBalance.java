@@ -1,21 +1,17 @@
 package org.qtum.wallet.model;
 
 import org.qtum.wallet.model.gson.UnspentOutput;
-import org.qtum.wallet.utils.CurrentNetParams;
-
-import org.bitcoinj.crypto.DeterministicKey;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class AddressWithBalance {
     private List<UnspentOutput> mUnspentOutputList = new ArrayList<>();
     private String mAddress;
     private BigDecimal mBalance;
-    
-    public AddressWithBalance(String address){
+
+    public AddressWithBalance(String address) {
         mAddress = address;
     }
 
@@ -27,7 +23,7 @@ public class AddressWithBalance {
         mUnspentOutputList = unspentOutputList;
     }
 
-    public void setUnspentOutput(UnspentOutput unspentOutput){
+    public void setUnspentOutput(UnspentOutput unspentOutput) {
         mUnspentOutputList.add(unspentOutput);
     }
 
@@ -40,7 +36,7 @@ public class AddressWithBalance {
     }
 
     public BigDecimal getBalance() {
-        if(mBalance == null) {
+        if (mBalance == null) {
             mBalance = new BigDecimal(0.0);
             for (UnspentOutput unspentOutput : mUnspentOutputList) {
                 mBalance = mBalance.add(unspentOutput.getAmount());

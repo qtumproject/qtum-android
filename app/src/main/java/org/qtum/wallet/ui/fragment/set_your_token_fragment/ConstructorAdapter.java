@@ -7,13 +7,12 @@ import org.qtum.wallet.model.contract.ContractMethodParameter;
 
 import java.util.List;
 
-
 public abstract class ConstructorAdapter extends RecyclerView.Adapter<InputViewHolder> {
 
     protected List<ContractMethodParameter> params;
     protected OnValidateParamsListener listener;
 
-    public List<ContractMethodParameter> getParams(){
+    public List<ContractMethodParameter> getParams() {
         return params;
     }
 
@@ -22,9 +21,9 @@ public abstract class ConstructorAdapter extends RecyclerView.Adapter<InputViewH
         this.listener = listener;
     }
 
-    public boolean validateMethods(){
-        for (ContractMethodParameter p : params){
-            if(TextUtils.isEmpty(p.getValue())){
+    public boolean validateMethods() {
+        for (ContractMethodParameter p : params) {
+            if (TextUtils.isEmpty(p.getValue())) {
                 return false;
             }
         }

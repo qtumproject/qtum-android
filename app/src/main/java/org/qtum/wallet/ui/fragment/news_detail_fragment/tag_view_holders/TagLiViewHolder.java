@@ -10,8 +10,7 @@ import org.qtum.wallet.utils.FontTextView;
 
 import butterknife.BindView;
 
-
-public class TagLiViewHolder extends TagViewHolder{
+public class TagLiViewHolder extends TagViewHolder {
 
     @BindView(R.id.tv_text)
     FontTextView mTextView;
@@ -20,7 +19,7 @@ public class TagLiViewHolder extends TagViewHolder{
         super(itemView);
     }
 
-    public void bindElement(Element element){
+    public void bindElement(Element element) {
         mTextView.setText(Html.fromHtml(element.html()));
         mTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }

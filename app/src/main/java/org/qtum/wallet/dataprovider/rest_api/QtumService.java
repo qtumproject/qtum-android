@@ -1,6 +1,5 @@
 package org.qtum.wallet.dataprovider.rest_api;
 
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -25,8 +24,6 @@ import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.model.gson.qstore.QstoreSourceCodeResponse;
 import org.qtum.wallet.utils.CurrentNetParams;
 
-
-import java.math.BigDecimal;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 
@@ -49,7 +46,6 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
-
 public class QtumService {
 
     private static QtumService sQtumService;
@@ -67,11 +63,11 @@ public class QtumService {
             final TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
                         @Override
-                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType){
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
                         }
 
                         @Override
-                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType){
+                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
 
                         }
 
@@ -81,8 +77,6 @@ public class QtumService {
                         }
                     }
             };
-
-            // Install the all-trusting trust manager
 
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
             httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -114,12 +108,6 @@ public class QtumService {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-            final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .addInterceptor(interceptor)
-                    .readTimeout(10, TimeUnit.SECONDS)
-                    .connectTimeout(10, TimeUnit.SECONDS)
-                    .build();
-
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(CurrentNetParams.getUrl())
                     .addConverterFactory(GsonConverterFactory.create(gson))
@@ -128,8 +116,7 @@ public class QtumService {
                     .build();
 
             mServiceApi = retrofit.create(QtumRestService.class);
-        } catch (Exception e){
-
+        } catch (Exception ignored) {
         }
     }
 
@@ -179,9 +166,9 @@ public class QtumService {
 
     public Observable<List<QSearchItem>> searchContracts(int offset, String type, String data, boolean byTag) {
         if (byTag) {
-            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/, type, new String[]{data});
+            return mServiceApi.getSearchContracts(20, offset, type, new String[]{data});
         } else {
-            return mServiceApi.getSearchContracts(20/*must be changed*/, offset/*get all contracts*/, type, data);
+            return mServiceApi.getSearchContracts(20, offset, type, data);
         }
     }
 
@@ -201,11 +188,11 @@ public class QtumService {
         return mServiceApi.isPaidByRequestId(contractId, requestId);
     }
 
-    public Observable<DGPInfo> getDGPInfo(){
+    public Observable<DGPInfo> getDGPInfo() {
         return mServiceApi.getDGPInfo();
     }
 
-    public Observable<QstoreSourceCodeResponse> getSourceCode(String contractId, String requestId, String accessToken){
+    public Observable<QstoreSourceCodeResponse> getSourceCode(String contractId, String requestId, String accessToken) {
 
         HashMap<String, String> body = new HashMap<>();
         body.put("request_id", requestId);
@@ -223,5 +210,4 @@ public class QtumService {
     public Observable<List<QstoreContractType>> getContractTypes() {
         return mServiceApi.getContractTypes();
     }
-
 }

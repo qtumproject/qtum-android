@@ -1,17 +1,14 @@
 package org.qtum.wallet.ui.fragment.news_detail_fragment;
 
-
 import org.jsoup.select.Elements;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
-
-
-public class NewsDetailPresenterImpl extends BaseFragmentPresenterImpl implements NewsDetailPresenter{
+public class NewsDetailPresenterImpl extends BaseFragmentPresenterImpl implements NewsDetailPresenter {
 
     NewsDetailView mNewsDetailView;
     NewsDetailInteractor mNewsDetailInteractor;
 
-    public NewsDetailPresenterImpl(NewsDetailView newsDetailView, NewsDetailInteractor newsDetailInteractor){
+    public NewsDetailPresenterImpl(NewsDetailView newsDetailView, NewsDetailInteractor newsDetailInteractor) {
         mNewsDetailView = newsDetailView;
         mNewsDetailInteractor = newsDetailInteractor;
     }

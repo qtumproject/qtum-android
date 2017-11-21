@@ -6,15 +6,15 @@ import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.crashlytics.android.Crashlytics;
+
 import org.qtum.wallet.datastorage.QStoreStorage;
 import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
-import org.qtum.wallet.model.Version;
 import org.qtum.wallet.utils.FontManager;
 import org.qtum.wallet.utils.MigrationManager;
 
 import io.fabric.sdk.android.Fabric;
 
-public class QtumApplication extends MultiDexApplication{
+public class QtumApplication extends MultiDexApplication {
 
     public static QtumApplication instance;
 
@@ -22,8 +22,7 @@ public class QtumApplication extends MultiDexApplication{
     public void onCreate() {
         super.onCreate();
         instance = this;
-
-        if(!BuildConfig.DEBUG) {
+        if (!BuildConfig.DEBUG) {
             Fabric.with(this, new Crashlytics());
         }
         FontManager.init(getAssets());
@@ -34,16 +33,14 @@ public class QtumApplication extends MultiDexApplication{
             int currentVersion = getCodeVersion();
             QtumSettingSharedPreference qtumSettingSharedPreference = new QtumSettingSharedPreference();
             int migrationVersion = qtumSettingSharedPreference.getCodeVersion(getApplicationContext());
-            if(currentVersion>migrationVersion){
+            if (currentVersion > migrationVersion) {
                 MigrationManager migrationManager = new MigrationManager();
-                int newMigrationVersion = migrationManager.makeMigration(currentVersion,migrationVersion, getApplicationContext());
+                int newMigrationVersion = migrationManager.makeMigration(currentVersion, migrationVersion, getApplicationContext());
                 qtumSettingSharedPreference.setMigrationCodeVersionString(getApplicationContext(), newMigrationVersion);
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        String applicationId = BuildConfig.APPLICATION_ID;
-
     }
 
     private int getCodeVersion() throws PackageManager.NameNotFoundException {

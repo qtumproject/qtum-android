@@ -8,7 +8,6 @@ import java.util.List;
 
 import butterknife.OnClick;
 
-
 public class SetYourTokenFragmentDark extends SetYourTokenFragment {
 
     private final int LAYOUT = R.layout.fragment_set_your_token;

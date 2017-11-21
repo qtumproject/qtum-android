@@ -7,10 +7,6 @@ import org.qtum.wallet.utils.DateCalculator;
 
 import butterknife.OnClick;
 
-/**
- * Created by kirillvolkov on 18.08.17.
- */
-
 public class StoreContractFragmentDark extends StoreContractFragment {
 
     @Override
@@ -19,7 +15,7 @@ public class StoreContractFragmentDark extends StoreContractFragment {
     }
 
     @OnClick(org.qtum.wallet.R.id.tv_view_abi)
-    public void onViewAbiClick(){
+    public void onViewAbiClick() {
         getPresenter().getContractAbiById(getPresenter().getContract().id);
     }
 
@@ -32,9 +28,8 @@ public class StoreContractFragmentDark extends StoreContractFragment {
         tvPublishDate.setText(DateCalculator.getShortDate(contract.creationDate));
         tvSizeInBytes.setText(String.valueOf(contract.sizeInBytes));
         tvCompiledOn.setText(contract.completedOn);
-        tvSourceCode.setText(contract.withSourceCode? "Yes":"No");
+        tvSourceCode.setText(contract.withSourceCode ? "Yes" : "No");
         tvPublishedBy.setText(contract.publisherAddress);
         tvDownloads.setText(String.valueOf(contract.countDownloads));
     }
-
 }

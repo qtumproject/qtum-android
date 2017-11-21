@@ -19,24 +19,26 @@ import butterknife.OnLongClick;
 import rx.Subscriber;
 import rx.Subscription;
 
-/**
- * Created by kirillvolkov on 05.07.17.
- */
-
 public class TransactionHolderDark extends RecyclerView.ViewHolder {
 
     @BindView(R.id.tv_value)
     TextView mTextViewValue;
+
     @BindView(R.id.tv_date)
     TextView mTextViewDate;
+
     @BindView(R.id.tv_id)
     TextView mTextViewID;
+
     @BindView(R.id.tv_operation_type)
     TextView mTextViewOperationType;
+
     @BindView(R.id.iv_icon)
     ImageView mImageViewIcon;
+
     @BindView(R.id.ll_transaction)
     LinearLayout mLinearLayoutTransaction;
+
     Subscription mSubscription;
 
     @OnLongClick(R.id.tv_id)
@@ -44,7 +46,7 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
         ClipboardUtils.copyToClipBoard(mTextViewID.getContext(), mTextViewID.getText().toString(), new ClipboardUtils.CopyCallback() {
             @Override
             public void onCopyToClipBoard() {
-                Toast.makeText(mTextViewID.getContext(),mTextViewID.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mTextViewID.getContext(), mTextViewID.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
             }
         });
         return true;
@@ -62,27 +64,25 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
     }
 
     void bindTransactionData(final History history) {
-        if(mSubscription!=null){
+        if (mSubscription != null) {
             mSubscription.unsubscribe();
         }
-        if(history.getBlockTime() != null) {
+        if (history.getBlockTime() != null) {
             mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {
                 @Override
                 public void onCompleted() {
-
                 }
 
                 @Override
                 public void onError(Throwable e) {
-
                 }
 
                 @Override
                 public void onNext(Object o) {
-                    mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime()*1000L));
+                    mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
                 }
             });
-            mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime()*1000L));
+            mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
 
         } else {
             mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.unconfirmed));

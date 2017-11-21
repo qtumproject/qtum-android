@@ -1,6 +1,5 @@
 package org.qtum.wallet.model.news;
 
-
 import com.google.gson.annotations.SerializedName;
 
 import org.jsoup.Jsoup;
@@ -11,12 +10,10 @@ import org.simpleframework.xml.Root;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 @Root(name = "item", strict = false)
 public class News {
-
     @SerializedName("encoded")
     @Element(name = "encoded")
     String contentEncoded;
@@ -42,23 +39,24 @@ public class News {
     }
 
     public String getFormattedPubDate() {
-        if(formattedData.isEmpty()){
+        if (formattedData.isEmpty()) {
             SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
-            Date date = null;
-            try{
+            Date date;
+            try {
                 date = sdf.parse(pubDate);
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(date);
                 SimpleDateFormat displayFormat = new SimpleDateFormat("MMM d, yyyy  HH:mm aaa", Locale.ENGLISH);
                 formattedData = displayFormat.format(date).toUpperCase();
-                //formattedData = String.format(Locale.US, "%s, %d", calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US), calendar.get(Calendar.DAY_OF_MONTH));
-            }catch (Exception e){ e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return formattedData;
     }
 
     public Document getDocument() {
-        if(mDocument == null){
+        if (mDocument == null) {
             mDocument = Jsoup.parse(contentEncoded);
         }
         return mDocument;

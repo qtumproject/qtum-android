@@ -3,6 +3,7 @@ package org.qtum.wallet.utils;
 import android.content.Context;
 
 import com.google.gson.Gson;
+
 import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.datastorage.QStoreStorage;
@@ -14,7 +15,6 @@ import org.qtum.wallet.model.gson.qstore.QstoreSourceCodeResponse;
 
 import rx.Subscriber;
 
-
 public class BoughtContractBuilder {
 
     private String sourceContract;
@@ -25,15 +25,15 @@ public class BoughtContractBuilder {
     private String dateString;
     private String uuid;
 
-    public void build(final Context context, ContractPurchase contractPurchase, final ContractBuilderListener listener){
+    public void build(final Context context, ContractPurchase contractPurchase, final ContractBuilderListener listener) {
         final PurchaseItem purchaseItem = QStoreStorage.getInstance(context).getPurchaseByContractId(contractPurchase.getContractId());
         QtumService.newInstance()
-                .getSourceCode(purchaseItem.getContractId(),purchaseItem.getRequestId(),purchaseItem.getAccessToken())
+                .getSourceCode(purchaseItem.getContractId(), purchaseItem.getRequestId(), purchaseItem.getAccessToken())
                 .subscribe(new Subscriber<QstoreSourceCodeResponse>() {
                     @Override
                     public void onCompleted() {
                         QtumService.newInstance()
-                                .getByteCode(purchaseItem.getContractId(),purchaseItem.getRequestId(),purchaseItem.getAccessToken())
+                                .getByteCode(purchaseItem.getContractId(), purchaseItem.getRequestId(), purchaseItem.getAccessToken())
                                 .subscribe(new Subscriber<QstoreByteCodeResponse>() {
                                     @Override
                                     public void onCompleted() {
@@ -45,13 +45,12 @@ public class BoughtContractBuilder {
                                                                 .subscribe(new Subscriber<QstoreContract>() {
                                                                     @Override
                                                                     public void onCompleted() {
-                                                                        FileStorageManager.getInstance().importTemplate(context,sourceContract,byteCodeContract,abiContract,type,name,dateString,uuid);
+                                                                        FileStorageManager.getInstance().importTemplate(context, sourceContract, byteCodeContract, abiContract, type, name, dateString, uuid);
                                                                         listener.onBuildSuccess();
                                                                     }
 
                                                                     @Override
                                                                     public void onError(Throwable e) {
-
                                                                     }
 
                                                                     @Override
@@ -66,7 +65,6 @@ public class BoughtContractBuilder {
 
                                                     @Override
                                                     public void onError(Throwable e) {
-
                                                     }
 
                                                     @Override
@@ -78,7 +76,6 @@ public class BoughtContractBuilder {
 
                                     @Override
                                     public void onError(Throwable e) {
-
                                     }
 
                                     @Override
@@ -90,7 +87,6 @@ public class BoughtContractBuilder {
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override
@@ -100,8 +96,7 @@ public class BoughtContractBuilder {
                 });
     }
 
-    public interface ContractBuilderListener{
+    public interface ContractBuilderListener {
         void onBuildSuccess();
     }
-
 }

@@ -9,10 +9,6 @@ import java.util.List;
 
 import butterknife.OnClick;
 
-/**
- * Created by kirillvolkov on 25.07.17.
- */
-
 public class ContractConfirmFragmentDark extends ContractConfirmFragment {
 
     public final int LAYOUT = org.qtum.wallet.R.layout.lyt_contract_confirm;
@@ -32,8 +28,7 @@ public class ContractConfirmFragmentDark extends ContractConfirmFragment {
         super.initializeViews();
         getPresenter().setContractMethodParameterList((List<ContractMethodParameter>) getArguments().getSerializable(paramsKey));
         confirmList.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ContractConfirmAdapterDark(getPresenter().getContractMethodParameterList(),"4jhbr4hjb4l23342i4bn2kl4b2352l342k35bv235rl23", this);
+        adapter = new ContractConfirmAdapterDark(getPresenter().getContractMethodParameterList(), "4jhbr4hjb4l23342i4bn2kl4b2352l342k35bv235rl23", this);
         confirmList.setAdapter(adapter);
     }
-
 }

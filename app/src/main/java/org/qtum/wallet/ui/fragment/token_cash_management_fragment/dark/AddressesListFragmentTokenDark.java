@@ -10,19 +10,13 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
-import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListPresenterImpl;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AddressesListFragmentToken;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.TokenAddressesAdapter;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.CurrentNetParams;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by kirillvolkov on 03.08.17.
- */
 
 public class AddressesListFragmentTokenDark extends AddressesListFragmentToken {
     @Override
@@ -47,13 +41,10 @@ public class AddressesListFragmentTokenDark extends AddressesListFragmentToken {
 
     protected void showTransferDialogFragment(final DeterministicKeyWithTokenBalance keyWithBalanceTo, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, int decimalUnits) {
         View view = LayoutInflater.from(getContext()).inflate(org.qtum.wallet.R.layout.dialog_transfer_balance_fragment, null);
-
         final TextInputEditText mEditTextAmount = (TextInputEditText) view.findViewById(org.qtum.wallet.R.id.et_amount);
         final Spinner spinner = (Spinner) view.findViewById(org.qtum.wallet.R.id.spinner_transfer);
         FontTextView mEditTextAddressTo = (FontTextView) view.findViewById(org.qtum.wallet.R.id.tv_address_to);
-
         mEditTextAddressTo.setText(keyWithBalanceTo.getKey().toAddress(CurrentNetParams.getNetParams()).toString());
-
         AddressesWithTokenBalanceSpinnerAdapterDark spinnerAdapter = new AddressesWithTokenBalanceSpinnerAdapterDark(getContext(), keyWithBalanceList, getPresenter().getCurrency(), decimalUnits);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -79,7 +70,6 @@ public class AddressesListFragmentTokenDark extends AddressesListFragmentToken {
             public void onClick(View v) {
                 setProgressDialog();
                 getPresenter().transfer(keyWithBalanceTo, getPresenter().getKeyWithTokenBalanceFrom(), mEditTextAmount.getText().toString());
-
             }
         });
 

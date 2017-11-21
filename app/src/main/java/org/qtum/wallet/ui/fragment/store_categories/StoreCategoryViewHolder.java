@@ -11,7 +11,6 @@ import org.qtum.wallet.model.gson.QstoreContractType;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class StoreCategoryViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.icon)
@@ -45,7 +44,7 @@ public class StoreCategoryViewHolder extends RecyclerView.ViewHolder {
         cost.setText(String.valueOf(item.getCount()));
     }
 
-    public interface OnCategoryClickListener{
+    public interface OnCategoryClickListener {
         void onClick(String type);
     }
 }

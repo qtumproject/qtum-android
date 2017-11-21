@@ -1,8 +1,6 @@
 package org.qtum.wallet.ui.fragment.send_fragment;
 
 import org.qtum.wallet.model.contract.Token;
-import org.qtum.wallet.model.gson.DGPInfo;
-import org.qtum.wallet.model.gson.FeePerKb;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 
@@ -39,5 +37,4 @@ public interface SendInteractor {
     BigDecimal getFeePerKb();
 
     int getMinGasPrice();
-
 }

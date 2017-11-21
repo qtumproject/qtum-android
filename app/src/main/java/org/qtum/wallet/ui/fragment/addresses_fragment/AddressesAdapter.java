@@ -6,10 +6,6 @@ import org.bitcoinj.crypto.DeterministicKey;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 06.07.17.
- */
-
 public abstract class AddressesAdapter extends RecyclerView.Adapter<AddressHolder> {
     protected List<DeterministicKey> mDeterministicKeys;
     protected String mAddress;

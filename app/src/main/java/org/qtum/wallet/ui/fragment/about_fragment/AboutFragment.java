@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.about_fragment;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +17,7 @@ public abstract class AboutFragment extends BaseFragment implements AboutView {
     AboutPresenter mAboutFragmentPresenter;
 
     @OnClick({org.qtum.wallet.R.id.ibt_back})
-    public void onClick(View view){
+    public void onClick(View view) {
         switch (view.getId()) {
             case org.qtum.wallet.R.id.ibt_back:
                 getActivity().onBackPressed();

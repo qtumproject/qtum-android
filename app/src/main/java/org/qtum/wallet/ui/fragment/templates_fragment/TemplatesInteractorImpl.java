@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.templates_fragment;
 
-
 import android.content.Context;
 
 import org.qtum.wallet.datastorage.TinyDB;

@@ -8,16 +8,15 @@ import android.view.View;
 import org.jsoup.nodes.Element;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.news_detail_fragment.LiTagAdapter;
-import org.qtum.wallet.ui.fragment.news_detail_fragment.NewsDetailFragment;
 
 import butterknife.BindView;
 
-
-public class TagUlViewHolder extends TagViewHolder{
+public class TagUlViewHolder extends TagViewHolder {
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @LayoutRes int mResId;
+    @LayoutRes
+    int mResId;
 
     public TagUlViewHolder(View itemView) {
         super(itemView);
@@ -31,8 +30,7 @@ public class TagUlViewHolder extends TagViewHolder{
     @Override
     public void bindElement(Element element) {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
-        LiTagAdapter liTagAdapter = new LiTagAdapter(element.children(),mResId);
+        LiTagAdapter liTagAdapter = new LiTagAdapter(element.children(), mResId);
         mRecyclerView.setAdapter(liTagAdapter);
     }
-
 }

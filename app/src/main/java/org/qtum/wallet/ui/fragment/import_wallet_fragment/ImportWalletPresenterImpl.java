@@ -1,10 +1,8 @@
 package org.qtum.wallet.ui.fragment.import_wallet_fragment;
 
-
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
-import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,7 +13,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.IMPORTING;
-
 
 public class ImportWalletPresenterImpl extends BaseFragmentPresenterImpl implements ImportWalletPresenter {
 
@@ -51,12 +48,11 @@ public class ImportWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
                 .subscribe(new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        getView().setAlertDialog(R.string.error,R.string.cancel, BaseFragment.PopUpType.error);
+                        getView().setAlertDialog(R.string.error, R.string.cancel, BaseFragment.PopUpType.error);
                     }
 
                     @Override
@@ -70,28 +66,28 @@ public class ImportWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
     }
 
     @Override
-    public void onPassphraseChange(String passphrase){
-        if(validatePassphrase(passphrase)){
+    public void onPassphraseChange(String passphrase) {
+        if (validatePassphrase(passphrase)) {
             getView().enableImportButton();
-        }else{
+        } else {
             getView().disableImportButton();
         }
     }
 
-    private boolean validatePassphrase(String passphrase){
+    private boolean validatePassphrase(String passphrase) {
         passphrase = passphrase.trim().replaceAll("[\\s]{2,}", " ");
         Pattern p = Pattern.compile(" ");
         Matcher m = p.matcher(passphrase);
         int counter = 0;
-        while(m.find()) {
+        while (m.find()) {
             counter++;
         }
-        if(counter!=11){
+        if (counter != 11) {
             return false;
         }
         char[] chars = passphrase.replaceAll(" ", "").toCharArray();
         for (char c : chars) {
-            if(!Character.isLetter(c)) {
+            if (!Character.isLetter(c)) {
                 return false;
             }
         }
@@ -111,12 +107,11 @@ public class ImportWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(mSubscription!=null){
+        if (mSubscription != null) {
             mSubscription.unsubscribe();
         }
     }
 
-    //setter for unit-testing
     public void setDataLoaded(boolean dataLoaded) {
         isDataLoaded = dataLoaded;
     }

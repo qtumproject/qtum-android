@@ -4,36 +4,30 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-
-public class ResizeWidthAnimation extends Animation
-{
+public class ResizeWidthAnimation extends Animation {
     private int mWidth;
     private int mStartWidth;
     private View mView;
 
-    public ResizeWidthAnimation(View view, int width)
-    {
+    public ResizeWidthAnimation(View view, int width) {
         mView = view;
         mWidth = width;
         mStartWidth = view.getWidth();
     }
 
     @Override
-    protected void applyTransformation(float interpolatedTime, Transformation t)
-    {
+    protected void applyTransformation(float interpolatedTime, Transformation t) {
         mView.getLayoutParams().width = mStartWidth + (int) ((mWidth - mStartWidth) * interpolatedTime);
         mView.requestLayout();
     }
 
     @Override
-    public void initialize(int width, int height, int parentWidth, int parentHeight)
-    {
+    public void initialize(int width, int height, int parentWidth, int parentHeight) {
         super.initialize(width, height, parentWidth, parentHeight);
     }
 
     @Override
-    public boolean willChangeBounds()
-    {
+    public boolean willChangeBounds() {
         return false;
     }
 }

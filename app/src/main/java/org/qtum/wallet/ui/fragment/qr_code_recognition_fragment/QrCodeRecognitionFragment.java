@@ -9,17 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+
 import com.google.zxing.Result;
 
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-
-public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerView.ResultHandler{
+public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerView.ResultHandler {
 
     private ZXingScannerView mZXingScannerView;
 
@@ -76,7 +78,7 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
         mZXingScannerView.stopCamera();
     }
 
-    public void dismiss(){
+    public void dismiss() {
         getFragmentManager().beginTransaction().remove(this).commit();
     }
 
@@ -106,12 +108,11 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
         if (matcher.find())
             amount = matcher.group(1);
 
-        if(!TextUtils.isEmpty(receiveAddr)) {
+        if (!TextUtils.isEmpty(receiveAddr)) {
             ((SendFragment) getTargetFragment()).onResponse(receiveAddr, Double.valueOf(amount), tokenAddr);
         } else {
             ((SendFragment) getTargetFragment()).onResponseError();
         }
         dismiss();
     }
-
 }

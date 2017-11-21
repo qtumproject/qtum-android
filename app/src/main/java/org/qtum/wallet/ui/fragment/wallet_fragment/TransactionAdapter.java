@@ -4,10 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import org.qtum.wallet.model.gson.history.History;
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 05.07.17.
- */
-
 public abstract class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     protected List<History> mHistoryList;

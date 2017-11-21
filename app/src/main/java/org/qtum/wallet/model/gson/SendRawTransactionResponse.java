@@ -3,7 +3,6 @@ package org.qtum.wallet.model.gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-
 public class SendRawTransactionResponse {
     @SerializedName("result")
     @Expose

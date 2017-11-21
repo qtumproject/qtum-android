@@ -16,16 +16,13 @@ import android.widget.FrameLayout;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.processing_dialog.ProcessingDialogFragment;
 import org.qtum.wallet.utils.ResizeHeightAnimation;
+
 import com.transitionseverywhere.Rotate;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-/**
- * Created by kirillvolkov on 06.07.17.
- */
 
 public class ProcessingDialogFragmentDark extends ProcessingDialogFragment implements Transition.TransitionListener, Animation.AnimationListener {
 
@@ -45,42 +42,40 @@ public class ProcessingDialogFragmentDark extends ProcessingDialogFragment imple
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.lyt_processing_dialog,null);
-        ButterKnife.bind(this,view);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.lyt_processing_dialog, null);
+        ButterKnife.bind(this, view);
         Dialog dialog = new Dialog(getContext());
-        if(dialog.getWindow()!=null) {
+        if (dialog.getWindow() != null) {
             dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         }
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(false);
-        if(dialog.getWindow()!=null) {
+        if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
-
         return dialog;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
         mRotateTransition = new Rotate();
         mRotateTransition.addTarget(mSpinner);
         mRotateTransition.setDuration(300);
         mRotateTransition.addListener(this);
 
-        if(mSpinnerInside.getHeight()==0) {
+        if (mSpinnerInside.getHeight() == 0) {
             mSpinnerInside.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
                     mSpinnerInside.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    appLogoHeight = (appLogoHeight == 0) ?  mSpinnerInside.getHeight() : appLogoHeight;
+                    appLogoHeight = (appLogoHeight == 0) ? mSpinnerInside.getHeight() : appLogoHeight;
                     initializeAnim();
                     doClipBoundsTransition();
                 }
             });
         } else {
-            appLogoHeight = (appLogoHeight == 0) ?  mSpinnerInside.getHeight() : appLogoHeight;
+            appLogoHeight = (appLogoHeight == 0) ? mSpinnerInside.getHeight() : appLogoHeight;
             initializeAnim();
             doClipBoundsTransition();
         }
@@ -92,7 +87,7 @@ public class ProcessingDialogFragmentDark extends ProcessingDialogFragment imple
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private void initializeAnim(){
+    private void initializeAnim() {
         mAnimForward = new ResizeHeightAnimation(mSpinnerInside, 0, appLogoHeight);
         mAnimForward.setDuration(300);
         mAnimForward.setFillEnabled(true);
@@ -106,36 +101,34 @@ public class ProcessingDialogFragmentDark extends ProcessingDialogFragment imple
         mAnimBackward.setAnimationListener(this);
     }
 
-    private void doClipBoundsTransition(){
+    private void doClipBoundsTransition() {
 
-        if(forward_clip) {
+        if (forward_clip) {
             mSpinnerInside.startAnimation(mAnimForward);
-        }else{
+        } else {
             mSpinnerInside.startAnimation(mAnimBackward);
         }
         forward_clip = !forward_clip;
     }
 
-    private void doRotateTransition(){
+    private void doRotateTransition() {
 
-        if(forward_rotate) {
+        if (forward_rotate) {
             TransitionManager.endTransitions(mRootLayout);
             mSpinner.setRotation(0);
             TransitionManager.beginDelayedTransition(mRootLayout, (new Rotate().setDuration(1000)).addListener(this));
             mSpinner.setRotation(180);
 
-        }else {
+        } else {
             TransitionManager.beginDelayedTransition(mRootLayout, (new Rotate().setDuration(1000)).addListener(this));
             mSpinner.setRotation(360);
         }
 
         forward_rotate = !forward_rotate;
-
     }
 
     @Override
     public void onTransitionStart(Transition transition) {
-
     }
 
     @Override
@@ -145,22 +138,18 @@ public class ProcessingDialogFragmentDark extends ProcessingDialogFragment imple
 
     @Override
     public void onTransitionCancel(Transition transition) {
-
     }
 
     @Override
     public void onTransitionPause(Transition transition) {
-
     }
 
     @Override
     public void onTransitionResume(Transition transition) {
-
     }
 
     @Override
     public void onAnimationStart(Animation animation) {
-
     }
 
     @Override
@@ -170,7 +159,5 @@ public class ProcessingDialogFragmentDark extends ProcessingDialogFragment imple
 
     @Override
     public void onAnimationRepeat(Animation animation) {
-
     }
-
 }

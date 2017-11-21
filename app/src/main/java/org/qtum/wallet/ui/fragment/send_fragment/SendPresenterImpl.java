@@ -12,7 +12,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,7 +113,6 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
     public void onDestroyView() {
         super.onDestroyView();
         getView().removePermissionResultListener();
-        //TODO:unsubscribe rx
     }
 
     @Override
@@ -166,7 +164,6 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
     public boolean isAmountValid(String amount) {
         BigDecimal bigAmount = new BigDecimal(amount);
         BigDecimal pattern = new BigDecimal("2").pow(256);
-
         return bigAmount.compareTo(pattern) < 0;
     }
 
@@ -180,9 +177,8 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
         final String fee = validateFee(feeDouble);
         int gasLimit = getView().getGasLimitInput();
         int gasPrice = getView().getGasPriceInput();
-
         if (currency.getName().equals("Qtum " + getView().getStringValue(org.qtum.wallet.R.string.default_currency))) {
-            if(isAmountValid(amount)) {
+            if (isAmountValid(amount)) {
                 getInteractor().sendTx(from, address, amount, fee, getView().getSendTransactionCallback());
             } else {
                 getView().setAlertDialog(getView().getContext().getString(R.string.amount_too_big), getView().getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
@@ -191,22 +187,16 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
             for (final Token token : mTokenList) {
                 String contractAddress = token.getContractAddress();
                 if (contractAddress.equals(((CurrencyToken) currency).getToken().getContractAddress())) {
-
                     String resultAmount = amount;
-
                     if (token.getDecimalUnits() != null) {
                         resultAmount = String.valueOf((int) (Double.valueOf(amount) * Math.pow(10, token.getDecimalUnits())));
                         resultAmount = String.valueOf(Integer.valueOf(resultAmount));
                     }
-
-                    if(!isAmountValid(resultAmount)){
+                    if (!isAmountValid(resultAmount)) {
                         getView().setAlertDialog(getView().getContext().getString(R.string.amount_too_big), getView().getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
                     }
-
                     TokenBalance tokenBalance = getView().getTokenBalance(contractAddress);
-
                     availableAddress = null;
-
                     if (!from.equals("")) {
                         for (Balance balance : tokenBalance.getBalances()) {
                             if (balance.getAddress().equals(from)) {
@@ -226,19 +216,14 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                             }
                         }
                     }
-
-
                     if (!getView().isValidAvailableAddress(availableAddress)) {
                         return;
                     }
-
                     createAbiMethodParams(address, resultAmount, token, fee, gasPrice, gasLimit);
-
                     break;
                 }
             }
         }
-
     }
 
     private void createAbiMethodParams(String address, String resultAmount, final Token token, final String fee, final int gasPrice, final int gasLimit) {
@@ -255,7 +240,6 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                 .subscribe(new Observer<CallSmartContractResponse>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -303,44 +287,26 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
         mNetworkConnectedFlag = networkConnectedFlag;
     }
 
-    /**
-     * Getter for unit tests
-     */
     public double getMinFee() {
         return minFee;
     }
 
-    /**
-     * Getter for unit tests
-     */
     public List<Token> getTokenList() {
         return mTokenList;
     }
 
-    /**
-     * Getter for unit tests
-     */
     public String getAvailableAddress() {
         return availableAddress;
     }
 
-    /**
-     * Setter for unit tests
-     */
     public void setTokenList(List<Token> tokenList) {
         this.mTokenList = tokenList;
     }
 
-    /**
-     * Setter for unit tests
-     */
     public void setMinFee(double minFee) {
         this.minFee = minFee;
     }
 
-    /**
-     * Setter for unit tests
-     */
     public void setMaxFee(double maxFee) {
         this.maxFee = maxFee;
     }

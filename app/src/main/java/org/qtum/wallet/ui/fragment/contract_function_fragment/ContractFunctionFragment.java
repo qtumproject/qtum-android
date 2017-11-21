@@ -39,7 +39,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 public abstract class ContractFunctionFragment extends BaseFragment implements ContractFunctionView {
 
     private ContractFunctionPresenter mContractFunctionPresenterImpl;
@@ -135,17 +134,14 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         mAnimForward.setDuration(300);
         mAnimForward.setFillEnabled(true);
         mAnimForward.setFillAfter(true);
-        //mAnimForward.setAnimationListener(this);
 
         mAnimBackward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, appLogoHeight, 0);
         mAnimBackward.setDuration(300);
         mAnimBackward.setFillEnabled(true);
         mAnimBackward.setFillAfter(true);
-        //mAnimBackward.setAnimationListener(this);
     }
 
     public static BaseFragment newInstance(Context context, String methodName, String uiid, String contractAddress) {
-
         Bundle args = new Bundle();
         args.putString(CONTRACT_TEMPLATE_UIID, uiid);
         args.putString(METHOD_NAME, methodName);
@@ -182,12 +178,10 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -200,12 +194,10 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -218,12 +210,10 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -248,7 +238,6 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         mTextInputEditTextFee.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -274,7 +263,6 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -300,7 +288,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         mMinFee = Double.valueOf(minFee * 100000000).intValue();
         mMaxFee = Double.valueOf(maxFee * 100000000).intValue();
         mSeekBarFee.setMax((mMaxFee - mMinFee) / stepFee);
-        mSeekBarFee.setProgress(10000000-mMinFee);
+        mSeekBarFee.setProgress(10000000 - mMinFee);
     }
 
     @Override
@@ -490,7 +478,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             return DENY;
         }
 
-        private String validateUINT(String content, BigInteger uint){
+        private String validateUINT(String content, BigInteger uint) {
             try {
                 BigInteger num = new BigInteger(content);
                 if ((num.compareTo(BigInteger.ZERO) > 0) && (num.compareTo(uint) < 0)) {

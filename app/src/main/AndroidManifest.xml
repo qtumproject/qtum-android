@@ -3,37 +3,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.qtum.wallet">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-        android:resizeableActivity="false"
-        android:theme="@style/AppTheme"
-        android:allowBackup="true"
         android:name="org.qtum.wallet.QtumApplication"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
+        android:resizeableActivity="false"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/AppTheme"
         tools:targetApi="n">
-        <activity
-            android:theme="@style/AppTheme"
-            android:name="org.qtum.wallet.ui.activity.main_activity.MainActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-        </activity>
+
+        <provider
+            android:name="org.qtum.wallet.utils.GenericFileProvider"
+            android:authorities="org.qtum.wallet.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
 
         <activity
-            android:theme="@style/SplashTheme"
+            android:name="org.qtum.wallet.ui.activity.main_activity.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name="org.qtum.wallet.ui.activity.splash_activity.SplashActivity"
             android:noHistory="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -43,18 +53,17 @@
         <service
             android:name="org.qtum.wallet.dataprovider.services.update_service.UpdateService"
             android:enabled="true"
-            android:exported="true">
-        </service>
+            android:exported="true" />
 
         <service android:name="org.qtum.wallet.dataprovider.firebase.QtumFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
         <service android:name="org.qtum.wallet.dataprovider.firebase.QtumFirebaseInstanceIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 

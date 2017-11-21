@@ -12,7 +12,6 @@ import org.qtum.wallet.model.gson.FeePerKb;
 
 import rx.Observable;
 
-
 class MainActivityInteractorImpl implements MainActivityInteractor {
 
     private Context mContext;
@@ -20,7 +19,7 @@ class MainActivityInteractorImpl implements MainActivityInteractor {
     private boolean isDGPInfoLoaded = false;
     private boolean isFeePerkbLoaded = false;
 
-    MainActivityInteractorImpl(Context context){
+    MainActivityInteractorImpl(Context context) {
         mContext = context;
     }
 
@@ -30,7 +29,7 @@ class MainActivityInteractorImpl implements MainActivityInteractor {
     }
 
     @Override
-    public void clearStatic(){
+    public void clearStatic() {
         KeyStorage.getInstance().clearKeyStorage();
         HistoryList.getInstance().clearHistoryList();
     }
@@ -68,7 +67,7 @@ class MainActivityInteractorImpl implements MainActivityInteractor {
     @Override
     public void setDGPInfo(DGPInfo dgpInfo) {
         isDGPInfoLoaded = true;
-        QtumSharedPreference.getInstance().setMinGasPrice(mContext,dgpInfo.getMingasprice());
+        QtumSharedPreference.getInstance().setMinGasPrice(mContext, dgpInfo.getMingasprice());
     }
 
     @Override

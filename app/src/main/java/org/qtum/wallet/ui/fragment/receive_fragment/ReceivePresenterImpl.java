@@ -48,9 +48,6 @@ public class ReceivePresenterImpl extends BaseFragmentPresenterImpl implements R
         return mReceiveInteractor;
     }
 
-    //qtum:qQMKtb8fs82ZTQwB1PWB8LDffoTKrNkK4z?amount=1.00000000&label=1234&message=mne&tokenAddress=....
-    //qtum:QYxULw7ppJex4uhHoDQbW4jRjYP1vS2CEc?amount=2&label=1234&message=mne&tokenAddress=1e6abee8af69f098aa354802164c79333623b252
-
     @Override
     public void changeAmount(String s) {
         mAmount = s;
@@ -105,7 +102,6 @@ public class ReceivePresenterImpl extends BaseFragmentPresenterImpl implements R
 
     private int moduleWidth = 0;
     private boolean withCrossQR = false;
-
     private int patternWidth = 0;
     private int topOffsetHeight = 0;
     private int leftOffcetWidth = 0;

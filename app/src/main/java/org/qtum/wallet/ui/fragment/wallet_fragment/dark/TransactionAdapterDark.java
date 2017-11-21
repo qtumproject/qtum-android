@@ -12,10 +12,6 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.TransactionClickListener;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 05.07.17.
- */
-
 public class TransactionAdapterDark extends TransactionAdapter {
 
     public TransactionAdapterDark(List<History> historyList, TransactionClickListener listener) {
@@ -24,7 +20,7 @@ public class TransactionAdapterDark extends TransactionAdapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == TYPE_TRANSACTION) {
+        if (viewType == TYPE_TRANSACTION) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater.inflate(org.qtum.wallet.R.layout.item_transaction, parent, false);
             return new TransactionHolderDark(view, listener);
@@ -37,8 +33,8 @@ public class TransactionAdapterDark extends TransactionAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof ProgressBarHolder){
-            ((ProgressBarHolder)holder).bindProgressBar(false);
+        if (holder instanceof ProgressBarHolder) {
+            ((ProgressBarHolder) holder).bindProgressBar(false);
         } else {
             mHistory = mHistoryList.get(position);
             ((TransactionHolderDark) holder).bindTransactionData(mHistory);

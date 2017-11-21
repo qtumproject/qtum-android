@@ -1,17 +1,7 @@
 package org.qtum.wallet.datastorage;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
-
-import com.google.gson.Gson;
-
-import org.qtum.wallet.model.Version;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class QtumSettingSharedPreference {
 
@@ -40,5 +30,4 @@ public class QtumSettingSharedPreference {
     public int getCodeVersion(Context context){
         return context.getSharedPreferences(QTUM_SETTING, Context.MODE_PRIVATE).getInt(MIGRATION_VERSION_STRING, 0);
     }
-
 }

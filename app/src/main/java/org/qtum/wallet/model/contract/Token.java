@@ -1,11 +1,9 @@
 package org.qtum.wallet.model.contract;
 
-
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 
 public class Token extends Contract {
 

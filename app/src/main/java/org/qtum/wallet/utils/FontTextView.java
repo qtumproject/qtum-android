@@ -11,9 +11,6 @@ import android.view.ViewTreeObserver;
 
 import org.qtum.wallet.R;
 
-import java.util.logging.Handler;
-
-
 public class FontTextView extends android.support.v7.widget.AppCompatTextView {
 
     Typeface tf;
@@ -91,5 +88,4 @@ public class FontTextView extends android.support.v7.widget.AppCompatTextView {
         p.setTextSize(getTextSize());
         return p.measureText(number) < allowWidth;
     }
-
 }

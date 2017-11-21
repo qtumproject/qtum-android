@@ -7,12 +7,9 @@ import android.text.TextUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class FontManager {
     private static FontManager instance;
-
     private AssetManager mgr;
-
     private Map<String, Typeface> fonts;
 
     private FontManager(AssetManager _mgr) {
@@ -37,10 +34,8 @@ public class FontManager {
         try {
             font = Typeface.createFromAsset(mgr, asset);
             fonts.put(asset, font);
-        } catch (Exception e) {
-
+        } catch (Exception ignored) {
         }
-
         if (font == null) {
             try {
                 String fixedAsset = fixAssetFilename(asset);
@@ -51,20 +46,14 @@ public class FontManager {
 
             }
         }
-
         return font;
     }
 
     private String fixAssetFilename(String asset) {
-        // Empty font filename?
-        // Just return it. We can't help.
         if (TextUtils.isEmpty(asset))
             return asset;
-
-        // Make sure that the font ends in '.ttf' or '.ttc'
         if (!asset.endsWith(".ttf") && !asset.endsWith(".ttc") && !asset.endsWith(".otf"))
             asset = String.format("%s.ttf", asset);
-
         return asset;
     }
 }

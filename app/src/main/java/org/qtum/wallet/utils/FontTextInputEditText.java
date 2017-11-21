@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 
-
 public class FontTextInputEditText extends TextInputEditText {
     public FontTextInputEditText(Context context) {
         this(context, null);

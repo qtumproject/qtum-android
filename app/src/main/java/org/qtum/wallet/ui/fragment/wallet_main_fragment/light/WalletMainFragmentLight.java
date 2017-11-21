@@ -8,15 +8,16 @@ import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
 
 import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 06.07.17.
- */
-
 public class WalletMainFragmentLight extends WalletMainFragment implements ViewPager.OnPageChangeListener {
 
-    @BindView(org.qtum.wallet.R.id.wallet_indicator) ImageView walletIndicator;
-    @BindView(org.qtum.wallet.R.id.other_tokens_indicator) ImageView otherTokensIndicator;
-    @BindView(org.qtum.wallet.R.id.page_indicator) public View pagerIndicator;
+    @BindView(org.qtum.wallet.R.id.wallet_indicator)
+    ImageView walletIndicator;
+
+    @BindView(org.qtum.wallet.R.id.other_tokens_indicator)
+    ImageView otherTokensIndicator;
+
+    @BindView(org.qtum.wallet.R.id.page_indicator)
+    public View pagerIndicator;
 
     @Override
     protected int getLayout() {
@@ -24,7 +25,8 @@ public class WalletMainFragmentLight extends WalletMainFragment implements ViewP
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
 
     @Override
     public void initializeViews() {
@@ -34,14 +36,15 @@ public class WalletMainFragmentLight extends WalletMainFragment implements ViewP
 
     @Override
     public void onPageSelected(int position) {
-        if(pagerIndicator.getVisibility() == View.VISIBLE) {
+        if (pagerIndicator.getVisibility() == View.VISIBLE) {
             walletIndicator.setImageResource((position == 0) ? org.qtum.wallet.R.drawable.tab_indicator_selected_light : org.qtum.wallet.R.drawable.tab_indicator_default_light);
             otherTokensIndicator.setImageResource((position == 0) ? org.qtum.wallet.R.drawable.tab_indicator_default_light : org.qtum.wallet.R.drawable.tab_indicator_selected_light);
         }
     }
 
     @Override
-    public void onPageScrollStateChanged(int state) {}
+    public void onPageScrollStateChanged(int state) {
+    }
 
     @Override
     public void showPageIndicator() {

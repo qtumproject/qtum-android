@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-
 public class PrefAdapter extends RecyclerView.Adapter<PrefViewHolder> {
 
     protected List<SettingObject> settings;
@@ -17,18 +16,18 @@ public class PrefAdapter extends RecyclerView.Adapter<PrefViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if(position < settings.size()-1) {
+        if (position < settings.size() - 1) {
             if (settings.get(position).getSectionNumber() == settings.get(position + 1).getSectionNumber()) {
                 return 0; //divider
             } else {
-                return 1; //sectior
+                return 1; //section
             }
         } else {
             return 1; //section
         }
     }
 
-    public PrefAdapter(final List<SettingObject> settings, OnSettingClickListener listener, int resId){
+    public PrefAdapter(final List<SettingObject> settings, OnSettingClickListener listener, int resId) {
         this.settings = settings;
         this.listener = listener;
         this.resId = resId;

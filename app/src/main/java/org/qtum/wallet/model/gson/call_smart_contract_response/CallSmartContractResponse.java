@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-
 public class CallSmartContractResponse {
     @SerializedName("items")
     @Expose
@@ -15,7 +14,6 @@ public class CallSmartContractResponse {
      * Constructor for unit testing
      */
     public CallSmartContractResponse() {
-
     }
 
     /**
@@ -32,5 +30,4 @@ public class CallSmartContractResponse {
     public void setItems(List<Item> items) {
         this.items = items;
     }
-
 }

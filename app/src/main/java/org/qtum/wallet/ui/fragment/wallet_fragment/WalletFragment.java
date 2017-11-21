@@ -60,34 +60,46 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     protected int totalItemCount;
     protected int pastVisibleItems;
     protected boolean mLoadingFlag = false;
+
     @BindView(R.id.recycler_view)
     protected RecyclerView mRecyclerView;
+
     @BindView(R.id.swipe_refresh)
     protected SwipeRefreshLayout mSwipeRefreshLayout;
+
     @BindView(R.id.app_bar)
     protected AppBarLayout mAppBarLayout;
+
     @BindView(R.id.bt_qr_code)
     protected ImageButton mButtonQrCode;
+
     @BindView(R.id.tv_wallet_name)
     protected TextView mTextViewWalletName;
+
     @BindView(R.id.fade_divider_root)
     RelativeLayout fadeDividerRoot;
+
     @BindView(R.id.tv_public_key)
     protected FontTextView publicKeyValue;
-    //HEADER
+
     @BindView(R.id.tv_balance)
     protected FontTextView balanceValue;
+
     @BindView(R.id.ll_balance)
     protected LinearLayout balanceLayout;
+
     @BindView(R.id.available_balance_title)
     protected FontTextView balanceTitle;
+
     @BindView(R.id.tv_unconfirmed_balance)
     protected FontTextView uncomfirmedBalanceValue;
+
     @BindView(R.id.unconfirmed_balance_title)
     protected FontTextView uncomfirmedBalanceTitle;
-    //HEADER
+
     @BindView(R.id.balance_view)
     protected FrameLayout balanceView;
+
     @BindView(R.id.toolbar_layout)
     protected CollapsingToolbarLayout collapsingToolbar;
 
@@ -103,7 +115,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
             @Override
             public void onServiceConnectionChange(boolean isConnecting) {
@@ -120,7 +131,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                             return getPresenter().getVisibility();
                         }
                     });
-
                     initBalanceListener();
                 }
             }
@@ -136,7 +146,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                 }
             }
         });
-
         mNetworkStateReceiver = getMainActivity().getNetworkReceiver();
         mNetworkStateListener = new NetworkStateListener() {
             @Override
@@ -183,7 +192,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     public void onReceiveClick() {
         BaseFragment receiveFragment = ReceiveFragment.newInstance(getContext(), null, null);
         openFragmentForResult(receiveFragment);
-
     }
 
     @OnClick(R.id.iv_choose_address)
@@ -243,7 +251,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     public void initializeViews() {
         super.initializeViews();
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

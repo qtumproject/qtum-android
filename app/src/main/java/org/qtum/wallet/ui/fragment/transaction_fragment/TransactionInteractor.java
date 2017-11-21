@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.transaction_fragment;
 
-
 import org.qtum.wallet.model.gson.history.History;
 
 public interface TransactionInteractor {
@@ -9,5 +8,4 @@ public interface TransactionInteractor {
     String getFullDate(long l);
 
     String getUnconfirmedDate();
-
 }

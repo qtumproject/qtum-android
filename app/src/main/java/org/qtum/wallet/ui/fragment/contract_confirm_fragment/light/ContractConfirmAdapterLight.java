@@ -13,15 +13,10 @@ import org.qtum.wallet.ui.fragment.contract_confirm_fragment.OnValueClick;
 
 import java.util.List;
 
-/**
- * Created by kirillvolkov on 25.07.17.
- */
-
 public class ContractConfirmAdapterLight extends ContractConfirmAdapter {
     ContractConfirmAdapterLight(List<ContractMethodParameter> params, String mineAddress, OnValueClick clickListener) {
         super(params, mineAddress, clickListener);
     }
-
 
     @Override
     protected RecyclerView.ViewHolder getItemView(LayoutInflater inflater, ViewGroup parent) {
@@ -35,11 +30,10 @@ public class ContractConfirmAdapterLight extends ContractConfirmAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof ContractConfirmViewHolder) {
+        if (holder instanceof ContractConfirmViewHolder) {
             ((ContractConfirmViewHolder) holder).bind(getItem(position));
-        } else if(holder instanceof ContractConfirmFooterViewHolder) {
-            ((ContractConfirmFooterViewHolder)holder).bind(mineAddress);
+        } else if (holder instanceof ContractConfirmFooterViewHolder) {
+            ((ContractConfirmFooterViewHolder) holder).bind(mineAddress);
         }
     }
-
 }

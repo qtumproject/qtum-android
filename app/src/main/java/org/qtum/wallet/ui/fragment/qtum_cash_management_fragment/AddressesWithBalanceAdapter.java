@@ -9,7 +9,6 @@ import org.qtum.wallet.model.AddressWithBalance;
 
 import java.util.List;
 
-
 public class AddressesWithBalanceAdapter extends RecyclerView.Adapter<AddressWithBalanceHolder> {
 
     protected List<AddressWithBalance> mDeterministicKeyWithBalance;

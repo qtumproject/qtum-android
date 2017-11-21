@@ -24,24 +24,23 @@ import butterknife.OnClick;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
-
 public class ShareDialogFragment extends AppCompatDialogFragment {
 
     public static String ABI = "S_ABI";
     public static String ADDR = "S_ADDR";
 
     @OnClick(R.id.btn_ok)
-    public void onCancelClick(){
+    public void onCancelClick() {
         dismiss();
     }
 
     @OnClick(R.id.copy_addr_btn)
-    public void onCopyAddrClick(){
+    public void onCopyAddrClick() {
         onClipBoard(address.getText().toString());
     }
 
     @OnClick(R.id.copy_abi_btn)
-    public void onCopyAbiClick(){
+    public void onCopyAbiClick() {
         onClipBoard(abi.getText().toString());
     }
 
@@ -54,8 +53,8 @@ public class ShareDialogFragment extends AppCompatDialogFragment {
     public static ShareDialogFragment newInstance(String addr, String abi) {
         Bundle args = new Bundle();
         ShareDialogFragment fragment = new ShareDialogFragment();
-        args.putSerializable(ADDR,addr);
-        args.putSerializable(ABI,abi);
+        args.putSerializable(ADDR, addr);
+        args.putSerializable(ABI, abi);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,7 +63,7 @@ public class ShareDialogFragment extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        if(dialog.getWindow()!=null) {
+        if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
         return dialog;
@@ -73,7 +72,7 @@ public class ShareDialogFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate((ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)? R.layout.lyt_view_share_abi_address : R.layout.lyt_view_share_abi_address_light), container, false);
+        View view = inflater.inflate((ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK) ? R.layout.lyt_view_share_abi_address : R.layout.lyt_view_share_abi_address_light), container, false);
         ButterKnife.bind(this, view);
         address.setText(getArguments().getString(ADDR));
         abi.setText(getArguments().getString(ABI));
@@ -86,10 +85,10 @@ public class ShareDialogFragment extends AppCompatDialogFragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void onClipBoard(String str){
+    public void onClipBoard(String str) {
         ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", str);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(getContext(), R.string.copied,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.copied, Toast.LENGTH_SHORT).show();
     }
 }

@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;
@@ -21,6 +21,7 @@ import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -82,9 +83,7 @@ public abstract class ContractManagementFragment extends BaseFragment implements
     @Override
     public void initializeViews() {
         super.initializeViews();
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         tvContractAddress.setText(getContractAddress());
     }
 
@@ -103,7 +102,7 @@ public abstract class ContractManagementFragment extends BaseFragment implements
         return getArguments().getString(CONTRACT_ADDRESS);
     }
 
-    Contract getContractByAddress(String contractAddress){
+    Contract getContractByAddress(String contractAddress) {
         return getPresenter().getContractByAddress(contractAddress);
     }
 
@@ -124,7 +123,7 @@ public abstract class ContractManagementFragment extends BaseFragment implements
         MethodViewHolder(View itemView, boolean needToGetValue) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            if(needToGetValue) {
+            if (needToGetValue) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -132,17 +131,16 @@ public abstract class ContractManagementFragment extends BaseFragment implements
                         openFragment(contractFunctionFragment);
                     }
                 });
-            }else {
+            } else {
                 arrowIcon.setVisibility(View.GONE);
                 itemView.setClickable(false);
             }
         }
 
-        void bindMethod(ContractMethod contractMethod){
+        void bindMethod(ContractMethod contractMethod) {
             mContractMethod = contractMethod;
             mTextViewName.setText(contractMethod.name);
         }
-
     }
 
     class PropertiesViewHolder extends RecyclerView.ViewHolder {
@@ -164,10 +162,10 @@ public abstract class ContractManagementFragment extends BaseFragment implements
             ButterKnife.bind(this, itemView);
         }
 
-        void bindProperty(ContractMethod contractMethod){
+        void bindProperty(ContractMethod contractMethod) {
             mTextViewPropertyName.setText(contractMethod.name);
             mContractMethod = contractMethod;
-            if(needToGetValue) {
+            if (needToGetValue) {
                 ContractManagementHelper.getPropertyValue(getContractByAddress(getContractAddress()), mContractMethod, new ContractManagementHelper.GetPropertyValueCallBack() {
                     @Override
                     public void onSuccess(String value) {
@@ -181,10 +179,9 @@ public abstract class ContractManagementFragment extends BaseFragment implements
                 itemView.setClickable(false);
             }
         }
-
     }
 
-    public class MethodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    public class MethodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private List<ContractMethod> contractMethods;
 
@@ -196,7 +193,7 @@ public abstract class ContractManagementFragment extends BaseFragment implements
 
         boolean needToGetValue;
 
-        public MethodAdapter(List<ContractMethod> list, int resIdProperty, int resIdMethod, boolean needToGetValue){
+        public MethodAdapter(List<ContractMethod> list, int resIdProperty, int resIdMethod, boolean needToGetValue) {
             contractMethods = list;
             mResIdMethod = resIdMethod;
             mResIdProperty = resIdProperty;
@@ -206,9 +203,9 @@ public abstract class ContractManagementFragment extends BaseFragment implements
         @Override
         public int getItemViewType(int position) {
             ContractMethod contractMethod = contractMethods.get(position);
-            if(contractMethod.constant && (contractMethod.getInputParams().size() == 0)){
+            if (contractMethod.constant && (contractMethod.getInputParams().size() == 0)) {
                 return TYPE_PROPERTY;
-            } else{
+            } else {
                 return TYPE_METHOD;
             }
         }
@@ -229,9 +226,9 @@ public abstract class ContractManagementFragment extends BaseFragment implements
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if(holder instanceof PropertiesViewHolder){
+            if (holder instanceof PropertiesViewHolder) {
                 ((PropertiesViewHolder) holder).bindProperty(contractMethods.get(position));
-            } else if(holder instanceof MethodViewHolder){
+            } else if (holder instanceof MethodViewHolder) {
                 ((MethodViewHolder) holder).bindMethod(contractMethods.get(position));
             }
         }

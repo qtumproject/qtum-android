@@ -19,7 +19,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-
 public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl implements ContractConfirmPresenter {
 
     private ContractConfirmView view;
@@ -73,7 +72,6 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                 .subscribe(new Observer<String>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -96,7 +94,6 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                 .subscribe(new Subscriber<List<UnspentOutput>>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -106,7 +103,6 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
-
                         for (Iterator<UnspentOutput> iterator = unspentOutputs.iterator(); iterator.hasNext(); ) {
                             UnspentOutput unspentOutput = iterator.next();
                             if (!unspentOutput.isOutputAvailableToPay()) {
@@ -119,7 +115,6 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                                 return unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? -1 : 0;
                             }
                         });
-//TODO
                         TransactionHashWithSender transactionHash = getInteractor().createTransactionHash(abiParams, unspentOutputs, gasLimit, gasPrice, fee);
                         sendTx(transactionHash.getTransactionHash(), transactionHash.getSender());
                     }
@@ -141,7 +136,6 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                             @Override
                             public void onButton2Click() {
-
                             }
                         });
                     }
@@ -153,7 +147,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
-                        getInteractor().saveContract(sendRawTransactionResponse.getTxid(),mContractTemplateUiid,getView().getContractName(),senderAddress);
+                        getInteractor().saveContract(sendRawTransactionResponse.getTxid(), mContractTemplateUiid, getView().getContractName(), senderAddress);
                     }
                 });
     }

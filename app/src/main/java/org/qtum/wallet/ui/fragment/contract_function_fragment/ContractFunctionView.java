@@ -5,7 +5,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 import java.util.List;
 
-
 public interface ContractFunctionView extends BaseFragmentView {
     void setUpParameterList(List<ContractMethodParameter> contractMethodParameterList);
 

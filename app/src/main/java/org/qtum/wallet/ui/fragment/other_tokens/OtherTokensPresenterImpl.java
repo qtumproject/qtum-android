@@ -9,7 +9,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-
 public class OtherTokensPresenterImpl extends BaseFragmentPresenterImpl implements OtherTokensPresenter {
     private OtherTokensView view;
     private OtherTokensInteractor interactor;

@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.addresses_fragment;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +23,6 @@ public abstract class AddressesFragment extends BaseFragment implements Addresse
     @BindView(R.id.recycler_view)
     protected
     RecyclerView mRecyclerView;
-
 
     @OnClick({R.id.ibt_back})
     public void onClick(View view) {

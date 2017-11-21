@@ -11,8 +11,7 @@ import android.util.Log;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
-
-public class PinEntryEditText extends com.alimuzaffar.lib.pin.PinEntryEditText{
+public class PinEntryEditText extends com.alimuzaffar.lib.pin.PinEntryEditText {
 
     public PinEntryEditText(Context context) {
         super(context);
@@ -36,13 +35,7 @@ public class PinEntryEditText extends com.alimuzaffar.lib.pin.PinEntryEditText{
 
         mMaxLength = getMaxLength(filters);
         mNumChars = mMaxLength;
-        if(mMaxLength>0) {
-//            mOriginalTextColors = getTextColors();
-//            if (mOriginalTextColors != null) {
-//                mLastCharPaint.setColor(mOriginalTextColors.getDefaultColor());
-//                mCharPaint.setColor(mOriginalTextColors.getDefaultColor());
-//                mSingleCharPaint.setColor(getCurrentHintTextColor());
-//            }
+        if (mMaxLength > 0) {
             int availableWidth = getWidth() - ViewCompat.getPaddingEnd(this) - ViewCompat.getPaddingStart(this);
             if (mSpace < 0) {
                 mCharSize = (availableWidth / (mNumChars * 2 - 1));
@@ -81,11 +74,10 @@ public class PinEntryEditText extends com.alimuzaffar.lib.pin.PinEntryEditText{
                 mCharBottom[i] = mLineCoords[i].bottom - mTextBottomPadding;
             }
         }
-        //requestLayout();
         invalidate();
     }
 
-    public int getMaxLength(InputFilter[] filters){
+    public int getMaxLength(InputFilter[] filters) {
         int maxLength = -1;
         for (InputFilter filter : filters) {
             if (filter instanceof InputFilter.LengthFilter) {

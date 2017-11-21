@@ -9,10 +9,6 @@ import org.qtum.wallet.utils.DateCalculator;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-/**
- * Created by drevnitskaya on 06.10.17.
- */
-
 public class TemplateLibraryInteractorImpl implements TemplateLibraryInteractor {
 
     private WeakReference<Context> mContext;

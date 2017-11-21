@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.contract_confirm_fragment;
 
-
 import android.content.Context;
 
 import org.bitcoinj.script.Script;
@@ -24,18 +23,18 @@ import java.util.List;
 
 import rx.Observable;
 
-class ContractConfirmInteractorImpl implements ContractConfirmInteractor{
+class ContractConfirmInteractorImpl implements ContractConfirmInteractor {
 
     Context mContext;
 
-    ContractConfirmInteractorImpl(Context context){
+    ContractConfirmInteractorImpl(Context context) {
         mContext = context;
     }
 
     @Override
     public Observable<String> createAbiConstructParams(List<ContractMethodParameter> contractMethodParameterList, String uiid) {
         ContractBuilder contractBuilder = new ContractBuilder();
-        return contractBuilder.createAbiConstructParams(contractMethodParameterList, uiid ,mContext);
+        return contractBuilder.createAbiConstructParams(contractMethodParameterList, uiid, mContext);
     }
 
     @Override
@@ -60,7 +59,7 @@ class ContractConfirmInteractorImpl implements ContractConfirmInteractor{
                     saveToken(tinyDB, txid, contractTemplateUiid, contractName, senderAddress);
                 } else {
                     saveContract(tinyDB, txid, contractTemplateUiid, contractName, senderAddress);
-                    if(contractTemplate.getContractType().equals("crowdsale")){
+                    if (contractTemplate.getContractType().equals("crowdsale")) {
                         saveToken(tinyDB, txid, contractTemplateUiid, contractName, senderAddress);
                     }
                 }
@@ -68,14 +67,14 @@ class ContractConfirmInteractorImpl implements ContractConfirmInteractor{
         }
     }
 
-    private void saveToken(TinyDB tinyDB, String txid,String contractTemplateUiid, String contractName, String senderAddress) {
+    private void saveToken(TinyDB tinyDB, String txid, String contractTemplateUiid, String contractName, String senderAddress) {
         Token token = new Token(ContractBuilder.generateContractAddress(txid), contractTemplateUiid, false, null, senderAddress, contractName);
         List<Token> tokenList = tinyDB.getTokenList();
         tokenList.add(token);
         tinyDB.putTokenList(tokenList);
     }
 
-    private void saveContract(TinyDB tinyDB, String txid,String contractTemplateUiid, String contractName, String senderAddress) {
+    private void saveContract(TinyDB tinyDB, String txid, String contractTemplateUiid, String contractName, String senderAddress) {
         Contract contract = new Contract(ContractBuilder.generateContractAddress(txid), contractTemplateUiid, false, null, senderAddress, contractName);
         List<Contract> contractList = tinyDB.getContractListWithoutToken();
         contractList.add(contract);

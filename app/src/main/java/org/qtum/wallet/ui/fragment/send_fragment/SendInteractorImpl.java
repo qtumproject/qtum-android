@@ -21,7 +21,6 @@ import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
-import org.qtum.wallet.model.gson.DGPInfo;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
@@ -64,7 +63,6 @@ public class SendInteractorImpl implements SendInteractor {
                 .subscribe(new Subscriber<List<UnspentOutput>>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -103,7 +101,6 @@ public class SendInteractorImpl implements SendInteractor {
                 .subscribe(new Subscriber<List<UnspentOutput>>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -148,11 +145,9 @@ public class SendInteractorImpl implements SendInteractor {
                 ECKey myKey = KeyStorage.getInstance().getCurrentKey();
                 BigDecimal amount = new BigDecimal(amountString);
                 BigDecimal fee = new BigDecimal(feeString);
-
                 BigDecimal amountFromOutput = new BigDecimal("0.0");
                 BigDecimal overFlow = new BigDecimal("0.0");
                 transaction.addOutput(Coin.valueOf((long) (amount.multiply(bitcoin).doubleValue())), addressToSend);
-
                 amount = amount.add(fee);
 
                 for (UnspentOutput unspentOutput : unspentOutputs) {
@@ -169,38 +164,31 @@ public class SendInteractorImpl implements SendInteractor {
                 if (delivery.doubleValue() != 0.0) {
                     transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), myKey.toAddress(CurrentNetParams.getNetParams()));
                 }
-
                 for (UnspentOutput unspentOutput : unspentOutputs) {
-                        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
-                            if (deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString().equals(unspentOutput.getAddress())) {
-                                Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
-                                TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
-                                Script script = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
-                                transaction.addSignedInput(outPoint, script, deterministicKey, Transaction.SigHash.ALL, true);
-                                amountFromOutput = amountFromOutput.add(unspentOutput.getAmount());
-                                break;
-                            }
+                    for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
+                        if (deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString().equals(unspentOutput.getAddress())) {
+                            Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
+                            TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
+                            Script script = new Script(Utils.parseAsHexOrBase58(unspentOutput.getTxoutScriptPubKey()));
+                            transaction.addSignedInput(outPoint, script, deterministicKey, Transaction.SigHash.ALL, true);
+                            amountFromOutput = amountFromOutput.add(unspentOutput.getAmount());
+                            break;
                         }
+                    }
                     if (amountFromOutput.doubleValue() >= amount.doubleValue()) {
                         break;
                     }
                 }
-
-
                 transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
                 transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
-
                 byte[] bytes = transaction.unsafeBitcoinSerialize();
-
                 int txSizeInkB = (int) Math.ceil(bytes.length / 1024.);
                 BigDecimal minimumFee = (estimateFeePerKb.multiply(new BigDecimal(txSizeInkB)));
                 if (minimumFee.doubleValue() > fee.doubleValue()) {
                     callBack.onError(mContext.getString(R.string.insufficient_fee_lease_use_minimum_of) + " " + minimumFee.toString() + " QTUM");
                     return;
                 }
-
                 String transactionHex = Hex.toHexString(bytes);
-
                 callBack.onSuccess(transactionHex);
             }
 
@@ -213,8 +201,6 @@ public class SendInteractorImpl implements SendInteractor {
 
     @Override
     public void sendTx(final String from, final String address, final String amount, final String fee, final SendTxCallBack callBack) {
-
-
         createTx(from, address, amount, fee, getFeePerKb(), new CreateTxCallBack() {
             @Override
             public void onSuccess(String txHex) {
@@ -226,8 +212,6 @@ public class SendInteractorImpl implements SendInteractor {
                 callBack.onError(error);
             }
         });
-
-
     }
 
     @Override
@@ -238,7 +222,6 @@ public class SendInteractorImpl implements SendInteractor {
                 .subscribe(new Subscriber<SendRawTransactionResponse>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -290,7 +273,6 @@ public class SendInteractorImpl implements SendInteractor {
                 return token.getContractName();
             }
         }
-
         return null;
     }
 
@@ -322,8 +304,7 @@ public class SendInteractorImpl implements SendInteractor {
 
     @Override
     public Observable<CallSmartContractResponse> callSmartContractObservable(Token token, String hash, String fromAddress) {
-
-        return QtumService.newInstance().callSmartContract(token.getContractAddress(), new CallSmartContractRequest(new String[]{hash},fromAddress));
+        return QtumService.newInstance().callSmartContract(token.getContractAddress(), new CallSmartContractRequest(new String[]{hash}, fromAddress));
     }
 
     @Override

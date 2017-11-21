@@ -1,4 +1,3 @@
-
 package org.qtum.wallet.model.gson.history;
 
 import com.google.gson.annotations.Expose;
@@ -18,15 +17,16 @@ public class HistoryResponse {
     public Integer getTotalItems() {
         return totalItems;
     }
-     public void setTotalItems(Integer totalItems) {
-         this.totalItems = totalItems;
-     }
-     public List<History> getItems() {
-         return items;
-     }
+
+    public void setTotalItems(Integer totalItems) {
+        this.totalItems = totalItems;
+    }
+
+    public List<History> getItems() {
+        return items;
+    }
 
     public void setItems(List<History> items) {
         this.items = items;
     }
-
 }

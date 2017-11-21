@@ -26,9 +26,7 @@ public class AddressListInteractorImpl implements AddressListInteractor {
     }
 
     @Override
-    public Observable<List<UnspentOutput>> getUnspentOutputs(List<String> addresses){
+    public Observable<List<UnspentOutput>> getUnspentOutputs(List<String> addresses) {
         return QtumService.newInstance().getUnspentOutputsForSeveralAddresses(addresses);
     }
-
-
 }

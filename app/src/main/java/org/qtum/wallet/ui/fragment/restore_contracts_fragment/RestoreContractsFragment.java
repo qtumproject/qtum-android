@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.restore_contracts_fragment;
 
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -49,7 +48,6 @@ import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 
-
 public abstract class RestoreContractsFragment extends BaseFragment implements RestoreContractsView {
     private final int FILE_SELECT_CODE = 0;
     private final int READ_EXTERNAL_STORAGE_CODE = 1;
@@ -59,8 +57,6 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
     private AlertDialog mRestoreDialog;
     private File mRestoreFile;
     private Subscription s;
-
-    private boolean isSelectedFile = false;
 
     @BindView(org.qtum.wallet.R.id.rl_back_up_file)
     protected
@@ -83,7 +79,6 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
     @BindView(org.qtum.wallet.R.id.iv_restore_icon)
     protected
     ImageView mImageViewRestoreIcon;
-
 
     @OnClick({org.qtum.wallet.R.id.rl_back_up_file, org.qtum.wallet.R.id.cb_restore_templates, org.qtum.wallet.R.id.cb_restore_contracts, org.qtum.wallet.R.id.cb_restore_tokens, org.qtum.wallet.R.id.cb_restore_all, org.qtum.wallet.R.id.iv_restore_icon, org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.bt_restore})
     public void onClick(View view) {
@@ -164,7 +159,6 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mUpdateService = getMainActivity().getUpdateService();
-
         getMainActivity().addActivityResultListener(new MainActivity.ActivityResultListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -186,9 +180,7 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
                                 if (mInputPFD != null) {
                                     FileDescriptor fd = mInputPFD.getFileDescriptor();
                                     FileInputStream fis = new FileInputStream(fd);
-
                                     Uri uri = data.getData();
-
                                     String fileName = "";
                                     Cursor cursor = null;
                                     try {
@@ -203,13 +195,10 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
                                             cursor.close();
                                         }
                                     }
-
                                     mRestoreFile = new File(getContext().getFilesDir(), fileName);
-
                                     byte[] buffer;
                                     buffer = new byte[fis.available()];
                                     fis.read(buffer);
-
                                     OutputStream outStream = new FileOutputStream(mRestoreFile);
                                     outStream.write(buffer);
                                     outStream.flush();
@@ -219,7 +208,6 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
                                 e.printStackTrace();
                                 return;
                             }
-
                         }
                         String name = mRestoreFile.getName();
                         if (getFileExtension(name) != null) {
@@ -233,7 +221,6 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
 
                                     @Override
                                     public void onButton2Click() {
-
                                     }
                                 });
                                 return;
@@ -258,21 +245,17 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
         });
     }
 
-
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-
         try {
             startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
         } catch (android.content.ActivityNotFoundException ex) {
-            // Potentially direct the user to the Market with a Dialog
             Toast.makeText(getView().getContext(), "Please install a File Manager.",
                     Toast.LENGTH_SHORT).show();
         }
     }
-
 
     @Override
     public void onDestroyView() {
@@ -352,7 +335,6 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
         if (mRestoreDialog.getWindow() != null) {
             mRestoreDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
-
         mRestoreDialog.setCanceledOnTouchOutside(false);
         mRestoreDialog.show();
     }
@@ -367,7 +349,6 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
                     .subscribe(new Observer<Boolean>() {
                         @Override
                         public void onCompleted() {
-
                         }
 
                         @Override
@@ -391,7 +372,6 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
 
                                     @Override
                                     public void onButton2Click() {
-
                                     }
                                 });
                             } else {
@@ -416,7 +396,6 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
 
             @Override
             public void onButton2Click() {
-
             }
         };
     }
@@ -430,5 +409,4 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
     public void subscribeTokenBalanceChange(String contractAddress) {
         mUpdateService.subscribeTokenBalanceChange(contractAddress);
     }
-
 }

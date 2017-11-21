@@ -32,43 +32,32 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-
 public class FileStorageManager {
 
     private static FileStorageManager _instance;
-
     private final static String TAG = "STORAGE MANAGER: ";
-
     private final static String prefMigrationBuildVersion = "migration_buid_version";
-
     private final static String CROWDSALE = "Crowdsale";
     private final static String QRC20TOKENSTANDART = "QRC20TokenStandard";
     private final static String HUMANSTANDARDTOKEN = "HumanStandardToken";
-
     public final static String HUMANSTANDARDTOKENUUID = "human-standard-token-identifire";
     private final static String QRC20TOKENSTANDARTUUID = "qrc20-token-identifire";
     private final static String CROWDSALEUUID = "crowdsale-identifire";
-
     private static String[] STANDARD_CONTRACTS = {CROWDSALE, HUMANSTANDARDTOKEN, QRC20TOKENSTANDART};
     private static String[] STANDARD_UUIDS = {CROWDSALEUUID, HUMANSTANDARDTOKENUUID, QRC20TOKENSTANDARTUUID};
-
     private HashMap<String, String> standardUUIDs;
-
     private static String abiContract = "abi-contract";
     private static String byteCodeContract = "bitecode-contract";
     private static String sourceContract = "source-contract";
-
     private static String TYPE = "type";
     private static String CONSTRUCTOR_TYPE = "constructor";
     private static String FUNCTION_TYPE = "function";
-
     private static String CONTRACTS_PACKAGE = "contracts";
 
     public static FileStorageManager getInstance() {
         if (_instance == null) {
             _instance = new FileStorageManager();
         }
-
         return _instance;
     }
 
@@ -92,22 +81,18 @@ public class FileStorageManager {
         File contractDir = getPackagePath(cw, CONTRACTS_PACKAGE);
         File mFileDirectory = new File(String.format("%s/%s", contractDir.getAbsolutePath(), packageName));
 
-        boolean v = mFileDirectory.mkdir();
+        mFileDirectory.mkdir();
 
         File fullPath = new File(mFileDirectory, fileName);
 
         if (!fullPath.exists()) {
-
             try {
-
                 FileOutputStream fOut = new FileOutputStream(fullPath, true);
                 OutputStreamWriter osw = new OutputStreamWriter(fOut);
-
                 osw.write(fileContent);
                 osw.flush();
                 osw.close();
             } catch (IOException e) {
-
                 e.printStackTrace();
                 return false;
             }
@@ -193,7 +178,6 @@ public class FileStorageManager {
         return readContract(context, uiid, sourceContract);
     }
 
-    //    READ DEFAULT CONTRACTS
     private String readAbiContractAsset(Context context, String packageName) {
         return readFromAsset(context, packageName, abiContract);
     }
@@ -205,7 +189,6 @@ public class FileStorageManager {
     private String readSourceContractAsset(Context context, String packageName) {
         return readFromAsset(context, packageName, sourceContract);
     }
-//    READ DEFAULT CONTRACTS
 
     private boolean migrateContract(Context context, String contractName, String packageName) {
         boolean result;
@@ -426,5 +409,4 @@ public class FileStorageManager {
 
         return contractTemplate;
     }
-
 }

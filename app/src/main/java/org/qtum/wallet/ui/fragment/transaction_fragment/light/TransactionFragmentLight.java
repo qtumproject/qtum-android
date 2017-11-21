@@ -1,15 +1,13 @@
 package org.qtum.wallet.ui.fragment.transaction_fragment.light;
 
 import android.widget.ImageView;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 
 import java.util.List;
-import butterknife.BindView;
 
-/**
- * Created by kirillvolkov on 11.07.17.
- */
+import butterknife.BindView;
 
 public class TransactionFragmentLight extends TransactionFragment {
 
@@ -46,8 +44,8 @@ public class TransactionFragmentLight extends TransactionFragment {
         colorHeader();
     }
 
-    void colorHeader(){
-        if(isSend){
+    void colorHeader() {
+        if (isSend) {
             getMainActivity().recolorStatusBar(R.color.title_lt_green_color);
             toolbarLayout.setBackgroundResource(R.drawable.transaction_back_confirmed);
         } else {
@@ -56,8 +54,8 @@ public class TransactionFragmentLight extends TransactionFragment {
         }
     }
 
-    void checkConfirmation(boolean confirmed){
-        if(confirmed){
+    void checkConfirmation(boolean confirmed) {
+        if (confirmed) {
             confirmIcon.setImageResource(R.drawable.ic_confirmed_light);
             notConfFlag.setText(R.string.confirmed);
         } else {

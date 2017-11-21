@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.template_library_fragment.dark;
 
-
 import org.qtum.wallet.model.ContractTemplate;
 import org.qtum.wallet.ui.fragment.template_library_fragment.TemplateLibraryFragment;
 

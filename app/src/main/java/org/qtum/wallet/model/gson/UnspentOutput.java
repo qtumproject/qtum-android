@@ -1,4 +1,3 @@
-
 package org.qtum.wallet.model.gson;
 
 import com.google.gson.annotations.Expose;
@@ -7,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 
 public class UnspentOutput {
-
     @SerializedName("address")
     @Expose
     private String address;
@@ -40,7 +38,6 @@ public class UnspentOutput {
     }
 
     public UnspentOutput() {
-
     }
 
     /**
@@ -72,7 +69,6 @@ public class UnspentOutput {
         this.vout = vout;
     }
 
-
     public String getTxoutScriptPubKey() {
         return txoutScriptPubKey;
     }
@@ -88,7 +84,6 @@ public class UnspentOutput {
     public void setTxHash(String txHash) {
         this.txHash = txHash;
     }
-
 
     public String getPubkeyHash() {
         return pubkeyHash;

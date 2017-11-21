@@ -2,8 +2,7 @@ package org.qtum.wallet.model;
 
 import org.qtum.wallet.model.contract.Token;
 
-
-public class CurrencyToken extends Currency{
+public class CurrencyToken extends Currency {
 
     private Token mToken;
 
