@@ -30,7 +30,10 @@ import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStat
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
+import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenBalanceChangeListener;
 import org.qtum.wallet.model.Currency;
+import org.qtum.wallet.model.CurrencyToken;
+import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -38,6 +41,7 @@ import org.qtum.wallet.ui.fragment.currency_fragment.CurrencyFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinDialogFragment;
 import org.qtum.wallet.ui.fragment.qr_code_recognition_fragment.QrCodeRecognitionFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
+import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.ResizeHeightAnimation;
@@ -47,6 +51,10 @@ import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public abstract class SendFragment extends BaseFragment implements SendView {
 
@@ -102,6 +110,8 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     TextView placeHolderBalance;
     @BindView(org.qtum.wallet.R.id.tv_placeholder_not_confirmed_balance_value)
     TextView placeHolderBalanceNotConfirmed;
+    @BindView(R.id.tv_placeholder_symbol)
+    TextView placeHolderSymbol;
 
     @BindView(R.id.gas_management_container)
     RelativeLayout mRelativeLayoutGasManagementContainer;
@@ -169,16 +179,33 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         }
     };
 
+    TokenBalanceChangeListener mTokenBalanceChangeListener = new TokenBalanceChangeListener() {
+        @Override
+        public void onBalanceChange(TokenBalance tokenBalance) {
+            getPresenter().handleBalanceChanges(new BigDecimal(0), tokenBalance.getTotalBalance());
+        }
+    };
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getMainActivity().setIconChecked(3);
+        String currency = getArguments().getString(CURRENCY, "");
+        if (!currency.equals("")) {
+            getPresenter().searchAndSetUpCurrency(currency);
+        }
         getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
             @Override
             public void onServiceConnectionChange(boolean isConnecting) {
                 if (isConnecting) {
                     mUpdateService = getUpdateService();
-                    mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
+                    if(mCurrency!=null) {
+                        if(mCurrency.getName().equals("Qtum " + getString(R.string.default_currency))) {
+                            mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
+                        } else {
+                            mUpdateService.addTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(),mTokenBalanceChangeListener);
+                        }
+                    }
                 }
             }
         });
@@ -207,10 +234,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         super.onResume();
         isQrCodeRecognition(getArguments().getBoolean(IS_QR_CODE_RECOGNITION));
         getArguments().putBoolean(IS_QR_CODE_RECOGNITION, false);
-        String currency = getArguments().getString(CURRENCY, "");
-        if (!currency.equals("")) {
-            getPresenter().searchAndSetUpCurrency(currency);
-        }
+
         if (OPEN_QR_CODE_FRAGMENT_FLAG) {
             openQrCodeFragment();
         }
@@ -416,7 +440,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
             public void onButton2Click() {
                 mTextInputEditTextAddress.setText("");
                 mTextInputEditTextAmount.setText("");
-                mCurrency = new Currency("Qtum " + getContext().getString(R.string.default_currency));
+                setUpCurrencyField(new Currency("Qtum " + getContext().getString(R.string.default_currency)));
                 mTextViewCurrency.setText(mCurrency.getName());
                 sendFrom = false;
                 getArguments().putString(ADDRESS_FROM, "");
@@ -591,15 +615,51 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         setAlertDialog(getString(org.qtum.wallet.R.string.error_qrcode_recognition_try_again), "Ok", PopUpType.error);
     }
 
+
+    Subscription mSubscription;
+
     @Override
     public void setUpCurrencyField(Currency currency) {
+        if(mSubscription!=null){
+            mSubscription.unsubscribe();
+        }
+        if(mUpdateService!=null){
+            if (mCurrency.getName().equals("Qtum " + getString(R.string.default_currency))) {
+                mUpdateService.removeBalanceChangeListener(mBalanceChangeListener);
+            } else {
+                mUpdateService.removeTokenBalanceChangeListener(((CurrencyToken)mCurrency).getToken().getContractAddress(),mTokenBalanceChangeListener);
+            }
+        }
         mLinearLayoutCurrency.setVisibility(View.VISIBLE);
         mTextViewCurrency.setText(currency.getName());
         mCurrency = currency;
-        if (mCurrency.getName().equals("Qtum " + getString(R.string.default_currency))) {
+
+        if (currency.getName().equals("Qtum " + getString(R.string.default_currency))) {
             mRelativeLayoutGasManagementContainer.setVisibility(View.GONE);
+            placeHolderSymbol.setText("QTUM");
+            if(mUpdateService!=null)
+                mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
         } else {
             mRelativeLayoutGasManagementContainer.setVisibility(View.VISIBLE);
+            mSubscription = ContractManagementHelper.getPropertyValue("symbol", ((CurrencyToken) mCurrency).getToken(), getContext())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<String>() {
+                        @Override
+                        public void onCompleted() {
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+
+                        @Override
+                        public void onNext(String string) {
+                            placeHolderSymbol.setText(string);
+                        }
+                    });
+            if(mUpdateService!=null)
+                mUpdateService.addTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(),mTokenBalanceChangeListener);
         }
     }
 
@@ -689,9 +749,9 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     public void handleBalanceUpdating(String balanceString, BigDecimal unconfirmedBalance) {
         String unconfirmedBalanceString = unconfirmedBalance.toString();
         if (!TextUtils.isEmpty(unconfirmedBalanceString) && !unconfirmedBalanceString.equals("0")) {
-            updateBalance(String.format("%S QTUM", balanceString), String.format("%S QTUM", String.valueOf(unconfirmedBalance.floatValue())));
+            updateBalance(balanceString, String.valueOf(unconfirmedBalance.floatValue()));
         } else {
-            updateBalance(String.format("%S QTUM", balanceString), null);
+            updateBalance(balanceString, null);
         }
     }
 

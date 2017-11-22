@@ -16,6 +16,9 @@ public class Token extends Contract {
     @SerializedName("decimal_units")
     private Integer decimalUnits;
 
+    @SerializedName("name")
+    private String name;
+
     public Token(String contractAddress, String templateUiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName) {
         super(contractAddress, templateUiid, hasBeenCreated, date, senderAddress, contractName);
         this.mIsSubscribe = true;
@@ -98,6 +101,14 @@ public class Token extends Contract {
 
     public BigDecimal getTokenBalanceWithDecimalUnits() {
         return mLastBalance.divide(new BigDecimal(10).pow((decimalUnits != null) ? decimalUnits.intValue() : 0), MathContext.DECIMAL128);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

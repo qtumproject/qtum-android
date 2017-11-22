@@ -12,6 +12,10 @@ import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 public class TokenInteractorImpl implements TokenInteractor {
     private WeakReference<Context> mContext;
 
@@ -30,23 +34,35 @@ public class TokenInteractorImpl implements TokenInteractor {
     }
 
     @Override
-    public void setupPropertyTotalSupplyValue(Token token, ContractManagementHelper.GetPropertyValueCallBack totalSupplyValueCallback) {
-        ContractManagementHelper.getPropertyValue(TokenFragment.totalSupply, token, mContext.get(), totalSupplyValueCallback);
+    public void setupPropertyTotalSupplyValue(Token token, Subscriber<String> stringSubscriber) {
+        ContractManagementHelper.getPropertyValue(TokenFragment.totalSupply, token, mContext.get())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stringSubscriber);
     }
 
     @Override
-    public void setupPropertyDecimalsValue(Token token, ContractManagementHelper.GetPropertyValueCallBack decimalsValueCallback) {
-        ContractManagementHelper.getPropertyValue(TokenFragment.decimals, token, mContext.get(), decimalsValueCallback);
+    public void setupPropertyDecimalsValue(Token token, Subscriber<String> stringSubscriber) {
+        ContractManagementHelper.getPropertyValue(TokenFragment.decimals, token, mContext.get())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stringSubscriber);
     }
 
     @Override
-    public void setupPropertySymbolValue(Token token, ContractManagementHelper.GetPropertyValueCallBack symbolValueCallback) {
-        ContractManagementHelper.getPropertyValue(TokenFragment.symbol, token, mContext.get(), symbolValueCallback);
+    public void setupPropertySymbolValue(Token token, Subscriber<String> stringSubscriber) {
+        ContractManagementHelper.getPropertyValue(TokenFragment.symbol, token, mContext.get())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stringSubscriber);
     }
 
     @Override
-    public void setupPropertyNameValue(Token token, ContractManagementHelper.GetPropertyValueCallBack nameValueCallback) {
-        ContractManagementHelper.getPropertyValue(TokenFragment.name, token, mContext.get(), nameValueCallback);
+    public void setupPropertyNameValue(Token token, Subscriber<String> stringSubscriber) {
+        ContractManagementHelper.getPropertyValue(TokenFragment.name, token, mContext.get())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stringSubscriber);
     }
 
     @Override

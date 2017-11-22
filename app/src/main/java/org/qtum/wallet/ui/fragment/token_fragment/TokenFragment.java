@@ -27,6 +27,7 @@ import org.qtum.wallet.utils.FontTextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import rx.Subscriber;
 
 public abstract class TokenFragment extends BaseFragment implements TokenView {
 
@@ -232,44 +233,84 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
     }
 
     @Override
-    public ContractManagementHelper.GetPropertyValueCallBack getTotalSupplyValueCallback() {
-        return new ContractManagementHelper.GetPropertyValueCallBack() {
+    public Subscriber<String> getTotalSupplyValueCallback() {
+        return new Subscriber<String>() {
             @Override
-            public void onSuccess(String value) {
-                onContractPropertyUpdated(TokenFragment.totalSupply, presenter.onTotalSupplyPropertySuccess(getPresenter().getToken(), value));
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                onContractPropertyUpdated(TokenFragment.totalSupply, presenter.onTotalSupplyPropertySuccess(getPresenter().getToken(), s));
             }
         };
     }
 
     @Override
-    public ContractManagementHelper.GetPropertyValueCallBack getDecimalsValueCallback() {
-        return new ContractManagementHelper.GetPropertyValueCallBack() {
+    public Subscriber<String> getDecimalsValueCallback() {
+        return new Subscriber<String>() {
             @Override
-            public void onSuccess(String value) {
-                onContractPropertyUpdated(TokenFragment.decimals, value);
-                if (value != null) {
-                    getPresenter().onDecimalsPropertySuccess(value);
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                onContractPropertyUpdated(TokenFragment.decimals, s);
+                if (s != null) {
+                    getPresenter().onDecimalsPropertySuccess(s);
                 }
             }
         };
     }
 
     @Override
-    public ContractManagementHelper.GetPropertyValueCallBack getSymbolValueCallback() {
-        return new ContractManagementHelper.GetPropertyValueCallBack() {
+    public Subscriber<String> getSymbolValueCallback() {
+        return new Subscriber<String>() {
             @Override
-            public void onSuccess(String value) {
-                onContractPropertyUpdated(TokenFragment.symbol, value);
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                onContractPropertyUpdated(TokenFragment.symbol, s);
             }
         };
     }
 
     @Override
-    public ContractManagementHelper.GetPropertyValueCallBack getNameValueCallback() {
-        return new ContractManagementHelper.GetPropertyValueCallBack() {
+    public Subscriber<String> getNameValueCallback() {
+        return new Subscriber<String>() {
             @Override
-            public void onSuccess(String value) {
-                onContractPropertyUpdated(TokenFragment.name, value);
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                onContractPropertyUpdated(TokenFragment.name, s);
             }
         };
     }

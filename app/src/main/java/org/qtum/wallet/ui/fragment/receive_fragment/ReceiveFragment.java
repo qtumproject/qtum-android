@@ -161,8 +161,15 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (getTokenBalance() == null) {
-            mUpdateService = getMainActivity().getUpdateService();
-            mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
+        getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
+            @Override
+            public void onServiceConnectionChange(boolean isConnecting) {
+                if(isConnecting) {
+                    mUpdateService = getMainActivity().getUpdateService();
+                    mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
+                }
+            }
+        });
         } else {
             updateBalance(getTokenBalance(), null);
         }

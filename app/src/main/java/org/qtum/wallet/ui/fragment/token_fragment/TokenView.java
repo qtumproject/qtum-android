@@ -3,6 +3,8 @@ package org.qtum.wallet.ui.fragment.token_fragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 import org.qtum.wallet.utils.ContractManagementHelper;
 
+import rx.Subscriber;
+
 public interface TokenView extends BaseFragmentView {
     void setBalance(String balance);
 
@@ -20,11 +22,11 @@ public interface TokenView extends BaseFragmentView {
 
     boolean isAbiEmpty(String abi);
 
-    ContractManagementHelper.GetPropertyValueCallBack getNameValueCallback();
+    Subscriber<String> getNameValueCallback();
 
-    ContractManagementHelper.GetPropertyValueCallBack getSymbolValueCallback();
+    Subscriber<String> getSymbolValueCallback();
 
-    ContractManagementHelper.GetPropertyValueCallBack getDecimalsValueCallback();
+    Subscriber<String> getDecimalsValueCallback();
 
-    ContractManagementHelper.GetPropertyValueCallBack getTotalSupplyValueCallback();
+    Subscriber<String> getTotalSupplyValueCallback();
 }
