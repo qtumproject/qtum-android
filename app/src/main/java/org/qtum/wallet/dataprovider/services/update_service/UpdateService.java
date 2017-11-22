@@ -85,6 +85,14 @@ public class UpdateService extends Service {
     private BigDecimal unconfirmedBalance;
     private BigDecimal balance;
 
+    public String getBalance(){
+        return balance != null? balance.toString() : null;
+    }
+
+    public String getUnconfirmedBalance(){
+        return unconfirmedBalance != null? unconfirmedBalance.toString() : null;
+    }
+
     private String mFirebasePrevToken;
     private String mFirebaseCurrentToken;
 

@@ -10,4 +10,7 @@ import java.util.List;
 
 public interface WearableMessagingProvider {
     List<History> getOperations();
+    String getBalance();
+    String getUnconfirmedBalance();
+    String getAddress();
 }

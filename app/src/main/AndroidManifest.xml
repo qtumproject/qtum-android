@@ -23,7 +23,7 @@
         android:theme="@style/AppTheme"
         tools:targetApi="n">
         <provider
-            android:name=".utils.GenericFileProvider"
+            android:name="org.qtum.wallet.utils.GenericFileProvider"
             android:authorities="org.qtum.wallet.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -32,14 +32,14 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity
-            android:name=".ui.activity.main_activity.MainActivity"
+        <org.qtum.wallet.activity
+            android:name=".ui.org.qtum.wallet.activity.main_activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".ui.activity.splash_activity.SplashActivity"
+        <org.qtum.wallet.activity
+            android:name=".ui.org.qtum.wallet.activity.splash_activity.SplashActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
@@ -48,7 +48,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </org.qtum.wallet.activity>
 
         <service
             android:name=".dataprovider.services.update_service.UpdateService"

@@ -83,7 +83,7 @@
             android:background="@drawable/bottom_vav_view_tab_selected_drawable"
             android:gravity="left|center_vertical"
             android:padding="8dp"
-            android:text="@string/activity"
+            android:text="@string/org.qtum.wallet.activity"
             android:textColor="@color/colorPrimary" />
 
             <android.support.v4.widget.SwipeRefreshLayout

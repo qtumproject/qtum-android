@@ -32,7 +32,7 @@
                 android:layout_height="32dp"
                 android:gravity="left|center_vertical"
                 android:padding="8dp"
-                android:text="@string/activity"
+                android:text="@string/org.qtum.wallet.activity"
                 android:textColor="@color/grey70" />
 
             <RelativeLayout

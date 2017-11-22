@@ -44,6 +44,7 @@ import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStat
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.datastorage.HistoryList;
+import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.activity.splash_activity.SplashActivity;
@@ -727,5 +728,20 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     @Override
     public List<History> getOperations() {
         return HistoryList.getInstance().getHistoryList();
+    }
+
+    @Override
+    public String getBalance() {
+        return mUpdateService != null? mUpdateService.getBalance() : null;
+    }
+
+    @Override
+    public String getUnconfirmedBalance() {
+        return mUpdateService != null? mUpdateService.getUnconfirmedBalance() : null;
+    }
+
+    @Override
+    public String getAddress() {
+        return KeyStorage.getInstance().getCurrentAddress();
     }
 }

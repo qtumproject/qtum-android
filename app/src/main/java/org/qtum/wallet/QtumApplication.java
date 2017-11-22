@@ -1,10 +1,7 @@
 package org.qtum.wallet;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 

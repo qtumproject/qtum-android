@@ -15,7 +15,7 @@
     <string name="qtum">QTUM</string>
     <string name="receive">Receive</string>
     <string name="send">Send</string>
-    <string name="activity">Activity</string>
+    <string name="org.qtum.wallet.activity">Activity</string>
     <string name="receiver_s_address">Receiver\'s Address</string>
     <string name="amount">Amount</string>
     <string name="available_balance">"Available Balance"</string>
