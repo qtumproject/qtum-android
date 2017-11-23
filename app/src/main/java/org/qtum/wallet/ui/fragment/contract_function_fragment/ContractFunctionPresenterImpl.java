@@ -66,6 +66,18 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
     @Override
     public void onCallClick(List<ContractMethodParameter> contractMethodParameterList, final String contractAddress, final String fee, final int gasLimit, final int gasPrice, String methodName) {
         getView().setProgressDialog();
+        for(ContractMethodParameter contract: contractMethodParameterList){
+            if(contract.getValue().isEmpty()){
+                getView().setAlertDialog("Invalid parameter", "Empty value","Cancel", BaseFragment.PopUpType.error);
+                return;
+            }
+            if(contract.getType().equals("address")){
+                if(contract.getValue().length()<24){
+                    getView().setAlertDialog("Invalid parameter", "Minimum address length is 24", "Cancel",BaseFragment.PopUpType.error);
+                    return;
+                }
+            }
+        }
         final Contract contract = getInteractor().getContractByAddress(contractAddress);
         getInteractor().callSmartContractObservable(methodName, contractMethodParameterList, contract)
                 .subscribeOn(Schedulers.io())
@@ -95,7 +107,7 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
                                     BaseFragment.PopUpType.error);
                             return;
                         }
-                        createTx(respWrapper.getAbiParams(), /*TODO callSmartContractResponse.getItems().get(0).getGasUsed()*/ gasLimit, gasPrice, fee.replace(',', '.'),
+                        createTx(respWrapper.getAbiParams(), gasLimit, gasPrice, fee.replace(',', '.'),
                                 getInteractor().getFeePerKb(), contract);
                     }
                 });
