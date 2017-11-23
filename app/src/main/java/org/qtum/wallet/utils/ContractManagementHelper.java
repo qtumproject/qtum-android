@@ -19,20 +19,17 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class ContractManagementHelper {
 
     public static Observable<String> getPropertyValue(final String propName, final Contract contract, final Context context) {
 
-        return  Observable.fromCallable(new Callable<Pair<String[], ContractMethod>>() {
+        return Observable.fromCallable(new Callable<Pair<String[], ContractMethod>>() {
             @Override
-            public Pair<String[], ContractMethod>call() throws Exception {
+            public Pair<String[], ContractMethod> call() throws Exception {
                 final ContractMethod contractMethod = getContractMethod(contract.getUiid(), propName, context);
-                return new Pair<>(getHash(contractMethod.name),contractMethod);
+                return new Pair<>(getHash(contractMethod.name), contractMethod);
             }
         }).flatMap(new Func1<Pair<String[], ContractMethod>, Observable<String>>() {
             @Override
@@ -48,26 +45,25 @@ public class ContractManagementHelper {
         });
     }
 
-    public static void getPropertyValue(final Contract contract, final ContractMethod contractMethod, final GetPropertyValueCallBack callBack) {
-        String[] hashes = getHash(contractMethod.name);
+    public static Observable<String> getPropertyValue(final Contract contract, final ContractMethod contractMethod) {
 
-        QtumService.newInstance().callSmartContract(contract.getContractAddress(), new CallSmartContractRequest(hashes, contract.getSenderAddress()))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<CallSmartContractResponse>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-
-                    @Override
-                    public void onNext(CallSmartContractResponse callSmartContractResponse) {
-                        callBack.onSuccess(processResponse(contractMethod.outputParams, callSmartContractResponse.getItems().get(0).getOutput()));
-                    }
-                });
+        return Observable.fromCallable(new Callable<String[]>() {
+            @Override
+            public String[] call() throws Exception {
+                return getHash(contractMethod.name);
+            }
+        }).flatMap(new Func1<String[], Observable<String>>() {
+            @Override
+            public Observable<String> call(String[] strings) {
+                return QtumService.newInstance().callSmartContract(contract.getContractAddress(), new CallSmartContractRequest(strings, contract.getSenderAddress()))
+                        .map(new Func1<CallSmartContractResponse, String>() {
+                            @Override
+                            public String call(CallSmartContractResponse callSmartContractResponse) {
+                                return processResponse(contractMethod.outputParams, callSmartContractResponse.getItems().get(0).getOutput());
+                            }
+                        });
+            }
+        });
     }
 
     private static String[] getHash(final String name) {

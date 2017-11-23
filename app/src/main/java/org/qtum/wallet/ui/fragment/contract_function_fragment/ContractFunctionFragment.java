@@ -34,6 +34,8 @@ import org.qtum.wallet.utils.ResizeHeightAnimation;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -104,14 +106,14 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
     private ResizeHeightAnimation mAnimBackward;
     boolean showing = false;
 
-    @OnClick({org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.cancel, org.qtum.wallet.R.id.call, R.id.bt_edit_close})
+    @OnClick({R.id.ibt_back, R.id.cancel, R.id.call, R.id.bt_edit_close})
     public void onClick(View view) {
         switch (view.getId()) {
-            case org.qtum.wallet.R.id.cancel:
-            case org.qtum.wallet.R.id.ibt_back:
+            case R.id.cancel:
+            case R.id.ibt_back:
                 getActivity().onBackPressed();
                 break;
-            case org.qtum.wallet.R.id.call:
+            case R.id.call:
                 getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_ADDRESS), mTextInputEditTextFee.getText().toString(),
                         Integer.valueOf(mFontTextViewGasLimit.getText().toString()), Integer.valueOf(mFontTextViewGasPrice.getText().toString()), getArguments().getString(METHOD_NAME));
                 break;
@@ -331,6 +333,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         private final String TYPE_UINT64 = "uint64";
         private final String TYPE_UINT128 = "uint128";
         private final String TYPE_UINT256 = "uint256";
+        private final String TYPE_ADDRESS = "address";
 
         private String DENY = "";
         private String ALLOW = null;
@@ -367,6 +370,8 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
                             return validateUINT(content, uint128);
                         case TYPE_UINT256:
                             return validateUINT(content, uint256);
+                        case TYPE_ADDRESS:
+                            return validateAddress(content);
 
                         default:
                             parameter.setValue(content);
@@ -378,13 +383,13 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             }
         };
 
-        @BindView(org.qtum.wallet.R.id.til_param)
+        @BindView(R.id.til_param)
         TextInputLayout tilParam;
 
-        @BindView(org.qtum.wallet.R.id.et_param)
+        @BindView(R.id.et_param)
         TextInputEditText etParam;
 
-        @BindView(org.qtum.wallet.R.id.checkbox)
+        @BindView(R.id.checkbox)
         AppCompatCheckBox checkBox;
 
         public ParameterViewHolder(View itemView) {
@@ -450,6 +455,15 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
                 etParam.setInputType(inputType);
 
             }
+        }
+
+        private String validateAddress(String content){
+            Pattern pattern = Pattern.compile("^[qQ][a-km-zA-HJ-NP-Z1-9]{0,33}$");
+            Matcher matcher = pattern.matcher(content);
+            if (!matcher.matches()) {
+                return "";
+            }
+            return null;
         }
 
         private String validateINT(String content) {

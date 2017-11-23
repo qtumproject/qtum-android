@@ -10,6 +10,8 @@ import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 import org.qtum.wallet.model.gson.DGPInfo;
 import org.qtum.wallet.model.gson.FeePerKb;
 
+import java.math.BigDecimal;
+
 import rx.Observable;
 
 class MainActivityInteractorImpl implements MainActivityInteractor {
@@ -73,6 +75,6 @@ class MainActivityInteractorImpl implements MainActivityInteractor {
     @Override
     public void setFeePerKb(FeePerKb feePerKb) {
         isFeePerkbLoaded = true;
-        QtumSharedPreference.getInstance().setFeePerKb(mContext, feePerKb.getFeePerKb().toPlainString());
+        QtumSharedPreference.getInstance().setFeePerKb(mContext, feePerKb.getFeePerKb().setScale(5, BigDecimal.ROUND_HALF_DOWN).toPlainString());
     }
 }
