@@ -73,7 +73,7 @@ public class UpdateService extends Service {
     private NotificationManager notificationManager;
     private TransactionListener mTransactionListener = null;
     private List<BalanceChangeListener> mBalanceChangeListeners = new ArrayList<>();
-    private HashMap<String, TokenBalanceChangeListener> mStringTokenBalanceChangeListenerHashMap = new HashMap<>();
+    private HashMap<String, List<TokenBalanceChangeListener>> mStringTokenBalanceChangeListenerHashMap = new HashMap<>();
     private HashMap<String, TokenBalance> mAllTokenBalanceList = new HashMap<>();
     private TokenListener mTokenListener;
     private ContractPurchaseListener mContractPurchaseListener;
@@ -291,8 +291,8 @@ public class UpdateService extends Service {
             mAllTokenBalanceList.put(tokenBalance.getContractAddress(), tokenBalance);
         }
 
-        TokenBalanceChangeListener tokenBalanceChangeListener = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
-        if (tokenBalanceChangeListener != null) {
+        List<TokenBalanceChangeListener> tokenBalanceChangeListeners = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
+        for(TokenBalanceChangeListener tokenBalanceChangeListener : tokenBalanceChangeListeners){
             tokenBalanceChangeListener.onBalanceChange(tokenBalance);
         }
     }
@@ -544,7 +544,10 @@ public class UpdateService extends Service {
     }
 
     public void addTokenBalanceChangeListener(String address, TokenBalanceChangeListener tokenBalanceChangeListener) {
-        mStringTokenBalanceChangeListenerHashMap.put(address, tokenBalanceChangeListener);
+        if(mStringTokenBalanceChangeListenerHashMap.get(address)==null){
+            mStringTokenBalanceChangeListenerHashMap.put(address, new ArrayList<TokenBalanceChangeListener>());
+        }
+        mStringTokenBalanceChangeListenerHashMap.get(address).add(tokenBalanceChangeListener);
         TokenBalance tokenBalance = mAllTokenBalanceList.get(address);
         if (tokenBalance != null) {
             tokenBalanceChangeListener.onBalanceChange(tokenBalance);
@@ -555,8 +558,8 @@ public class UpdateService extends Service {
         return mAllTokenBalanceList.get(address);
     }
 
-    public void removeTokenBalanceChangeListener(String address) {
-        mStringTokenBalanceChangeListenerHashMap.remove(address);
+    public void removeTokenBalanceChangeListener(String address, TokenBalanceChangeListener tokenBalanceChangeListener) {
+        mStringTokenBalanceChangeListenerHashMap.get(address).remove(tokenBalanceChangeListener);
     }
 
     public void removeBalanceChangeListener(BalanceChangeListener balanceChangeListener) {

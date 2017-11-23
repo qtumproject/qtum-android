@@ -407,6 +407,8 @@ public abstract class RestoreContractsFragment extends BaseFragment implements R
 
     @Override
     public void subscribeTokenBalanceChange(String contractAddress) {
-        mUpdateService.subscribeTokenBalanceChange(contractAddress);
+        if(mUpdateService!=null) {
+            mUpdateService.subscribeTokenBalanceChange(contractAddress);
+        }
     }
 }

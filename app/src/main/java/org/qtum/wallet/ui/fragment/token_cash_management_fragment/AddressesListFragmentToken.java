@@ -52,7 +52,7 @@ public abstract class AddressesListFragmentToken extends BaseFragment implements
         getSocketInstance().addTokenBalanceChangeListener(getPresenter().getContractAddress(), new TokenBalanceChangeListener() {
             @Override
             public void onBalanceChange(TokenBalance tokenBalance) {
-                getSocketInstance().removeTokenBalanceChangeListener(tokenBalance.getContractAddress());
+                getSocketInstance().removeTokenBalanceChangeListener(tokenBalance.getContractAddress(), this);
                 getPresenter().setTokenBalance(tokenBalance);
                 getPresenter().processTokenBalances(tokenBalance);
                 getHandler().post((Runnable) getPresenter());

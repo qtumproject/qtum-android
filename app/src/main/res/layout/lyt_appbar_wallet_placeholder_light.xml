@@ -26,16 +26,30 @@
             android:gravity="center"
             android:layout_height="match_parent" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true">
         <org.qtum.wallet.utils.FontTextView
             android:textColor="@color/white"
             android:textSize="12sp"
-            android:layout_alignParentRight="true"
             android:id="@+id/tv_placeholder_balance_value"
             app:typefaceAsset="@string/proximaNovaRegular"
-            android:text="0.0 QTUM"
+            android:text="0.0"
             android:layout_width="wrap_content"
             android:gravity="center"
             android:layout_height="match_parent" />
+
+            <org.qtum.wallet.utils.FontTextView
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:id="@+id/tv_placeholder_symbol"
+                app:typefaceAsset="@string/proximaNovaRegular"
+                android:text="QTUM"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
     </RelativeLayout>
 
