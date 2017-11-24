@@ -53,13 +53,22 @@ public class HistoryViewHolder extends WearableRecyclerView.ViewHolder {
         } else {
             mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.unconfirmed));
         }
-        if (history.getChangeInBalance().doubleValue() > 0) {
-            mTextViewID.setText(history.getTxHash());
-            mImageViewIcon.setImageResource(R.drawable.ic_receive);
+        if(history.getChangeInBalance() != null) {
+            if (history.getChangeInBalance().doubleValue() > 0) {
+                mTextViewID.setText(history.getTxHash());
+                mImageViewIcon.setImageResource(R.drawable.ic_receive);
+            } else {
+                mTextViewID.setText(history.getTxHash());
+                mImageViewIcon.setImageResource(R.drawable.ic_sent);
+            }
         } else {
-            mTextViewID.setText(history.getTxHash());
-            mImageViewIcon.setImageResource(R.drawable.ic_sent);
+            mTextViewID.setText("NULL");
+            mImageViewIcon.setImageResource(R.drawable.red_point);
         }
-        mTextViewValue.setText(String.format("%s QTUM", history.getChangeInBalance().toString()));
+        if(history.getChangeInBalance() != null) {
+            mTextViewValue.setText(String.format("%s QTUM",history.getChangeInBalance().toString()));
+        } else {
+            mTextViewValue.setText(String.format("%s QTUM","null"));
+        }
     }
 }

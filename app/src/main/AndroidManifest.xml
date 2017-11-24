@@ -32,14 +32,14 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <org.qtum.wallet.activity
-            android:name=".ui.org.qtum.wallet.activity.main_activity.MainActivity"
+        <activity
+            android:name=".ui.activity.main_activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
-        <org.qtum.wallet.activity
-            android:name=".ui.org.qtum.wallet.activity.splash_activity.SplashActivity"
+        <activity
+            android:name=".ui.activity.splash_activity.SplashActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
@@ -48,28 +48,36 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </org.qtum.wallet.activity>
+        </activity>
 
         <service
             android:name=".dataprovider.services.update_service.UpdateService"
             android:enabled="true"
             android:exported="true" />
+
+        <service
+            android:name=".dataprovider.services.update_service.WatchUpdateService"
+            android:enabled="true"
+            android:exported="true" />
+
         <service android:name=".dataprovider.firebase.QtumFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <service android:name=".dataprovider.firebase.QtumFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
-        <service android:name=".WearListCallListenerService">
+        <service android:name="org.qtum.wallet.WearListCallListenerService" android:enabled="true" android:exported="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
                 <data android:scheme="wear" android:host="*" android:pathPrefix="/get_history" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/stop_service" />
             </intent-filter>
         </service>
 

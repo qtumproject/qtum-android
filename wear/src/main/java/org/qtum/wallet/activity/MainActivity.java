@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
 import android.support.wearable.activity.WearableActivity;
@@ -15,6 +16,8 @@ import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.DataMapItem;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 
 import org.qtum.wallet.R;
@@ -33,7 +36,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends WearableActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        DataApi.DataListener, ItemClickListener, HeaderClickListener {
+        DataApi.DataListener, ItemClickListener, HeaderClickListener, MessageApi.MessageListener {
 
     public static final String ITEMS = "items";
     public static final String BALANCE = "balance";
@@ -74,16 +77,10 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (mApiClient != null && !(mApiClient.isConnected() || mApiClient.isConnecting()))
-            mApiClient.connect();
-    }
-
-    @Override
     protected void onStop() {
         if (mApiClient != null) {
             if (mApiClient.isConnected()) {
+                Wearable.MessageApi.sendMessage(mApiClient, "/stop_service", "/stop_service", null);
                 mApiClient.disconnect();
             }
         }
@@ -104,13 +101,16 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        if (mApiClient != null && !(mApiClient.isConnected() || mApiClient.isConnecting()))
+        if (mApiClient != null && !(mApiClient.isConnected() || mApiClient.isConnecting())) {
             mApiClient.connect();
+        }
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Wearable.DataApi.addListener(mApiClient, this);
+        Wearable.MessageApi.addListener(mApiClient, this);
+        Wearable.MessageApi.sendMessage(mApiClient, "/get_history", "/get_history", null);
     }
 
     private void removeListeners() {
@@ -144,6 +144,7 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
                     @Override
                     public void run() {
                         MainActivity.this.headerData = DataStorage.getHeaderData(MainActivity.this);
+                        adapter.setHeaderData(MainActivity.this.headerData);
                         adapter.updateHistory(histories);
                     }
                 });
@@ -164,4 +165,12 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
         intent.putExtra(ADDRESS, headerData.getAddress());
         startActivity(intent);
     }
+
+    @Override
+    public void onMessageReceived(MessageEvent messageEvent) {
+        if (messageEvent.getPath().contains("/app_started")) {
+            Wearable.MessageApi.sendMessage(mApiClient, "/stop_service", "/stop_service", null);
+        }
+    }
+
 }

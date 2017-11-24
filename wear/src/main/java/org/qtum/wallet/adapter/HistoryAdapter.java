@@ -39,6 +39,10 @@ public class HistoryAdapter extends WearableRecyclerView.Adapter {
         this.headerClickListener = headerClickListener;
     }
 
+    public void setHeaderData(HeaderData headerData){
+        this.headerData = headerData;
+    }
+
     public void updateHistory(List<History> items) {
         this.items = items;
         notifyDataSetChanged();

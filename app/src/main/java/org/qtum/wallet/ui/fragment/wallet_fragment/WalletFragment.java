@@ -284,7 +284,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @Override
     protected void createPresenter() {
-        mWalletFragmentPresenter = new WalletPresenterImpl(this, new WalletInteractorImpl());
+        mWalletFragmentPresenter = new WalletPresenterImpl(this, new WalletInteractorImpl(getContext()));
     }
 
     @Override
