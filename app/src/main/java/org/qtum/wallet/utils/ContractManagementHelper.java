@@ -3,7 +3,7 @@ package org.qtum.wallet.utils;
 import android.content.Context;
 import android.util.Pair;
 
-import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;

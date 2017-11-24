@@ -377,25 +377,35 @@ public class ContractBuilder {
         return new Script(program);
     }
 
-    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String feeString, Context context) {
+    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String feeString, String sendToContractString,Context context) {
         Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
-        transaction.addOutput(Coin.ZERO, script);
+
         BigDecimal fee = new BigDecimal(feeString);
         BigDecimal gasFee = (new BigDecimal(gasLimit)).multiply(new BigDecimal(gasPrice)).divide(new BigDecimal(100000000), MathContext.DECIMAL128);
-        BigDecimal totalFee = fee.add(gasFee);
+        BigDecimal totalAmount = fee.add(gasFee);
         BigDecimal amountFromOutput = new BigDecimal("0.0");
         BigDecimal overFlow = new BigDecimal("0.0");
+        BigDecimal bitcoin = new BigDecimal(100000000);
+
+        if(sendToContractString.isEmpty()) {
+            transaction.addOutput(Coin.ZERO, script);
+        } else {
+            BigDecimal sendToContract = new BigDecimal(sendToContractString).multiply(bitcoin);
+            transaction.addOutput(Coin.valueOf((long) (sendToContract.doubleValue())), script);
+            totalAmount = totalAmount.add(sendToContract);
+        }
+
         for (UnspentOutput unspentOutput : unspentOutputs) {
             overFlow = overFlow.add(unspentOutput.getAmount());
-            if (overFlow.doubleValue() >= totalFee.doubleValue()) {
+            if (overFlow.doubleValue() >= totalAmount.doubleValue()) {
                 break;
             }
         }
-        if (overFlow.doubleValue() < totalFee.doubleValue()) {
+        if (overFlow.doubleValue() < totalAmount.doubleValue()) {
             throw new RuntimeException("You have insufficient funds for this transaction");
         }
-        BigDecimal delivery = overFlow.subtract(totalFee);
-        BigDecimal bitcoin = new BigDecimal(100000000);
+        BigDecimal delivery = overFlow.subtract(totalAmount);
+
         Address myAddress;
         try {
             myAddress = Address.fromBase58(CurrentNetParams.getNetParams(), unspentOutputs.get(0).getAddress());
@@ -416,7 +426,7 @@ public class ContractBuilder {
                     break;
                 }
             }
-            if (amountFromOutput.doubleValue() >= totalFee.doubleValue()) {
+            if (amountFromOutput.doubleValue() >= totalAmount.doubleValue()) {
                 break;
             }
         }

@@ -2,11 +2,13 @@ package org.qtum.wallet.ui.fragment.watch_token_fragment;
 
 import android.content.Context;
 
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.ContractTemplate;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.ContractParams;
 import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.DateCalculator;
 
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import rx.Observable;
 
 public class WatchTokenInteractorImpl implements WatchTokenInteractor {
 
@@ -80,5 +84,10 @@ public class WatchTokenInteractorImpl implements WatchTokenInteractor {
             }
         }
         return null;
+    }
+
+    @Override
+    public Observable<ContractParams> getContractParams(String contractAddress) {
+        return QtumService.newInstance().getContractParams(contractAddress);
     }
 }

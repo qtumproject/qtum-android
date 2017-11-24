@@ -3,7 +3,7 @@ package org.qtum.wallet.ui.fragment.contract_function_fragment;
 import android.content.Context;
 
 import org.bitcoinj.script.Script;
-import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
@@ -83,11 +83,11 @@ public class ContractFunctionInteractorImpl implements ContractFunctionInteracto
     }
 
     @Override
-    public String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String fee, final String contractAddress) {
+    public String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String fee, final String contractAddress, String sendToContract) {
         ContractBuilder contractBuilder = new ContractBuilder();
         Script script = contractBuilder.createMethodScript(abiParams, gasLimit, gasPrice, contractAddress);
 
-        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, feePerKb, fee, mContext.get());
+        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, feePerKb, fee, sendToContract,mContext.get());
     }
 
     @Override

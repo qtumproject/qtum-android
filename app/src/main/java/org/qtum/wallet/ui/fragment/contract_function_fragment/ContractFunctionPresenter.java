@@ -6,5 +6,5 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 import java.util.List;
 
 public interface ContractFunctionPresenter extends BaseFragmentPresenter {
-    void onCallClick(List<ContractMethodParameter> contractMethodParameterList, String contractAddress, String fee, int gasLimit, int gasPrice, String methodName);
+    void onCallClick(List<ContractMethodParameter> contractMethodParameterList, String contractAddress, String fee, int gasLimit, int gasPrice, String methodName, String sendToAddress);
 }

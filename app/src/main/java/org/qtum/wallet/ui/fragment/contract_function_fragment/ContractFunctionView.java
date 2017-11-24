@@ -17,4 +17,8 @@ public interface ContractFunctionView extends BaseFragmentView {
     void updateGasPrice(int minGasPrice, int maxGasPrice);
 
     void updateGasLimit(int minGasLimit, int maxGasLimit);
+
+    void showEtSendToContract();
+
+    void hideEtSendToContract();
 }

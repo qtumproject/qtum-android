@@ -2,7 +2,7 @@ package org.qtum.wallet.ui.fragment.store_categories;
 
 import android.content.Context;
 
-import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.model.gson.QstoreContractType;
 
 import java.lang.ref.WeakReference;
