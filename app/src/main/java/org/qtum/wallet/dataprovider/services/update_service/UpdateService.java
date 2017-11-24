@@ -22,7 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.qtum.wallet.dataprovider.firebase.FirebaseSharedPreferences;
 import org.qtum.wallet.dataprovider.firebase.listeners.FireBaseTokenRefreshListener;
-import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
 import org.qtum.wallet.datastorage.QStoreStorage;
 import org.qtum.wallet.datastorage.TinyDB;
@@ -292,8 +292,10 @@ public class UpdateService extends Service {
         }
 
         List<TokenBalanceChangeListener> tokenBalanceChangeListeners = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
-        for(TokenBalanceChangeListener tokenBalanceChangeListener : tokenBalanceChangeListeners){
-            tokenBalanceChangeListener.onBalanceChange(tokenBalance);
+        if(tokenBalanceChangeListeners!=null) {
+            for (TokenBalanceChangeListener tokenBalanceChangeListener : tokenBalanceChangeListeners) {
+                tokenBalanceChangeListener.onBalanceChange(tokenBalance);
+            }
         }
     }
 

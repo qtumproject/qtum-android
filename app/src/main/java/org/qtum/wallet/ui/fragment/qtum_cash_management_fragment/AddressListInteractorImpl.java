@@ -2,7 +2,7 @@ package org.qtum.wallet.ui.fragment.qtum_cash_management_fragment;
 
 import android.content.Context;
 
-import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.datastorage.KeyStorage;
 
 import org.qtum.wallet.model.gson.UnspentOutput;

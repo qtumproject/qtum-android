@@ -19,18 +19,21 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment.pin_fragment.PinDialogFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.FontManager;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.ResizeHeightAnimation;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -81,6 +84,11 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
     @BindView(R.id.tv_gas_limit)
     FontTextView mFontTextViewGasLimit;
 
+    @BindView(R.id.til_send_to_contract)
+    TextInputLayout mTilSendToContract;
+    @BindView(R.id.et_send_to_contract)
+    EditText mEtSendToContract;
+
     @BindView(R.id.bt_edit_close)
     FontButton mFontButtonEditClose;
     @BindView(R.id.seek_bar_container)
@@ -114,8 +122,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
                 getActivity().onBackPressed();
                 break;
             case R.id.call:
-                getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_ADDRESS), mTextInputEditTextFee.getText().toString(),
-                        Integer.valueOf(mFontTextViewGasLimit.getText().toString()), Integer.valueOf(mFontTextViewGasPrice.getText().toString()), getArguments().getString(METHOD_NAME));
+                showPinDialog();
                 break;
             case R.id.bt_edit_close:
                 if (showing) {
@@ -162,6 +169,37 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
     protected ContractFunctionPresenter getPresenter() {
         return mContractFunctionPresenterImpl;
     }
+
+    @Override
+    public void showEtSendToContract() {
+        mTilSendToContract.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEtSendToContract() {
+        mTilSendToContract.setVisibility(View.GONE);
+    }
+
+    private void showPinDialog() {
+        PinDialogFragment pinDialogFragment = new PinDialogFragment();
+        pinDialogFragment.setTouchIdFlag(getMainActivity().checkTouchIdEnable());
+        pinDialogFragment.addPinCallBack(callback);
+        pinDialogFragment.show(getFragmentManager(), pinDialogFragment.getClass().getCanonicalName());
+    }
+
+    PinDialogFragment.PinCallBack callback = new PinDialogFragment.PinCallBack() {
+        @Override
+        public void onSuccess() {
+            getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_ADDRESS), mTextInputEditTextFee.getText().toString(),
+                    Integer.valueOf(mFontTextViewGasLimit.getText().toString()), Integer.valueOf(mFontTextViewGasPrice.getText().toString()), getArguments().getString(METHOD_NAME), mEtSendToContract.getText().toString());
+        }
+
+        @Override
+        public void onError(String error) {
+            hideKeyBoard();
+            setAlertDialog(R.string.warning, error, R.string.cancel, PopUpType.error);
+        }
+    };
 
     @Override
     public void initializeViews() {

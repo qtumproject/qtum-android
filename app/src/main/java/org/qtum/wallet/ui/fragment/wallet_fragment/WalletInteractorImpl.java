@@ -1,6 +1,6 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment;
 
-import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
 import org.qtum.wallet.model.gson.history.Vin;

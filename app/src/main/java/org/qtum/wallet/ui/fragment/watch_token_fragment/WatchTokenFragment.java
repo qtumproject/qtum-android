@@ -59,6 +59,9 @@ public abstract class WatchTokenFragment extends BaseFragment implements WatchTo
             public void afterTextChanged(Editable editable) {
                 isEmptyContractAddress = editable.toString().isEmpty();
                 checkForNoEmpty(isEmptyContractAddress, isEmptyContractName);
+                if(editable.toString().length()==40){
+                    getPresenter().onContractAddressEntered(editable.toString());
+                }
             }
         });
 
@@ -160,5 +163,13 @@ public abstract class WatchTokenFragment extends BaseFragment implements WatchTo
     public void setSoftMode() {
         super.setSoftMode();
         getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
+    @Override
+    public void setContractName(String contractName) {
+        if(mEditTextContractName.getText().toString().isEmpty()){
+            mEditTextContractName.setText(contractName);
+            mEditTextContractName.setSelection(contractName.length());
+        }
     }
 }

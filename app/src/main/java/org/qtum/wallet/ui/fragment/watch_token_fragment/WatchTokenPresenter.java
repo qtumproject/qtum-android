@@ -7,4 +7,6 @@ public interface WatchTokenPresenter extends BaseFragmentPresenter {
 
     void onOkClick(String name, String address);
 
+    void onContractAddressEntered(String contractAddress);
+
 }
