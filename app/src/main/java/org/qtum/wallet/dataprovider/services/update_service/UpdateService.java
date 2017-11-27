@@ -27,6 +27,7 @@ import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceCha
 import org.qtum.wallet.datastorage.QStoreStorage;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.gson.qstore.PurchaseItem;
+import org.qtum.wallet.model.gson.token_balance.Balance;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.utils.BoughtContractBuilder;
@@ -286,7 +287,13 @@ public class UpdateService extends Service {
     private void updateTokenBalance(TokenBalance tokenBalance) {
         TokenBalance tokenBalanceFromList = mAllTokenBalanceList.get(tokenBalance.getContractAddress());
         if (tokenBalanceFromList != null) {
-            tokenBalanceFromList.setBalances(tokenBalance.getBalances());
+            for(Balance balance : tokenBalance.getBalances()) {
+                for (Balance balanceFromList : tokenBalanceFromList.getBalances()) {
+                    if(balance.getAddress().equals(balanceFromList.getAddress())){
+                        balanceFromList.setBalance(balance.getBalance());
+                    }
+                }
+            }
         } else {
             mAllTokenBalanceList.put(tokenBalance.getContractAddress(), tokenBalance);
         }
