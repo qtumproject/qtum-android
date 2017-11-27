@@ -110,10 +110,43 @@
                 android:layout_height="match_parent"
                 android:id="@+id/rl_send">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/spinner_container">
+
+                <org.qtum.wallet.utils.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textSize="12dp"
+                    app:typefaceAsset="@string/simplonMonoRegular"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/from"/>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:id="@+id/spinner_from">
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:background="@color/colorPrimary"/>
+
+                </LinearLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/til_receivers_address"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="16dp"
+                    android:layout_below="@+id/spinner_container"
+                    android:layout_marginTop="8dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:theme="@style/InputText"
