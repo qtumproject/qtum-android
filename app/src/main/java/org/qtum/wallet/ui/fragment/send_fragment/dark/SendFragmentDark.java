@@ -25,12 +25,12 @@ public class SendFragmentDark extends SendFragment {
 
     @Override
     public void setUpSpinner(TokenBalance tokenBalance, Integer decimalUnits) {
-        if(mSpinner.getAdapter()!=null &&
+        if(adapter!=null &&
                 ((AddressWithTokenBalanceSpinnerAdapter)mSpinner.getAdapter()).getTokenBalance().getContractAddress().equals(tokenBalance.getContractAddress())) {
             adapter.setTokenBalance(tokenBalance);
             adapter.notifyDataSetChanged();
         } else {
-            adapter = new AddressWithTokenBalanceSpinnerAdapterDark(getContext(), tokenBalance, "test", decimalUnits);
+            adapter = new AddressWithTokenBalanceSpinnerAdapterDark(getContext(), tokenBalance, "", decimalUnits);
             mSpinner.setAdapter(adapter);
         }
     }

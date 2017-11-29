@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
-    android:layout_height="56dp">
+    android:layout_height="wrap_content">
 
     <org.qtum.wallet.utils.FontTextView
         android:id="@+id/address_name"
@@ -17,7 +17,7 @@
         android:ellipsize="end"
         app:typefaceAsset="@string/proximaNovaRegular"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/ll_balance"

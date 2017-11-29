@@ -2,6 +2,7 @@ package org.qtum.wallet.utils;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.support.design.widget.TextInputEditText;
 import android.text.TextUtils;
@@ -40,6 +41,14 @@ public class FontTextInputEditText extends TextInputEditText {
                 else
                     Log.d("FontText", String.format("Could not create a font from asset: %s", fontAsset));
             }
+        }
+    }
+
+    @Override
+    protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
+        super.onFocusChanged(focused, direction, previouslyFocusedRect);
+        if(focused){
+            int i = 2;
         }
     }
 }

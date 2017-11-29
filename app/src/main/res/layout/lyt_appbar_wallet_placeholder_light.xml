@@ -1,87 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:weightSum="2"
-    android:id="@+id/lyt_appbar_root"
-    android:gravity="center"
-    android:padding="8dp"
-    android:orientation="vertical"
-    android:layout_height="56dp">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/lyt_appbar_root"
+              android:layout_width="match_parent"
+              android:layout_height="56dp"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="8dp"
+              android:weightSum="2">
 
     <RelativeLayout
         android:id="@+id/available_balance_view"
-        android:layout_weight="1"
-        android:padding="2dp"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="2dp">
 
         <org.qtum.wallet.utils.FontTextView
+            android:id="@+id/tv_placeholder_balance_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/available_balance"
             android:textColor="@color/white"
             android:textSize="12sp"
-            android:id="@+id/tv_placeholder_balance_title"
-            android:text="@string/available_balance"
-            android:layout_width="wrap_content"
-            app:typefaceAsset="@string/proximaNovaRegular"
-            android:gravity="center"
-            android:layout_height="match_parent" />
+            app:typefaceAsset="@string/proximaNovaRegular"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true">
-        <org.qtum.wallet.utils.FontTextView
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:id="@+id/tv_placeholder_balance_value"
-            app:typefaceAsset="@string/proximaNovaRegular"
-            android:text="0.0"
-            android:layout_width="wrap_content"
-            android:gravity="center"
-            android:layout_height="match_parent" />
 
             <org.qtum.wallet.utils.FontTextView
+                android:id="@+id/tv_placeholder_balance_value"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="0.0"
                 android:textColor="@color/white"
                 android:textSize="12sp"
+                app:typefaceAsset="@string/proximaNovaRegular"/>
+
+            <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_placeholder_symbol"
-                app:typefaceAsset="@string/proximaNovaRegular"
-                android:text="QTUM"
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_height="match_parent" />
+                android:text="QTUM"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:typefaceAsset="@string/proximaNovaRegular"/>
         </LinearLayout>
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/not_confirmed_balance_view"
-        android:layout_weight="1"
-        android:padding="2dp"
-        android:alpha=".6"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:alpha=".6"
+        android:padding="2dp"
+        android:visibility="gone">
 
         <org.qtum.wallet.utils.FontTextView
-            android:textColor="@color/white"
-            android:textSize="12sp"
             android:id="@+id/tv_placeholder_not_confirmed_balance_title"
-            app:typefaceAsset="@string/proximaNovaRegular"
-            android:text="@string/not_confirmed_balance"
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_height="match_parent" />
-
-        <org.qtum.wallet.utils.FontTextView
+            android:text="@string/not_confirmed_balance"
             android:textColor="@color/white"
             android:textSize="12sp"
-            android:layout_alignParentRight="true"
+            app:typefaceAsset="@string/proximaNovaRegular"/>
+
+        <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_placeholder_not_confirmed_balance_value"
-            app:typefaceAsset="@string/proximaNovaRegular"
-            android:text="0.0 QTUM"
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
             android:gravity="center"
-            android:layout_height="match_parent" />
+            android:text="0.0 QTUM"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:typefaceAsset="@string/proximaNovaRegular"/>
 
     </RelativeLayout>
 
