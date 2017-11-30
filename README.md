@@ -13,8 +13,13 @@ You can use ONLY production(debug/release) buildTypes.
 
 <b>Setting Custom Network Parameters</b><br/>
 ```java
-org.qtum.wallet.utils.CurrentNetParams
-	public static String getUrl(){
+package org.qtum.wallet.utils.CurrentNetParams
+
+    public static NetworkParameters getNetParams() {
+        return QtumMainNetParams.get(); // or QtumTestNetParams.get();
+    }
+
+	public static String getUrl() {
         return "http://127.0.0.1:5555/";
     }
 ```
