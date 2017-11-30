@@ -28,6 +28,7 @@ import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinDialogFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
+import org.qtum.wallet.utils.EditTextValidated;
 import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.FontManager;
 import org.qtum.wallet.utils.FontTextView;
@@ -425,7 +426,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
         TextInputLayout tilParam;
 
         @BindView(R.id.et_param)
-        TextInputEditText etParam;
+        EditTextValidated etParam;
 
         @BindView(R.id.checkbox)
         AppCompatCheckBox checkBox;
@@ -443,6 +444,7 @@ public abstract class ContractFunctionFragment extends BaseFragment implements C
             this.parameter = parameter;
 
             tilParam.setHint(fromCamelCase(parameter.getName()));
+            etParam.setTopHint(fromCamelCase(parameter.getName())+" ("+parameter.getType()+")");
             setInputType(parameter.getType());
             if (isLast) {
                 etParam.setImeOptions(EditorInfo.IME_ACTION_DONE);

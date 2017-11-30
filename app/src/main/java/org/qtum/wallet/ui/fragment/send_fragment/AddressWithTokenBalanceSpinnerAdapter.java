@@ -21,13 +21,13 @@ public abstract class AddressWithTokenBalanceSpinnerAdapter extends BaseAdapter 
 
     private Context mContext;
     private TokenBalance mTokenBalance;
-    private String currency;
+    private String symbol;
     private int decimalUnits;
 
-    public AddressWithTokenBalanceSpinnerAdapter(@NonNull Context context, TokenBalance tokenBalance, String currency, int decimalUnits) {
+    public AddressWithTokenBalanceSpinnerAdapter(@NonNull Context context, TokenBalance tokenBalance, String symbol, int decimalUnits) {
         mContext = context;
         mTokenBalance = tokenBalance;
-        this.currency = currency;
+        this.symbol = symbol;
         this.decimalUnits = decimalUnits;
     }
 
@@ -52,7 +52,7 @@ public abstract class AddressWithTokenBalanceSpinnerAdapter extends BaseAdapter 
         FontTextView textViewAddress = (FontTextView) view.findViewById(R.id.address_name);
         final FontTextView textViewBalance = (FontTextView) view.findViewById(R.id.address_balance);
         final FontTextView textViewSymbol = (FontTextView) view.findViewById(R.id.address_symbol);
-        textViewSymbol.setText(String.format(" %s", currency));
+        textViewSymbol.setText(String.format(" %s", symbol));
         String balance = (mTokenBalance.getBalances().get(position).getBalance() != null) ? String.valueOf(mTokenBalance.getBalances().get(position).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0";
         textViewBalance.setLongNumberText(balance, textViewBalance.getContext().getResources().getDisplayMetrics().widthPixels / 2);
         textViewAddress.setText(mTokenBalance.getBalances().get(position).getAddress());
@@ -73,5 +73,13 @@ public abstract class AddressWithTokenBalanceSpinnerAdapter extends BaseAdapter 
 
     public void setTokenBalance(TokenBalance tokenBalance) {
         mTokenBalance = tokenBalance;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public void clearBalances(){
+
     }
 }

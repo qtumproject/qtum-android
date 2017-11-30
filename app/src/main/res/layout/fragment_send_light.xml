@@ -104,8 +104,39 @@
                 android:layout_height="match_parent"
                 android:padding="@dimen/activity_horizontal_margin">
 
+                <LinearLayout
+                    android:id="@+id/spinner_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <org.qtum.wallet.utils.FontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/from"
+                        android:textColor="@color/bottom_nav_bar_text_color_light_alpha_50"
+                        android:textSize="12dp"
+                        app:typefaceAsset="@string/proximaNovaRegular"/>
+
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/spinner_from"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/bottom_nav_bar_text_color_light_alpha_50"
+                        android:theme="@style/LightSpinner">
+
+                    </android.support.v7.widget.AppCompatSpinner>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/bottom_nav_bar_text_color_light_alpha_50"/>
+                </LinearLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/til_receivers_address"
+                    android:layout_below="@+id/spinner_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
@@ -215,10 +246,10 @@
 
                     <org.qtum.wallet.utils.FontTextView
                         android:id="@+id/tv_min_fee"
-                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:textColor="@color/black"
                         app:typefaceAsset="@string/proximaNovaRegular"/>
 
@@ -234,9 +265,9 @@
 
                 <SeekBar
                     android:id="@+id/seekBar"
-                    android:layout_below="@+id/ll_fee"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/ll_fee"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:progressDrawable="@drawable/seekbar_progress_light"
@@ -328,8 +359,8 @@
                                     android:id="@+id/tv_min_gas_price"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
                                     android:layout_gravity="center"
+                                    android:layout_weight="1"
                                     android:textColor="@color/black"
                                     app:typefaceAsset="@string/proximaNovaRegular"/>
 
@@ -360,10 +391,10 @@
 
                                 <org.qtum.wallet.utils.FontTextView
                                     android:id="@+id/tv_min_gas_limit"
-                                    android:layout_weight="1"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
+                                    android:layout_weight="1"
                                     android:textColor="@color/black"
                                     app:typefaceAsset="@string/proximaNovaRegular"/>
 

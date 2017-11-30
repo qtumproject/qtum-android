@@ -301,7 +301,7 @@ public class UpdateService extends Service {
         List<TokenBalanceChangeListener> tokenBalanceChangeListeners = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
         if(tokenBalanceChangeListeners!=null) {
             for (TokenBalanceChangeListener tokenBalanceChangeListener : tokenBalanceChangeListeners) {
-                tokenBalanceChangeListener.onBalanceChange(tokenBalance);
+                tokenBalanceChangeListener.onBalanceChange(mAllTokenBalanceList.get(tokenBalance.getContractAddress()));
             }
         }
     }

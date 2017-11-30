@@ -510,7 +510,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         }
         mTextInputEditTextAmount.setText(amount);
         mTextInputEditTextAddress.setText(address);
-
+    
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -667,11 +667,13 @@ public abstract class SendFragment extends BaseFragment implements SendView {
 
     @Override
     public void setUpCurrencyField(Currency currency) {
+        placeHolderBalance.setText("");
+        placeHolderSymbol.setText("");
         if(mSubscription!=null){
             mSubscription.unsubscribe();
         }
         if(adapter!=null){
-            adapter.clearBalances();
+            adapter=null;
         }
         if(mUpdateService!=null){
             if (mCurrency instanceof CurrencyToken) {
@@ -701,6 +703,8 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                         @Override
                         public void onNext(String string) {
                             placeHolderSymbol.setText(string);
+                            adapter.setSymbol(string);
+                            adapter.notifyDataSetChanged();
                         }
                     });
             if(mUpdateService!=null) {
