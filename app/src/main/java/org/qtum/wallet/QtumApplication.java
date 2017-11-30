@@ -51,6 +51,7 @@ public class QtumApplication extends MultiDexApplication{
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+        BuildConfig
     }
 
     private int getCodeVersion() throws PackageManager.NameNotFoundException {
