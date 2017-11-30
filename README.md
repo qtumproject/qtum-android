@@ -8,7 +8,7 @@ Designed with stability, modularity and interoperability in mind, Qtum is the fo
 
 <b>Build Types</b><br/>
 Project have several build types:
-[!Screenshot](http://www.picshare.ru/uploads/171130/vGf7v0LPBX.jpg)
+![Screenshot](http://www.picshare.ru/uploads/171130/vGf7v0LPBX.jpg)
 
 <b>Setting Custom Network Parameters</b><br/>
 ```java
