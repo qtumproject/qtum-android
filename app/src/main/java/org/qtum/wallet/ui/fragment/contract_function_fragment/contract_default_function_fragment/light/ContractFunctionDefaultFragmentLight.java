@@ -1,11 +1,12 @@
-package org.qtum.wallet.ui.fragment.contract_function_fragment.light;
+package org.qtum.wallet.ui.fragment.contract_function_fragment.contract_default_function_fragment.light;
 
 import org.qtum.wallet.model.contract.ContractMethodParameter;
-import org.qtum.wallet.ui.fragment.contract_function_fragment.ContractFunctionFragment;
+import org.qtum.wallet.ui.fragment.contract_function_fragment.ParameterAdapter;
+import org.qtum.wallet.ui.fragment.contract_function_fragment.contract_default_function_fragment.ContractFunctionDefaultFragment;
 
 import java.util.List;
 
-public class ContractFunctionFragmentLight extends ContractFunctionFragment {
+public class ContractFunctionDefaultFragmentLight extends ContractFunctionDefaultFragment {
 
     @Override
     protected int getLayout() {

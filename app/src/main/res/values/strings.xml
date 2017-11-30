@@ -215,5 +215,7 @@
     <string name="you_are_about_to_exit_your_account_all_account_data_will_be_erased_from_the_device_please_make_sure_you_have_saved_backups_of_your_passphrase_and_required_contracts">You are about to exit your account. All account data will be erased from the device. Please make sure you have saved back-ups of your Passphrase and required Contracts</string>
     <string name="amount_too_big">Amount Value Too Big</string>
     <string name="swipe_left_to_unsubscribe_or_delete_contract">Swipe Left to Unsubscribe or Delete Contract</string>
+    <string name="query">Query</string>
+    <string name="query_result">Query Result</string>
 
 </resources>

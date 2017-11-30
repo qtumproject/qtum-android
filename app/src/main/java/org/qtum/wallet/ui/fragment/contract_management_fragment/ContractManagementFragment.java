@@ -15,7 +15,8 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.fragment.contract_function_fragment.ContractFunctionFragment;
+import org.qtum.wallet.ui.fragment.contract_function_fragment.contract_constant_function_fragment.ContractFunctionConstantFragment;
+import org.qtum.wallet.ui.fragment.contract_function_fragment.contract_default_function_fragment.ContractFunctionDefaultFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontTextView;
@@ -130,7 +131,12 @@ public abstract class ContractManagementFragment extends BaseFragment implements
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        BaseFragment contractFunctionFragment = ContractFunctionFragment.newInstance(getContext(), mContractMethod.name, getContractTemplateUiid(), getArguments().getString(CONTRACT_ADDRESS));
+                        BaseFragment contractFunctionFragment;
+                        if(mContractMethod.isConstant()){
+                            contractFunctionFragment = ContractFunctionConstantFragment.newInstance(getContext(), mContractMethod.getName(), getContractTemplateUiid(), getArguments().getString(CONTRACT_ADDRESS));
+                        }else {
+                            contractFunctionFragment = ContractFunctionDefaultFragment.newInstance(getContext(), mContractMethod.getName(), getContractTemplateUiid(), getArguments().getString(CONTRACT_ADDRESS));
+                        }
                         openFragment(contractFunctionFragment);
                     }
                 });
@@ -142,7 +148,7 @@ public abstract class ContractManagementFragment extends BaseFragment implements
 
         void bindMethod(ContractMethod contractMethod) {
             mContractMethod = contractMethod;
-            mTextViewName.setText(contractMethod.name);
+            mTextViewName.setText(contractMethod.getName());
         }
     }
 
@@ -166,7 +172,7 @@ public abstract class ContractManagementFragment extends BaseFragment implements
         }
 
         void bindProperty(ContractMethod contractMethod) {
-            mTextViewPropertyName.setText(contractMethod.name);
+            mTextViewPropertyName.setText(contractMethod.getName());
             mContractMethod = contractMethod;
             if (needToGetValue) {
                 ContractManagementHelper.getPropertyValue(getContractByAddress(getContractAddress()), mContractMethod)
@@ -219,7 +225,7 @@ public abstract class ContractManagementFragment extends BaseFragment implements
         @Override
         public int getItemViewType(int position) {
             ContractMethod contractMethod = contractMethods.get(position);
-            if (contractMethod.constant && (contractMethod.getInputParams().size() == 0)) {
+            if (contractMethod.isConstant() && (contractMethod.getInputParams().size() == 0)) {
                 return TYPE_PROPERTY;
             } else {
                 return TYPE_METHOD;
