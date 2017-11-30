@@ -1,4 +1,4 @@
-package org.qtum.wallet.ui.fragment.contract_function_fragment;
+package org.qtum.wallet.ui.fragment.contract_function_fragment.contract_default_function_fragment;
 
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;
@@ -21,10 +21,10 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl implements ContractFunctionPresenter {
+public class ContractFunctionDefaultPresenterImpl extends BaseFragmentPresenterImpl implements ContractFunctionDefaultPresenter {
 
-    private ContractFunctionView mContractMethodFragmentView;
-    private ContractFunctionInteractor mContractFunctionInteractor;
+    private ContractFunctionDefaultView mContractMethodFragmentView;
+    private ContractFunctionDefaultInteractor mContractFunctionInteractor;
 
     private double minFee;
     private double maxFee = 1;
@@ -35,13 +35,13 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
     private int minGasLimit = 100000;
     private int maxGasLimit = 5000000;
 
-    public ContractFunctionPresenterImpl(ContractFunctionView contractMethodFragmentView, ContractFunctionInteractor contractFunctionInteractor) {
+    public ContractFunctionDefaultPresenterImpl(ContractFunctionDefaultView contractMethodFragmentView, ContractFunctionDefaultInteractor contractFunctionInteractor) {
         mContractMethodFragmentView = contractMethodFragmentView;
         mContractFunctionInteractor = contractFunctionInteractor;
     }
 
     @Override
-    public ContractFunctionView getView() {
+    public ContractFunctionDefaultView getView() {
         return mContractMethodFragmentView;
     }
 
@@ -50,13 +50,13 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
         super.initializeViews();
         List<ContractMethod> list = getInteractor().getContractMethod(getView().getContractTemplateUiid());
         for (ContractMethod contractMethod : list) {
-            if (contractMethod.name.equals(getView().getMethodName())) {
+            if (contractMethod.getName().equals(getView().getMethodName())) {
                 if(contractMethod.isPayable()){
                     getView().showEtSendToContract();
                 }else{
                     getView().hideEtSendToContract();
                 }
-                getView().setUpParameterList(contractMethod.inputParams);
+                getView().setUpParameterList(contractMethod.getInputParams());
                 break;
             }
         }
@@ -87,7 +87,7 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
         getInteractor().callSmartContractObservable(methodName, contractMethodParameterList, contract)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ContractFunctionInteractorImpl.CallSmartContractRespWrapper>() {
+                .subscribe(new Subscriber<ContractFunctionDefaultInteractorImpl.CallSmartContractRespWrapper>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -98,7 +98,7 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
                     }
 
                     @Override
-                    public void onNext(final ContractFunctionInteractorImpl.CallSmartContractRespWrapper respWrapper) {
+                    public void onNext(final ContractFunctionDefaultInteractorImpl.CallSmartContractRespWrapper respWrapper) {
                         Item item = respWrapper.getResponse().getItems().get(0);
                         if (!item.getExcepted().equals("None")) {
                             getView().setAlertDialog(org.qtum.wallet.R.string.error,
@@ -165,7 +165,7 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
         return getInteractor().sendRawTransactionObservable(code);
     }
 
-    public ContractFunctionInteractor getInteractor() {
+    public ContractFunctionDefaultInteractor getInteractor() {
         return mContractFunctionInteractor;
     }
 }

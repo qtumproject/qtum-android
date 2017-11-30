@@ -59,5 +59,7 @@
     <color name="code_comment_light">#6fc29c</color>
     <color name="code_type_light">#36b9c8</color>
 
+    <color name="query_result_background">#802e9ad0</color>
+
 
 </resources>

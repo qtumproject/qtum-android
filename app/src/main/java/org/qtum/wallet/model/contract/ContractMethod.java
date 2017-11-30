@@ -7,22 +7,22 @@ import java.util.List;
 public class ContractMethod {
 
     @SerializedName("constant")
-    public boolean constant;
+    private boolean constant;
 
     @SerializedName("inputs")
-    public List<ContractMethodParameter> inputParams;
+    private List<ContractMethodParameter> inputParams;
 
     @SerializedName("name")
-    public String name;
+    private String name;
 
     @SerializedName("outputs")
-    public List<ContractMethodParameter> outputParams;
+    private List<ContractMethodParameter> outputParams;
 
     @SerializedName("payable")
-    public boolean payable;
+    private boolean payable;
 
     @SerializedName("type")
-    public String type;
+    private String type;
 
     public ContractMethod() {
 

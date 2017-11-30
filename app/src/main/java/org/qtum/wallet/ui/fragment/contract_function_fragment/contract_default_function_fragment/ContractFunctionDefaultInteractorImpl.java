@@ -1,4 +1,4 @@
-package org.qtum.wallet.ui.fragment.contract_function_fragment;
+package org.qtum.wallet.ui.fragment.contract_function_fragment.contract_default_function_fragment;
 
 import android.content.Context;
 
@@ -25,11 +25,11 @@ import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
-public class ContractFunctionInteractorImpl implements ContractFunctionInteractor {
+public class ContractFunctionDefaultInteractorImpl implements ContractFunctionDefaultInteractor {
 
     private WeakReference<Context> mContext;
 
-    public ContractFunctionInteractorImpl(Context context) {
+    public ContractFunctionDefaultInteractorImpl(Context context) {
         mContext = new WeakReference<>(context);
     }
 
