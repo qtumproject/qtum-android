@@ -72,4 +72,6 @@ public interface SendView extends BaseFragmentView {
     int getGasPriceInput();
 
     int getGasLimitInput();
+
+    void setUpSpinner(TokenBalance tokenBalance, Integer decimalUnits);
 }

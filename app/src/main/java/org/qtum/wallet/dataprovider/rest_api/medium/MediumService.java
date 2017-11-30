@@ -1,4 +1,4 @@
-package org.qtum.wallet.dataprovider.medium_rss_feed;
+package org.qtum.wallet.dataprovider.rest_api.medium;
 
 import org.qtum.wallet.model.news.RssFeed;
 

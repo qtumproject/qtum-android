@@ -26,7 +26,6 @@ import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 import com.google.gson.Gson;
 
-import org.qtum.wallet.dataprovider.rest_api.QtumService;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.dataprovider.services.update_service.WatchUpdateService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;

@@ -12,6 +12,7 @@ import org.qtum.wallet.ui.fragment.qstore.QStoreFragment;
 import org.qtum.wallet.ui.fragment.restore_contracts_fragment.RestoreContractsFragment;
 import org.qtum.wallet.ui.fragment.templates_fragment.TemplatesFragment;
 import org.qtum.wallet.ui.fragment.watch_contract_fragment.WatchContractFragment;
+import org.qtum.wallet.ui.fragment.watch_token_fragment.WatchTokenFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.profile_fragment.DividerItemDecoration;
@@ -69,11 +70,11 @@ public abstract class SmartContractsFragment extends BaseFragment implements OnS
                 openFragment(qStroreFragment);
                 break;
             case R.string.watch_contract:
-                BaseFragment watchContractFragment = WatchContractFragment.newInstance(getContext(), false);
+                BaseFragment watchContractFragment = WatchContractFragment.newInstance(getContext());
                 openFragment(watchContractFragment);
                 break;
             case R.string.watch_token:
-                BaseFragment watchTokenFragment = WatchContractFragment.newInstance(getContext(), true);
+                BaseFragment watchTokenFragment = WatchTokenFragment.newInstance(getContext());
                 openFragment(watchTokenFragment);
                 break;
             case R.string.restore_contracts:

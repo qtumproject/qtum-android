@@ -1,5 +1,7 @@
 package org.qtum.wallet.ui.fragment.send_fragment.dark;
 
+import org.qtum.wallet.model.gson.token_balance.TokenBalance;
+import org.qtum.wallet.ui.fragment.send_fragment.AddressWithTokenBalanceSpinnerAdapter;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.utils.FontManager;
 
@@ -19,5 +21,17 @@ public class SendFragmentDark extends SendFragment {
         tilAdress.setTypeface(FontManager.getInstance().getFont(getString(org.qtum.wallet.R.string.simplonMonoRegular)));
         tilAmount.setTypeface(FontManager.getInstance().getFont(getString(org.qtum.wallet.R.string.simplonMonoRegular)));
         tilFee.setTypeface(FontManager.getInstance().getFont(getString(org.qtum.wallet.R.string.simplonMonoRegular)));
+    }
+
+    @Override
+    public void setUpSpinner(TokenBalance tokenBalance, Integer decimalUnits) {
+        if(adapter!=null &&
+                ((AddressWithTokenBalanceSpinnerAdapter)mSpinner.getAdapter()).getTokenBalance().getContractAddress().equals(tokenBalance.getContractAddress())) {
+            adapter.setTokenBalance(tokenBalance);
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter = new AddressWithTokenBalanceSpinnerAdapterDark(getContext(), tokenBalance, "", decimalUnits);
+            mSpinner.setAdapter(adapter);
+        }
     }
 }

@@ -12,6 +12,8 @@ import org.qtum.wallet.utils.ContractManagementHelper;
 
 import java.math.BigDecimal;
 
+import rx.Subscriber;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -48,7 +50,7 @@ public class TokenPresenterTest {
         verify(view, times(1)).onContractPropertyUpdated(anyString(), anyString());
         verify(view, times(1)).setBalance(anyString());
 
-        verify(interactor, never()).setupPropertyDecimalsValue((Token) any(), (ContractManagementHelper.GetPropertyValueCallBack) any());
+        verify(interactor, never()).setupPropertyDecimalsValue((Token) any(), (Subscriber<String>) any());
     }
 
     @Test
@@ -56,7 +58,7 @@ public class TokenPresenterTest {
         presenter.setToken(TEST_TOKEN_WITHOUT_DECIMALS);
         presenter.initializeViews();
 
-        verify(interactor, times(1)).setupPropertyDecimalsValue((Token) any(), (ContractManagementHelper.GetPropertyValueCallBack) any());
+        verify(interactor, times(1)).setupPropertyDecimalsValue((Token) any(), (Subscriber<String>) any());
 
         verify(view, never()).onContractPropertyUpdated(anyString(), anyString());
         verify(view, never()).setBalance(anyString());

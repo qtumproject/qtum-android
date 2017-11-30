@@ -1,4 +1,4 @@
-package org.qtum.wallet.dataprovider.rest_api;
+package org.qtum.wallet.dataprovider.rest_api.qtum;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import org.qtum.wallet.model.gson.BlockChainInfo;
 
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
+import org.qtum.wallet.model.gson.ContractParams;
 import org.qtum.wallet.model.gson.DGPInfo;
 import org.qtum.wallet.model.gson.FeePerKb;
 import org.qtum.wallet.model.gson.QstoreContractType;
@@ -210,4 +211,9 @@ public class QtumService {
     public Observable<List<QstoreContractType>> getContractTypes() {
         return mServiceApi.getContractTypes();
     }
+
+    public Observable<ContractParams> getContractParams(String contractAddress) {
+        return mServiceApi.getContractParams(contractAddress);
+    }
+
 }

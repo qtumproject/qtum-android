@@ -30,7 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.qtum.wallet.dataprovider.firebase.FirebaseSharedPreferences;
 import org.qtum.wallet.dataprovider.firebase.listeners.FireBaseTokenRefreshListener;
-import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;

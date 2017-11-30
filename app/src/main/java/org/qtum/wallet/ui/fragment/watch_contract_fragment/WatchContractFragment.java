@@ -28,11 +28,7 @@ import butterknife.OnClick;
 
 public abstract class WatchContractFragment extends BaseFragment implements WatchContractView {
 
-    private static final String IS_TOKEN = "is_token";
-
     private WatchContractPresenter mWatchContractFragmentPresenter;
-
-    private boolean mIsToken;
 
     @BindView(org.qtum.wallet.R.id.et_contract_name)
     protected TextInputEditText mEditTextContractName;
@@ -49,12 +45,6 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
     @BindView(org.qtum.wallet.R.id.rv_templates)
     protected RecyclerView mRecyclerViewTemplates;
 
-    @BindView(org.qtum.wallet.R.id.til_contract_name)
-    protected TextInputLayout mTilContractName;
-
-    @BindView(org.qtum.wallet.R.id.til_contract_address)
-    protected TextInputLayout mTilContractAddress;
-
     @BindView(org.qtum.wallet.R.id.bt_ok)
     FontButton mButtonConfirm;
 
@@ -66,9 +56,8 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
     @BindView(org.qtum.wallet.R.id.bt_choose_from_library)
     FontButton mFontButtonChooseFromLibrary;
 
-    public static BaseFragment newInstance(Context context, boolean isToken) {
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        args.putBoolean(IS_TOKEN, isToken);
         BaseFragment fragment = Factory.instantiateFragment(context, WatchContractFragment.class);
         fragment.setArguments(args);
         return fragment;
@@ -77,14 +66,9 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
     @Override
     public void initializeViews() {
         super.initializeViews();
-        mIsToken = getArguments().getBoolean(IS_TOKEN);
-        if (mIsToken) {
-            mTilContractName.setHint(getResources().getString(org.qtum.wallet.R.string.token_name));
-            mTilContractAddress.setHint(getResources().getString(org.qtum.wallet.R.string.token_address));
-            mTextViewToolbar.setText(getString(org.qtum.wallet.R.string.watch_token));
-        } else {
-            mTextViewToolbar.setText(getString(org.qtum.wallet.R.string.watch_contract));
-        }
+
+        mTextViewToolbar.setText(getString(org.qtum.wallet.R.string.watch_contract));
+
         ChipsLayoutManager chipsLayoutManager = ChipsLayoutManager.newBuilder(getContext())
                 .build();
         mRecyclerViewTemplates.setLayoutManager(chipsLayoutManager);
@@ -179,10 +163,10 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
                 String name = mEditTextContractName.getText().toString();
                 String address = mEditTextContractAddress.getText().toString();
                 String jsonInterface = mEditTextABIInterface.getText().toString();
-                getPresenter().onOkClick(name, address, jsonInterface, mIsToken);
+                getPresenter().onOkClick(name, address, jsonInterface);
                 break;
             case org.qtum.wallet.R.id.bt_choose_from_library:
-                BaseFragment templateLibraryFragment = TemplateLibraryFragment.newInstance(getContext(), mIsToken);
+                BaseFragment templateLibraryFragment = TemplateLibraryFragment.newInstance(getContext());
                 openFragmentForResult(templateLibraryFragment);
                 break;
         }
@@ -196,11 +180,6 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
     public void setABIInterfaceForResult(String name, String abiInterface) {
         mEditTextABIInterface.setText(abiInterface);
         ((TemplatesAdapter) mRecyclerViewTemplates.getAdapter()).setSelection(name);
-    }
-
-    @Override
-    public boolean isToken() {
-        return getArguments().getBoolean(IS_TOKEN);
     }
 
     private void checkForNoEmpty(boolean... isEmptyParams) {

@@ -27,31 +27,19 @@ public class WatchContractPresenterImpl extends BaseFragmentPresenterImpl implem
 
         List<ContractTemplate> contractFullTemplateList = new ArrayList<>();
         List<ContractTemplate> contractTemplateList = getInteractor().getContractTemplates();
-        if (getView().isToken()) {
-            for (ContractTemplate contractTemplate : contractTemplateList) {
-                if (contractTemplate.isFullContractTemplate() && contractTemplate.getContractType().equals("token")) {
-                    contractFullTemplateList.add(contractTemplate);
-                }
+
+        for (ContractTemplate contractTemplate : contractTemplateList) {
+            if (contractTemplate.isFullContractTemplate()) {
+                contractFullTemplateList.add(contractTemplate);
             }
-            Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
-                @Override
-                public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
-                    return getInteractor().compareDates(contractInfo.getDate(), t1.getDate());
-                }
-            });
-        } else {
-            for (ContractTemplate contractTemplate : contractTemplateList) {
-                if (contractTemplate.isFullContractTemplate()) {
-                    contractFullTemplateList.add(contractTemplate);
-                }
-            }
-            Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
-                @Override
-                public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
-                    return getInteractor().compareDates(contractInfo.getDate(), t1.getDate());
-                }
-            });
         }
+        Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
+            @Override
+            public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
+                return getInteractor().compareDates(contractInfo.getDate(), t1.getDate());
+            }
+        });
+
         getView().setUpTemplatesList(contractFullTemplateList, getView().getTemplateClickListener());
     }
 
@@ -61,7 +49,7 @@ public class WatchContractPresenterImpl extends BaseFragmentPresenterImpl implem
     }
 
     @Override
-    public void onOkClick(String name, String address, String ABIInterface, boolean isToken) {
+    public void onOkClick(String name, String address, String ABIInterface) {
         getView().setProgressDialog();
         if (!getInteractor().isValidContractAddress(address)) {
             getView().setAlertDialog(R.string.invalid_token_address, R.string.ok, BaseFragment.PopUpType.error);
@@ -74,17 +62,7 @@ public class WatchContractPresenterImpl extends BaseFragmentPresenterImpl implem
                 return;
             }
         }
-        if (isToken) {
-            if (getInteractor().isABIInterfaceValid(ABIInterface)) {
-                String contractAddress = getInteractor().handleContractWithToken(name, address, ABIInterface);
-                getView().subscribeTokenBalanceChanges(contractAddress);
-            } else {
-                getView().setAlertDialog(R.string.abi_doesnt_match_qrc20_standard, R.string.ok, BaseFragment.PopUpType.error);
-                return;
-            }
-        } else {
-            getInteractor().handleContractWithoutToken(name, address, ABIInterface);
-        }
+        getInteractor().handleContractWithoutToken(name, address, ABIInterface);
         getView().setAlertDialog(R.string.token_was_added_to_your_wallet, "", R.string.ok, BaseFragment.PopUpType.confirm, getView().getAlertCallback());
     }
 

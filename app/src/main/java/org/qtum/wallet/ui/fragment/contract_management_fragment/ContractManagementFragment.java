@@ -14,9 +14,9 @@ import android.widget.ProgressBar;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;
-import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.contract_function_fragment.ContractFunctionFragment;
+import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontTextView;
 
@@ -25,6 +25,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public abstract class ContractManagementFragment extends BaseFragment implements ContractManagementView {
 
@@ -166,14 +169,27 @@ public abstract class ContractManagementFragment extends BaseFragment implements
             mTextViewPropertyName.setText(contractMethod.name);
             mContractMethod = contractMethod;
             if (needToGetValue) {
-                ContractManagementHelper.getPropertyValue(getContractByAddress(getContractAddress()), mContractMethod, new ContractManagementHelper.GetPropertyValueCallBack() {
-                    @Override
-                    public void onSuccess(String value) {
-                        mProgressBar.setVisibility(View.GONE);
-                        mTextViewPropertyValue.setVisibility(View.VISIBLE);
-                        mTextViewPropertyValue.setText(value);
-                    }
-                });
+                ContractManagementHelper.getPropertyValue(getContractByAddress(getContractAddress()), mContractMethod)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<String>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(String s) {
+                                mProgressBar.setVisibility(View.GONE);
+                                mTextViewPropertyValue.setVisibility(View.VISIBLE);
+                                mTextViewPropertyValue.setText(s);
+                            }
+                        });
             } else {
                 mProgressBar.setVisibility(View.GONE);
                 itemView.setClickable(false);

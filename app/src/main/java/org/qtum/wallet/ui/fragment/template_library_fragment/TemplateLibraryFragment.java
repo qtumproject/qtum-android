@@ -21,8 +21,6 @@ import butterknife.OnClick;
 
 public abstract class TemplateLibraryFragment extends BaseFragment implements TemplateLibraryView {
 
-    private static final String IS_TOKEN_LIBRARY = "is_token_library";
-
     @BindView(R.id.recycler_view)
     RecyclerView contractList;
 
@@ -33,10 +31,9 @@ public abstract class TemplateLibraryFragment extends BaseFragment implements Te
 
     TemplateLibraryPresenter mTemplateLibraryPresenterImpl;
 
-    public static BaseFragment newInstance(Context context, boolean isTokenLibrary) {
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, TemplateLibraryFragment.class);
-        args.putBoolean(IS_TOKEN_LIBRARY, isTokenLibrary);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,11 +46,6 @@ public abstract class TemplateLibraryFragment extends BaseFragment implements Te
     @Override
     protected TemplateLibraryPresenter getPresenter() {
         return mTemplateLibraryPresenterImpl;
-    }
-
-    @Override
-    public boolean isTokenLibrary() {
-        return getArguments().getBoolean(IS_TOKEN_LIBRARY);
     }
 
     @Override

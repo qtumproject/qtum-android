@@ -31,7 +31,7 @@ import org.json.JSONObject;
 import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.dataprovider.firebase.FirebaseSharedPreferences;
 import org.qtum.wallet.dataprovider.firebase.listeners.FireBaseTokenRefreshListener;
-import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
 import org.qtum.wallet.datastorage.QStoreStorage;
 import org.qtum.wallet.datastorage.TinyDB;
@@ -39,6 +39,7 @@ import org.qtum.wallet.model.gson.history.HistoryResponse;
 import org.qtum.wallet.model.gson.history.Vin;
 import org.qtum.wallet.model.gson.history.Vout;
 import org.qtum.wallet.model.gson.qstore.PurchaseItem;
+import org.qtum.wallet.model.gson.token_balance.Balance;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.utils.BoughtContractBuilder;
@@ -92,7 +93,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
     private NotificationManager notificationManager;
     private TransactionListener mTransactionListener = null;
     private List<BalanceChangeListener> mBalanceChangeListeners = new ArrayList<>();
-    private HashMap<String, TokenBalanceChangeListener> mStringTokenBalanceChangeListenerHashMap = new HashMap<>();
+    private HashMap<String, List<TokenBalanceChangeListener>> mStringTokenBalanceChangeListenerHashMap = new HashMap<>();
     private HashMap<String, TokenBalance> mAllTokenBalanceList = new HashMap<>();
     private TokenListener mTokenListener;
     private ContractPurchaseListener mContractPurchaseListener;
@@ -407,14 +408,22 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
     private void updateTokenBalance(TokenBalance tokenBalance) {
         TokenBalance tokenBalanceFromList = mAllTokenBalanceList.get(tokenBalance.getContractAddress());
         if (tokenBalanceFromList != null) {
-            tokenBalanceFromList.setBalances(tokenBalance.getBalances());
+            for(Balance balance : tokenBalance.getBalances()) {
+                for (Balance balanceFromList : tokenBalanceFromList.getBalances()) {
+                    if(balance.getAddress().equals(balanceFromList.getAddress())){
+                        balanceFromList.setBalance(balance.getBalance());
+                    }
+                }
+            }
         } else {
             mAllTokenBalanceList.put(tokenBalance.getContractAddress(), tokenBalance);
         }
 
-        TokenBalanceChangeListener tokenBalanceChangeListener = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
-        if (tokenBalanceChangeListener != null) {
-            tokenBalanceChangeListener.onBalanceChange(tokenBalance);
+        List<TokenBalanceChangeListener> tokenBalanceChangeListeners = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
+        if(tokenBalanceChangeListeners!=null) {
+            for (TokenBalanceChangeListener tokenBalanceChangeListener : tokenBalanceChangeListeners) {
+                tokenBalanceChangeListener.onBalanceChange(mAllTokenBalanceList.get(tokenBalance.getContractAddress()));
+            }
         }
     }
 
@@ -679,7 +688,10 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
     }
 
     public void addTokenBalanceChangeListener(String address, TokenBalanceChangeListener tokenBalanceChangeListener) {
-        mStringTokenBalanceChangeListenerHashMap.put(address, tokenBalanceChangeListener);
+        if(mStringTokenBalanceChangeListenerHashMap.get(address)==null){
+            mStringTokenBalanceChangeListenerHashMap.put(address, new ArrayList<TokenBalanceChangeListener>());
+        }
+        mStringTokenBalanceChangeListenerHashMap.get(address).add(tokenBalanceChangeListener);
         TokenBalance tokenBalance = mAllTokenBalanceList.get(address);
         if (tokenBalance != null) {
             tokenBalanceChangeListener.onBalanceChange(tokenBalance);
@@ -690,8 +702,8 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
         return mAllTokenBalanceList.get(address);
     }
 
-    public void removeTokenBalanceChangeListener(String address) {
-        mStringTokenBalanceChangeListenerHashMap.remove(address);
+    public void removeTokenBalanceChangeListener(String address, TokenBalanceChangeListener tokenBalanceChangeListener) {
+        mStringTokenBalanceChangeListenerHashMap.get(address).remove(tokenBalanceChangeListener);
     }
 
     public void removeBalanceChangeListener(BalanceChangeListener balanceChangeListener) {

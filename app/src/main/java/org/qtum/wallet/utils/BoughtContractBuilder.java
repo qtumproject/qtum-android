@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
-import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.datastorage.QStoreStorage;
 import org.qtum.wallet.model.gson.qstore.ContractPurchase;

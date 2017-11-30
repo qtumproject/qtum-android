@@ -2,7 +2,7 @@ package org.qtum.wallet.ui.fragment.news_fragment;
 
 import android.content.Context;
 
-import org.qtum.wallet.dataprovider.medium_rss_feed.MediumService;
+import org.qtum.wallet.dataprovider.rest_api.medium.MediumService;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.model.news.RssFeed;

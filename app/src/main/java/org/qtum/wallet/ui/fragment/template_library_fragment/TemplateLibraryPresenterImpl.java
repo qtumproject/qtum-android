@@ -29,31 +29,19 @@ public class TemplateLibraryPresenterImpl extends BaseFragmentPresenterImpl impl
         List<ContractTemplate> contractFullTemplateList = new ArrayList<>();
 
         List<ContractTemplate> contractTemplateList = getInteractor().getContactTemplates();
-        if (getView().isTokenLibrary()) {
-            for (ContractTemplate contractTemplate : contractTemplateList) {
-                if (contractTemplate.isFullContractTemplate() && contractTemplate.getContractType().equals("token")) {
-                    contractFullTemplateList.add(contractTemplate);
-                }
+
+        for (ContractTemplate contractTemplate : contractTemplateList) {
+            if (contractTemplate.isFullContractTemplate()) {
+                contractFullTemplateList.add(contractTemplate);
             }
-            Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
-                @Override
-                public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
-                    return getInteractor().compareDates(contractInfo.getDate(), t1.getDate());
-                }
-            });
-        } else {
-            for (ContractTemplate contractTemplate : contractTemplateList) {
-                if (contractTemplate.isFullContractTemplate()) {
-                    contractFullTemplateList.add(contractTemplate);
-                }
-            }
-            Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
-                @Override
-                public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
-                    return getInteractor().compareDates(contractInfo.getDate(), t1.getDate());
-                }
-            });
         }
+        Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
+            @Override
+            public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
+                return getInteractor().compareDates(contractInfo.getDate(), t1.getDate());
+            }
+        });
+
         getView().setUpTemplateList(contractFullTemplateList);
     }
 

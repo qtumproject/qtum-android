@@ -14,7 +14,7 @@ import org.bitcoinj.core.Utils;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.script.Script;
 import org.qtum.wallet.R;
-import org.qtum.wallet.dataprovider.rest_api.QtumService;
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
@@ -287,7 +287,7 @@ public class SendInteractorImpl implements SendInteractor {
     public String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee) {
         ContractBuilder contractBuilder = new ContractBuilder();
         Script script = contractBuilder.createMethodScript(abiParams, gasLimit, gasPrice, contractAddress);
-        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, getFeePerKb(), fee, mContext);
+        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, getFeePerKb(), fee, "",mContext);
     }
 
     @Override
