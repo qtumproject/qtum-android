@@ -62,7 +62,7 @@ public class ContractFunctionDefaultInteractorImpl implements ContractFunctionDe
             @Override
             public Observable<CallSmartContractResponse> call(String s) {
                 wrapper.setAbiParams(s);
-                return QtumService.newInstance().callSmartContract(addressFrom, new CallSmartContractRequest(new String[]{s}, contract.getSenderAddress()));
+                return QtumService.newInstance().callSmartContract(contract.getContractAddress(), new CallSmartContractRequest(new String[]{s}, addressFrom));
             }
         }).map(new Func1<CallSmartContractResponse, CallSmartContractRespWrapper>() {
             @Override
