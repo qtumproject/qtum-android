@@ -163,6 +163,7 @@
 
                     <LinearLayout
                         android:id="@+id/ll_gas_price_and_gas_limit"
+                        android:paddingTop="16dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -221,6 +222,7 @@
                         android:id="@+id/ll_address_container"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:layout_below="@+id/ll_gas_price_and_gas_limit"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
@@ -239,6 +241,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:layout_weight="1"
                             android:textColor="@color/light_blue"
                             app:typefaceAsset="@string/proximaNovaRegular"/>
@@ -253,6 +257,7 @@
 
                         <LinearLayout
                             android:id="@+id/ll_gas_price"
+                            android:layout_marginTop="8dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp">
@@ -287,6 +292,7 @@
                             android:id="@+id/ll_gas_limit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
                             android:layout_marginBottom="16dp">
 
                             <org.qtum.wallet.utils.FontTextView
@@ -319,6 +325,7 @@
                             android:id="@+id/spinner_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
                             android:orientation="vertical">
 
                             <org.qtum.wallet.utils.FontTextView

@@ -144,22 +144,6 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
         mAnimForward.setDuration(300);
         mAnimForward.setFillEnabled(true);
         mAnimForward.setFillAfter(true);
-//        mAnimForward.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                mNestedScrollView.smoothScrollTo(0,mNestedScrollView.getScrollY()+appLogoHeight);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//
-//            }
-//        });
 
         mAnimBackward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, appLogoHeight, 0);
         mAnimBackward.setDuration(300);
@@ -349,18 +333,19 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
             }
         });
 
-//        mLinearLayoutSeekBarContainer.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-//            @Override
-//            public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
-//                mNestedScrollView.post(new Runnable() {
-//
-//                    @Override
-//                    public void run() {
-//                        mNestedScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-//                    }
-//                });
-//            }
-//        });
+        mLinearLayoutSeekBarContainer.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int i, int i1, int i2, final int i3, final int i4, int i5, int i6, final int i7) {
+                mNestedScrollView.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if(i3>i7)
+                        mNestedScrollView.scrollTo(0,mNestedScrollView.getScrollY()+i3);
+                    }
+                });
+            }
+        });
     }
 
     @Override
