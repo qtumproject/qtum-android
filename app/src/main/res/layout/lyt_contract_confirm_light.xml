@@ -88,6 +88,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:id="@+id/nested_scroll_view"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <RelativeLayout
@@ -177,6 +178,7 @@
 
                 <LinearLayout
                     android:id="@+id/ll_gas_price_and_gas_limit"
+                    android:paddingTop="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -242,6 +244,7 @@
                         android:id="@+id/ll_gas_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp">
 
                         <org.qtum.wallet.utils.FontTextView
@@ -275,6 +278,7 @@
                         android:id="@+id/ll_gas_limit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp">
 
                         <org.qtum.wallet.utils.FontTextView
