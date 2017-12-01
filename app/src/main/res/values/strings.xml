@@ -217,5 +217,6 @@
     <string name="swipe_left_to_unsubscribe_or_delete_contract">Swipe Left to Unsubscribe or Delete Contract</string>
     <string name="query">Query</string>
     <string name="query_result">Query Result</string>
+    <string name="default_address">Default Address</string>
 
 </resources>

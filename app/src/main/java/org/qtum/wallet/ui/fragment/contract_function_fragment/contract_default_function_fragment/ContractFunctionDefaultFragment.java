@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -11,11 +12,17 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.contract_function_fragment.ParameterAdapter;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinDialogFragment;
@@ -25,6 +32,7 @@ import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.ResizeHeightAnimation;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -79,6 +87,15 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
     @BindView(R.id.seek_bar_container)
     LinearLayout mLinearLayoutSeekBarContainer;
 
+    @BindView(R.id.spinner_default_address)
+    protected Spinner mSpinner;
+
+    @BindView(R.id.tv_address)
+    TextView mTextViewAddress;
+
+    @BindView(R.id.nested_scroll_view)
+    NestedScrollView mNestedScrollView;
+
     int mMinFee;
     int mMaxFee;
     int stepFee = 1;
@@ -99,10 +116,9 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
     private ResizeHeightAnimation mAnimBackward;
     boolean showing = false;
 
-    @OnClick({R.id.ibt_back, R.id.cancel, R.id.call, R.id.bt_edit_close})
+    @OnClick({R.id.ibt_back, R.id.call, R.id.bt_edit_close})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.cancel:
             case R.id.ibt_back:
                 getActivity().onBackPressed();
                 break;
@@ -128,6 +144,22 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
         mAnimForward.setDuration(300);
         mAnimForward.setFillEnabled(true);
         mAnimForward.setFillAfter(true);
+//        mAnimForward.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                mNestedScrollView.smoothScrollTo(0,mNestedScrollView.getScrollY()+appLogoHeight);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//
+//            }
+//        });
 
         mAnimBackward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, appLogoHeight, 0);
         mAnimBackward.setDuration(300);
@@ -176,7 +208,7 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
         @Override
         public void onSuccess() {
             getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_ADDRESS), mTextInputEditTextFee.getText().toString(),
-                    Integer.valueOf(mFontTextViewGasLimit.getText().toString()), Integer.valueOf(mFontTextViewGasPrice.getText().toString()), getArguments().getString(METHOD_NAME), mEtSendToContract.getText().toString());
+                    Integer.valueOf(mFontTextViewGasLimit.getText().toString()), Integer.valueOf(mFontTextViewGasPrice.getText().toString()), getArguments().getString(METHOD_NAME),mTextViewAddress.getText().toString(), mEtSendToContract.getText().toString());
         }
 
         @Override
@@ -304,6 +336,31 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
                 }
             }
         });
+
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mTextViewAddress.setText(((AddressWithBalance)mSpinner.getItemAtPosition(i)).getAddress());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+//        mLinearLayoutSeekBarContainer.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+//            @Override
+//            public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+//                mNestedScrollView.post(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        mNestedScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+//                    }
+//                });
+//            }
+//        });
     }
 
     @Override

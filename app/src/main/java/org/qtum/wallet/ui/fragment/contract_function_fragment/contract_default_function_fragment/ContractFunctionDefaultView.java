@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.contract_function_fragment.contract_default_function_fragment;
 
+import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
@@ -21,4 +22,7 @@ public interface ContractFunctionDefaultView extends BaseFragmentView {
     void showEtSendToContract();
 
     void hideEtSendToContract();
+
+    void updateAddressWithBalanceSpinner(List<AddressWithBalance> addressWithBalances);
+
 }

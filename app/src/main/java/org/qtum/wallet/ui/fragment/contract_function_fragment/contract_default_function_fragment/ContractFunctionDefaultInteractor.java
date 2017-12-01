@@ -20,7 +20,8 @@ public interface ContractFunctionDefaultInteractor {
 
     Observable<ContractFunctionDefaultInteractorImpl.CallSmartContractRespWrapper> callSmartContractObservable(String methodName,
                                                                                                                List<ContractMethodParameter> contractMethodParameterList,
-                                                                                                               Contract contract);
+                                                                                                               Contract contract,
+                                                                                                               String addressFrom);
 
     Observable<List<UnspentOutput>> unspentOutputsForAddressObservable(String address);
 
@@ -29,4 +30,8 @@ public interface ContractFunctionDefaultInteractor {
     Observable<SendRawTransactionResponse> sendRawTransactionObservable(String code);
 
     Contract getContractByAddress(String address);
+
+    List<String> getAddresses();
+
+    Observable<List<UnspentOutput>> getUnspentOutputs(List<String> addresses);
 }
