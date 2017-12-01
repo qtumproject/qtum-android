@@ -10,6 +10,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -120,6 +121,9 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     TextView placeHolderBalanceNotConfirmed;
     @BindView(R.id.tv_placeholder_symbol)
     TextView placeHolderSymbol;
+
+    @BindView(R.id.nested_scroll_view)
+    NestedScrollView mNestedScrollView;
 
     @BindView(R.id.gas_management_container)
     RelativeLayout mRelativeLayoutGasManagementContainer;
@@ -622,6 +626,20 @@ public abstract class SendFragment extends BaseFragment implements SendView {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        mLinearLayoutSeekBarContainer.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int i, int i1, int i2, final int i3, final int i4, int i5, int i6, final int i7) {
+                mNestedScrollView.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if(i3>i7)
+                            mNestedScrollView.scrollTo(0,mNestedScrollView.getScrollY()+i3);
+                    }
+                });
             }
         });
     }

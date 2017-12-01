@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -54,6 +55,9 @@ public abstract class ContractConfirmFragment extends BaseFragment implements Co
     FontTextView mFontTextViewMaxGasPrice;
     @BindView(R.id.tv_min_gas_price)
     FontTextView mFontTextViewMinGasPrice;
+
+    @BindView(R.id.nested_scroll_view)
+    NestedScrollView mNestedScrollView;
 
     @BindView(R.id.tv_max_gas_limit)
     FontTextView mFontTextViewMaxGasLimit;
@@ -249,6 +253,20 @@ public abstract class ContractConfirmFragment extends BaseFragment implements Co
                         mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
                     }
                 }
+            }
+        });
+
+        mLinearLayoutSeekBarContainer.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int i, int i1, int i2, final int i3, final int i4, int i5, int i6, final int i7) {
+                mNestedScrollView.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if(i3>i7)
+                            mNestedScrollView.scrollTo(0,mNestedScrollView.getScrollY()+i3);
+                    }
+                });
             }
         });
     }
