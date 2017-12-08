@@ -1,4 +1,4 @@
-package org.qtum.wallet.ui.fragment.set_your_token_fragment;
+package org.qtum.wallet.ui.fragment.contract_function_fragment;
 
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -10,53 +10,51 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.utils.EditTextValidated;
 import org.qtum.wallet.utils.FontManager;
 
 import java.math.BigInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public abstract class InputViewHolder extends RecyclerView.ViewHolder implements EditTextValidated.EditTextValidateListener {
 
-    private static String TYPE_BOOL = "bool";
+public class ParameterViewHolder extends RecyclerView.ViewHolder {
 
-    private static final String TYPE_UINT = "uint";
-    private static final String TYPE_UINT8 = "uint8";
-    private static final String TYPE_UINT16 = "uint16";
-    private static final String TYPE_UINT32 = "uint32";
-    private static final String TYPE_UINT64 = "uint64";
-    private static final String TYPE_UINT128 = "uint128";
-    private static final String TYPE_UINT256 = "uint256";
+    private String TYPE_BOOL = "bool";
 
-    private static String DENY = "";
-    private static String ALLOW = null;
+    private final String TYPE_UINT = "uint";
+    private final String TYPE_UINT8 = "uint8";
+    private final String TYPE_UINT16 = "uint16";
+    private final String TYPE_UINT32 = "uint32";
+    private final String TYPE_UINT64 = "uint64";
+    private final String TYPE_UINT128 = "uint128";
+    private final String TYPE_UINT256 = "uint256";
+    private final String TYPE_ADDRESS = "address";
 
-    private static final String TYPE_INT = "int";
+    private String DENY = "";
+    private String ALLOW = null;
 
-    private static int uint8 = (int) Math.pow(2, 8);
-    private static int uint16 = (int) Math.pow(2, 16);
-    private static long uint32 = (long) Math.pow(2, 32);
-    private static long uint64 = (long) Math.pow(2, 64);
-    private static BigInteger uint128 = new BigInteger("2").pow(128);
-    private static BigInteger uint256 = new BigInteger("2").pow(256);
+    private final String TYPE_INT = "int";
+
+    private int uint8 = (int) Math.pow(2, 8);
+    private int uint16 = (int) Math.pow(2, 16);
+    private long uint32 = (long) Math.pow(2, 32);
+    private long uint64 = (long) Math.pow(2, 64);
+    private BigInteger uint128 = new BigInteger("2").pow(128);
+    private BigInteger uint256 = new BigInteger("2").pow(256);
 
     private ContractMethodParameter parameter;
 
-    private InputFilter filter = new InputFilter() {
-
+    public InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-
-            for (int i = start; i < end; i++) {
-                if (!Character.isLetterOrDigit(source.charAt(i)) && !Character.toString(source.charAt(i)).equals("_") && !Character.toString(source.charAt(i)).equals("-")) {
-                    return "";
-                }
-            }
-
             String content = etParam.getText().toString() + source;
+            parameter.setValue(content);
             if (!TextUtils.isEmpty(content)) {
                 switch (parameter.getType()) {
                     case TYPE_INT:
@@ -73,7 +71,11 @@ public abstract class InputViewHolder extends RecyclerView.ViewHolder implements
                         return validateUINT(content, uint128);
                     case TYPE_UINT256:
                         return validateUINT(content, uint256);
+                    case TYPE_ADDRESS:
+                        return validateAddress(content);
+
                     default:
+                        parameter.setValue(content);
                         return ALLOW;
                 }
             } else {
@@ -82,31 +84,27 @@ public abstract class InputViewHolder extends RecyclerView.ViewHolder implements
         }
     };
 
-    @BindView(org.qtum.wallet.R.id.til_param)
-    protected
+    @BindView(R.id.til_param)
     TextInputLayout tilParam;
 
-    @BindView(org.qtum.wallet.R.id.et_param)
-    protected
+    @BindView(R.id.et_param)
     EditTextValidated etParam;
 
-    @BindView(org.qtum.wallet.R.id.checkbox)
+    @BindView(R.id.checkbox)
     AppCompatCheckBox checkBox;
 
-    OnValidateParamsListener listener;
-
-    public InputViewHolder(View itemView, OnValidateParamsListener listener) {
+    public ParameterViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-        this.listener = listener;
+
         tilParam.setTypeface(FontManager.getInstance().getFont(tilParam.getContext().getString(org.qtum.wallet.R.string.simplonMonoRegular)));
         etParam.setTypeface(FontManager.getInstance().getFont(etParam.getContext().getString(org.qtum.wallet.R.string.simplonMonoRegular)));
         etParam.setFilters(new InputFilter[]{filter});
-        etParam.setOnEditTextValidateListener(this);
     }
 
     public void bind(ContractMethodParameter parameter, boolean isLast) {
         this.parameter = parameter;
+
         tilParam.setHint(fromCamelCase(parameter.getName()));
         etParam.setTopHint(fromCamelCase(parameter.getName())+" ("+parameter.getType()+")");
         setInputType(parameter.getType());
@@ -126,6 +124,7 @@ public abstract class InputViewHolder extends RecyclerView.ViewHolder implements
                     builder = builder.insert(i, ' ');
                 }
             }
+
             String value = builder.toString().replace("_", "");
             parameter.setDisplayName(value.substring(0, 1).toUpperCase() + value.substring(1));
         }
@@ -133,27 +132,47 @@ public abstract class InputViewHolder extends RecyclerView.ViewHolder implements
     }
 
     private void setInputType(String type) {
+
         int inputType = InputType.TYPE_CLASS_TEXT;
+
         if (type.contains(TYPE_BOOL)) {
+
             tilParam.setVisibility(View.INVISIBLE);
             checkBox.setVisibility(View.VISIBLE);
+
         } else {
+
             tilParam.setVisibility(View.VISIBLE);
             checkBox.setVisibility(View.INVISIBLE);
+
             if (type.contains(TYPE_UINT)) {
+
                 inputType = InputType.TYPE_CLASS_NUMBER;
 
             } else if (type.contains(TYPE_INT)) {
+
                 inputType = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED;
             }
+
             etParam.setInputType(inputType);
+
         }
+    }
+
+    private String validateAddress(String content){
+        Pattern pattern = Pattern.compile("^[qQ][a-km-zA-HJ-NP-Z1-9]{0,33}$");
+        Matcher matcher = pattern.matcher(content);
+        if (!matcher.matches()) {
+            return "";
+        }
+        return null;
     }
 
     private String validateINT(String content) {
         try {
             int num = Integer.parseInt(content);
             if (num > Integer.MIN_VALUE && num < Integer.MAX_VALUE) {
+                parameter.setValue(String.valueOf(num));
                 return ALLOW;
             }
         } catch (Exception e) {
@@ -166,6 +185,7 @@ public abstract class InputViewHolder extends RecyclerView.ViewHolder implements
         try {
             long num = Long.parseLong(content);
             if (num > 0 && num < uint) {
+                parameter.setValue(String.valueOf(num));
                 return ALLOW;
             }
         } catch (Exception e) {
@@ -178,17 +198,12 @@ public abstract class InputViewHolder extends RecyclerView.ViewHolder implements
         try {
             BigInteger num = new BigInteger(content);
             if ((num.compareTo(BigInteger.ZERO) > 0) && (num.compareTo(uint) < 0)) {
+                parameter.setValue(String.valueOf(num));
                 return ALLOW;
             }
         } catch (Exception e) {
             return DENY;
         }
         return DENY;
-    }
-
-    @Override
-    public void onValidate(String text) {
-        parameter.setValue(text);
-        listener.onValidate();
     }
 }

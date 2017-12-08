@@ -88,11 +88,12 @@
                 layout="@layout/lyt_appbar_wallet_placeholder_light"/>
         </FrameLayout>
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/balance"
             android:clickable="true"
+            android:id="@+id/nested_scroll_view"
             android:fillViewport="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -240,6 +241,7 @@
                     android:id="@+id/ll_fee"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/til_amount"
                     android:layout_marginTop="13dp">
@@ -353,7 +355,8 @@
                                 android:id="@+id/ll_gas_price"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp">
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="8dp">
 
                                 <org.qtum.wallet.utils.FontTextView
                                     android:id="@+id/tv_min_gas_price"
@@ -387,7 +390,8 @@
                                 android:id="@+id/ll_gas_limit"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp">
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="8dp">
 
                                 <org.qtum.wallet.utils.FontTextView
                                     android:id="@+id/tv_min_gas_limit"
@@ -461,7 +465,7 @@
 
             </RelativeLayout>
 
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
 
     </RelativeLayout>

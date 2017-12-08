@@ -21,7 +21,7 @@ public class SetYourTokenPresenterImpl extends BaseFragmentPresenterImpl impleme
 
     public void getConstructorByUiid(String uiid) {
         contractMethod = getInteractor().getContractConstructor(uiid);
-        getView().onContractConstructorPrepared(contractMethod.inputParams);
+        getView().onContractConstructorPrepared(contractMethod.getInputParams());
     }
 
     public SetYourTokenInteractor getInteractor() {

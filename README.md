@@ -7,7 +7,7 @@ Designed with stability, modularity and interoperability in mind, Qtum is the fo
 2)Open with Android Studio
 
 <b>Build Types</b><br/>
-Project have several build types:<br/>
+The project has several build types:<br/>
 ![Screenshot](http://www.picshare.ru/uploads/171130/vGf7v0LPBX.jpg)<br/>
 You can use ONLY production(debug/release) buildTypes.
 

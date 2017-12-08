@@ -1,4 +1,4 @@
-package org.qtum.wallet.ui.fragment.qtum_cash_management_fragment;
+package org.qtum.wallet.ui.fragment.contract_function_fragment.contract_default_function_fragment;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -42,7 +42,7 @@ public abstract class AddressesWithBalanceSpinnerAdapter extends BaseAdapter imp
         return (long) position;
     }
 
-    public View getCustomView(int position, int resId, @NonNull ViewGroup parent) {
+    public View getCustomDropDownView(int position, int resId, @NonNull ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(resId, parent, false);
         FontTextView textViewAddress = (FontTextView) view.findViewById(R.id.address_name);
@@ -62,5 +62,11 @@ public abstract class AddressesWithBalanceSpinnerAdapter extends BaseAdapter imp
         return view;
     }
 
-
+    public View getCustomView(int position, @Nullable int resId, @NonNull ViewGroup parent) {
+        LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = layoutInflater.inflate(resId, parent, false);
+        FontTextView textViewAddress = (FontTextView) view.findViewById(R.id.address_name);
+        textViewAddress.setText(mKeyWithBalanceList.get(position).getAddress());
+        return view;
+    }
 }

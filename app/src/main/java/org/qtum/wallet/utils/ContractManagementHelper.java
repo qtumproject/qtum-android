@@ -29,7 +29,7 @@ public class ContractManagementHelper {
             @Override
             public Pair<String[], ContractMethod> call() throws Exception {
                 final ContractMethod contractMethod = getContractMethod(contract.getUiid(), propName, context);
-                return new Pair<>(getHash(contractMethod.name), contractMethod);
+                return new Pair<>(getHash(contractMethod.getName()), contractMethod);
             }
         }).flatMap(new Func1<Pair<String[], ContractMethod>, Observable<String>>() {
             @Override
@@ -38,7 +38,7 @@ public class ContractManagementHelper {
                         .map(new Func1<CallSmartContractResponse, String>() {
                             @Override
                             public String call(CallSmartContractResponse callSmartContractResponse) {
-                                return processResponse(pair.second.outputParams, callSmartContractResponse.getItems().get(0).getOutput());
+                                return processResponse(pair.second.getOutputParams(), callSmartContractResponse.getItems().get(0).getOutput());
                             }
                         });
             }
@@ -50,7 +50,7 @@ public class ContractManagementHelper {
         return Observable.fromCallable(new Callable<String[]>() {
             @Override
             public String[] call() throws Exception {
-                return getHash(contractMethod.name);
+                return getHash(contractMethod.getName());
             }
         }).flatMap(new Func1<String[], Observable<String>>() {
             @Override
@@ -59,7 +59,7 @@ public class ContractManagementHelper {
                         .map(new Func1<CallSmartContractResponse, String>() {
                             @Override
                             public String call(CallSmartContractResponse callSmartContractResponse) {
-                                return processResponse(contractMethod.outputParams, callSmartContractResponse.getItems().get(0).getOutput());
+                                return processResponse(contractMethod.getOutputParams(), callSmartContractResponse.getItems().get(0).getOutput());
                             }
                         });
             }
@@ -76,14 +76,14 @@ public class ContractManagementHelper {
     private static ContractMethod getContractMethod(final String contractUiid, final String methodName, final Context context) {
         List<ContractMethod> methods = FileStorageManager.getInstance().getContractMethods(context, contractUiid);
         for (ContractMethod method : methods) {
-            if (method.name.equals(methodName)) {
+            if (method.getName().equals(methodName)) {
                 return method;
             }
         }
         return null;
     }
 
-    private static String processResponse(List<ContractMethodParameter> contractMethodOutputParameterList, String output) {
+    public static String processResponse(List<ContractMethodParameter> contractMethodOutputParameterList, String output) {
         String type = contractMethodOutputParameterList.get(0).getType();
         if (type.contains("int")) {
             if (output.isEmpty()) {
@@ -101,7 +101,4 @@ public class ContractManagementHelper {
         return output;
     }
 
-    public interface GetPropertyValueCallBack {
-        void onSuccess(String value);
-    }
 }

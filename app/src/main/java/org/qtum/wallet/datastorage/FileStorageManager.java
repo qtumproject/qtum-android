@@ -259,9 +259,9 @@ public class FileStorageManager {
             Collections.sort(contractMethods, new Comparator<ContractMethod>() {
                 @Override
                 public int compare(ContractMethod contractMethod, ContractMethod t1) {
-                    if (contractMethod.constant && !t1.constant) {
+                    if (contractMethod.isConstant() && !t1.isConstant()) {
                         return -1;
-                    } else if (!contractMethod.constant && t1.constant) {
+                    } else if (!contractMethod.isConstant() && t1.isConstant()) {
                         return 1;
                     } else {
                         return 0;
@@ -292,9 +292,9 @@ public class FileStorageManager {
             Collections.sort(contractMethods, new Comparator<ContractMethod>() {
                 @Override
                 public int compare(ContractMethod contractMethod, ContractMethod t1) {
-                    if (contractMethod.constant && !t1.constant) {
+                    if (contractMethod.isConstant() && !t1.isConstant()) {
                         return -1;
-                    } else if (!contractMethod.constant && t1.constant) {
+                    } else if (!contractMethod.isConstant() && t1.isConstant()) {
                         return 1;
                     } else {
                         return 0;

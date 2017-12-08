@@ -8,15 +8,13 @@ import org.mockito.MockitoAnnotations;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
-import org.qtum.wallet.model.gson.SendRawTransactionResponse;
-import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.model.gson.call_smart_contract_response.Item;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.fragment.contract_function_fragment.ContractFunctionInteractor;
-import org.qtum.wallet.ui.fragment.contract_function_fragment.ContractFunctionInteractorImpl;
-import org.qtum.wallet.ui.fragment.contract_function_fragment.ContractFunctionPresenterImpl;
-import org.qtum.wallet.ui.fragment.contract_function_fragment.ContractFunctionView;
+import org.qtum.wallet.ui.fragment.contract_function_fragment.contract_default_function_fragment.ContractFunctionDefaultInteractor;
+import org.qtum.wallet.ui.fragment.contract_function_fragment.contract_default_function_fragment.ContractFunctionDefaultInteractorImpl;
+import org.qtum.wallet.ui.fragment.contract_function_fragment.contract_default_function_fragment.ContractFunctionDefaultPresenterImpl;
+import org.qtum.wallet.ui.fragment.contract_function_fragment.contract_default_function_fragment.ContractFunctionDefaultView;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -45,10 +43,10 @@ import static org.mockito.Mockito.when;
 public class ContractFunctionPresenterTest {
 
     @Mock
-    private ContractFunctionView view;
+    private ContractFunctionDefaultView view;
     @Mock
-    private ContractFunctionInteractor interactor;
-    private ContractFunctionPresenterImpl presenter;
+    private ContractFunctionDefaultInteractor interactor;
+    private ContractFunctionDefaultPresenterImpl presenter;
 
     @Before
     public void setup() {
@@ -66,7 +64,7 @@ public class ContractFunctionPresenterTest {
             }
         });
 
-        presenter = new ContractFunctionPresenterImpl(view, interactor);
+        presenter = new ContractFunctionDefaultPresenterImpl(view, interactor);
     }
 
     private final String TEST_UUID = "uuid";
@@ -135,8 +133,8 @@ public class ContractFunctionPresenterTest {
     private final String TEST_EXCEPTED_NOT_NONE = "excepted";
     private final String TEST_EXCEPTED_NONE = "None";
     private final List<Item> TEST_WRONG_ITEMS = Arrays.asList(new Item(TEST_EXCEPTED_NOT_NONE), new Item(TEST_EXCEPTED_NONE));
-    private final ContractFunctionInteractorImpl.CallSmartContractRespWrapper TEST_WRONG_RESP_WRAPPER =
-            new ContractFunctionInteractorImpl.CallSmartContractRespWrapper("code", new CallSmartContractResponse(TEST_WRONG_ITEMS));
+    private final ContractFunctionDefaultInteractorImpl.CallSmartContractRespWrapper TEST_WRONG_RESP_WRAPPER =
+            new ContractFunctionDefaultInteractorImpl.CallSmartContractRespWrapper("code", new CallSmartContractResponse(TEST_WRONG_ITEMS));
 
     @Test
     public void onCallClick_ItemExceptedNotNoneError() {
@@ -153,8 +151,8 @@ public class ContractFunctionPresenterTest {
     private final int TEST_ITEM_USED_GAS_LIMIT = 4;
     private final List<Item> TEST_WRONG_GAS_ITEMS = Arrays.asList(new Item(TEST_EXCEPTED_NONE, TEST_ITEM_USED_GAS_LIMIT),
             new Item(TEST_EXCEPTED_NOT_NONE, TEST_ITEM_USED_GAS_LIMIT));
-    private final ContractFunctionInteractorImpl.CallSmartContractRespWrapper TEST_WRONG_GAS_RESP_WRAPPER =
-            new ContractFunctionInteractorImpl.CallSmartContractRespWrapper("abi params", new CallSmartContractResponse(TEST_WRONG_GAS_ITEMS));
+    private final ContractFunctionDefaultInteractorImpl.CallSmartContractRespWrapper TEST_WRONG_GAS_RESP_WRAPPER =
+            new ContractFunctionDefaultInteractorImpl.CallSmartContractRespWrapper("abi params", new CallSmartContractResponse(TEST_WRONG_GAS_ITEMS));
 
     @Test
     public void onCallClick_WrongGasUsedError() {
@@ -169,8 +167,8 @@ public class ContractFunctionPresenterTest {
 
     private final List<Item> TEST_RIGHT_ITEMS = Arrays.asList(new Item(TEST_EXCEPTED_NONE, 1),
             new Item(TEST_EXCEPTED_NOT_NONE, 1));
-    private final ContractFunctionInteractorImpl.CallSmartContractRespWrapper TEST_RIGHT_RESP_WRAPPER =
-            new ContractFunctionInteractorImpl.CallSmartContractRespWrapper("code", new CallSmartContractResponse(TEST_RIGHT_ITEMS));
+    private final ContractFunctionDefaultInteractorImpl.CallSmartContractRespWrapper TEST_RIGHT_RESP_WRAPPER =
+            new ContractFunctionDefaultInteractorImpl.CallSmartContractRespWrapper("code", new CallSmartContractResponse(TEST_RIGHT_ITEMS));
 
 
     @After

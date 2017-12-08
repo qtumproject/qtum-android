@@ -1,5 +1,6 @@
-package org.qtum.wallet.ui.fragment.contract_function_fragment;
+package org.qtum.wallet.ui.fragment.contract_function_fragment.contract_default_function_fragment;
 
+import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
@@ -10,6 +11,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -21,10 +23,10 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl implements ContractFunctionPresenter {
+public class ContractFunctionDefaultPresenterImpl extends BaseFragmentPresenterImpl implements ContractFunctionDefaultPresenter {
 
-    private ContractFunctionView mContractMethodFragmentView;
-    private ContractFunctionInteractor mContractFunctionInteractor;
+    private ContractFunctionDefaultView mContractMethodFragmentView;
+    private ContractFunctionDefaultInteractor mContractFunctionInteractor;
 
     private double minFee;
     private double maxFee = 1;
@@ -35,28 +37,64 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
     private int minGasLimit = 100000;
     private int maxGasLimit = 5000000;
 
-    public ContractFunctionPresenterImpl(ContractFunctionView contractMethodFragmentView, ContractFunctionInteractor contractFunctionInteractor) {
+    private List<AddressWithBalance> mAddressWithBalanceList = new ArrayList<>();
+
+    public ContractFunctionDefaultPresenterImpl(ContractFunctionDefaultView contractMethodFragmentView, ContractFunctionDefaultInteractor contractFunctionInteractor) {
         mContractMethodFragmentView = contractMethodFragmentView;
         mContractFunctionInteractor = contractFunctionInteractor;
     }
 
     @Override
-    public ContractFunctionView getView() {
+    public ContractFunctionDefaultView getView() {
         return mContractMethodFragmentView;
     }
 
     @Override
     public void initializeViews() {
         super.initializeViews();
+
+
+        getView().setProgressDialog();
+        List<String> addresses = getInteractor().getAddresses();
+        initAddressesWithBalanceList(addresses);
+        getInteractor().getUnspentOutputs(addresses)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<UnspentOutput>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(List<UnspentOutput> unspentOutputs) {
+                        for (UnspentOutput unspentOutput : unspentOutputs) {
+                            for (AddressWithBalance addressWithBalance : mAddressWithBalanceList) {
+                                if (unspentOutput.getAddress().equals(addressWithBalance.getAddress())) {
+                                    addressWithBalance.setUnspentOutput(unspentOutput);
+                                    break;
+                                }
+                            }
+                        }
+                        getView().updateAddressWithBalanceSpinner(mAddressWithBalanceList);
+                        getView().dismissProgressDialog();
+                    }
+                });
+
+
         List<ContractMethod> list = getInteractor().getContractMethod(getView().getContractTemplateUiid());
         for (ContractMethod contractMethod : list) {
-            if (contractMethod.name.equals(getView().getMethodName())) {
+            if (contractMethod.getName().equals(getView().getMethodName())) {
                 if(contractMethod.isPayable()){
                     getView().showEtSendToContract();
                 }else{
                     getView().hideEtSendToContract();
                 }
-                getView().setUpParameterList(contractMethod.inputParams);
+                getView().setUpParameterList(contractMethod.getInputParams());
                 break;
             }
         }
@@ -68,8 +106,14 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
         getView().updateGasLimit(minGasLimit, maxGasLimit);
     }
 
+    private void initAddressesWithBalanceList(List<String> addresses) {
+        for (String address : addresses) {
+            mAddressWithBalanceList.add(new AddressWithBalance(address));
+        }
+    }
+
     @Override
-    public void onCallClick(List<ContractMethodParameter> contractMethodParameterList, final String contractAddress, final String fee, final int gasLimit, final int gasPrice, String methodName, final String sendToAddress) {
+    public void onCallClick(List<ContractMethodParameter> contractMethodParameterList, final String contractAddress, final String fee, final int gasLimit, final int gasPrice, String methodName, final String addressFrom, final String sendToAddress) {
         getView().setProgressDialog();
         for(ContractMethodParameter contract: contractMethodParameterList){
             if(contract.getValue().isEmpty()){
@@ -84,10 +128,10 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
             }
         }
         final Contract contract = getInteractor().getContractByAddress(contractAddress);
-        getInteractor().callSmartContractObservable(methodName, contractMethodParameterList, contract)
+        getInteractor().callSmartContractObservable(methodName, contractMethodParameterList, contract, addressFrom)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ContractFunctionInteractorImpl.CallSmartContractRespWrapper>() {
+                .subscribe(new Subscriber<ContractFunctionDefaultInteractorImpl.CallSmartContractRespWrapper>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -98,7 +142,7 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
                     }
 
                     @Override
-                    public void onNext(final ContractFunctionInteractorImpl.CallSmartContractRespWrapper respWrapper) {
+                    public void onNext(final ContractFunctionDefaultInteractorImpl.CallSmartContractRespWrapper respWrapper) {
                         Item item = respWrapper.getResponse().getItems().get(0);
                         if (!item.getExcepted().equals("None")) {
                             getView().setAlertDialog(org.qtum.wallet.R.string.error,
@@ -113,14 +157,14 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
                             return;
                         }
                         createTx(respWrapper.getAbiParams(), gasLimit, gasPrice, fee.replace(',', '.'),
-                                getInteractor().getFeePerKb(), contract, sendToAddress);
+                                getInteractor().getFeePerKb(), contract, addressFrom,sendToAddress);
                     }
                 });
     }
 
 
-    private void createTx(final String abiParams, final int gasLimit, final int gasPrice, final String fee, final BigDecimal feePerKb, final Contract contract, final String sendToContract) {
-        getInteractor().unspentOutputsForAddressObservable(contract.getSenderAddress())
+    private void createTx(final String abiParams, final int gasLimit, final int gasPrice, final String fee, final BigDecimal feePerKb, final Contract contract, String addressFrom,final String sendToContract) {
+        getInteractor().unspentOutputsForAddressObservable(addressFrom)
                 .flatMap(new Func1<List<UnspentOutput>, Observable<SendRawTransactionResponse>>() {
                     @Override
                     public Observable<SendRawTransactionResponse> call(List<UnspentOutput> unspentOutputs) {
@@ -165,7 +209,7 @@ public class ContractFunctionPresenterImpl extends BaseFragmentPresenterImpl imp
         return getInteractor().sendRawTransactionObservable(code);
     }
 
-    public ContractFunctionInteractor getInteractor() {
+    public ContractFunctionDefaultInteractor getInteractor() {
         return mContractFunctionInteractor;
     }
 }
