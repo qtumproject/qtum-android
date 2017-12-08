@@ -376,8 +376,11 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
         @Override
         public void onError(Throwable e) {
+            setAlertDialog(org.qtum.wallet.R.string.no_internet_connection,
+                    org.qtum.wallet.R.string.please_check_your_network_settings,
+                    org.qtum.wallet.R.string.ok,
+                    BaseFragment.PopUpType.error);
             stopRefreshRecyclerAnimation();
-            Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
     };
 

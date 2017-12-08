@@ -64,7 +64,7 @@
     <string name="incorrect_repeated_pin">Incorrect repeated PIN</string>
     <string name="your_brain_code">Your Passphrase</string>
     <string name="copy_brain_code">Copy Passphrase</string>
-    <string name="copy_brain_code_n_to_use_it_in_another_app">Copy the passphase to restore your wallet on another device</string>
+    <string name="copy_brain_code_n_to_use_it_in_another_app">Copy the passphrase to restore your wallet on another device</string>
     <string name="choose_another_address">Choose Another Address</string>
     <string name="log_out">Log Out</string>
     <string name="qr_code">QR Code</string>

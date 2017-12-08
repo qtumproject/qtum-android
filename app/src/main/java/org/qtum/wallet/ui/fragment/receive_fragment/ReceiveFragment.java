@@ -470,7 +470,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
         DisplayMetrics displayMetrics = new DisplayMetrics();
         Display display = getMainActivity().getWindowManager().getDefaultDisplay();
         display.getMetrics(displayMetrics);
-        int QRCodeWidth = displayMetrics.heightPixels / 4;
+        int QRCodeWidth = displayMetrics.widthPixels * 4/5;
         getPresenter().setModuleWidth(QRCodeWidth);
         BitMatrix bitMatrix;
         try {
@@ -507,7 +507,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
                 }
             }
         }
-        Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
+        Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.RGB_565);
         bitmap.setPixels(pixels, 0, QRCodeWidth, 0, 0, bitMatrixWidth, bitMatrixHeight);
         return bitmap;
     }
