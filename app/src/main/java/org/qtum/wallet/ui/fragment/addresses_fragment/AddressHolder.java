@@ -22,17 +22,6 @@ public class AddressHolder extends RecyclerView.ViewHolder {
     @BindView(org.qtum.wallet.R.id.ll_single_item)
     protected LinearLayout mLinearLayoutAddress;
 
-    @OnLongClick(R.id.tv_single_string)
-    public boolean onAddressLongClick() {
-        ClipboardUtils.copyToClipBoard(mTextViewAddress.getContext(), mTextViewAddress.getText().toString(), new ClipboardUtils.CopyCallback() {
-            @Override
-            public void onCopyToClipBoard() {
-                Toast.makeText(mTextViewAddress.getContext(), mTextViewAddress.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
-            }
-        });
-        return true;
-    }
-
     protected int defaultTextColor, selectedTextColor;
 
     protected AddressHolder(View itemView, final OnAddressClickListener listener) {
@@ -41,6 +30,18 @@ public class AddressHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 listener.onAddressClick(getAdapterPosition());
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ClipboardUtils.copyToClipBoard(mTextViewAddress.getContext(), mTextViewAddress.getText().toString(), new ClipboardUtils.CopyCallback() {
+                    @Override
+                    public void onCopyToClipBoard() {
+                        Toast.makeText(mTextViewAddress.getContext(), mTextViewAddress.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return true;
             }
         });
         ButterKnife.bind(this, itemView);

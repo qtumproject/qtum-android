@@ -46,7 +46,7 @@ public class News {
                 date = sdf.parse(pubDate);
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(date);
-                SimpleDateFormat displayFormat = new SimpleDateFormat("MMM d, yyyy  HH:mm aaa", Locale.ENGLISH);
+                SimpleDateFormat displayFormat = new SimpleDateFormat("MMM d, yyyy  hh:mm aaa", Locale.ENGLISH);
                 formattedData = displayFormat.format(date).toUpperCase();
             } catch (Exception e) {
                 e.printStackTrace();
