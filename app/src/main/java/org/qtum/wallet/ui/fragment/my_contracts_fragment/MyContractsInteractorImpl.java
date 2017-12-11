@@ -2,13 +2,17 @@ package org.qtum.wallet.ui.fragment.my_contracts_fragment;
 
 import android.content.Context;
 
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.ExistContractResponse;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import rx.Observable;
 
 public class MyContractsInteractorImpl implements MyContractsInteractor {
     private WeakReference<Context> mContext;
@@ -57,5 +61,10 @@ public class MyContractsInteractorImpl implements MyContractsInteractor {
     public void setShowWizard(boolean isShow) {
         QtumSettingSharedPreference qtumSettingSharedPreference = new QtumSettingSharedPreference();
         qtumSettingSharedPreference.setShowContractsDeleteUnsubscribeWizard(mContext.get(), isShow);
+    }
+
+    @Override
+    public Observable<ExistContractResponse> isContractExist(String contractAddress) {
+        return QtumService.newInstance().isContractExist(contractAddress);
     }
 }

@@ -3,11 +3,16 @@ package org.qtum.wallet.ui.fragment.my_contracts_fragment;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.ExistContractResponse;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import java.util.Iterator;
 import java.util.List;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implements MyContractsPresenter {
 
@@ -60,6 +65,33 @@ public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implemen
         } else {
             getView().setAlertDialog(R.string.error, R.string.fail_to_get_contracts, BaseFragment.PopUpType.error);
         }
+    }
+
+    @Override
+    public void onContractClick(final Contract contract) {
+        getInteractor().isContractExist(contract.getContractAddress())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ExistContractResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(ExistContractResponse existContractResponse) {
+                        if(existContractResponse.isExist()){
+                            getView().openContractFunctionFragment(contract);
+                        }else{
+                            getView().openDeletedContractFragment(contract.getContractAddress());
+                        }
+                    }
+                });
     }
 
     @Override

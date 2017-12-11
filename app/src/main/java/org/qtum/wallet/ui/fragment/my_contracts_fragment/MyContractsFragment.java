@@ -88,6 +88,17 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
         return mMyContractsPresenterImpl;
     }
 
+    @Override
+    public void openContractFunctionFragment(Contract contract){
+        BaseFragment contractManagementFragment = ContractManagementFragment.newInstance(getContext(), contract.getUiid(), contract.getContractAddress());
+        openFragment(contractManagementFragment);
+    }
+
+    @Override
+    public void openDeletedContractFragment(String contractAddress) {
+
+    }
+
     class ContractViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.title)
@@ -115,8 +126,7 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
                 @Override
                 public void onClick(View v) {
                     if (mContract.isHasBeenCreated()) {
-                        BaseFragment contractManagementFragment = ContractManagementFragment.newInstance(getContext(), mContract.getUiid(), mContract.getContractAddress());
-                        openFragment(contractManagementFragment);
+                        getPresenter().onContractClick(mContract);
                     }
                 }
             });

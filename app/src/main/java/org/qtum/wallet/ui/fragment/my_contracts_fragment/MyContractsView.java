@@ -13,4 +13,8 @@ public interface MyContractsView extends BaseFragmentView {
     void showWizard();
 
     void updateRecyclerView(List<Contract> contracts);
+
+    void openContractFunctionFragment(Contract contract);
+
+    void openDeletedContractFragment(String contractAddress);
 }

@@ -223,5 +223,8 @@
     <string name="contract_name_">Contract Name</string>
     <string name="name">Name</string>
     <string name="purchase_date">Purchase Date</string>
+    <string name="contract_was_deleted_by_its_author_and_is_no_longer_available_you_can_unsubscribe_to_remove_it_from_your_wallet">Contract was deleted by its author and is no longer available. You can Unsubscribe to remove it from your wallet.</string>
+    <string name="unsubscribe">Unsubscribe</string>
+    <string name="unsubscribe">Unsubscribe</string>
 
 </resources>
