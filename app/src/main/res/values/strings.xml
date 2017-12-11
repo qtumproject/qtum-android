@@ -101,10 +101,10 @@
     <string name="token_address">Token Address</string>
 
     <!--FONT PATHS-->
-    <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
-    <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
-    <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
-    <string name="avenir">fonts/avenir.ttc</string>
+    <string name="euclidFlexMedium" translatable="false">fonts/euclidflexmedium.ttf</string>
+    <string name="simplonMonoMedium" translatable="false">fonts/simplonmonomedium.ttf</string>
+    <string name="simplonMonoRegular" translatable="false">fonts/simplonmonoregular.ttf</string>
+    <string name="avenir" translatable="false">fonts/avenir.ttc</string>
     <string name="proximaNovaBold" translatable="false">fonts/proximanovabold.ttf</string>
     <string name="proximaNovaLight" translatable="false">fonts/proximanovalight.ttf</string>
     <string name="proximaNovaRegular" translatable="false">fonts/proximanovaregular.ttf</string>
@@ -218,5 +218,10 @@
     <string name="query">Query</string>
     <string name="query_result">Query Result</string>
     <string name="default_address">Default Address</string>
+    <string name="choose_from_library"><![CDATA[Choose from library >]]></string>
+    <string name="contract_address_">Contract Address</string>
+    <string name="contract_name_">Contract Name</string>
+    <string name="name">Name</string>
+    <string name="purchase_date">Purchase Date</string>
 
 </resources>

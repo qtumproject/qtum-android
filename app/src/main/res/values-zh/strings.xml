@@ -170,9 +170,6 @@
     <string name="you_have_insufficient_funds_for_this_transaction">资金不足，无法发起交易</string>
 
     <!--FONT PATHS-->
-    <string name="euclidFlexMedium">fonts/euclidflexmedium.ttf</string>
-    <string name="simplonMonoMedium">fonts/simplonmonomedium.ttf</string>
-    <string name="simplonMonoRegular">fonts/simplonmonoregular.ttf</string>
     <string name="sent_time">发送时间</string>
     <string name="invalid_qtum_address">不合法的QTUM地址</string>
     <string name="invalid_qr_code">无效的二维码格式</string>
@@ -185,7 +182,6 @@
     <string name="insufficient_fee_lease_use_minimum_of">交易费不足。请使用至少</string>
 
     <string name="no_transaction_available_yet">当前没有有效交易</string>
-    <string name="amount_too_big">Amount Value Too Big</string>
 
 
 </resources>

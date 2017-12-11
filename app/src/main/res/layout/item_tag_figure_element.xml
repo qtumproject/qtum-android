@@ -18,6 +18,7 @@
     <org.qtum.wallet.utils.FontTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textIsSelectable="true"
         android:textColor="@color/colorPrimary"
         app:typefaceAsset="@string/simplonMonoRegular"
         android:layout_marginTop="8dp"
