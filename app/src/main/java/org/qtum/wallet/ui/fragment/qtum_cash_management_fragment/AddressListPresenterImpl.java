@@ -50,10 +50,12 @@ public class AddressListPresenterImpl extends BaseFragmentPresenterImpl implemen
                     @Override
                     public void onNext(List<UnspentOutput> unspentOutputs) {
                         for (UnspentOutput unspentOutput : unspentOutputs) {
-                            for (AddressWithBalance addressWithBalance : mAddressWithBalanceList) {
-                                if (unspentOutput.getAddress().equals(addressWithBalance.getAddress())) {
-                                    addressWithBalance.setUnspentOutput(unspentOutput);
-                                    break;
+                            if (unspentOutput.isOutputAvailableToPay()) {
+                                for (AddressWithBalance addressWithBalance : mAddressWithBalanceList) {
+                                    if (unspentOutput.getAddress().equals(addressWithBalance.getAddress())) {
+                                        addressWithBalance.setUnspentOutput(unspentOutput);
+                                        break;
+                                    }
                                 }
                             }
                         }

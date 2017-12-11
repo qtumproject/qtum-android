@@ -11,7 +11,7 @@
     <string name="qtum">QTUM</string>
     <string name="receive">接收</string>
     <string name="send">发送</string>
-    <string name="activity">活动</string>
+    <string name="org.qtum.wallet.activity">活动</string>
     <string name="receiver_s_address">接收人地址</string>
     <string name="amount">数量</string>
     <string name="available_balance">"可用余额: "</string>

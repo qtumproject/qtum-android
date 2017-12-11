@@ -21,7 +21,7 @@
             android:gravity="left|center_vertical"
             android:padding="8dp"
             app:typefaceAsset="@string/proximaNovaSemibold"
-            android:text="@string/activity"
+            android:text="@string/org.qtum.wallet.activity"
             android:textColor="@color/bottom_nav_bar_text_color_light" />
 
         <android.support.v4.widget.SwipeRefreshLayout

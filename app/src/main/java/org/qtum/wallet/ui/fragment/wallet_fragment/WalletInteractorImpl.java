@@ -1,5 +1,8 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment;
 
+import android.content.Context;
+import android.text.TextUtils;
+import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
@@ -18,12 +21,14 @@ import rx.schedulers.Schedulers;
 
 public class WalletInteractorImpl implements WalletInteractor {
 
+    private Context context;
     private SubscriptionList mSubscriptionList = new SubscriptionList();
     static final int UPDATE_STATE = 0;
     static final int LOAD_STATE = 1;
     private final List<String> addresses = KeyStorage.getInstance().getAddresses();
 
-    public WalletInteractorImpl() {
+    public WalletInteractorImpl(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -145,6 +150,10 @@ public class WalletInteractorImpl implements WalletInteractor {
 
     @Override
     public String getAddress() {
-        return KeyStorage.getInstance().getCurrentAddress();
+        String s = KeyStorage.getInstance().getCurrentAddress();
+        if(!TextUtils.isEmpty(s)) {
+            QtumSharedPreference.getInstance().saveCurrentAddress(context, s);
+        }
+        return s;
     }
 }

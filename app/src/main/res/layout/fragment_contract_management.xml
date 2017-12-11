@@ -56,6 +56,8 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:clickable="true"
+            android:focusable="true"
             android:paddingStart="10dp"
             android:paddingEnd="16dp"
             android:orientation="vertical"

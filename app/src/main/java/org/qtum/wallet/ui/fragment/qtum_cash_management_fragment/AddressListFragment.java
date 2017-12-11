@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 
+import org.jsoup.helper.StringUtil;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
@@ -79,7 +80,7 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
     }
 
     public void transfer(AddressWithBalance keyWithBalanceTo, AddressWithBalance keyWithBalanceFrom, String amountString) {
-        if (TextUtils.isEmpty(amountString)) {
+        if (!isValidFloat(amountString)) {
             setAlertDialog(getString(R.string.error),
                     getString(R.string.enter_valid_amount_value),
                     getString(R.string.ok),
@@ -99,6 +100,11 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
         Fragment fragment = SendFragment.newInstance(keyWithBalanceFrom.getAddress(), keyWithBalanceTo.getAddress(), amountString, "", getContext());
         getMainActivity().setRootFragment(fragment);
         openRootFragment(fragment);
+    }
+
+    private boolean isValidFloat(String value) {
+        return !TextUtils.isEmpty(value) && !(value.length() == 1 && (value.charAt(0) == '.' || value.charAt(0) == ','));
+
     }
 
     @Override

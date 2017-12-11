@@ -9,5 +9,5 @@
 app/Configs/dev.properties
 app/Configs/qa.properties
 app/src/dev/google-services.json
-app/src/qa/google-services.json
+app/src/qa/google-services.jsony
 /jks

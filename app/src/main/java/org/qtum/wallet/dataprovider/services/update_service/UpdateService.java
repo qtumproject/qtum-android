@@ -1,6 +1,7 @@
 package org.qtum.wallet.dataprovider.services.update_service;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,23 +10,34 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
+import com.google.android.gms.wearable.Wearable;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.dataprovider.firebase.FirebaseSharedPreferences;
 import org.qtum.wallet.dataprovider.firebase.listeners.FireBaseTokenRefreshListener;
 import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
 import org.qtum.wallet.datastorage.QStoreStorage;
 import org.qtum.wallet.datastorage.TinyDB;
+import org.qtum.wallet.model.gson.history.HistoryResponse;
+import org.qtum.wallet.model.gson.history.Vin;
+import org.qtum.wallet.model.gson.history.Vout;
 import org.qtum.wallet.model.gson.qstore.PurchaseItem;
 import org.qtum.wallet.model.gson.token_balance.Balance;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
@@ -68,8 +80,15 @@ import io.socket.emitter.Emitter;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
-public class UpdateService extends Service {
+import static org.qtum.wallet.WearListCallListenerService.ADDRESS;
+import static org.qtum.wallet.WearListCallListenerService.BALANCE;
+import static org.qtum.wallet.WearListCallListenerService.CURR_TIME_MILLS;
+import static org.qtum.wallet.WearListCallListenerService.ITEMS;
+import static org.qtum.wallet.WearListCallListenerService.UNC_BALANCE;
 
+public class UpdateService extends Service implements GoogleApiClient.ConnectionCallbacks {
+
+    private final static String TAG = "UPDATE_SERVICE";
     private final int DEFAULT_NOTIFICATION_ID = 101;
     private NotificationManager notificationManager;
     private TransactionListener mTransactionListener = null;
@@ -85,6 +104,16 @@ public class UpdateService extends Service {
     private JSONArray mAddresses;
     private BigDecimal unconfirmedBalance;
     private BigDecimal balance;
+    private GoogleApiClient mApiClient;
+    private List<String> addresses;
+
+    public String getBalance(){
+        return balance != null? balance.toString() : null;
+    }
+
+    public String getUnconfirmedBalance(){
+        return unconfirmedBalance != null? unconfirmedBalance.toString() : null;
+    }
 
     private String mFirebasePrevToken;
     private String mFirebaseCurrentToken;
@@ -92,14 +121,32 @@ public class UpdateService extends Service {
     private UpdateBinder mUpdateBinder = new UpdateBinder();
     String[] firebaseTokens;
 
+    private static UpdateService instance;
+
+    public UpdateService getInstance(){
+        return instance;
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
 
+    public void initGoogleApiClient() {
+        if(mApiClient == null) {
+            mApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(Wearable.API)
+                    .addConnectionCallbacks(this)
+                    .build();
+            mApiClient.connect();
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        initGoogleApiClient();
 
         try {
             SSLContext mySSLContext = SSLContext.getInstance("TLS");
@@ -172,6 +219,7 @@ public class UpdateService extends Service {
                     for (BalanceChangeListener balanceChangeListener : mBalanceChangeListeners) {
                         balanceChangeListener.onChangeBalance(unconfirmedBalance, balance);
                     }
+                    onBalanceChange();
                 } catch (ClassCastException e) {
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -282,6 +330,79 @@ public class UpdateService extends Service {
 
         notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
     }
+
+    //WEAR
+
+    private void onBalanceChange() {
+        QtumService.newInstance().getHistoryListForSeveralAddresses(addresses, 10, 0)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new Subscriber<HistoryResponse>() {
+                    @Override
+                    public void onCompleted() {}
+                    @Override
+                    public void onError(Throwable e) {}
+                    @Override
+                    public void onNext(HistoryResponse historyResponse) {
+                        Gson gson = new Gson();
+                        List<History> items = historyResponse.getItems();
+                        for (History item : items) {
+                            calculateChangeInBalance(item, addresses);
+                        }
+                        String s = gson.toJson(items);
+                        Log.d(TAG, "onNext: HISTORY ITEMS = " + s);
+                        sendData(s, balance.toString(), unconfirmedBalance.toString(), QtumApplication.instance.getWearableMessagingProvider().getAddress());
+                    }
+                });
+    }
+
+    private void sendData(String items, String balance, String uncBalance, String address) {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/data");
+        putDataMapReq.getDataMap().putLong(CURR_TIME_MILLS, System.currentTimeMillis());
+        putDataMapReq.getDataMap().putString(ITEMS, items);
+        putDataMapReq.getDataMap().putString(BALANCE, balance);
+        putDataMapReq.getDataMap().putString(UNC_BALANCE, uncBalance);
+        putDataMapReq.getDataMap().putString(ADDRESS, address);
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest().setUrgent();
+        DataApi.DataItemResult await = Wearable.DataApi.putDataItem(mApiClient, putDataReq).await();
+    }
+
+    private void calculateChangeInBalance(History history, List<String> addresses) {
+        BigDecimal changeInBalance = calculateVout(history, addresses).subtract(calculateVin(history, addresses));
+        history.setChangeInBalance(changeInBalance);
+    }
+
+    private BigDecimal calculateVin(History history, List<String> addresses) {
+        BigDecimal totalVin = new BigDecimal("0.0");
+        boolean equals = false;
+        for (Vin vin : history.getVin()) {
+            for (String address : addresses) {
+                if (vin.getAddress().equals(address)) {
+                    vin.setOwnAddress(true);
+                    equals = true;
+                }
+            }
+        }
+        if (equals) {
+            totalVin = history.getAmount();
+        }
+        return totalVin;
+    }
+
+    private BigDecimal calculateVout(History history, List<String> addresses) {
+        BigDecimal totalVout = new BigDecimal("0.0");
+        for (Vout vout : history.getVout()) {
+            for (String address : addresses) {
+                if (vout.getAddress().equals(address)) {
+                    vout.setOwnAddress(true);
+                    totalVout = totalVout.add(vout.getValue());
+                }
+            }
+        }
+        return totalVout;
+    }
+
+    //WEAR
 
 
     private void updateTokenBalance(TokenBalance tokenBalance) {
@@ -460,12 +581,26 @@ public class UpdateService extends Service {
     public void startMonitoring() {
         if (!monitoringFlag) {
             mAddresses = new JSONArray();
-            for (String address : KeyStorage.getInstance().getAddresses()) {
+            for (String address : getPublicAddresses()) {
                 mAddresses.put(address);
             }
             socket.connect();
             monitoringFlag = true;
         }
+    }
+
+    private List<String> getPublicAddresses(){
+        List<String> addresses = KeyStorage.getInstance().getAddresses();
+        TinyDB tinyDB = new TinyDB(getApplicationContext());
+        if(addresses == null){
+            addresses = tinyDB.getPublicAddresses();
+        } else {
+            tinyDB.savePublicAddresses(addresses);
+        }
+
+        this.addresses = addresses;
+
+        return addresses;
     }
 
     public void stopMonitoring() {
@@ -579,6 +714,16 @@ public class UpdateService extends Service {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancelAll();
         totalTransaction = 0;
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Wearable.MessageApi.sendMessage(mApiClient, "/app_started", "/app_started", null);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
     }
 
     public class UpdateBinder extends Binder {

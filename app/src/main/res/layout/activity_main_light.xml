@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="org.qtum.wallet.ui.activity.main_activity.MainActivity">
+    tools:context="org.qtum.wallet.ui.org.qtum.wallet.activity.main_activity.MainActivity">
 
     <FrameLayout
         android:id="@+id/fragment_container"

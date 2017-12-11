@@ -30,6 +30,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.jsoup.helper.StringUtil;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
@@ -583,6 +584,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                     return;
                 }
                 if (!s.toString().isEmpty()) {
+                    s = validateFloatDot(s);
                     Double fee = Double.valueOf(s.toString()) * 100000000;
                     textViewChangeValue = true;
                     int progress;
@@ -642,6 +644,14 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                 });
             }
         });
+    }
+
+    private String validateFloatDot(CharSequence input) {
+        if(input.length() == 1 && (input.charAt(0) == '.' || input.charAt(0) == ',')) {
+            return '0' + input.toString();
+        }
+
+        return input.toString();
     }
 
     private void initializeAnim() {
@@ -848,13 +858,18 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     @Override
     public boolean isValidAmount() {
         String amount = getAmountInput();
-        if ((TextUtils.isEmpty(amount)) || Float.valueOf(amount) <= 0) {
+        if (!isValidFloat(amount)) {
             dismissProgressDialog();
             setAlertDialog(org.qtum.wallet.R.string.error, org.qtum.wallet.R.string.transaction_amount_cant_be_zero, "Ok", BaseFragment.PopUpType.error);
             return false;
         } else {
             return true;
         }
+    }
+
+    private boolean isValidFloat(String value) {
+        return !TextUtils.isEmpty(value) && !(value.length() == 1 && (value.charAt(0) == '.' || value.charAt(0) == ','));
+
     }
 
     @Override

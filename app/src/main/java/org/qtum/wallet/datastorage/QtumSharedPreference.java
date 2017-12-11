@@ -25,6 +25,7 @@ public class QtumSharedPreference {
     private final String FAILED_ATTEMPTS_COUNT = "failed_attempts_count";
     private final String MIN_GAS_PRICE = "min_gas_price";
     private final String FEE_PER_KB = "fee_per_kb";
+    private final String CURRENT_ADDRESS = "current_active_address";
 
     private List<LanguageChangeListener> mLanguageChangeListeners;
 
@@ -59,6 +60,17 @@ public class QtumSharedPreference {
 
     public String getPassword(Context context) {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_PASSWORD, "");
+    }
+
+    public void saveCurrentAddress(Context context, String address) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putString(CURRENT_ADDRESS, address);
+        mEditor.apply();
+    }
+
+    public String getCurrentAddress(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(CURRENT_ADDRESS, null);
     }
 
     public void setBanTime(Context context, Long banTime) {

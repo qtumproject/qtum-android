@@ -14,9 +14,19 @@ import org.qtum.wallet.utils.MigrationManager;
 
 import io.fabric.sdk.android.Fabric;
 
-public class QtumApplication extends MultiDexApplication {
+public class QtumApplication extends MultiDexApplication{
 
     public static QtumApplication instance;
+
+    private WearableMessagingProvider wearableMessagingProvider;
+
+    public WearableMessagingProvider getWearableMessagingProvider() {
+        return wearableMessagingProvider;
+    }
+
+    public void setWearableMessagingProvider(WearableMessagingProvider provider){
+        this.wearableMessagingProvider = provider;
+    }
 
     @Override
     public void onCreate() {

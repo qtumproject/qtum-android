@@ -43,9 +43,18 @@ public class TinyDB {
     private final String SHARED_TEMPLATE_LIST = "SHARED_TEMPLATE_LIST";
     private final String UNCONFIRMED_CONTRACT_TX_HAS_LIST = "unconfirmed_contract_tx_hash_list";
     private final String NEWS_LIST = "news_list";
+    private final String PUB_ADRESSES = "qtum_addresses";
 
     public TinyDB(Context appContext) {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
+    }
+
+    public void savePublicAddresses(List<String> addresses) {
+        putListString(PUB_ADRESSES, new ArrayList<String>(addresses));
+    }
+
+    public List<String> getPublicAddresses() {
+        return getListString(PUB_ADRESSES);
     }
 
     /**
