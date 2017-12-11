@@ -2,12 +2,11 @@ package org.qtum.wallet.ui.fragment.profile_fragment.dark;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.profile_fragment.DividerItemDecoration;
+import org.qtum.wallet.ui.fragment.profile_fragment.PrefAdapter;
 import org.qtum.wallet.ui.fragment.profile_fragment.light.PrefAdapterLight;
 import org.qtum.wallet.ui.fragment.profile_fragment.ProfileFragment;
 
 public class ProfileFragmentDark extends ProfileFragment {
-
-    private PrefAdapterLight adapter;
 
     @Override
     protected int getLayout() {
@@ -24,8 +23,4 @@ public class ProfileFragmentDark extends ProfileFragment {
         prefList.setAdapter(adapter);
     }
 
-    @Override
-    public void resetText() {
-        adapter.notifyDataSetChanged();
-    }
 }

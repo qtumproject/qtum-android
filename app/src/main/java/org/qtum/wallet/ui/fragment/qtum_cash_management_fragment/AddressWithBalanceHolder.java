@@ -30,22 +30,6 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
     AddressWithBalance mDeterministicKeyWithBalance;
     OnAddressClickListener listener;
 
-    @OnLongClick(R.id.address_name)
-    public boolean onAddressLongClick() {
-        ClipboardUtils.copyToClipBoard(mTextViewAddress.getContext(), mTextViewAddress.getText().toString(), new ClipboardUtils.CopyCallback() {
-            @Override
-            public void onCopyToClipBoard() {
-                Toast.makeText(mTextViewAddress.getContext(), mTextViewAddress.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
-            }
-        });
-        return true;
-    }
-
-    @OnClick(R.id.address_name)
-    public void onAddressClick() {
-        listener.onItemClick(mDeterministicKeyWithBalance);
-    }
-
     protected AddressWithBalanceHolder(View itemView, final OnAddressClickListener listener) {
         super(itemView);
         this.listener = listener;
@@ -53,6 +37,18 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 listener.onItemClick(mDeterministicKeyWithBalance);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ClipboardUtils.copyToClipBoard(mTextViewAddress.getContext(), mTextViewAddress.getText().toString(), new ClipboardUtils.CopyCallback() {
+                    @Override
+                    public void onCopyToClipBoard() {
+                        Toast.makeText(mTextViewAddress.getContext(), mTextViewAddress.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return true;
             }
         });
         ButterKnife.bind(this, itemView);
