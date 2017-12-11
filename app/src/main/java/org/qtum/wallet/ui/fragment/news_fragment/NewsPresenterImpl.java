@@ -94,7 +94,7 @@ public class NewsPresenterImpl extends BaseFragmentPresenterImpl implements News
                                 }
                             }
                         }
-                        NewsStorage.newInstance().setNewses(rssFeed.getNewses());
+                        NewsStorage.newInstance().setNewses(oldNews);
                         getInteractor().setNewses(oldNews);
                         getView().updateNews(oldNews);
                     }

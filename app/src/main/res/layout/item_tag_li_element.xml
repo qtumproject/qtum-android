@@ -15,6 +15,7 @@
         android:id="@+id/tv_text"
         android:textColor="@color/colorPrimary"
         app:typefaceAsset="@string/simplonMonoRegular"
+        android:textIsSelectable="true"
         android:layout_marginLeft="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

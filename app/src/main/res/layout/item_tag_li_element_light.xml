@@ -15,6 +15,7 @@
         android:id="@+id/tv_text"
         app:typefaceAsset="@string/proximaNovaRegular"
         android:textColor="@color/bottom_nav_view_item_color"
+        android:textIsSelectable="true"
         android:layout_marginLeft="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

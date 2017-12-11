@@ -558,8 +558,8 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             recolorStatusBar(R.color.colorPrimary);
         } else {
             int[][] states = new int[][] {
-                    new int[] {android.R.attr.state_checked}, // unchecked
-                    new int[] {-android.R.attr.state_checked}  // pressed
+                    new int[] {android.R.attr.state_checked},
+                    new int[] {-android.R.attr.state_checked}
             };
 
             int[] colors = new int[] {
