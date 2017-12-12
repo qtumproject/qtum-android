@@ -16,5 +16,5 @@ public interface MyContractsView extends BaseFragmentView {
 
     void openContractFunctionFragment(Contract contract);
 
-    void openDeletedContractFragment(String contractAddress);
+    void openDeletedContractFragment(String contractAddress, String contractName);
 }

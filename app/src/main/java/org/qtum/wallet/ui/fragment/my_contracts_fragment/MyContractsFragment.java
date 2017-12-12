@@ -16,6 +16,7 @@ import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.activity.main_activity.WizardDialogFragment;
+import org.qtum.wallet.ui.fragment.deleted_contract_fragment.DeletedContractFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.contract_management_fragment.ContractManagementFragment;
@@ -78,6 +79,10 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
         });
     }
 
+    public void onUnsubscribeClick(){
+        getPresenter().onUnsubscribeClick();
+    }
+
     @Override
     public void setPlaceHolder() {
         mFontTextViewPlaceHolder.setVisibility(View.VISIBLE);
@@ -95,8 +100,9 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
     }
 
     @Override
-    public void openDeletedContractFragment(String contractAddress) {
-
+    public void openDeletedContractFragment(String contractAddress, String contractName) {
+        BaseFragment deletedContractFragment = DeletedContractFragment.newInstance(getContext(), contractAddress, contractName);
+        openFragmentForResult(deletedContractFragment);
     }
 
     class ContractViewHolder extends RecyclerView.ViewHolder {

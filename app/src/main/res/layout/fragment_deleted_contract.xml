@@ -35,12 +35,12 @@
                 app:srcCompat="@drawable/ic_back_indicator"/>
 
             <org.qtum.wallet.utils.FontTextView
-                android:id="@+id/tv_toolbar_restore_contracts"
+                android:id="@+id/tv_toolbar_deleted_contract"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="48dp"
                 android:gravity="center"
-                android:text="@string/about"
+                android:text="@string/contract_name_"
                 android:textColor="@color/background"
                 android:textSize="@dimen/toolbar_text_size"
                 app:typefaceAsset="@string/euclidFlexMedium"/>
@@ -70,13 +70,13 @@
                 android:text="@string/contract_was_deleted_by_its_author_and_is_no_longer_available_you_can_unsubscribe_to_remove_it_from_your_wallet"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
-                app:typefaceAsset="@string/avenir"
-                android:layout_marginBottom="64dp"/>
+                app:typefaceAsset="@string/avenir"/>
 
             <org.qtum.wallet.utils.FontButton
-                android:id="@+id/bt_send"
+                android:id="@+id/bt_unsubscribe"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"

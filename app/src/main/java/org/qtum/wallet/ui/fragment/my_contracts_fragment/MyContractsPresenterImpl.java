@@ -49,6 +49,11 @@ public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implemen
     };
 
     @Override
+    public void onUnsubscribeClick() {
+        getView().updateRecyclerView(getInteractor().getContracts());
+    }
+
+    @Override
     public void initializeViews() {
         super.initializeViews();
 
@@ -69,6 +74,7 @@ public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implemen
 
     @Override
     public void onContractClick(final Contract contract) {
+        getView().setProgressDialog();
         getInteractor().isContractExist(contract.getContractAddress())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -85,10 +91,11 @@ public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implemen
 
                     @Override
                     public void onNext(ExistContractResponse existContractResponse) {
-                        if(existContractResponse.isExist()){
+                        getView().dismissProgressDialog();
+                        if(false/*existContractResponse.isExist()*/){
                             getView().openContractFunctionFragment(contract);
                         }else{
-                            getView().openDeletedContractFragment(contract.getContractAddress());
+                            getView().openDeletedContractFragment(contract.getContractAddress(), contract.getContractName());
                         }
                     }
                 });

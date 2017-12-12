@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="48dp"
                 android:gravity="center"
-                android:text="@string/about"
+                android:text="@string/contract_name_"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:typefaceAsset="@string/proximaNovaSemibold"/>
@@ -73,11 +73,11 @@
                 app:typefaceAsset="@string/avenir"/>
 
             <org.qtum.wallet.utils.FontButton
-                android:id="@+id/bt_send"
+                android:id="@+id/bt_unsubscribe"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="36dp"
                 android:background="@drawable/btn_sea_corner_background_light"
                 android:gravity="center"
                 android:padding="16dp"
