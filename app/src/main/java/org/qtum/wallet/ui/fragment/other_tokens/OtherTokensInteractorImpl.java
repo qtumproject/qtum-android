@@ -3,6 +3,7 @@ package org.qtum.wallet.ui.fragment.other_tokens;
 import android.content.Context;
 
 import org.qtum.wallet.datastorage.TinyDB;
+import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.model.contract.Token;
 
 import java.lang.ref.WeakReference;
@@ -29,7 +30,7 @@ public class OtherTokensInteractorImpl implements OtherTokensInteractor {
                 List<Token> tokenList = tinyDB.getTokenList();
                 List<Token> tokens = new ArrayList<>();
                 for (Token token : tokenList) {
-                    if (token.isHasBeenCreated() && token.isSubscribe()) {
+                    if (token.getCreationStatus().equals(ContractCreationStatus.Created) && token.isSubscribe()) {
                         tokens.add(token);
                     }
                 }

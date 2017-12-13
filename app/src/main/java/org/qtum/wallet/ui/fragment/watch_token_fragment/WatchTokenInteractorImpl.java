@@ -7,6 +7,7 @@ import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.ContractTemplate;
 import org.qtum.wallet.model.contract.Contract;
+import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.ContractParams;
 import org.qtum.wallet.utils.ContractBuilder;
@@ -63,7 +64,7 @@ public class WatchTokenInteractorImpl implements WatchTokenInteractor {
                 DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
         TinyDB tinyDB = new TinyDB(mContext.get());
         List<Token> tokenList = tinyDB.getTokenList();
-        Token token = new Token(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "", name);
+        Token token = new Token(address, contractTemplate.getUuid(), ContractCreationStatus.Created, DateCalculator.getCurrentDate(), "", name);
         tokenList.add(token);
         tinyDB.putTokenList(tokenList);
 
