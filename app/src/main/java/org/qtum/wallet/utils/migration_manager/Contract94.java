@@ -1,10 +1,11 @@
-package org.qtum.wallet.model.contract;
+package org.qtum.wallet.utils.migration_manager;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Contract implements Serializable {
+
+public class Contract94 implements Serializable {
 
     @SerializedName("contractAddress")
     protected String mContractAddress;
@@ -12,8 +13,8 @@ public class Contract implements Serializable {
     protected String mUiid;
     @SerializedName("contractName")
     protected String mContractName;
-    @SerializedName("creationStatus")
-    protected ContractCreationStatus mCreationStatus;
+    @SerializedName("hasBeenCreated")
+    protected Boolean mHasBeenCreated;
     @SerializedName("date")
     protected String mDate;
     @SerializedName("senderAddress")
@@ -21,43 +22,14 @@ public class Contract implements Serializable {
     @SerializedName("isSubscribe")
     protected boolean mIsSubscribe;
 
-    public Contract(String contractAddress, String uiid, ContractCreationStatus creationStatus, String date, String senderAddress, String contractName) {
+    public Contract94(String contractAddress, String uiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName){
         this.mContractAddress = contractAddress;
         this.mUiid = uiid;
-        this.mCreationStatus = creationStatus;
+        this.mHasBeenCreated = hasBeenCreated;
         this.mContractName = contractName;
         this.mDate = date;
         this.mSenderAddress = senderAddress;
         this.mIsSubscribe = false;
-    }
-
-    /**
-     * Default constructor for unit testing
-     */
-    public Contract() {
-    }
-
-
-    /**
-     * Constructor for unit testing
-     */
-    public Contract(boolean isSubscribe) {
-        this.mIsSubscribe = isSubscribe;
-    }
-
-    /**
-     * Constructor for unit testing
-     */
-    public Contract(String contractAddress) {
-        this.mContractAddress = contractAddress;
-    }
-
-    /**
-     * Constructor for unit testing
-     */
-    public Contract(boolean isSubscribe, String contractAddress) {
-        this.mIsSubscribe = isSubscribe;
-        this.mContractAddress = contractAddress;
     }
 
     public String getContractAddress() {
@@ -76,12 +48,12 @@ public class Contract implements Serializable {
         this.mUiid = uiid;
     }
 
-    public ContractCreationStatus getCreationStatus() {
-        return mCreationStatus;
+    public Boolean isHasBeenCreated() {
+        return mHasBeenCreated;
     }
 
-    public void setCreationStatus(ContractCreationStatus creationStatus) {
-        mCreationStatus = creationStatus;
+    public void setHasBeenCreated(Boolean hasBeenCreated) {
+        this.mHasBeenCreated = hasBeenCreated;
     }
 
     public String getDate() {

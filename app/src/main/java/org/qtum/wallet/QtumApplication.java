@@ -10,7 +10,7 @@ import com.crashlytics.android.Crashlytics;
 import org.qtum.wallet.datastorage.QStoreStorage;
 import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.utils.FontManager;
-import org.qtum.wallet.utils.MigrationManager;
+import org.qtum.wallet.utils.migration_manager.MigrationManager;
 
 import io.fabric.sdk.android.Fabric;
 
