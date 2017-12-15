@@ -1,7 +1,10 @@
 package org.qtum.wallet.ui.fragment.token_fragment;
 
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 import org.qtum.wallet.utils.ContractManagementHelper;
+
+import java.util.List;
 
 import rx.Subscriber;
 
@@ -29,4 +32,6 @@ public interface TokenView extends BaseFragmentView {
     Subscriber<String> getDecimalsValueCallback();
 
     Subscriber<String> getTotalSupplyValueCallback();
+
+    void updateHistory(List<TokenHistory> tokenHistories);
 }

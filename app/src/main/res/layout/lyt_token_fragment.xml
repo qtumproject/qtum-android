@@ -181,15 +181,15 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:minHeight="200dp"
-                    android:id="@+id/recycler_view"
+                    android:id="@+id/recycler_token_history"
                     android:splitMotionEvents="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                     <org.qtum.wallet.utils.FontTextView
                         android:gravity="center"
-                        android:layout_alignTop="@+id/recycler_view"
-                        android:layout_alignBottom="@+id/recycler_view"
+                        android:layout_alignTop="@+id/recycler_token_history"
+                        android:layout_alignBottom="@+id/recycler_token_history"
                         app:typefaceAsset="@string/simplonMonoRegular"
                         android:textColor="@color/colorPrimary"
                         android:layout_centerInParent="true"

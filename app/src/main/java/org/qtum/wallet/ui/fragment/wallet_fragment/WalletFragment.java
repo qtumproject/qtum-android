@@ -107,12 +107,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     private UpdateService mUpdateService;
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        updateHistory(getPresenter().getHistoryList());
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
@@ -362,27 +356,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
             }
         });
     }
-
-    @Override
-    public WalletInteractorImpl.GetHistoryListCallBack getHistoryCallback() {
-        return historyCallback;
-    }
-
-    WalletInteractorImpl.GetHistoryListCallBack historyCallback = new WalletInteractorImpl.GetHistoryListCallBack() {
-        @Override
-        public void onSuccess() {
-            updateHistory(getPresenter().getHistoryList());
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            setAlertDialog(org.qtum.wallet.R.string.no_internet_connection,
-                    org.qtum.wallet.R.string.please_check_your_network_settings,
-                    org.qtum.wallet.R.string.ok,
-                    BaseFragment.PopUpType.error);
-            stopRefreshRecyclerAnimation();
-        }
-    };
 
     BalanceChangeListener balanceListener = new BalanceChangeListener() {
         @Override

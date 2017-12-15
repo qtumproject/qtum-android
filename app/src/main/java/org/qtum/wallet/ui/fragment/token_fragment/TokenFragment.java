@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -102,7 +104,17 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
+    @BindView(R.id.recycler_token_history)
+    RecyclerView mRecyclerView;
+
+    protected LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+
     ShareDialogFragment shareDialog;
+
+    protected int visibleItemCount;
+    protected int totalItemCount;
+    protected int pastVisibleItems;
+    protected boolean mLoadingFlag = false;
 
     @OnLongClick(R.id.tv_token_address)
     public boolean onAddressLongClick() {
@@ -180,6 +192,24 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
         setTokenAddress(token.getContractAddress());
         setSenderAddress(token.getSenderAddress());
         headerPAdding = convertDpToPixel(16, getContext());
+
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    if (!mLoadingFlag) {
+                        visibleItemCount = mLinearLayoutManager.getChildCount();
+                        totalItemCount = mLinearLayoutManager.getItemCount();
+                        pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 1) {
+                            getPresenter().onLastItem(totalItemCount - 1);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override

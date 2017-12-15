@@ -1,16 +1,27 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment;
 
+import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.model.gson.history.History;
+import org.qtum.wallet.model.gson.history.HistoryResponse;
+import org.qtum.wallet.model.gson.history.Vin;
+import org.qtum.wallet.model.gson.history.Vout;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
+import java.math.BigDecimal;
 import java.util.List;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.internal.util.SubscriptionList;
+import rx.schedulers.Schedulers;
 
 public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements WalletPresenter {
     private WalletInteractor mWalletFragmentInteractor;
     private WalletView mWalletView;
     private boolean mVisibility = false;
     private boolean mNetworkConnectedFlag = false;
+    private SubscriptionList mSubscriptionList = new SubscriptionList();
 
     private final int ONE_PAGE_COUNT = 25;
 
@@ -24,6 +35,12 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         String pubKey = getInteractor().getAddress();
         getView().updatePubKey(pubKey);
         loadAndUpdateData();
+    }
+
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        getView().updateHistory(getInteractor().getHistoryList());
     }
 
     @Override
@@ -57,31 +74,96 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     public void onLastItem(final int currentItemCount) {
         if (getInteractor().getHistoryList().size() != getInteractor().getTotalHistoryItem()) {
             getView().loadNewHistory();
-            getInteractor().getHistoryList(WalletInteractorImpl.LOAD_STATE, ONE_PAGE_COUNT,
-                    currentItemCount, new WalletInteractorImpl.GetHistoryListCallBack() {
+            mSubscriptionList.add(getInteractor().getHistoryList(ONE_PAGE_COUNT, currentItemCount)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<HistoryResponse>() {
                         @Override
-                        public void onSuccess() {
-                            getView().addHistory(currentItemCount, getInteractor().getHistoryList().size() - currentItemCount + 1,
-                                    getInteractor().getHistoryList());
+                        public void onCompleted() {
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            e.printStackTrace();
+
                         }
-                    });
+
+                        @Override
+                        public void onNext(HistoryResponse historyResponse) {
+                            for (History history : historyResponse.getItems()) {
+                                calculateChangeInBalance(history, getInteractor().getAddresses());
+                            }
+                            HistoryList.getInstance().getHistoryList().addAll(historyResponse.getItems());
+                            getView().addHistory(currentItemCount, getInteractor().getHistoryList().size() - currentItemCount + 1,
+                                    getInteractor().getHistoryList());
+                        }
+                    }));
+
         }
+    }
+
+    private void calculateChangeInBalance(History history, List<String> addresses) {
+        BigDecimal changeInBalance = calculateVout(history, addresses).subtract(calculateVin(history, addresses));
+        history.setChangeInBalance(changeInBalance);
+    }
+
+    private BigDecimal calculateVin(History history, List<String> addresses) {
+        BigDecimal totalVin = new BigDecimal("0.0");
+        boolean equals = false;
+        for (Vin vin : history.getVin()) {
+            for (String address : addresses) {
+                if (vin.getAddress().equals(address)) {
+                    vin.setOwnAddress(true);
+                    equals = true;
+                }
+            }
+        }
+        if (equals) {
+            totalVin = history.getAmount();
+        }
+        return totalVin;
+    }
+
+    private BigDecimal calculateVout(History history, List<String> addresses) {
+        BigDecimal totalVout = new BigDecimal("0.0");
+        for (Vout vout : history.getVout()) {
+            for (String address : addresses) {
+                if (vout.getAddress().equals(address)) {
+                    vout.setOwnAddress(true);
+                    totalVout = totalVout.add(vout.getValue());
+                }
+            }
+        }
+        return totalVout;
     }
 
     private void loadAndUpdateData() {
         getView().startRefreshAnimation();
-        getInteractor().getHistoryList(WalletInteractorImpl.UPDATE_STATE, ONE_PAGE_COUNT,
-                0, getView().getHistoryCallback());
-    }
+        mSubscriptionList.add(getInteractor().getHistoryList(ONE_PAGE_COUNT, 0).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<HistoryResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
-    @Override
-    public List<History> getHistoryList() {
-        return getInteractor().getHistoryList();
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().setAlertDialog(org.qtum.wallet.R.string.no_internet_connection,
+                                org.qtum.wallet.R.string.please_check_your_network_settings,
+                                org.qtum.wallet.R.string.ok,
+                                BaseFragment.PopUpType.error);
+                        getView().stopRefreshRecyclerAnimation();
+                    }
+
+                    @Override
+                    public void onNext(HistoryResponse historyResponse) {
+                        for (History history : historyResponse.getItems()) {
+                            calculateChangeInBalance(history, getInteractor().getAddresses());
+                        }
+                        HistoryList.getInstance().setHistoryList(historyResponse.getItems());
+                        HistoryList.getInstance().setTotalItem(historyResponse.getTotalItems());
+                        getView().updateHistory(getInteractor().getHistoryList());
+                    }
+                }));
     }
 
     @Override
@@ -95,6 +177,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     @Override
     public void onNewHistory(History history) {
         if (history.getBlockTime() != null) {
+            calculateChangeInBalance(history, getInteractor().getAddresses());
             Integer notifyPosition = getInteractor().setHistory(history);
             if (notifyPosition == null) {
                 getView().notifyNewHistory();
@@ -102,6 +185,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                 getView().notifyConfirmHistory(notifyPosition);
             }
         } else {
+            calculateChangeInBalance(history, getInteractor().getAddresses());
             getInteractor().addToHistoryList(history);
             getView().notifyNewHistory();
         }
@@ -120,7 +204,9 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getInteractor().unSubscribe();
+        if (mSubscriptionList != null) {
+            mSubscriptionList.clear();
+        }
     }
 
     public void setNetworkConnectedFlag(boolean mNetworkConnectedFlag) {

@@ -20,6 +20,7 @@ import org.qtum.wallet.model.gson.qstore.QstoreByteCodeResponse;
 import org.qtum.wallet.model.gson.qstore.QstoreContract;
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.model.gson.qstore.QstoreSourceCodeResponse;
+import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -98,4 +99,8 @@ interface QtumRestService {
 
     @GET("/contracts/{addressContract}/params?keys=symbol,decimals,name,totalSupply")
     Observable<ContractParams> getContractParams(@Path("addressContract") String addressContract);
+
+    @GET("/qrc20/{qrc20ContractAddress}/transfers")
+    Observable<TokenHistoryResponse> getTokenHistoryList(@Path("qrc20ContractAddress") String qrc20ContractAddress, @Query("limit") int limit, @Query("offset") int offset, @Query("addresses[]") List<String> addresses);
+
 }

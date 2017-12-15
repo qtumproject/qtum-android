@@ -13,4 +13,6 @@ public interface TokenPresenter extends BaseFragmentPresenter {
     void onDecimalsPropertySuccess(String value);
 
     String onTotalSupplyPropertySuccess(Token token, String value);
+
+    void onLastItem(int currentItemCount);
 }

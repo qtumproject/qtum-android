@@ -6,6 +6,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 import java.util.List;
 
 public interface WalletPresenter extends BaseFragmentPresenter {
+
     void onRefresh();
 
     void openTransactionFragment(int position);
@@ -14,8 +15,6 @@ public interface WalletPresenter extends BaseFragmentPresenter {
 
     void notifyHeader();
 
-    List<History> getHistoryList();
-
     void onNetworkStateChanged(boolean networkConnectedFlag);
 
     void onNewHistory(History history);
@@ -23,4 +22,5 @@ public interface WalletPresenter extends BaseFragmentPresenter {
     boolean getVisibility();
 
     void updateVisibility(boolean value);
+
 }
