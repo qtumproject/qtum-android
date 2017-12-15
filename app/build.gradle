@@ -65,7 +65,6 @@ android {
             versionName buildProps['VERSION_NAME'].toString()
             buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
             buildConfigField "Boolean", 'USE_MAIN_NET', 'true'
-            versionNameSuffix "-prod"
         }
         dev {
             applicationIdSuffix ".dev"
@@ -74,7 +73,6 @@ android {
             versionName buildProps['VERSION_NAME'].toString()
             buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
             buildConfigField "Boolean", 'USE_MAIN_NET', 'false'
-            versionNameSuffix "-dev"
         }
         qa {
             applicationIdSuffix ".qa"
@@ -83,7 +81,6 @@ android {
             versionName buildProps['VERSION_NAME'].toString()
             buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
             buildConfigField "Boolean", 'USE_MAIN_NET', 'false'
-            versionNameSuffix "-qa"
         }
     }
 }
