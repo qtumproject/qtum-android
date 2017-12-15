@@ -61,24 +61,24 @@ android {
     productFlavors {
         production {
             buildProps = getBuildProperties("prod")
-            versionCode buildProps['VERSION_CODE'].toInteger()
-            versionName buildProps['VERSION_NAME'].toString()
+            versionCode 100
+            versionName "0.10"
             buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
             buildConfigField "Boolean", 'USE_MAIN_NET', 'true'
         }
         dev {
             applicationIdSuffix ".dev"
             buildProps = getBuildProperties("dev")
-            versionCode buildProps['VERSION_CODE'].toInteger()
-            versionName buildProps['VERSION_NAME'].toString()
+            versionCode 100
+            versionName "0.10"
             buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
             buildConfigField "Boolean", 'USE_MAIN_NET', 'false'
         }
         qa {
             applicationIdSuffix ".qa"
             buildProps = getBuildProperties("qa")
-            versionCode buildProps['VERSION_CODE'].toInteger()
-            versionName buildProps['VERSION_NAME'].toString()
+            versionCode 100
+            versionName "0.10"
             buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
             buildConfigField "Boolean", 'USE_MAIN_NET', 'false'
         }

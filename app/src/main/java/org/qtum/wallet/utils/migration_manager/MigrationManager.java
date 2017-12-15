@@ -14,12 +14,12 @@ import java.util.List;
 public class MigrationManager {
 
     private final int migrateVersion_93 = 93;
-    private final int migrateVersion_94 = 96    ;
+    private final int migrateVersion_100 = 100    ;
     List<Integer> migrations = new ArrayList<>();
 
     public MigrationManager() {
         migrations.add(migrateVersion_93);
-        migrations.add(migrateVersion_94);
+        migrations.add(migrateVersion_100);
     }
 
     public int makeMigration(int currentVersion, int migrationVersion, Context context) {
@@ -41,7 +41,7 @@ public class MigrationManager {
                 renameSenderAddress(context);
                 clearKeyFile(context);
                 return true;
-            case migrateVersion_94:
+            case migrateVersion_100:
                 resetContractCreationStatus(context);
                 return true;
             default:
