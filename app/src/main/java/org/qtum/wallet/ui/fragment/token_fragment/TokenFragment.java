@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AddressesListFragmentToken;
 import org.qtum.wallet.ui.fragment_factory.Factory;
@@ -25,6 +26,8 @@ import org.qtum.wallet.ui.fragment.token_fragment.dialogs.ShareDialogFragment;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontTextView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -343,5 +346,10 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
                 onContractPropertyUpdated(TokenFragment.name, s);
             }
         };
+    }
+
+    @Override
+    public void updateHistory(List<TokenHistory> tokenHistories) {
+
     }
 }

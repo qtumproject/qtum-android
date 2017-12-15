@@ -97,7 +97,7 @@ public class KeyStorage implements Serializable {
     }
 
     public List<DeterministicKey> getKeyList() {
-        if (mDeterministicKeyList == null) {
+        if (mDeterministicKeyList == null || mDeterministicKeyList.isEmpty()) {
             mDeterministicKeyList = new ArrayList<>(ADDRESSES_COUNT);
             mAddressesList = new ArrayList<>();
             List<ChildNumber> pathParent = new ArrayList<>();

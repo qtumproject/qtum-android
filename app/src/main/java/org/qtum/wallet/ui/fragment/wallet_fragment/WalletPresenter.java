@@ -13,8 +13,6 @@ public interface WalletPresenter extends BaseFragmentPresenter {
 
     void onLastItem(int currentItemCount);
 
-    void notifyHeader();
-
     void onNetworkStateChanged(boolean networkConnectedFlag);
 
     void onNewHistory(History history);

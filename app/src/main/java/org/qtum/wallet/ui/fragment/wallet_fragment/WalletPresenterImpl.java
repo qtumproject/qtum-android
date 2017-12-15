@@ -31,15 +31,11 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     }
 
     @Override
-    public void notifyHeader() {
+    public void initializeViews() {
+        super.initializeViews();
         String pubKey = getInteractor().getAddress();
         getView().updatePubKey(pubKey);
         loadAndUpdateData();
-    }
-
-    @Override
-    public void initializeViews() {
-        super.initializeViews();
         getView().updateHistory(getInteractor().getHistoryList());
     }
 

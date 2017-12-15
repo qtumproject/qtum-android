@@ -274,7 +274,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                 getPresenter().onRefresh();
             }
         });
-        getPresenter().notifyHeader();
     }
 
     @Override

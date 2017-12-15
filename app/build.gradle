@@ -60,27 +60,27 @@ android {
     }
     productFlavors {
         production {
+            versionCode 100
+            versionName "0.10"
             buildProps = getBuildProperties("prod")
-            versionCode buildProps['VERSION_CODE'].toInteger()
-            versionName buildProps['VERSION_NAME'].toString()
             buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
             buildConfigField "Boolean", 'USE_MAIN_NET', 'true'
             versionNameSuffix "-prod"
         }
         dev {
+            versionCode 100
+            versionName "0.10"
             applicationIdSuffix ".dev"
             buildProps = getBuildProperties("dev")
-            versionCode buildProps['VERSION_CODE'].toInteger()
-            versionName buildProps['VERSION_NAME'].toString()
             buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
             buildConfigField "Boolean", 'USE_MAIN_NET', 'false'
             versionNameSuffix "-dev"
         }
         qa {
+            versionCode 100
+            versionName "0.10"
             applicationIdSuffix ".qa"
             buildProps = getBuildProperties("qa")
-            versionCode buildProps['VERSION_CODE'].toInteger()
-            versionName buildProps['VERSION_NAME'].toString()
             buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
             buildConfigField "Boolean", 'USE_MAIN_NET', 'false'
             versionNameSuffix "-qa"

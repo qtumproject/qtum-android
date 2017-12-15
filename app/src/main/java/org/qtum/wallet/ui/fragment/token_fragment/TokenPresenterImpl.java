@@ -5,6 +5,7 @@ import org.qtum.wallet.datastorage.TokenHistoryList;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletInteractorImpl;
 
@@ -43,7 +44,7 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
 
         getInteractor().setupPropertySymbolValue(token, getView().getSymbolValueCallback());
         getInteractor().setupPropertyNameValue(token, getView().getNameValueCallback());
-
+        loadAndUpdateData();
         getView().updateHistory(getInteractor().getHistoryList());
     }
 
@@ -118,6 +119,33 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
                     }));
 
         }
+    }
+
+    private void loadAndUpdateData() {
+        //getView().startRefreshAnimation();
+        mSubscriptionList.add(getInteractor().getHistoryList(token.getContractAddress(), ONE_PAGE_COUNT, 0).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<TokenHistoryResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().setAlertDialog(org.qtum.wallet.R.string.no_internet_connection,
+                                org.qtum.wallet.R.string.please_check_your_network_settings,
+                                org.qtum.wallet.R.string.ok,
+                                BaseFragment.PopUpType.error);
+                        //getView().stopRefreshRecyclerAnimation();
+                    }
+
+                    @Override
+                    public void onNext(TokenHistoryResponse historyResponse) {
+                        TokenHistoryList.newInstance().setTokenHistories(historyResponse.getItems());
+                        TokenHistoryList.newInstance().setTotalItems(historyResponse.getCount());
+                        getView().updateHistory(getInteractor().getHistoryList());
+                    }
+                }));
     }
 
     @Override
