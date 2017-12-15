@@ -244,12 +244,7 @@ public class ContractBuilder {
     }
 
     private static String convertToByteCode(String _value) {
-        char[] chars = _value.toCharArray();
-        StringBuilder hex = new StringBuilder();
-        for (char aChar : chars) {
-            hex.append(Integer.toHexString((int) aChar));
-        }
-        return hex.toString();
+        return Hex.toHexString(_value.getBytes());
     }
 
     private String getStringOffset(String data) {

@@ -6,7 +6,7 @@
     android:id="@+id/root_layout"
     android:clickable="true"
     android:layout_width="match_parent"
-    android:background="?attr/selectableItemBackground"
+              android:background="@drawable/list_item_background_selector_light"
     android:weightSum="2"
     android:paddingTop="4dp"
     android:layout_height="54dp">

@@ -69,7 +69,7 @@
                 app:typefaceAsset="@string/euclidFlexMedium"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:text="Address"/>
+                android:text="@string/name"/>
 
             <org.qtum.wallet.utils.FontTextView
                 android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
                 android:textColor="@color/colorPrimary"
                 app:typefaceAsset="@string/euclidFlexMedium"
                 android:layout_gravity="end"
-                android:text="Publish Date"/>
+                android:text="@string/purchase_date"/>
 
         </LinearLayout>
 

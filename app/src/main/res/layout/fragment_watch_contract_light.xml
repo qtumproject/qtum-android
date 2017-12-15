@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left|center_vertical"
-                android:hint="Contract Name"
+                android:hint="@string/contract_name_"
                 android:inputType="text"
                 android:maxLines="1"
                 android:imeOptions="actionNext" />
@@ -90,7 +90,7 @@
                 android:id="@+id/et_contract_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Contract Address"
+                android:hint="@string/contract_address"
                 android:gravity="left|center_vertical"
                 android:inputType="text"
                 android:maxLines="1"
@@ -119,7 +119,7 @@
 
             <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_choose_from_library"
-                android:text="Choose from library"
+                android:text="@string/choose_from_library"
                 android:gravity="center"
                 android:padding="8dp"
                 android:textSize="12sp"

@@ -5,6 +5,7 @@ import android.content.Context;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.Currency;
 import org.qtum.wallet.model.CurrencyToken;
+import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.datastorage.TinyDB;
 
@@ -26,7 +27,7 @@ class CurrencyInteractorImpl implements CurrencyInteractor {
         Currency currency = new Currency("Qtum " + mContext.getString(R.string.default_currency));
         currencies.add(currency);
         for (Token token : tokens) {
-            if (token.isHasBeenCreated() && token.isSubscribe()) {
+            if (token.getCreationStatus().equals(ContractCreationStatus.Created) && token.isSubscribe()) {
                 currency = new CurrencyToken(token.getContractName(), token);
                 currencies.add(currency);
             }

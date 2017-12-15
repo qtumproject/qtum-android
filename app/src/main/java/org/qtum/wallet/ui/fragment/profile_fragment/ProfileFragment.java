@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
@@ -27,8 +28,13 @@ import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CHANGING;
 
 public abstract class ProfileFragment extends BaseFragment implements ProfileView, OnSettingClickListener {
 
+    protected PrefAdapter adapter;
+
     @BindView(org.qtum.wallet.R.id.pref_list)
     protected RecyclerView prefList;
+
+    @BindView(R.id.tv_toolbar_profile)
+    TextView mTextViewToolBar;
 
     protected ProfilePresenter mProfileFragmentPresenter;
     protected DividerItemDecoration dividerItemDecoration;
@@ -153,5 +159,11 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
     @Override
     public boolean checkAvailabilityTouchId() {
         return getMainActivity().checkAvailabilityTouchId();
+    }
+
+    @Override
+    public void resetText() {
+        adapter.notifyDataSetChanged();
+        mTextViewToolBar.setText(R.string.profile);
     }
 }

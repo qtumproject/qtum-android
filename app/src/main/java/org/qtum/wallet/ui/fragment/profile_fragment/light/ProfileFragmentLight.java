@@ -7,8 +7,6 @@ import org.qtum.wallet.ui.fragment.profile_fragment.ProfileFragment;
 
 public class ProfileFragmentLight extends ProfileFragment {
 
-    private PrefAdapter adapter;
-
     @Override
     protected int getLayout() {
         return R.layout.lyt_profile_preference_light;
@@ -24,8 +22,4 @@ public class ProfileFragmentLight extends ProfileFragment {
         prefList.setAdapter(adapter);
     }
 
-    @Override
-    public void resetText() {
-        adapter.notifyDataSetChanged();
-    }
 }

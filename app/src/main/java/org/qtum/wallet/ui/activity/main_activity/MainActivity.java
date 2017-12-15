@@ -113,6 +113,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         }
         setContentView((ThemeUtils.THEME_DARK.equals(ThemeUtils.currentTheme)) ? LAYOUT : LAYOUT_LIGHT);
         bindView();
+        updateTheme();
         mNetworkReceiver = new NetworkStateReceiver(getNetworkConnectedFlag());
         registerReceiver(mNetworkReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -175,11 +176,6 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     public boolean checkPermission(String perm) {
         return ContextCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
     }
 
     @Override
@@ -561,10 +557,21 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             resetNavBarIconsWithTheme(blackThemeIcons);
             recolorStatusBar(R.color.colorPrimary);
         } else {
+            int[][] states = new int[][] {
+                    new int[] {android.R.attr.state_checked},
+                    new int[] {-android.R.attr.state_checked}
+            };
+
+            int[] colors = new int[] {
+                    ContextCompat.getColor(getContext(),R.color.bottom_nav_bar_text_color_light),
+                    ContextCompat.getColor(getContext(),R.color.bottom_nav_bar_text_color_light_alpha_50)
+            };
+            ColorStateList myList = new ColorStateList(states, colors);
+
             mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.bottom_nav_bar_color_light));
             mBottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
-            mBottomNavigationView.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bottom_nav_bar_text_color_light)));
-            mBottomNavigationView.setItemIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bottom_nav_bar_text_color_light)));
+            mBottomNavigationView.setItemTextColor(myList);
+            mBottomNavigationView.setItemIconTintList(myList);
             recolorStatusBar(R.color.title_color_light);
             resetNavBarIconsWithTheme(lightThemeIcons);
         }

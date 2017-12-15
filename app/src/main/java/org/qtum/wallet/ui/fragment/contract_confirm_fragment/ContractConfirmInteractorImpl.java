@@ -10,6 +10,7 @@ import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.ContractTemplate;
 import org.qtum.wallet.model.TransactionHashWithSender;
 import org.qtum.wallet.model.contract.Contract;
+import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
@@ -68,14 +69,14 @@ class ContractConfirmInteractorImpl implements ContractConfirmInteractor {
     }
 
     private void saveToken(TinyDB tinyDB, String txid, String contractTemplateUiid, String contractName, String senderAddress) {
-        Token token = new Token(ContractBuilder.generateContractAddress(txid), contractTemplateUiid, false, null, senderAddress, contractName);
+        Token token = new Token(ContractBuilder.generateContractAddress(txid), contractTemplateUiid, ContractCreationStatus.Unconfirmed, null, senderAddress, contractName);
         List<Token> tokenList = tinyDB.getTokenList();
         tokenList.add(token);
         tinyDB.putTokenList(tokenList);
     }
 
     private void saveContract(TinyDB tinyDB, String txid, String contractTemplateUiid, String contractName, String senderAddress) {
-        Contract contract = new Contract(ContractBuilder.generateContractAddress(txid), contractTemplateUiid, false, null, senderAddress, contractName);
+        Contract contract = new Contract(ContractBuilder.generateContractAddress(txid), contractTemplateUiid, ContractCreationStatus.Unconfirmed, null, senderAddress, contractName);
         List<Contract> contractList = tinyDB.getContractListWithoutToken();
         contractList.add(contract);
         tinyDB.putContractListWithoutToken(contractList);
