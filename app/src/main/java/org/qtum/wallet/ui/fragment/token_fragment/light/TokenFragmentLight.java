@@ -8,10 +8,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
+import org.qtum.wallet.ui.fragment.token_fragment.dark.TokenHistoryAdapterDark;
 import org.qtum.wallet.ui.wave_visualizer.WaveHelper;
 import org.qtum.wallet.ui.wave_visualizer.WaveView;
 import org.qtum.wallet.utils.ContractBuilder;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -101,4 +105,11 @@ public class TokenFragmentLight extends TokenFragment {
                 break;
         }
     }
+
+    @Override
+    public void updateHistory(List<TokenHistory> tokenHistories) {
+        mAdapter = new TokenHistoryAdapterLight(tokenHistories,this);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
 }

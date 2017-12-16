@@ -34,7 +34,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import rx.Subscriber;
 
-public abstract class TokenFragment extends BaseFragment implements TokenView {
+public abstract class TokenFragment extends BaseFragment implements TokenView, TokenHistoryClickListener {
 
     private static final String tokenKey = "tokenInfo";
     private static final String qtumAddressKey = "qtumAddressKey";
@@ -108,8 +108,8 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
     Toolbar mToolbar;
 
     @BindView(R.id.recycler_token_history)
-    RecyclerView mRecyclerView;
-
+    protected RecyclerView mRecyclerView;
+    protected TokenHistoryAdapter mAdapter;
     protected LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
     ShareDialogFragment shareDialog;
@@ -349,7 +349,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
     }
 
     @Override
-    public void updateHistory(List<TokenHistory> tokenHistories) {
+    public void onTokenHistoryClick(int adapterPosition) {
 
     }
 }
