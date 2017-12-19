@@ -28,20 +28,6 @@ android {
             debuggable = true
         }
     }
-
-    productFlavors {
-        production {
-            versionNameSuffix "-prod"
-        }
-        dev {
-            applicationIdSuffix ".dev"
-            versionNameSuffix "-dev"
-        }
-        qa {
-            applicationIdSuffix ".qa"
-            versionNameSuffix "-qa"
-        }
-    }
 }
 
 dependencies {
