@@ -43,6 +43,8 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
+        versionCode 101
+        versionName "0.10"
         applicationId "org.qtum.wallet"
         minSdkVersion 19
         targetSdkVersion 26
@@ -61,23 +63,17 @@ android {
 
     productFlavors {
         production {
-            versionCode 101
-            versionName "0.10"
             buildProps = getBuildProperties("prod")
             buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
             buildConfigField "Boolean", 'USE_MAIN_NET', 'true'
         }
         dev {
-            versionCode 101
-            versionName "0.10"
             applicationIdSuffix ".dev"
             buildProps = getBuildProperties("dev")
             buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
             buildConfigField "Boolean", 'USE_MAIN_NET', 'false'
         }
         qa {
-            versionCode 101
-            versionName "0.10"
             applicationIdSuffix ".qa"
             buildProps = getBuildProperties("qa")
             buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
