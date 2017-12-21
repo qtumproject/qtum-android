@@ -36,6 +36,7 @@ public class TokenHistoryHolderLight extends RecyclerView.ViewHolder {
     @BindView(R.id.ll_transaction)
     LinearLayout mLinearLayoutTransaction;
     Subscription mSubscription;
+    String mSymbol;
 
     @OnLongClick(R.id.tv_id)
     public boolean onIdLongClick() {
@@ -59,10 +60,11 @@ public class TokenHistoryHolderLight extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    void bindTransactionData(final TokenHistory history) {
+    void bindTransactionData(final TokenHistory history, String symbol) {
         if (mSubscription != null) {
             mSubscription.unsubscribe();
         }
+        mSymbol = symbol;
         mLinearLayoutTransaction.setBackgroundResource(android.R.color.transparent);
 
 //        if (history.getChangeInBalance().doubleValue() > 0) {
@@ -93,7 +95,7 @@ public class TokenHistoryHolderLight extends RecyclerView.ViewHolder {
             mLinearLayoutTransaction.setBackgroundResource(R.color.bottom_nav_bar_color_light);
         }
         mTextViewID.setText(history.getTxHash());
-        mTextViewValue.setText(getSpannedBalance(history.getAmount()));
+        mTextViewValue.setText(getSpannedBalance(history.getAmount()) + mSymbol);
     }
 
     private SpannableString getSpannedBalance(String balance) {

@@ -14,6 +14,8 @@ public abstract class TokenHistoryAdapter extends RecyclerView.Adapter<RecyclerV
     protected TokenHistory mHistory;
     protected final int TYPE_PROGRESS_BAR = 0;
     protected final int TYPE_TRANSACTION = 1;
+    protected boolean mLoadingFlag = false;
+    protected String mSymbol = "";
 
     public TokenHistory getItem(int position){
         return mHistoryList.get(position);
@@ -41,5 +43,13 @@ public abstract class TokenHistoryAdapter extends RecyclerView.Adapter<RecyclerV
 
     public void setHistoryList(List<TokenHistory> historyList) {
         mHistoryList = historyList;
+    }
+
+    public void setLoadingFlag(boolean loadingFlag) {
+        mLoadingFlag = loadingFlag;
+    }
+
+    public void setSymbol(String symbol) {
+        mSymbol = symbol;
     }
 }

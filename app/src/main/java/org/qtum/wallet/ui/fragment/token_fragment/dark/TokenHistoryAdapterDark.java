@@ -38,10 +38,10 @@ public class TokenHistoryAdapterDark extends TokenHistoryAdapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ProgressBarHolder) {
-            ((ProgressBarHolder) holder).bindProgressBar(false);
+            ((ProgressBarHolder) holder).bindProgressBar(mLoadingFlag);
         } else {
             mHistory = mHistoryList.get(position);
-            ((TokenHistoryHolderDark) holder).bindTransactionData(mHistory);
+            ((TokenHistoryHolderDark) holder).bindTransactionData(mHistory, mSymbol);
         }
     }
 }

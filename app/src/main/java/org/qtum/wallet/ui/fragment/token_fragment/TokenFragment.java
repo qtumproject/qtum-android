@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Contract;
@@ -106,6 +107,9 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    @BindView(R.id.token_histories_placeholder)
+    TextView mTextViewHistoriesPlaceholder;
 
     @BindView(R.id.recycler_token_history)
     protected RecyclerView mRecyclerView;
@@ -216,6 +220,14 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
     }
 
     @Override
+    public void addHistory(int positionStart, int itemCount, List<TokenHistory> historyList) {
+        mAdapter.setHistoryList(historyList);
+        mAdapter.setLoadingFlag(false);
+        mLoadingFlag = false;
+        mAdapter.notifyItemRangeChanged(positionStart, itemCount);
+    }
+
+    @Override
     public String getTokenBalance() {
         return mTextViewBalance.getText().toString() + mTextViewCurrency.getText().toString();
     }
@@ -253,6 +265,15 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
     public void setQtumAddress(String address) {
         if (!TextUtils.isEmpty(address)) {
             tokenAddress.setText(address);
+        }
+    }
+
+    @Override
+    public void updateHistory(List<TokenHistory> tokenHistories) {
+        if(tokenHistories.isEmpty()){
+            mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
+        } else {
+            mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
         }
     }
 
@@ -324,6 +345,8 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
             @Override
             public void onNext(String s) {
                 onContractPropertyUpdated(TokenFragment.symbol, s);
+                mAdapter.setSymbol(" " + s);
+                mAdapter.notifyDataSetChanged();
             }
         };
     }

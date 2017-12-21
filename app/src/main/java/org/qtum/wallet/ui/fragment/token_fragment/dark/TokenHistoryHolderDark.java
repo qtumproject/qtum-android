@@ -42,6 +42,7 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
     LinearLayout mLinearLayoutTransaction;
 
     Subscription mSubscription;
+    String mSymbol;
 
     @OnLongClick(R.id.tv_id)
     public boolean onIdLongClick() {
@@ -65,10 +66,11 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    void bindTransactionData(final TokenHistory history) {
+    void bindTransactionData(final TokenHistory history, String symbol) {
         if (mSubscription != null) {
             mSubscription.unsubscribe();
         }
+        mSymbol = symbol;
         if (history.getTxTime() != null) {
             mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {
                 @Override
@@ -89,15 +91,16 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
         } else {
             mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.unconfirmed));
         }
+        mTextViewID.setText(history.getTxHash());
 //        if (history.getChangeInBalance().doubleValue() > 0) {
 //            mTextViewOperationType.setText(R.string.received);
-//            mTextViewID.setText(history.getTxHash());
+//
 //            mImageViewIcon.setImageResource(R.drawable.ic_received);
 //        } else {
 //            mTextViewOperationType.setText(R.string.sent);
-//            mTextViewID.setText(history.getTxHash());
+//
 //            mImageViewIcon.setImageResource(R.drawable.ic_sent);
 //        }
-        mTextViewValue.setText(history.getAmount());
+        mTextViewValue.setText(history.getAmount()+ mSymbol);
     }
 }

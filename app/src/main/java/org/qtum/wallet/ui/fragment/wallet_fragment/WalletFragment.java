@@ -326,6 +326,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @Override
     public void addHistory(int positionStart, int itemCount, List<History> historyList) {
         mTransactionAdapter.setHistoryList(historyList);
+        mTransactionAdapter.setLoadingFlag(false);
         mLoadingFlag = false;
         mTransactionAdapter.notifyItemRangeChanged(positionStart, itemCount);
     }
@@ -333,6 +334,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @Override
     public void loadNewHistory() {
         mLoadingFlag = true;
+        mTransactionAdapter.setLoadingFlag(true);
         mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
     }
 

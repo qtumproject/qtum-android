@@ -39,15 +39,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <android.support.v7.widget.RecyclerView
-                    android:minHeight="200dp"
-                    android:id="@+id/recycler_token_history"
-                    android:splitMotionEvents="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
                 <org.qtum.wallet.utils.FontTextView
                     app:typefaceAsset="@string/proximaNovaRegular"
+                    android:id="@+id/token_histories_placeholder"
                     android:textColor="@color/grey70"
                     android:gravity="center"
                     android:textSize="18sp"
@@ -56,6 +50,12 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_token_history"
+                    android:splitMotionEvents="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
             </RelativeLayout>
 

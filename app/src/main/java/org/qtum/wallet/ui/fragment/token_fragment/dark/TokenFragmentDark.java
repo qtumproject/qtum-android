@@ -127,6 +127,7 @@ public class TokenFragmentDark extends TokenFragment {
 
     @Override
     public void updateHistory(List<TokenHistory> tokenHistories) {
+        super.updateHistory(tokenHistories);
         mAdapter = new TokenHistoryAdapterDark(tokenHistories,this);
         mRecyclerView.setAdapter(mAdapter);
     }
