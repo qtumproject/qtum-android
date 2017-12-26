@@ -24,7 +24,6 @@ public class QtumSharedPreference {
     private final String BAN_TIME = "ban_time";
     private final String FAILED_ATTEMPTS_COUNT = "failed_attempts_count";
     private final String MIN_GAS_PRICE = "min_gas_price";
-    private final String FEE_PER_KB = "fee_per_kb";
     private final String CURRENT_ADDRESS = "current_active_address";
 
     private List<LanguageChangeListener> mLanguageChangeListeners;
@@ -184,14 +183,5 @@ public class QtumSharedPreference {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getInt(MIN_GAS_PRICE, 40);
     }
 
-    public void setFeePerKb(Context context, String feePerKb) {
-        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putString(FEE_PER_KB, feePerKb);
-        mEditor.apply();
-    }
 
-    public String getFeePerKb(Context context) {
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(FEE_PER_KB, "0.00001");
-    }
 }
