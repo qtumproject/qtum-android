@@ -13,6 +13,8 @@ public class ConfirmPassphrasePresenterImpl extends BaseFragmentPresenterImpl im
     ConfirmPassphraseView mConfirmPassphraseView;
     ConfirmPassphraseInteractor mConfirmPassphraseInteractor;
 
+    List<String> wordsList;
+
     ConfirmPassphrasePresenterImpl(ConfirmPassphraseView confirmPassphraseView, ConfirmPassphraseInteractor confirmPassphraseInteractor){
         mConfirmPassphraseView = confirmPassphraseView;
         mConfirmPassphraseInteractor = confirmPassphraseInteractor;
@@ -27,9 +29,28 @@ public class ConfirmPassphrasePresenterImpl extends BaseFragmentPresenterImpl im
     public void initializeViews() {
         super.initializeViews();
         String seed = getView().getSeed();
-        List<String> wordsList = Arrays.asList(seed.split("\\W+"));
+        wordsList = Arrays.asList(seed.split("\\W+"));
         getView().setUpRecyclerViews(wordsList);
     }
 
+    @Override
+    public void onResetAllClick(){
+        getView().hideError();
+        getView().resetAll(wordsList);
+    }
 
+    @Override
+    public void seedEntered(List<String> seed) {
+        if(seed.size()==12){
+            for(int i=0;i<12;i++){
+                if(!seed.get(i).equals(wordsList.get(i))){
+                    getView().showError();
+                    return;
+                }
+            }
+            getView().confirmSeed();
+        }else{
+            getView().hideError();
+        }
+    }
 }

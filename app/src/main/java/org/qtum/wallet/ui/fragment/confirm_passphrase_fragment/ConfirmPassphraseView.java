@@ -8,4 +8,8 @@ import java.util.List;
 public interface ConfirmPassphraseView extends BaseFragmentView{
     String getSeed();
     void setUpRecyclerViews(List<String> seed);
+    void resetAll(List<String> seed);
+    void confirmSeed();
+    void showError();
+    void hideError();
 }

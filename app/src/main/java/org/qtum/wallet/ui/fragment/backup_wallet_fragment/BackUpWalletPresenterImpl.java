@@ -48,9 +48,5 @@ public class BackUpWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
     public void onContinueClick() {
         BaseFragment fragment = ConfirmPassphraseFragment.newInstance(getView().getContext(),passphrase);
         getView().openFragment(fragment);
-
-//        final WalletMainFragment walletFragment = WalletMainFragment.newInstance(getView().getContext());
-//        getView().getMainActivity().setRootFragment(walletFragment);
-//        getView().openRootFragment(walletFragment);
     }
 }

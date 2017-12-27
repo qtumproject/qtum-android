@@ -160,7 +160,7 @@
             android:layout_marginStart="32dp"
             android:background="?attr/selectableItemBackground"
             android:padding="16dp"
-            android:text="@string/skip"
+            android:text="@string/_continue"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/button_text"/>

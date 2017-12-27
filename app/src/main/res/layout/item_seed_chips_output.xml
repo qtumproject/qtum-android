@@ -5,16 +5,15 @@
              android:layout_height="wrap_content"
              android:paddingBottom="4dp"
              android:paddingRight="4dp">
+
     <org.qtum.wallet.utils.FontButton
         android:id="@+id/bt_seed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/chip_normal_corner_background"
+        android:background="@drawable/background_et_import_wallet"
         android:gravity="center"
         android:padding="8dp"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        app:typeface="@string/proximaNovaLight">
-
-    </org.qtum.wallet.utils.FontButton>
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        app:typeface="@string/simplonMonoRegular"/>
 </FrameLayout>
