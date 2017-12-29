@@ -42,8 +42,6 @@ public class WatchContractPresenterTest {
 
     @Test
     public void initialize() {
-        when(view.isToken())
-                .thenReturn(true);
 
         presenter.initializeViews();
 
@@ -53,14 +51,13 @@ public class WatchContractPresenterTest {
     private static final String TEST_NAME = "Name";
     private static final String TEST_ADDRESS = "Address";
     private static final String TEST_ABIINTERFACE = "Interface";
-    private static final boolean TEST_TOKEN = true;
 
     @Test
     public void onOkClick_InvalidContractAddressError() {
         when(interactor.isValidContractAddress(anyString()))
                 .thenReturn(false);
 
-        presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE, TEST_TOKEN);
+        presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE);
 
         verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
         verify(view, never()).setAlertDialog(anyInt(), anyString(), anyInt(), (BaseFragment.PopUpType) any(), (BaseFragment.AlertDialogCallBack) any());
@@ -77,7 +74,7 @@ public class WatchContractPresenterTest {
         when(interactor.getContracts())
                 .thenReturn(TEST_CONTRACTS_WITH_DUPLICATE_TOKEN_ADDRESS);
 
-        presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE, TEST_TOKEN);
+        presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE);
 
         verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
         verify(view, never()).setAlertDialog(anyInt(), anyString(), anyInt(), (BaseFragment.PopUpType) any(), (BaseFragment.AlertDialogCallBack) any());
@@ -95,7 +92,7 @@ public class WatchContractPresenterTest {
         when(interactor.isABIInterfaceValid(anyString()))
                 .thenReturn(false);
 
-        presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE, TEST_TOKEN);
+        presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE);
 
         verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
 
@@ -113,7 +110,7 @@ public class WatchContractPresenterTest {
         when(interactor.isABIInterfaceValid(anyString()))
                 .thenReturn(true);
 
-        presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE, TEST_TOKEN);
+        presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE);
 
         verify(interactor, times(1)).handleContractWithToken(anyString(), anyString(), anyString());
         verify(view, times(1)).subscribeTokenBalanceChanges(anyString());
@@ -129,7 +126,7 @@ public class WatchContractPresenterTest {
         when(interactor.isABIInterfaceValid(anyString()))
                 .thenReturn(true);
 
-        presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE, false);
+        presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE);
 
         verify(interactor, times(1)).handleContractWithoutToken(anyString(), anyString(), anyString());
         verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyInt(), (BaseFragment.PopUpType) any(), (BaseFragment.AlertDialogCallBack) any());

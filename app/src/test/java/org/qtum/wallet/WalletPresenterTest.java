@@ -37,13 +37,6 @@ public class WalletPresenterTest {
         presenter = new WalletPresenterImpl(view, interactor);
     }
 
-    @Test
-    public void notifyHeader() {
-        presenter.notifyHeader();
-
-        verify(interactor, times(1)).getAddress();
-        verify(view, times(1)).updatePubKey(anyString());
-    }
 
     @Test
     public void onRefresh_NetworkConnected() {
@@ -51,7 +44,7 @@ public class WalletPresenterTest {
         presenter.onRefresh();
 
         verify(view, times(1)).startRefreshAnimation();
-        verify(interactor, times(1)).getHistoryList(anyInt(), anyInt(), anyInt(), (WalletInteractorImpl.GetHistoryListCallBack) any());
+        verify(interactor, times(1)).getHistoryList(anyInt(), anyInt());
         verify(view, never()).setAlertDialog(anyInt(), anyInt(), anyInt(), (BaseFragment.PopUpType) any());
     }
 
@@ -63,7 +56,7 @@ public class WalletPresenterTest {
         verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), anyInt(), (BaseFragment.PopUpType) any());
         verify(view, times(1)).stopRefreshRecyclerAnimation();
         verify(view, never()).startRefreshAnimation();
-        verify(interactor, never()).getHistoryList(anyInt(), anyInt(), anyInt(), (WalletInteractorImpl.GetHistoryListCallBack) any());
+        verify(interactor, never()).getHistoryList(anyInt(), anyInt());
     }
 
     @Test
@@ -83,7 +76,7 @@ public class WalletPresenterTest {
         presenter.onLastItem(0);
 
         verify(view, times(1)).loadNewHistory();
-        verify(interactor, times(1)).getHistoryList(anyInt(), anyInt(), anyInt(), (WalletInteractorImpl.GetHistoryListCallBack) any());
+        verify(interactor, times(1)).getHistoryList(anyInt(), anyInt());
     }
 
     @Test
@@ -91,7 +84,7 @@ public class WalletPresenterTest {
         presenter.onNetworkStateChanged(true);
 
         verify(view, times(1)).startRefreshAnimation();
-        verify(interactor, times(1)).getHistoryList(anyInt(), anyInt(), anyInt(), (WalletInteractorImpl.GetHistoryListCallBack) any());
+        verify(interactor, times(1)).getHistoryList(anyInt(), anyInt());
     }
 
     @Test

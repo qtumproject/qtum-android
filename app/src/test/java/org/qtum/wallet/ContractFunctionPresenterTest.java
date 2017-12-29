@@ -122,10 +122,10 @@ public class ContractFunctionPresenterTest {
 
     @Test
     public void onCallClick_Error() {
-        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
+        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any(),""))
                 .thenReturn(Observable.error(new Throwable("Error")));
 
-        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", 2, 2, "method name");
+        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", 2, 2, "method name","","");
 
         verify(view, never()).dismissProgressDialog();
     }
@@ -138,10 +138,10 @@ public class ContractFunctionPresenterTest {
 
     @Test
     public void onCallClick_ItemExceptedNotNoneError() {
-        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
+        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any(),""))
                 .thenReturn(Observable.just(TEST_WRONG_RESP_WRAPPER));
 
-        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", 2, 2, "method name");
+        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", 2, 2, "method name","","");
 
         verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any());
         verify(view, never()).dismissProgressDialog();
@@ -156,10 +156,10 @@ public class ContractFunctionPresenterTest {
 
     @Test
     public void onCallClick_WrongGasUsedError() {
-        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
+        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any(),""))
                 .thenReturn(Observable.just(TEST_WRONG_GAS_RESP_WRAPPER));
 
-        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", TEST_PARAM_GAS_LIMIT, 2, "method name");
+        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", TEST_PARAM_GAS_LIMIT, 2, "method name","","");
 
         verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any());
         verify(view, never()).dismissProgressDialog();

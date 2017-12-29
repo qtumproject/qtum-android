@@ -149,7 +149,7 @@ public class PinPresenterTest {
 
     @Test
     public void confirm_creating_withoutTouchId_test(){
-        when(interactor.createWallet()).thenReturn(Observable.just(PASSPHRASE));
+        when(interactor.loadWallet(PASSPHRASE)).thenReturn(Observable.just(PASSPHRASE));
         when(view.checkAvailabilityTouchId()).thenReturn(false);
         when(interactor.generateSHA256String(PIN)).thenReturn(PIN_HASH);
 
@@ -172,7 +172,7 @@ public class PinPresenterTest {
 
     @Test
     public void confirm_creating_withTouchId_test(){
-        when(interactor.createWallet()).thenReturn(Observable.just(PASSPHRASE));
+        when(interactor.loadWallet(PASSPHRASE)).thenReturn(Observable.just(PASSPHRASE));
         when(view.checkAvailabilityTouchId()).thenReturn(true);
         when(interactor.encodeInBackground(PIN)).thenReturn(Observable.just(TOUCH_ID_PASSWORD));
         when(interactor.generateSHA256String(PIN)).thenReturn(PIN_HASH);
@@ -196,7 +196,7 @@ public class PinPresenterTest {
 
     @Test
     public void confirm_creating_incorrectRepeatedPin_test(){
-        when(interactor.createWallet()).thenReturn(Observable.just(PASSPHRASE));
+        when(interactor.loadWallet(PASSPHRASE)).thenReturn(Observable.just(PASSPHRASE));
 
         presenter.setAction(CREATING);
         presenter.confirm(PIN);
