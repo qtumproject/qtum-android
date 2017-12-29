@@ -141,6 +141,11 @@ public abstract class ConfirmPassphraseFragment extends BaseFragment implements 
     }
 
     @Override
+    public void onLogin() {
+        getMainActivity().onLogin();
+    }
+
+    @Override
     public String getSeed() {
         return getArguments().getString(SEED);
     }

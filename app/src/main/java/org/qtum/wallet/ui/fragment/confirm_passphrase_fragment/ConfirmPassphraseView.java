@@ -12,4 +12,5 @@ public interface ConfirmPassphraseView extends BaseFragmentView{
     void confirmSeed();
     void showError();
     void hideError();
+    void onLogin();
 }

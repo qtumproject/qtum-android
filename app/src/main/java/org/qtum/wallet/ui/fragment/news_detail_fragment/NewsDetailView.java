@@ -7,4 +7,6 @@ public interface NewsDetailView extends BaseFragmentView {
     int getNewsPosition();
 
     void setupElements(Elements elements);
+
+    void setUpTitleAndDate(String title, String date);
 }

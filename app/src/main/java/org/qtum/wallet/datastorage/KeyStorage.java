@@ -46,35 +46,7 @@ public class KeyStorage implements Serializable {
         sKeyStorage = null;
     }
 
-    public Observable<String> createWallet() {
-        return Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-
-                String mnemonicCode = "";
-                for (int i = 0; i < 11; i++) {
-                    mnemonicCode += DictionaryWords.getRandomWord() + " ";
-                }
-                mnemonicCode += DictionaryWords.getRandomWord();
-
-                String passphrase = "";
-                DeterministicSeed seed = null;
-                try {
-                    seed = new DeterministicSeed(mnemonicCode, null, passphrase, DeterministicHierarchy.BIP32_STANDARDISATION_TIME_SECS);
-                } catch (UnreadableWalletException e) {
-                    e.printStackTrace();
-                }
-                if (seed != null) {
-                    sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
-
-                }
-                getKeyList();
-                subscriber.onNext(mnemonicCode);
-            }
-        });
-    }
-
-    public Observable<String> importWallet(final String seedString) {
+    public Observable<String> createWallet(final String seedString) {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
@@ -94,6 +66,15 @@ public class KeyStorage implements Serializable {
                 subscriber.onNext(seedString);
             }
         });
+    }
+
+    public String getRandomSeed(){
+        String mnemonicCode = "";
+        for (int i = 0; i < 11; i++) {
+            mnemonicCode += DictionaryWords.getRandomWord() + " ";
+        }
+        mnemonicCode += DictionaryWords.getRandomWord();
+        return mnemonicCode;
     }
 
     public List<DeterministicKey> getKeyList() {

@@ -271,9 +271,11 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     public void onDestroyView() {
         super.onDestroyView();
         mNetworkStateReceiver.removeNetworkStateListener(mNetworkStateListener);
-        mUpdateService.removeBalanceChangeListener(mBalanceChangeListener);
-        if(mCurrency instanceof CurrencyToken) {
-            mUpdateService.removeTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(), mTokenBalanceChangeListener);
+        if(mUpdateService!=null) {
+            mUpdateService.removeBalanceChangeListener(mBalanceChangeListener);
+            if (mCurrency instanceof CurrencyToken) {
+                mUpdateService.removeTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(), mTokenBalanceChangeListener);
+            }
         }
     }
 
@@ -488,8 +490,9 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                 if (!matcher.matches()) {
                     int length = editable.length();
                     mTextInputEditTextAddress.setText(editable.subSequence(0,length==0?length:length-1));
-                    mTextInputEditTextAddress.setSelection(length-1);
+
                 }
+                mTextInputEditTextAddress.setSelection(mTextInputEditTextAddress.getText().length());
             }
         });
         mAlertDialogCallBack = new AlertDialogCallBack() {
