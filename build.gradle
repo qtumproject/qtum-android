@@ -29,4 +29,3 @@ ext {
     mockitoVersion = "1.10.19"
     hamcrestVersion = "1.3"
 }
-

@@ -104,7 +104,6 @@ public class ParameterViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(ContractMethodParameter parameter, boolean isLast) {
         this.parameter = parameter;
-
         tilParam.setHint(fromCamelCase(parameter.getName()));
         etParam.setTopHint(fromCamelCase(parameter.getName())+" ("+parameter.getType()+")");
         setInputType(parameter.getType());
