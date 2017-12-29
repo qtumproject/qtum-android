@@ -17,8 +17,6 @@ public interface PinInteractor {
 
     void saveTouchIdPassword(String password);
 
-    Observable<String> createWallet();
-
     void setKeyGeneratedInstance(boolean isKeyGenerated);
 
     String decode(String encoded, Cipher cipher);
@@ -44,4 +42,6 @@ public interface PinInteractor {
     String getBanPinString(int min);
 
     Observable<String> loadWallet(String code);
+
+    String getRandomSeed();
 }

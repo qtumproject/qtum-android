@@ -35,16 +35,6 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
     LinearLayout mLinearLayoutTransaction;
     Subscription mSubscription;
 
-    @OnLongClick(R.id.tv_id)
-    public boolean onIdLongClick() {
-        ClipboardUtils.copyToClipBoard(mTextViewID.getContext(), mTextViewID.getText().toString(), new ClipboardUtils.CopyCallback() {
-            @Override
-            public void onCopyToClipBoard() {
-                Toast.makeText(mTextViewID.getContext(), mTextViewID.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
-            }
-        });
-        return true;
-    }
 
     TransactionHolderLight(View itemView, final TransactionClickListener listener) {
         super(itemView);
@@ -55,6 +45,18 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
             }
         });
         ButterKnife.bind(this, itemView);
+        mTextViewID.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ClipboardUtils.copyToClipBoard(mTextViewID.getContext(), mTextViewID.getText().toString(), new ClipboardUtils.CopyCallback() {
+                    @Override
+                    public void onCopyToClipBoard() {
+                        Toast.makeText(mTextViewID.getContext(), mTextViewID.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return true;
+            }
+        });
     }
 
     void bindTransactionData(final History history) {

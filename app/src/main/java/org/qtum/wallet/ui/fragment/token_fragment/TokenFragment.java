@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -11,10 +13,12 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AddressesListFragmentToken;
 import org.qtum.wallet.ui.fragment_factory.Factory;
@@ -24,12 +28,14 @@ import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontTextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import rx.Subscriber;
 
-public abstract class TokenFragment extends BaseFragment implements TokenView {
+public abstract class TokenFragment extends BaseFragment implements TokenView, TokenHistoryClickListener {
 
     private static final String tokenKey = "tokenInfo";
     private static final String qtumAddressKey = "qtumAddressKey";
@@ -102,7 +108,20 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
+    @BindView(R.id.token_histories_placeholder)
+    TextView mTextViewHistoriesPlaceholder;
+
+    @BindView(R.id.recycler_token_history)
+    protected RecyclerView mRecyclerView;
+    protected TokenHistoryAdapter mAdapter;
+    protected LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+
     ShareDialogFragment shareDialog;
+
+    protected int visibleItemCount;
+    protected int totalItemCount;
+    protected int pastVisibleItems;
+    protected boolean mLoadingFlag = false;
 
     @OnLongClick(R.id.tv_token_address)
     public boolean onAddressLongClick() {
@@ -180,6 +199,32 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
         setTokenAddress(token.getContractAddress());
         setSenderAddress(token.getSenderAddress());
         headerPAdding = convertDpToPixel(16, getContext());
+
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    if (!mLoadingFlag) {
+                        visibleItemCount = mLinearLayoutManager.getChildCount();
+                        totalItemCount = mLinearLayoutManager.getItemCount();
+                        pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 1) {
+                            getPresenter().onLastItem(totalItemCount - 1);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void addHistory(int positionStart, int itemCount, List<TokenHistory> historyList) {
+        mAdapter.setHistoryList(historyList);
+        mAdapter.setLoadingFlag(false);
+        mLoadingFlag = false;
+        mAdapter.notifyItemRangeChanged(positionStart, itemCount);
     }
 
     @Override
@@ -220,6 +265,15 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
     public void setQtumAddress(String address) {
         if (!TextUtils.isEmpty(address)) {
             tokenAddress.setText(address);
+        }
+    }
+
+    @Override
+    public void updateHistory(List<TokenHistory> tokenHistories) {
+        if(tokenHistories.isEmpty()){
+            mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
+        } else {
+            mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
         }
     }
 
@@ -291,6 +345,8 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
             @Override
             public void onNext(String s) {
                 onContractPropertyUpdated(TokenFragment.symbol, s);
+                mAdapter.setSymbol(" " + s);
+                mAdapter.notifyDataSetChanged();
             }
         };
     }
@@ -313,5 +369,10 @@ public abstract class TokenFragment extends BaseFragment implements TokenView {
                 onContractPropertyUpdated(TokenFragment.name, s);
             }
         };
+    }
+
+    @Override
+    public void onTokenHistoryClick(int adapterPosition) {
+
     }
 }

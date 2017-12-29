@@ -1,13 +1,16 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment;
 
 import org.qtum.wallet.model.gson.history.History;
+import org.qtum.wallet.model.gson.history.HistoryResponse;
 
 import java.util.List;
+
+import rx.Observable;
 
 public interface WalletInteractor {
     List<History> getHistoryList();
 
-    void getHistoryList(int STATE, int limit, int offset, WalletInteractorImpl.GetHistoryListCallBack callBack);
+    Observable<HistoryResponse> getHistoryList(int limit, int offset);
 
     String getAddress();
 
@@ -17,5 +20,5 @@ public interface WalletInteractor {
 
     Integer setHistory(History history);
 
-    void unSubscribe();
+    List<String> getAddresses();
 }

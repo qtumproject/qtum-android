@@ -230,10 +230,10 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
                 JSONObject data = (JSONObject) args[0];
                 History history = gson.fromJson(data.toString(), History.class);
 
-                if (history.getContractHasBeenCreated() != null && history.getBlockTime() != null) {
+                if (history.getBlockTime() != null) {
 
                     ContractCreationStatus contractCreationStatus;
-                    if(history.getContractHasBeenCreated()){
+                    if(history.getContractHasBeenCreated() != null && history.getContractHasBeenCreated()){
                         contractCreationStatus = ContractCreationStatus.Created;
                     } else {
                         contractCreationStatus = ContractCreationStatus.Failed;
@@ -487,12 +487,12 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
 
                         @Override
                         public void onNext(History history) {
-                            if (history.getContractHasBeenCreated() != null && history.getBlockTime() != null) {
+                            if (history.getBlockTime() != null) {
 
                                 String contractAddress = ContractBuilder.generateContractAddress(unconfirmedContractTxHash);
 
                                 ContractCreationStatus contractCreationStatus;
-                                if(history.getContractHasBeenCreated()){
+                                if(history.getContractHasBeenCreated() != null && history.getContractHasBeenCreated()){
                                     contractCreationStatus = ContractCreationStatus.Created;
                                 } else {
                                     contractCreationStatus = ContractCreationStatus.Failed;

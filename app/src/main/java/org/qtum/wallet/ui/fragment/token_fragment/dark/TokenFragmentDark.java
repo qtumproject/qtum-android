@@ -5,9 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
 import org.qtum.wallet.utils.ResizeWidthAnimation;
 import org.qtum.wallet.utils.StackCollapseLinearLayout;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -120,5 +123,12 @@ public class TokenFragmentDark extends TokenFragment {
                 mTextViewTokenName.setText(propValue);
                 break;
         }
+    }
+
+    @Override
+    public void updateHistory(List<TokenHistory> tokenHistories) {
+        super.updateHistory(tokenHistories);
+        mAdapter = new TokenHistoryAdapterDark(tokenHistories,this);
+        mRecyclerView.setAdapter(mAdapter);
     }
 }

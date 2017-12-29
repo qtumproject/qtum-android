@@ -7,9 +7,6 @@ import org.qtum.wallet.datastorage.KeyStorage;
 import java.lang.ref.WeakReference;
 
 import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 class ImportWalletInteractorImpl implements ImportWalletInteractor {
 
@@ -21,6 +18,6 @@ class ImportWalletInteractorImpl implements ImportWalletInteractor {
 
     @Override
     public Observable<String> importWallet(String seed) {
-        return KeyStorage.getInstance().importWallet(seed);
+        return KeyStorage.getInstance().createWallet(seed);
     }
 }

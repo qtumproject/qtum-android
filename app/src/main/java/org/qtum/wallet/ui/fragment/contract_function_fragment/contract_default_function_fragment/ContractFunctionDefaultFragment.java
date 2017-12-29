@@ -340,7 +340,7 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
 
                     @Override
                     public void run() {
-                        if(i3>i7)
+                        if(i7!=0 && i3>i7)
                         mNestedScrollView.scrollTo(0,mNestedScrollView.getScrollY()+i3);
                     }
                 });

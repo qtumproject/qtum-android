@@ -18,13 +18,7 @@ public class NewsDetailInteractorImpl implements NewsDetailInteractor {
     }
 
     @Override
-    public Elements getElements(int newsPosition) {
-        News news = NewsStorage.newInstance().getNews(newsPosition);
-        if (news != null) {
-            Document document = news.getDocument();
-            return document != null ? document.body().children() : null;
-        } else {
-            return null;
-        }
+    public News getNews(int newsPosition) {
+        return NewsStorage.newInstance().getNews(newsPosition);
     }
 }

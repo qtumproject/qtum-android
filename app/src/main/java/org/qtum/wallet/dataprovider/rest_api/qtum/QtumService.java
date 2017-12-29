@@ -23,6 +23,7 @@ import org.qtum.wallet.model.gson.qstore.QstoreByteCodeResponse;
 import org.qtum.wallet.model.gson.qstore.QstoreContract;
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.model.gson.qstore.QstoreSourceCodeResponse;
+import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 import org.qtum.wallet.utils.CurrentNetParams;
 
 import java.security.KeyStore;
@@ -214,6 +215,10 @@ public class QtumService {
 
     public Observable<ContractParams> getContractParams(String contractAddress) {
         return mServiceApi.getContractParams(contractAddress);
+    }
+
+    public Observable<TokenHistoryResponse> getTokenHistoryList(String qrc20ContractAddress, int limit, int offset, List<String> addresses){
+        return mServiceApi.getTokenHistoryList(qrc20ContractAddress, limit, offset, addresses);
     }
 
 }

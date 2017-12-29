@@ -14,7 +14,9 @@ import java.util.List;
 public class MigrationManager {
 
     private final int migrateVersion_93 = 93;
+
     private final int migrateVersion_100 = 100    ;
+
     List<Integer> migrations = new ArrayList<>();
 
     public MigrationManager() {
