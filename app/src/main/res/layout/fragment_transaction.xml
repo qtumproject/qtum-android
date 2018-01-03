@@ -10,12 +10,12 @@
 
 
     <android.support.v4.view.ViewPager
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/view_pager_transaction"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:id="@+id/view_pager_transaction"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        </android.support.v4.view.ViewPager>
+    </android.support.v4.view.ViewPager>
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -54,24 +54,58 @@
                         android:text="23.000.000.097"
                         android:textColor="@color/background"
                         android:textSize="30sp"
-                        app:typefaceAsset="@string/simplonMonoMedium" />
+                        app:typefaceAsset="@string/simplonMonoMedium"/>
 
                     <org.qtum.wallet.utils.FontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:textSize="30sp"
                         android:layout_marginStart="4dp"
                         android:text="@string/qtum"
                         android:textColor="@color/background"
-                        app:typefaceAsset="@string/simplonMonoMedium" />
+                        android:textSize="30sp"
+                        app:typefaceAsset="@string/simplonMonoMedium"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_value_cont"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal">
+
+                    <org.qtum.wallet.utils.FontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Fee"
+                        android:textColor="@color/background"
+                        app:typefaceAsset="@string/simplonMonoRegular"/>
+
+                    <org.qtum.wallet.utils.FontTextView
+                        android:id="@+id/tv_fee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:textColor="@color/background"
+                        app:typefaceAsset="@string/simplonMonoRegular"/>
+
+                    <org.qtum.wallet.utils.FontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/qtum"
+                        android:textColor="@color/background"
+                        app:typefaceAsset="@string/simplonMonoRegular"/>
+
+
                 </LinearLayout>
 
                 <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/not_confirmed_flag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_value_cont"
+                    android:layout_below="@+id/ll_fee"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="16dp"
                     android:background="@color/background"
@@ -82,7 +116,7 @@
                     android:text="@string/not_confirmed_transaction"
                     android:textColor="@color/colorPrimary"
                     android:textSize="20sp"
-                    app:typefaceAsset="@string/simplonMonoMedium" />
+                    app:typefaceAsset="@string/simplonMonoMedium"/>
 
             </RelativeLayout>
 
@@ -97,12 +131,12 @@
                 android:orientation="horizontal">
 
                 <org.qtum.wallet.utils.FontTextView
+                    android:id="@+id/tv_time_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tv_time_type"
                     android:text="@string/received_time"
                     android:textColor="@color/background"
-                    app:typefaceAsset="@string/simplonMonoRegular" />
+                    app:typefaceAsset="@string/simplonMonoRegular"/>
 
                 <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_received_time"
@@ -112,7 +146,7 @@
                     android:gravity="right"
                     android:text="Dec 18"
                     android:textColor="@color/background"
-                    app:typefaceAsset="@string/simplonMonoRegular" />
+                    app:typefaceAsset="@string/simplonMonoRegular"/>
 
             </LinearLayout>
 
@@ -131,7 +165,7 @@
                     android:layout_marginStart="16dp"
                     android:text="From"
                     android:textColor="@color/colorPrimary"
-                    app:typefaceAsset="@string/euclidFlexMedium" />
+                    app:typefaceAsset="@string/euclidFlexMedium"/>
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tab_indicator"
@@ -142,7 +176,7 @@
                     android:layout_marginEnd="16dp"
                     app:tabBackground="@drawable/tab_indicator_selector_drawable"
                     app:tabIndicatorColor="@android:color/transparent"
-                    app:tabMaxWidth="17dp" />
+                    app:tabMaxWidth="17dp"/>
 
             </RelativeLayout>
 
@@ -163,7 +197,7 @@
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:paddingTop="10dp"
-                    app:srcCompat="@drawable/ic_back_indicator" />
+                    app:srcCompat="@drawable/ic_back_indicator"/>
 
                 <org.qtum.wallet.utils.FontTextView
                     android:layout_width="match_parent"
@@ -173,7 +207,7 @@
                     android:text="@string/transactionQTUM"
                     android:textColor="@color/background"
                     android:textSize="@dimen/toolbar_text_size"
-                    app:typefaceAsset="@string/euclidFlexMedium" />
+                    app:typefaceAsset="@string/euclidFlexMedium"/>
 
             </android.support.v7.widget.Toolbar>
 
