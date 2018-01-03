@@ -16,9 +16,5 @@ public interface WatchContractInteractor {
 
     List<Contract> getContracts();
 
-    String handleContractWithToken(String name, String address, String ABIInterface);
-
     void handleContractWithoutToken(String name, String address, String ABIInterface);
-
-    boolean isABIInterfaceValid(String abiInterface);
 }

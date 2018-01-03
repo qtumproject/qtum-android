@@ -124,7 +124,7 @@ public class PinPresenterTest {
         presenter.setAction(AUTHENTICATION_FOR_PASSPHRASE);
         presenter.cancel();
 
-        verify(view, times(1)).onCancelClick();
+        verify(view, times(1)).onBackPressed();
     }
 
     @Test
@@ -132,7 +132,7 @@ public class PinPresenterTest {
         presenter.setAction(CHECK_AUTHENTICATION);
         presenter.cancel();
 
-        verify(view, times(1)).onBackPressed();
+        verify(view, times(1)).onCancelClick();
     }
 
     @Test
@@ -149,7 +149,7 @@ public class PinPresenterTest {
 
     @Test
     public void confirm_creating_withoutTouchId_test(){
-        when(interactor.createWallet()).thenReturn(Observable.just(PASSPHRASE));
+        when(interactor.loadWallet(PASSPHRASE)).thenReturn(Observable.just(PASSPHRASE));
         when(view.checkAvailabilityTouchId()).thenReturn(false);
         when(interactor.generateSHA256String(PIN)).thenReturn(PIN_HASH);
 
@@ -160,10 +160,8 @@ public class PinPresenterTest {
         verify(view,times(2)).clearError();
         verify(view,times(1)).setProgressDialog();
         verify(view,times(1)).hideKeyBoard();
-        verify(interactor, times(1)).setKeyGeneratedInstance(true);
 
         verify(interactor,times(1)).savePassword(anyString());
-        verify(view,times(1)).onLogin();
         verify(view,times(1)).dismiss();
         verify(view,times(1)).openBackUpWalletFragment(true,PIN);
         verify(view,times(1)).dismissProgressDialog();
@@ -172,7 +170,7 @@ public class PinPresenterTest {
 
     @Test
     public void confirm_creating_withTouchId_test(){
-        when(interactor.createWallet()).thenReturn(Observable.just(PASSPHRASE));
+        when(interactor.loadWallet(PASSPHRASE)).thenReturn(Observable.just(PASSPHRASE));
         when(view.checkAvailabilityTouchId()).thenReturn(true);
         when(interactor.encodeInBackground(PIN)).thenReturn(Observable.just(TOUCH_ID_PASSWORD));
         when(interactor.generateSHA256String(PIN)).thenReturn(PIN_HASH);
@@ -184,11 +182,9 @@ public class PinPresenterTest {
         verify(view,times(2)).clearError();
         verify(view,times(1)).setProgressDialog();
         verify(view,times(1)).hideKeyBoard();
-        verify(interactor, times(1)).setKeyGeneratedInstance(true);
 
         verify(interactor,times(1)).saveTouchIdPassword(TOUCH_ID_PASSWORD);
         verify(interactor,times(1)).savePassword(anyString());
-        verify(view,times(1)).onLogin();
         verify(view,times(1)).openTouchIDPreferenceFragment(false,PIN);
         verify(view,times(1)).dismissProgressDialog();
 
@@ -196,7 +192,7 @@ public class PinPresenterTest {
 
     @Test
     public void confirm_creating_incorrectRepeatedPin_test(){
-        when(interactor.createWallet()).thenReturn(Observable.just(PASSPHRASE));
+        when(interactor.loadWallet(PASSPHRASE)).thenReturn(Observable.just(PASSPHRASE));
 
         presenter.setAction(CREATING);
         presenter.confirm(PIN);

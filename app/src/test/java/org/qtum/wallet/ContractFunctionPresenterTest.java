@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractMethod;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
+import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.model.gson.call_smart_contract_response.Item;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -34,6 +35,7 @@ import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -70,6 +72,8 @@ public class ContractFunctionPresenterTest {
     private final String TEST_UUID = "uuid";
     private final BigDecimal TEST_FEE_DOUBLE = new BigDecimal("2.0");
     private final int TEST_MIN_GAS_PRISE = 2;
+    private final static List<UnspentOutput> TEST_OUTPUTS = Arrays.asList(new UnspentOutput(600, true, new BigDecimal("12.0")),
+            new UnspentOutput(700, true, new BigDecimal("10.0")));
 
     @Test
     public void initialize_EmptyContracts() {
@@ -77,6 +81,7 @@ public class ContractFunctionPresenterTest {
                 .thenReturn(TEST_UUID);
         when(interactor.getContractMethod(anyString()))
                 .thenReturn(Collections.<ContractMethod>emptyList());
+        when(interactor.getUnspentOutputs(anyList())).thenReturn(Observable.just(TEST_OUTPUTS));
 
         when(interactor.getFeePerKb())
                 .thenReturn(TEST_FEE_DOUBLE);
@@ -104,6 +109,7 @@ public class ContractFunctionPresenterTest {
                 .thenReturn(TEST_METHOD_NAME);
         when(interactor.getContractMethod(anyString()))
                 .thenReturn(TEST_METHODS);
+        when(interactor.getUnspentOutputs(anyList())).thenReturn(Observable.just(TEST_OUTPUTS));
 
         when(interactor.getFeePerKb())
                 .thenReturn(TEST_FEE_DOUBLE);
@@ -122,10 +128,10 @@ public class ContractFunctionPresenterTest {
 
     @Test
     public void onCallClick_Error() {
-        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
+        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any(),eq("")))
                 .thenReturn(Observable.error(new Throwable("Error")));
 
-        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", 2, 2, "method name");
+        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", 2, 2, "method name","","");
 
         verify(view, never()).dismissProgressDialog();
     }
@@ -138,10 +144,10 @@ public class ContractFunctionPresenterTest {
 
     @Test
     public void onCallClick_ItemExceptedNotNoneError() {
-        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
+        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any(),eq("")))
                 .thenReturn(Observable.just(TEST_WRONG_RESP_WRAPPER));
 
-        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", 2, 2, "method name");
+        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", 2, 2, "method name","","");
 
         verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any());
         verify(view, never()).dismissProgressDialog();
@@ -156,10 +162,10 @@ public class ContractFunctionPresenterTest {
 
     @Test
     public void onCallClick_WrongGasUsedError() {
-        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any()))
+        when(interactor.callSmartContractObservable(anyString(), anyList(), (Contract)any(),eq("")))
                 .thenReturn(Observable.just(TEST_WRONG_GAS_RESP_WRAPPER));
 
-        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", TEST_PARAM_GAS_LIMIT, 2, "method name");
+        presenter.onCallClick(TEST_PARAMETRS, "address", "fee", TEST_PARAM_GAS_LIMIT, 2, "method name","","");
 
         verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any());
         verify(view, never()).dismissProgressDialog();

@@ -1,21 +1,36 @@
 package org.qtum.wallet;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
+import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenInteractor;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenPresenterImpl;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenView;
 import org.qtum.wallet.utils.ContractManagementHelper;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
+import rx.android.plugins.RxAndroidPlugins;
+import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.plugins.RxJavaPlugins;
+import rx.plugins.RxJavaSchedulersHook;
+import rx.schedulers.Schedulers;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyByte;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -34,16 +49,30 @@ public class TokenPresenterTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-
+        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
+            @Override
+            public Scheduler getMainThreadScheduler() {
+                return Schedulers.immediate();
+            }
+        });
+        RxJavaPlugins.getInstance().registerSchedulersHook(new RxJavaSchedulersHook() {
+            @Override
+            public Scheduler getIOScheduler() {
+                return Schedulers.immediate();
+            }
+        });
         presenter = new TokenPresenterImpl(view, interactor);
     }
 
     private static final Token TEST_TOKEN_WITH_DECIMALS = new Token(10, new BigDecimal("15"));
     private static final Token TEST_TOKEN_WITHOUT_DECIMALS = new Token(new BigDecimal("15"));
+    private static final TokenHistory TEST_TOKEN_HISTORY= new TokenHistory("test","test","test","test","test",20);
+    private static final List<TokenHistory> TEST_TOKEN_HISTORY_LIST = Arrays.asList(TEST_TOKEN_HISTORY);
+    private static final TokenHistoryResponse TEST_HISTORY_RESPONSE = new TokenHistoryResponse(10,10,10, Arrays.asList(TEST_TOKEN_HISTORY));
 
     @Test
     public void initialize_TokenWithDecimals() {
-
+        when(interactor.getHistoryList(anyString(),anyInt(),anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
         presenter.setToken(TEST_TOKEN_WITH_DECIMALS);
         presenter.initializeViews();
 
@@ -55,6 +84,7 @@ public class TokenPresenterTest {
 
     @Test
     public void initialize_TokenWithoutDecimals() {
+        when(interactor.getHistoryList(anyString(),anyInt(),anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
         presenter.setToken(TEST_TOKEN_WITHOUT_DECIMALS);
         presenter.initializeViews();
 
@@ -100,5 +130,10 @@ public class TokenPresenterTest {
 
     }
 
+    @After
+    public void tearDown() {
+        RxAndroidPlugins.getInstance().reset();
+        RxJavaPlugins.getInstance().reset();
+    }
 
 }

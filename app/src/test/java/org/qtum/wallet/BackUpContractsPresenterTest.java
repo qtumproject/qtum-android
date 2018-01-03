@@ -100,7 +100,7 @@ public class BackUpContractsPresenterTest {
         when(file.exists()).thenReturn(true);
         presenter.setBackUpFile(file);
         presenter.permissionGrantedForChooseShareMethod();
-        verify(view,times(1)).chooseShareMethod(anyString());
+        verify(view,times(1)).chooseShareMethod(anyString(), (File) any());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class BackUpContractsPresenterTest {
         presenter.setBackUpFile(file);
         presenter.permissionGrantedForChooseShareMethod();
         verify(view,times(1)).setAlertDialog(anyInt(),anyInt(),(BaseFragment.PopUpType)any());
-        verify(view,never()).chooseShareMethod(anyString());
+        verify(view,never()).chooseShareMethod(anyString(), (File) any());
     }
 
     @Test

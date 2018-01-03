@@ -37,8 +37,6 @@ public class TemplateLibraryPresenterTest {
     public void initialize() {
         when(interactor.getContactTemplates())
                 .thenReturn(Arrays.asList(new ContractTemplate(), new ContractTemplate()));
-        when(view.isTokenLibrary())
-                .thenReturn(true);
         when(interactor.compareDates(anyString(), anyString()))
                 .thenReturn(1);
 

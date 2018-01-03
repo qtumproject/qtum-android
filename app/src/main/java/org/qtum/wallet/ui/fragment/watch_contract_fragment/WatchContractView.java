@@ -15,7 +15,5 @@ public interface WatchContractView extends BaseFragmentView {
 
     OnTemplateClickListener getTemplateClickListener();
 
-    void subscribeTokenBalanceChanges(String contractAddress);
-
     BaseFragment.AlertDialogCallBack getAlertCallback();
 }

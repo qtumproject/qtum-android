@@ -213,11 +213,6 @@ public abstract class WatchContractFragment extends BaseFragment implements Watc
     }
 
     @Override
-    public void subscribeTokenBalanceChanges(String contractAddress) {
-        mUpdateService.subscribeTokenBalanceChange(contractAddress);
-    }
-
-    @Override
     public AlertDialogCallBack getAlertCallback() {
         return new BaseFragment.AlertDialogCallBack() {
             @Override

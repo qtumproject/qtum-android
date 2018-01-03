@@ -72,11 +72,6 @@ public class WatchTokenInteractorImpl implements WatchTokenInteractor {
     }
 
     @Override
-    public boolean isABIInterfaceValid(String ABIInterface) {
-        return ContractBuilder.checkForValidityQRC20(ABIInterface);
-    }
-
-    @Override
     public String getQRC20TokenStandardAbi() {
         TinyDB tinyDB = new TinyDB(mContext.get());
         for(ContractTemplate template: tinyDB.getContractTemplateList()){
