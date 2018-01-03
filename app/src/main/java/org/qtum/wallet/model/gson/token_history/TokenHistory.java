@@ -73,4 +73,13 @@ public class TokenHistory {
         this.txTime = txTime;
     }
 
+    //for unit_test
+    public TokenHistory(String contractAddress, String from, String to, String amount, String txHash, Integer txTime) {
+        this.contractAddress = contractAddress;
+        this.from = from;
+        this.to = to;
+        this.amount = amount;
+        this.txHash = txHash;
+        this.txTime = txTime;
+    }
 }

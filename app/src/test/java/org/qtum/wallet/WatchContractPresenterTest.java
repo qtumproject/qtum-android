@@ -84,47 +84,11 @@ public class WatchContractPresenterTest {
             new Contract("other address"));
 
     @Test
-    public void onOkClick_ContractWithToken_InvalidAbiInterfaceError() {
-        when(interactor.isValidContractAddress(anyString()))
-                .thenReturn(true);
-        when(interactor.getContracts())
-                .thenReturn(TEST_VALID_CONTRACTS);
-        when(interactor.isABIInterfaceValid(anyString()))
-                .thenReturn(false);
-
-        presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE);
-
-        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
-
-        verify(view, never()).subscribeTokenBalanceChanges(anyString());
-        verify(view, never()).setAlertDialog(anyInt(), anyString(), anyInt(), (BaseFragment.PopUpType) any(), (BaseFragment.AlertDialogCallBack) any());
-
-    }
-
-    @Test
-    public void onOkClick_ContractWithToken_Success() {
-        when(interactor.isValidContractAddress(anyString()))
-                .thenReturn(true);
-        when(interactor.getContracts())
-                .thenReturn(TEST_VALID_CONTRACTS);
-        when(interactor.isABIInterfaceValid(anyString()))
-                .thenReturn(true);
-
-        presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE);
-
-        verify(interactor, times(1)).handleContractWithToken(anyString(), anyString(), anyString());
-        verify(view, times(1)).subscribeTokenBalanceChanges(anyString());
-        verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyInt(), (BaseFragment.PopUpType) any(), (BaseFragment.AlertDialogCallBack) any());
-    }
-
-    @Test
     public void onOkClick_ContractWithoutToken_Success() {
         when(interactor.isValidContractAddress(anyString()))
                 .thenReturn(true);
         when(interactor.getContracts())
                 .thenReturn(TEST_VALID_CONTRACTS);
-        when(interactor.isABIInterfaceValid(anyString()))
-                .thenReturn(true);
 
         presenter.onOkClick(TEST_NAME, TEST_ADDRESS, TEST_ABIINTERFACE);
 

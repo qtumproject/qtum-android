@@ -29,4 +29,9 @@ public class HistoryResponse {
     public void setItems(List<History> items) {
         this.items = items;
     }
+
+    public HistoryResponse(Integer totalItems, List<History> items) {
+        this.totalItems = totalItems;
+        this.items = items;
+    }
 }

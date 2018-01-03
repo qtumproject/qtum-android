@@ -98,11 +98,7 @@ public class BackupContractsPresenterImpl extends BaseFragmentPresenterImpl impl
     public void permissionGrantedForChooseShareMethod() {
         if (mBackUpFile.exists()) {
             String authority = "org.qtum.wallet.FileProvider";
-            getView().chooseShareMethod(
-                            FileProvider.getUriForFile(
-                                    getView().getContext(),
-                                    authority,
-                                    mBackUpFile).toString());
+            getView().chooseShareMethod(authority, mBackUpFile);
         } else {
             getView().setAlertDialog(R.string.error, R.string.cancel, BaseFragment.PopUpType.error);
         }

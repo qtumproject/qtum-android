@@ -93,7 +93,7 @@ public class SendPresenterTest {
 
         verify(view, times(1)).setUpCurrencyField(anyInt());
         assertThat(presenter.getMinFee())
-                .isEqualTo(TEST_FEE_PER_KB_DOUBLE_VALUE);
+                .isEqualTo(TEST_FEE_PER_KB_DOUBLE_VALUE.doubleValue());
         verify(view, times(1)).updateFee(anyDouble(), anyDouble());
         verify(view, times(1)).updateGasPrice(anyInt(), anyInt());
         verify(view, times(1)).updateGasLimit(anyInt(), anyInt());
@@ -118,7 +118,7 @@ public class SendPresenterTest {
         verify(view, times(1)).updateGasPrice(anyInt(), anyInt());
         verify(view, times(1)).updateGasLimit(anyInt(), anyInt());
         assertThat(presenter.getMinFee())
-                .isEqualTo(TEST_FEE_PER_KB_DOUBLE_VALUE);
+                .isEqualTo(TEST_FEE_PER_KB_DOUBLE_VALUE.doubleValue());
         assertThat(presenter.getTokenList())
                 .isEmpty();
     }
@@ -140,7 +140,7 @@ public class SendPresenterTest {
         verify(view, never()).hideCurrencyField();
 
         assertThat(presenter.getMinFee())
-                .isEqualTo(TEST_FEE_PER_KB_DOUBLE_VALUE);
+                .isEqualTo(TEST_FEE_PER_KB_DOUBLE_VALUE.doubleValue());
 
         assertThat(presenter.getTokenList())
                 .hasSize(3);

@@ -53,4 +53,11 @@ public class TokenHistoryResponse {
         this.items = items;
     }
 
+    //for unit_test
+    public TokenHistoryResponse(Integer limit, Integer offset, Integer count, List<TokenHistory> items) {
+        this.limit = limit;
+        this.offset = offset;
+        this.count = count;
+        this.items = items;
+    }
 }
