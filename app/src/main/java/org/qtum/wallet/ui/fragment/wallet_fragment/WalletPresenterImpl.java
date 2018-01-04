@@ -103,9 +103,12 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         BigDecimal totalOwnVin = new BigDecimal("0.0");
         BigDecimal totalOwnVout = new BigDecimal("0.0");
 
+        boolean isOwnVin = false;
+
         for (Vin vin : history.getVin()) {
             for (String address : addresses) {
                 if (vin.getAddress().equals(address)) {
+                    isOwnVin = true;
                     vin.setOwnAddress(true);
                     totalOwnVin = totalOwnVin.add(vin.getValue());
                 }
@@ -123,8 +126,12 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
             totalVout = totalVout.add(vout.getValue());
         }
 
-        history.setFee(totalVout.subtract(totalVin));
-        history.setChangeInBalance(totalOwnVout.subtract(totalOwnVin).subtract(history.getFee()));
+        history.setFee(totalVin.subtract(totalVout));
+        if(isOwnVin) {
+            history.setChangeInBalance(totalOwnVout.subtract(totalOwnVin).add(history.getFee()));
+        }else{
+            history.setChangeInBalance(totalOwnVout.subtract(totalOwnVin));
+        }
     }
 
 
