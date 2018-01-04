@@ -2,10 +2,10 @@ package org.qtum.wallet.model.gson.history;
 
 import java.math.BigDecimal;
 
-public abstract class TransactionInfo {
-    public abstract String getAddress();
+public interface TransactionInfo {
+    String getAddress();
 
-    public abstract BigDecimal getValue();
+    BigDecimal getValue();
 
-    public abstract boolean isOwnAddress();
+    boolean isOwnAddress();
 }

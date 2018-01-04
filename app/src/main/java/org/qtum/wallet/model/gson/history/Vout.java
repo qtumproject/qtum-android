@@ -5,10 +5,14 @@ import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
 
-public class Vout extends TransactionInfo {
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+
+public class Vout extends RealmObject implements TransactionInfo {
 
     @SerializedName("value")
     @Expose
+    @Ignore
     private BigDecimal value;
     @SerializedName("address")
     @Expose

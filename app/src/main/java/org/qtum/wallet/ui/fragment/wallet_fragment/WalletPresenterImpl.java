@@ -11,6 +11,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import java.math.BigDecimal;
 import java.util.List;
 
+import io.realm.Realm;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.internal.util.SubscriptionList;
@@ -154,13 +155,20 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                     }
 
                     @Override
-                    public void onNext(HistoryResponse historyResponse) {
+                    public void onNext(final HistoryResponse historyResponse) {
                         for (History history : historyResponse.getItems()) {
                             calculateChangeInBalance(history, getInteractor().getAddresses());
                         }
                         HistoryList.getInstance().setHistoryList(historyResponse.getItems());
                         HistoryList.getInstance().setTotalItem(historyResponse.getTotalItems());
                         getView().updateHistory(getInteractor().getHistoryList());
+                        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                realm.insertOrUpdate(historyResponse.getItems());;
+                            }
+                        });
+                        int i = 2;
                     }
                 }));
     }
