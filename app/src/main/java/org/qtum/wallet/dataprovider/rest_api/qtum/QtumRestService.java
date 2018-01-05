@@ -13,6 +13,7 @@ import org.qtum.wallet.model.gson.history.HistoryResponse;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.qstore.ContractPurchase;
 import org.qtum.wallet.model.gson.qstore.QSearchItem;
 import org.qtum.wallet.model.gson.qstore.QstoreBuyResponse;
@@ -103,4 +104,6 @@ interface QtumRestService {
     @GET("/qrc20/{qrc20ContractAddress}/transfers")
     Observable<TokenHistoryResponse> getTokenHistoryList(@Path("qrc20ContractAddress") String qrc20ContractAddress, @Query("limit") int limit, @Query("offset") int offset, @Query("addresses[]") List<String> addresses);
 
+    @GET("/transactions/{txhash}/receipt")
+    Observable<TransactionReceipt> getTransactionReceipt(@Path("txhash") String txHash);
 }

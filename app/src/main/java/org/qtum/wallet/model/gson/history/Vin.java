@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
 
 public class Vin extends RealmObject implements TransactionInfo {
 
@@ -16,6 +17,7 @@ public class Vin extends RealmObject implements TransactionInfo {
     private BigDecimal value;
     @SerializedName("address")
     @Expose
+    @PrimaryKey
     private String address;
     private boolean isOwnAddress = false;
 

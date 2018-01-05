@@ -1,13 +1,10 @@
 package org.qtum.wallet.ui.fragment.token_fragment;
 
-import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.TokenHistoryList;
 import org.qtum.wallet.model.contract.Token;
-import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
-import org.qtum.wallet.ui.fragment.wallet_fragment.WalletInteractorImpl;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;

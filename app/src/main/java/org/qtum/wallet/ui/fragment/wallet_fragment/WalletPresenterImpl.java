@@ -1,8 +1,11 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment;
 
+import com.google.gson.JsonSyntaxException;
+
 import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.history.Vin;
 import org.qtum.wallet.model.gson.history.Vout;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -36,7 +39,6 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         super.initializeViews();
         String pubKey = getInteractor().getAddress();
         getView().updatePubKey(pubKey);
-        loadAndUpdateData();
         getView().updateHistory(getInteractor().getHistoryList());
     }
 
@@ -161,16 +163,72 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                         }
                         HistoryList.getInstance().setHistoryList(historyResponse.getItems());
                         HistoryList.getInstance().setTotalItem(historyResponse.getTotalItems());
+                        initTransactionReceipt();
                         getView().updateHistory(getInteractor().getHistoryList());
                         Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
                             @Override
                             public void execute(Realm realm) {
-                                realm.insertOrUpdate(historyResponse.getItems());;
+                                realm.insertOrUpdate(historyResponse.getItems());
+                                realm.insertOrUpdate(new Vin("TEST"));
                             }
                         });
                         int i = 2;
                     }
                 }));
+    }
+
+    private void initTransactionReceipt() {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(final Realm realm) {
+                List<History> historiesDB = realm.copyFromRealm(realm.where(History.class).findAll());
+                for(final History history: HistoryList.getInstance().getHistoryList()){
+                    if(history.getTransactionReceipt()==null){
+                        for(History historyDB : historiesDB){
+                            if(history.getTxHash().equals(historyDB.getTxHash())){
+                                if(historyDB.getTransactionReceipt()!=null) {
+                                    history.setTransactionReceipt(historyDB.getTransactionReceipt());
+                                } else {
+                                    getInteractor().getTransactionReceipt(history.getTxHash())
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(new Subscriber<TransactionReceipt>() {
+                                                @Override
+                                                public void onCompleted() {
+
+                                                }
+
+                                                @Override
+                                                public void onError(Throwable e) {
+                                                    if(e instanceof JsonSyntaxException){
+                                                        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+                                                            @Override
+                                                            public void execute(Realm realm) {
+                                                                realm.insertOrUpdate(history);
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNext(final TransactionReceipt transactionReceipt) {
+                                                    Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+                                                        @Override
+                                                        public void execute(Realm realm) {
+                                                            history.setTransactionReceipt(transactionReceipt);
+                                                            realm.insertOrUpdate(history);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override

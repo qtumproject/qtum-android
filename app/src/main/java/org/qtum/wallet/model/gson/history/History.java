@@ -39,6 +39,9 @@ public class History extends RealmObject{
     @SerializedName("vin")
     @Expose
     private RealmList<Vin> vin = null;
+
+    private TransactionReceipt mTransactionReceipt;
+
     @Ignore
     private BigDecimal changeInBalance;
     @Ignore
@@ -156,5 +159,13 @@ public class History extends RealmObject{
 
     public void setContractHasBeenCreated(Boolean contractHasBeenCreated) {
         this.contractHasBeenCreated = contractHasBeenCreated;
+    }
+
+    public TransactionReceipt getTransactionReceipt() {
+        return mTransactionReceipt;
+    }
+
+    public void setTransactionReceipt(TransactionReceipt transactionReceipt) {
+        mTransactionReceipt = transactionReceipt;
     }
 }
