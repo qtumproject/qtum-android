@@ -12,45 +12,51 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragment.TransactionDetailFragment;
 import org.qtum.wallet.utils.FontTextView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public abstract class TransactionFragment extends BaseFragment implements TransactionView {
 
-    @BindView(org.qtum.wallet.R.id.tv_value)
+    @BindView(R.id.tv_value)
     TextView mTextViewValue;
 
-    @BindView(org.qtum.wallet.R.id.tv_received_time)
+    @BindView(R.id.tv_received_time)
     TextView mTextViewReceivedTime;
 
-    @BindView(org.qtum.wallet.R.id.view_pager_transaction)
+    @BindView(R.id.view_pager_transaction)
     ViewPager mViewPager;
 
-    @BindView(org.qtum.wallet.R.id.app_bar)
+    @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
 
-    @BindView(org.qtum.wallet.R.id.toolbar_layout)
+    @BindView(R.id.toolbar_layout)
     protected CollapsingToolbarLayout toolbarLayout;
 
-    @BindView(org.qtum.wallet.R.id.tab_name)
+    @BindView(R.id.tab_name)
     FontTextView tabName;
 
-    @BindView(org.qtum.wallet.R.id.tab_indicator)
+    @BindView(R.id.tab_indicator)
     TabLayout tabIndicator;
 
-    @BindView(org.qtum.wallet.R.id.not_confirmed_flag)
+    @BindView(R.id.not_confirmed_flag)
     protected
     FontTextView notConfFlag;
 
-    @OnClick({org.qtum.wallet.R.id.ibt_back})
+    @BindView(R.id.tv_fee)
+    TextView mTextViewFee;
+
+    @OnClick({R.id.ibt_back})
     public void onClick(View view) {
         switch (view.getId()) {
-            case org.qtum.wallet.R.id.ibt_back:
+            case R.id.ibt_back:
                 getActivity().onBackPressed();
                 break;
         }
@@ -89,9 +95,11 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         super.initializeViews();
     }
 
-    protected void setTransactionData(String value, String receivedTime) {
+    @Override
+    public void setUpTransactionData(String value, String fee, String receivedTime, List<String> from, List<String> to, boolean confirmed) {
         if (mViewPager.getAdapter() == null) {
             mTextViewValue.setText(value);
+            mTextViewFee.setText(fee);
             mTextViewReceivedTime.setText(receivedTime);
             TransactionPagerAdapter transactionPagerAdapter = new TransactionPagerAdapter(getFragmentManager());
             mViewPager.setAdapter(transactionPagerAdapter);
@@ -116,6 +124,7 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
             });
         }
     }
+
 
     private class TransactionPagerAdapter extends FragmentStatePagerAdapter {
 

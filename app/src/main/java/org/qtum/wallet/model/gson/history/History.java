@@ -33,6 +33,7 @@ public class History {
     @Expose
     private List<Vin> vin = null;
     private BigDecimal changeInBalance;
+    private BigDecimal fee;
 
     /**
      * Constructor for unit tests
@@ -130,6 +131,14 @@ public class History {
 
     public void setChangeInBalance(BigDecimal changeInBalance) {
         this.changeInBalance = changeInBalance;
+    }
+
+    public BigDecimal getFee() {
+        return fee;
+    }
+
+    public void setFee(BigDecimal fee) {
+        this.fee = fee;
     }
 
     public Boolean getContractHasBeenCreated() {

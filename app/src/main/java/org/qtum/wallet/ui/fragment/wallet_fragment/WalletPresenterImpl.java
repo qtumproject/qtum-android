@@ -98,39 +98,42 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     }
 
     private void calculateChangeInBalance(History history, List<String> addresses) {
-        BigDecimal changeInBalance = calculateVout(history, addresses).subtract(calculateVin(history, addresses));
-        history.setChangeInBalance(changeInBalance);
-    }
-
-    private BigDecimal calculateVin(History history, List<String> addresses) {
         BigDecimal totalVin = new BigDecimal("0.0");
-        boolean equals = false;
+        BigDecimal totalVout = new BigDecimal("0.0");
+        BigDecimal totalOwnVin = new BigDecimal("0.0");
+        BigDecimal totalOwnVout = new BigDecimal("0.0");
+
+        boolean isOwnVin = false;
+
         for (Vin vin : history.getVin()) {
             for (String address : addresses) {
                 if (vin.getAddress().equals(address)) {
+                    isOwnVin = true;
                     vin.setOwnAddress(true);
-                    equals = true;
+                    totalOwnVin = totalOwnVin.add(vin.getValue());
                 }
             }
+            totalVin = totalVin.add(vin.getValue());
         }
-        if (equals) {
-            totalVin = history.getAmount();
-        }
-        return totalVin;
-    }
 
-    private BigDecimal calculateVout(History history, List<String> addresses) {
-        BigDecimal totalVout = new BigDecimal("0.0");
         for (Vout vout : history.getVout()) {
             for (String address : addresses) {
                 if (vout.getAddress().equals(address)) {
                     vout.setOwnAddress(true);
-                    totalVout = totalVout.add(vout.getValue());
+                    totalOwnVout = totalOwnVout.add(vout.getValue());
                 }
             }
+            totalVout = totalVout.add(vout.getValue());
         }
-        return totalVout;
+
+        history.setFee(totalVin.subtract(totalVout));
+        if(isOwnVin) {
+            history.setChangeInBalance(totalOwnVout.subtract(totalOwnVin).add(history.getFee()));
+        }else{
+            history.setChangeInBalance(totalOwnVout.subtract(totalOwnVin));
+        }
     }
+
 
     private void loadAndUpdateData() {
         getView().startRefreshAnimation();

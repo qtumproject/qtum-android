@@ -29,27 +29,74 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <org.qtum.wallet.utils.FontTextView
-                    android:id="@+id/tv_value"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="23.000.000.097"
-                    android:textColor="@color/white"
-                    android:textSize="30sp"
-                    app:typefaceAsset="@string/proximaNovaBold" />
+                    android:orientation="horizontal">
 
-                <org.qtum.wallet.utils.FontTextView
+                    <org.qtum.wallet.utils.FontTextView
+                        android:id="@+id/tv_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="23.000.000.097"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
+                        app:typefaceAsset="@string/proximaNovaBold"/>
+
+                    <org.qtum.wallet.utils.FontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="2dp"
+                        android:text="@string/qtum"
+                        android:textColor="@color/white"
+                        app:typefaceAsset="@string/proximaNovaLight"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="2dp"
-                    android:text="@string/qtum"
-                    android:textColor="@color/white"
-                    app:typefaceAsset="@string/proximaNovaLight" />
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <org.qtum.wallet.utils.FontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:text="@string/Fee"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:typefaceAsset="@string/proximaNovaRegular"/>
+
+                    <org.qtum.wallet.utils.FontTextView
+                        android:id="@+id/tv_fee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:typefaceAsset="@string/proximaNovaRegular"/>
+
+                    <org.qtum.wallet.utils.FontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/qtum"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:typefaceAsset="@string/proximaNovaRegular"/>
+
+                </LinearLayout>
+
             </LinearLayout>
+
 
             <RelativeLayout
                 android:id="@+id/tab_layout"
@@ -66,7 +113,7 @@
                     android:layout_marginStart="16dp"
                     android:text="From"
                     android:textColor="@color/bottom_nav_bar_text_color_light"
-                    app:typefaceAsset="@string/proximaNovaRegular" />
+                    app:typefaceAsset="@string/proximaNovaRegular"/>
 
             </RelativeLayout>
 
@@ -88,7 +135,7 @@
                     android:paddingRight="16dp"
                     android:paddingTop="10dp"
                     android:tint="@color/white"
-                    app:srcCompat="@drawable/ic_back_indicator" />
+                    app:srcCompat="@drawable/ic_back_indicator"/>
 
                 <org.qtum.wallet.utils.FontTextView
                     android:layout_width="match_parent"
@@ -98,7 +145,7 @@
                     android:text="@string/transactionQTUM"
                     android:textColor="@color/white"
                     android:textSize="@dimen/toolbar_text_size"
-                    app:typefaceAsset="@string/proximaNovaSemibold" />
+                    app:typefaceAsset="@string/proximaNovaSemibold"/>
 
             </android.support.v7.widget.Toolbar>
 
@@ -120,7 +167,7 @@
                     android:layout_height="18dp"
                     android:layout_marginEnd="4dp"
                     android:tint="@color/white"
-                    app:srcCompat="@drawable/ic_confirmation_loader" />
+                    app:srcCompat="@drawable/ic_confirmation_loader"/>
 
                 <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/not_confirmed_flag"
@@ -136,7 +183,7 @@
                     android:text="@string/not_confirmed_yet"
                     android:textColor="@color/white"
                     android:textSize="12sp"
-                    app:typefaceAsset="@string/proximaNovaRegular" />
+                    app:typefaceAsset="@string/proximaNovaRegular"/>
 
                 <ImageView
                     android:id="@+id/ic_time"
@@ -145,7 +192,7 @@
                     android:layout_marginEnd="4dp"
                     android:layout_toStartOf="@+id/tv_received_time"
                     android:tint="@color/white"
-                    app:srcCompat="@drawable/ic_time_light" />
+                    app:srcCompat="@drawable/ic_time_light"/>
 
                 <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_received_time"
@@ -158,7 +205,7 @@
                     android:text="Dec 18"
                     android:textColor="@color/white"
                     android:textSize="12sp"
-                    app:typefaceAsset="@string/proximaNovaRegular" />
+                    app:typefaceAsset="@string/proximaNovaRegular"/>
 
             </RelativeLayout>
 
@@ -175,11 +222,11 @@
     </android.support.v4.view.ViewPager>
 
     <RelativeLayout
-        android:layout_gravity="center_horizontal|bottom"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
         android:background="@drawable/transparent_alpha_gradient"
-        android:padding="8dp"
-        android:layout_height="wrap_content">
+        android:padding="8dp">
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_indicator"
@@ -188,7 +235,7 @@
             android:layout_centerHorizontal="true"
             app:tabBackground="@drawable/tab_indicator_selector_drawable_light"
             app:tabIndicatorColor="@android:color/transparent"
-            app:tabMaxWidth="17dp" />
+            app:tabMaxWidth="17dp"/>
 
     </RelativeLayout>
 
