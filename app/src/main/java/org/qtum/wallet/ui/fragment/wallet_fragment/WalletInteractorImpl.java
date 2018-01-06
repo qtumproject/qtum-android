@@ -77,7 +77,7 @@ public class WalletInteractorImpl implements WalletInteractor {
     }
 
     @Override
-    public Observable<TransactionReceipt> getTransactionReceipt(String txHash) {
+    public Observable<List<TransactionReceipt>> getTransactionReceipt(String txHash) {
         return QtumService.newInstance().getTransactionReceipt(txHash);
     }
 }

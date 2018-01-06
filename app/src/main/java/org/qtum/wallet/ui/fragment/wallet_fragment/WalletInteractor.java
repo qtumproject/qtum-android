@@ -13,7 +13,7 @@ public interface WalletInteractor {
 
     Observable<HistoryResponse> getHistoryList(int limit, int offset);
 
-    Observable<TransactionReceipt> getTransactionReceipt(String txHash);
+    Observable<List<TransactionReceipt>> getTransactionReceipt(String txHash);
 
     String getAddress();
 

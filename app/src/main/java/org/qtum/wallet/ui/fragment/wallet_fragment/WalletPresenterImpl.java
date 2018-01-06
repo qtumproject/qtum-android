@@ -130,9 +130,9 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         }
 
         history.setFee(totalVin.subtract(totalVout));
-        if(isOwnVin) {
+        if (isOwnVin) {
             history.setChangeInBalance(totalOwnVout.subtract(totalOwnVin).add(history.getFee()));
-        }else{
+        } else {
             history.setChangeInBalance(totalOwnVout.subtract(totalOwnVin));
         }
     }
@@ -165,14 +165,6 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                         HistoryList.getInstance().setTotalItem(historyResponse.getTotalItems());
                         initTransactionReceipt();
                         getView().updateHistory(getInteractor().getHistoryList());
-                        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
-                                realm.insertOrUpdate(historyResponse.getItems());
-                                realm.insertOrUpdate(new Vin("TEST"));
-                            }
-                        });
-                        int i = 2;
                     }
                 }));
     }
@@ -182,49 +174,49 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
             @Override
             public void execute(final Realm realm) {
                 List<History> historiesDB = realm.copyFromRealm(realm.where(History.class).findAll());
-                for(final History history: HistoryList.getInstance().getHistoryList()){
-                    if(history.getTransactionReceipt()==null){
-                        for(History historyDB : historiesDB){
-                            if(history.getTxHash().equals(historyDB.getTxHash())){
-                                if(historyDB.getTransactionReceipt()!=null) {
-                                    history.setTransactionReceipt(historyDB.getTransactionReceipt());
-                                } else {
-                                    getInteractor().getTransactionReceipt(history.getTxHash())
-                                            .subscribeOn(Schedulers.io())
-                                            .observeOn(AndroidSchedulers.mainThread())
-                                            .subscribe(new Subscriber<TransactionReceipt>() {
-                                                @Override
-                                                public void onCompleted() {
-
-                                                }
-
-                                                @Override
-                                                public void onError(Throwable e) {
-                                                    if(e instanceof JsonSyntaxException){
-                                                        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
-                                                            @Override
-                                                            public void execute(Realm realm) {
-                                                                realm.insertOrUpdate(history);
-                                                            }
-                                                        });
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onNext(final TransactionReceipt transactionReceipt) {
-                                                    Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
-                                                        @Override
-                                                        public void execute(Realm realm) {
-                                                            history.setTransactionReceipt(transactionReceipt);
-                                                            realm.insertOrUpdate(history);
-                                                        }
-                                                    });
-                                                }
-                                            });
-                                }
+                for (final History history : HistoryList.getInstance().getHistoryList()) {
+                    if (history.getTransactionReceipt() == null) {
+                        boolean success = false;
+                        for (History historyDB : historiesDB) {
+                            if (history.getTxHash().equals(historyDB.getTxHash())) {
+                                history.setTransactionReceipt(historyDB.getTransactionReceipt());
+                                success = true;
                                 break;
                             }
                         }
+                        if (!success) {
+                            getInteractor().getTransactionReceipt(history.getTxHash())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new Subscriber<List<TransactionReceipt>>() {
+                                        @Override
+                                        public void onCompleted() {
+
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(final List<TransactionReceipt> transactionReceipt) {
+                                            Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+                                                @Override
+                                                public void execute(Realm realm) {
+                                                    if(transactionReceipt.size()>0) {
+                                                        history.setTransactionReceipt(transactionReceipt.get(0));
+                                                        realm.insertOrUpdate(history);
+                                                    } else {
+                                                        realm.insertOrUpdate(history);
+                                                    }
+                                                    getView().updateHistory(getInteractor().getHistoryList());
+                                                }
+                                            });
+                                        }
+                                    });
+                        }
+
                     }
                 }
             }

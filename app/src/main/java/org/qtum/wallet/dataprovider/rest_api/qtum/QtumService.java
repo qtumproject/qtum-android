@@ -222,7 +222,7 @@ public class QtumService {
         return mServiceApi.getTokenHistoryList(qrc20ContractAddress, limit, offset, addresses);
     }
 
-    public Observable<TransactionReceipt> getTransactionReceipt(String txHash){
+    public Observable<List<TransactionReceipt>> getTransactionReceipt(String txHash){
         return mServiceApi.getTransactionReceipt(txHash);
     }
 

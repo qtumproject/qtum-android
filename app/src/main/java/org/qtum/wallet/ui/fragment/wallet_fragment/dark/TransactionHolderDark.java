@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment.dark;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -39,6 +40,9 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
     @BindView(R.id.ll_transaction)
     LinearLayout mLinearLayoutTransaction;
 
+    @BindView(R.id.view_contract_indicator)
+    View contractIndicator;
+
     Subscription mSubscription;
 
     public TransactionHolderDark(View itemView, final TransactionClickListener listener) {
@@ -67,6 +71,11 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
     void bindTransactionData(final History history) {
         if (mSubscription != null) {
             mSubscription.unsubscribe();
+        }
+        if(history.getTransactionReceipt()!=null){
+            contractIndicator.setBackgroundResource(R.color.accent_red_color);
+        } else{
+            contractIndicator.setBackgroundColor(Color.TRANSPARENT);
         }
         if (history.getBlockTime() != null) {
             mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {

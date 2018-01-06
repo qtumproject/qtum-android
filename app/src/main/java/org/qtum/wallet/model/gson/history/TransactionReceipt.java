@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class TransactionReceipt extends RealmObject {
 
@@ -19,6 +20,7 @@ public class TransactionReceipt extends RealmObject {
     private Integer blockNumber;
     @SerializedName("transactionHash")
     @Expose
+    @PrimaryKey
     private String transactionHash;
     @SerializedName("transactionIndex")
     @Expose

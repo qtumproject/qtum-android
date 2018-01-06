@@ -105,5 +105,5 @@ interface QtumRestService {
     Observable<TokenHistoryResponse> getTokenHistoryList(@Path("qrc20ContractAddress") String qrc20ContractAddress, @Query("limit") int limit, @Query("offset") int offset, @Query("addresses[]") List<String> addresses);
 
     @GET("/transactions/{txhash}/receipt")
-    Observable<TransactionReceipt> getTransactionReceipt(@Path("txhash") String txHash);
+    Observable<List<TransactionReceipt>> getTransactionReceipt(@Path("txhash") String txHash);
 }
