@@ -1,4 +1,4 @@
-package org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragment;
+package org.qtum.wallet.ui.fragment.addresses_detail_fragment;
 
 import android.support.v7.widget.RecyclerView;
 
@@ -6,16 +6,16 @@ import org.qtum.wallet.model.gson.history.TransactionInfo;
 
 import java.util.List;
 
-public abstract class TransactionDetailAdapter extends RecyclerView.Adapter<TransactionDetailHolder> {
+public abstract class AddressesDetailAdapter extends RecyclerView.Adapter<AddressesDetailHolder> {
 
     private List<TransactionInfo> mTransactionInfoList;
 
-    protected TransactionDetailAdapter(List<TransactionInfo> transactionInfoList) {
+    protected AddressesDetailAdapter(List<TransactionInfo> transactionInfoList) {
         mTransactionInfoList = transactionInfoList;
     }
 
     @Override
-    public void onBindViewHolder(TransactionDetailHolder holder, int position) {
+    public void onBindViewHolder(AddressesDetailHolder holder, int position) {
         holder.bindTransactionDetail(mTransactionInfoList.get(position));
     }
 

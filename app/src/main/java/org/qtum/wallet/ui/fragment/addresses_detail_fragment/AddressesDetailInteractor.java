@@ -1,13 +1,13 @@
-package org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragment;
+package org.qtum.wallet.ui.fragment.addresses_detail_fragment;
 
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.datastorage.HistoryList;
 
 import java.util.List;
 
-class TransactionDetailFragmentInteractor {
+class AddressesDetailInteractor {
 
-    public TransactionDetailFragmentInteractor() {
+    public AddressesDetailInteractor() {
     }
 
     public History getHistory(int position) {

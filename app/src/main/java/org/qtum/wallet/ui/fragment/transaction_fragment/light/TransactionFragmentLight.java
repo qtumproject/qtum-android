@@ -23,8 +23,13 @@ public class TransactionFragmentLight extends TransactionFragment {
     }
 
     @Override
-    public void setUpTransactionData(String value, String fee, String receivedTime, List<String> from, List<String> to, boolean confirmed) {
-        super.setUpTransactionData(value, fee, receivedTime, from, to, confirmed);
+    public void recolorTab(int position) {
+
+    }
+
+    @Override
+    public void setUpTransactionData(String value, String fee, String receivedTime, boolean confirmed, boolean isContractCall) {
+        super.setUpTransactionData(value, fee, receivedTime, confirmed, isContractCall);
         this.confirmed = confirmed;
         this.isSend = Double.valueOf(value) > 0;
         checkConfirmation(confirmed);

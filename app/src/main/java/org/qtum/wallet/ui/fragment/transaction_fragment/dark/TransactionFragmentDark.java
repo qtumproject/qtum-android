@@ -1,10 +1,11 @@
 package org.qtum.wallet.ui.fragment.transaction_fragment.dark;
 
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
-import org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragment.TransactionDetailFragment;
+import org.qtum.wallet.ui.fragment.addresses_detail_fragment.AddressesDetailFragment;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class TransactionFragmentDark extends TransactionFragment {
     }
 
     @Override
-    public void setUpTransactionData(String value, String fee,String receivedTime, List<String> from, List<String> to, boolean confirmed) {
-        super.setUpTransactionData(value, fee, receivedTime, from, to, confirmed);
+    public void setUpTransactionData(String value, String fee,String receivedTime, boolean confirmed, boolean isContractCall) {
+        super.setUpTransactionData(value, fee, receivedTime,confirmed, isContractCall);
         notConfFlag.setVisibility((!confirmed) ? View.VISIBLE : View.INVISIBLE);
 
         if (Double.valueOf(value) > 0) {
@@ -34,15 +35,24 @@ public class TransactionFragmentDark extends TransactionFragment {
     }
 
     @Override
-    public void initializeViews() {
-        super.initializeViews();
-        switch (getArguments().getInt(TransactionDetailFragment.ACTION)) {
-            case TransactionDetailFragment.ACTION_FROM:
-                mTextViewTimeType.setText(R.string.received_time);
+    public void recolorTab(int position) {
+        switch (position){
+            case 0:
+                tabAddresses.setTextColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
+                tabOverview.setTextColor(ContextCompat.getColor(getContext(),R.color.file_size_color));
+                tabEventLog.setTextColor(ContextCompat.getColor(getContext(),R.color.file_size_color));
                 break;
-            case TransactionDetailFragment.ACTION_TO:
-                mTextViewTimeType.setText(R.string.sent_time);
+            case 1:
+                tabAddresses.setTextColor(ContextCompat.getColor(getContext(),R.color.file_size_color));
+                tabOverview.setTextColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
+                tabEventLog.setTextColor(ContextCompat.getColor(getContext(),R.color.file_size_color));
+                break;
+            case 2:
+                tabAddresses.setTextColor(ContextCompat.getColor(getContext(),R.color.file_size_color));
+                tabOverview.setTextColor(ContextCompat.getColor(getContext(),R.color.file_size_color));
+                tabEventLog.setTextColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
                 break;
         }
     }
+
 }

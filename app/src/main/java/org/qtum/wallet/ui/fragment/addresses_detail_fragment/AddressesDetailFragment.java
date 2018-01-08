@@ -1,4 +1,4 @@
-package org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragment;
+package org.qtum.wallet.ui.fragment.addresses_detail_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,24 +17,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class TransactionDetailFragment extends Fragment implements TransactionDetailFragmentView {
+public abstract class AddressesDetailFragment extends Fragment implements AddressesDetailView {
 
-    public static final int ACTION_FROM = 0;
-    public static final int ACTION_TO = 1;
-    public static String ACTION = "action";
+
     public static String POSITION = "position";
     private Unbinder mUnbinder;
-    private TransactionDetailFragmentPresenter mTransactionFragmentPresenter;
+    private AddressesDetailFragmentPresenter mTransactionFragmentPresenter;
 
     @BindView(R.id.recycler_view)
     protected
     RecyclerView mRecyclerView;
 
-    public static Fragment newInstance(Context context, int action, int position) {
+    public static Fragment newInstance(Context context, int position) {
         Bundle args = new Bundle();
-        args.putInt(ACTION, action);
         args.putInt(POSITION, position);
-        Fragment fragment = Factory.instantiateDefaultFragment(context, TransactionDetailFragment.class);
+        Fragment fragment = Factory.instantiateDefaultFragment(context, AddressesDetailFragment.class);
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,7 +39,7 @@ public abstract class TransactionDetailFragment extends Fragment implements Tran
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTransactionFragmentPresenter = new TransactionDetailFragmentPresenter(this);
+        mTransactionFragmentPresenter = new AddressesDetailFragmentPresenter(this);
     }
 
     @Nullable
@@ -67,7 +64,7 @@ public abstract class TransactionDetailFragment extends Fragment implements Tran
         mUnbinder.unbind();
     }
 
-    private TransactionDetailFragmentPresenter getPresenter() {
+    private AddressesDetailFragmentPresenter getPresenter() {
         return mTransactionFragmentPresenter;
     }
 }
