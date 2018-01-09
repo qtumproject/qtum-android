@@ -18,9 +18,6 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
     public static String POSITION = "position";
     private EventLogPresenter mEventLogPresenter;
 
-    @BindView(R.id.tv_event_log)
-    TextView mTextView;
-
     public static Fragment newInstance(Context context, int position) {
         Bundle args = new Bundle();
         args.putInt(POSITION, position);
@@ -39,14 +36,14 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
     @Override
     public void initializeViews() {
         super.initializeViews();
-        mTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int marginTop = getRelativeTop(mTextView)-mTextView.getLayoutParams().height;
-                ChooseDialogFragment chooseDialogFragment = ChooseDialogFragment.newInstance(marginTop);
-                chooseDialogFragment.show(getFragmentManager(), ChooseDialogFragment.class.getCanonicalName());
-            }
-        });
+//        mTextView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int marginTop = getRelativeTop(mTextView)-mTextView.getLayoutParams().height;
+//                ChooseDialogFragment chooseDialogFragment = ChooseDialogFragment.newInstance(marginTop);
+//                chooseDialogFragment.show(getFragmentManager(), ChooseDialogFragment.class.getCanonicalName());
+//            }
+//        });
     }
 
     @Override

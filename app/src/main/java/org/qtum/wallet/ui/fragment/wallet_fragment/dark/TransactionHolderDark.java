@@ -44,17 +44,20 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
     View contractIndicator;
 
     Subscription mSubscription;
+    History mHistory;
 
     public TransactionHolderDark(View itemView, final TransactionClickListener listener) {
         super(itemView);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onTransactionClick(getAdapterPosition());
+                if(mHistory.isReceiptUpdated()) {
+                    listener.onTransactionClick(getAdapterPosition());
+                }
             }
         });
         ButterKnife.bind(this, itemView);
-        mTextViewID.setOnLongClickListener(new View.OnLongClickListener() {
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 ClipboardUtils.copyToClipBoard(mTextViewID.getContext(), mTextViewID.getText().toString(), new ClipboardUtils.CopyCallback() {
@@ -69,14 +72,13 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
     }
 
     void bindTransactionData(final History history) {
+
+        mHistory = history;
+
         if (mSubscription != null) {
             mSubscription.unsubscribe();
         }
-        if(history.getTransactionReceipt()!=null){
-            contractIndicator.setBackgroundResource(R.color.accent_red_color);
-        } else{
-            contractIndicator.setBackgroundColor(Color.TRANSPARENT);
-        }
+
         if (history.getBlockTime() != null) {
             mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {
                 @Override
@@ -97,15 +99,36 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
         } else {
             mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.unconfirmed));
         }
-        if (history.getChangeInBalance().doubleValue() > 0) {
-            mTextViewOperationType.setText(R.string.received);
-            mTextViewID.setText(history.getTxHash());
-            mImageViewIcon.setImageResource(R.drawable.ic_received);
+
+        if(history.isReceiptUpdated()) {
+            if (history.getTransactionReceipt() != null) {
+                mImageViewIcon.setVisibility(View.VISIBLE);
+                if (history.getChangeInBalance().doubleValue() > 0) {
+                    mTextViewOperationType.setText(R.string.received_contract);
+                    mImageViewIcon.setImageResource(R.drawable.ic_rec_cont_dark);
+                    contractIndicator.setBackgroundResource(R.color.colorAccent);
+                } else {
+                    mTextViewOperationType.setText(R.string.sent_contract);
+                    mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_dark);
+                    contractIndicator.setBackgroundResource(R.color.colorPrimary);
+                }
+            } else {
+                contractIndicator.setBackgroundColor(Color.TRANSPARENT);
+                if (history.getChangeInBalance().doubleValue() > 0) {
+                    mTextViewOperationType.setText(R.string.received);
+                    mImageViewIcon.setImageResource(R.drawable.ic_received);
+                } else {
+                    mTextViewOperationType.setText(R.string.sent);
+                    mImageViewIcon.setImageResource(R.drawable.ic_sent);
+                }
+            }
         } else {
-            mTextViewOperationType.setText(R.string.sent);
-            mTextViewID.setText(history.getTxHash());
-            mImageViewIcon.setImageResource(R.drawable.ic_sent);
+            mTextViewOperationType.setText(R.string.getting_info);
+            mImageViewIcon.setVisibility(View.GONE);
+            contractIndicator.setBackgroundColor(Color.TRANSPARENT);
         }
+
+        mTextViewID.setText(history.getTxHash());
         mTextViewValue.setText(history.getChangeInBalance().toString() + " QTUM");
     }
 }

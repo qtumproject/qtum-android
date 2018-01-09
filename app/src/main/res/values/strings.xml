@@ -230,5 +230,11 @@
     <string name="repeat_passphrase">Repeat Passphrase</string>
     <string name="overview">Overview</string>
     <string name="event_log">Event Log</string>
+    <string name="address">Address</string>
+    <string name="topics">Topics</string>
+    <string name="getting_info">Getting Info</string>
+    <string name="received_contract">Received Contract</string>
+    <string name="sent_contract">Sent Contract</string>
+
 
 </resources>

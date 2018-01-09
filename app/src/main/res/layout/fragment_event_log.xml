@@ -2,20 +2,71 @@
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/tv_event_log"
-            android:layout_marginTop="66dp"
-            android:gravity="right"
-            android:textSize="30sp"
-            android:text="EVENTLOG"/>
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <org.qtum.wallet.utils.FontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/address"
+                android:textColor="@color/overview_title_color"
+                app:typefaceAsset="@string/simplonMonoRegular"/>
+
+            <org.qtum.wallet.utils.FontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorAccent"
+                app:typefaceAsset="@string/simplonMonoMedium"
+                android:id="@+id/tv_address" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimary"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <org.qtum.wallet.utils.FontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/topics"
+                android:textColor="@color/overview_title_color"
+                app:typefaceAsset="@string/simplonMonoRegular"/>
+
+            <org.qtum.wallet.utils.FontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorAccent"
+                app:typefaceAsset="@string/simplonMonoMedium"
+                android:id="@+id/tv_topic" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimary"/>
 
     </LinearLayout>
 

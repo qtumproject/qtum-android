@@ -94,6 +94,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                             HistoryList.getInstance().getHistoryList().addAll(historyResponse.getItems());
                             getView().addHistory(currentItemCount, getInteractor().getHistoryList().size() - currentItemCount + 1,
                                     getInteractor().getHistoryList());
+                            initTransactionReceipt(historyResponse.getItems());
                         }
                     }));
 
@@ -163,18 +164,18 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                         }
                         HistoryList.getInstance().setHistoryList(historyResponse.getItems());
                         HistoryList.getInstance().setTotalItem(historyResponse.getTotalItems());
-                        initTransactionReceipt();
+                        initTransactionReceipt(historyResponse.getItems());
                         getView().updateHistory(getInteractor().getHistoryList());
                     }
                 }));
     }
 
-    private void initTransactionReceipt() {
+    private void initTransactionReceipt(final List<History> histories) {
         Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(final Realm realm) {
                 List<History> historiesDB = realm.copyFromRealm(realm.where(History.class).findAll());
-                for (final History history : HistoryList.getInstance().getHistoryList()) {
+                for (final History history : histories) {
                     if (history.getTransactionReceipt() == null) {
                         boolean success = false;
                         for (History historyDB : historiesDB) {
@@ -208,9 +209,10 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                                                         history.setTransactionReceipt(transactionReceipt.get(0));
                                                         realm.insertOrUpdate(history);
                                                     } else {
+                                                        history.setReceiptUpdated(true);
                                                         realm.insertOrUpdate(history);
                                                     }
-                                                    getView().updateHistory(getInteractor().getHistoryList());
+                                                    getView().notifyConfirmHistory(histories.indexOf(history));
                                                 }
                                             });
                                         }

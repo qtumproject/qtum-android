@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.transaction_fragment.light;
 
+import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import org.qtum.wallet.R;
@@ -24,7 +25,23 @@ public class TransactionFragmentLight extends TransactionFragment {
 
     @Override
     public void recolorTab(int position) {
-
+        switch (position){
+            case 0:
+                tabAddresses.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_selected));
+                tabOverview.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_unselected));
+                tabEventLog.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_unselected));
+                break;
+            case 1:
+                tabAddresses.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_unselected));
+                tabOverview.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_selected));
+                tabEventLog.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_unselected));
+                break;
+            case 2:
+                tabAddresses.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_unselected));
+                tabOverview.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_unselected));
+                tabEventLog.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_selected));
+                break;
+        }
     }
 
     @Override
