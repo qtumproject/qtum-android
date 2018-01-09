@@ -6,11 +6,11 @@ import org.qtum.wallet.model.gson.history.TransactionInfo;
 
 import java.util.List;
 
-public abstract class AddressesDetailAdapter extends RecyclerView.Adapter<AddressesDetailHolder> {
+public abstract class AddressesDetailAdapter<T extends TransactionInfo> extends RecyclerView.Adapter<AddressesDetailHolder> {
 
-    private List<TransactionInfo> mTransactionInfoList;
+    private List<T> mTransactionInfoList;
 
-    protected AddressesDetailAdapter(List<TransactionInfo> transactionInfoList) {
+    protected AddressesDetailAdapter(List<T> transactionInfoList) {
         mTransactionInfoList = transactionInfoList;
     }
 

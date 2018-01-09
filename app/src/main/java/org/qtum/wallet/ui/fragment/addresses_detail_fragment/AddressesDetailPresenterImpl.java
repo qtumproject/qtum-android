@@ -1,25 +1,26 @@
 package org.qtum.wallet.ui.fragment.addresses_detail_fragment;
 
-import android.os.Bundle;
 
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.TransactionInfo;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class AddressesDetailFragmentPresenter {
+class AddressesDetailPresenterImpl extends BaseFragmentPresenterImpl implements AddressesDetailPresenter {
 
     private AddressesDetailInteractor mAddressesDetailInteractor;
     private AddressesDetailView mAddressesDetailView;
     private History mHistory;
 
-    AddressesDetailFragmentPresenter(AddressesDetailView transactionDetailFragmentView) {
-        mAddressesDetailInteractor = new AddressesDetailInteractor();
+    AddressesDetailPresenterImpl(AddressesDetailView transactionDetailFragmentView, AddressesDetailInteractor addressesDetailInteractor) {
+        mAddressesDetailInteractor = addressesDetailInteractor;
         mAddressesDetailView = transactionDetailFragmentView;
     }
 
-    private AddressesDetailView getView() {
+    @Override
+    public AddressesDetailView getView() {
         return mAddressesDetailView;
     }
 
@@ -27,13 +28,14 @@ class AddressesDetailFragmentPresenter {
         return mAddressesDetailInteractor;
     }
 
-    void onViewCreated(Bundle bundle) {
-        mHistory = getInteractor().getHistory(bundle.getInt(AddressesDetailFragment.POSITION));
+    @Override
+    public void initializeViews() {
+        super.initializeViews();
+        mHistory = getInteractor().getHistory(getView().getPosition());
         if (mHistory != null) {
             List<TransactionInfo> transactionInfoList = new ArrayList<>();
-            mHistory.getVin();
-            mHistory.getVout();
-            getView().setUpRecyclerView(transactionInfoList);
+
+            getView().setUpRecyclerView(mHistory.getVin(), mHistory.getVout());
         }
     }
 }

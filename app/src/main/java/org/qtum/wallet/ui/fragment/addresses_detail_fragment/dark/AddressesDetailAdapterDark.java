@@ -11,8 +11,9 @@ import org.qtum.wallet.ui.fragment.addresses_detail_fragment.AddressesDetailHold
 
 import java.util.List;
 
-public class AddressesDetailAdapterDark extends AddressesDetailAdapter {
-    AddressesDetailAdapterDark(List<TransactionInfo> transactionInfoList) {
+public class AddressesDetailAdapterDark<T extends TransactionInfo> extends AddressesDetailAdapter {
+
+    AddressesDetailAdapterDark(List<T> transactionInfoList) {
         super(transactionInfoList);
     }
 

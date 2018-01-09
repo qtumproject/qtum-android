@@ -10,9 +10,9 @@ import org.qtum.wallet.ui.fragment.addresses_detail_fragment.AddressesDetailHold
 
 import java.util.List;
 
-class AddressesDetailAdapterLight extends AddressesDetailAdapter {
+class AddressesDetailAdapterLight<T extends TransactionInfo> extends AddressesDetailAdapter {
 
-    protected AddressesDetailAdapterLight(List<TransactionInfo> transactionInfoList) {
+    protected AddressesDetailAdapterLight(List<T> transactionInfoList) {
         super(transactionInfoList);
     }
 

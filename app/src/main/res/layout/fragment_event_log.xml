@@ -12,6 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/tv_event_log"
+            android:layout_marginTop="66dp"
             android:gravity="right"
             android:textSize="30sp"
             android:text="EVENTLOG"/>

@@ -42,7 +42,7 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int marginTop = getRelativeTop(mTextView);
+                int marginTop = getRelativeTop(mTextView)-mTextView.getLayoutParams().height;
                 ChooseDialogFragment chooseDialogFragment = ChooseDialogFragment.newInstance(marginTop);
                 chooseDialogFragment.show(getFragmentManager(), ChooseDialogFragment.class.getCanonicalName());
             }

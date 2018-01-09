@@ -2,31 +2,31 @@ package org.qtum.wallet.ui.fragment.addresses_detail_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
-public abstract class AddressesDetailFragment extends Fragment implements AddressesDetailView {
+public abstract class AddressesDetailFragment extends BaseFragment implements AddressesDetailView {
 
 
     public static String POSITION = "position";
-    private Unbinder mUnbinder;
-    private AddressesDetailFragmentPresenter mTransactionFragmentPresenter;
+    private AddressesDetailPresenter mAddressesDetailPresenter;
 
-    @BindView(R.id.recycler_view)
+    protected AddressesDetailAdapter mAddressesDetailAdapterFrom;
+    protected AddressesDetailAdapter mAddressesDetailAdapterTo;
+
+    @BindView(R.id.recycler_view_from)
     protected
-    RecyclerView mRecyclerView;
+    RecyclerView mRecyclerViewFrom;
+    @BindView(R.id.recycler_view_to)
+    protected
+    RecyclerView mRecyclerViewTo;
 
     public static Fragment newInstance(Context context, int position) {
         Bundle args = new Bundle();
@@ -37,34 +37,24 @@ public abstract class AddressesDetailFragment extends Fragment implements Addres
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mTransactionFragmentPresenter = new AddressesDetailFragmentPresenter(this);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_transaction_detail, container, false);
-        return view;
+    protected void createPresenter() {
+        mAddressesDetailPresenter = new AddressesDetailPresenterImpl(this, new AddressesDetailInteractorImpl(getContext()));
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mUnbinder = ButterKnife.bind(this, view);
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        getPresenter().onViewCreated(getArguments());
+    public void initializeViews() {
+        super.initializeViews();
+        mRecyclerViewFrom.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerViewTo.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mUnbinder.unbind();
+    public AddressesDetailPresenter getPresenter() {
+        return mAddressesDetailPresenter;
     }
 
-    private AddressesDetailFragmentPresenter getPresenter() {
-        return mTransactionFragmentPresenter;
+    @Override
+    public int getPosition() {
+        return getArguments().getInt(AddressesDetailFragment.POSITION);
     }
 }
