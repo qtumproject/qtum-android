@@ -8,9 +8,9 @@ Designed with stability, modularity and interoperability in mind, Qtum is the fo
 
 <b>Configurations</b><br/>
 The project has two configurations: default and local.<br/>
-Default configuration contains mainnet parameters.
-If you want to define your network settings, then you
-1)Build project (gradle created local.properties configuration file)
+Default configuration contains mainnet parameters.<br/>
+If you want to define your network settings, then you<br/>
+1)Build project (gradle created local.properties configuration file)<br/>
 2)Edit local.properties configuration file.
 
 <b>Setting Custom Network Parameters</b><br/>
