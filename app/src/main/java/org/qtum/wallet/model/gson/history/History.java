@@ -46,6 +46,8 @@ public class History extends RealmObject{
     private BigDecimal changeInBalance;
     @Ignore
     private BigDecimal fee;
+    @Ignore
+    private boolean isReceiptUpdated = false;
 
     /**
      * Constructor for unit tests
@@ -167,5 +169,14 @@ public class History extends RealmObject{
 
     public void setTransactionReceipt(TransactionReceipt transactionReceipt) {
         mTransactionReceipt = transactionReceipt;
+        isReceiptUpdated = true;
+    }
+
+    public boolean isReceiptUpdated() {
+        return isReceiptUpdated;
+    }
+
+    public void setReceiptUpdated(boolean receiptUpdated) {
+        isReceiptUpdated = receiptUpdated;
     }
 }

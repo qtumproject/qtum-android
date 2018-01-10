@@ -4,19 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_view_event_logs">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/tv_event_log"
-            android:layout_marginTop="66dp"
-            android:gravity="right"
-            android:textSize="30sp"
-            android:text="EVENTLOG"/>
+    </android.support.v7.widget.RecyclerView>
 
-    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

@@ -16,6 +16,7 @@ class AddressesDetailInteractorImpl implements AddressesDetailInteractor {
         mContext = new WeakReference<Context>(context);
     }
 
+    @Override
     public History getHistory(int position) {
         List<History> historyList = HistoryList.getInstance().getHistoryList();
         if (historyList != null && historyList.size() > position) {
