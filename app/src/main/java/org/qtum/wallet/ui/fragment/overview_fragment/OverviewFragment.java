@@ -54,7 +54,7 @@ public abstract class OverviewFragment extends BaseFragment implements OverviewV
 
     @Override
     public int getPosition() {
-        return getArguments().getInt(AddressesDetailFragment.POSITION);
+        return getArguments().getInt(POSITION);
     }
 
     @Override

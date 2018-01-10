@@ -235,6 +235,7 @@
     <string name="getting_info">Getting Info</string>
     <string name="received_contract">Received Contract</string>
     <string name="sent_contract">Sent Contract</string>
+    <string name="data">Data</string>
 
 
 </resources>
