@@ -150,35 +150,47 @@
 
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="bottom"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="horizontal"
                 android:background="@drawable/bottom_vav_view_tab_selected_drawable">
 
                 <org.qtum.wallet.utils.FontTextView
-                    android:id="@+id/tab_name"
+                    android:id="@+id/tab_addresses"
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="16dp"
-                    android:text="From"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/addresses"
                     android:textColor="@color/colorPrimary"
                     app:typefaceAsset="@string/euclidFlexMedium"/>
 
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tab_indicator"
+                <org.qtum.wallet.utils.FontTextView
+                    android:id="@+id/tab_overview"
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
-                    android:layout_height="17dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="16dp"
-                    app:tabBackground="@drawable/tab_indicator_selector_drawable"
-                    app:tabIndicatorColor="@android:color/transparent"
-                    app:tabMaxWidth="17dp"/>
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/overview"
+                    android:textColor="@color/colorPrimary"
+                    app:typefaceAsset="@string/euclidFlexMedium"/>
 
-            </RelativeLayout>
+                <org.qtum.wallet.utils.FontTextView
+                    android:id="@+id/tab_event_log"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/event_log"
+                    android:textColor="@color/colorPrimary"
+                    app:typefaceAsset="@string/euclidFlexMedium"/>
+
+
+            </LinearLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

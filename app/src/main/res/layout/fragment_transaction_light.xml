@@ -11,7 +11,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="220dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
@@ -98,24 +98,46 @@
             </LinearLayout>
 
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="50dp"
                 android:layout_gravity="bottom"
-                android:background="@color/bottom_nav_bar_color_light">
+                android:background="@drawable/transaction_detail_footer_divider">
 
                 <org.qtum.wallet.utils.FontTextView
-                    android:id="@+id/tab_name"
+                    android:id="@+id/tab_addresses"
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="16dp"
-                    android:text="From"
-                    android:textColor="@color/bottom_nav_bar_text_color_light"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/addresses"
+                    android:textColor="@color/transaction_detail_selected"
                     app:typefaceAsset="@string/proximaNovaRegular"/>
 
-            </RelativeLayout>
+                <org.qtum.wallet.utils.FontTextView
+                    android:id="@+id/tab_overview"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/overview"
+                    android:textColor="@color/transaction_detail_selected"
+                    app:typefaceAsset="@string/proximaNovaRegular"/>
+
+                <org.qtum.wallet.utils.FontTextView
+                    android:id="@+id/tab_event_log"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/event_log"
+                    android:textColor="@color/transaction_detail_selected"
+                    app:typefaceAsset="@string/proximaNovaRegular"/>
+
+            </LinearLayout>
+
+
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -154,7 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|bottom"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="50dp"
                 android:orientation="horizontal"
                 android:padding="8dp"
                 android:paddingBottom="8dp"

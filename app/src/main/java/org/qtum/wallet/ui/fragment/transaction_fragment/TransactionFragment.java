@@ -8,14 +8,17 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.ui.fragment.addresses_detail_fragment.AddressesDetailFragment;
+import org.qtum.wallet.ui.fragment.event_log_fragment.EventLogFragment;
+import org.qtum.wallet.ui.fragment.overview_fragment.OverviewFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragment.TransactionDetailFragment;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.util.List;
@@ -40,11 +43,17 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
     @BindView(R.id.toolbar_layout)
     protected CollapsingToolbarLayout toolbarLayout;
 
-    @BindView(R.id.tab_name)
-    FontTextView tabName;
+    @BindView(R.id.tab_addresses)
+    protected
+    FontTextView tabAddresses;
 
-    @BindView(R.id.tab_indicator)
-    TabLayout tabIndicator;
+    @BindView(R.id.tab_event_log)
+    protected
+    FontTextView tabEventLog;
+
+    @BindView(R.id.tab_overview)
+    protected
+    FontTextView tabOverview;
 
     @BindView(R.id.not_confirmed_flag)
     protected
@@ -93,17 +102,43 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
     @Override
     public void initializeViews() {
         super.initializeViews();
+        tabAddresses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewPager.setCurrentItem(0,true);
+            }
+        });
+        tabOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewPager.setCurrentItem(1,true);
+            }
+        });
+        tabEventLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewPager.setCurrentItem(2,true);
+            }
+        });
     }
 
+    public abstract void recolorTab(int position);
+
     @Override
-    public void setUpTransactionData(String value, String fee, String receivedTime, List<String> from, List<String> to, boolean confirmed) {
+    public void setUpTransactionData(String value, String fee, String receivedTime, boolean confirmed, boolean isContractCall) {
         if (mViewPager.getAdapter() == null) {
             mTextViewValue.setText(value);
             mTextViewFee.setText(fee);
             mTextViewReceivedTime.setText(receivedTime);
-            TransactionPagerAdapter transactionPagerAdapter = new TransactionPagerAdapter(getFragmentManager());
+            FragmentStatePagerAdapter transactionPagerAdapter;
+            if(isContractCall){
+                transactionPagerAdapter = new ContractTransactionPagerAdapter(getFragmentManager());
+            } else {
+                transactionPagerAdapter = new TransactionPagerAdapter(getFragmentManager());
+                tabEventLog.setVisibility(View.GONE);
+            }
             mViewPager.setAdapter(transactionPagerAdapter);
-            tabIndicator.setupWithViewPager(mViewPager, true);
+            recolorTab(0);
             mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -115,16 +150,11 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
 
                 @Override
                 public void onPageSelected(int position) {
-                    if (position == 0) {
-                        tabName.setText(getString(org.qtum.wallet.R.string.from));
-                    } else {
-                        tabName.setText(getString(org.qtum.wallet.R.string.to));
-                    }
+                    recolorTab(position);
                 }
             });
         }
     }
-
 
     private class TransactionPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -134,20 +164,16 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
 
         @Override
         public Fragment getItem(int position) {
-            Fragment transactionDetailFragment = null;
             switch (position) {
-                case TransactionDetailFragment.ACTION_FROM: {
-                    transactionDetailFragment = TransactionDetailFragment.newInstance(getContext(), TransactionDetailFragment.ACTION_FROM,
-                            getArguments().getInt(POSITION));
-                    break;
+                case 0: {
+                    return AddressesDetailFragment.newInstance(getContext(), getArguments().getInt(POSITION));
                 }
-                case TransactionDetailFragment.ACTION_TO: {
-                    transactionDetailFragment = TransactionDetailFragment.newInstance(getContext(), TransactionDetailFragment.ACTION_TO,
-                            getArguments().getInt(POSITION));
-                    break;
+                case 1:{
+                    return OverviewFragment.newInstance(getContext(), getArguments().getInt(POSITION));
                 }
+                default:
+                    return null;
             }
-            return transactionDetailFragment;
         }
 
         @Override
@@ -155,4 +181,34 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
             return 2;
         }
     }
+
+    private class ContractTransactionPagerAdapter extends FragmentStatePagerAdapter {
+
+        public ContractTransactionPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0: {
+                    return AddressesDetailFragment.newInstance(getContext(), getArguments().getInt(POSITION));
+                }
+                case 1: {
+                    return OverviewFragment.newInstance(getContext(), getArguments().getInt(POSITION));
+                }
+                case 2:{
+                    return EventLogFragment.newInstance(getContext(), getArguments().getInt(POSITION));
+                }
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+    }
+
 }

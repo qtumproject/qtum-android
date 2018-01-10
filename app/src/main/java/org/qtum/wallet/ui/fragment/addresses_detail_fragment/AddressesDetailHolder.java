@@ -1,4 +1,4 @@
-package org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragment;
+package org.qtum.wallet.ui.fragment.addresses_detail_fragment;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -14,14 +14,14 @@ import org.qtum.wallet.utils.ClipboardUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TransactionDetailHolder extends RecyclerView.ViewHolder {
+public class AddressesDetailHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.tv_single_string)
     TextView mTextViewAddress;
     @BindView(R.id.tv_value)
     TextView mTextViewValue;
 
-    public TransactionDetailHolder(final View itemView) {
+    public AddressesDetailHolder(final View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
 

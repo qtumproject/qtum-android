@@ -13,10 +13,13 @@ import org.qtum.wallet.utils.FontManager;
 import org.qtum.wallet.utils.migration_manager.MigrationManager;
 
 import io.fabric.sdk.android.Fabric;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class QtumApplication extends MultiDexApplication{
 
     public static QtumApplication instance;
+    private final String REALM_NAME = "org.qtum.realm";
 
     private WearableMessagingProvider wearableMessagingProvider;
 
@@ -38,6 +41,16 @@ public class QtumApplication extends MultiDexApplication{
         FontManager.init(getAssets());
         QStoreStorage.getInstance(getApplicationContext());
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
+        Realm.init(this);
+
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .name(REALM_NAME)
+                .schemaVersion(1)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+
+        Realm.setDefaultConfiguration(config);
 
         try {
             int currentVersion = getCodeVersion();

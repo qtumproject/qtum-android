@@ -1,8 +1,11 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment;
 
+import com.google.gson.JsonSyntaxException;
+
 import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.history.Vin;
 import org.qtum.wallet.model.gson.history.Vout;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -11,6 +14,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import java.math.BigDecimal;
 import java.util.List;
 
+import io.realm.Realm;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.internal.util.SubscriptionList;
@@ -35,7 +39,6 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         super.initializeViews();
         String pubKey = getInteractor().getAddress();
         getView().updatePubKey(pubKey);
-        loadAndUpdateData();
         getView().updateHistory(getInteractor().getHistoryList());
     }
 
@@ -91,6 +94,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                             HistoryList.getInstance().getHistoryList().addAll(historyResponse.getItems());
                             getView().addHistory(currentItemCount, getInteractor().getHistoryList().size() - currentItemCount + 1,
                                     getInteractor().getHistoryList());
+                            initTransactionReceipt(historyResponse.getItems());
                         }
                     }));
 
@@ -127,9 +131,9 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         }
 
         history.setFee(totalVin.subtract(totalVout));
-        if(isOwnVin) {
+        if (isOwnVin) {
             history.setChangeInBalance(totalOwnVout.subtract(totalOwnVin).add(history.getFee()));
-        }else{
+        } else {
             history.setChangeInBalance(totalOwnVout.subtract(totalOwnVin));
         }
     }
@@ -154,15 +158,71 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                     }
 
                     @Override
-                    public void onNext(HistoryResponse historyResponse) {
+                    public void onNext(final HistoryResponse historyResponse) {
                         for (History history : historyResponse.getItems()) {
                             calculateChangeInBalance(history, getInteractor().getAddresses());
                         }
                         HistoryList.getInstance().setHistoryList(historyResponse.getItems());
                         HistoryList.getInstance().setTotalItem(historyResponse.getTotalItems());
+                        initTransactionReceipt(historyResponse.getItems());
                         getView().updateHistory(getInteractor().getHistoryList());
                     }
                 }));
+    }
+
+    private void initTransactionReceipt(final List<History> histories) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(final Realm realm) {
+                List<History> historiesDB = realm.copyFromRealm(realm.where(History.class).findAll());
+                for (final History history : histories) {
+                    if (history.getTransactionReceipt() == null) {
+                        boolean success = false;
+                        for (History historyDB : historiesDB) {
+                            if (history.getTxHash().equals(historyDB.getTxHash())) {
+                                history.setTransactionReceipt(historyDB.getTransactionReceipt());
+                                success = true;
+                                break;
+                            }
+                        }
+                        if (!success) {
+                            getInteractor().getTransactionReceipt(history.getTxHash())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new Subscriber<List<TransactionReceipt>>() {
+                                        @Override
+                                        public void onCompleted() {
+
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(final List<TransactionReceipt> transactionReceipt) {
+                                            Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+                                                @Override
+                                                public void execute(Realm realm) {
+                                                    if(transactionReceipt.size()>0) {
+                                                        history.setTransactionReceipt(transactionReceipt.get(0));
+                                                        realm.insertOrUpdate(history);
+                                                    } else {
+                                                        history.setReceiptUpdated(true);
+                                                        realm.insertOrUpdate(history);
+                                                    }
+                                                    getView().notifyConfirmHistory(histories.indexOf(history));
+                                                }
+                                            });
+                                        }
+                                    });
+                        }
+
+                    }
+                }
+            }
+        });
     }
 
     @Override

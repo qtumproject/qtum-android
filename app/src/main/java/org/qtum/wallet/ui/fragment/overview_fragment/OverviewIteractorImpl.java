@@ -1,13 +1,20 @@
-package org.qtum.wallet.ui.fragment.transaction_fragment.transaction_detail_fragment;
+package org.qtum.wallet.ui.fragment.overview_fragment;
 
-import org.qtum.wallet.model.gson.history.History;
+
+import android.content.Context;
+
 import org.qtum.wallet.datastorage.HistoryList;
+import org.qtum.wallet.model.gson.history.History;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
-class TransactionDetailFragmentInteractor {
+public class OverviewIteractorImpl implements OverviewIteractor{
 
-    public TransactionDetailFragmentInteractor() {
+    WeakReference<Context> mContext;
+
+    OverviewIteractorImpl(Context context){
+        mContext = new WeakReference<Context>(context);
     }
 
     public History getHistory(int position) {
@@ -18,4 +25,5 @@ class TransactionDetailFragmentInteractor {
             return null;
         }
     }
+
 }

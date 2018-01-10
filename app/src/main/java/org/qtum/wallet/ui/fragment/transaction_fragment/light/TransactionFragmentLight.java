@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.transaction_fragment.light;
 
+import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import org.qtum.wallet.R;
@@ -23,8 +24,29 @@ public class TransactionFragmentLight extends TransactionFragment {
     }
 
     @Override
-    public void setUpTransactionData(String value, String fee, String receivedTime, List<String> from, List<String> to, boolean confirmed) {
-        super.setUpTransactionData(value, fee, receivedTime, from, to, confirmed);
+    public void recolorTab(int position) {
+        switch (position){
+            case 0:
+                tabAddresses.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_selected));
+                tabOverview.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_unselected));
+                tabEventLog.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_unselected));
+                break;
+            case 1:
+                tabAddresses.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_unselected));
+                tabOverview.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_selected));
+                tabEventLog.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_unselected));
+                break;
+            case 2:
+                tabAddresses.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_unselected));
+                tabOverview.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_unselected));
+                tabEventLog.setTextColor(ContextCompat.getColor(getContext(),R.color.transaction_detail_selected));
+                break;
+        }
+    }
+
+    @Override
+    public void setUpTransactionData(String value, String fee, String receivedTime, boolean confirmed, boolean isContractCall) {
+        super.setUpTransactionData(value, fee, receivedTime, confirmed, isContractCall);
         this.confirmed = confirmed;
         this.isSend = Double.valueOf(value) > 0;
         checkConfirmation(confirmed);

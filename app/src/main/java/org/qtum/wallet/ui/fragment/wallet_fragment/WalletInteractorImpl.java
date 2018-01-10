@@ -6,6 +6,7 @@ import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.history.Vin;
 import org.qtum.wallet.model.gson.history.Vout;
 import org.qtum.wallet.datastorage.HistoryList;
@@ -73,5 +74,10 @@ public class WalletInteractorImpl implements WalletInteractor {
             QtumSharedPreference.getInstance().saveCurrentAddress(context, s);
         }
         return s;
+    }
+
+    @Override
+    public Observable<List<TransactionReceipt>> getTransactionReceipt(String txHash) {
+        return QtumService.newInstance().getTransactionReceipt(txHash);
     }
 }

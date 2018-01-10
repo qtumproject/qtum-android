@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <org.qtum.wallet.utils.FontTextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/bottom_nav_bar_color_light"
+            android:padding="8dp"
+            android:textColor="@color/transaction_detail_unselected"
+            android:text="@string/from"
+            app:typefaceAsset="@string/proximaNovaRegular" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recycler_view_from">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <org.qtum.wallet.utils.FontTextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/bottom_nav_bar_color_light"
+            android:padding="8dp"
+            android:text="@string/to"
+            android:textColor="@color/transaction_detail_unselected"
+            app:typefaceAsset="@string/proximaNovaRegular" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recycler_view_to">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

@@ -6,7 +6,12 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class History {
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
+
+public class History extends RealmObject{
 
     @SerializedName("block_time")
     @Expose
@@ -19,21 +24,30 @@ public class History {
     private String blockHash;
     @SerializedName("tx_hash")
     @Expose
+    @PrimaryKey
     private String txHash;
     @SerializedName("amount")
     @Expose
+    @Ignore
     private BigDecimal amount;
     @SerializedName("contract_has_been_created")
     @Expose
     private Boolean contractHasBeenCreated;
     @SerializedName("vout")
     @Expose
-    private List<Vout> vout = null;
+    private RealmList<Vout> vout = null;
     @SerializedName("vin")
     @Expose
-    private List<Vin> vin = null;
+    private RealmList<Vin> vin = null;
+
+    private TransactionReceipt mTransactionReceipt;
+
+    @Ignore
     private BigDecimal changeInBalance;
+    @Ignore
     private BigDecimal fee;
+    @Ignore
+    private boolean isReceiptUpdated = false;
 
     /**
      * Constructor for unit tests
@@ -51,7 +65,7 @@ public class History {
     /**
      * Constructor for unit tests
      */
-    public History(Long blockTime, List<Vout> vout, List<Vin> vin, BigDecimal changeInBalance, Integer blockHeight) {
+    public History(Long blockTime, RealmList<Vout> vout, RealmList<Vin> vin, BigDecimal changeInBalance, Integer blockHeight) {
         this.blockTime = blockTime;
         this.vout = vout;
         this.vin = vin;
@@ -62,7 +76,7 @@ public class History {
     /**
      * Constructor for unit tests
      */
-    public History(List<Vout> vout, List<Vin> vin, BigDecimal changeInBalance, Integer blockHeight) {
+    public History(RealmList<Vout> vout, RealmList<Vin> vin, BigDecimal changeInBalance, Integer blockHeight) {
         this.vout = vout;
         this.vin = vin;
         this.changeInBalance = changeInBalance;
@@ -113,7 +127,7 @@ public class History {
         return vout;
     }
 
-    public void setVout(List<Vout> vout) {
+    public void setVout(RealmList<Vout> vout) {
         this.vout = vout;
     }
 
@@ -121,7 +135,7 @@ public class History {
         return vin;
     }
 
-    public void setVin(List<Vin> vin) {
+    public void setVin(RealmList<Vin> vin) {
         this.vin = vin;
     }
 
@@ -147,5 +161,22 @@ public class History {
 
     public void setContractHasBeenCreated(Boolean contractHasBeenCreated) {
         this.contractHasBeenCreated = contractHasBeenCreated;
+    }
+
+    public TransactionReceipt getTransactionReceipt() {
+        return mTransactionReceipt;
+    }
+
+    public void setTransactionReceipt(TransactionReceipt transactionReceipt) {
+        mTransactionReceipt = transactionReceipt;
+        isReceiptUpdated = true;
+    }
+
+    public boolean isReceiptUpdated() {
+        return isReceiptUpdated;
+    }
+
+    public void setReceiptUpdated(boolean receiptUpdated) {
+        isReceiptUpdated = receiptUpdated;
     }
 }
