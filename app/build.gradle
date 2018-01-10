@@ -17,7 +17,7 @@ apply plugin: 'realm-android'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
-    maven { url "https://jitpack.io" }
+    maven { url 'https://jitpack.io' }
     google()
 }
 
@@ -30,7 +30,7 @@ android {
             storePassword 'qtum-mobile'
         }
     }
-    flavorDimensions "default"
+    flavorDimensions 'default'
     lintOptions {
         disable 'MissingTranslation'
     }
@@ -49,11 +49,11 @@ android {
         targetSdkVersion 26
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildProps = getBuildProperties("local")
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        buildProps = getBuildProperties('local')
         applicationId buildProps['APPLICATION_ID']
-        buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
-        buildConfigField "Boolean", 'USE_MAIN_NET', buildProps['USE_MAIN_NET']
+        buildConfigField 'String', 'API_URL', buildProps['API_URL'].toString()
+        buildConfigField 'Boolean', 'USE_MAIN_NET', buildProps['USE_MAIN_NET']
         versionCode buildProps['VERSION_CODE'].toInteger()
         versionName buildProps['VERSION_NAME'].toString()
     }
@@ -121,25 +121,25 @@ dependencies {
 apply plugin: 'com.google.gms.google-services'
 
 def getBuildProperties(buildType) {
-    def propertiesFile = file(buildType + ".properties")
+    def propertiesFile = file(buildType + '.properties')
     if (propertiesFile.canRead()) {
         Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(propertiesFile))
-        if (versionProps.containsKey("apiSecret") && versionProps.containsKey("apiKey")) {
+        if (versionProps.containsKey('apiSecret') && versionProps.containsKey('apiKey')) {
             Properties fabricProps = new Properties()
-            fabricProps.put("apiSecret", versionProps['apiSecret'])
-            fabricProps.put("apiKey", versionProps['apiKey'])
-            FileWriter fabricWriter = new FileWriter("app/fabric.properties")
-            fabricProps.store(fabricWriter, "Auto Generate")
+            fabricProps.put('apiSecret', versionProps['apiSecret'])
+            fabricProps.put('apiKey', versionProps['apiKey'])
+            FileWriter fabricWriter = new FileWriter('app/fabric.properties')
+            fabricProps.store(fabricWriter, 'Auto Generate')
             fabricWriter.close()
         }
         return versionProps
     } else {
         copy {
-            from "default.properties"
+            from 'default.properties'
             into '.'
             rename { String fileName ->
-                fileName.replace("default.properties", "local.properties")
+                fileName.replace('default.properties', 'local.properties')
             }
         }
         getBuildProperties(build)

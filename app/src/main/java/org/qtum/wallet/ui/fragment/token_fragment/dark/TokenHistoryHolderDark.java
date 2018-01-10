@@ -15,6 +15,8 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.TransactionClickListener;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.DateCalculator;
 
+import java.math.BigDecimal;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnLongClick;
@@ -44,6 +46,8 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
     Subscription mSubscription;
     String mSymbol;
 
+    int decimalUnits;
+
     @OnLongClick(R.id.tv_id)
     public boolean onIdLongClick() {
         ClipboardUtils.copyToClipBoard(mTextViewID.getContext(), mTextViewID.getText().toString(), new ClipboardUtils.CopyCallback() {
@@ -55,7 +59,7 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
         return true;
     }
 
-    public TokenHistoryHolderDark(View itemView, final TokenHistoryClickListener listener) {
+    public TokenHistoryHolderDark(View itemView, final TokenHistoryClickListener listener, int decimalUnits) {
         super(itemView);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +68,7 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
             }
         });
         ButterKnife.bind(this, itemView);
+        this.decimalUnits = decimalUnits;
     }
 
     void bindTransactionData(final TokenHistory history, String symbol) {
@@ -92,15 +97,13 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
             mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.unconfirmed));
         }
         mTextViewID.setText(history.getTxHash());
-//        if (history.getChangeInBalance().doubleValue() > 0) {
-//            mTextViewOperationType.setText(R.string.received);
-//
-//            mImageViewIcon.setImageResource(R.drawable.ic_received);
-//        } else {
-//            mTextViewOperationType.setText(R.string.sent);
-//
-//            mImageViewIcon.setImageResource(R.drawable.ic_sent);
-//        }
-        mTextViewValue.setText(history.getAmount()+ mSymbol);
+
+        String resultamount = history.getAmount();
+
+        if(decimalUnits > 0) {
+            resultamount = new BigDecimal(history.getAmount()).divide(new BigDecimal("10").pow(decimalUnits)).toString();
+        }
+
+        mTextViewValue.setText(resultamount + mSymbol);
     }
 }

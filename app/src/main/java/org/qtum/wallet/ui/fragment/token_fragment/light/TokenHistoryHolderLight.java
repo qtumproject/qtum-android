@@ -17,6 +17,8 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.TransactionClickListener;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.DateCalculator;
 
+import java.math.BigDecimal;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnLongClick;
@@ -38,6 +40,8 @@ public class TokenHistoryHolderLight extends RecyclerView.ViewHolder {
     Subscription mSubscription;
     String mSymbol;
 
+    int decimalUnits;
+
     @OnLongClick(R.id.tv_id)
     public boolean onIdLongClick() {
         ClipboardUtils.copyToClipBoard(mTextViewID.getContext(), mTextViewID.getText().toString(), new ClipboardUtils.CopyCallback() {
@@ -49,7 +53,7 @@ public class TokenHistoryHolderLight extends RecyclerView.ViewHolder {
         return true;
     }
 
-    TokenHistoryHolderLight(View itemView, final TokenHistoryClickListener listener) {
+    TokenHistoryHolderLight(View itemView, final TokenHistoryClickListener listener, int decimalUnits) {
         super(itemView);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +62,7 @@ public class TokenHistoryHolderLight extends RecyclerView.ViewHolder {
             }
         });
         ButterKnife.bind(this, itemView);
+        this.decimalUnits = decimalUnits;
     }
 
     void bindTransactionData(final TokenHistory history, String symbol) {
@@ -66,12 +71,6 @@ public class TokenHistoryHolderLight extends RecyclerView.ViewHolder {
         }
         mSymbol = symbol;
         mLinearLayoutTransaction.setBackgroundResource(android.R.color.transparent);
-
-//        if (history.getChangeInBalance().doubleValue() > 0) {
-//            mImageViewIcon.setImageResource(R.drawable.ic_received_light);
-//        } else {
-//            mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
-//        }
 
         if (history.getTxTime() != null) {
             mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {
@@ -95,7 +94,14 @@ public class TokenHistoryHolderLight extends RecyclerView.ViewHolder {
             mLinearLayoutTransaction.setBackgroundResource(R.color.bottom_nav_bar_color_light);
         }
         mTextViewID.setText(history.getTxHash());
-        mTextViewValue.setText(getSpannedBalance(history.getAmount()) + mSymbol);
+
+        String resultamount = history.getAmount();
+
+        if(decimalUnits > 0) {
+           resultamount = new BigDecimal(history.getAmount()).divide(new BigDecimal("10").pow(decimalUnits)).toString();
+        }
+
+        mTextViewValue.setText(getSpannedBalance(resultamount) + mSymbol);
     }
 
     private SpannableString getSpannedBalance(String balance) {

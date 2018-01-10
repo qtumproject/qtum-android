@@ -200,6 +200,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
         setSenderAddress(token.getSenderAddress());
         headerPAdding = convertDpToPixel(16, getContext());
 
+        mRecyclerView.setNestedScrollingEnabled(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

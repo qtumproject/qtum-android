@@ -19,8 +19,8 @@ import java.util.List;
 
 public class TokenHistoryAdapterLight extends TokenHistoryAdapter {
 
-    public TokenHistoryAdapterLight(List<TokenHistory> historyList, TokenHistoryClickListener listener) {
-        super(historyList, listener);
+    public TokenHistoryAdapterLight(List<TokenHistory> historyList, TokenHistoryClickListener listener, int decimalUnits) {
+        super(historyList, listener, decimalUnits);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class TokenHistoryAdapterLight extends TokenHistoryAdapter {
         if (viewType == TYPE_TRANSACTION) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater.inflate(R.layout.lyt_transaction_light, parent, false);
-            return new TokenHistoryHolderLight(view, listener);
+            return new TokenHistoryHolderLight(view, listener, decimalUnits);
         } else {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater.inflate(R.layout.item_progress_bar, parent, false);
