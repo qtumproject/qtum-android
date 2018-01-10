@@ -6,10 +6,12 @@ Designed with stability, modularity and interoperability in mind, Qtum is the fo
 1)Clone project<br/>
 2)Open with Android Studio
 
-<b>Build Types</b><br/>
-The project has several build types:<br/>
-![Screenshot](http://www.picshare.ru/uploads/171130/vGf7v0LPBX.jpg)<br/>
-You can use ONLY production(debug/release) buildTypes.
+<b>Configurations</b><br/>
+The project has two configurations: default and local.<br/>
+Default configuration contains mainnet parameters.
+If you want to define your network settings, then you
+1)Build project (gradle created local.properties configuration file)
+2)Edit local.properties configuration file.
 
 <b>Setting Custom Network Parameters</b><br/>
 ```java
