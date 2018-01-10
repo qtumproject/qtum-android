@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
     android:background="@drawable/holder_background"
-    android:padding="8dp">
+    android:padding="4dp">
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="10dp"
-        android:layout_height="34dp"
+        android:layout_width="8dp"
+        android:layout_height="40dp"
         android:scaleType="fitStart"
         app:srcCompat="@drawable/send_shape" />
 
@@ -22,33 +24,43 @@
         android:layout_toEndOf="@+id/iv_icon"
         android:gravity="right"
         android:text="-7,450 QTUM"
-        android:textColor="@color/colorPrimary"
-        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
+        android:layout_below="@+id/tv_value"
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginStart="16dp"
-        android:layout_toEndOf="@+id/tv_value"
-        android:alpha=".6"
+        android:layout_toEndOf="@+id/v_divider"
+        android:textSize="12sp"
         android:gravity="right"
         android:text="Nov 28"
-        android:textColor="@color/colorPrimary"
-        android:textSize="12sp" />
+        android:textColor="#7d7d7d" />
 
     <TextView
         android:id="@+id/tv_id"
-        android:layout_width="match_parent"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/tv_value"
         android:layout_below="@+id/tv_value"
-        android:alpha=".7"
-        android:ellipsize="end"
-        android:maxLines="1"
+        android:textSize="12sp"
+        android:ellipsize="middle"
+        android:singleLine="true"
         android:text="1mase88dascasd12312nfsa33"
         android:textColor="@color/colorPrimary" />
+
+    <View
+        android:alpha=".5"
+        android:id="@+id/v_divider"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_toEndOf="@+id/tv_id"
+        android:layout_alignTop="@+id/tv_id"
+        android:layout_alignBottom="@+id/tv_id"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"/>
 
 </RelativeLayout>
