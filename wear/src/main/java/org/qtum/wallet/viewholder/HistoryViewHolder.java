@@ -56,10 +56,10 @@ public class HistoryViewHolder extends WearableRecyclerView.ViewHolder {
         if(history.getChangeInBalance() != null) {
             if (history.getChangeInBalance().doubleValue() > 0) {
                 mTextViewID.setText(history.getTxHash());
-                mImageViewIcon.setImageResource(R.drawable.ic_receive);
+                mImageViewIcon.setImageResource(R.drawable.receive_shape);
             } else {
                 mTextViewID.setText(history.getTxHash());
-                mImageViewIcon.setImageResource(R.drawable.ic_sent);
+                mImageViewIcon.setImageResource(R.drawable.send_shape);
             }
         } else {
             mTextViewID.setText("NULL");

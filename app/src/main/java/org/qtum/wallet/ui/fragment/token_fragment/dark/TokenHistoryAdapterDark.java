@@ -18,8 +18,8 @@ import java.util.List;
 
 public class TokenHistoryAdapterDark extends TokenHistoryAdapter {
 
-    public TokenHistoryAdapterDark(List<TokenHistory> historyList, TokenHistoryClickListener listener) {
-        super(historyList, listener);
+    public TokenHistoryAdapterDark(List<TokenHistory> historyList, TokenHistoryClickListener listener, int decimalUnits) {
+        super(historyList, listener, decimalUnits);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class TokenHistoryAdapterDark extends TokenHistoryAdapter {
         if (viewType == TYPE_TRANSACTION) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater.inflate(org.qtum.wallet.R.layout.item_transaction, parent, false);
-            return new TokenHistoryHolderDark(view, listener);
+            return new TokenHistoryHolderDark(view, listener, decimalUnits);
         } else {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater.inflate(org.qtum.wallet.R.layout.item_progress_bar, parent, false);

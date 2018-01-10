@@ -154,8 +154,10 @@ public abstract class PinFragment extends BaseFragment implements PinView {
 
     @Override
     public void clearError() {
-        tooltip.setText("");
-        tooltip.setVisibility(View.INVISIBLE);
+        if(!this.isDetached() && tooltip != null) {
+            tooltip.setText("");
+            tooltip.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -165,7 +167,9 @@ public abstract class PinFragment extends BaseFragment implements PinView {
 
     @Override
     public void setPin(String pin) {
-        mWalletPin.setText(pin);
+        if(!this.isDetached() && mWalletPin != null) {
+            mWalletPin.setText(pin);
+        }
     }
 
     @Override
@@ -184,6 +188,8 @@ public abstract class PinFragment extends BaseFragment implements PinView {
         super.onPause();
         getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         hideKeyBoard();
+        getMainActivity().resetAuthFlags();
+        dismiss();
     }
 
     Handler softHandler;

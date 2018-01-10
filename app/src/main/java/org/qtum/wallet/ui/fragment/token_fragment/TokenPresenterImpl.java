@@ -129,10 +129,10 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
 
                     @Override
                     public void onError(Throwable e) {
-                        getView().setAlertDialog(org.qtum.wallet.R.string.no_internet_connection,
-                                org.qtum.wallet.R.string.please_check_your_network_settings,
-                                org.qtum.wallet.R.string.ok,
-                                BaseFragment.PopUpType.error);
+//                        getView().setAlertDialog(org.qtum.wallet.R.string.no_internet_connection,
+//                                org.qtum.wallet.R.string.please_check_your_network_settings,
+//                                org.qtum.wallet.R.string.ok,
+//                                BaseFragment.PopUpType.error);
                         //getView().stopRefreshRecyclerAnimation();
                     }
 
