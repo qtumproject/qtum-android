@@ -85,24 +85,44 @@
             android:textSize="16sp"
             app:typefaceAsset="@string/proximaNovaLight"/>
 
-        <org.qtum.wallet.utils.FontTextView
-            android:id="@+id/contract_type"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/arrow"
+            android:layout_height="20dp"
             android:layout_toEndOf="@+id/title"
-            android:background="@drawable/btn_sea_corner_background_light"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:paddingBottom="2dp"
-            android:paddingEnd="4dp"
-            android:paddingStart="4dp"
-            android:paddingTop="2dp"
-            android:text="@string/about"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:typefaceAsset="@string/proximaNovaRegular"/>
+            android:orientation="horizontal">
+
+            <org.qtum.wallet.utils.FontTextView
+                android:id="@+id/contract_type"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/btn_sea_corner_background_light"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:paddingBottom="2dp"
+                android:paddingEnd="4dp"
+                android:paddingStart="4dp"
+                android:paddingTop="2dp"
+                android:text="@string/about"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:typefaceAsset="@string/proximaNovaRegular"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_weight="1"
+                android:padding="2dp"
+                android:layout_marginStart="1dp"
+                android:background="@drawable/btn_sea_corner_background_light"
+                app:srcCompat="@drawable/ic_edit_light"
+                android:id="@+id/bt_rename_contract"/>
+
+        </LinearLayout>
+
+
 
         <View
             android:layout_width="match_parent"

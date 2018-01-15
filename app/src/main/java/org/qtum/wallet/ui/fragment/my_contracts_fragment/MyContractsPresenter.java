@@ -7,4 +7,5 @@ public interface MyContractsPresenter extends BaseFragmentPresenter {
     void onWizardClose();
     void onContractClick(Contract contract);
     void onUnsubscribeClick();
+    void onRenameContract(Contract contract);
 }
