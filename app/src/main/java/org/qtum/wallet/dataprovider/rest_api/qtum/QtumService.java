@@ -8,6 +8,7 @@ import org.qtum.wallet.model.gson.BlockChainInfo;
 import org.qtum.wallet.model.gson.CallSmartContractRequest;
 import org.qtum.wallet.model.gson.ContractParams;
 import org.qtum.wallet.model.gson.DGPInfo;
+import org.qtum.wallet.model.gson.ExistContractResponse;
 import org.qtum.wallet.model.gson.FeePerKb;
 import org.qtum.wallet.model.gson.QstoreContractType;
 import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
@@ -216,6 +217,11 @@ public class QtumService {
 
     public Observable<ContractParams> getContractParams(String contractAddress) {
         return mServiceApi.getContractParams(contractAddress);
+    }
+
+
+    public Observable<ExistContractResponse> isContractExist(String contractAddress) {
+        return mServiceApi.isContractExist(contractAddress);
     }
 
     public Observable<TokenHistoryResponse> getTokenHistoryList(String qrc20ContractAddress, int limit, int offset, List<String> addresses){
