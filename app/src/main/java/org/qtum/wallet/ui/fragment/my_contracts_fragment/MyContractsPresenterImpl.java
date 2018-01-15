@@ -10,6 +10,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import java.util.Iterator;
 import java.util.List;
 
+import io.realm.annotations.PrimaryKey;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -104,6 +105,31 @@ public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implemen
     @Override
     public void onWizardClose() {
         getInteractor().setShowWizard(false);
+    }
+
+    @Override
+    public void onRenameContract(Contract contract) {
+        if(contract instanceof Token){
+            List<Token> list = getInteractor().getTokens();
+            for (Iterator<Token> tokenIterator = list.iterator(); tokenIterator.hasNext(); ) {
+                if(tokenIterator.next().getContractAddress().equals(contract.getContractAddress())){
+                    tokenIterator.remove();
+                    list.add((Token)contract);
+                    getInteractor().setTokens(list);
+                    return;
+                }
+            }
+        } else {
+            List<Contract> contractListWithoutTokens = getInteractor().getContractsWithoutTokens();
+            for (Iterator<Contract> contractIterator = contractListWithoutTokens.iterator(); contractIterator.hasNext(); ) {
+                if (contract.getContractAddress().equals(contractIterator.next().getContractAddress())) {
+                    contractIterator.remove();
+                    contractListWithoutTokens.add(contract);
+                    getInteractor().setContractWithoutTokens(contractListWithoutTokens);
+                    return;
+                }
+            }
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -17,6 +18,7 @@ import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.activity.main_activity.WizardDialogFragment;
+import org.qtum.wallet.ui.fragment.change_contract_name_fragment.ChangeContractNameFragment;
 import org.qtum.wallet.ui.fragment.deleted_contract_fragment.DeletedContractFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -123,6 +125,9 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
         @BindView(R.id.ll_unsubscribe)
         LinearLayout mLinearLayoutUnsubscribe;
 
+        @BindView(R.id.bt_rename_contract)
+        ImageView mImageViewRenameContract;
+
         Contract mContract;
 
         public ContractViewHolder(View itemView) {
@@ -136,6 +141,14 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
                     if (mContract.getCreationStatus().equals(ContractCreationStatus.Created)) {
                         getPresenter().onContractClick(mContract);
                     }
+                }
+            });
+
+            mImageViewRenameContract.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    BaseFragment baseFragment = ChangeContractNameFragment.newInstance(getContext(), mTextViewTitle.getText().toString(),getAdapterPosition());
+                    openFragmentForResult(baseFragment);
                 }
             });
         }
@@ -193,6 +206,10 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
         public void setContractList(List<Contract> contractList) {
             mContractList = contractList;
         }
+
+        public List<Contract> getContractList() {
+            return mContractList;
+        }
     }
 
     @Override
@@ -212,5 +229,11 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
     public void onWizardCanceled() {
         isShowWizard = false;
         getPresenter().onWizardClose();
+    }
+
+    public void onRenameContract(int position, String newContractName){
+        mContractAdapter.getContractList().get(position).setContractName(newContractName);
+        mContractAdapter.notifyItemChanged(position);
+        getPresenter().onRenameContract(mContractAdapter.getContractList().get(position));
     }
 }

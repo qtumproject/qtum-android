@@ -240,6 +240,8 @@
     <string name="received_contract">Received Contract</string>
     <string name="sent_contract">Sent Contract</string>
     <string name="data">Data</string>
+    <string name="change_contract_name">Change contract name</string>
+    <string name="change">Change</string>
 
 
 </resources>
