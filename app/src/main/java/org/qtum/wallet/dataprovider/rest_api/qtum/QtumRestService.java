@@ -14,6 +14,7 @@ import org.qtum.wallet.model.gson.history.HistoryResponse;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.qstore.ContractPurchase;
 import org.qtum.wallet.model.gson.qstore.QSearchItem;
 import org.qtum.wallet.model.gson.qstore.QstoreBuyResponse;
@@ -21,6 +22,7 @@ import org.qtum.wallet.model.gson.qstore.QstoreByteCodeResponse;
 import org.qtum.wallet.model.gson.qstore.QstoreContract;
 import org.qtum.wallet.model.gson.qstore.QstoreItem;
 import org.qtum.wallet.model.gson.qstore.QstoreSourceCodeResponse;
+import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -100,6 +102,14 @@ interface QtumRestService {
     @GET("/contracts/{addressContract}/params?keys=symbol,decimals,name,totalSupply")
     Observable<ContractParams> getContractParams(@Path("addressContract") String addressContract);
 
+
     @GET("/contracts/{addressContract}/exists")
     Observable<ExistContractResponse> isContractExist(@Path("addressContract") String addressContract);
+
+    @GET("/qrc20/{qrc20ContractAddress}/transfers")
+    Observable<TokenHistoryResponse> getTokenHistoryList(@Path("qrc20ContractAddress") String qrc20ContractAddress, @Query("limit") int limit, @Query("offset") int offset, @Query("addresses[]") List<String> addresses);
+
+    @GET("/transactions/{txhash}/receipt")
+    Observable<List<TransactionReceipt>> getTransactionReceipt(@Path("txhash") String txHash);
+
 }

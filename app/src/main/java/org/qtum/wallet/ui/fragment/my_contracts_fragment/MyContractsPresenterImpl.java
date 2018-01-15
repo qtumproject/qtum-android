@@ -92,7 +92,7 @@ public class MyContractsPresenterImpl extends BaseFragmentPresenterImpl implemen
                     @Override
                     public void onNext(ExistContractResponse existContractResponse) {
                         getView().dismissProgressDialog();
-                        if(false/*existContractResponse.isExist()*/){
+                        if(existContractResponse.isExist()){
                             getView().openContractFunctionFragment(contract);
                         }else{
                             getView().openDeletedContractFragment(contract.getContractAddress(), contract.getContractName());

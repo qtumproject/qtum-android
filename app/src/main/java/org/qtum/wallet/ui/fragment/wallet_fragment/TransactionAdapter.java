@@ -10,6 +10,7 @@ public abstract class TransactionAdapter extends RecyclerView.Adapter<RecyclerVi
     protected History mHistory;
     protected final int TYPE_PROGRESS_BAR = 0;
     protected final int TYPE_TRANSACTION = 1;
+    protected boolean mLoadingFlag = false;
 
     public History getItem(int position){
         return mHistoryList.get(position);
@@ -37,5 +38,9 @@ public abstract class TransactionAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public void setHistoryList(List<History> historyList) {
         mHistoryList = historyList;
+    }
+
+    public void setLoadingFlag(boolean loadingFlag) {
+        mLoadingFlag = loadingFlag;
     }
 }

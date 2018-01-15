@@ -26,7 +26,5 @@ public interface WalletView extends BaseFragmentView {
 
     void notifyConfirmHistory(int notifyPosition);
 
-    WalletInteractorImpl.GetHistoryListCallBack getHistoryCallback();
-
     void openTransactionsFragment(int position);
 }

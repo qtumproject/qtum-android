@@ -13,10 +13,11 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'realm-android'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
-    maven { url "https://jitpack.io" }
+    maven { url 'https://jitpack.io' }
     google()
 }
 
@@ -29,7 +30,7 @@ android {
             storePassword 'qtum-mobile'
         }
     }
-    flavorDimensions "default"
+    flavorDimensions 'default'
     lintOptions {
         disable 'MissingTranslation'
     }
@@ -42,13 +43,19 @@ android {
     Properties buildProps
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
+
     defaultConfig {
-        applicationId "org.qtum.wallet"
         minSdkVersion 19
         targetSdkVersion 26
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        buildProps = getBuildProperties('local')
+        applicationId buildProps['APPLICATION_ID']
+        buildConfigField 'String', 'API_URL', buildProps['API_URL'].toString()
+        buildConfigField 'Boolean', 'USE_MAIN_NET', buildProps['USE_MAIN_NET']
+        versionCode buildProps['VERSION_CODE'].toInteger()
+        versionName buildProps['VERSION_NAME'].toString()
     }
     buildTypes {
         release {
@@ -57,34 +64,6 @@ android {
             signingConfig signingConfigs.releaseConfig
         }
         debug {}
-    }
-    productFlavors {
-        production {
-            buildProps = getBuildProperties("prod")
-            versionCode buildProps['VERSION_CODE'].toInteger()
-            versionName buildProps['VERSION_NAME'].toString()
-            buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
-            buildConfigField "Boolean", 'USE_MAIN_NET', 'true'
-            versionNameSuffix "-prod"
-        }
-        dev {
-            applicationIdSuffix ".dev"
-            buildProps = getBuildProperties("dev")
-            versionCode buildProps['VERSION_CODE'].toInteger()
-            versionName buildProps['VERSION_NAME'].toString()
-            buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
-            buildConfigField "Boolean", 'USE_MAIN_NET', 'false'
-            versionNameSuffix "-dev"
-        }
-        qa {
-            applicationIdSuffix ".qa"
-            buildProps = getBuildProperties("qa")
-            versionCode buildProps['VERSION_CODE'].toInteger()
-            versionName buildProps['VERSION_NAME'].toString()
-            buildConfigField "String", 'API_URL', buildProps['API_URL'].toString()
-            buildConfigField "Boolean", 'USE_MAIN_NET', 'false'
-            versionNameSuffix "-qa"
-        }
     }
 }
 dependencies {
@@ -141,40 +120,28 @@ dependencies {
 }
 apply plugin: 'com.google.gms.google-services'
 
-task(gitInfo) {
-    ext.count = getGitCount()
-    ext.branch = getGitBranch()
-
-    println "COUNT " + ext.count
-    println "BRANCH " + ext.branch
-}
-
 def getBuildProperties(buildType) {
-    def propertiesFile = file("Configs/" + buildType + ".properties")
+    def propertiesFile = file(buildType + '.properties')
     if (propertiesFile.canRead()) {
         Properties versionProps = new Properties()
         versionProps.load(new FileInputStream(propertiesFile))
+        if (versionProps.containsKey('apiSecret') && versionProps.containsKey('apiKey')) {
+            Properties fabricProps = new Properties()
+            fabricProps.put('apiSecret', versionProps['apiSecret'])
+            fabricProps.put('apiKey', versionProps['apiKey'])
+            FileWriter fabricWriter = new FileWriter('app/fabric.properties')
+            fabricProps.store(fabricWriter, 'Auto Generate')
+            fabricWriter.close()
+        }
         return versionProps
     } else {
-        propertiesFile = file("Configs/prod.properties")
-        if (propertiesFile.canRead()) {
-            Properties versionProps = new Properties()
-            versionProps.load(new FileInputStream(propertiesFile))
-            return versionProps
-        } else {
-            throw new GradleException(".properties not found")
+        copy {
+            from 'default.properties'
+            into '.'
+            rename { String fileName ->
+                fileName.replace('default.properties', 'local.properties')
+            }
         }
+        getBuildProperties(build)
     }
-}
-
-def getGitBranch() {
-    def cmd = "git rev-parse --abbrev-ref HEAD"
-    def proc = cmd.execute()
-    proc.text.trim()
-}
-
-def getGitCount() {
-    def cmd = "git rev-list HEAD --count"
-    def proc = cmd.execute()
-    proc.text.trim()
 }

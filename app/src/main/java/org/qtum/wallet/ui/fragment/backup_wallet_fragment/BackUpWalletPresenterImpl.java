@@ -1,6 +1,8 @@
 package org.qtum.wallet.ui.fragment.backup_wallet_fragment;
 
+import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+import org.qtum.wallet.ui.fragment.confirm_passphrase_fragment.ConfirmPassphraseFragment;
 import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
 
 public class BackUpWalletPresenterImpl extends BaseFragmentPresenterImpl implements BackUpWalletPresenter {
@@ -44,8 +46,7 @@ public class BackUpWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
 
     @Override
     public void onContinueClick() {
-        final WalletMainFragment walletFragment = WalletMainFragment.newInstance(getView().getContext());
-        getView().getMainActivity().setRootFragment(walletFragment);
-        getView().openRootFragment(walletFragment);
+        BaseFragment fragment = ConfirmPassphraseFragment.newInstance(getView().getContext(),passphrase);
+        getView().openFragment(fragment);
     }
 }

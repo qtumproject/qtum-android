@@ -82,57 +82,38 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                             getView().clearError();
                             getView().setProgressDialog();
                             getView().hideKeyBoard();
-                            mSubscription = getInteractor().createWallet()
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new Subscriber<String>() {
-                                        @Override
-                                        public void onCompleted() {
-                                        }
+                            String passphrase = getInteractor().getRandomSeed();
 
-                                        @Override
-                                        public void onError(Throwable e) {
-                                        }
 
-                                        @Override
-                                        public void onNext(String passphrase) {
-                                            getInteractor().setKeyGeneratedInstance(true);
-                                            isDataLoaded = true;
-                                            getInteractor().savePassphraseSaltWithPin(pinRepeat, passphrase);
-                                            pinHash = getInteractor().generateSHA256String(pinRepeat);
-                                            if (getView().checkAvailabilityTouchId()) {
-                                                getInteractor().encodeInBackground(pinRepeat)
-                                                        .subscribeOn(Schedulers.io())
-                                                        .observeOn(AndroidSchedulers.mainThread())
-                                                        .subscribe(new Subscriber<String>() {
-                                                            @Override
-                                                            public void onCompleted() {
-                                                            }
-
-                                                            @Override
-                                                            public void onError(Throwable e) {
-                                                            }
-
-                                                            @Override
-                                                            public void onNext(String s) {
-                                                                getInteractor().saveTouchIdPassword(s);
-                                                                getInteractor().savePassword(pinHash);
-                                                                getView().onLogin();
-                                                                getView().openTouchIDPreferenceFragment(false, pinRepeat);
-                                                                getView().dismissProgressDialog();
-                                                                isDataLoaded = false;
-                                                            }
-                                                        });
-                                            } else {
-                                                getInteractor().savePassword(pinHash);
-                                                getView().onLogin();
-                                                getView().dismiss();
-                                                getView().openBackUpWalletFragment(true, pinRepeat);
-                                                getView().dismissProgressDialog();
-                                                isDataLoaded = false;
+                            getInteractor().savePassphraseSaltWithPin(pinRepeat, passphrase);
+                            pinHash = getInteractor().generateSHA256String(pinRepeat);
+                            if (getView().checkAvailabilityTouchId()) {
+                                getInteractor().encodeInBackground(pinRepeat)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Subscriber<String>() {
+                                            @Override
+                                            public void onCompleted() {
                                             }
-                                        }
-                                    });
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                            }
+
+                                            @Override
+                                            public void onNext(String s) {
+                                                getInteractor().saveTouchIdPassword(s);
+                                                getInteractor().savePassword(pinHash);
+                                                getView().openTouchIDPreferenceFragment(false, pinRepeat);
+                                                getView().dismissProgressDialog();
+                                            }
+                                        });
+                            } else {
+                                getInteractor().savePassword(pinHash);
+                                getView().dismiss();
+                                getView().openBackUpWalletFragment(true, pinRepeat);
+                                getView().dismissProgressDialog();
+                            }
 
                         } else {
                             getView().confirmError(R.string.incorrect_repeated_pin);

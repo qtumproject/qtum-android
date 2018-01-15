@@ -12,8 +12,8 @@ public class Contract implements Serializable {
     protected String mUiid;
     @SerializedName("contractName")
     protected String mContractName;
-    @SerializedName("hasBeenCreated")
-    protected Boolean mHasBeenCreated;
+    @SerializedName("creationStatus")
+    protected ContractCreationStatus mCreationStatus;
     @SerializedName("date")
     protected String mDate;
     @SerializedName("senderAddress")
@@ -21,10 +21,10 @@ public class Contract implements Serializable {
     @SerializedName("isSubscribe")
     protected boolean mIsSubscribe;
 
-    public Contract(String contractAddress, String uiid, Boolean hasBeenCreated, String date, String senderAddress, String contractName) {
+    public Contract(String contractAddress, String uiid, ContractCreationStatus creationStatus, String date, String senderAddress, String contractName) {
         this.mContractAddress = contractAddress;
         this.mUiid = uiid;
-        this.mHasBeenCreated = hasBeenCreated;
+        this.mCreationStatus = creationStatus;
         this.mContractName = contractName;
         this.mDate = date;
         this.mSenderAddress = senderAddress;
@@ -76,12 +76,12 @@ public class Contract implements Serializable {
         this.mUiid = uiid;
     }
 
-    public Boolean isHasBeenCreated() {
-        return mHasBeenCreated;
+    public ContractCreationStatus getCreationStatus() {
+        return mCreationStatus;
     }
 
-    public void setHasBeenCreated(Boolean hasBeenCreated) {
-        this.mHasBeenCreated = hasBeenCreated;
+    public void setCreationStatus(ContractCreationStatus creationStatus) {
+        mCreationStatus = creationStatus;
     }
 
     public String getDate() {

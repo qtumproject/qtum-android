@@ -6,6 +6,7 @@ import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.ContractTemplate;
 import org.qtum.wallet.model.contract.Contract;
+import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.DateCalculator;
@@ -54,31 +55,14 @@ public class WatchContractInteractorImpl implements WatchContractInteractor {
     }
 
     @Override
-    public String handleContractWithToken(String name, String address, String ABIInterface) {
-        ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(mContext.get(), null, null, ABIInterface, "token", "no_name",
-                DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
-        TinyDB tinyDB = new TinyDB(mContext.get());
-        List<Token> tokenList = tinyDB.getTokenList();
-        Token token = new Token(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "", name);
-        tokenList.add(token);
-        tinyDB.putTokenList(tokenList);
-
-        return token.getContractAddress();
-    }
-
-    @Override
     public void handleContractWithoutToken(String name, String address, String ABIInterface) {
         ContractTemplate contractTemplate = FileStorageManager.getInstance().importTemplate(mContext.get(), null, null, ABIInterface, "contract", "no_name",
                 DateCalculator.getCurrentDate(), UUID.randomUUID().toString());
         TinyDB tinyDB = new TinyDB(mContext.get());
         List<Contract> contractList = tinyDB.getContractListWithoutToken();
-        Contract contract = new Contract(address, contractTemplate.getUuid(), true, DateCalculator.getCurrentDate(), "", name);
+        Contract contract = new Contract(address, contractTemplate.getUuid(), ContractCreationStatus.Created, DateCalculator.getCurrentDate(), "", name);
         contractList.add(contract);
         tinyDB.putContractListWithoutToken(contractList);
     }
 
-    @Override
-    public boolean isABIInterfaceValid(String ABIInterface) {
-        return ContractBuilder.checkForValidityQRC20(ABIInterface);
-    }
 }

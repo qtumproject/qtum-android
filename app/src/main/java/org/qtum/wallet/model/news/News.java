@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.qtum.wallet.utils.DateCalculator;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
@@ -30,6 +31,8 @@ public class News {
 
     transient String formattedData = "";
 
+    transient String fullFormattedData = "";
+
     public String getTitle() {
         return title;
     }
@@ -44,15 +47,29 @@ public class News {
             Date date;
             try {
                 date = sdf.parse(pubDate);
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                SimpleDateFormat displayFormat = new SimpleDateFormat("MMM d, yyyy  hh:mm aaa", Locale.ENGLISH);
-                formattedData = displayFormat.format(date).toUpperCase();
+                formattedData = DateCalculator.getShortDate(date.getTime());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return formattedData;
+    }
+
+    public String getFullFormattedPubDate(){
+        if (fullFormattedData.isEmpty()) {
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
+            Date date;
+            try {
+                date = sdf.parse(pubDate);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                SimpleDateFormat displayFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy \nhh:mm aaa", Locale.ENGLISH);
+                fullFormattedData = displayFormat.format(date).toUpperCase();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return fullFormattedData;
     }
 
     public Document getDocument() {

@@ -1,8 +1,15 @@
 package org.qtum.wallet.ui.fragment.token_fragment;
 
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.history.History;
+import org.qtum.wallet.model.gson.history.HistoryResponse;
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
+import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 import org.qtum.wallet.utils.ContractManagementHelper;
 
+import java.util.List;
+
+import rx.Observable;
 import rx.Subscriber;
 
 public interface TokenInteractor {
@@ -21,4 +28,14 @@ public interface TokenInteractor {
     Token setTokenDecimals(Token token, String value);
 
     String handleTotalSupplyValue(Token token, String value);
+
+    List<TokenHistory> getHistoryList();
+
+    Observable<TokenHistoryResponse> getHistoryList(String contractAddress, int limit, int offset);
+
+    int getTotalHistoryItem();
+
+    List<String> getAddresses();
+
+    //void addToHistoryList(TokenHistory history);
 }

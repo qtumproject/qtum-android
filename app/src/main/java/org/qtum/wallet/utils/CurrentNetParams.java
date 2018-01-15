@@ -14,6 +14,6 @@ public class CurrentNetParams {
     }
 
     public static String getUrl(){
-        return BuildConfig.API_URL;
+        return "https://testnet-walletapi.qtum.org"; //BuildConfig.API_URL;
     }
 }

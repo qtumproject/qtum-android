@@ -2,10 +2,13 @@ package org.qtum.wallet.ui.fragment.news_detail_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
+import org.jsoup.select.Elements;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
@@ -22,6 +25,11 @@ public abstract class NewsDetailFragment extends BaseFragment implements NewsDet
     protected
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.tv_date)
+    TextView mTextViewDate;
+    @BindView(R.id.tv_title)
+    TextView mTextViewTitle;
+
     public static BaseFragment newInstance(Context context, int newsPosition) {
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, NewsDetailFragment.class);
@@ -34,6 +42,7 @@ public abstract class NewsDetailFragment extends BaseFragment implements NewsDet
     public void initializeViews() {
         super.initializeViews();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        ViewCompat.setNestedScrollingEnabled(mRecyclerView, false);
     }
 
     @Override
@@ -54,6 +63,11 @@ public abstract class NewsDetailFragment extends BaseFragment implements NewsDet
                 getActivity().onBackPressed();
                 break;
         }
+    }
+
+    public void setUpTitleAndDate(String title, String date){
+        mTextViewTitle.setText(title);
+        mTextViewDate.setText(date);
     }
 
     @Override

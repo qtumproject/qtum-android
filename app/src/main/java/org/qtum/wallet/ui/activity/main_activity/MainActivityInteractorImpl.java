@@ -5,6 +5,7 @@ import android.content.Context;
 import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
+import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 import org.qtum.wallet.model.gson.DGPInfo;
@@ -75,6 +76,7 @@ class MainActivityInteractorImpl implements MainActivityInteractor {
     @Override
     public void setFeePerKb(FeePerKb feePerKb) {
         isFeePerkbLoaded = true;
-        QtumSharedPreference.getInstance().setFeePerKb(mContext, feePerKb.getFeePerKb().setScale(5, BigDecimal.ROUND_HALF_DOWN).toPlainString());
+        QtumSettingSharedPreference qtumSettingSharedPreference = new QtumSettingSharedPreference();
+        qtumSettingSharedPreference.setFeePerKb(mContext, feePerKb.getFeePerKb().setScale(5, BigDecimal.ROUND_HALF_DOWN).toPlainString());
     }
 }

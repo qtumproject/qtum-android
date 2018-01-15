@@ -49,14 +49,8 @@ public class WatchTokenPresenterImpl extends BaseFragmentPresenterImpl implement
                 return;
             }
         }
-
-        if (getInteractor().isABIInterfaceValid(QRC20TokenStandardAbi)) {
-            String contractAddress = getInteractor().handleContractWithToken(name, address, QRC20TokenStandardAbi);
-            getView().subscribeTokenBalanceChanges(contractAddress);
-        } else {
-            getView().setAlertDialog(R.string.abi_doesnt_match_qrc20_standard, R.string.ok, BaseFragment.PopUpType.error);
-            return;
-        }
+        String contractAddress = getInteractor().handleContractWithToken(name, address, QRC20TokenStandardAbi);
+        getView().subscribeTokenBalanceChanges(contractAddress);
 
         getView().setAlertDialog(R.string.token_was_added_to_your_wallet, "", R.string.ok, BaseFragment.PopUpType.confirm, getView().getAlertCallback());
     }

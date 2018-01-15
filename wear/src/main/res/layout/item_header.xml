@@ -19,6 +19,7 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:textStyle="bold"
         android:text="QTUM"
         android:textColor="@android:color/white"
         android:textSize="12sp"
@@ -41,6 +42,7 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:textStyle="bold"
         android:text="QTUM"
         android:textColor="@android:color/white"
         android:textSize="12sp"

@@ -107,8 +107,15 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
         matcher = pattern.matcher(result.getText());
         if (matcher.find())
             amount = matcher.group(1);
-
+            if(amount.equals(".")){
+                amount="0.0";
+            }
         if (!TextUtils.isEmpty(receiveAddr)) {
+            try {
+                Double.valueOf(amount);
+            } catch(Exception e) {
+                amount = "0.0";
+            }
             ((SendFragment) getTargetFragment()).onResponse(receiveAddr, Double.valueOf(amount), tokenAddr);
         } else {
             ((SendFragment) getTargetFragment()).onResponseError();

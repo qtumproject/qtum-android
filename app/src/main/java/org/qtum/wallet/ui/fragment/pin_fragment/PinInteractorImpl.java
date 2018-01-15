@@ -117,8 +117,8 @@ class PinInteractorImpl implements PinInteractor {
     }
 
     @Override
-    public Observable<String> createWallet() {
-        return KeyStorage.getInstance().createWallet();
+    public String getRandomSeed(){
+        return KeyStorage.getInstance().getRandomSeed();
     }
 
     @Override
@@ -154,6 +154,6 @@ class PinInteractorImpl implements PinInteractor {
 
     @Override
     public Observable<String> loadWallet(String code) {
-        return KeyStorage.getInstance().importWallet(KeyStoreHelper.getSeed(mContext, code));
+        return KeyStorage.getInstance().createWallet(KeyStoreHelper.getSeed(mContext, code));
     }
 }

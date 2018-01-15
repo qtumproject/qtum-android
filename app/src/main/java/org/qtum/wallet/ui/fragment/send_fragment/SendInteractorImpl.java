@@ -16,6 +16,7 @@ import org.bitcoinj.script.Script;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.datastorage.KeyStorage;
+import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
@@ -52,7 +53,8 @@ public class SendInteractorImpl implements SendInteractor {
 
     @Override
     public BigDecimal getFeePerKb() {
-        return new BigDecimal(QtumSharedPreference.getInstance().getFeePerKb(mContext));
+        QtumSettingSharedPreference qtumSettingSharedPreference = new QtumSettingSharedPreference();
+        return new BigDecimal(qtumSettingSharedPreference.getFeePerKb(mContext));
     }
 
     @Override

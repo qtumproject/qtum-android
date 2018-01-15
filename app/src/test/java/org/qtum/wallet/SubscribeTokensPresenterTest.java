@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.ui.fragment.subscribe_tokens_fragment.SubscribeTokensInteractor;
 import org.qtum.wallet.ui.fragment.subscribe_tokens_fragment.SubscribeTokensPresenterImpl;
@@ -48,7 +49,7 @@ public class SubscribeTokensPresenterTest {
         verify(view, never()).setTokenList(anyList());
     }
 
-    private final List<Token> TEST_TOKENS = Arrays.asList(new Token(true, true), new Token(true, true));
+    private final List<Token> TEST_TOKENS = Arrays.asList(new Token(true, ContractCreationStatus.Created), new Token(true, ContractCreationStatus.Created));
 
     @Test
     public void initialize_Success() {

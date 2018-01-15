@@ -14,6 +14,7 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.model.ContractTemplate;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.datastorage.TinyDB;
+import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.activity.main_activity.WizardDialogFragment;
 import org.qtum.wallet.ui.fragment.deleted_contract_fragment.DeletedContractFragment;
@@ -131,7 +132,8 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
             mRelativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mContract.isHasBeenCreated()) {
+
+                    if (mContract.getCreationStatus().equals(ContractCreationStatus.Created)) {
                         getPresenter().onContractClick(mContract);
                     }
                 }
@@ -146,10 +148,10 @@ public abstract class MyContractsFragment extends BaseFragment implements MyCont
                     contractItemListener.onUnsubscribeClick(mContract);
                 }
             });
-            if (contract.getDate() != null) {
+            if (contract.getCreationStatus().equals(ContractCreationStatus.Created)) {
                 mTextViewDate.setText(DateCalculator.getShortDate(contract.getDate()));
             } else {
-                mTextViewDate.setText(R.string.unconfirmed);
+                mTextViewDate.setText(contract.getCreationStatus().name());
             }
             mTextViewTitle.setText(contract.getContractName());
             TinyDB tinyDB = new TinyDB(getContext());

@@ -1,13 +1,18 @@
 package org.qtum.wallet.ui.fragment.token_fragment.dark;
 
+import android.support.annotation.BinderThread;
 import android.support.design.widget.AppBarLayout;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
 import org.qtum.wallet.utils.ResizeWidthAnimation;
 import org.qtum.wallet.utils.StackCollapseLinearLayout;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -21,6 +26,9 @@ public class TokenFragmentDark extends TokenFragment {
     @BindView(R.id.collapse_layout)
     protected
     StackCollapseLinearLayout collapseLinearLayout;
+
+    @BindView(R.id.rvContainer)
+    View rvContainer;
 
     @Override
     protected int getLayout() {
@@ -68,12 +76,14 @@ public class TokenFragmentDark extends TokenFragment {
                     mLinearLayoutBalance.setY(balanceView.getHeight() / 2 - mLinearLayoutBalance.getHeight() * percents - mLinearLayoutBalance.getHeight() / 2 * (1 - percents));
                 }
                 collapseLinearLayout.collapseFromPercents(percents);
+                rvContainer.setY(collapseLinearLayout.getInitialHeight() * percents);
                 prevPercents = percents;
             }
 
         });
         collapseLinearLayout.requestLayout();
         doDividerCollapse();
+        mRecyclerView.setNestedScrollingEnabled(true);
     }
 
     protected void doDividerExpand() {
@@ -120,5 +130,12 @@ public class TokenFragmentDark extends TokenFragment {
                 mTextViewTokenName.setText(propValue);
                 break;
         }
+    }
+
+    @Override
+    public void updateHistory(List<TokenHistory> tokenHistories) {
+        super.updateHistory(tokenHistories);
+        mAdapter = new TokenHistoryAdapterDark(tokenHistories, this, getPresenter().getToken().getDecimalUnits());
+        mRecyclerView.setAdapter(mAdapter);
     }
 }

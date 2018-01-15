@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment.light;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -33,63 +34,94 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
     ImageView mImageViewIcon;
     @BindView(R.id.ll_transaction)
     LinearLayout mLinearLayoutTransaction;
+    @BindView(R.id.tv_getting_info)
+    TextView mTextViewGettingInfo;
     Subscription mSubscription;
-
-    @OnLongClick(R.id.tv_id)
-    public boolean onIdLongClick() {
-        ClipboardUtils.copyToClipBoard(mTextViewID.getContext(), mTextViewID.getText().toString(), new ClipboardUtils.CopyCallback() {
-            @Override
-            public void onCopyToClipBoard() {
-                Toast.makeText(mTextViewID.getContext(), mTextViewID.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
-            }
-        });
-        return true;
-    }
+    History mHistory;
+    @BindView(R.id.view_contract_indicator)
+    View contractIndicator;
 
     TransactionHolderLight(View itemView, final TransactionClickListener listener) {
         super(itemView);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onTransactionClick(getAdapterPosition());
+                if(mHistory.isReceiptUpdated()) {
+                    listener.onTransactionClick(getAdapterPosition());
+                }
             }
         });
         ButterKnife.bind(this, itemView);
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ClipboardUtils.copyToClipBoard(mTextViewID.getContext(), mTextViewID.getText().toString(), new ClipboardUtils.CopyCallback() {
+                    @Override
+                    public void onCopyToClipBoard() {
+                        Toast.makeText(mTextViewID.getContext(), mTextViewID.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return true;
+            }
+        });
     }
 
     void bindTransactionData(final History history) {
+        mHistory = history;
+
         if (mSubscription != null) {
             mSubscription.unsubscribe();
         }
         mLinearLayoutTransaction.setBackgroundResource(android.R.color.transparent);
 
-        if (history.getChangeInBalance().doubleValue() > 0) {
-            mImageViewIcon.setImageResource(R.drawable.ic_received_light);
+        if(history.isReceiptUpdated()) {
+            mImageViewIcon.setVisibility(View.VISIBLE);
+            mTextViewDate.setVisibility(View.VISIBLE);
+            mTextViewGettingInfo.setVisibility(View.GONE);
+            if (history.getBlockTime() != null) {
+                mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
+                    }
+                });
+                mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
+            } else {
+                mImageViewIcon.setImageResource(R.drawable.ic_confirmation_loader);
+                mTextViewDate.setText(R.string.confirmation);
+                mLinearLayoutTransaction.setBackgroundResource(R.color.bottom_nav_bar_color_light);
+            }
+            if(history.getTransactionReceipt()==null) {
+                contractIndicator.setBackgroundColor(Color.TRANSPARENT);
+                if (history.getChangeInBalance().doubleValue() > 0) {
+                    mImageViewIcon.setImageResource(R.drawable.ic_received_light);
+                } else {
+                    mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
+                }
+            } else {
+                if (history.getChangeInBalance().doubleValue() > 0) {
+                    mImageViewIcon.setImageResource(R.drawable.ic_rec_cont_light);
+                    contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_received_color);
+                } else {
+                    mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_light);
+                    contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_sent_color);
+                }
+            }
         } else {
-            mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
+            contractIndicator.setBackgroundColor(Color.TRANSPARENT);
+            mImageViewIcon.setVisibility(View.GONE);
+            mTextViewDate.setVisibility(View.GONE);
+            mTextViewGettingInfo.setVisibility(View.VISIBLE);
         }
 
-        if (history.getBlockTime() != null) {
-            mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {
-                @Override
-                public void onCompleted() {
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                }
-
-                @Override
-                public void onNext(Object o) {
-                    mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
-                }
-            });
-            mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
-        } else {
-            mImageViewIcon.setImageResource(R.drawable.ic_confirmation_loader);
-            mTextViewDate.setText(R.string.confirmation);
-            mLinearLayoutTransaction.setBackgroundResource(R.color.bottom_nav_bar_color_light);
-        }
         mTextViewID.setText(history.getTxHash());
         mTextViewValue.setText(getSpannedBalance(history.getChangeInBalance().toString() + " QTUM"));
     }

@@ -271,9 +271,11 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     public void onDestroyView() {
         super.onDestroyView();
         mNetworkStateReceiver.removeNetworkStateListener(mNetworkStateListener);
-        mUpdateService.removeBalanceChangeListener(mBalanceChangeListener);
-        if(mCurrency instanceof CurrencyToken) {
-            mUpdateService.removeTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(), mTokenBalanceChangeListener);
+        if(mUpdateService!=null) {
+            mUpdateService.removeBalanceChangeListener(mBalanceChangeListener);
+            if (mCurrency instanceof CurrencyToken) {
+                mUpdateService.removeTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(), mTokenBalanceChangeListener);
+            }
         }
     }
 
@@ -458,18 +460,41 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        mTextInputEditTextAddress.setFilters(new InputFilter[]{new InputFilter() {
+//        mTextInputEditTextAddress.setFilters(new InputFilter[]{new InputFilter() {
+//            @Override
+//            public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+//                String content = mTextInputEditTextAddress.getText().toString() + charSequence;
+//                Pattern pattern = Pattern.compile("^[qQ][a-km-zA-HJ-NP-Z1-9]{0,33}$");
+//                Matcher matcher = pattern.matcher(content);
+//                if (!matcher.matches()) {
+//                    return "";
+//                }
+//                return null;
+//            }
+//        }});
+        mTextInputEditTextAddress.addTextChangedListener(new TextWatcher() {
             @Override
-            public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
-                String content = mTextInputEditTextAddress.getText().toString() + charSequence;
-                Pattern pattern = Pattern.compile("^[qQ][a-km-zA-HJ-NP-Z1-9]{0,33}$");
-                Matcher matcher = pattern.matcher(content);
-                if (!matcher.matches()) {
-                    return "";
-                }
-                return null;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
-        }});
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Pattern pattern = Pattern.compile("^$|^[qQ][a-km-zA-HJ-NP-Z1-9]{0,33}$");
+                Matcher matcher = pattern.matcher(editable);
+                if (!matcher.matches()) {
+                    int length = editable.length();
+                    mTextInputEditTextAddress.setText(editable.subSequence(0,length==0?length:length-1));
+
+                }
+                mTextInputEditTextAddress.setSelection(mTextInputEditTextAddress.getText().length());
+            }
+        });
         mAlertDialogCallBack = new AlertDialogCallBack() {
             @Override
             public void onButtonClick() {
@@ -638,7 +663,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
 
                     @Override
                     public void run() {
-                        if(i3>i7)
+                        if(i7!=0 && i3>i7)
                             mNestedScrollView.scrollTo(0,mNestedScrollView.getScrollY()+i3);
                     }
                 });

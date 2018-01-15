@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.subscribe_tokens_fragment;
 
+import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
@@ -26,7 +27,7 @@ public class SubscribeTokensPresenterImpl extends BaseFragmentPresenterImpl impl
         super.initializeViews();
         List<Token> confirmedTokens = new ArrayList<>();
         for (Token token : getInteractor().getTokenList()) {
-            if (token.isHasBeenCreated()) {
+            if (token.getCreationStatus().equals(ContractCreationStatus.Created)) {
                 confirmedTokens.add(token);
             }
         }

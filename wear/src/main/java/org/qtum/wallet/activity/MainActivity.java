@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.ImageViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.wear.widget.WearableLinearLayoutManager;
 import android.support.wear.widget.WearableRecyclerView;
 import android.support.wearable.activity.WearableActivity;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -48,6 +51,10 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
     @BindView(R.id.history_list)
     WearableRecyclerView listView;
 
+    @BindView(R.id.v_background)
+    ImageView background;
+
+
     HistoryAdapter adapter;
     HeaderData headerData;
 
@@ -56,20 +63,14 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        listView.setVisibility(View.INVISIBLE);
 
         listView.setEdgeItemsCenteringEnabled(true);
-        listView.setLayoutManager(
-                new WearableLinearLayoutManager(this));
+        listView.setLayoutManager(new WearableLinearLayoutManager(this));
 
         CustomScrollingLayoutCallback customScrollingLayoutCallback =
                 new CustomScrollingLayoutCallback();
-        listView.setLayoutManager(
-                new WearableLinearLayoutManager(this, customScrollingLayoutCallback));
-
-        headerData = DataStorage.getHeaderData(this);
-
-        adapter = new HistoryAdapter(DataStorage.loadLastHistory(this), headerData, this, this);
-        listView.setAdapter(adapter);
+        listView.setLayoutManager(new WearableLinearLayoutManager(this, customScrollingLayoutCallback));
 
         setAmbientEnabled();
 
@@ -143,9 +144,12 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        MainActivity.this.headerData = DataStorage.getHeaderData(MainActivity.this);
-                        adapter.setHeaderData(MainActivity.this.headerData);
-                        adapter.updateHistory(histories);
+                        listView.setVisibility(View.VISIBLE);
+                        background.setImageResource(R.drawable.radial_circle);
+                        headerData = DataStorage.getHeaderData(MainActivity.this);
+
+                        adapter = new HistoryAdapter(DataStorage.loadLastHistory(MainActivity.this), headerData, MainActivity.this, MainActivity.this);
+                        listView.setAdapter(adapter);
                     }
                 });
             } else if (dataEvent.getType() == DataEvent.TYPE_DELETED) {

@@ -12,6 +12,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,7 +165,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
     public boolean isAmountValid(String amount) {
         BigDecimal bigAmount = new BigDecimal(amount);
         BigDecimal pattern = new BigDecimal("2").pow(256);
-        return bigAmount.compareTo(pattern) < 0;
+        return bigAmount.compareTo(pattern) <= 0;
     }
 
     @Override
@@ -189,9 +190,18 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                 if (contractAddress.equals(((CurrencyToken) currency).getToken().getContractAddress())) {
                     String resultAmount = amount;
                     if (token.getDecimalUnits() != null) {
-                        resultAmount = String.valueOf((int) (Double.valueOf(amount) * Math.pow(10, token.getDecimalUnits())));
-                        resultAmount = String.valueOf(Integer.valueOf(resultAmount));
+
+                        BigDecimal multiplyPow = new BigDecimal("10").pow(token.getDecimalUnits());
+
+                        if(!validateDecimalUnits(resultAmount, token.getDecimalUnits())){
+                            getView().dismissProgressDialog();
+                            getView().setAlertDialog(org.qtum.wallet.R.string.error, getView().getContext().getString(R.string.amount_too_big), "Ok", BaseFragment.PopUpType.error);
+                            return;
+                        }
+
+                        resultAmount = new BigDecimal(amount).multiply(multiplyPow).toBigInteger().toString();
                     }
+
                     if (!isAmountValid(resultAmount)) {
                         getView().setAlertDialog(getView().getContext().getString(R.string.amount_too_big), getView().getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
                     }
@@ -200,7 +210,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                     if (!from.equals("")) {
                         for (Balance balance : tokenBalance.getBalances()) {
                             if (balance.getAddress().equals(from)) {
-                                if (balance.getBalance().floatValue() >= Float.valueOf(resultAmount)) {
+                                if (balance.getBalance().compareTo(new BigDecimal(resultAmount)) > 0) {
                                     availableAddress = balance.getAddress();
                                     break;
                                 } else {
@@ -210,7 +220,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                         }
                     } else {
                         for (Balance balance : tokenBalance.getBalances()) {
-                            if (balance.getBalance().floatValue() >= Float.valueOf(resultAmount)) {
+                            if (balance.getBalance().compareTo(new BigDecimal(resultAmount)) > 0) {
                                 availableAddress = balance.getAddress();
                                 break;
                             }
@@ -224,6 +234,11 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                 }
             }
         }
+    }
+
+    boolean validateDecimalUnits(String amount, int decimalUnits) {
+        int commaPosition = amount.indexOf(".");
+        return commaPosition < 0 || amount.substring(commaPosition + 1).length() <= decimalUnits;
     }
 
     private void createAbiMethodParams(String address, String resultAmount, final Token token, final String fee, final int gasPrice, final int gasLimit) {

@@ -2,21 +2,28 @@ package org.qtum.wallet.ui.fragment.token_fragment;
 
 import android.content.Context;
 
+import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.TinyDB;
+import org.qtum.wallet.datastorage.TokenHistoryList;
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
+import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 import org.qtum.wallet.utils.ContractManagementHelper;
 
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.List;
 
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class TokenInteractorImpl implements TokenInteractor {
+
     private WeakReference<Context> mContext;
 
     public TokenInteractorImpl(Context context) {
@@ -79,4 +86,31 @@ public class TokenInteractorImpl implements TokenInteractor {
         }
         return value;
     }
+
+    @Override
+    public List<TokenHistory> getHistoryList() {
+        return TokenHistoryList.newInstance().getTokenHistories();
+    }
+
+    @Override
+    public Observable<TokenHistoryResponse> getHistoryList(String contractAddress, int limit, int offset) {
+        return QtumService.newInstance().getTokenHistoryList(contractAddress,limit,offset,getAddresses());
+    }
+
+    @Override
+    public int getTotalHistoryItem() {
+        return TokenHistoryList.newInstance().getTotalItems();
+    }
+
+//    @Override
+//    public void addToHistoryList(TokenHistory history) {
+//        TokenHistoryList.newInstance().getTokenHistories().add(0,history);
+//    }
+
+    @Override
+    public List<String> getAddresses() {
+        return KeyStorage.getInstance().getAddresses();
+    }
+
+
 }
