@@ -45,6 +45,7 @@
                 android:id="@+id/tv_placeholder_symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:text="@string/qtum"
                 android:layout_marginLeft="4dp"
                 android:gravity="center"
                 android:textColor="@color/white"
@@ -73,16 +74,34 @@
             android:textSize="12sp"
             app:typefaceAsset="@string/proximaNovaRegular"/>
 
-        <org.qtum.wallet.utils.FontTextView
-            android:id="@+id/tv_placeholder_not_confirmed_balance_value"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:text="0.0 QTUM"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:typefaceAsset="@string/proximaNovaRegular"/>
+            android:layout_alignParentRight="true">
+
+            <org.qtum.wallet.utils.FontTextView
+                android:id="@+id/tv_placeholder_not_confirmed_balance_value"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:typefaceAsset="@string/proximaNovaRegular"/>
+
+            <org.qtum.wallet.utils.FontTextView
+                android:id="@+id/tv_placeholder_not_confirmed_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/qtum"
+                android:layout_marginLeft="4dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:typefaceAsset="@string/proximaNovaRegular"/>
+        </LinearLayout>
+
+
 
     </RelativeLayout>
 

@@ -74,9 +74,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:hint="@string/_fee"
                     android:inputType="text"
-                    android:digits="0123456789qwertzuiopasdfghjklyxcvbnm"/>
+                    android:digits="0123456789qwertzuiopasdfghjklyxcvbnmабвгдеёжзийклмнопрстуфхцчшщъыьэюя"/>
             </android.support.design.widget.TextInputLayout>
 
             <org.qtum.wallet.utils.FontButton

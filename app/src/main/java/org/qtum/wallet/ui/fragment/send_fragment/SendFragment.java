@@ -123,6 +123,9 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     @BindView(R.id.tv_placeholder_symbol)
     TextView placeHolderSymbol;
 
+    @BindView(R.id.tv_placeholder_not_confirmed_symbol)
+    TextView placeHolderSymbolNotConfirmed;
+
     @BindView(R.id.nested_scroll_view)
     NestedScrollView mNestedScrollView;
 
@@ -460,18 +463,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     @Override
     public void initializeViews() {
         super.initializeViews();
-//        mTextInputEditTextAddress.setFilters(new InputFilter[]{new InputFilter() {
-//            @Override
-//            public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
-//                String content = mTextInputEditTextAddress.getText().toString() + charSequence;
-//                Pattern pattern = Pattern.compile("^[qQ][a-km-zA-HJ-NP-Z1-9]{0,33}$");
-//                Matcher matcher = pattern.matcher(content);
-//                if (!matcher.matches()) {
-//                    return "";
-//                }
-//                return null;
-//            }
-//        }});
+
         mTextInputEditTextAddress.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -767,6 +759,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
             mSpinnerContainer.setVisibility(View.GONE);
             mRelativeLayoutGasManagementContainer.setVisibility(View.GONE);
             placeHolderSymbol.setText("QTUM");
+            placeHolderSymbolNotConfirmed.setText("QTUM");
             if(mUpdateService!=null) {
                 mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
             }

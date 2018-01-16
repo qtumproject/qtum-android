@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -45,6 +46,8 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
     @BindView(R.id.recycler_view_event_logs)
     protected
     RecyclerView mRecyclerViewLogs;
+    @BindView(R.id.nested_scroll_view_container)
+    NestedScrollView mNestedScrollView;
 
     private int getRelativeTop(View myView) {
         if (myView.getParent() == myView.getRootView())
@@ -159,7 +162,7 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
             mEventLogViewType.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int marginTop = getRelativeTop(view) - view.getHeight();
+                    int marginTop = getRelativeTop(view) - view.getHeight() - mNestedScrollView.getScrollY();
                     ChooseDialogFragment chooseDialogFragment = ChooseDialogFragment.newInstance(marginTop,mDisplayedData.getDataHex());
                     chooseDialogFragment.setTargetFragment(getFragment(),1234);
                     chooseDialogFragment.show(getFragmentManager(), ChooseDialogFragment.class.getCanonicalName());

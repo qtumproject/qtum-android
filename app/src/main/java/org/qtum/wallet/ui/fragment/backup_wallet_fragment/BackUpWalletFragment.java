@@ -42,8 +42,6 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
     FontTextView mTextViewBrainCode;
     @BindView(R.id.tv_copy_brain_code_to_use)
     FontTextView mTextViewCopyBrainCodeToUse;
-    @BindView(R.id.tv_you_can_skip)
-    FontTextView youCanSkip;
 
     @OnClick(R.id.bt_share)
     public void onShareClick() {
@@ -103,14 +101,12 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
         if (getArguments().getBoolean(IS_WALLET_CREATING)) {
             mTextViewToolbarTitle.setText(R.string.copy_brain_code);
             mTextViewCopyBrainCodeToUse.setVisibility(View.GONE);
-            youCanSkip.setVisibility(View.VISIBLE);
             mButtonContinue.setVisibility(View.VISIBLE);
             mButtonCopy.setVisibility(View.VISIBLE);
             copyPassphare.setVisibility(View.GONE);
         } else {
             mTextViewToolbarTitle.setText(R.string.export_passphrase);
             mTextViewCopyBrainCodeToUse.setVisibility(View.VISIBLE);
-            youCanSkip.setVisibility(View.GONE);
             mButtonContinue.setVisibility(View.GONE);
             mButtonCopy.setVisibility(View.GONE);
             copyPassphare.setVisibility(View.VISIBLE);
