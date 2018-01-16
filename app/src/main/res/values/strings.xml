@@ -223,10 +223,6 @@
     <string name="contract_name_">Contract Name</string>
     <string name="name">Name</string>
     <string name="purchase_date">Purchase Date</string>
-
-    <string name="contract_was_deleted_by_its_author_and_is_no_longer_available_you_can_unsubscribe_to_remove_it_from_your_wallet">Contract was deleted by its author and is no longer available. You can Unsubscribe to remove it from your wallet.</string>
-    <string name="unsubscribe">Unsubscribe</string>
-
     <string name="please_put_the_words_from_passphrase_into_correct_order">Please put the words from passphrase into correct order</string>
     <string name="reset_all">Reset All</string>
     <string name="the_passphrase_is_not_correct_please_click_quot_reset_all_quot_to_clear_the_field_and_try_again">The passphrase is not correct. Please click \"Reset all\" to clear the field and try again</string>
@@ -236,12 +232,16 @@
     <string name="event_log">Event Log</string>
     <string name="address">Address</string>
     <string name="topics">Topics</string>
-    <string name="getting_info">Getting Info</string>
+    <string name="getting_info">Getting transaction receipt</string>
     <string name="received_contract">Received Contract</string>
     <string name="sent_contract">Sent Contract</string>
     <string name="data">Data</string>
+    <string name="hex">Hex</string>
+    <string name="number">Number</string>
+    <string name="text">Text</string>
     <string name="change_contract_name">Change contract name</string>
     <string name="change">Change</string>
-
+    <string name="contract_was_deleted_by_its_author_and_is_no_longer_available_you_can_unsubscribe_to_remove_it_from_your_wallet">Contract was deleted by its author and is no longer available. You can Unsubscribe to remove it from your wallet.</string>
+    <string name="unsubscribe">Unsubscribe</string>
 
 </resources>

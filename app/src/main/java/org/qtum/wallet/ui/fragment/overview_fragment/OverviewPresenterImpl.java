@@ -28,16 +28,16 @@ public class OverviewPresenterImpl extends BaseFragmentPresenterImpl implements 
     public void initializeViews() {
         super.initializeViews();
         History history = getIteractor().getHistory(getView().getPosition());
-        List<Pair<String, String>> overview = new ArrayList<>();
-        overview.add(new Pair<>("TxHash", history.getTxHash()));
-        overview.add(new Pair<>("BlockHash", history.getBlockHash()));
-        overview.add(new Pair<>("Block Height", String.valueOf(history.getBlockHeight())));
+        List<CopyableOverviewItem> overview = new ArrayList<>();
+        overview.add(new CopyableOverviewItem("TxHash", history.getTxHash(),true));
+        overview.add(new CopyableOverviewItem("BlockHash", history.getBlockHash(),true));
+        overview.add(new CopyableOverviewItem("Block Height", String.valueOf(history.getBlockHeight()),true));
         if(history.getTransactionReceipt()!=null){
-            overview.add(new Pair<>("Contract Address",history.getTransactionReceipt().getContractAddress()));
-            overview.add(new Pair<>("From",history.getTransactionReceipt().getFrom()));
-            overview.add(new Pair<>("To",history.getTransactionReceipt().getTo()));
-            overview.add(new Pair<>("Cumulative Gas Used",String.valueOf(history.getTransactionReceipt().getCumulativeGasUsed())));
-            overview.add(new Pair<>("Gas Used",String.valueOf(history.getTransactionReceipt().getGasUsed())));
+            overview.add(new CopyableOverviewItem("Contract Address",history.getTransactionReceipt().getContractAddress(),false));
+            overview.add(new CopyableOverviewItem("From",history.getTransactionReceipt().getFrom(),false));
+            overview.add(new CopyableOverviewItem("To",history.getTransactionReceipt().getTo(),false));
+            overview.add(new CopyableOverviewItem("Cumulative Gas Used",String.valueOf(history.getTransactionReceipt().getCumulativeGasUsed()),false));
+            overview.add(new CopyableOverviewItem("Gas Used",String.valueOf(history.getTransactionReceipt().getGasUsed()),false));
         }
         getView().setUpOverview(overview);
     }

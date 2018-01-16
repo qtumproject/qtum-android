@@ -40,6 +40,8 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
     History mHistory;
     @BindView(R.id.view_contract_indicator)
     View contractIndicator;
+    @BindView(R.id.progress_indicator)
+    View progressIndicator;
 
     TransactionHolderLight(View itemView, final TransactionClickListener listener) {
         super(itemView);
@@ -77,6 +79,7 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
         if(history.isReceiptUpdated()) {
             mImageViewIcon.setVisibility(View.VISIBLE);
             mTextViewDate.setVisibility(View.VISIBLE);
+            progressIndicator.setVisibility(View.GONE);
             mTextViewGettingInfo.setVisibility(View.GONE);
             if (history.getBlockTime() != null) {
                 mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {
@@ -119,6 +122,7 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
             contractIndicator.setBackgroundColor(Color.TRANSPARENT);
             mImageViewIcon.setVisibility(View.GONE);
             mTextViewDate.setVisibility(View.GONE);
+            progressIndicator.setVisibility(View.VISIBLE);
             mTextViewGettingInfo.setVisibility(View.VISIBLE);
         }
 

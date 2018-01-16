@@ -86,12 +86,20 @@
 
     </LinearLayout>
 
+    <org.qtum.wallet.utils.CustomProgressBarView
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:id="@+id/progress_indicator"
+        android:background="@color/qr_code_background"
+        app:progressSrc="@drawable/ic_progress_light_1"
+        android:layout_marginStart="16dp"/>
+
     <View
 
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
         android:alpha=".1"
-        android:background="@color/bottom_nav_bar_text_color_light"/>
+        android:background="@color/qr_code_background"/>
 
 </LinearLayout>

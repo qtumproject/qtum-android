@@ -10,9 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.model.gson.history.DisplayedData;
 import org.qtum.wallet.model.gson.history.Log;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.addresses_detail_fragment.AddressesDetailFragment;
@@ -24,11 +26,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public abstract class EventLogFragment extends BaseFragment implements EventLogView{
+public abstract class EventLogFragment extends BaseFragment implements EventLogView {
 
     public static String POSITION = "position";
     private EventLogPresenter mEventLogPresenter;
     protected EventLogAdapter mEventLogAdapter;
+
+    DataTypeChangeListener mDataTypeChangeListener;
 
     public static Fragment newInstance(Context context, int position) {
         Bundle args = new Bundle();
@@ -53,14 +57,6 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
     public void initializeViews() {
         super.initializeViews();
         mRecyclerViewLogs.setLayoutManager(new LinearLayoutManager(getContext()));
-//        mTextView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int marginTop = getRelativeTop(mTextView)-mTextView.getLayoutParams().height;
-//                ChooseDialogFragment chooseDialogFragment = ChooseDialogFragment.newInstance(marginTop);
-//                chooseDialogFragment.show(getFragmentManager(), ChooseDialogFragment.class.getCanonicalName());
-//            }
-//        });
     }
 
     @Override
@@ -78,7 +74,7 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
         return mEventLogPresenter;
     }
 
-    class EventLogViewHolder extends RecyclerView.ViewHolder{
+    class EventLogViewHolder extends RecyclerView.ViewHolder {
 
         @LayoutRes
         int mResId;
@@ -92,43 +88,36 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
         @BindView(R.id.recycler_view_data)
         RecyclerView mRecyclerViewData;
 
-        public EventLogViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-
-        public EventLogViewHolder(View view,  @LayoutRes int resId){
+        public EventLogViewHolder(View view, @LayoutRes int resId) {
             super(view);
+            ButterKnife.bind(this, itemView);
             mResId = resId;
         }
 
-        public void bind(Log log){
+        public void bind(Log log) {
             mTextViewAddress.setText(log.getAddress());
 
             mRecyclerViewTopics.setLayoutManager(new LinearLayoutManager(mRecyclerViewTopics.getContext()));
-            EventLogDataAdapter eventLogDataAdapter = new EventLogDataAdapter(log.getTopics(),mResId);
-            mRecyclerViewTopics.setAdapter(eventLogDataAdapter);
+            EventLogDataAdapter eventLogTopicsAdapter = new EventLogDataAdapter(log.getDisplayedTopics(), mResId);
+            mRecyclerViewTopics.setAdapter(eventLogTopicsAdapter);
 
-            List<String> data = new ArrayList<>();
-            int dataCount = log.getData().length()/64;
-            for(int i = 0; i<dataCount; i++){
-                data.add(log.getData().substring(i,(i+1)*64));
-            }
             mRecyclerViewData.setLayoutManager(new LinearLayoutManager(mRecyclerViewData.getContext()));
-            EventLogDataAdapter eventLogDataAdapter1 = new EventLogDataAdapter(data,mResId);
-            mRecyclerViewData.setAdapter(eventLogDataAdapter1);
+            EventLogDataAdapter eventLogDataAdapter = new EventLogDataAdapter(log.getDisplayedData(), mResId);
+            mRecyclerViewData.setAdapter(eventLogDataAdapter);
 
         }
 
     }
 
-    public class EventLogAdapter extends RecyclerView.Adapter<EventLogViewHolder>{
+    public class EventLogAdapter extends RecyclerView.Adapter<EventLogViewHolder> {
 
         List<Log> mLogs;
-        @LayoutRes int mResIdLog;
-        @LayoutRes int mResIdData;
+        @LayoutRes
+        int mResIdLog;
+        @LayoutRes
+        int mResIdData;
 
-        public EventLogAdapter(List<Log> logs, @LayoutRes int resIdLog, @LayoutRes int resIdData){
+        public EventLogAdapter(List<Log> logs, @LayoutRes int resIdLog, @LayoutRes int resIdData) {
             mLogs = logs;
             mResIdLog = resIdLog;
             mResIdData = resIdData;
@@ -136,7 +125,7 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
 
         @Override
         public EventLogViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new EventLogViewHolder(LayoutInflater.from(parent.getContext()).inflate(mResIdLog, parent, false),mResIdData);
+            return new EventLogViewHolder(LayoutInflater.from(parent.getContext()).inflate(mResIdLog, parent, false), mResIdData);
         }
 
         @Override
@@ -148,9 +137,10 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
         public int getItemCount() {
             return mLogs.size();
         }
+
     }
 
-    class EventLogDataViewHolder extends RecyclerView.ViewHolder{
+    class EventLogDataViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_view_type)
         TextView mTextViewType;
@@ -158,30 +148,60 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
         @BindView(R.id.tv_log_data)
         TextView mTextViewLogData;
 
-        public EventLogDataViewHolder(View itemView) {
+        @BindView(R.id.event_log_view_type)
+        LinearLayout mEventLogViewType;
+
+        DisplayedData mDisplayedData;
+
+        public EventLogDataViewHolder(View itemView, final DataTypeChangeListener dataTypeChangeListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            mEventLogViewType.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int marginTop = getRelativeTop(view) - view.getHeight();
+                    ChooseDialogFragment chooseDialogFragment = ChooseDialogFragment.newInstance(marginTop,mDisplayedData.getDataHex());
+                    chooseDialogFragment.setTargetFragment(getFragment(),1234);
+                    chooseDialogFragment.show(getFragmentManager(), ChooseDialogFragment.class.getCanonicalName());
+                    mDataTypeChangeListener = new DataTypeChangeListener() {
+                        @Override
+                        public void onChange(DisplayedData newData, Integer position) {
+                            dataTypeChangeListener.onChange(newData, getAdapterPosition());
+                        }
+                    };
+                }
+            });
         }
 
-        public void bind(String data){
-            mTextViewLogData.setText(data);
+        public void bind(DisplayedData displayedData) {
+            mDisplayedData = displayedData;
+            mTextViewLogData.setText(displayedData.getData());
+            mTextViewType.setText(displayedData.getDataType());
         }
 
     }
 
-    class EventLogDataAdapter extends RecyclerView.Adapter<EventLogDataViewHolder>{
+    class EventLogDataAdapter extends RecyclerView.Adapter<EventLogDataViewHolder> {
 
-        List<String> mData;
-        @LayoutRes int mResId;
+        List<DisplayedData> mData;
+        @LayoutRes
+        int mResId;
 
-        EventLogDataAdapter(List<String> data, @LayoutRes int resId){
+        EventLogDataAdapter(List<DisplayedData> data, @LayoutRes int resId) {
             mData = data;
             mResId = resId;
+
         }
 
         @Override
         public EventLogDataViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new EventLogDataViewHolder(LayoutInflater.from(parent.getContext()).inflate(mResId, parent, false));
+            return new EventLogDataViewHolder(LayoutInflater.from(parent.getContext()).inflate(mResId, parent, false), new DataTypeChangeListener() {
+                @Override
+                public void onChange(DisplayedData newData, Integer position) {
+                    mData.set(position, newData);
+                    notifyItemChanged(position);
+                }
+            });
         }
 
         @Override
@@ -193,6 +213,15 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
         public int getItemCount() {
             return mData.size();
         }
+
     }
 
+    interface DataTypeChangeListener{
+        void onChange(DisplayedData newData, Integer position);
+    }
+
+
+    public void onViewTypeChoose(DisplayedData newData){
+        mDataTypeChangeListener.onChange(newData, null);
+    }
 }

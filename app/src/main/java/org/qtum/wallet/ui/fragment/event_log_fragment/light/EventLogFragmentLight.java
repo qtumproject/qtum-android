@@ -16,6 +16,7 @@ public class EventLogFragmentLight extends EventLogFragment{
 
     @Override
     public void updateEventLog(List<Log> logs) {
-
+        mEventLogAdapter = new EventLogAdapter(logs, R.layout.item_event_log_light, R.layout.item_event_log_data_light);
+        mRecyclerViewLogs.setAdapter(mEventLogAdapter);
     }
 }
