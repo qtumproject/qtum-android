@@ -43,6 +43,9 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
     @BindView(R.id.view_contract_indicator)
     View contractIndicator;
 
+    @BindView(R.id.progress_indicator)
+    View progressIndicator;
+
     Subscription mSubscription;
     History mHistory;
 
@@ -99,7 +102,7 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
         } else {
             mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.unconfirmed));
         }
-
+        progressIndicator.setVisibility(View.GONE);
         if(history.isReceiptUpdated()) {
             if (history.getTransactionReceipt() != null) {
                 mImageViewIcon.setVisibility(View.VISIBLE);
@@ -124,6 +127,7 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
             }
         } else {
             mTextViewOperationType.setText(R.string.getting_info);
+            progressIndicator.setVisibility(View.VISIBLE);
             mImageViewIcon.setVisibility(View.GONE);
             contractIndicator.setBackgroundColor(Color.TRANSPARENT);
         }

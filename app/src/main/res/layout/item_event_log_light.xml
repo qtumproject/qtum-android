@@ -13,19 +13,19 @@
         android:padding="16dp">
 
         <org.qtum.wallet.utils.FontTextView
-            app:typefaceAsset="@string/simplonMonoRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/address"
-            android:textColor="@color/overview_title_color"/>
+            android:textColor="@color/event_log_title_color"
+            app:typefaceAsset="@string/proximaNovaRegular"/>
 
         <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_address"
-            app:typefaceAsset="@string/simplonMonoMedium"
+            app:typefaceAsset="@string/proximaNovaSemibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/event_log_address_color"
             android:textSize="16sp"/>
 
     </LinearLayout>
@@ -33,7 +33,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/colorPrimary"/>
+        android:layout_marginStart="16dp"
+        android:background="@color/bottom_nav_bar_color_light"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,11 +43,11 @@
         android:padding="16dp">
 
         <org.qtum.wallet.utils.FontTextView
-            app:typefaceAsset="@string/simplonMonoRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/topics"
-            android:textColor="@color/overview_title_color"/>
+            android:textColor="@color/event_log_title_color"
+            app:typefaceAsset="@string/proximaNovaRegular"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_topics"
@@ -61,7 +62,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/colorPrimary"/>
+        android:layout_marginStart="16dp"
+        android:background="@color/bottom_nav_bar_color_light"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,11 +72,11 @@
         android:padding="16dp">
 
         <org.qtum.wallet.utils.FontTextView
-            app:typefaceAsset="@string/simplonMonoRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/data"
-            android:textColor="@color/overview_title_color"/>
+            android:textColor="@color/event_log_title_color"
+            app:typefaceAsset="@string/proximaNovaRegular"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_data"

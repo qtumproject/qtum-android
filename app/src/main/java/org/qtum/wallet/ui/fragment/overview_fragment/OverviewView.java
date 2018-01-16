@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface OverviewView extends BaseFragmentView{
     int getPosition();
-    void setUpOverview(List<Pair<String,String>> overview);
+    void setUpOverview(List<CopyableOverviewItem> overview);
 }

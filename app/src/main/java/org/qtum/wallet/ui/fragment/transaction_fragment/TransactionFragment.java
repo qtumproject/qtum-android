@@ -7,6 +7,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -130,11 +131,11 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
             mTextViewValue.setText(value);
             mTextViewFee.setText(fee);
             mTextViewReceivedTime.setText(receivedTime);
-            FragmentStatePagerAdapter transactionPagerAdapter;
+            FragmentPagerAdapter transactionPagerAdapter;
             if(isContractCall){
-                transactionPagerAdapter = new ContractTransactionPagerAdapter(getFragmentManager());
+                transactionPagerAdapter = new ContractTransactionPagerAdapter(getChildFragmentManager());
             } else {
-                transactionPagerAdapter = new TransactionPagerAdapter(getFragmentManager());
+                transactionPagerAdapter = new TransactionPagerAdapter(getChildFragmentManager());
                 tabEventLog.setVisibility(View.GONE);
             }
             mViewPager.setAdapter(transactionPagerAdapter);
@@ -156,7 +157,7 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         }
     }
 
-    private class TransactionPagerAdapter extends FragmentStatePagerAdapter {
+    private class TransactionPagerAdapter extends FragmentPagerAdapter {
 
         public TransactionPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -182,7 +183,8 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         }
     }
 
-    private class ContractTransactionPagerAdapter extends FragmentStatePagerAdapter {
+    private class ContractTransactionPagerAdapter extends FragmentPagerAdapter {
+
 
         public ContractTransactionPagerAdapter(FragmentManager fm) {
             super(fm);

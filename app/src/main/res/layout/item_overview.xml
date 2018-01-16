@@ -9,26 +9,42 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="16dp">
 
-    <org.qtum.wallet.utils.FontTextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/overview_title_color"
-        app:typefaceAsset="@string/simplonMonoRegular"/>
 
-    <org.qtum.wallet.utils.FontTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        android:textColor="@color/colorPrimary"
-        app:typefaceAsset="@string/simplonMonoMedium"
-        android:id="@+id/tv_value" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <org.qtum.wallet.utils.FontTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/overview_title_color"
+                app:typefaceAsset="@string/simplonMonoRegular"/>
+
+            <org.qtum.wallet.utils.FontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"
+                app:typefaceAsset="@string/simplonMonoMedium"
+                android:id="@+id/tv_value" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv_copy"
+            app:srcCompat="@drawable/ic_copy_dark"/>
 
     </LinearLayout>
+
 
     <View
         android:layout_width="match_parent"

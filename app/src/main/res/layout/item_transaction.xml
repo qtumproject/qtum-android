@@ -88,10 +88,18 @@
 
     </LinearLayout>
 
+    <org.qtum.wallet.utils.CustomProgressBarView
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:id="@+id/progress_indicator"
+        android:background="@color/background"
+        app:progressSrc="@drawable/ic_progress_dark_1"
+        android:layout_marginStart="16dp"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:background="@color/colorPrimary"/>
 
 </LinearLayout>

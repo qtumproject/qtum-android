@@ -24,16 +24,20 @@
         <attr name="checkBoxTypeface" format="string"/>
     </declare-styleable>
 
-        <declare-styleable name="GLWaveVisualizationView" tools:ignore="ResourceName">
-            <attr name="av_wavesCount" format="integer" />
-            <attr name="av_wavesColors" format="reference" />
-            <attr name="av_wavesHeight" format="dimension" />
-            <attr name="av_wavesFooterHeight" format="dimension" />
-            <attr name="av_layersCount" format="integer" />
-        </declare-styleable>
+    <declare-styleable name="GLWaveVisualizationView" tools:ignore="ResourceName">
+        <attr name="av_wavesCount" format="integer" />
+        <attr name="av_wavesColors" format="reference" />
+        <attr name="av_wavesHeight" format="dimension" />
+        <attr name="av_wavesFooterHeight" format="dimension" />
+        <attr name="av_layersCount" format="integer" />
+    </declare-styleable>
 
     <declare-styleable name="SearchBar">
         <attr name="lytSearchView" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomProgressBarView">
+        <attr name="progressSrc" format="reference"/>
     </declare-styleable>
 
 </resources>

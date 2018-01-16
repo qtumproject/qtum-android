@@ -9,24 +9,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:orientation="horizontal">
 
-    <org.qtum.wallet.utils.FontTextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/overview_title_color_light"
-        app:typefaceAsset="@string/proximaNovaRegular"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
 
-    <org.qtum.wallet.utils.FontTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        android:textColor="@color/grey"
-        app:typefaceAsset="@string/proximaNovaSemibold"
-        android:id="@+id/tv_value" />
+            <org.qtum.wallet.utils.FontTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/overview_title_color_light"
+                app:typefaceAsset="@string/proximaNovaRegular"/>
+
+            <org.qtum.wallet.utils.FontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:textColor="@color/grey"
+                app:typefaceAsset="@string/proximaNovaSemibold"
+                android:id="@+id/tv_value" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv_copy"
+            app:srcCompat="@drawable/ic_copy_light"/>
 
     </LinearLayout>
 

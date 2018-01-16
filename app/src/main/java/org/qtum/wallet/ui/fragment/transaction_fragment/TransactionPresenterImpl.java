@@ -37,6 +37,6 @@ public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implemen
             dateString = getInteractor().getUnconfirmedDate();
         }
         getView().setUpTransactionData(history.getChangeInBalance().toString(), history.getFee().toString(), dateString,
-                history.getBlockHeight() > 0, history.getTransactionReceipt()!=null);
+                history.getBlockHeight() > 0, history.getTransactionReceipt()!=null && history.getTransactionReceipt().getLog()!=null && !history.getTransactionReceipt().getLog().isEmpty());
     }
 }

@@ -23,7 +23,7 @@ public class TransactionAdapterLight extends TransactionAdapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_TRANSACTION) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.lyt_transaction_light, parent, false);
+            View view = layoutInflater.inflate(R.layout.item_transaction_light, parent, false);
             return new TransactionHolderLight(view, listener);
         } else {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());

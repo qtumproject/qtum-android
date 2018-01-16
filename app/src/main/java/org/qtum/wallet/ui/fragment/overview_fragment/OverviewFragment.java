@@ -12,12 +12,15 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.addresses_detail_fragment.AddressesDetailFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
+import org.qtum.wallet.utils.ClipboardUtils;
 
 import java.util.List;
 
@@ -69,25 +72,41 @@ public abstract class OverviewFragment extends BaseFragment implements OverviewV
         TextView mTextViewTitle;
         @BindView(R.id.tv_value)
         TextView mTextViewValue;
+        @BindView(R.id.iv_copy)
+        ImageView mImageViewCopy;
+        CopyableOverviewItem mOverviewItem;
 
         public OverviewViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+            mImageViewCopy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClipboardUtils.copyToClipBoard(mImageViewCopy.getContext(), mOverviewItem.getValue(), new ClipboardUtils.CopyCallback() {
+                        @Override
+                        public void onCopyToClipBoard() {
+                            Toast.makeText(mImageViewCopy.getContext(), mImageViewCopy.getContext().getString(R.string.copied), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
         }
 
-        public void bindOverview(Pair<String, String> overview){
-            mTextViewTitle.setText(overview.first);
-            mTextViewValue.setText(overview.second);
+        public void bindOverview(CopyableOverviewItem overview){
+            mOverviewItem = overview;
+            mTextViewTitle.setText(overview.getTitle());
+            mTextViewValue.setText(overview.getValue());
+            mImageViewCopy.setVisibility(overview.isCopyable()?View.VISIBLE:View.GONE);
         }
 
     }
 
     protected class OverviewAdapter extends RecyclerView.Adapter<OverviewViewHolder>{
 
-        List<Pair<String, String>> mOverview;
+        List<CopyableOverviewItem> mOverview;
         @LayoutRes int mResId;
 
-        public OverviewAdapter(List<Pair<String, String>> overview, @LayoutRes int resId){
+        public OverviewAdapter(List<CopyableOverviewItem> overview, @LayoutRes int resId){
             mOverview = overview;
             mResId = resId;
         }
