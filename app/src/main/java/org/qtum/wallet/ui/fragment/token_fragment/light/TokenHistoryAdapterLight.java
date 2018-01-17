@@ -23,7 +23,7 @@ public class TokenHistoryAdapterLight extends TokenHistoryAdapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_TRANSACTION) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.item_transaction_light, parent, false);
+            View view = layoutInflater.inflate(R.layout.item_token_transaction_light, parent, false);
             return new TokenHistoryHolderLight(view, listener, decimalUnits);
         } else {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
