@@ -259,9 +259,9 @@ public class FileStorageManager {
             Collections.sort(contractMethods, new Comparator<ContractMethod>() {
                 @Override
                 public int compare(ContractMethod contractMethod, ContractMethod t1) {
-                    if (contractMethod.isConstant() && !t1.isConstant()) {
+                    if ((contractMethod.isConstant() && contractMethod.getInputParams().isEmpty()) && !t1.isConstant()) {
                         return -1;
-                    } else if (!contractMethod.isConstant() && t1.isConstant()) {
+                    } else if (!contractMethod.isConstant() && (t1.isConstant() && t1.getInputParams().isEmpty())) {
                         return 1;
                     } else {
                         return 0;

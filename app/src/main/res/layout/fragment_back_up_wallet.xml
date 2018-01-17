@@ -100,19 +100,6 @@
             android:textSize="16sp"
             app:typefaceAsset="@string/simplonMonoMedium"/>
 
-        <org.qtum.wallet.utils.FontTextView
-            android:id="@+id/tv_you_can_skip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="@string/you_can_skip_this_step_and_export_your_brain_code_at_any_time_you_want"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
-            app:typefaceAsset="@string/simplonMonoMedium"/>
-
     </RelativeLayout>
 
     <RelativeLayout
