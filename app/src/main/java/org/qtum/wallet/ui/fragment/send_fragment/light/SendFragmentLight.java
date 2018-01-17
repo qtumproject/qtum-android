@@ -36,5 +36,6 @@ public class SendFragmentLight extends SendFragment {
             adapter = new AddressWithTokenBalanceSpinnerAdapterLight(getContext(), tokenBalance, "", decimalUnits);
             mSpinner.setAdapter(adapter);
         }
+        super.setUpSpinner(tokenBalance, decimalUnits);
     }
 }

@@ -214,6 +214,24 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     };
 
     @Override
+    public void setUpSpinner(TokenBalance tokenBalance, Integer decimalUnits) {
+        int i = 0;
+        String currency = getArguments().getString(CURRENCY);
+        if(currency!=null && !currency.isEmpty()){
+        String addressFrom = getArguments().getString(ADDRESS_FROM);
+        if(addressFrom!=null && !addressFrom.isEmpty()) {
+            for (Balance balance : tokenBalance.getBalances()) {
+                if (balance.getAddress().equals(addressFrom)) {
+                    mSpinner.setSelection(i);
+                    return;
+                }
+                i++;
+            }
+        }
+        }
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getMainActivity().setIconChecked(3);
@@ -634,7 +652,6 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                 }
             }
         });
-
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
