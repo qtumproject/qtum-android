@@ -79,8 +79,10 @@ public abstract  class ChangeContractNameFragment extends BaseFragment implement
             public void afterTextChanged(Editable editable) {
                 if(editable.toString().isEmpty()){
                     mButtonChange.setClickable(false);
+                    mButtonChange.setAlpha(0.5f);
                 } else {
                     mButtonChange.setClickable(true);
+                    mButtonChange.setAlpha(1f);
                 }
             }
         });
