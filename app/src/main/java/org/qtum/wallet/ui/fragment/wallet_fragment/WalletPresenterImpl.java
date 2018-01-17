@@ -176,7 +176,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
             public void execute(final Realm realm) {
                 List<History> historiesDB = realm.copyFromRealm(realm.where(History.class).findAll());
                 for (final History history : histories) {
-                    if (history.getTransactionReceipt() == null) {
+                    if (history.getTransactionReceipt() == null && history.getBlockTime() != null) {
                         boolean success = false;
                         for (History historyDB : historiesDB) {
                             if (history.getTxHash().equals(historyDB.getTxHash())) {
@@ -248,6 +248,61 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
             getInteractor().addToHistoryList(history);
             getView().notifyNewHistory();
         }
+        initTransactionReceipt(history);
+    }
+
+    private void initTransactionReceipt(final History history) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(final Realm realm) {
+                List<History> historiesDB = realm.copyFromRealm(realm.where(History.class).findAll());
+                    if (history.getTransactionReceipt() == null && history.getBlockTime() != null) {
+                        boolean success = false;
+                        for (History historyDB : historiesDB) {
+                            if (history.getTxHash().equals(historyDB.getTxHash())) {
+                                history.setTransactionReceipt(historyDB.getTransactionReceipt());
+                                success = true;
+                                break;
+                            }
+                        }
+                        if (!success) {
+                            getInteractor().getTransactionReceipt(history.getTxHash())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new Subscriber<List<TransactionReceipt>>() {
+                                        @Override
+                                        public void onCompleted() {
+
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(final List<TransactionReceipt> transactionReceipt) {
+                                            Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+                                                @Override
+                                                public void execute(Realm realm) {
+                                                    if(transactionReceipt.size()>0) {
+                                                        history.setTransactionReceipt(transactionReceipt.get(0));
+                                                        realm.insertOrUpdate(history);
+                                                    } else {
+                                                        history.setReceiptUpdated(true);
+                                                        realm.insertOrUpdate(history);
+                                                    }
+                                                    getView().notifyConfirmHistory(getInteractor().getHistoryList().indexOf(history));
+                                                }
+                                            });
+                                        }
+                                    });
+                        }
+
+                    }
+
+            }
+        });
     }
 
     @Override
