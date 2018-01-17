@@ -3,9 +3,13 @@ package org.qtum.wallet.ui.fragment.change_contract_name_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 
 import org.qtum.wallet.R;
@@ -25,7 +29,9 @@ public abstract  class ChangeContractNameFragment extends BaseFragment implement
     @BindView(R.id.til_contract_name)
     TextInputLayout mTextInputLayoutContractName;
     @BindView(R.id.et_contract_name)
-    EditText mEditTextContractName;
+    TextInputEditText mEditTextContractName;
+    @BindView(R.id.bt_change)
+    Button mButtonChange;
 
     @OnClick({R.id.ibt_back, R.id.bt_change})
     public void onClick(View view) {
@@ -57,7 +63,27 @@ public abstract  class ChangeContractNameFragment extends BaseFragment implement
     @Override
     public void initializeViews() {
         super.initializeViews();
-        mTextInputLayoutContractName.setHint(getArguments().getString(CURRENT_CONTRACT_NAME));
+        mEditTextContractName.setText(getArguments().getString(CURRENT_CONTRACT_NAME));
+        mEditTextContractName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.toString().isEmpty()){
+                    mButtonChange.setClickable(false);
+                } else {
+                    mButtonChange.setClickable(true);
+                }
+            }
+        });
     }
 
     @Override
