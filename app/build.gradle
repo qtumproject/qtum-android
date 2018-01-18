@@ -26,7 +26,7 @@ android {
         releaseConfig {
             keyAlias 'QTUM'
             keyPassword 'qtum-mobile'
-            storeFile file('/Users/kirillvolkov/Documents/PixelPlex/Qtum/jks/qtum-test.jks')
+            storeFile file('/qtum-test.jks')
             storePassword 'qtum-mobile'
         }
     }
