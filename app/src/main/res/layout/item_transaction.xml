@@ -55,7 +55,7 @@
                     android:textColor="@color/colorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Send"/>
+                    android:text="@string/sent_contract"/>
 
                 <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_value"
