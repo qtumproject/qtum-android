@@ -2,24 +2,18 @@ package org.qtum.wallet.ui.fragment.wallet_fragment;
 
 import android.content.Context;
 import android.text.TextUtils;
-import org.qtum.wallet.datastorage.QtumSharedPreference;
+
 import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
+import org.qtum.wallet.datastorage.HistoryList;
+import org.qtum.wallet.datastorage.KeyStorage;
+import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
 import org.qtum.wallet.model.gson.history.TransactionReceipt;
-import org.qtum.wallet.model.gson.history.Vin;
-import org.qtum.wallet.model.gson.history.Vout;
-import org.qtum.wallet.datastorage.HistoryList;
-import org.qtum.wallet.datastorage.KeyStorage;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.internal.util.SubscriptionList;
-import rx.schedulers.Schedulers;
 
 public class WalletInteractorImpl implements WalletInteractor {
 
@@ -70,7 +64,7 @@ public class WalletInteractorImpl implements WalletInteractor {
     @Override
     public String getAddress() {
         String s = KeyStorage.getInstance().getCurrentAddress();
-        if(!TextUtils.isEmpty(s)) {
+        if (!TextUtils.isEmpty(s)) {
             QtumSharedPreference.getInstance().saveCurrentAddress(context, s);
         }
         return s;
