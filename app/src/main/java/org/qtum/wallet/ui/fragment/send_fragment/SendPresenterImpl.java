@@ -210,7 +210,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                     if (!from.equals("")) {
                         for (Balance balance : tokenBalance.getBalances()) {
                             if (balance.getAddress().equals(from)) {
-                                if (balance.getBalance().compareTo(new BigDecimal(resultAmount)) > 0) {
+                                if (balance.getBalance().compareTo(new BigDecimal(resultAmount)) >= 0) {
                                     availableAddress = balance.getAddress();
                                     break;
                                 } else {
@@ -220,7 +220,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                         }
                     } else {
                         for (Balance balance : tokenBalance.getBalances()) {
-                            if (balance.getBalance().compareTo(new BigDecimal(resultAmount)) > 0) {
+                            if (balance.getBalance().compareTo(new BigDecimal(resultAmount)) >= 0) {
                                 availableAddress = balance.getAddress();
                                 break;
                             }

@@ -9,6 +9,7 @@ import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class AddressesListTokenInteractorImpl implements AddressesListTokenInteractor {
@@ -40,7 +41,7 @@ public class AddressesListTokenInteractorImpl implements AddressesListTokenInter
     }
 
     @Override
-    public boolean isValidBalance(TokenBalance tokenBalance, DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String amountString) {
-        return tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()).getBalance().floatValue() > Float.valueOf(amountString);
+    public boolean isValidBalance(TokenBalance tokenBalance, DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String amountString, Integer decimalUnits) {
+        return tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits))).floatValue() >= Float.valueOf(amountString);
     }
 }
