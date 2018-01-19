@@ -57,13 +57,10 @@ class ContractConfirmInteractorImpl implements ContractConfirmInteractor {
         tinyDB.putUnconfirmedContractTxHashList(unconfirmedTokenTxHashList);
         for (ContractTemplate contractTemplate : tinyDB.getContractTemplateList()) {
             if (contractTemplate.getUuid().equals(contractTemplateUiid)) {
-                if (contractTemplate.getContractType().equals("token")) {
+                if (contractTemplate.getContractType().equals("token") || contractTemplate.getContractType().equals("crowdsale")) {
                     saveToken(tinyDB, txid, contractTemplateUiid, contractName, senderAddress);
                 } else {
                     saveContract(tinyDB, txid, contractTemplateUiid, contractName, senderAddress);
-                    if (contractTemplate.getContractType().equals("crowdsale")) {
-                        saveToken(tinyDB, txid, contractTemplateUiid, contractName, senderAddress);
-                    }
                 }
             }
         }

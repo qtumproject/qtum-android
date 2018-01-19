@@ -26,7 +26,7 @@ public class TokenHistoryAdapterDark extends TokenHistoryAdapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_TRANSACTION) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(org.qtum.wallet.R.layout.item_transaction, parent, false);
+            View view = layoutInflater.inflate(org.qtum.wallet.R.layout.item_token_transaction, parent, false);
             return new TokenHistoryHolderDark(view, listener, decimalUnits);
         } else {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());

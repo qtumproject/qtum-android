@@ -16,6 +16,7 @@ public class ConfirmPassphrasePresenterImpl extends BaseFragmentPresenterImpl im
 
     ConfirmPassphraseView mConfirmPassphraseView;
     ConfirmPassphraseInteractor mConfirmPassphraseInteractor;
+    boolean isDataLoaded = false;
 
     List<String> wordsList;
 
@@ -82,6 +83,7 @@ public class ConfirmPassphrasePresenterImpl extends BaseFragmentPresenterImpl im
                     @Override
                     public void onNext(String s) {
                         getInteractor().setKeyGeneratedInstance(true);
+                        isDataLoaded = true;
                         getView().onLogin();
                         getView().dismissProgressDialog();
                         getView().confirmSeed();
@@ -90,4 +92,12 @@ public class ConfirmPassphrasePresenterImpl extends BaseFragmentPresenterImpl im
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(isDataLoaded){
+            getView().dismissProgressDialog();
+            getView().confirmSeed();
+        }
+    }
 }

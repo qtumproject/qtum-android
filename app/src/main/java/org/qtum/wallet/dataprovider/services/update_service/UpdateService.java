@@ -626,6 +626,9 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
         socket.emit("unsubscribe", "balance_subscribe", null, obj);
         socket.disconnect();
         monitoringFlag = false;
+        mAllTokenBalanceList.clear();
+        unconfirmedBalance = null;
+        balance = null;
         mAddresses = null;
         notificationManager.cancel(DEFAULT_NOTIFICATION_ID);
     }

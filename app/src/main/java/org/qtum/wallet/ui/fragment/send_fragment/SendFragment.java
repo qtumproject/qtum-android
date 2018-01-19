@@ -13,8 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
@@ -30,7 +28,6 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.jsoup.helper.StringUtil;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
@@ -39,7 +36,6 @@ import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceCha
 import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenBalanceChangeListener;
 import org.qtum.wallet.model.Currency;
 import org.qtum.wallet.model.CurrencyToken;
-import org.qtum.wallet.model.gson.call_smart_contract_response.CallSmartContractResponse;
 import org.qtum.wallet.model.gson.token_balance.Balance;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
@@ -207,11 +203,29 @@ public abstract class SendFragment extends BaseFragment implements SendView {
             getMainActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    setUpSpinner(tokenBalance,((CurrencyToken) mCurrency).getToken().getDecimalUnits());
+                    setUpSpinner(tokenBalance, ((CurrencyToken) mCurrency).getToken().getDecimalUnits());
                 }
             });
         }
     };
+
+    @Override
+    public void setUpSpinner(TokenBalance tokenBalance, Integer decimalUnits) {
+        int i = 0;
+        String currency = getArguments().getString(CURRENCY);
+        if (currency != null && !currency.isEmpty()) {
+            String addressFrom = getArguments().getString(ADDRESS_FROM);
+            if (addressFrom != null && !addressFrom.isEmpty()) {
+                for (Balance balance : tokenBalance.getBalances()) {
+                    if (balance.getAddress().equals(addressFrom)) {
+                        mSpinner.setSelection(i);
+                        return;
+                    }
+                    i++;
+                }
+            }
+        }
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -226,9 +240,9 @@ public abstract class SendFragment extends BaseFragment implements SendView {
             public void onServiceConnectionChange(boolean isConnecting) {
                 if (isConnecting) {
                     mUpdateService = getUpdateService();
-                    if(mCurrency!=null) {
-                        if(mCurrency instanceof CurrencyToken) {
-                            mUpdateService.addTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(),mTokenBalanceChangeListener);
+                    if (mCurrency != null) {
+                        if (mCurrency instanceof CurrencyToken) {
+                            mUpdateService.addTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(), mTokenBalanceChangeListener);
                         } else {
                             mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
                         }
@@ -274,7 +288,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     public void onDestroyView() {
         super.onDestroyView();
         mNetworkStateReceiver.removeNetworkStateListener(mNetworkStateListener);
-        if(mUpdateService!=null) {
+        if (mUpdateService != null) {
             mUpdateService.removeBalanceChangeListener(mBalanceChangeListener);
             if (mCurrency instanceof CurrencyToken) {
                 mUpdateService.removeTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(), mTokenBalanceChangeListener);
@@ -481,7 +495,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                 Matcher matcher = pattern.matcher(editable);
                 if (!matcher.matches()) {
                     int length = editable.length();
-                    mTextInputEditTextAddress.setText(editable.subSequence(0,length==0?length:length-1));
+                    mTextInputEditTextAddress.setText(editable.subSequence(0, length == 0 ? length : length - 1));
 
                 }
                 mTextInputEditTextAddress.setSelection(mTextInputEditTextAddress.getText().length());
@@ -532,7 +546,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         }
         mTextInputEditTextAmount.setText(amount);
         mTextInputEditTextAddress.setText(address);
-    
+
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -634,12 +648,11 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                 }
             }
         });
-
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Integer decimalUnits = ((CurrencyToken)mCurrency).getToken().getDecimalUnits();
-                getPresenter().handleBalanceChanges(new BigDecimal(0),((Balance)mSpinner.getItemAtPosition(i)).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128));
+                Integer decimalUnits = ((CurrencyToken) mCurrency).getToken().getDecimalUnits();
+                getPresenter().handleBalanceChanges(new BigDecimal(0), ((Balance) mSpinner.getItemAtPosition(i)).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128));
             }
 
             @Override
@@ -655,8 +668,8 @@ public abstract class SendFragment extends BaseFragment implements SendView {
 
                     @Override
                     public void run() {
-                        if(i7!=0 && i3>i7)
-                            mNestedScrollView.scrollTo(0,mNestedScrollView.getScrollY()+i3);
+                        if (i7 != 0 && i3 > i7)
+                            mNestedScrollView.scrollTo(0, mNestedScrollView.getScrollY() + i3);
                     }
                 });
             }
@@ -664,7 +677,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     }
 
     private String validateFloatDot(CharSequence input) {
-        if(input.length() == 1 && (input.charAt(0) == '.' || input.charAt(0) == ',')) {
+        if (input.length() == 1 && (input.charAt(0) == '.' || input.charAt(0) == ',')) {
             return '0' + input.toString();
         }
 
@@ -714,15 +727,15 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     public void setUpCurrencyField(Currency currency) {
         placeHolderBalance.setText("");
         placeHolderSymbol.setText("");
-        if(mSubscription!=null){
+        if (mSubscription != null) {
             mSubscription.unsubscribe();
         }
-        if(adapter!=null){
-            adapter=null;
+        if (adapter != null) {
+            adapter = null;
         }
-        if(mUpdateService!=null){
+        if (mUpdateService != null) {
             if (mCurrency instanceof CurrencyToken) {
-                mUpdateService.removeTokenBalanceChangeListener(((CurrencyToken)mCurrency).getToken().getContractAddress(),mTokenBalanceChangeListener);
+                mUpdateService.removeTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(), mTokenBalanceChangeListener);
             } else {
                 mUpdateService.removeBalanceChangeListener(mBalanceChangeListener);
             }
@@ -752,7 +765,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                             adapter.notifyDataSetChanged();
                         }
                     });
-            if(mUpdateService!=null) {
+            if (mUpdateService != null) {
                 mUpdateService.addTokenBalanceChangeListener(((CurrencyToken) mCurrency).getToken().getContractAddress(), mTokenBalanceChangeListener);
             }
         } else {
@@ -760,7 +773,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
             mRelativeLayoutGasManagementContainer.setVisibility(View.GONE);
             placeHolderSymbol.setText("QTUM");
             placeHolderSymbolNotConfirmed.setText("QTUM");
-            if(mUpdateService!=null) {
+            if (mUpdateService != null) {
                 mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
             }
         }
