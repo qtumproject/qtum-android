@@ -25,6 +25,8 @@ public class TokenHistory {
     @Expose
     private Integer txTime;
 
+    private HistoryType mHistoryType;
+
     public String getContractAddress() {
         return contractAddress;
     }
@@ -71,6 +73,14 @@ public class TokenHistory {
 
     public void setTxTime(Integer txTime) {
         this.txTime = txTime;
+    }
+
+    public void setHistoryType(HistoryType historyType) {
+        mHistoryType = historyType;
+    }
+
+    public HistoryType getHistoryType() {
+        return mHistoryType;
     }
 
     //for unit_test

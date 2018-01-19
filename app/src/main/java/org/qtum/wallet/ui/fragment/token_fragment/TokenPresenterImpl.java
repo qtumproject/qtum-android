@@ -2,9 +2,14 @@ package org.qtum.wallet.ui.fragment.token_fragment;
 
 import org.qtum.wallet.datastorage.TokenHistoryList;
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.token_history.HistoryType;
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+
+import java.util.Iterator;
+import java.util.List;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -138,11 +143,28 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
 
                     @Override
                     public void onNext(TokenHistoryResponse historyResponse) {
+                        initTokenHistoryType(historyResponse.getItems());
                         TokenHistoryList.newInstance().setTokenHistories(historyResponse.getItems());
                         TokenHistoryList.newInstance().setTotalItems(historyResponse.getCount());
                         getView().updateHistory(getInteractor().getHistoryList());
                     }
                 }));
+    }
+
+    private void initTokenHistoryType(List<TokenHistory> tokenHistories) {
+        List<String> ownAddresses = getInteractor().getAddresses();
+        for(TokenHistory tokenHistory : tokenHistories){
+            for (String address : ownAddresses) {
+                if (tokenHistory.getFrom().equals(address)){
+                    tokenHistory.setHistoryType(HistoryType.Sent);
+                    break;
+                }
+            }
+            if(tokenHistory.getHistoryType()==null){
+                tokenHistory.setHistoryType(HistoryType.Received);
+            }
+        }
+
     }
 
     @Override

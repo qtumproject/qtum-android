@@ -96,6 +96,15 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
         } else {
             mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.unconfirmed));
         }
+        switch (history.getHistoryType()){
+            case Sent:
+                mImageViewIcon.setImageResource(R.drawable.ic_sent);
+                break;
+            case Received:
+                mImageViewIcon.setImageResource(R.drawable.ic_received);
+                break;
+        }
+        mTextViewOperationType.setText(history.getHistoryType().name());
         mTextViewID.setText(history.getTxHash());
 
         String resultamount = history.getAmount();
