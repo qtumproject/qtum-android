@@ -18,8 +18,8 @@ import android.widget.Toast;
 import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
-import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.ResizeHeightAnimation;
@@ -227,11 +227,11 @@ public abstract class ContractConfirmFragment extends BaseFragment implements Co
                     textViewChangeValue = true;
                     int progress;
                     if (fee < mMinFee) {
-                        progress = mMinFee / stepFee;
+                        progress = 0;
                     } else if (fee > mMaxFee) {
-                        progress = mMaxFee / stepFee;
+                        progress = (mMaxFee - mMinFee) / stepFee;
                     } else {
-                        progress = fee.intValue() / stepFee;
+                        progress = (fee.intValue() - mMinFee) / stepFee;
                     }
                     mSeekBarFee.setProgress(progress);
                 }
@@ -263,8 +263,8 @@ public abstract class ContractConfirmFragment extends BaseFragment implements Co
 
                     @Override
                     public void run() {
-                        if(i3>i7)
-                            mNestedScrollView.scrollTo(0,mNestedScrollView.getScrollY()+i3);
+                        if (i3 > i7)
+                            mNestedScrollView.scrollTo(0, mNestedScrollView.getScrollY() + i3);
                     }
                 });
             }
