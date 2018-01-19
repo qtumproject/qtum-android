@@ -60,12 +60,22 @@
 
                 <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_value"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:gravity="right"
                     app:typefaceAsset="@string/simplonMonoMedium"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
-                    android:text="-7,450 QTUM"
+                    android:text="-7,450"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <org.qtum.wallet.utils.FontTextView
+                    android:layout_width="wrap_content"
+                    app:typefaceAsset="@string/simplonMonoMedium"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:text=" QTUM"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
