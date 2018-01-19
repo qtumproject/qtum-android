@@ -39,9 +39,14 @@ public class SubscribeTokensPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
     @Override
-    public void saveTokens(List<Token> tokens) {
-        if (tokens != null) {
-            getInteractor().saveTokenList(tokens);
+    public void onSubscribeChanged(Token token) {
+        List<Token> tokens = getInteractor().getTokenList();
+        for(Token token1 : tokens){
+            if(token1.getContractAddress().equals(token.getContractAddress())){
+                token1.setSubscribe(!token1.isSubscribe());
+                getInteractor().saveTokenList(tokens);
+                return;
+            }
         }
     }
 

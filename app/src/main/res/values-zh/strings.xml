@@ -182,6 +182,47 @@
     <string name="insufficient_fee_lease_use_minimum_of">交易费不足。请使用至少</string>
 
     <string name="no_transaction_available_yet">当前没有有效交易</string>
+    <string name="unsubscribe">no</string>
+    <string name="contract_was_deleted_by_its_author_and_is_no_longer_available_you_can_unsubscribe_to_remove_it_from_your_wallet">no</string>
+    <string name="change_contract_name">no</string>
+    <string name="change">no</string>
+    <string name="text">no</string>
+    <string name="number">no</string>
+    <string name="hex">no</string>
+    <string name="data">no</string>
+    <string name="sent_contract">no</string>
+    <string name="received_contract">no</string>
+    <string name="getting_info">no</string>
+    <string name="topics">no</string>
+    <string name="event_log">no</string>
+    <string name="address">no</string>
+    <string name="overview">no</string>
+    <string name="repeat_passphrase">no</string>
+    <string name="please_note_that_you_won_t_be_able_to_restore_your_wallet_without_passphrase_and_all_funds_can_be_lost">no</string>
+    <string name="the_passphrase_is_not_correct_please_click_quot_reset_all_quot_to_clear_the_field_and_try_again">no</string>
+    <string name="reset_all">no</string>
+    <string name="please_put_the_words_from_passphrase_into_correct_order">no</string>
+    <string name="purchase_date">no</string>
+    <string name="name">no</string>
+    <string name="contract_name_">no</string>
+    <string name="contract_address_">no</string>
+    <string name="default_address">no</string>
+    <string name="choose_from_library">no</string>
+    <string name="query_result">no</string>
+    <string name="query">no</string>
+    <string name="swipe_left_to_unsubscribe_or_delete_contract">no</string>
+    <string name="amount_too_big">no</string>
+    <string name="you_are_about_to_exit_your_account_all_account_data_will_be_erased_from_the_device_please_make_sure_you_have_saved_backups_of_your_passphrase_and_required_contracts">no</string>
+    <string name="warning">no</string>
+    <string name="minutes">no</string>
+    <string name="sorry_please_try_again_in">no</string>
+    <string name="receive_version_error">no</string>
+    <string name="edit">no</string>
+    <string name="close">no</string>
+    <string name="no_contracts_found">no</string>
+    <string name="no_tokens_found">no</string>
+    <string name="invalid_fee">no</string>
+    <string name="_fee">no</string>
 
 
 </resources>
