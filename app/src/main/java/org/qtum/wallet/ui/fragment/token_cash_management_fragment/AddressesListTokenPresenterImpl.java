@@ -101,7 +101,7 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
         getView().hideTransferDialog();
 
         if (tokenBalance == null || !getInteractor().isValidForAddress(tokenBalance, keyWithTokenBalanceFrom)
-                || !getInteractor().isValidBalance(tokenBalance, keyWithTokenBalanceFrom, amountString)) {
+                || !getInteractor().isValidBalance(tokenBalance, keyWithTokenBalanceFrom, amountString, token.getDecimalUnits())) {
             getView().dismissProgressDialog();
             getView().setAlertDialog(R.string.error, R.string.you_have_insufficient_funds_for_this_transaction, "Ok", BaseFragment.PopUpType.error);
             return;

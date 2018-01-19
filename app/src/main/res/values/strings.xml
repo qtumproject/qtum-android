@@ -233,8 +233,8 @@
     <string name="address">Address</string>
     <string name="topics">Topics</string>
     <string name="getting_info">Getting transaction receipt</string>
-    <string name="received_contract">Received Contract</string>
-    <string name="sent_contract">Sent Contract</string>
+    <string name="received_contract">Received \nContract</string>
+    <string name="sent_contract">Sent \nContract</string>
     <string name="data">Data</string>
     <string name="hex">Hex</string>
     <string name="number">Number</string>

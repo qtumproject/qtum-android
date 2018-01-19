@@ -22,7 +22,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
@@ -32,12 +31,12 @@ import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceCha
 import org.qtum.wallet.dataprovider.services.update_service.listeners.TransactionListener;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFragment;
 import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.FontTextView;
 
@@ -175,14 +174,14 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(mNetworkStateListener!=null) {
+        if (mNetworkStateListener != null) {
             mNetworkStateReceiver.removeNetworkStateListener(mNetworkStateListener);
         }
-        if(mUpdateService!=null) {
+        if (mUpdateService != null) {
             mUpdateService.removeTransactionListener();
             mUpdateService.removeBalanceChangeListener(balanceListener);
         }
-        if(getMainActivity()!=null) {
+        if (getMainActivity() != null) {
             getMainActivity().removePermissionResultListener();
         }
         setAdapterNull();

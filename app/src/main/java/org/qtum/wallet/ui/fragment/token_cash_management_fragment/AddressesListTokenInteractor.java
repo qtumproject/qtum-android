@@ -15,5 +15,5 @@ public interface AddressesListTokenInteractor {
 
     boolean isValidForAddress(TokenBalance tokenBalance, DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom);
 
-    boolean isValidBalance(TokenBalance tokenBalance, DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String amountString);
+    boolean isValidBalance(TokenBalance tokenBalance, DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String amountString, Integer decimalUnits);
 }

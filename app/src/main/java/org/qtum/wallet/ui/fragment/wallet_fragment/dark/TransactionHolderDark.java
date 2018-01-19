@@ -109,11 +109,11 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
                 if (history.getChangeInBalance().doubleValue() > 0) {
                     mTextViewOperationType.setText(R.string.received_contract);
                     mImageViewIcon.setImageResource(R.drawable.ic_rec_cont_dark);
-                    contractIndicator.setBackgroundResource(R.color.colorAccent);
+                    contractIndicator.setBackgroundResource(R.color.colorPrimary);
                 } else {
                     mTextViewOperationType.setText(R.string.sent_contract);
                     mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_dark);
-                    contractIndicator.setBackgroundResource(R.color.colorPrimary);
+                    contractIndicator.setBackgroundResource(R.color.colorAccent);
                 }
             } else {
                 contractIndicator.setBackgroundColor(Color.TRANSPARENT);
