@@ -4,25 +4,20 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.addresses_detail_fragment.AddressesDetailFragment;
 import org.qtum.wallet.ui.fragment.event_log_fragment.EventLogFragment;
 import org.qtum.wallet.ui.fragment.overview_fragment.OverviewFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.FontTextView;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -106,19 +101,19 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         tabAddresses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mViewPager.setCurrentItem(0,true);
+                mViewPager.setCurrentItem(0, true);
             }
         });
         tabOverview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mViewPager.setCurrentItem(1,true);
+                mViewPager.setCurrentItem(1, true);
             }
         });
         tabEventLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mViewPager.setCurrentItem(2,true);
+                mViewPager.setCurrentItem(2, true);
             }
         });
     }
@@ -132,7 +127,7 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
             mTextViewFee.setText(fee);
             mTextViewReceivedTime.setText(receivedTime);
             FragmentPagerAdapter transactionPagerAdapter;
-            if(isContractCall){
+            if (isContractCall) {
                 transactionPagerAdapter = new ContractTransactionPagerAdapter(getChildFragmentManager());
             } else {
                 transactionPagerAdapter = new TransactionPagerAdapter(getChildFragmentManager());
@@ -169,7 +164,7 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
                 case 0: {
                     return AddressesDetailFragment.newInstance(getContext(), getArguments().getInt(POSITION));
                 }
-                case 1:{
+                case 1: {
                     return OverviewFragment.newInstance(getContext(), getArguments().getInt(POSITION));
                 }
                 default:
@@ -199,7 +194,7 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
                 case 1: {
                     return OverviewFragment.newInstance(getContext(), getArguments().getInt(POSITION));
                 }
-                case 2:{
+                case 2: {
                     return EventLogFragment.newInstance(getContext(), getArguments().getInt(POSITION));
                 }
                 default:

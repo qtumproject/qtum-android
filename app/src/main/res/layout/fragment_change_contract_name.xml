@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:inputType="text"
-                    android:digits="0123456789qwertzuiopasdfghjklyxcvbnmабвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+                    android:digits="@string/valid_contract_name_symbol"
                     android:textColor="@color/colorPrimary"/>
             </android.support.design.widget.TextInputLayout>
 

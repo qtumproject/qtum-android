@@ -18,9 +18,10 @@ import org.qtum.wallet.utils.DateCalculator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnLongClick;
 import rx.Subscriber;
 import rx.Subscription;
+
+import static org.qtum.wallet.utils.StringUtils.convertBalanceToString;
 
 public class TransactionHolderLight extends RecyclerView.ViewHolder {
 
@@ -48,7 +49,7 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mHistory.isReceiptUpdated()) {
+                if (mHistory.isReceiptUpdated()) {
                     listener.onTransactionClick(getAdapterPosition());
                 }
             }
@@ -76,7 +77,7 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
         }
         mLinearLayoutTransaction.setBackgroundResource(android.R.color.transparent);
 
-        if(history.isReceiptUpdated()) {
+        if (history.isReceiptUpdated()) {
             mImageViewIcon.setVisibility(View.VISIBLE);
             mTextViewDate.setVisibility(View.VISIBLE);
             progressIndicator.setVisibility(View.GONE);
@@ -102,7 +103,7 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
                 mTextViewDate.setText(R.string.confirmation);
                 mLinearLayoutTransaction.setBackgroundResource(R.color.bottom_nav_bar_color_light);
             }
-            if(history.getTransactionReceipt()==null) {
+            if (history.getTransactionReceipt() == null) {
                 contractIndicator.setBackgroundColor(Color.TRANSPARENT);
                 if (history.getChangeInBalance().doubleValue() > 0) {
                     mImageViewIcon.setImageResource(R.drawable.ic_received_light);
@@ -127,7 +128,7 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
         }
 
         mTextViewID.setText(history.getTxHash());
-        mTextViewValue.setText(getSpannedBalance(history.getChangeInBalance().toString() + " QTUM"));
+        mTextViewValue.setText(getSpannedBalance(convertBalanceToString(history.getChangeInBalance()) + " QTUM"));
     }
 
     private SpannableString getSpannedBalance(String balance) {

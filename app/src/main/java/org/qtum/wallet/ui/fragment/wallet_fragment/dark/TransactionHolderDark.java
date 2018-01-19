@@ -16,9 +16,10 @@ import org.qtum.wallet.utils.DateCalculator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnLongClick;
 import rx.Subscriber;
 import rx.Subscription;
+
+import static org.qtum.wallet.utils.StringUtils.convertBalanceToString;
 
 public class TransactionHolderDark extends RecyclerView.ViewHolder {
 
@@ -54,7 +55,7 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mHistory.isReceiptUpdated()) {
+                if (mHistory.isReceiptUpdated()) {
                     listener.onTransactionClick(getAdapterPosition());
                 }
             }
@@ -103,7 +104,7 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
             mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.unconfirmed));
         }
         progressIndicator.setVisibility(View.GONE);
-        if(history.isReceiptUpdated()) {
+        if (history.isReceiptUpdated()) {
             if (history.getTransactionReceipt() != null) {
                 mImageViewIcon.setVisibility(View.VISIBLE);
                 if (history.getChangeInBalance().doubleValue() > 0) {
@@ -133,6 +134,8 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
         }
 
         mTextViewID.setText(history.getTxHash());
-        mTextViewValue.setText(history.getChangeInBalance().toString() + " QTUM");
+
+
+        mTextViewValue.setText(convertBalanceToString(history.getChangeInBalance()));
     }
 }
