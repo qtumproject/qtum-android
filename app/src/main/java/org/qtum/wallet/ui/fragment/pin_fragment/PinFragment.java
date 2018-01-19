@@ -189,7 +189,6 @@ public abstract class PinFragment extends BaseFragment implements PinView {
         getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         hideKeyBoard();
         getMainActivity().resetAuthFlags();
-        dismiss();
     }
 
     Handler softHandler;
