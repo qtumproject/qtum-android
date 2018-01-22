@@ -29,11 +29,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
-                android:splitMotionEvents="false"
-                android:id="@+id/recycler_view"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:splitMotionEvents="false"
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <org.qtum.wallet.utils.FontTextView
+                    app:typefaceAsset="@string/proximaNovaRegular"
+                    android:id="@+id/histories_placeholder"
+                    android:textColor="@color/grey70"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:text="@string/no_transaction_available_yet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"/>
+
+            </RelativeLayout>
+
+
 
         </android.support.v4.widget.SwipeRefreshLayout>
 

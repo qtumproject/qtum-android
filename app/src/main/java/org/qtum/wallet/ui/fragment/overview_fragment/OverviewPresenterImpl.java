@@ -33,7 +33,7 @@ public class OverviewPresenterImpl extends BaseFragmentPresenterImpl implements 
         overview.add(new CopyableOverviewItem("BlockHash", history.getBlockHash(),true));
         overview.add(new CopyableOverviewItem("Block Height", String.valueOf(history.getBlockHeight()),true));
         if(history.getTransactionReceipt()!=null){
-            overview.add(new CopyableOverviewItem("Contract Address",history.getTransactionReceipt().getContractAddress(),false));
+            overview.add(new CopyableOverviewItem("Contract Address",history.getTransactionReceipt().getContractAddress(),true));
             overview.add(new CopyableOverviewItem("From",history.getTransactionReceipt().getFrom(),false));
             overview.add(new CopyableOverviewItem("To",history.getTransactionReceipt().getTo(),false));
             overview.add(new CopyableOverviewItem("Cumulative Gas Used",String.valueOf(history.getTransactionReceipt().getCumulativeGasUsed()),false));
