@@ -98,7 +98,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
         tokenName.setText(token.getContractName());
         tokenBalanceView.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
-        if(socketInstance.getSocketInstance()!=null) {
+        if (socketInstance.getSocketInstance() != null) {
             socketInstance.getSocketInstance().addTokenBalanceChangeListener(token.getContractAddress(), this);
         }
     }
@@ -108,30 +108,24 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
     public void onBalanceChange(final TokenBalance tokenBalance) {
         if (token.getContractAddress().equals(tokenBalance.getContractAddress())) {
             token.setLastBalance(tokenBalance.getTotalBalance());
+            ContractManagementHelper.getPropertyValue(TokenFragment.decimals, token, itemView.getContext())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<String>() {
+                        @Override
+                        public void onCompleted() {
+                        }
 
-            if (token.getDecimalUnits() == null) {
-                ContractManagementHelper.getPropertyValue(TokenFragment.decimals, token, itemView.getContext())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<String>() {
-                            @Override
-                            public void onCompleted() {
-                            }
+                        @Override
+                        public void onError(Throwable e) {
+                        }
 
-                            @Override
-                            public void onError(Throwable e) {
-                            }
-
-                            @Override
-                            public void onNext(String string) {
-                                token = new TinyDB(itemView.getContext()).setTokenDecimals(token, Integer.valueOf(string));
-                                updateBalance();
-                            }
-                        });
-
-            } else {
-                updateBalance();
-            }
+                        @Override
+                        public void onNext(String string) {
+                            token = new TinyDB(itemView.getContext()).setTokenDecimals(token, Integer.valueOf(string));
+                            updateBalance();
+                        }
+                    });
         }
     }
 

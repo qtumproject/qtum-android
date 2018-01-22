@@ -41,7 +41,6 @@ public class TokenFragmentDark extends TokenFragment {
 
         collapseLinearLayout.requestLayout();
         doDividerCollapse();
-        mRecyclerView.setNestedScrollingEnabled(true);
     }
 
     @Override

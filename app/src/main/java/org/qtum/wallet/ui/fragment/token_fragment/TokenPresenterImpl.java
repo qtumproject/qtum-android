@@ -1,5 +1,7 @@
 package org.qtum.wallet.ui.fragment.token_fragment;
 
+import android.text.TextUtils;
+
 import org.qtum.wallet.datastorage.TokenHistoryList;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.token_history.HistoryType;
@@ -36,14 +38,7 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
         super.initializeViews();
         setQtumAddress();
 
-        if (token.getDecimalUnits() == null) {
-            getInteractor().setupPropertyDecimalsValue(token, getView().getDecimalsValueCallback());
-        } else {
-            getView().onContractPropertyUpdated(TokenFragment.decimals, String.valueOf(token.getDecimalUnits()));
-            getView().setBalance(token.getTokenBalanceWithDecimalUnits().toString());
-            getInteractor().setupPropertyTotalSupplyValue(token, getView().getTotalSupplyValueCallback());
-        }
-
+        getInteractor().setupPropertyDecimalsValue(token, getView().getDecimalsValueCallback());
         getInteractor().setupPropertySymbolValue(token, getView().getSymbolValueCallback());
         getInteractor().setupPropertyNameValue(token, getView().getNameValueCallback());
         loadAndUpdateData();
@@ -80,6 +75,11 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
 
     @Override
     public void onDecimalsPropertySuccess(String value) {
+
+        if(!TextUtils.isEmpty(value) && !token.getDecimalUnits().equals(Integer.valueOf(value))) {
+            getView().updateHistory(getInteractor().getHistoryList());
+        }
+
         token = getInteractor().setTokenDecimals(token, value);
         getView().setBalance(token.getTokenBalanceWithDecimalUnits().toString());
         getInteractor().setupPropertyTotalSupplyValue(token, getView().getTotalSupplyValueCallback());
