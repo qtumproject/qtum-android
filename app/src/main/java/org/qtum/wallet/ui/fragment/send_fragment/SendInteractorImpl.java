@@ -164,7 +164,7 @@ public class SendInteractorImpl implements SendInteractor {
                 }
                 BigDecimal delivery = overFlow.subtract(amount);
                 if (delivery.doubleValue() != 0.0) {
-                    transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), myKey.toAddress(CurrentNetParams.getNetParams()));
+                    transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), from.isEmpty() ? myKey.toAddress(CurrentNetParams.getNetParams()) : new Address(CurrentNetParams.getNetParams(), from));
                 }
                 for (UnspentOutput unspentOutput : unspentOutputs) {
                     for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {

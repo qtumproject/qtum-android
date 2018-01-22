@@ -93,6 +93,14 @@ public class TokenHistoryHolderLight extends RecyclerView.ViewHolder {
             mTextViewDate.setText(R.string.confirmation);
             mLinearLayoutTransaction.setBackgroundResource(R.color.bottom_nav_bar_color_light);
         }
+        switch (history.getHistoryType()){
+            case Sent:
+                mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
+                break;
+            case Received:
+                mImageViewIcon.setImageResource(R.drawable.ic_received_light);
+                break;
+        }
         mTextViewID.setText(history.getTxHash());
 
         String resultamount = history.getAmount();

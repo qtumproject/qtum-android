@@ -6,5 +6,5 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 import java.util.List;
 
 public interface AddressesListTokenPresenter extends BaseFragmentPresenter {
-    void saveTokens(List<Token> tokens);
+    void onSubscribeChanged(Token token);
 }

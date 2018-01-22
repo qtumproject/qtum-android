@@ -12,11 +12,9 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,7 +30,6 @@ import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.ResizeHeightAnimation;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -192,7 +189,7 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
         @Override
         public void onSuccess() {
             getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_ADDRESS), mTextInputEditTextFee.getText().toString(),
-                    Integer.valueOf(mFontTextViewGasLimit.getText().toString()), Integer.valueOf(mFontTextViewGasPrice.getText().toString()), getArguments().getString(METHOD_NAME),mTextViewAddress.getText().toString(), mEtSendToContract.getText().toString());
+                    Integer.valueOf(mFontTextViewGasLimit.getText().toString()), Integer.valueOf(mFontTextViewGasPrice.getText().toString()), getArguments().getString(METHOD_NAME), mTextViewAddress.getText().toString(), mEtSendToContract.getText().toString());
         }
 
         @Override
@@ -292,11 +289,11 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
                     textViewChangeValue = true;
                     int progress;
                     if (fee < mMinFee) {
-                        progress = mMinFee / stepFee;
+                        progress = 0;
                     } else if (fee > mMaxFee) {
-                        progress = mMaxFee / stepFee;
+                        progress = (mMaxFee - mMinFee) / stepFee;
                     } else {
-                        progress = fee.intValue() / stepFee;
+                        progress = (fee.intValue() - mMinFee) / stepFee;
                     }
                     mSeekBarFee.setProgress(progress);
                 }
@@ -324,7 +321,7 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mTextViewAddress.setText(((AddressWithBalance)mSpinner.getItemAtPosition(i)).getAddress());
+                mTextViewAddress.setText(((AddressWithBalance) mSpinner.getItemAtPosition(i)).getAddress());
             }
 
             @Override
@@ -340,8 +337,8 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
 
                     @Override
                     public void run() {
-                        if(i7!=0 && i3>i7)
-                        mNestedScrollView.scrollTo(0,mNestedScrollView.getScrollY()+i3);
+                        if (i7 != 0 && i3 > i7)
+                            mNestedScrollView.scrollTo(0, mNestedScrollView.getScrollY() + i3);
                     }
                 });
             }

@@ -104,6 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/ic_token"
                 android:layout_alignBottom="@+id/ic_token"
+                android:digits="@string/valid_contract_name_symbol"
                 android:text="@string/token"
                 android:focusableInTouchMode="true"
                 android:id="@+id/tv_template_name"

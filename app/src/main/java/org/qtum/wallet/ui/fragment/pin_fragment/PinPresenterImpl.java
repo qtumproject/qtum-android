@@ -413,6 +413,9 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
         super.onPause();
         pinRepeat = "0";
         currentState = 0;
+        if(!mAction.equals(IMPORTING)){
+            getView().dismiss();
+        }
     }
 
     @Override

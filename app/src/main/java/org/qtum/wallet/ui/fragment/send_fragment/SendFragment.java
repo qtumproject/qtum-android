@@ -622,9 +622,9 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                     if (fee < mMinFee) {
                         progress = 0;
                     } else if (fee > mMaxFee) {
-                        progress = mMaxFee / step;
+                        progress = (mMaxFee - mMinFee) / step;
                     } else {
-                        progress = fee.intValue() / step;
+                        progress = (fee.intValue() - mMinFee) / step;
                     }
                     mSeekBar.setProgress(progress);
                 }

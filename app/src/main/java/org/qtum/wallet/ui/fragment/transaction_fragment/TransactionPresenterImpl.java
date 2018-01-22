@@ -1,12 +1,9 @@
 package org.qtum.wallet.ui.fragment.transaction_fragment;
 
 import org.qtum.wallet.model.gson.history.History;
-import org.qtum.wallet.model.gson.history.Vin;
-import org.qtum.wallet.model.gson.history.Vout;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.qtum.wallet.utils.StringUtils.convertBalanceToString;
 
 public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implements TransactionPresenter {
 
@@ -36,7 +33,7 @@ public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implemen
         } else {
             dateString = getInteractor().getUnconfirmedDate();
         }
-        getView().setUpTransactionData(history.getChangeInBalance().toString(), history.getFee().toString(), dateString,
-                history.getBlockHeight() > 0, history.getTransactionReceipt()!=null && history.getTransactionReceipt().getLog()!=null && !history.getTransactionReceipt().getLog().isEmpty());
+        getView().setUpTransactionData(convertBalanceToString(history.getChangeInBalance()), convertBalanceToString(history.getFee()), dateString,
+                history.getBlockHeight() > 0, history.getTransactionReceipt() != null && history.getTransactionReceipt().getLog() != null && !history.getTransactionReceipt().getLog().isEmpty());
     }
 }

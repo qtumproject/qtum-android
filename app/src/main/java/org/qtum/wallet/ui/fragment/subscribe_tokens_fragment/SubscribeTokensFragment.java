@@ -78,11 +78,6 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
         return mSubscribeTokensPresenterImpl;
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        getPresenter().saveTokens(getTokenList());
-    }
 
     @Override
     public void setPlaceHolder() {
@@ -106,14 +101,6 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
         });
     }
 
-    @Override
-    public List<Token> getTokenList() {
-        if (mTokenAdapter != null) {
-            return mTokenAdapter.getTokenList();
-        } else {
-            return null;
-        }
-    }
 
     @Override
     public void onActivate() {
@@ -177,6 +164,7 @@ public abstract class SubscribeTokensFragment extends BaseFragment implements Su
                 public void onClick(View view) {
                     if (getAdapterPosition() >= 0) {
                         mTokenAdapter.getTokenList().get(getAdapterPosition()).setSubscribe(!mToken.isSubscribe());
+                        getPresenter().onSubscribeChanged(mToken);
                         mTokenAdapter.notifyItemChanged(getAdapterPosition());
                     }
                 }
