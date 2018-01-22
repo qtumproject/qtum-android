@@ -56,9 +56,6 @@ public class TokenFragmentLight extends TokenFragment {
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 percents = (((getTotalRange() - Math.abs(verticalOffset)) * 1.0f) / getTotalRange());
                 float offsetPercents = percents - (1 - percents);
-                mShareBtn.setAlpha(offsetPercents);
-                mIvChooseAddress.setAlpha(offsetPercents);
-                mTokenTitle.setAlpha(offsetPercents);
                 balanceView.setAlpha(offsetPercents);
                 prevPercents = percents;
             }
