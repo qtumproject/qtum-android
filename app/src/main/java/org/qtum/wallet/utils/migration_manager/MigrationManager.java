@@ -3,25 +3,31 @@ package org.qtum.wallet.utils.migration_manager;
 import android.content.Context;
 
 import org.qtum.wallet.datastorage.TinyDB;
+import org.qtum.wallet.model.ContractTemplate;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.utils.DateCalculator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class MigrationManager {
 
     private final int migrateVersion_93 = 93;
 
-    private final int migrateVersion_100 = 100    ;
+    private final int migrateVersion_100 = 100;
+
+    private final int migrateVersion_104 = 104;
 
     List<Integer> migrations = new ArrayList<>();
 
     public MigrationManager() {
         migrations.add(migrateVersion_93);
         migrations.add(migrateVersion_100);
+        migrations.add(migrateVersion_104);
     }
 
     public int makeMigration(int currentVersion, int migrationVersion, Context context) {
@@ -45,6 +51,9 @@ public class MigrationManager {
                 return true;
             case migrateVersion_100:
                 resetContractCreationStatus(context);
+                return true;
+            case migrateVersion_104:
+                resetContractAndTemplateTime(context);
                 return true;
             default:
                 return false;
@@ -80,16 +89,16 @@ public class MigrationManager {
     private void resetContractCreationStatus(Context context){
         TinyDB_94 tinyDB94 = new TinyDB_94(context);
 
-        TinyDB tinyDB = new TinyDB(context);
-        List<Token> tokens = new ArrayList<>();
-        List<Contract> contracts = new ArrayList<>();
+        TinyDB_104 tinyDB = new TinyDB_104(context);
+        List<Token104> tokens = new ArrayList<>();
+        List<Contract104> contracts = new ArrayList<>();
 
         for (Contract94 contract94 : tinyDB94.getContractListWithoutToken()) {
             if (contract94.isHasBeenCreated()!=null && contract94.isHasBeenCreated()) {
-                contracts.add(new Contract(contract94.getContractAddress(),contract94.getUiid(),
+                contracts.add(new Contract104(contract94.getContractAddress(),contract94.getUiid(),
                         ContractCreationStatus.Created,contract94.getDate(),contract94.getSenderAddress(),contract94.getContractName()));
             }else{
-                contracts.add(new Contract(contract94.getContractAddress(),contract94.getUiid(),
+                contracts.add(new Contract104(contract94.getContractAddress(),contract94.getUiid(),
                         ContractCreationStatus.Unconfirmed,contract94.getDate(),contract94.getSenderAddress(),contract94.getContractName()));
             }
         }
@@ -97,13 +106,41 @@ public class MigrationManager {
 
         for (Token94 token94 : tinyDB94.getTokenList()) {
             if (token94.isHasBeenCreated()!=null && token94.isHasBeenCreated()) {
-                tokens.add(new Token(token94.getContractAddress(),token94.getUiid(),ContractCreationStatus.Created,
+                tokens.add(new Token104(token94.getContractAddress(),token94.getUiid(),ContractCreationStatus.Created,
                         token94.getDate(),token94.getSenderAddress(),token94.getContractName()));
             } else {
-                tokens.add(new Token(token94.getContractAddress(),token94.getUiid(),ContractCreationStatus.Unconfirmed,
+                tokens.add(new Token104(token94.getContractAddress(),token94.getUiid(),ContractCreationStatus.Unconfirmed,
                         token94.getDate(),token94.getSenderAddress(),token94.getContractName()));
             }
         }
         tinyDB.putTokenList(tokens);
+    }
+
+    private void resetContractAndTemplateTime(Context context) {
+        TinyDB_104 tinyDB104 = new TinyDB_104(context);
+        TinyDB tinyDB = new TinyDB(context);
+
+        List<Contract> contracts = new ArrayList<>();
+        List<Token> tokens = new ArrayList<>();
+        List<ContractTemplate> contractTemplates = new ArrayList<>();
+
+        for(Contract104 contract104 : tinyDB104.getContractListWithoutToken()){
+            contracts.add(new Contract(contract104.getContractAddress(),contract104.getUiid(),contract104.getContractName(),contract104.getCreationStatus(),convertDateToLong(contract104.getDate()),contract104.getSenderAddress(),contract104.isSubscribe()));
+        }
+        tinyDB.putContractListWithoutToken(contracts);
+
+        for(Token104 token104 : tinyDB104.getTokenList()){
+
+        }
+        tinyDB.putTokenList(tokens);
+
+        for(ContractTemplate104 contractTemplate104 : tinyDB104.getContractTemplateList()){
+            contractTemplates.add(new ContractTemplate(contractTemplate104.getName(),convertDateToLong(contractTemplate104.getDate()), contractTemplate104.getContractType(),contractTemplate104.getUuid(),contractTemplate104.isFullContractTemplate(),contractTemplate104.isSelectedABI()));
+        }
+        tinyDB.putContractTemplate(contractTemplates);
+    }
+
+    private Long convertDateToLong(String date){
+        return DateCalculator.getLongDate(date)/* - (long) (new GregorianCalendar().getTimeZone()).getRawOffset()*/;
     }
 }

@@ -322,7 +322,7 @@ public class FileStorageManager {
                     return false;
                 }
 
-                contractTemplateList.add(new ContractTemplate(contractName, DateCalculator.getDateInFormat(new Date()), (contractName.equals(CROWDSALE) ? "crowdsale" : "token"),tinyDB.addTemplate(contractName, uuid).getUuid()));
+                contractTemplateList.add(new ContractTemplate(contractName, (new Date()).getTime(), (contractName.equals(CROWDSALE) ? "crowdsale" : "token"),tinyDB.addTemplate(contractName, uuid).getUuid()));
             }
 
             tinyDB.putContractTemplate(contractTemplateList);
@@ -382,7 +382,7 @@ public class FileStorageManager {
         }
     }
 
-    public ContractTemplate importTemplate(Context context, String sourceContract, String byteCodeContract, String abiContract, String type, String name, String dateString, String uuid) {
+    public ContractTemplate importTemplate(Context context, String sourceContract, String byteCodeContract, String abiContract, String type, String name, Long dateString, String uuid) {
         TinyDB tinyDB = new TinyDB(context);
 
         ContractTemplate contractTemplate = new ContractTemplate(name, dateString, type, uuid);

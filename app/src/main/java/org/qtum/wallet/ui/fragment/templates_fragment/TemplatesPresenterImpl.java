@@ -33,7 +33,7 @@ public class TemplatesPresenterImpl extends BaseFragmentPresenterImpl implements
         Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
             @Override
             public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
-                return getInteractor().compareDates(contractInfo.getDate(), t1.getDate());
+                return contractInfo.getDate().compareTo(t1.getDate());
             }
         });
         getView().setUpTemplateList(contractFullTemplateList);

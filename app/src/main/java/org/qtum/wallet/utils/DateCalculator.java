@@ -49,6 +49,17 @@ public class DateCalculator {
         return dateString;
     }
 
+    public static Long getLongDate(String dateInFormat){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-d HH:mm:ss", Locale.US);
+        long date = 0;
+        try {
+            date = formatter.parse(dateInFormat).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
     public static String getShortDate(long timeInMills) {
         long currentTime = (new Date()).getTime();
         long delay = currentTime - timeInMills;
@@ -110,8 +121,8 @@ public class DateCalculator {
         return date1long > date2long ? -1 : date1long < date2long ? 1 : 0;
     }
 
-    public static String getCurrentDate() {
-        return getDateInFormat(new Date());
+    public static Long getCurrentDate() {
+        return (new Date()).getTime();
     }
 
     public static Observable getUpdater() {

@@ -1,10 +1,12 @@
-package org.qtum.wallet.model.contract;
+package org.qtum.wallet.utils.migration_manager;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.qtum.wallet.model.contract.ContractCreationStatus;
+
 import java.io.Serializable;
 
-public class Contract implements Serializable {
+public class Contract104 implements Serializable {
 
     @SerializedName("contractAddress")
     protected String mContractAddress;
@@ -15,13 +17,13 @@ public class Contract implements Serializable {
     @SerializedName("creationStatus")
     protected ContractCreationStatus mCreationStatus;
     @SerializedName("date")
-    protected Long mDate;
+    protected String mDate;
     @SerializedName("senderAddress")
     protected String mSenderAddress;
     @SerializedName("isSubscribe")
     protected boolean mIsSubscribe;
 
-    public Contract(String contractAddress, String uiid, ContractCreationStatus creationStatus, Long date, String senderAddress, String contractName) {
+    public Contract104(String contractAddress, String uiid, ContractCreationStatus creationStatus, String date, String senderAddress, String contractName) {
         this.mContractAddress = contractAddress;
         this.mUiid = uiid;
         this.mCreationStatus = creationStatus;
@@ -31,44 +33,7 @@ public class Contract implements Serializable {
         this.mIsSubscribe = false;
     }
 
-    public Contract(String contractAddress, String uiid, String contractName, ContractCreationStatus creationStatus, Long date, String senderAddress, boolean isSubscribe) {
-        mContractAddress = contractAddress;
-        mUiid = uiid;
-        mContractName = contractName;
-        mCreationStatus = creationStatus;
-        mDate = date;
-        mSenderAddress = senderAddress;
-        mIsSubscribe = isSubscribe;
-    }
 
-    /**
-     * Default constructor for unit testing
-     */
-    public Contract() {
-    }
-
-
-    /**
-     * Constructor for unit testing
-     */
-    public Contract(boolean isSubscribe) {
-        this.mIsSubscribe = isSubscribe;
-    }
-
-    /**
-     * Constructor for unit testing
-     */
-    public Contract(String contractAddress) {
-        this.mContractAddress = contractAddress;
-    }
-
-    /**
-     * Constructor for unit testing
-     */
-    public Contract(boolean isSubscribe, String contractAddress) {
-        this.mIsSubscribe = isSubscribe;
-        this.mContractAddress = contractAddress;
-    }
 
     public String getContractAddress() {
         return mContractAddress;
@@ -94,11 +59,11 @@ public class Contract implements Serializable {
         mCreationStatus = creationStatus;
     }
 
-    public Long getDate() {
+    public String getDate() {
         return mDate;
     }
 
-    public void setDate(Long date) {
+    public void setDate(String date) {
         this.mDate = date;
     }
 

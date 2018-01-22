@@ -1,11 +1,13 @@
-package org.qtum.wallet.model.contract;
+package org.qtum.wallet.utils.migration_manager;
 
 import com.google.gson.annotations.SerializedName;
+
+import org.qtum.wallet.model.contract.ContractCreationStatus;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-public class Token extends Contract {
+public class Token104 extends Contract104 {
 
     @SerializedName("lastBalance")
     private BigDecimal mLastBalance;
@@ -19,57 +21,11 @@ public class Token extends Contract {
     @SerializedName("name")
     private String name;
 
-    public Token(String contractAddress, String templateUiid, ContractCreationStatus contractCreationStatus, Long date, String senderAddress, String contractName) {
+    public Token104(String contractAddress, String templateUiid, ContractCreationStatus contractCreationStatus, String date, String senderAddress, String contractName) {
         super(contractAddress, templateUiid, contractCreationStatus, date, senderAddress, contractName);
         this.mIsSubscribe = true;
     }
 
-    public Token(String contractAddress, String uiid, String contractName, ContractCreationStatus creationStatus, Long date, String senderAddress, boolean isSubscribe){
-        super(contractAddress,uiid,contractName,creationStatus,date,senderAddress,isSubscribe);
-    }
-
-    /**
-     * Default constructor for unit testing
-     */
-    public Token() {
-    }
-
-    /**
-     * Constructor for unit testing
-     */
-    public Token(boolean isSubscribe) {
-        super(isSubscribe);
-    }
-
-    /**
-     * Constructor for unit testing
-     */
-    public Token(boolean isSubscribe, String contractAddress) {
-        super(isSubscribe, contractAddress);
-    }
-
-    /**
-     * Constructor for unit testing
-     */
-    public Token(Integer decimalUnits, BigDecimal lastBalance) {
-        this.decimalUnits = decimalUnits;
-        this.mLastBalance = lastBalance;
-    }
-
-    /**
-     * Constructor for unit testing
-     */
-    public Token(BigDecimal lastBalance) {
-        this.mLastBalance = lastBalance;
-    }
-
-    /**
-     * Constructor for unit testing
-     */
-    public Token(boolean isSubscribe, ContractCreationStatus contractCreationStatus) {
-        super(isSubscribe);
-        this.mCreationStatus = contractCreationStatus;
-    }
 
     public String getSymbol() {
         return symbol;
