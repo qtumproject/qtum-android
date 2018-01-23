@@ -11,7 +11,4 @@ public interface ReceiveInteractor {
 
     String formatTokenAddress(String addr);
 
-    String formatBalance(String balanceString);
-
-    String formatUnconfirmedBalance(BigDecimal unconfirmedBalance);
 }

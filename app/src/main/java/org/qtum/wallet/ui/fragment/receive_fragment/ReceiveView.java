@@ -16,17 +16,14 @@ public interface ReceiveView extends BaseFragmentView {
 
     void setUpAddress(String s);
 
-    void updateBalance(String balance, String unconfirmedBalance);
+    void updateBalance(String balance, String unconfirmedBalance, String symbol);
 
-    void updateBalance(String balance);
 
     void showToast();
 
     void openFragmentForResult(Fragment fragment);
 
     Bitmap getQrCode();
-
-    String getTokenBalance();
 
     Subscription imageEncodeObservable(final String param);
 
