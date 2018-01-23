@@ -73,7 +73,7 @@ public class KeyStoreHelper {
                 SecurityConstants.KEYSTORE_PROVIDER_ANDROID_KEYSTORE);
         kpGenerator.initialize(spec);
         KeyPair kp = kpGenerator.generateKeyPair();
-        Log.d(TAG, "Public Key is: " + kp.getPublic().toString());
+       // Log.d(TAG, "Public Key is: " + kp.getPublic().toString());
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -110,6 +110,8 @@ public class KeyStoreHelper {
             try {
                 KeyStore keyStore = KeyStore.getInstance(SecurityConstants.KEYSTORE_PROVIDER_ANDROID_KEYSTORE);
                 keyStore.load(null);
+                //KeyStore.Entry entry = keyStore.getEntry(alias, null);
+                //keyStore.getEntry(alias, new KeyStore.PasswordProtection(null));
                 return keyStore.containsAlias(alias);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
