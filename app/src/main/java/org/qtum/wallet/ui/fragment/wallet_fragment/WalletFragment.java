@@ -193,7 +193,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @OnClick({R.id.ll_receive, R.id.iv_receive})
     public void onReceiveClick() {
-        BaseFragment receiveFragment = ReceiveFragment.newInstance(getContext(), null, null);
+        BaseFragment receiveFragment = ReceiveFragment.newInstance(getContext(), null, null, null);
         openFragmentForResult(receiveFragment);
     }
 

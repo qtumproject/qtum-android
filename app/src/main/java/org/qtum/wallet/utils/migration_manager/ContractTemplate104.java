@@ -1,14 +1,14 @@
-package org.qtum.wallet.model;
+package org.qtum.wallet.utils.migration_manager;
 
 import com.google.gson.annotations.SerializedName;
 
 import org.qtum.wallet.model.backup.TemplateJSON;
 
-public class ContractTemplate {
+public class ContractTemplate104 {
     @SerializedName("name")
     private String mName;
     @SerializedName("date")
-    private Long mDate;
+    private String mDate;
     @SerializedName("type")
     private String mType;
     @SerializedName("uuid")
@@ -16,22 +16,9 @@ public class ContractTemplate {
     @SerializedName("isFullContractTemplate")
     private boolean mIsFullContractTemplate;
 
-    /**
-     * Constructor for unit testing
-     */
-    public ContractTemplate() {
-    }
 
-    public ContractTemplate(String name, Long date, String type, String uuid, boolean isFullContractTemplate, boolean selectedABI) {
-        mName = name;
-        mDate = date;
-        mType = type;
-        mUuid = uuid;
-        mIsFullContractTemplate = isFullContractTemplate;
-        this.selectedABI = selectedABI;
-    }
 
-    public ContractTemplate(String name, Long date, String contractType, String uuid) {
+    public ContractTemplate104(String name, String date, String contractType, String uuid) {
         this.mName = name;
         this.mDate = date;
         this.mType = contractType;
@@ -39,9 +26,9 @@ public class ContractTemplate {
         mIsFullContractTemplate = true;
     }
 
-    public ContractTemplate(TemplateJSON templateJSON) {
+    public ContractTemplate104(TemplateJSON templateJSON) {
         this.mName = templateJSON.getName();
-        //this.mDate = templateJSON.getCreationDate();
+        this.mDate = templateJSON.getCreationDate();
         this.mType = templateJSON.getType();
         this.mUuid = templateJSON.getUuid();
         mIsFullContractTemplate = true;
@@ -65,11 +52,11 @@ public class ContractTemplate {
         this.mName = name;
     }
 
-    public Long getDate() {
+    public String getDate() {
         return mDate;
     }
 
-    public void setData(Long date) {
+    public void setData(String date) {
         this.mDate = date;
     }
 

@@ -424,7 +424,7 @@ public class TinyDB {
                 } else if (t1.getDate() == null) {
                     return 1;
                 } else {
-                    return DateCalculator.equals(contract.getDate(), t1.getDate());
+                    return contract.getDate().compareTo(t1.getDate());
                 }
             }
         });

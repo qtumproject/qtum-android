@@ -7,6 +7,7 @@ import org.qtum.wallet.datastorage.KeyStorage;
 import java.math.BigDecimal;
 
 class ReceiveInteractorImpl implements ReceiveInteractor {
+
     private Context mContext;
 
     ReceiveInteractorImpl(Context context) {
@@ -33,13 +34,4 @@ class ReceiveInteractorImpl implements ReceiveInteractor {
         return String.format("&tokenAddress=%s", addr);
     }
 
-    @Override
-    public String formatBalance(String balanceString) {
-        return String.format("%S QTUM", balanceString);
-    }
-
-    @Override
-    public String formatUnconfirmedBalance(BigDecimal unconfirmedBalance) {
-        return String.format("%S QTUM", String.valueOf(unconfirmedBalance.floatValue()));
-    }
 }
