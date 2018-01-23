@@ -130,7 +130,7 @@ public class MigrationManager {
         tinyDB.putContractListWithoutToken(contracts);
 
         for(Token104 token104 : tinyDB104.getTokenList()){
-
+            tokens.add(new Token(token104.getContractAddress(),token104.getUiid(),token104.getContractName(),token104.getCreationStatus(),convertDateToLong(token104.getDate()),token104.getSenderAddress(),token104.isSubscribe()));
         }
         tinyDB.putTokenList(tokens);
 
