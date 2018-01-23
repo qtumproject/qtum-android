@@ -1,11 +1,13 @@
 package org.qtum.wallet.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -60,6 +62,18 @@ public class DateCalculator {
         return date;
     }
 
+        public static Long getLongDateInTimeZone(String dateInFormat){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-d HH:mm:ss", Locale.US);
+        long date = 0;
+        try {
+            date = formatter.parse(dateInFormat).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date+TimeZone.getDefault().getOffset((new Date()).getTime());
+    }
+
+
     public static String getShortDate(long timeInMills) {
         long currentTime = (new Date()).getTime();
         long delay = currentTime - timeInMills;
@@ -106,6 +120,12 @@ public class DateCalculator {
     public static String getDateInFormat(Long date) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         return formatter.format(new Date(date));
+    }
+
+    public static String getDateInUtc(Long date) {
+        DateFormat dateFormat  = new SimpleDateFormat("yyyy-MM-d HH:mm:ss", Locale.US);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return dateFormat.format(new Date(date));
     }
 
     public static int equals(String date1, String date2) {

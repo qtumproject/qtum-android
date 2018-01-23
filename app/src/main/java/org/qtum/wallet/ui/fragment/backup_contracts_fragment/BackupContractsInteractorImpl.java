@@ -47,7 +47,7 @@ public class BackupContractsInteractorImpl implements BackupContractsInteractor 
                     String source = FileStorageManager.getInstance().readSourceContract(mContext, contractTemplate.getUuid());
                     String bytecode = FileStorageManager.getInstance().readByteCodeContract(mContext, contractTemplate.getUuid());
                     String abi = FileStorageManager.getInstance().readAbiContract(mContext, contractTemplate.getUuid());
-                    TemplateJSON templateJSON = new TemplateJSON(source, bytecode, contractTemplate.getUuid(), DateCalculator.getDateInFormat(contractTemplate.getDate()), abi, contractTemplate.getContractType(), contractTemplate.getName());
+                    TemplateJSON templateJSON = new TemplateJSON(source, bytecode, contractTemplate.getUuid(), DateCalculator.getDateInUtc(contractTemplate.getDate()), abi, contractTemplate.getContractType(), contractTemplate.getName());
                     templateJSONList.add(templateJSON);
                 }
 
@@ -56,11 +56,11 @@ public class BackupContractsInteractorImpl implements BackupContractsInteractor 
                 List<Contract> contractList = tinyDB.getContractList();
                 for (Contract contract : contractList) {
                     String contractTemplateType = tinyDB.getContractTemplateByUiid(contract.getUiid()).getContractType();
-                    ContractJSON contract1 = new ContractJSON(contract.getContractName(), contract.getSenderAddress(), contract.getContractAddress(), contractTemplateType, DateCalculator.getDateInFormat(contract.getDate()), contract.getUiid(), contract.isSubscribe());
+                    ContractJSON contract1 = new ContractJSON(contract.getContractName(), contract.getSenderAddress(), contract.getContractAddress(), contractTemplateType, DateCalculator.getDateInUtc(contract.getDate()), contract.getUiid(), contract.isSubscribe());
                     contractList1.add(contract1);
                 }
 
-                Backup backup = new Backup(DateCalculator.getDateInFormat(new Date()), templateJSONList, String.valueOf(android.os.Build.VERSION.SDK_INT), "test", contractList1, "android");
+                Backup backup = new Backup(DateCalculator.getDateInUtc(new Date().getTime()), templateJSONList, String.valueOf(android.os.Build.VERSION.SDK_INT), "test", contractList1, "android");
                 Gson gson = new Gson();
                 String backupData = gson.toJson(backup);
 
