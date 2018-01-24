@@ -5,6 +5,7 @@ import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.ui.base.base_activity.BasePresenterImpl;
+import org.qtum.wallet.utils.migration_manager.KeystoreMigrationResult;
 import org.qtum.wallet.utils.migration_manager.MigrationManager;
 
 public class SplashActivityPresenterImpl extends BasePresenterImpl implements SplashActivityPresenter {
@@ -19,7 +20,8 @@ public class SplashActivityPresenterImpl extends BasePresenterImpl implements Sp
 
     @Override
     public void initializeViews() {
-        if(!MigrationManager.migratePassphrase(getView().getContext())) {
+        if(MigrationManager.migrateFromKeystore(getView().getContext())
+                .equalsName(KeystoreMigrationResult.ERROR.name())) {
             clearWallet();
         }
         getInteractor().migrateDefaultContracts();
@@ -36,7 +38,7 @@ public class SplashActivityPresenterImpl extends BasePresenterImpl implements Sp
     }
 
     public void clearWallet() {
-        QtumSharedPreference.getInstance().clear(getView().getContext());
+        QtumSharedPreference.getInstance().forceClear(getView().getContext());
         KeyStorage.getInstance().clearKeyStorage();
         HistoryList.getInstance().clearHistoryList();
         TinyDB db = new TinyDB(getView().getContext());
