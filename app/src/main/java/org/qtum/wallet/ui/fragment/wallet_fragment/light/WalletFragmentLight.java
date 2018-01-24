@@ -112,14 +112,14 @@ public class WalletFragmentLight extends WalletFragment {
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
         try {
-            balanceValue.setText(getSpannedBalance(String.format("%s QTUM", balance)));
-            placeHolderBalance.setText(getSpannedBalance(String.format("%s QTUM", balance)));
+            balanceValue.setText(balance);
+            placeHolderBalance.setText(balance);
             if (unconfirmedBalance != null) {
                 notConfirmedBalancePlaceholder.setVisibility(View.VISIBLE);
                 uncomfirmedBalanceValue.setVisibility(View.VISIBLE);
                 uncomfirmedBalanceTitle.setVisibility(View.VISIBLE);
-                uncomfirmedBalanceValue.setText(getSpannedBalance(String.format("%s QTUM", unconfirmedBalance)));
-                placeHolderBalanceNotConfirmed.setText(getSpannedBalance(String.format("%s QTUM", unconfirmedBalance)));
+                uncomfirmedBalanceValue.setText(unconfirmedBalance);
+                placeHolderBalanceNotConfirmed.setText(unconfirmedBalance);
             } else {
                 notConfirmedBalancePlaceholder.setVisibility(View.GONE);
                 uncomfirmedBalanceValue.setVisibility(View.GONE);

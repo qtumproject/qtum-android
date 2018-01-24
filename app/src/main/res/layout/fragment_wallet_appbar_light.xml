@@ -23,7 +23,6 @@
 
         <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_balance"
-            android:text="0.0 QTUM"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:typefaceAsset="@string/proximaNovaSemibold"
@@ -32,11 +31,13 @@
 
         <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_currency"
+            android:layout_marginLeft="8dp"
+            android:text="QTUM"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:typefaceAsset="@string/proximaNovaSemibold"
             android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -49,14 +50,29 @@
         android:text="@string/not_confirmed_balance"
         style="@style/appbar_wallet_alpha_title"/>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
     <org.qtum.wallet.utils.FontTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:textColor="@color/white"
         app:typefaceAsset="@string/proximaNovaSemibold"
-        android:text="0.0 QTUM"
         android:id="@+id/tv_unconfirmed_balance"/>
+
+        <org.qtum.wallet.utils.FontTextView
+            android:text="QTUM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            app:typefaceAsset="@string/proximaNovaSemibold"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_marginTop="8dp"
