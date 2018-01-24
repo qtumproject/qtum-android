@@ -1,6 +1,8 @@
 package org.qtum.wallet.ui.fragment.pin_fragment;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Base64;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.utils.CryptoUtils;
@@ -25,20 +27,26 @@ class PinInteractorImpl implements PinInteractor {
 
     PinInteractorImpl(Context context) {
         mContext = context;
-        try {
-            KeyStoreHelper.createKeys(mContext, QTUM_PIN_ALIAS);
-        } catch (NoSuchProviderException | NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public String getPassword() {
         String sixDigitPassword = getSixDigitPassword();
-        if (!getSixDigitPassword().isEmpty()) {
-            return sixDigitPassword;
+        if (!TextUtils.isEmpty(sixDigitPassword)) {
+            return trimEndSpaces(sixDigitPassword);
         } else {
-            return getFourDigitPassword();
+            return trimEndSpaces(getFourDigitPassword());
+        }
+        //delete 4 spaces because after API 18 android have bug
+        //(https://stackoverflow.com/questions/34472004/android-preferences-adding-unwanted-chars)
+    }
+
+    private String trimEndSpaces(String value){
+        if(value.contains("\n")){
+            int indexOf = value.indexOf("\n");
+            return value.substring(0, indexOf+1);
+        } else {
+            return value;
         }
     }
 
@@ -53,18 +61,9 @@ class PinInteractorImpl implements PinInteractor {
         return KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, encryptedPinHash);
     }
 
-    private void saveFourDigitPassword(String password) {
-        String encryptedPinHash = KeyStoreHelper.encrypt(QTUM_PIN_ALIAS, password);
-        QtumSharedPreference.getInstance().savePassword(mContext, encryptedPinHash);
-    }
-
     @Override
     public String getSixDigitPassword() {
-        String encryptedPinHash = QtumSharedPreference.getInstance().getSixDigitPassword(mContext);
-        if (encryptedPinHash.isEmpty()) {
-            return encryptedPinHash;
-        }
-        return KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, encryptedPinHash);
+        return QtumSharedPreference.getInstance().getSixDigitPassword(mContext);
     }
 
     @Override
@@ -89,21 +88,20 @@ class PinInteractorImpl implements PinInteractor {
 
     @Override
     public void saveSixDigitPassword(String password) {
-        String encryptedPinHash = KeyStoreHelper.encrypt(QTUM_PIN_ALIAS, password);
-        QtumSharedPreference.getInstance().saveSixDigitPassword(mContext, encryptedPinHash);
+        QtumSharedPreference.getInstance().saveSixDigitPassword(mContext, password);
     }
 
     @Override
     public void savePassphraseSaltWithPin(String pin, String passphrase) {
         byte[] saltPassphrase = AESUtil.encryptToBytes(pin, passphrase);
-        String encryptedSaltPassphrase = KeyStoreHelper.encryptBytes(QTUM_PIN_ALIAS, saltPassphrase);
+        String encryptedSaltPassphrase = Base64.encodeToString(saltPassphrase, Base64.DEFAULT);
         QtumSharedPreference.getInstance().saveSeed(mContext, encryptedSaltPassphrase);
     }
 
     @Override
     public byte[] getSaltPassphrase() {
         String encryptedSaltPassphrase = QtumSharedPreference.getInstance().getSeed(mContext);
-        return KeyStoreHelper.decryptToBytes(QTUM_PIN_ALIAS, encryptedSaltPassphrase);
+        return Base64.decode(encryptedSaltPassphrase, Base64.DEFAULT);
     }
 
     @Override
@@ -156,4 +154,5 @@ class PinInteractorImpl implements PinInteractor {
     public Observable<String> loadWallet(String code) {
         return KeyStorage.getInstance().createWallet(KeyStoreHelper.getSeed(mContext, code));
     }
+
 }

@@ -47,6 +47,7 @@
         <org.qtum.wallet.utils.FontTextView
             android:id="@+id/token_balance"
             android:textSize="14sp"
+            android:maxLines="1"
             android:layout_marginEnd="4dp"
             android:textColor="@color/bottom_nav_bar_text_color_light"
             app:typefaceAsset="@string/proximaNovaSemibold"

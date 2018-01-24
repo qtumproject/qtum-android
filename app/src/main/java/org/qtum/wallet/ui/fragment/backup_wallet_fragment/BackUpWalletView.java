@@ -12,4 +12,6 @@ public interface BackUpWalletView extends BaseFragmentView {
     void copyToClipboard(String text);
 
     void chooseShareMethod(String text);
+
+    void onLogin();
 }

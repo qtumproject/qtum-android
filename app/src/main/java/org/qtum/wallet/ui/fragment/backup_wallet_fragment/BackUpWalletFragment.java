@@ -64,6 +64,11 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
         }
     }
 
+    @Override
+    public void onLogin() {
+        getMainActivity().onLogin();
+    }
+
     private void onBack() {
         if (getArguments().getBoolean(IS_WALLET_CREATING)) {
             openRootFragment(StartPageFragment.newInstance(false, getContext()));
