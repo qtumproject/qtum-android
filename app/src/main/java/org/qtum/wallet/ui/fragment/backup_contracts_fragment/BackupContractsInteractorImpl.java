@@ -12,6 +12,7 @@ import org.qtum.wallet.model.backup.Backup;
 import org.qtum.wallet.model.backup.ContractJSON;
 import org.qtum.wallet.model.backup.TemplateJSON;
 import org.qtum.wallet.model.contract.Contract;
+import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.utils.DateCalculator;
 
 import java.io.File;
@@ -55,9 +56,11 @@ public class BackupContractsInteractorImpl implements BackupContractsInteractor 
 
                 List<Contract> contractList = tinyDB.getContractList();
                 for (Contract contract : contractList) {
-                    String contractTemplateType = tinyDB.getContractTemplateByUiid(contract.getUiid()).getContractType();
-                    ContractJSON contract1 = new ContractJSON(contract.getContractName(), contract.getSenderAddress(), contract.getContractAddress(), contractTemplateType, DateCalculator.getDateInUtc(contract.getDate()), contract.getUiid(), contract.isSubscribe());
-                    contractList1.add(contract1);
+                    if(contract.getCreationStatus().equals(ContractCreationStatus.Created)) {
+                        String contractTemplateType = tinyDB.getContractTemplateByUiid(contract.getUiid()).getContractType();
+                        ContractJSON contract1 = new ContractJSON(contract.getContractName(), contract.getSenderAddress(), contract.getContractAddress(), contractTemplateType, DateCalculator.getDateInUtc(contract.getDate()), contract.getUiid(), contract.isSubscribe());
+                        contractList1.add(contract1);
+                    }
                 }
 
                 Backup backup = new Backup(DateCalculator.getDateInUtc(new Date().getTime()), templateJSONList, String.valueOf(android.os.Build.VERSION.SDK_INT), "test", contractList1, "android");
