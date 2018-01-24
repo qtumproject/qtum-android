@@ -1,6 +1,7 @@
 package org.qtum.wallet.ui.fragment.backup_wallet_fragment;
 
 import android.content.Context;
+import android.util.Base64;
 
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.utils.crypto.AESUtil;
@@ -18,8 +19,6 @@ class BackUpWalletInteractorImpl implements BackUpWalletInteractor {
 
     @Override
     public String getPassphrase(String pin) {
-        String cryptoSaltPassphrase = QtumSharedPreference.getInstance().getSeed(mContext);
-        byte[] saltPassphrase = KeyStoreHelper.decryptToBytes(QTUM_PIN_ALIAS, cryptoSaltPassphrase);
-        return AESUtil.decryptBytes(pin, saltPassphrase);
+       return KeyStoreHelper.getSeed(mContext, pin);
     }
 }

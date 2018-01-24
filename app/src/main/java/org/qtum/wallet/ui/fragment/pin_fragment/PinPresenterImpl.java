@@ -1,5 +1,8 @@
 package org.qtum.wallet.ui.fragment.pin_fragment;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -193,6 +196,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
 
                                     @Override
                                     public void onError(Throwable e) {
+                                        Log.d("ERROR", "onError: " + e.getMessage());
                                     }
 
                                     @Override
@@ -207,6 +211,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                         getView().confirmError(R.string.incorrect_pin);
                     }
                 } catch (Exception ignored) {
+                    Log.d("ERROR", "onError: " + ignored.getMessage());
                 }
             }
             break;
@@ -390,7 +395,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 } else {
                     titleID = R.string.enter_pin;
                 }
-                if (getInteractor().getSixDigitPassword().isEmpty()) {
+                if (TextUtils.isEmpty(getInteractor().getSixDigitPassword())) {
                     getView().setDigitPin(4);
                 } else {
                     getView().setDigitPin(6);
@@ -398,7 +403,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 break;
             case CHANGING:
                 titleID = R.string.change_pin;
-                if (getInteractor().getSixDigitPassword().isEmpty()) {
+                if (TextUtils.isEmpty(getInteractor().getSixDigitPassword())) {
                     getView().setDigitPin(4);
                 } else {
                     getView().setDigitPin(6);

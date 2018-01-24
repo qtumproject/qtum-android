@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
+import org.qtum.wallet.utils.migration_manager.KeystoreMigrationResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class QtumSharedPreference {
     private final String MIN_GAS_PRICE = "min_gas_price";
     private final String CURRENT_ADDRESS = "current_active_address";
 
+    private static String passphrase_migration_state = "passphrase_migration_state";
+
     private List<LanguageChangeListener> mLanguageChangeListeners;
 
     private QtumSharedPreference() {
@@ -37,6 +40,18 @@ public class QtumSharedPreference {
             sInstance = new QtumSharedPreference();
         }
         return sInstance;
+    }
+
+    public String getKeystoreMigrationState(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(passphrase_migration_state
+                , null);
+    }
+
+    public void setKeyStoreMigrationState(Context context, String state) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putString(passphrase_migration_state, state);
+        mEditor.apply();
     }
 
     public void saveTouchIdEnable(Context context, boolean isEnable) {
@@ -158,6 +173,17 @@ public class QtumSharedPreference {
     }
 
     public void clear(Context context) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        String passphraseMigrationState = mSharedPreferences.getString(passphrase_migration_state,null);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.clear();
+        mEditor.apply();
+
+        mEditor.putString(passphrase_migration_state, passphraseMigrationState); //for prevent lost flag
+        mEditor.apply();
+    }
+
+    public void forceClear(Context context){
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
         mEditor.clear();
