@@ -1,9 +1,16 @@
 package org.qtum.wallet.ui.fragment.backup_wallet_fragment;
 
+import org.qtum.wallet.BuildConfig;
+import org.qtum.wallet.datastorage.KeyStorage;
+import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.confirm_passphrase_fragment.ConfirmPassphraseFragment;
 import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class BackUpWalletPresenterImpl extends BaseFragmentPresenterImpl implements BackUpWalletPresenter {
 
@@ -46,7 +53,36 @@ public class BackUpWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
 
     @Override
     public void onContinueClick() {
-        BaseFragment fragment = ConfirmPassphraseFragment.newInstance(getView().getContext(),passphrase);
-        getView().openFragment(fragment);
-    }
+        if(BuildConfig.DEBUG) {
+
+            getView().setProgressDialog();
+            KeyStorage.getInstance().createWallet(passphrase)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<String>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(String s) {
+                            getView().dismissProgressDialog();
+                            getView().onLogin();
+                            QtumSharedPreference.getInstance().setKeyGeneratedInstance(getView().getContext(), true);
+                            final WalletMainFragment walletFragment = WalletMainFragment.newInstance(getView().getContext());
+                            getView().getMainActivity().setRootFragment(walletFragment);
+                            getView().openRootFragment(walletFragment);
+                        }
+                    });
+        } else {
+            BaseFragment fragment = ConfirmPassphraseFragment.newInstance(getView().getContext(), passphrase);
+            getView().openFragment(fragment);
+        }
+   }
 }

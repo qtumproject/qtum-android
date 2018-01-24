@@ -1,6 +1,7 @@
 package org.qtum.wallet.ui.activity.splash_activity;
 
 import org.qtum.wallet.ui.base.base_activity.BasePresenterImpl;
+import org.qtum.wallet.utils.migration_manager.MigrationManager;
 
 public class SplashActivityPresenterImpl extends BasePresenterImpl implements SplashActivityPresenter {
 
@@ -14,6 +15,7 @@ public class SplashActivityPresenterImpl extends BasePresenterImpl implements Sp
 
     @Override
     public void initializeViews() {
+        MigrationManager.migratePassphrase(getView().getContext());
         getInteractor().migrateDefaultContracts();
         getView().initializeViews();
     }

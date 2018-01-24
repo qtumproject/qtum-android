@@ -26,6 +26,8 @@ public class QtumSharedPreference {
     private final String MIN_GAS_PRICE = "min_gas_price";
     private final String CURRENT_ADDRESS = "current_active_address";
 
+    private static String passphrase_migrated = "passphrase_migrated";
+
     private List<LanguageChangeListener> mLanguageChangeListeners;
 
     private QtumSharedPreference() {
@@ -37,6 +39,17 @@ public class QtumSharedPreference {
             sInstance = new QtumSharedPreference();
         }
         return sInstance;
+    }
+
+    public boolean isPassphraseMigrated(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getBoolean(passphrase_migrated, false);
+    }
+
+    public void setPassphraseMigration(Context context, boolean flag) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putBoolean(passphrase_migrated, flag);
+        mEditor.apply();
     }
 
     public void saveTouchIdEnable(Context context, boolean isEnable) {
@@ -159,8 +172,12 @@ public class QtumSharedPreference {
 
     public void clear(Context context) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        boolean passphraseMigrationFlag = mSharedPreferences.getBoolean(passphrase_migrated,false);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
         mEditor.clear();
+        mEditor.apply();
+
+        mEditor.putBoolean(passphrase_migrated, passphraseMigrationFlag); //for prevent lost flag
         mEditor.apply();
     }
 
