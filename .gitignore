@@ -8,4 +8,5 @@
 .externalNativeBuild
 app/release
 app/local.properties
+wear/local.properties
 /jks

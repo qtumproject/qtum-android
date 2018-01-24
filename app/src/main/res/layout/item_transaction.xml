@@ -44,15 +44,22 @@
                     android:id="@+id/iv_icon"
                     android:layout_width="25dp"
                     android:layout_height="16dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_gravity="center"
                     android:tint="@color/colorPrimary"
                     app:srcCompat="@drawable/ic_sent"/>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
                 <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_operation_type"
-                    android:layout_marginLeft="8dp"
                     app:typefaceAsset="@string/simplonMonoRegular"
                     android:textColor="@color/colorPrimary"
+                    android:layout_alignParentLeft="true"
+                    android:ellipsize="end"
+                    android:layout_toStartOf="@id/tv_value"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -60,11 +67,12 @@
 
                 <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_value"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
                     app:typefaceAsset="@string/simplonMonoMedium"
                     android:layout_height="wrap_content"
+                    android:layout_toStartOf="@id/symbol"
                     android:textColor="@color/colorPrimary"
                     android:text="-7,450"
                     android:textSize="18sp"
@@ -72,12 +80,16 @@
 
                 <org.qtum.wallet.utils.FontTextView
                     android:layout_width="wrap_content"
+                    android:id="@+id/symbol"
                     app:typefaceAsset="@string/simplonMonoMedium"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
+                    android:layout_alignParentRight="true"
                     android:text=" QTUM"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
+
+                </RelativeLayout>
 
             </LinearLayout>
 
