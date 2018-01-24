@@ -153,7 +153,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
 
     @OnClick(R.id.token_addr_btn)
     public void onTokenAddrClick() {
-        BaseFragment receiveFragment = ReceiveFragment.newInstance(getContext(), presenter.getToken().getContractAddress(), getTokenBalance());
+        BaseFragment receiveFragment = ReceiveFragment.newInstance(getContext(), presenter.getToken().getContractAddress(), mTextViewBalance.getText().toString(), mTextViewCurrency.getText().toString());
         openFragment(receiveFragment);
     }
 
@@ -226,11 +226,6 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
         mAdapter.setLoadingFlag(false);
         mLoadingFlag = false;
         mAdapter.notifyItemRangeChanged(positionStart, itemCount);
-    }
-
-    @Override
-    public String getTokenBalance() {
-        return mTextViewBalance.getText().toString() + mTextViewCurrency.getText().toString();
     }
 
     protected boolean expanded = false;

@@ -10,6 +10,7 @@ import org.qtum.wallet.model.backup.ContractJSON;
 import org.qtum.wallet.model.backup.TemplateJSON;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+import org.qtum.wallet.utils.DateCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +118,7 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
                                 if (contractJSON.getTemplate().equals(templateJSON.getUuid())) {
                                     ContractTemplate contractTemplate = getInteractor().importTemplate(templateJSON, templates);
                                     //TODO change Created status
-                                    Contract contract = new Contract(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                    Contract contract = new Contract(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, DateCalculator.getLongDateInTimeZone(contractJSON.getPublishDate()), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                     contractList.add(contract);
                                 }
                             }
@@ -133,7 +134,7 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
                                 if (contractJSON.getTemplate().equals(templateJSON.getUuid())) {
                                     ContractTemplate contractTemplate = getInteractor().importTemplate(templateJSON, templates);
                                     //TODO change Created status
-                                    Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, contractJSON.getPublishDate(),
+                                    Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, DateCalculator.getLongDateInTimeZone(contractJSON.getPublishDate()),
                                             contractJSON.getContractCreationAddres(), contractJSON.getName());
                                     token.setSubscribe(contractJSON.getIsActive());
                                     getView().subscribeTokenBalanceChange(token.getContractAddress());
@@ -153,7 +154,7 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
                                 if (contractJSON.getTemplate().equals(templateJSON.getUuid())) {
                                     ContractTemplate contractTemplate = getInteractor().importTemplate(templateJSON, templates);
                                     //TODO
-                                    Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                    Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, DateCalculator.getLongDateInTimeZone(contractJSON.getPublishDate()), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                     getView().subscribeTokenBalanceChange(token.getContractAddress());
                                     token.setSubscribe(contractJSON.getIsActive());
                                     tokenList.add(token);
@@ -164,7 +165,7 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
                                 if (contractJSON.getTemplate().equals(templateJSON.getUuid())) {
                                     ContractTemplate contractTemplate = getInteractor().importTemplate(templateJSON, templates);
                                     //TODO
-                                    Contract contract = new Contract(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, contractJSON.getPublishDate(),
+                                    Contract contract = new Contract(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, DateCalculator.getLongDateInTimeZone(contractJSON.getPublishDate()),
                                             contractJSON.getContractCreationAddres(), contractJSON.getName());
                                     contractList.add(contract);
                                 }
@@ -184,11 +185,11 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
                             if (contractJSON.getTemplate().equals(templateJSON.getUuid())) {
                                 if (!contractJSON.getType().equals("token")) {
                                     //TODO
-                                    Contract contract = new Contract(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                    Contract contract = new Contract(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, DateCalculator.getLongDateInTimeZone(contractJSON.getPublishDate()), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                     contractList.add(contract);
                                 } else if (contractJSON.getType().equals("token")) {
                                     //TODO
-                                    Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                    Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, DateCalculator.getLongDateInTimeZone(contractJSON.getPublishDate()), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                     token.setSubscribe(contractJSON.getIsActive());
                                     getView().subscribeTokenBalanceChange(token.getContractAddress());
                                     tokenList.add(token);
@@ -208,7 +209,7 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
                             if (contractJSON.getTemplate().equals(templateJSON.getUuid())) {
                                 if (!contractJSON.getType().equals("token")) {
                                     //TODO
-                                    Contract contract = new Contract(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                    Contract contract = new Contract(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, DateCalculator.getLongDateInTimeZone(contractJSON.getPublishDate()), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                     contractList.add(contract);
                                 }
                             }
@@ -223,7 +224,7 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
                             if (contractJSON.getTemplate().equals(templateJSON.getUuid())) {
                                 if (contractJSON.getType().equals("token")) {
                                     //TODO
-                                    Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, contractJSON.getPublishDate(), contractJSON.getContractCreationAddres(), contractJSON.getName());
+                                    Token token = new Token(contractJSON.getContractAddress(), contractTemplate.getUuid(), ContractCreationStatus.Created, DateCalculator.getLongDateInTimeZone(contractJSON.getPublishDate()), contractJSON.getContractCreationAddres(), contractJSON.getName());
                                     token.setSubscribe(contractJSON.getIsActive());
                                     getView().subscribeTokenBalanceChange(token.getContractAddress());
                                     tokenList.add(token);

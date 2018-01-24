@@ -3,7 +3,11 @@ package org.qtum.wallet.model.backup;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.qtum.wallet.utils.DateCalculator;
+
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class Backup {
 
@@ -36,7 +40,7 @@ public class Backup {
     }
 
     public String getDateCreate() {
-        return dateCreate;
+        return DateCalculator.getDateInFormat(DateCalculator.getLongDateInTimeZone(dateCreate));
     }
 
     public void setDateCreate(String dateCreate) {

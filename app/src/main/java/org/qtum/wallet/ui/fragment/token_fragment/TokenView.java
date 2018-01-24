@@ -21,8 +21,6 @@ public interface TokenView extends BaseFragmentView {
 
     String getCurrency();
 
-    String getTokenBalance();
-
     boolean isAbiEmpty(String abi);
 
     Subscriber<String> getNameValueCallback();

@@ -200,6 +200,7 @@ public class ContractFunctionDefaultPresenterImpl extends BaseFragmentPresenterI
 
                     @Override
                     public void onNext(SendRawTransactionResponse sendRawTransactionResponse) {
+                        getView().setAlertDialog(org.qtum.wallet.R.string.payment_completed_successfully, "Ok", BaseFragment.PopUpType.confirm);
                         getView().dismissProgressDialog();
                     }
                 });

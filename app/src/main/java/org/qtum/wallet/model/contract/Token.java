@@ -19,9 +19,13 @@ public class Token extends Contract {
     @SerializedName("name")
     private String name;
 
-    public Token(String contractAddress, String templateUiid, ContractCreationStatus contractCreationStatus, String date, String senderAddress, String contractName) {
+    public Token(String contractAddress, String templateUiid, ContractCreationStatus contractCreationStatus, Long date, String senderAddress, String contractName) {
         super(contractAddress, templateUiid, contractCreationStatus, date, senderAddress, contractName);
         this.mIsSubscribe = true;
+    }
+
+    public Token(String contractAddress, String uiid, String contractName, ContractCreationStatus creationStatus, Long date, String senderAddress, boolean isSubscribe){
+        super(contractAddress,uiid,contractName,creationStatus,date,senderAddress,isSubscribe);
     }
 
     /**

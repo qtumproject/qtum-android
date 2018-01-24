@@ -2,12 +2,13 @@ package org.qtum.wallet.ui.fragment.event_log_fragment;
 
 import android.app.Dialog;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,36 +92,44 @@ public class ChooseDialogFragment extends DialogFragment {
     public void onStart() {
         super.onStart();
         Dialog dialog = getDialog();
+
         if (dialog != null) {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
             dialog.getWindow().setLayout(width, height);
         }
         Resources r = getResources();
-
+        int marginTop = getArguments().getInt(MARGIN_TOP);
         int pxW = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 116, r.getDisplayMetrics());
+        int pxH = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 134, r.getDisplayMetrics());
         int pxMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, r.getDisplayMetrics());
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                pxW,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(pxMargin, getArguments().getInt(MARGIN_TOP), 0, 0);
+
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y - getResources().getDimensionPixelSize(getResources().getIdentifier("status_bar_height", "dimen", "android"));
+        if ((height - marginTop) < pxH) {
+            marginTop = height - pxH;
+        }
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(pxW, pxH);
+        params.setMargins(pxMargin, marginTop, 0, 0);
         mViewTypeContainer.setLayoutParams(params);
         final String data = getArguments().getString(DATA);
 
         mTextViewAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String newData = data.substring(24,64);
-                ((EventLogFragment)getTargetFragment()).onViewTypeChoose(new DisplayedData("Address",data,newData));
+                String newData = data.substring(24, 64);
+                ((EventLogFragment) getTargetFragment()).onViewTypeChoose(new DisplayedData("Address", data, newData));
                 getDialog().dismiss();
             }
         });
         mTextViewHex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((EventLogFragment)getTargetFragment()).onViewTypeChoose(new DisplayedData("Hex",data, data));
+                ((EventLogFragment) getTargetFragment()).onViewTypeChoose(new DisplayedData("Hex", data, data));
                 getDialog().dismiss();
             }
         });
@@ -128,7 +137,7 @@ public class ChooseDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 String newData = new BigInteger(Hex.decode(data)).toString();
-                ((EventLogFragment)getTargetFragment()).onViewTypeChoose(new DisplayedData("Number", data, newData));
+                ((EventLogFragment) getTargetFragment()).onViewTypeChoose(new DisplayedData("Number", data, newData));
                 getDialog().dismiss();
             }
         });
@@ -137,11 +146,11 @@ public class ChooseDialogFragment extends DialogFragment {
             public void onClick(View view) {
                 String newData = "";
                 try {
-                    newData = new String(Hex.decode(data),"ASCII");
+                    newData = new String(Hex.decode(data), "ASCII");
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                ((EventLogFragment)getTargetFragment()).onViewTypeChoose(new DisplayedData("Text",data, newData));
+                ((EventLogFragment) getTargetFragment()).onViewTypeChoose(new DisplayedData("Text", data, newData));
                 getDialog().dismiss();
             }
         });
