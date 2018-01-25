@@ -1,8 +1,5 @@
 package org.qtum.wallet.utils.migration_manager;
 
-/**
- * Created by kirillvolkov on 24.01.2018.
- */
 
 public enum  KeystoreMigrationResult {
     NOT_NEED ("NOT_NEED"), ERROR ("ERROR"), SUCCESS ("SUCCESS");
