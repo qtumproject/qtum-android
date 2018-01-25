@@ -368,12 +368,12 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @Override
     public void notifyConfirmHistory(final int notifyPosition) {
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 mTransactionAdapter.notifyItemChanged(notifyPosition);
-//            }
-//        });
+            }
+        });
     }
 
     BalanceChangeListener balanceListener = new BalanceChangeListener() {
