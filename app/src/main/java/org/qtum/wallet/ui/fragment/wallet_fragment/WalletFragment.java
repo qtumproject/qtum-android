@@ -334,11 +334,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @Override
     public void addHistory(int positionStart, int itemCount, List<History> historyList) {
         mTransactionAdapter.setHistoryList(historyList);
-        if(mTransactionAdapter.getItemCount()==1){
-            mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
-        }else{
-            mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
-        }
         mTransactionAdapter.setLoadingFlag(false);
         if(mTransactionAdapter.getItemCount()==1){
             mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);

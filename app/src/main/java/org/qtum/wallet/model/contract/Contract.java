@@ -3,6 +3,7 @@ package org.qtum.wallet.model.contract;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class Contract implements Serializable {
 
@@ -92,6 +93,7 @@ public class Contract implements Serializable {
 
     public void setCreationStatus(ContractCreationStatus creationStatus) {
         mCreationStatus = creationStatus;
+        BigDecimal d = new BigDecimal(12.2);
     }
 
     public Long getDate() {

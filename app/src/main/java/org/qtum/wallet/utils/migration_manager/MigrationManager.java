@@ -4,6 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Base64;
 
+import org.qtum.wallet.datastorage.HistoryList;
+import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.ContractTemplate;
@@ -65,6 +67,10 @@ public class MigrationManager {
                 return true;
             case migrateVersion_106:
                 resetContractAndTemplateTime(context);
+                if(MigrationManager.migrateFromKeystore(context)
+                        .equalsName(KeystoreMigrationResult.ERROR.name())) {
+                    clearWallet(context);
+                }
                 return true;
             default:
                 return false;
@@ -214,5 +220,15 @@ public class MigrationManager {
     private static void savePassphraseSalt(Context context, byte[] saltPassphrase) {
         String base64 = Base64.encodeToString(saltPassphrase, Base64.DEFAULT);
         QtumSharedPreference.getInstance().saveSeed(context, base64);
+    }
+
+    private void clearWallet(Context context) {
+        QtumSharedPreference.getInstance().forceClear(context);
+        KeyStorage.getInstance().clearKeyStorage();
+        HistoryList.getInstance().clearHistoryList();
+        TinyDB db = new TinyDB(context);
+        db.clearTokenList();
+        db.clearContractList();
+        db.clearTemplateList();
     }
 }
