@@ -424,7 +424,7 @@ public class TinyDB {
                 } else if (t1.getDate() == null) {
                     return 1;
                 } else {
-                    return DateCalculator.equals(contract.getDate(), t1.getDate());
+                    return contract.getDate().compareTo(t1.getDate());
                 }
             }
         });
@@ -480,7 +480,7 @@ public class TinyDB {
 
         List<Token> tokenList = getTokenList();
         for (Token t : tokenList) {
-            if (token.getUiid().equals(t.getUiid())) {
+            if (token.getContractAddress().equals(t.getContractAddress())) {
                 t.setLastBalance(token.getLastBalance());
                 t.setDecimalUnits(decimalUnits);
                 token = t;
@@ -493,7 +493,7 @@ public class TinyDB {
     public Token setTokenSymbol(Token token, String symbol) {
         List<Token> tokenList = getTokenList();
         for (Token t : tokenList) {
-            if (token.getUiid().equals(t.getUiid())) {
+            if (token.getContractAddress().equals(t.getContractAddress())) {
                 t.setSymbol(symbol);
                 token = t;
             }

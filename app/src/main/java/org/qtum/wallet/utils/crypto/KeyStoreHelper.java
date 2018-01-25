@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
 
+import org.jsoup.Connection;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 
 import java.math.BigInteger;
@@ -73,7 +74,7 @@ public class KeyStoreHelper {
                 SecurityConstants.KEYSTORE_PROVIDER_ANDROID_KEYSTORE);
         kpGenerator.initialize(spec);
         KeyPair kp = kpGenerator.generateKeyPair();
-        Log.d(TAG, "Public Key is: " + kp.getPublic().toString());
+       // Log.d(TAG, "Public Key is: " + kp.getPublic().toString());
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -226,11 +227,12 @@ public class KeyStoreHelper {
         String SIGNATURE_SHA512withRSA = "SHA512withRSA";
     }
 
-    private final static String QTUM_PIN_ALIAS = "qtum_alias";
+    public final static String QTUM_PIN_ALIAS = "qtum_alias";
 
     public static String getSeed(Context context, @NonNull String pin) {
         String cryptoSaltPassphrase = QtumSharedPreference.getInstance().getSeed(context);
-        byte[] saltPassphrase = KeyStoreHelper.decryptToBytes(QTUM_PIN_ALIAS, cryptoSaltPassphrase);
+        //byte[] saltPassphrase = KeyStoreHelper.decryptToBytes(QTUM_PIN_ALIAS, cryptoSaltPassphrase);
+        byte[] saltPassphrase = Base64.decode(cryptoSaltPassphrase, Base64.DEFAULT);
         return AESUtil.decryptBytes(pin, saltPassphrase);
     }
 }

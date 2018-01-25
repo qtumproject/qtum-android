@@ -45,7 +45,7 @@ public class BoughtContractBuilder {
                                                                 .subscribe(new Subscriber<QstoreContract>() {
                                                                     @Override
                                                                     public void onCompleted() {
-                                                                        FileStorageManager.getInstance().importTemplate(context, sourceContract, byteCodeContract, abiContract, type, name, dateString, uuid);
+                                                                        FileStorageManager.getInstance().importTemplate(context, sourceContract, byteCodeContract, abiContract, type, name, null/*TODO dateString*/, uuid);
                                                                         listener.onBuildSuccess();
                                                                     }
 

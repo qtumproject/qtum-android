@@ -425,6 +425,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     @Override
     protected void onResume() {
         super.onResume();
+
     }
 
     private void initBottomNavViewWithFont(int fontId) {

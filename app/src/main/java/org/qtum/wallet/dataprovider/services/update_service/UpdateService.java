@@ -249,7 +249,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
                     for (Contract contract : contractList) {
                         if (contract.getContractAddress() != null && contract.getContractAddress().equals(contractAddress)) {
                             contract.setCreationStatus(contractCreationStatus);
-                            contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime() * 1000L));
+                            contract.setDate(history.getBlockTime() * 1000L);
                             done = true;
                             ArrayList<String> unconfirmedContractTxHashList = tinyDB.getUnconfirmedContractTxHasList();
                             unconfirmedContractTxHashList.remove(history.getTxHash());
@@ -264,7 +264,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
                         for (Token token : tokenList) {
                             if (token.getContractAddress() != null && token.getContractAddress().equals(contractAddress)) {
                                 token.setCreationStatus(contractCreationStatus);
-                                token.setDate(DateCalculator.getDateInFormat(history.getBlockTime() * 1000L));
+                                token.setDate(history.getBlockTime() * 1000L);
                                 ArrayList<String> unconfirmedContractTxHashList = tinyDB.getUnconfirmedContractTxHasList();
                                 unconfirmedContractTxHashList.remove(history.getTxHash());
                                 tinyDB.putUnconfirmedContractTxHashList(unconfirmedContractTxHashList);
@@ -504,7 +504,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
                                 for (Contract contract : contractList) {
                                     if (contract.getContractAddress() != null && contract.getContractAddress().equals(contractAddress)) {
                                         contract.setCreationStatus(contractCreationStatus);
-                                        contract.setDate(DateCalculator.getDateInFormat(history.getBlockTime() * 1000L));
+                                        contract.setDate(history.getBlockTime() * 1000L);
                                         done = true;
                                         unconfirmedContractTxHashList.remove(history.getTxHash());
                                         tinyDB.putUnconfirmedContractTxHashList(unconfirmedContractTxHashList);
@@ -518,7 +518,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
                                     for (Token token : tokenList) {
                                         if (token.getContractAddress() != null && token.getContractAddress().equals(contractAddress)) {
                                             token.setCreationStatus(contractCreationStatus);
-                                            token.setDate(DateCalculator.getDateInFormat(history.getBlockTime() * 1000L));
+                                            token.setDate(history.getBlockTime() * 1000L);
                                             unconfirmedContractTxHashList.remove(history.getTxHash());
                                             tinyDB.putUnconfirmedContractTxHashList(unconfirmedContractTxHashList);
                                             break;

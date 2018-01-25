@@ -26,4 +26,6 @@ public class SplashActivityPresenterImpl extends BasePresenterImpl implements Sp
     public SplashActivityInteractor getInteractor() {
         return mMainActivityInteractor;
     }
+
+
 }

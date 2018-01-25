@@ -44,35 +44,33 @@ public class TokenFragmentLight extends TokenFragment {
         return LAYOUT;
     }
 
+    AppBarLayout.OnOffsetChangedListener appBarLayoutListener =  new AppBarLayout.OnOffsetChangedListener() {
+        @Override
+        public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+            percents = (((getTotalRange() - Math.abs(verticalOffset)) * 1.0f) / getTotalRange());
+            float offsetPercents = percents - (1 - percents);
+            balanceView.setAlpha(offsetPercents);
+            prevPercents = percents;
+        }
+    };
+
     @Override
     public void initializeViews() {
         super.initializeViews();
-
         waveView.setShapeType(WaveView.ShapeType.SQUARE);
         mWaveHelper = new WaveHelper(waveView);
-
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                percents = (((getTotalRange() - Math.abs(verticalOffset)) * 1.0f) / getTotalRange());
-                float offsetPercents = percents - (1 - percents);
-                mShareBtn.setAlpha(offsetPercents);
-                mIvChooseAddress.setAlpha(offsetPercents);
-                mTokenTitle.setAlpha(offsetPercents);
-                balanceView.setAlpha(offsetPercents);
-                prevPercents = percents;
-            }
-        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mAppBarLayout.addOnOffsetChangedListener(appBarLayoutListener);
         mWaveHelper.start();
     }
 
     @Override
     public void onPause() {
+        mAppBarLayout.removeOnOffsetChangedListener(appBarLayoutListener);
         mWaveHelper.cancel();
         super.onPause();
     }

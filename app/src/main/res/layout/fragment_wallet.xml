@@ -16,7 +16,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/background" />
+            android:background="@color/background"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,22 +26,22 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/iv_receive"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:id="@+id/iv_receive"
                 android:layout_gravity="center"
                 android:layout_marginStart="8dp"
                 android:paddingEnd="6dp"
                 android:tint="@color/background"
-                app:srcCompat="@drawable/ic_createnew" />
+                app:srcCompat="@drawable/ic_createnew"/>
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:weightSum="2"
-                android:layout_weight="1"
                 android:id="@+id/ll_receive"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:weightSum="2">
 
                 <org.qtum.wallet.utils.FontTextView
                     android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                     android:gravity="bottom"
                     android:text="@string/qtum_address"
                     android:textColor="@color/background"
-                    app:typefaceAsset="@string/simplonMonoRegular" />
+                    app:typefaceAsset="@string/simplonMonoRegular"/>
 
                 <org.qtum.wallet.utils.FontTextView
 
@@ -58,22 +58,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:maxLines="1"
                     android:ellipsize="end"
+                    android:maxLines="1"
                     android:paddingEnd="16dp"
                     android:textColor="@color/background"
-                    app:typefaceAsset="@string/simplonMonoMedium" />
+                    app:typefaceAsset="@string/simplonMonoMedium"/>
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/iv_choose_address"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:id="@+id/iv_choose_address"
                 android:layout_gravity="center"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:tint="@color/background"
-                app:srcCompat="@drawable/ic_addressbook" />
+                app:srcCompat="@drawable/ic_addressbook"/>
 
         </LinearLayout>
 
@@ -84,19 +84,37 @@
             android:gravity="left|center_vertical"
             android:padding="8dp"
             android:text="@string/org.qtum.wallet.activity"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"/>
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_refresh"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
-                    android:splitMotionEvents="false"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </android.support.v4.widget.SwipeRefreshLayout>
+                    android:layout_height="match_parent"
+                    android:splitMotionEvents="false"/>
+
+                <org.qtum.wallet.utils.FontTextView
+                    android:id="@+id/histories_placeholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="100dp"
+                    android:text="@string/no_transaction_available_yet"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"
+                    app:typefaceAsset="@string/simplonMonoRegular" />
+
+            </RelativeLayout>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 
@@ -129,14 +147,14 @@
                 <include layout="@layout/fragment_wallet_appbar"/>
 
                 <LinearLayout
+                    android:id="@+id/page_indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/page_indicator"
                     android:layout_gravity="bottom|center_horizontal"
                     android:gravity="center"
-                    android:visibility="gone"
                     android:orientation="horizontal"
-                    android:padding="4dp">
+                    android:padding="4dp"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="12dp"

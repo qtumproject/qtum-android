@@ -105,8 +105,8 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
         }
         progressIndicator.setVisibility(View.GONE);
         if (history.isReceiptUpdated()) {
+            mImageViewIcon.setVisibility(View.VISIBLE);
             if (history.getTransactionReceipt() != null) {
-                mImageViewIcon.setVisibility(View.VISIBLE);
                 if (history.getChangeInBalance().doubleValue() > 0) {
                     mTextViewOperationType.setText(R.string.received_contract);
                     mImageViewIcon.setImageResource(R.drawable.ic_rec_cont_dark);

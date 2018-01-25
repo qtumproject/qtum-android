@@ -45,11 +45,11 @@ import com.google.zxing.common.BitMatrix;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
-import org.qtum.wallet.ui.fragment.addresses_fragment.AddressesFragment;
-import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment.addresses_fragment.AddressesFragment;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
+import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.FontManager;
 
 import java.io.File;
@@ -78,43 +78,46 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
 
     public static final String TOKEN_ADDRESS = "TOKEN_ADDRESS";
     public static final String TOKEN_BALANCE = "TOKEN_BALANCE";
+    public static final String TOKEN_SYMBOL = "TOKEN_SYMBOL";
 
-    @BindView(org.qtum.wallet.R.id.iv_qr_code)
+    @BindView(R.id.iv_qr_code)
     ImageView mImageViewQrCode;
-    @BindView(org.qtum.wallet.R.id.et_amount)
+    @BindView(R.id.et_amount)
     TextInputEditText mTextInputEditTextAmount;
-    @BindView(org.qtum.wallet.R.id.til_amount)
+    @BindView(R.id.til_amount)
     TextInputLayout mTextInputLayoutAmount;
-    @BindView(org.qtum.wallet.R.id.tv_single_string)
+    @BindView(R.id.tv_single_string)
     TextView mTextViewAddress;
-    @BindView(org.qtum.wallet.R.id.bt_copy_wallet_address)
+    @BindView(R.id.bt_copy_wallet_address)
     Button mButtonCopyWalletAddress;
-    @BindView(org.qtum.wallet.R.id.bt_choose_another_address)
+    @BindView(R.id.bt_choose_another_address)
     Button mButtonChooseAnotherAddress;
-    @BindView(org.qtum.wallet.R.id.ibt_back)
+    @BindView(R.id.ibt_back)
     ImageButton mImageButtonBack;
-    @BindView(org.qtum.wallet.R.id.rl_receive)
+    @BindView(R.id.rl_receive)
     RelativeLayout mRelativeLayoutBase;
-    @BindView(org.qtum.wallet.R.id.cl_receive)
+    @BindView(R.id.cl_receive)
     protected
     CoordinatorLayout mCoordinatorLayout;
 
-    @BindView(org.qtum.wallet.R.id.qr_progress_bar)
+    @BindView(R.id.qr_progress_bar)
     ProgressBar qrProgressBar;
 
-    @BindView(org.qtum.wallet.R.id.not_confirmed_balance_view)
+    @BindView(R.id.not_confirmed_balance_view)
     View notConfirmedBalancePlaceholder;
-    @BindView(org.qtum.wallet.R.id.tv_placeholder_balance_value)
+    @BindView(R.id.tv_placeholder_balance_value)
     TextView placeHolderBalance;
-    @BindView(org.qtum.wallet.R.id.tv_placeholder_not_confirmed_balance_value)
+    @BindView(R.id.tv_placeholder_not_confirmed_balance_value)
     TextView placeHolderBalanceNotConfirmed;
+    @BindView(R.id.tv_placeholder_symbol)
+    TextView mTextViewSymbol;
 
     QrCodePreview zoomDialog;
     private UpdateService mUpdateService;
     private int qrCodeColor = Color.BLACK;
     private int qrBackColor = Color.WHITE;
 
-    @OnClick(org.qtum.wallet.R.id.iv_qr_code)
+    @OnClick(R.id.iv_qr_code)
     public void onQrCodeClick() {
         rebuildDrawingCash();
         if (mImageViewQrCode.getDrawingCache() != null) {
@@ -123,7 +126,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
         }
     }
 
-    @OnClick(org.qtum.wallet.R.id.bt_share)
+    @OnClick(R.id.bt_share)
     public void onShareClick() {
         if (checkPermissionWriteExternalStorage()) {
             chooseShareMethod();
@@ -160,18 +163,20 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (getTokenBalance() == null) {
-        getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
-            @Override
-            public void onServiceConnectionChange(boolean isConnecting) {
-                if(isConnecting) {
-                    mUpdateService = getMainActivity().getUpdateService();
-                    mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
+        String tokenBalance = getArguments().getString(TOKEN_BALANCE);
+        String tokenSymbol = getArguments().getString(TOKEN_SYMBOL);
+        if (tokenBalance == null) {
+            getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
+                @Override
+                public void onServiceConnectionChange(boolean isConnecting) {
+                    if (isConnecting) {
+                        mUpdateService = getMainActivity().getUpdateService();
+                        mUpdateService.addBalanceChangeListener(mBalanceChangeListener);
+                    }
                 }
-            }
-        });
+            });
         } else {
-            updateBalance(getTokenBalance(), null);
+            updateBalance(tokenBalance, null, tokenSymbol);
         }
     }
 
@@ -213,16 +218,16 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
         }
     }
 
-    @OnClick({org.qtum.wallet.R.id.bt_copy_wallet_address, org.qtum.wallet.R.id.bt_choose_another_address, org.qtum.wallet.R.id.ibt_back})
+    @OnClick({R.id.bt_copy_wallet_address, R.id.bt_choose_another_address, R.id.ibt_back})
     public void onClick(View view) {
         switch (view.getId()) {
-            case org.qtum.wallet.R.id.bt_copy_wallet_address:
+            case R.id.bt_copy_wallet_address:
                 onCopyWalletAddressClick();
                 break;
-            case org.qtum.wallet.R.id.bt_choose_another_address:
+            case R.id.bt_choose_another_address:
                 onChooseAnotherAddressClick();
                 break;
-            case org.qtum.wallet.R.id.ibt_back:
+            case R.id.ibt_back:
                 getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 getActivity().onBackPressed();
                 break;
@@ -241,11 +246,12 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
         showToast();
     }
 
-    public static BaseFragment newInstance(Context context, String tokenAddress, String balance) {
+    public static BaseFragment newInstance(Context context, String tokenAddress, String balance, String tokenSymbol) {
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, ReceiveFragment.class);
         args.putString(TOKEN_BALANCE, balance);
         args.putString(TOKEN_ADDRESS, tokenAddress);
+        args.putString(TOKEN_SYMBOL, tokenSymbol);
         fragment.setArguments(args);
         return fragment;
     }
@@ -264,7 +270,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
     public void initializeViews() {
         mImageViewQrCode.setDrawingCacheEnabled(true);
 
-        setQrColors(ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.colorPrimary), mCoordinatorLayout.getDrawingCacheBackgroundColor());
+        setQrColors(ContextCompat.getColor(getContext(), R.color.colorPrimary), mCoordinatorLayout.getDrawingCacheBackgroundColor());
 
         mTextInputEditTextAmount.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -321,8 +327,8 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
             }
         });
 
-        mTextInputEditTextAmount.setTypeface(FontManager.getInstance().getFont(getString(org.qtum.wallet.R.string.simplonMonoRegular)));
-        mTextInputLayoutAmount.setTypeface(FontManager.getInstance().getFont(getString(org.qtum.wallet.R.string.simplonMonoRegular)));
+        mTextInputEditTextAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
+        mTextInputLayoutAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.simplonMonoRegular)));
 
         if (getArguments() != null) {
             String tokenAddr = getArguments().getString(TOKEN_ADDRESS, null);
@@ -355,8 +361,8 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
         fragment.setTargetFragment(this, code_response);
         getFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(org.qtum.wallet.R.anim.enter_from_right, org.qtum.wallet.R.anim.exit_to_left, org.qtum.wallet.R.anim.enter_from_left, org.qtum.wallet.R.anim.exit_to_right)
-                .add(org.qtum.wallet.R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .add(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
                 .addToBackStack(null)
                 .commit();
     }
@@ -401,7 +407,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
 
     @Override
     public void showToast() {
-        Toast.makeText(getContext(), org.qtum.wallet.R.string.copied, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.copied, Toast.LENGTH_SHORT).show();
     }
 
     public void onChangeAddress() {
@@ -409,12 +415,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
     }
 
     @Override
-    public String getTokenBalance() {
-        return getArguments().getString(TOKEN_BALANCE);
-    }
-
-    @Override
-    public void updateBalance(String balance, String unconfirmedBalance) {
+    public void updateBalance(String balance, String unconfirmedBalance, String symbol) {
         placeHolderBalance.setText(balance);
         if (!TextUtils.isEmpty(unconfirmedBalance)) {
             notConfirmedBalancePlaceholder.setVisibility(View.VISIBLE);
@@ -422,11 +423,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
         } else {
             notConfirmedBalancePlaceholder.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void updateBalance(String balance) {
-        updateBalance(balance, null);
+        mTextViewSymbol.setText(symbol);
     }
 
     private void rebuildDrawingCash() {
@@ -470,7 +467,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
         DisplayMetrics displayMetrics = new DisplayMetrics();
         Display display = getMainActivity().getWindowManager().getDefaultDisplay();
         display.getMetrics(displayMetrics);
-        int QRCodeWidth = displayMetrics.widthPixels * 4/5;
+        int QRCodeWidth = displayMetrics.widthPixels * 4 / 5;
         getPresenter().setModuleWidth(QRCodeWidth);
         BitMatrix bitMatrix;
         try {

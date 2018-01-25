@@ -22,7 +22,6 @@ import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.utils.CryptoUtilsCompat;
 import org.qtum.wallet.utils.PinEntryEditText;
 import org.qtum.wallet.utils.ThemeUtils;
-import org.qtum.wallet.utils.crypto.KeyStoreHelper;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.utils.CryptoUtils;
 import org.qtum.wallet.utils.FontTextView;
@@ -90,11 +89,7 @@ public class PinDialogFragment extends DialogFragment {
     }
 
     private String getSixDigitPassword() {
-        String encryptedPinHash = QtumSharedPreference.getInstance().getSixDigitPassword(getContext());
-        if (encryptedPinHash.isEmpty()) {
-            return encryptedPinHash;
-        }
-        return KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, encryptedPinHash);
+        return QtumSharedPreference.getInstance().getSixDigitPassword(getContext());
     }
 
     private String getPassword() {
@@ -107,8 +102,7 @@ public class PinDialogFragment extends DialogFragment {
     }
 
     private String getFourDigitPassword() {
-        String encryptedPinHash = QtumSharedPreference.getInstance().getPassword(getContext());
-        return KeyStoreHelper.decrypt(QTUM_PIN_ALIAS, encryptedPinHash);
+        return QtumSharedPreference.getInstance().getPassword(getContext());
     }
 
     @Override

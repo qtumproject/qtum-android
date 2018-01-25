@@ -23,6 +23,7 @@ import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 
+import org.qtum.wallet.BuildConfig;
 import org.qtum.wallet.R;
 import org.qtum.wallet.adapter.HistoryAdapter;
 import org.qtum.wallet.entity.HeaderData;

@@ -39,6 +39,7 @@ import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.FontTextView;
+import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -101,6 +102,9 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @BindView(R.id.toolbar_layout)
     protected CollapsingToolbarLayout collapsingToolbar;
+
+    @BindView(R.id.histories_placeholder)
+    TextView mTextViewHistoriesPlaceholder;
 
     private NetworkStateReceiver mNetworkStateReceiver;
     private UpdateService mUpdateService;
@@ -189,7 +193,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @OnClick({R.id.ll_receive, R.id.iv_receive})
     public void onReceiveClick() {
-        BaseFragment receiveFragment = ReceiveFragment.newInstance(getContext(), null, null);
+        BaseFragment receiveFragment = ReceiveFragment.newInstance(getContext(), null, null, null);
         openFragmentForResult(receiveFragment);
     }
 
@@ -292,6 +296,11 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     public void updateHistory(TransactionAdapter adapter) {
         mTransactionAdapter = adapter;
+        if(mTransactionAdapter.getItemCount()==1){
+            mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
+        }else{
+            mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
+        }
         mRecyclerView.setAdapter(mTransactionAdapter);
         mSwipeRefreshLayout.setRefreshing(false);
         mLoadingFlag = false;
@@ -326,6 +335,11 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     public void addHistory(int positionStart, int itemCount, List<History> historyList) {
         mTransactionAdapter.setHistoryList(historyList);
         mTransactionAdapter.setLoadingFlag(false);
+        if(mTransactionAdapter.getItemCount()==1){
+            mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
+        }else{
+            mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
+        }
         mLoadingFlag = false;
         mTransactionAdapter.notifyItemRangeChanged(positionStart, itemCount);
     }
@@ -342,6 +356,11 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if(mTransactionAdapter.getItemCount()==1){
+                    mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
+                }else{
+                    mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
+                }
                 mTransactionAdapter.notifyDataSetChanged();
             }
         });
