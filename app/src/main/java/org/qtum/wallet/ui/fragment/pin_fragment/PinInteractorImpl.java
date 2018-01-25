@@ -12,10 +12,6 @@ import org.qtum.wallet.utils.crypto.KeyStoreHelper;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-
 import javax.crypto.Cipher;
 
 import rx.Observable;
