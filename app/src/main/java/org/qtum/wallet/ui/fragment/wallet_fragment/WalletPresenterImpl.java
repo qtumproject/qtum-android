@@ -210,7 +210,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                                                         history.setReceiptUpdated(true);
                                                         realm.insertOrUpdate(history);
                                                     }
-                                                    getView().notifyConfirmHistory(histories.indexOf(history));
+                                                    getView().notifyConfirmHistory(getInteractor().getHistoryList().indexOf(history));
                                                 }
                                             });
                                         }
