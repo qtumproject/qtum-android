@@ -51,7 +51,6 @@ public class QtumApplication extends MultiDexApplication{
                 .build();
 
         Realm.setDefaultConfiguration(config);
-
         try {
             int currentVersion = getCodeVersion();
             QtumSettingSharedPreference qtumSettingSharedPreference = new QtumSettingSharedPreference();
