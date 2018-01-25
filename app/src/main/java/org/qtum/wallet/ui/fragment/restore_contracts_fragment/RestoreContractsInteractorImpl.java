@@ -64,14 +64,6 @@ public class RestoreContractsInteractorImpl implements RestoreContractsInteracto
         return FileStorageManager.getInstance().importTemplate(mContext.get(), templateJSON, templates);
     }
 
-    @Override
-    public void putListWithoutToken(List<Contract> contractList) {
-        TinyDB tinyDB = new TinyDB(mContext.get());
-        List<Contract> tmpContractList = tinyDB.getContractListWithoutToken();
-        tmpContractList.addAll(contractList);
-        tinyDB.putContractListWithoutToken(tmpContractList);
-    }
-
     private List<Token> filterTokenListForDuplicate(List<Token> newTokens, List<Token> currentTokens) {
         for (Token newToken : newTokens) {
             if (!isTokenExist(newToken, currentTokens)) {
@@ -81,9 +73,27 @@ public class RestoreContractsInteractorImpl implements RestoreContractsInteracto
         return currentTokens;
     }
 
+    private List<Contract> filterContractListForDuplicate(List<Contract> newContracts, List<Contract> currentContracts) {
+        for (Contract newContract : newContracts) {
+            if (!isContractExist(newContract, currentContracts)) {
+                currentContracts.add(newContract);
+            }
+        }
+        return currentContracts;
+    }
+
     private boolean isTokenExist(Token token, List<Token> oldTokens) {
         for (Token t : oldTokens) {
             if (!TextUtils.isEmpty(t.getContractAddress()) && t.getContractAddress().equals(token.getContractAddress())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isContractExist(Contract contract, List<Contract> oldContracts) {
+        for (Contract t : oldContracts) {
+            if (!TextUtils.isEmpty(t.getContractAddress()) && t.getContractAddress().equals(contract.getContractAddress())) {
                 return true;
             }
         }
@@ -96,6 +106,14 @@ public class RestoreContractsInteractorImpl implements RestoreContractsInteracto
         List<Token> tmpTokenList = tinyDB.getTokenList();
         tmpTokenList = filterTokenListForDuplicate(tokenList, tmpTokenList);
         tinyDB.putTokenList(tmpTokenList);
+    }
+
+    @Override
+    public void putListWithoutToken(List<Contract> contractList) {
+        TinyDB tinyDB = new TinyDB(mContext.get());
+        List<Contract> tmpContractList = tinyDB.getContractListWithoutToken();
+        tmpContractList = filterContractListForDuplicate(contractList,tmpContractList);
+        tinyDB.putContractListWithoutToken(tmpContractList);
     }
 
     @Override
