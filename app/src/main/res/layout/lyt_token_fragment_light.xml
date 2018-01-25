@@ -69,6 +69,7 @@
         android:layout_height="wrap_content"
         android:background="@color/title_color_light"
         android:fitsSystemWindows="true"
+        android:stateListAnimator="@null"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -90,7 +91,6 @@
             app:contentInsetLeft="0dp"
             app:contentInsetRight="0dp"
             app:contentInsetStart="0dp"
-            app:elevation="0dp"
             app:layout_collapseMode="pin">
 
             <LinearLayout

@@ -42,6 +42,11 @@ public class AddressesListTokenInteractorImpl implements AddressesListTokenInter
 
     @Override
     public boolean isValidBalance(TokenBalance tokenBalance, DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String amountString, Integer decimalUnits) {
-        return (tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)),BigDecimal.ROUND_DOWN)).compareTo(new BigDecimal(amountString)) > 0;
+        if(tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()).getBalance() != null
+                && !tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()).getBalance().toString().equals("0")) {
+            return (tokenBalance.getBalanceForAddress(keyWithTokenBalanceFrom.getAddress()).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), BigDecimal.ROUND_DOWN)).compareTo(new BigDecimal(amountString)) > 0;
+        } else {
+            return false;
+        }
     }
 }

@@ -72,7 +72,12 @@ public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
     public void bind(DeterministicKeyWithTokenBalance item) {
         this.item = item;
         mTextViewAddress.setText(item.getAddress());
-        String balance = (item.getBalance() != null) ? String.valueOf(item.getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0";
+        String balance = "0";
+        try {
+            balance = (item.getBalance() != null && !item.getBalance().toString().equals("0")) ? String.valueOf(item.getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0";
+        } catch (Exception e){
+            balance = "0";
+        }
         if (mTextViewAddressBalance.getLayoutParams().width == WRAP_CONTENT) {
             mTextViewAddressBalance.setLongNumberText(balance, itemView.getContext().getResources().getDisplayMetrics().widthPixels / 2);
         } else {

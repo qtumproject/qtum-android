@@ -652,7 +652,11 @@ public abstract class SendFragment extends BaseFragment implements SendView {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Integer decimalUnits = ((CurrencyToken) mCurrency).getToken().getDecimalUnits();
-                getPresenter().handleBalanceChanges(new BigDecimal(0), ((Balance) mSpinner.getItemAtPosition(i)).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128));
+                if(((Balance)mSpinner.getItemAtPosition(i)).getBalance() != null && !((Balance)mSpinner.getItemAtPosition(i)).getBalance().toString().equals("0")) {
+                    getPresenter().handleBalanceChanges(new BigDecimal(0), ((Balance) mSpinner.getItemAtPosition(i)).getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128));
+                } else {
+                    getPresenter().handleBalanceChanges(new BigDecimal(0),new BigDecimal(0));
+                }
             }
 
             @Override
