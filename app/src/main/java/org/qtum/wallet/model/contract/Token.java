@@ -104,7 +104,7 @@ public class Token extends Contract {
     }
 
     public BigDecimal getTokenBalanceWithDecimalUnits() {
-        return mLastBalance.divide(new BigDecimal(10).pow((decimalUnits != null) ? decimalUnits.intValue() : 0), MathContext.DECIMAL128);
+        return mLastBalance.divide(new BigDecimal(10).pow((decimalUnits != null) ? decimalUnits : 0), MathContext.DECIMAL128);
     }
 
     public String getName() {
