@@ -36,7 +36,11 @@ public class WatchContractPresenterImpl extends BaseFragmentPresenterImpl implem
         Collections.sort(contractFullTemplateList, new Comparator<ContractTemplate>() {
             @Override
             public int compare(ContractTemplate contractInfo, ContractTemplate t1) {
-                return contractInfo.getDate().compareTo(t1.getDate());
+                if(contractInfo.getDate()==null || t1.getDate()==null){
+                    return 0;
+                } else {
+                    return contractInfo.getDate().compareTo(t1.getDate());
+                }
             }
         });
 
