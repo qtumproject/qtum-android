@@ -28,8 +28,6 @@ public class QtumSharedPreference {
 
     private static String passphrase_migration_state = "passphrase_migration_state";
 
-
-
     private QtumSharedPreference() {
 
     }
