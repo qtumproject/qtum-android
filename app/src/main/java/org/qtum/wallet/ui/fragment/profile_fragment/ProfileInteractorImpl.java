@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
+import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
@@ -29,12 +30,12 @@ class ProfileInteractorImpl implements ProfileInteractor {
 
     @Override
     public void setupLanguageChangeListener(LanguageChangeListener listener) {
-        QtumSharedPreference.getInstance().addLanguageListener(listener);
+        QtumSettingSharedPreference.getInstance().addLanguageListener(listener);
     }
 
     @Override
     public void removeLanguageListener(LanguageChangeListener listener) {
-        QtumSharedPreference.getInstance().removeLanguageListener(listener);
+        QtumSettingSharedPreference.getInstance().removeLanguageListener(listener);
     }
 
     @Override

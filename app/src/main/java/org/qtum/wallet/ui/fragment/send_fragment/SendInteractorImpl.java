@@ -53,7 +53,7 @@ public class SendInteractorImpl implements SendInteractor {
 
     @Override
     public BigDecimal getFeePerKb() {
-        QtumSettingSharedPreference qtumSettingSharedPreference = new QtumSettingSharedPreference();
+        QtumSettingSharedPreference qtumSettingSharedPreference = QtumSettingSharedPreference.getInstance();
         return new BigDecimal(qtumSettingSharedPreference.getFeePerKb(mContext));
     }
 

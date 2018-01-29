@@ -89,7 +89,7 @@ class ContractConfirmInteractorImpl implements ContractConfirmInteractor {
 
     @Override
     public BigDecimal getFeePerKb() {
-        QtumSettingSharedPreference qtumSettingSharedPreference = new QtumSettingSharedPreference();
+        QtumSettingSharedPreference qtumSettingSharedPreference = QtumSettingSharedPreference.getInstance();
         return new BigDecimal(qtumSettingSharedPreference.getFeePerKb(mContext));
     }
 

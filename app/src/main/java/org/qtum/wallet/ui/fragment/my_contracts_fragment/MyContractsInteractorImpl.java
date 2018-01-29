@@ -53,13 +53,13 @@ public class MyContractsInteractorImpl implements MyContractsInteractor {
 
     @Override
     public boolean isShowWizard() {
-        QtumSettingSharedPreference qtumSettingSharedPreference = new QtumSettingSharedPreference();
+        QtumSettingSharedPreference qtumSettingSharedPreference = QtumSettingSharedPreference.getInstance();
         return qtumSettingSharedPreference.getShowContractsDeleteUnsubscribeWizard(mContext.get());
     }
 
     @Override
     public void setShowWizard(boolean isShow) {
-        QtumSettingSharedPreference qtumSettingSharedPreference = new QtumSettingSharedPreference();
+        QtumSettingSharedPreference qtumSettingSharedPreference = QtumSettingSharedPreference.getInstance();
         qtumSettingSharedPreference.setShowContractsDeleteUnsubscribeWizard(mContext.get(), isShow);
     }
 

@@ -18,7 +18,6 @@ public class QtumSharedPreference {
     private final String QTUM_PASSWORD = "qtum_wallet_password";
     private final String QTUM_SIX_DIGIT_PASSWORD = "qtum_wallet_six_digit_password";
     private final String QTUM_IS_KEY_GENERATED = "qtum_is_key_generated";
-    private final String QTUM_LANGUAGE = "qtum_language";
     private final String QTUM_SEED = "qtum_seed";
     private final String TOUCH_ID_ENABLE = "touch_id_enable";
     private final String TOUCH_ID_PASSWORD = "touch_id_password";
@@ -29,10 +28,10 @@ public class QtumSharedPreference {
 
     private static String passphrase_migration_state = "passphrase_migration_state";
 
-    private List<LanguageChangeListener> mLanguageChangeListeners;
+
 
     private QtumSharedPreference() {
-        mLanguageChangeListeners = new ArrayList<>();
+
     }
 
     public static QtumSharedPreference getInstance() {
@@ -142,24 +141,7 @@ public class QtumSharedPreference {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getBoolean(QTUM_IS_KEY_GENERATED, false);
     }
 
-    public String getLanguage(Context context) {
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_LANGUAGE, "us");
-    }
 
-    public void saveLanguage(Context context, String language) {
-        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putString(QTUM_LANGUAGE, language);
-        mEditor.apply();
-        Locale locale = new Locale(language);
-        Locale.setDefault(locale);
-        Configuration configuration = new Configuration();
-        configuration.locale = locale;
-        context.getResources().updateConfiguration(configuration, null);
-        for (LanguageChangeListener languageChangeListener : mLanguageChangeListeners) {
-            languageChangeListener.onLanguageChange();
-        }
-    }
 
     public String getSeed(Context context) {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(QTUM_SEED, "");
@@ -190,13 +172,7 @@ public class QtumSharedPreference {
         mEditor.apply();
     }
 
-    public void addLanguageListener(LanguageChangeListener languageChangeListener) {
-        mLanguageChangeListeners.add(languageChangeListener);
-    }
 
-    public void removeLanguageListener(LanguageChangeListener languageChangeListener) {
-        mLanguageChangeListeners.remove(languageChangeListener);
-    }
 
     public void setMinGasPrice(Context context, Integer minGasLimit) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
