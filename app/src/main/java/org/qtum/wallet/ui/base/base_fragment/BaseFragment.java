@@ -437,25 +437,29 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void openFragment(Fragment fragment) {
         hideKeyBoard();
-        getFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(org.qtum.wallet.R.anim.enter_from_right, org.qtum.wallet.R.anim.exit_to_left, org.qtum.wallet.R.anim.enter_from_left, org.qtum.wallet.R.anim.exit_to_right)
-                .add(org.qtum.wallet.R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
-                .addToBackStack(null)
-                .commit();
+        if(getFragmentManager().findFragmentByTag(fragment.getClass().getCanonicalName())==null) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(org.qtum.wallet.R.anim.enter_from_right, org.qtum.wallet.R.anim.exit_to_left, org.qtum.wallet.R.anim.enter_from_left, org.qtum.wallet.R.anim.exit_to_right)
+                    .add(org.qtum.wallet.R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     @Override
     public void openFragmentForResult(Fragment fragment) {
-        hideKeyBoard();
-        int code_response = 200;
-        fragment.setTargetFragment(this, code_response);
-        getFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(org.qtum.wallet.R.anim.enter_from_right, org.qtum.wallet.R.anim.exit_to_left, org.qtum.wallet.R.anim.enter_from_left, org.qtum.wallet.R.anim.exit_to_right)
-                .add(org.qtum.wallet.R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
-                .addToBackStack(null)
-                .commit();
+        if(getFragmentManager().findFragmentByTag(fragment.getClass().getCanonicalName())==null) {
+            hideKeyBoard();
+            int code_response = 200;
+            fragment.setTargetFragment(this, code_response);
+            getFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(org.qtum.wallet.R.anim.enter_from_right, org.qtum.wallet.R.anim.exit_to_left, org.qtum.wallet.R.anim.enter_from_left, org.qtum.wallet.R.anim.exit_to_right)
+                    .add(org.qtum.wallet.R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     @Override
