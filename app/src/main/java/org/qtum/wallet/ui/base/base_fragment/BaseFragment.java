@@ -436,8 +436,8 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     @Override
     public void openFragment(Fragment fragment) {
-        hideKeyBoard();
         if(getFragmentManager().findFragmentByTag(fragment.getClass().getCanonicalName())==null) {
+            hideKeyBoard();
             getFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(org.qtum.wallet.R.anim.enter_from_right, org.qtum.wallet.R.anim.exit_to_left, org.qtum.wallet.R.anim.enter_from_left, org.qtum.wallet.R.anim.exit_to_right)
