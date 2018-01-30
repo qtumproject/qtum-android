@@ -46,6 +46,7 @@ import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.dataprovider.services.update_service.WatchUpdateService;
 import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
+import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.activity.splash_activity.SplashActivity;
@@ -489,7 +490,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CustomContextWrapper.wrap(newBase, QtumSharedPreference.getInstance().getLanguage(newBase)));
+        super.attachBaseContext(CustomContextWrapper.wrap(newBase, QtumSettingSharedPreference.getInstance().getLanguage(newBase)));
     }
 
     public QtumApplication getQtumApplication() {

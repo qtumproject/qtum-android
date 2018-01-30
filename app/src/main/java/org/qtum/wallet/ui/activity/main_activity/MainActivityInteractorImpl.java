@@ -54,12 +54,12 @@ class MainActivityInteractorImpl implements MainActivityInteractor {
 
     @Override
     public void addLanguageChangeListener(LanguageChangeListener languageChangeListener) {
-        QtumSharedPreference.getInstance().addLanguageListener(languageChangeListener);
+        QtumSettingSharedPreference.getInstance().addLanguageListener(languageChangeListener);
     }
 
     @Override
     public void removeLanguageChangeListener(LanguageChangeListener languageChangeListener) {
-        QtumSharedPreference.getInstance().removeLanguageListener(languageChangeListener);
+        QtumSettingSharedPreference.getInstance().removeLanguageListener(languageChangeListener);
     }
 
     @Override
@@ -76,7 +76,7 @@ class MainActivityInteractorImpl implements MainActivityInteractor {
     @Override
     public void setFeePerKb(FeePerKb feePerKb) {
         isFeePerkbLoaded = true;
-        QtumSettingSharedPreference qtumSettingSharedPreference = new QtumSettingSharedPreference();
+        QtumSettingSharedPreference qtumSettingSharedPreference = QtumSettingSharedPreference.getInstance();
         qtumSettingSharedPreference.setFeePerKb(mContext, feePerKb.getFeePerKb().setScale(5, BigDecimal.ROUND_HALF_DOWN).toPlainString());
     }
 }

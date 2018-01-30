@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 @Root(name = "item", strict = false)
 public class News {
@@ -44,10 +45,11 @@ public class News {
     public String getFormattedPubDate() {
         if (formattedData.isEmpty()) {
             SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
-            Date date;
+            long date;
             try {
-                date = sdf.parse(pubDate);
-                formattedData = DateCalculator.getShortDate(date.getTime());
+                date = sdf.parse(pubDate).getTime();
+                date+= TimeZone.getDefault().getOffset((new Date()).getTime());
+                formattedData = DateCalculator.getShortDate(date);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -56,19 +58,16 @@ public class News {
     }
 
     public String getFullFormattedPubDate(){
-        if (fullFormattedData.isEmpty()) {
             SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
-            Date date;
+            long date;
             try {
-                date = sdf.parse(pubDate);
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
+                date = sdf.parse(pubDate).getTime();
+                date+= TimeZone.getDefault().getOffset((new Date()).getTime());
                 SimpleDateFormat displayFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy \nhh:mm aaa", Locale.ENGLISH);
-                fullFormattedData = displayFormat.format(date).toUpperCase();
+                fullFormattedData = displayFormat.format(new Date(date)).toUpperCase();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
         return fullFormattedData;
     }
 

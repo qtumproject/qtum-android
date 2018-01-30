@@ -53,7 +53,7 @@ public class QtumApplication extends MultiDexApplication{
         Realm.setDefaultConfiguration(config);
         try {
             int currentVersion = getCodeVersion();
-            QtumSettingSharedPreference qtumSettingSharedPreference = new QtumSettingSharedPreference();
+            QtumSettingSharedPreference qtumSettingSharedPreference = QtumSettingSharedPreference.getInstance();
             int migrationVersion = qtumSettingSharedPreference.getCodeVersion(getApplicationContext());
             if (currentVersion > migrationVersion) {
                 MigrationManager migrationManager = new MigrationManager();
