@@ -7,6 +7,7 @@ import android.security.KeyPairGeneratorSpec;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
@@ -74,7 +75,7 @@ public class KeyStoreHelper {
                 SecurityConstants.KEYSTORE_PROVIDER_ANDROID_KEYSTORE);
         kpGenerator.initialize(spec);
         KeyPair kp = kpGenerator.generateKeyPair();
-       // Log.d(TAG, "Public Key is: " + kp.getPublic().toString());
+        // Log.d(TAG, "Public Key is: " + kp.getPublic().toString());
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -231,8 +232,19 @@ public class KeyStoreHelper {
 
     public static String getSeed(Context context, @NonNull String pin) {
         String cryptoSaltPassphrase = QtumSharedPreference.getInstance().getSeed(context);
-        //byte[] saltPassphrase = KeyStoreHelper.decryptToBytes(QTUM_PIN_ALIAS, cryptoSaltPassphrase);
+
+        cryptoSaltPassphrase = trimEndSpaces(cryptoSaltPassphrase);
+
         byte[] saltPassphrase = Base64.decode(cryptoSaltPassphrase, Base64.DEFAULT);
         return AESUtil.decryptBytes(pin, saltPassphrase);
+    }
+
+    public static String trimEndSpaces(String value){
+        if(!TextUtils.isEmpty(value)) {
+            if(value.length() - value.trim().length() == 5){
+                value = value.trim() + "\n";
+            }
+        }
+        return value;
     }
 }

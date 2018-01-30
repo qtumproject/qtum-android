@@ -317,6 +317,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                 onCurrencyClick();
                 break;
             case R.id.bt_edit_close:
+                initializeAnim(); //because onGlobalLayout calls not always
                 if (showing) {
                     mLinearLayoutSeekBarContainer.startAnimation(mAnimBackward);
                     mFontButtonEditClose.setText(R.string.edit);
@@ -689,15 +690,17 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     }
 
     private void initializeAnim() {
-        mAnimForward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, 0, appLogoHeight);
-        mAnimForward.setDuration(300);
-        mAnimForward.setFillEnabled(true);
-        mAnimForward.setFillAfter(true);
+        if(mAnimForward == null || mAnimBackward == null) {
+            mAnimForward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, 0, appLogoHeight);
+            mAnimForward.setDuration(300);
+            mAnimForward.setFillEnabled(true);
+            mAnimForward.setFillAfter(true);
 
-        mAnimBackward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, appLogoHeight, 0);
-        mAnimBackward.setDuration(300);
-        mAnimBackward.setFillEnabled(true);
-        mAnimBackward.setFillAfter(true);
+            mAnimBackward = new ResizeHeightAnimation(mLinearLayoutSeekBarContainer, appLogoHeight, 0);
+            mAnimBackward.setDuration(300);
+            mAnimBackward.setFillEnabled(true);
+            mAnimBackward.setFillAfter(true);
+        }
     }
 
     @Override

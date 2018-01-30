@@ -1,6 +1,7 @@
 package org.qtum.wallet.ui.activity.main_activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
@@ -121,7 +123,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         mServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                if(iBinder instanceof UpdateService.UpdateBinder) {
+                if (iBinder instanceof UpdateService.UpdateBinder) {
                     QtumApplication.instance.setWearableMessagingProvider(MainActivity.this);
                     mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
                     mUpdateService.clearNotification();
@@ -142,14 +144,16 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        switch (intent.getAction()) {
-            case QtumIntent.OPEN_FROM_NOTIFICATION:
-                mRootFragment = WalletMainFragment.newInstance(getContext());
-                openRootFragment(mRootFragment);
-                setIconChecked(0);
-                break;
-            default:
-                break;
+        if (intent != null && intent.getAction() != null) {
+            switch (intent.getAction()) {
+                case QtumIntent.OPEN_FROM_NOTIFICATION:
+                    mRootFragment = WalletMainFragment.newInstance(getContext());
+                    openRootFragment(mRootFragment);
+                    setIconChecked(0);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -428,6 +432,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     }
 
+    @SuppressLint("RestrictedApi")
     private void initBottomNavViewWithFont(int fontId) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) mBottomNavigationView.getChildAt(0);
         try {
@@ -558,14 +563,14 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             resetNavBarIconsWithTheme(blackThemeIcons);
             recolorStatusBar(R.color.colorPrimary);
         } else {
-            int[][] states = new int[][] {
-                    new int[] {android.R.attr.state_checked},
-                    new int[] {-android.R.attr.state_checked}
+            int[][] states = new int[][]{
+                    new int[]{android.R.attr.state_checked},
+                    new int[]{-android.R.attr.state_checked}
             };
 
-            int[] colors = new int[] {
-                    ContextCompat.getColor(getContext(),R.color.bottom_nav_bar_text_color_light),
-                    ContextCompat.getColor(getContext(),R.color.bottom_nav_bar_text_color_light_alpha_50)
+            int[] colors = new int[]{
+                    ContextCompat.getColor(getContext(), R.color.bottom_nav_bar_text_color_light),
+                    ContextCompat.getColor(getContext(), R.color.bottom_nav_bar_text_color_light_alpha_50)
             };
             ColorStateList myList = new ColorStateList(states, colors);
 
@@ -706,6 +711,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             } else {
                 loadPermissions(Manifest.permission.USE_FINGERPRINT, REQUEST_FINGERPRINT);
                 addPermissionResultListener(new PermissionsResultListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
                         if (requestCode == REQUEST_FINGERPRINT) {
@@ -741,12 +747,12 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public String getBalance() {
-        return mUpdateService != null? mUpdateService.getBalance() : null;
+        return mUpdateService != null ? mUpdateService.getBalance() : null;
     }
 
     @Override
     public String getUnconfirmedBalance() {
-        return mUpdateService != null? mUpdateService.getUnconfirmedBalance() : null;
+        return mUpdateService != null ? mUpdateService.getUnconfirmedBalance() : null;
     }
 
     @Override

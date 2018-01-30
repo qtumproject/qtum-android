@@ -19,6 +19,12 @@ public class Token extends Contract {
     @SerializedName("name")
     private String name;
 
+    private boolean supportFlag = true;
+
+    public boolean getSupportFlag(){
+        return supportFlag;
+    }
+
     public Token(String contractAddress, String templateUiid, ContractCreationStatus contractCreationStatus, Long date, String senderAddress, String contractName) {
         super(contractAddress, templateUiid, contractCreationStatus, date, senderAddress, contractName);
         this.mIsSubscribe = true;
@@ -52,6 +58,7 @@ public class Token extends Contract {
      * Constructor for unit testing
      */
     public Token(Integer decimalUnits, BigDecimal lastBalance) {
+        supportFlag = decimalUnits <= 128;
         this.decimalUnits = decimalUnits;
         this.mLastBalance = lastBalance;
     }
@@ -80,6 +87,7 @@ public class Token extends Contract {
     }
 
     public void setDecimalUnits(Integer decimalUnits) {
+        supportFlag = decimalUnits <= 128;
         this.decimalUnits = decimalUnits;
     }
 
@@ -104,7 +112,17 @@ public class Token extends Contract {
     }
 
     public BigDecimal getTokenBalanceWithDecimalUnits() {
-        return mLastBalance.divide(new BigDecimal(10).pow((decimalUnits != null) ? decimalUnits : 0), MathContext.DECIMAL128);
+        if(getDecimalUnits() <= 128) {
+            try {
+                return mLastBalance.divide(new BigDecimal(10).pow((decimalUnits != null) ? decimalUnits : 0), MathContext.DECIMAL128);
+            } catch (Exception e) {
+                supportFlag = false;
+                return new BigDecimal("0");
+            }
+        } else {
+            supportFlag = false;
+            return new BigDecimal("0");
+        }
     }
 
     public String getName() {

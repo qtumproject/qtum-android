@@ -9,6 +9,7 @@ import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.datastorage.TinyDB;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,13 @@ class CurrencyInteractorImpl implements CurrencyInteractor {
         currencies.add(currency);
         for (Token token : tokens) {
             if (token.getCreationStatus().equals(ContractCreationStatus.Created) && token.isSubscribe()) {
+
+                BigDecimal tokenBalanceWithDecimalUnits = token.getTokenBalanceWithDecimalUnits();
+
+                if(tokenBalanceWithDecimalUnits.toString().equals("0") && !token.getSupportFlag()) {
+                   continue;
+                }
+
                 currency = new CurrencyToken(token.getContractName(), token);
                 currencies.add(currency);
             }

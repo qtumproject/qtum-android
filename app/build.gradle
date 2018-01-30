@@ -41,8 +41,8 @@ android {
         exclude 'lib/x86_64/darwin/libscrypt.dylib'
     }
     Properties buildProps
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 19
@@ -50,7 +50,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-        buildProps = getBuildProperties('default')
+        buildProps = getBuildProperties('local')
         applicationId buildProps['APPLICATION_ID']
         buildConfigField 'String', 'API_URL', buildProps['API_URL'].toString()
         buildConfigField 'Boolean', 'USE_MAIN_NET', buildProps['USE_MAIN_NET']
@@ -76,13 +76,13 @@ dependencies {
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'stax', module: 'stax'
     }
-    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:appcompat-v7:27.0.2'
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
     testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
     testCompile 'org.assertj:assertj-core:2.8.0'
-    compile 'com.android.support:support-v4:26.1.0'
-    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.android.support:design:27.0.2'
     compile 'com.github.designsters:android-fork-bitcoinj:1.0.11'
     compile 'com.android.support:multidex:1.0.2'
     compile 'com.google.zxing:core:3.3.0'
