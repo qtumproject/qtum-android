@@ -6,6 +6,7 @@ import android.util.Pair;
 import android.view.View;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.ui.fragment.language_fragment.LanguageHolder;
 import org.qtum.wallet.ui.fragment.language_fragment.OnLanguageIntemClickListener;
@@ -16,7 +17,7 @@ public class LanguageHolderLight extends LanguageHolder {
     }
 
     public void bindLanguage(Pair<String, String> language) {
-        if (language.first.equals(QtumSharedPreference.getInstance().getLanguage(mTextViewLanguage.getContext()))) {
+        if (language.first.equals(QtumSettingSharedPreference.getInstance().getLanguage(mTextViewLanguage.getContext()))) {
             mImageViewCheckIndicator.setVisibility(View.VISIBLE);
             mLinearLayoutAddress.setBackgroundColor(ContextCompat.getColor(mTextViewLanguage.getContext(), R.color.qr_code_background));
         } else {

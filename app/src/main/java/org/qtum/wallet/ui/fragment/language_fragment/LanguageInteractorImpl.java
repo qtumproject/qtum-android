@@ -3,6 +3,7 @@ package org.qtum.wallet.ui.fragment.language_fragment;
 import android.content.Context;
 import android.util.Pair;
 
+import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 
@@ -23,12 +24,12 @@ class LanguageInteractorImpl implements LanguageInteractor {
 
     @Override
     public String getLanguage() {
-        return QtumSharedPreference.getInstance().getLanguage(mContext);
+        return QtumSettingSharedPreference.getInstance().getLanguage(mContext);
     }
 
     @Override
     public void setLanguage(String language) {
-        QtumSharedPreference.getInstance().saveLanguage(mContext, language);
+        QtumSettingSharedPreference.getInstance().saveLanguage(mContext, language);
     }
 
     @Override
@@ -38,11 +39,11 @@ class LanguageInteractorImpl implements LanguageInteractor {
 
     @Override
     public void removeLanguageListener(LanguageChangeListener languageChangeListener) {
-        QtumSharedPreference.getInstance().removeLanguageListener(languageChangeListener);
+        QtumSettingSharedPreference.getInstance().removeLanguageListener(languageChangeListener);
     }
 
     @Override
     public void addLanguageListener(LanguageChangeListener languageChangeListener) {
-        QtumSharedPreference.getInstance().addLanguageListener(languageChangeListener);
+        QtumSettingSharedPreference.getInstance().addLanguageListener(languageChangeListener);
     }
 }

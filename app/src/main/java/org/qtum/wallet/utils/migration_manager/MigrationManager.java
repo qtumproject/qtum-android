@@ -159,7 +159,7 @@ public class MigrationManager {
     }
 
     private Long convertDateToLong(String date) {
-        return DateCalculator.getLongDate(date)/* - (long) (new GregorianCalendar().getTimeZone()).getRawOffset()*/;
+        return DateCalculator.getLongDate(date);
     }
 
 
