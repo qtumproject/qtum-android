@@ -258,6 +258,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                //TODO
                 if (dy > 0) {
                     if (!mLoadingFlag) {
                         visibleItemCount = mLinearLayoutManager.getChildCount();
