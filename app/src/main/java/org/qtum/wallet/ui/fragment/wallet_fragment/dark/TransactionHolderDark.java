@@ -14,6 +14,8 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.TransactionClickListener;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.DateCalculator;
 
+import java.math.BigDecimal;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscriber;
@@ -56,7 +58,7 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (mHistory.isReceiptUpdated()) {
-                    listener.onTransactionClick(getAdapterPosition());
+                    listener.onTransactionClick(mHistory.getTxHash());
                 }
             }
         });
@@ -107,7 +109,7 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
         if (history.isReceiptUpdated()) {
             mImageViewIcon.setVisibility(View.VISIBLE);
             if (history.getTransactionReceipt() != null) {
-                if (history.getChangeInBalance().doubleValue() > 0) {
+                if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
                     mTextViewOperationType.setText(R.string.received_contract);
                     mImageViewIcon.setImageResource(R.drawable.ic_rec_cont_dark);
                     contractIndicator.setBackgroundResource(R.color.colorPrimary);
@@ -118,7 +120,7 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
                 }
             } else {
                 contractIndicator.setBackgroundColor(Color.TRANSPARENT);
-                if (history.getChangeInBalance().doubleValue() > 0) {
+                if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
                     mTextViewOperationType.setText(R.string.received);
                     mImageViewIcon.setImageResource(R.drawable.ic_received);
                 } else {
@@ -136,6 +138,6 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
         mTextViewID.setText(history.getTxHash());
 
 
-        mTextViewValue.setText(convertBalanceToString(history.getChangeInBalance()));
+        mTextViewValue.setText(history.getChangeInBalance());
     }
 }

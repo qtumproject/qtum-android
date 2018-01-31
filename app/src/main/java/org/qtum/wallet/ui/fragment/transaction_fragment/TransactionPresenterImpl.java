@@ -25,15 +25,15 @@ public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implemen
     }
 
     @Override
-    public void openTransactionView(int position) {
+    public void openTransactionView(String txHash) {
         String dateString;
-        History history = getInteractor().getHistory(position);
+        History history = getInteractor().getHistory(txHash);
         if (history.getBlockTime() != null) {
             dateString = getInteractor().getFullDate(history.getBlockTime() * 1000L);
         } else {
             dateString = getInteractor().getUnconfirmedDate();
         }
-        getView().setUpTransactionData(convertBalanceToString(history.getChangeInBalance()), convertBalanceToString(history.getFee()), dateString,
+        getView().setUpTransactionData(history.getChangeInBalance(), history.getFee(), dateString,
                 history.getBlockHeight() > 0, history.getTransactionReceipt() != null && history.getTransactionReceipt().getLog() != null && !history.getTransactionReceipt().getLog().isEmpty());
     }
 }

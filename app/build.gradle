@@ -50,7 +50,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-        buildProps = getBuildProperties('default')
+        buildProps = getBuildProperties('local')
         applicationId buildProps['APPLICATION_ID']
         buildConfigField 'String', 'API_URL', buildProps['API_URL'].toString()
         buildConfigField 'Boolean', 'USE_MAIN_NET', buildProps['USE_MAIN_NET']
@@ -117,6 +117,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     compile 'com.google.android.gms:play-services-wearable:11.8.0'
+    compile 'io.realm:android-adapters:2.1.0'
 
     compile 'com.scottyab:secure-preferences-lib:0.1.4'
 }

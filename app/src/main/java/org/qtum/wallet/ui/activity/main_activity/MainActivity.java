@@ -43,8 +43,6 @@ import org.qtum.wallet.WearableMessagingProvider;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
-import org.qtum.wallet.dataprovider.services.update_service.WatchUpdateService;
-import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
@@ -737,7 +735,9 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public List<History> getOperations() {
-        return HistoryList.getInstance().getHistoryList();
+        return null;
+        //TODO CRITICAL
+        //return HistoryList.getInstance().getHistoryList();
     }
 
     @Override

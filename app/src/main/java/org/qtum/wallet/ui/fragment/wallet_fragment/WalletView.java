@@ -5,8 +5,10 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 import java.util.List;
 
+import io.realm.RealmResults;
+
 public interface WalletView extends BaseFragmentView {
-    void updateHistory(List<History> historyList);
+    void updateHistory(RealmResults<History> historyList);
 
     void setAdapterNull();
 
@@ -26,5 +28,5 @@ public interface WalletView extends BaseFragmentView {
 
     void notifyConfirmHistory(int notifyPosition);
 
-    void openTransactionsFragment(int position);
+    void openTransactionsFragment(String txHash);
 }

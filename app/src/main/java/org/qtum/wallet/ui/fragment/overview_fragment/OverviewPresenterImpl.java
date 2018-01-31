@@ -27,7 +27,7 @@ public class OverviewPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void initializeViews() {
         super.initializeViews();
-        History history = getIteractor().getHistory(getView().getPosition());
+        History history = getIteractor().getHistory(getView().getTxHash());
         List<CopyableOverviewItem> overview = new ArrayList<>();
         overview.add(new CopyableOverviewItem("TxHash", history.getTxHash(),true));
         overview.add(new CopyableOverviewItem("BlockHash", history.getBlockHash(),true));

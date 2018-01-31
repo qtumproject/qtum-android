@@ -18,6 +18,7 @@ import org.qtum.wallet.ui.wave_visualizer.WaveView;
 import java.util.List;
 
 import butterknife.BindView;
+import io.realm.RealmResults;
 
 public class WalletFragmentLight extends WalletFragment {
 
@@ -61,15 +62,7 @@ public class WalletFragmentLight extends WalletFragment {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (mAppBarLayout != null) {
-                    if (mSwipeRefreshLayout != null) {
-                        if (!mSwipeRefreshLayout.isActivated()) {
-                            if (verticalOffset == 0) {
-                                mSwipeRefreshLayout.setEnabled(true);
-                            } else {
-                                mSwipeRefreshLayout.setEnabled(false);
-                            }
-                        }
-                    }
+
                     percents = (((getTotalRange() - Math.abs(verticalOffset)) * 1.0f) / getTotalRange());
                     float testPercents = percents - (1 - percents);
                     float testP2 = (percents >= .8f) ? 0 : (1 - percents) - percents;
@@ -105,8 +98,8 @@ public class WalletFragmentLight extends WalletFragment {
     }
 
     @Override
-    public void updateHistory(List<History> historyList) {
-        super.updateHistory(new TransactionAdapterLight(historyList, getAdapterListener()));
+    public void updateHistory(RealmResults<History> historyList) {
+        super.updateHistory(new TransactionAdapterLight(historyList, true, getAdapterListener()));
     }
 
     @Override

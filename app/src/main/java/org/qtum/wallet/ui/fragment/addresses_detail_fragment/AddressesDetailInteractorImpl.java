@@ -2,11 +2,12 @@ package org.qtum.wallet.ui.fragment.addresses_detail_fragment;
 
 import android.content.Context;
 
-import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.model.gson.history.History;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import io.realm.Realm;
 
 class AddressesDetailInteractorImpl implements AddressesDetailInteractor {
 
@@ -17,12 +18,10 @@ class AddressesDetailInteractorImpl implements AddressesDetailInteractor {
     }
 
     @Override
-    public History getHistory(int position) {
-        List<History> historyList = HistoryList.getInstance().getHistoryList();
-        if (historyList != null && historyList.size() > position) {
-            return historyList.get(position);
-        } else {
-            return null;
-        }
+    public History getHistory(String txHash) {
+        Realm realm = Realm.getDefaultInstance();
+        return realm.where(History.class)
+                .equalTo("txHash", txHash)
+                .findFirst();
     }
 }

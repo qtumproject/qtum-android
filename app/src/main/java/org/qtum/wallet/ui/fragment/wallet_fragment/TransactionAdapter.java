@@ -1,10 +1,14 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import org.qtum.wallet.model.gson.history.History;
 import java.util.List;
 
-public abstract class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+import io.realm.OrderedRealmCollection;
+import io.realm.RealmRecyclerViewAdapter;
+
+public abstract class TransactionAdapter extends RealmRecyclerViewAdapter<History, RecyclerView.ViewHolder> {
 
     protected List<History> mHistoryList;
     protected History mHistory;
@@ -12,20 +16,24 @@ public abstract class TransactionAdapter extends RecyclerView.Adapter<RecyclerVi
     protected final int TYPE_TRANSACTION = 1;
     protected boolean mLoadingFlag = false;
 
-    public History getItem(int position){
-        return mHistoryList.get(position);
+    public TransactionAdapter(@Nullable OrderedRealmCollection<History> data, boolean autoUpdate, TransactionClickListener listener) {
+        super(data, autoUpdate);
+    }
+
+    public TransactionAdapter(@Nullable OrderedRealmCollection<History> data, boolean autoUpdate, boolean updateOnModification) {
+        super(data, autoUpdate, updateOnModification);
     }
 
     protected TransactionClickListener listener;
 
-    public TransactionAdapter(List<History> historyList, TransactionClickListener listener) {
-        mHistoryList = historyList;
-        this.listener = listener;
-    }
+//    public TransactionAdapter(List<History> historyList, TransactionClickListener listener) {
+//        mHistoryList = historyList;
+//        this.listener = listener;
+//    }
 
     @Override
     public int getItemViewType(int position) {
-        if(position == mHistoryList.size()){
+        if(position == super.getItemCount()){
             return TYPE_PROGRESS_BAR;
         }
         return TYPE_TRANSACTION;
@@ -33,7 +41,7 @@ public abstract class TransactionAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemCount() {
-        return mHistoryList.size()+1;
+        return super.getItemCount()+1;
     }
 
     public void setHistoryList(List<History> historyList) {

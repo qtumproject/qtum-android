@@ -17,7 +17,7 @@ public class EventLogPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void initializeViews() {
         super.initializeViews();
-        History history = getInteractor().getHistory(getView().getPosition());
+        History history = getInteractor().getHistory(getView().getTxHash());
         getView().updateEventLog(history.getTransactionReceipt().getLog());
     }
 

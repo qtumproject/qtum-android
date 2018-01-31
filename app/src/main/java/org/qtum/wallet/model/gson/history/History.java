@@ -42,10 +42,8 @@ public class History extends RealmObject{
 
     private TransactionReceipt mTransactionReceipt;
 
-    @Ignore
-    private BigDecimal changeInBalance;
-    @Ignore
-    private BigDecimal fee;
+    private String changeInBalance;
+    private String fee;
     @Ignore
     private boolean isReceiptUpdated = false;
 
@@ -65,7 +63,7 @@ public class History extends RealmObject{
     /**
      * Constructor for unit tests
      */
-    public History(Long blockTime, RealmList<Vout> vout, RealmList<Vin> vin, BigDecimal changeInBalance, Integer blockHeight) {
+    public History(Long blockTime, RealmList<Vout> vout, RealmList<Vin> vin, String changeInBalance, Integer blockHeight) {
         this.blockTime = blockTime;
         this.vout = vout;
         this.vin = vin;
@@ -76,7 +74,7 @@ public class History extends RealmObject{
     /**
      * Constructor for unit tests
      */
-    public History(RealmList<Vout> vout, RealmList<Vin> vin, BigDecimal changeInBalance, Integer blockHeight) {
+    public History(RealmList<Vout> vout, RealmList<Vin> vin, String changeInBalance, Integer blockHeight) {
         this.vout = vout;
         this.vin = vin;
         this.changeInBalance = changeInBalance;
@@ -139,19 +137,19 @@ public class History extends RealmObject{
         this.vin = vin;
     }
 
-    public BigDecimal getChangeInBalance() {
+    public String getChangeInBalance() {
         return changeInBalance;
     }
 
-    public void setChangeInBalance(BigDecimal changeInBalance) {
+    public void setChangeInBalance(String changeInBalance) {
         this.changeInBalance = changeInBalance;
     }
 
-    public BigDecimal getFee() {
+    public String getFee() {
         return fee;
     }
 
-    public void setFee(BigDecimal fee) {
+    public void setFee(String fee) {
         this.fee = fee;
     }
 

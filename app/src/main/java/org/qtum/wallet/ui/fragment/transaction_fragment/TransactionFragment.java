@@ -67,14 +67,14 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         }
     }
 
-    private final static String POSITION = "position";
+    private final static String TX_HASH = "tx_hash";
 
     private TransactionPresenter mTransactionPresenter;
 
-    public static BaseFragment newInstance(Context context, int position) {
+    public static BaseFragment newInstance(Context context, String txHash) {
         BaseFragment transactionFragment = Factory.instantiateFragment(context, TransactionFragment.class);
         Bundle args = new Bundle();
-        args.putInt(POSITION, position);
+        args.putString(TX_HASH, txHash);
         transactionFragment.setArguments(args);
         return transactionFragment;
     }
@@ -92,7 +92,7 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
     @Override
     public void onResume() {
         super.onResume();
-        getPresenter().openTransactionView(getArguments().getInt(POSITION));
+        getPresenter().openTransactionView(getArguments().getString(TX_HASH));
     }
 
     @Override
@@ -162,10 +162,10 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: {
-                    return AddressesDetailFragment.newInstance(getContext(), getArguments().getInt(POSITION));
+                    return AddressesDetailFragment.newInstance(getContext(), getArguments().getString(TX_HASH));
                 }
                 case 1: {
-                    return OverviewFragment.newInstance(getContext(), getArguments().getInt(POSITION));
+                    return OverviewFragment.newInstance(getContext(), getArguments().getString(TX_HASH));
                 }
                 default:
                     return null;
@@ -189,13 +189,13 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: {
-                    return AddressesDetailFragment.newInstance(getContext(), getArguments().getInt(POSITION));
+                    return AddressesDetailFragment.newInstance(getContext(), getArguments().getString(TX_HASH));
                 }
                 case 1: {
-                    return OverviewFragment.newInstance(getContext(), getArguments().getInt(POSITION));
+                    return OverviewFragment.newInstance(getContext(), getArguments().getString(TX_HASH));
                 }
                 case 2: {
-                    return EventLogFragment.newInstance(getContext(), getArguments().getInt(POSITION));
+                    return EventLogFragment.newInstance(getContext(), getArguments().getString(TX_HASH));
                 }
                 default:
                     return null;

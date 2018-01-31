@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
-import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.model.gson.history.History;
@@ -23,10 +22,10 @@ public class WalletInteractorImpl implements WalletInteractor {
         this.context = context;
     }
 
-    @Override
-    public List<History> getHistoryList() {
-        return HistoryList.getInstance().getHistoryList();
-    }
+//    @Override
+//    public List<History> getHistoryList() {
+//        return HistoryList.getInstance().getHistoryList();
+//    }
 
     @Override
     public Observable<HistoryResponse> getHistoryList(int limit, int offest) {
@@ -38,28 +37,28 @@ public class WalletInteractorImpl implements WalletInteractor {
         return KeyStorage.getInstance().getAddresses();
     }
 
-    @Override
-    public int getTotalHistoryItem() {
-        return HistoryList.getInstance().getTotalItem();
-    }
-
-    @Override
-    public void addToHistoryList(History history) {
-        HistoryList.getInstance().getHistoryList().add(0, history);
-    }
-
-    @Override
-    public Integer setHistory(History history) {
-        for (History historyReplacing : getHistoryList()) {
-            if (historyReplacing.getTxHash().equals(history.getTxHash())) {
-                int position = getHistoryList().indexOf(historyReplacing);
-                getHistoryList().set(position, history);
-                return position;
-            }
-        }
-        getHistoryList().add(0, history);
-        return null;
-    }
+//    @Override
+//    public int getTotalHistoryItem() {
+//        return HistoryList.getInstance().getTotalItem();
+//    }
+//
+//    @Override
+//    public void addToHistoryList(History history) {
+//        HistoryList.getInstance().getHistoryList().add(0, history);
+//    }
+//
+//    @Override
+//    public Integer setHistory(History history) {
+//        for (History historyReplacing : getHistoryList()) {
+//            if (historyReplacing.getTxHash().equals(history.getTxHash())) {
+//                int position = getHistoryList().indexOf(historyReplacing);
+//                getHistoryList().set(position, history);
+//                return position;
+//            }
+//        }
+//        getHistoryList().add(0, history);
+//        return null;
+//    }
 
     @Override
     public String getAddress() {

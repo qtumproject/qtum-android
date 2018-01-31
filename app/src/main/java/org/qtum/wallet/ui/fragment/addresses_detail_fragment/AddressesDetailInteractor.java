@@ -5,5 +5,5 @@ import org.qtum.wallet.model.gson.history.History;
 
 
 public interface AddressesDetailInteractor {
-    History getHistory(int position);
+    History getHistory(String txHash);
 }

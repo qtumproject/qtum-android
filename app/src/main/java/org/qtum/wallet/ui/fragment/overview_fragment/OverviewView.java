@@ -8,6 +8,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 import java.util.List;
 
 public interface OverviewView extends BaseFragmentView{
-    int getPosition();
+    String getTxHash();
     void setUpOverview(List<CopyableOverviewItem> overview);
 }

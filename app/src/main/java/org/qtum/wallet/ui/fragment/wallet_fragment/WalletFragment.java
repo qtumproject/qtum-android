@@ -64,8 +64,8 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @BindView(R.id.recycler_view)
     protected RecyclerView mRecyclerView;
 
-    @BindView(R.id.swipe_refresh)
-    protected SwipeRefreshLayout mSwipeRefreshLayout;
+//    @BindView(R.id.swipe_refresh)
+//    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     @BindView(R.id.app_bar)
     protected AppBarLayout mAppBarLayout;
@@ -270,13 +270,13 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                 }
             }
         });
-        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getPresenter().onRefresh();
-            }
-        });
+//        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                getPresenter().onRefresh();
+//            }
+//        });
     }
 
     @Override
@@ -290,8 +290,8 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     }
 
     @Override
-    public void onTransactionClick(int adapterPosition) {
-        getPresenter().openTransactionFragment(adapterPosition);
+    public void onTransactionClick(String txHash) {
+        getPresenter().openTransactionFragment(txHash);
     }
 
     public void updateHistory(TransactionAdapter adapter) {
@@ -302,7 +302,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
             mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
         }
         mRecyclerView.setAdapter(mTransactionAdapter);
-        mSwipeRefreshLayout.setRefreshing(false);
+        //mSwipeRefreshLayout.setRefreshing(false);
         mLoadingFlag = false;
     }
 
@@ -321,14 +321,14 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @Override
     public void startRefreshAnimation() {
-        mSwipeRefreshLayout.setRefreshing(true);
+        //mSwipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     public void stopRefreshRecyclerAnimation() {
-        if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
+//        if (mSwipeRefreshLayout != null) {
+//            mSwipeRefreshLayout.setRefreshing(false);
+//        }
     }
 
     @Override
@@ -397,8 +397,8 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     };
 
     @Override
-    public void openTransactionsFragment(int position) {
-        Fragment fragment = TransactionFragment.newInstance(getContext(), position);
+    public void openTransactionsFragment(String txHash) {
+        Fragment fragment = TransactionFragment.newInstance(getContext(), txHash);
         openFragment(fragment);
     }
 }

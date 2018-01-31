@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Base64;
 
-import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
@@ -225,7 +224,7 @@ public class MigrationManager {
     private void clearWallet(Context context) {
         QtumSharedPreference.getInstance().forceClear(context);
         KeyStorage.getInstance().clearKeyStorage();
-        HistoryList.getInstance().clearHistoryList();
+        //TODO CLEAR REALM
         TinyDB db = new TinyDB(context);
         db.clearTokenList();
         db.clearContractList();

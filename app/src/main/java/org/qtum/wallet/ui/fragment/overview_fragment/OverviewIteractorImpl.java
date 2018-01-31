@@ -3,11 +3,12 @@ package org.qtum.wallet.ui.fragment.overview_fragment;
 
 import android.content.Context;
 
-import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.model.gson.history.History;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import io.realm.Realm;
 
 public class OverviewIteractorImpl implements OverviewIteractor{
 
@@ -17,13 +18,11 @@ public class OverviewIteractorImpl implements OverviewIteractor{
         mContext = new WeakReference<Context>(context);
     }
 
-    public History getHistory(int position) {
-        List<History> historyList = HistoryList.getInstance().getHistoryList();
-        if (historyList != null && historyList.size() > position) {
-            return historyList.get(position);
-        } else {
-            return null;
-        }
+    public History getHistory(String txHash) {
+        Realm realm = Realm.getDefaultInstance();
+        return realm.where(History.class)
+                .equalTo("txHash", txHash)
+                .findFirst();
     }
 
 }
