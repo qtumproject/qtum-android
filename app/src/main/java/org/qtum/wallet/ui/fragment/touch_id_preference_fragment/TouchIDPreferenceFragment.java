@@ -23,13 +23,11 @@ public abstract class TouchIDPreferenceFragment extends BaseFragment implements 
             case org.qtum.wallet.R.id.bt_enable_touch_id:
                 getPresenter().onEnableTouchIdClick();
             case org.qtum.wallet.R.id.bt_not_now:
-                if (mIsImporting) {
-                    WalletMainFragment walletFragment = WalletMainFragment.newInstance(getContext());
-                    getMainActivity().setRootFragment(walletFragment);
-                    openRootFragment(walletFragment);
-                } else {
+                if (!mIsImporting) {
                     BaseFragment backUpWalletFragment = BackUpWalletFragment.newInstance(getContext(), true, getPin());
                     openFragment(backUpWalletFragment);
+                } else {
+                    getMainActivity().openRootWallet();
                 }
 
                 break;
@@ -52,6 +50,12 @@ public abstract class TouchIDPreferenceFragment extends BaseFragment implements 
     public void initializeViews() {
         super.initializeViews();
         mIsImporting = getArguments().getBoolean(IS_IMPORTING);
+    }
+
+    @Override
+    public void onResume() {
+        hideBottomNavView(false);
+        super.onResume();
     }
 
     @Override

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:id="@+id/activity_main"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
     android:fitsSystemWindows="true"
-                                             tools:context="org.qtum.wallet.ui.org.qtum.wallet.activity.main_activity.MainActivity">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -16,7 +15,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <android.support.design.widget.BottomNavigationView
@@ -25,12 +24,12 @@
         android:layout_height="wrap_content"
         android:background="@color/background"
         app:elevation="0dp"
-        app:itemIconTint="@color/colorPrimary"
         app:itemBackground="@drawable/bottom_nav_view_tab_background"
+        app:itemIconTint="@color/colorPrimary"
         app:itemTextColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/navigation"/>
+        app:menu="@menu/navigation" />
 
 </android.support.constraint.ConstraintLayout>

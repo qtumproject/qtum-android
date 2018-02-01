@@ -167,7 +167,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                 getInteractor().setKeyGeneratedInstance(true);
                                 getView().onLogin();
                                 getView().dismissProgressDialog();
-                                getView().openWalletMainFragment();
                             }
                         } else {
                             getView().confirmError(R.string.incorrect_repeated_pin);
@@ -204,7 +203,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                         isDataLoaded = true;
                                         getView().onLogin();
                                         getView().dismissProgressDialog();
-                                        getView().openWalletMainFragment();
                                     }
                                 });
                     } else {
@@ -224,7 +222,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                     getView().clearError();
                     getView().hideKeyBoard();
                     getView().setCheckAuthenticationShowFlag(false);
-                    getView().onBackPressed();
+                    getView().dismiss();
                 } else {
                     getView().confirmError(R.string.incorrect_pin);
                 }
@@ -438,7 +436,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                     break;
                 }
                 case AUTHENTICATION: {
-                    getView().openWalletMainFragment();
                     getView().dismissProgressDialog();
                     break;
                 }

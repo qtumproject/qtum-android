@@ -189,7 +189,9 @@ public class WaveView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        createShader();
+        if(h > 0) {
+            createShader();
+        }
     }
 
     /**

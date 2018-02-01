@@ -16,6 +16,7 @@ import android.widget.TextView;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.model.news.News;
+import org.qtum.wallet.ui.base.base_nav_fragment.BaseNavFragment;
 import org.qtum.wallet.ui.fragment.news_detail_fragment.NewsDetailFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.R;
@@ -26,7 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public abstract class NewsFragment extends BaseFragment implements NewsView {
+public abstract class NewsFragment extends BaseNavFragment implements NewsView {
 
     private NewsPresenter mNewsFragmentPresenter;
     protected NewsAdapter mNewsAdapter;
@@ -39,11 +40,21 @@ public abstract class NewsFragment extends BaseFragment implements NewsView {
     private NetworkStateReceiver mNetworkStateReceiver;
     private NetworkStateListener mNetworkStateListener;
 
-    public static BaseFragment newInstance(Context context) {
+    public static NewsFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        BaseFragment fragment = Factory.instantiateFragment(context, NewsFragment.class);
+        NewsFragment fragment = (NewsFragment) Factory.instantiateFragment(context, NewsFragment.class);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getRootView() {
+        return R.id.fragment_container;
+    }
+
+    @Override
+    public String getNavigationTag() {
+        return NewsFragment.class.getCanonicalName();
     }
 
     @Override
@@ -118,7 +129,7 @@ public abstract class NewsFragment extends BaseFragment implements NewsView {
                 @Override
                 public void onClick(View v) {
                     BaseFragment newsDetailFragment = NewsDetailFragment.newInstance(getContext(), getAdapterPosition());
-                    openFragment(newsDetailFragment);
+                    addChild(newsDetailFragment);
                 }
             });
             ButterKnife.bind(this, itemView);
@@ -129,6 +140,11 @@ public abstract class NewsFragment extends BaseFragment implements NewsView {
             mTextViewDate.setText(news.getFormattedPubDate());
             mTextViewDescription.setText(news.getDocument().select("p").get(0).text());
         }
+    }
+
+    @Override
+    public void activateTab() {
+        getMainActivity().setIconChecked(2);
     }
     
     public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

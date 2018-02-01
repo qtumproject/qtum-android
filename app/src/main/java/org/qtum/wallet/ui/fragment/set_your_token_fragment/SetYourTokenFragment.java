@@ -105,14 +105,14 @@ public abstract class SetYourTokenFragment extends BaseFragment implements SetYo
 
     @Override
     public void onResume() {
-        hideBottomNavView(false);
+        //hideBottomNavView(false);
         super.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        showBottomNavView(false);
+        //showBottomNavView(false);
     }
 
     @Override

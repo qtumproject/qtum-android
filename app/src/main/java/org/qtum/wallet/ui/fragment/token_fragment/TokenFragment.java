@@ -114,7 +114,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
     @BindView(R.id.recycler_token_history)
     protected RecyclerView mRecyclerView;
     protected TokenHistoryAdapter mAdapter;
-    protected LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+    protected LinearLayoutManager mLinearLayoutManager;
 
     ShareDialogFragment shareDialog;
 
@@ -201,6 +201,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
         headerPAdding = convertDpToPixel(16, getContext());
 
         mRecyclerView.setNestedScrollingEnabled(false);
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

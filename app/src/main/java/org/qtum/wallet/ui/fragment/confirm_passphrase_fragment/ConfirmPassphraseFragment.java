@@ -134,13 +134,6 @@ public abstract class ConfirmPassphraseFragment extends BaseFragment implements 
     }
 
     @Override
-    public void confirmSeed() {
-        final WalletMainFragment walletFragment = WalletMainFragment.newInstance(getContext());
-        getMainActivity().setRootFragment(walletFragment);
-        openRootFragment(walletFragment);
-    }
-
-    @Override
     public void onLogin() {
         getMainActivity().onLogin();
     }

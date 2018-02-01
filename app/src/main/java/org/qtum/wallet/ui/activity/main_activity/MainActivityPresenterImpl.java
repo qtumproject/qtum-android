@@ -66,6 +66,11 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
     }
 
     @Override
+    public boolean shouldShowPin(){
+        return !mCheckAuthenticationFlag && mCheckAuthenticationShowFlag;
+    }
+
+    @Override
     public MainActivityView getView() {
         return mMainActivityView;
     }

@@ -30,6 +30,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.util.Log;
@@ -45,7 +46,6 @@ import org.qtum.wallet.WearableMessagingProvider;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
-import org.qtum.wallet.dataprovider.services.update_service.WatchUpdateService;
 import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
@@ -53,7 +53,7 @@ import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.activity.splash_activity.SplashActivity;
 import org.qtum.wallet.ui.base.base_activity.BaseActivity;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.base.base_nav_fragment.BaseNavFragment;
 import org.qtum.wallet.ui.fragment.news_fragment.NewsFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinAction;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
@@ -70,9 +70,12 @@ import org.qtum.wallet.utils.ThemeUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+
+import static org.qtum.wallet.ui.base.base_fragment.BaseFragment.BACK_STACK_ROOT_TAG;
 
 public class MainActivity extends BaseActivity implements MainActivityView, WearableMessagingProvider {
     private static final int LAYOUT = R.layout.activity_main;
@@ -94,6 +97,8 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @BindView(R.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
+
+    List<String> navigationBackStack = new ArrayList<>();
 
     @Override
     protected void createPresenter() {
@@ -148,9 +153,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         if (intent != null && intent.getAction() != null) {
             switch (intent.getAction()) {
                 case QtumIntent.OPEN_FROM_NOTIFICATION:
-                    mRootFragment = WalletMainFragment.newInstance(getContext());
-                    openRootFragment(mRootFragment);
-                    setIconChecked(0);
+                    openRootWallet();
                     break;
                 default:
                     break;
@@ -183,13 +186,23 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         return ContextCompat.checkSelfPermission(this, perm) == PackageManager.PERMISSION_GRANTED;
     }
 
+
+    public void openNavFragment(BaseNavFragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, fragment, fragment.getNavigationTag())
+                .addToBackStack(fragment.getNavigationTag())
+                .commit();
+        navigationBackStack.add(fragment.getNavigationTag());
+    }
+
     @Override
     public void openRootFragment(Fragment fragment) {
-        getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getSupportFragmentManager().popBackStack(BACK_STACK_ROOT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, fragment.getClass().getCanonicalName())
-                .addToBackStack(BaseFragment.BACK_STACK_ROOT_TAG)
+                .addToBackStack(BACK_STACK_ROOT_TAG)
                 .commit();
     }
 
@@ -224,7 +237,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public void popBackStack() {
-        getSupportFragmentManager().popBackStack(BaseFragment.BACK_STACK_ROOT_TAG, 0);
+        getSupportFragmentManager().popBackStack(BACK_STACK_ROOT_TAG, 0);
     }
 
     @Override
@@ -332,39 +345,33 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_wallet:
-                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(WalletMainFragment.class.getSimpleName())) {
-                            popBackStack();
+                        if (checkFragmentExistance(WalletMainFragment.class.getCanonicalName(), true)) {
                             return true;
                         }
                         mRootFragment = WalletMainFragment.newInstance(getContext());
                         break;
                     case R.id.item_profile:
-                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(ProfileFragment.class.getSimpleName())) {
-                            popBackStack();
+                        if (checkFragmentExistance(ProfileFragment.class.getCanonicalName(), true)) {
                             return true;
                         }
                         mRootFragment = ProfileFragment.newInstance(getContext());
                         break;
                     case R.id.item_news:
-                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(NewsFragment.class.getSimpleName())) {
-                            popBackStack();
+                        if (checkFragmentExistance(NewsFragment.class.getCanonicalName(), true)) {
                             return true;
                         }
                         mRootFragment = NewsFragment.newInstance(getContext());
                         break;
                     case R.id.item_send:
-                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(SendFragment.class.getSimpleName())) {
-                            popBackStack();
+                        if (checkFragmentExistance(SendFragment.class.getCanonicalName(), true)) {
                             return true;
                         }
-
                         mRootFragment = SendFragment.newInstance(false, null, null, null, getContext());
-
                         break;
                     default:
                         return false;
                 }
-                openRootFragment(mRootFragment);
+                openNavFragment((BaseNavFragment) mRootFragment);
                 return true;
             }
         });
@@ -416,6 +423,32 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             }
         };
         mNetworkReceiver.addNetworkStateListener(mNetworkStateListener);
+    }
+
+    private boolean checkFragmentExistance(String tag, boolean addToBackStack) {
+        Fragment fragmentByTag = getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragmentByTag != null && fragmentByTag instanceof BaseNavFragment) {
+            mRootFragment = fragmentByTag;
+            ((BaseNavFragment)mRootFragment).activateTab();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            for (Fragment fr : getSupportFragmentManager().getFragments()) {
+                transaction.hide(fr);
+            }
+            transaction.show(mRootFragment).commit();
+            if(addToBackStack) {
+                if(navigationBackStack.contains(((BaseNavFragment) mRootFragment).getNavigationTag())){
+                    navigationBackStack.removeAll(Collections.singleton(((BaseNavFragment) mRootFragment).getNavigationTag()));
+                    if(((BaseNavFragment) mRootFragment).getNavigationTag().equals(WalletMainFragment.class.getCanonicalName())){
+                        navigationBackStack.add(0, ((BaseNavFragment) mRootFragment).getNavigationTag());
+                    }
+                }
+                navigationBackStack.add(((BaseNavFragment) mRootFragment).getNavigationTag());
+            }
+
+            return true;
+        }
+        return false;
     }
 
     boolean startPageExists(List<Fragment> fragments) {
@@ -528,11 +561,38 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1 || getPresenter().isCheckAuthenticationShowFlag()) {
-            ActivityCompat.finishAffinity(this);
-        } else {
-            super.onBackPressed();
+        if(getPresenter().getAuthenticationFlag()) {
+            if (navigationBackStack.size() > 0) {
+                String tag = navigationBackStack.get(navigationBackStack.size() - 1);
+                if (!onChildBackPressed(tag)) {
+                    if (navigationBackStack.size() == 1) {
+                        ActivityCompat.finishAffinity(this);
+                    } else {
+                        navigationBackStack.remove(navigationBackStack.size() - 1);
+                        checkFragmentExistance(navigationBackStack.get(navigationBackStack.size() - 1), false);
+                    }
+                }
+            }
+        }else {
+            if(getPresenter().shouldShowPin()){
+                clearBackStack();
+                openRootFragment(StartPageFragment.newInstance(false, this));
+                return;
+            }
+            if(getSupportFragmentManager().getBackStackEntryCount() > 1){
+                super.onBackPressed();
+            } else {
+                ActivityCompat.finishAffinity(this);
+            }
         }
+    }
+
+    private boolean onChildBackPressed(String tag) {
+        Fragment fragmentByTag = getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragmentByTag == null || !(fragmentByTag instanceof BaseNavFragment)) {
+            return false;
+        }
+        return ((BaseNavFragment) fragmentByTag).onBackPressed();
     }
 
     public void setCheckAuthenticationShowFlag(boolean flag) {
@@ -550,11 +610,25 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     private int[] blackThemeIcons = {R.drawable.ic_wallet, R.drawable.ic_profile, R.drawable.ic_news, R.drawable.ic_send};
     private int[] lightThemeIcons = {R.drawable.ic_wallet_light, R.drawable.ic_profile_light, R.drawable.ic_news_light, R.drawable.ic_send_light};
 
+    private void clearBackStack(){
+        FragmentManager fm = getSupportFragmentManager();
+        int count = fm.getBackStackEntryCount();
+        for(int i = 0; i < count; ++i) {
+            fm.popBackStack();
+        }
+        navigationBackStack.clear();
+    }
+
     @Override
     protected void updateTheme() {
 
-        setRootFragment(ProfileFragment.newInstance(this));
-        openRootFragment(mRootFragment);
+        if (mRootFragment != null && mRootFragment instanceof ProfileFragment) {
+
+            clearBackStack();
+            openNavFragment(WalletMainFragment.newInstance(this));
+            mRootFragment = ProfileFragment.newInstance(this);
+            openNavFragment((BaseNavFragment) mRootFragment);
+        }
 
         if (ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)) {
             mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
@@ -623,6 +697,15 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
                 bindService(mIntent, mServiceConnection, 0);
             }
         }
+        showBottomNavigationView(false);
+        openRootWallet();
+    }
+
+    public void openRootWallet() {
+        clearBackStack();
+        hideKeyBoard();
+        openNavFragment(WalletMainFragment.newInstance(this));
+        setIconChecked(0);
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -637,6 +720,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     public void onLogout() {
+        clearBackStack();
         if (mUpdateService != null) {
             mUpdateService.stopMonitoring();
         }

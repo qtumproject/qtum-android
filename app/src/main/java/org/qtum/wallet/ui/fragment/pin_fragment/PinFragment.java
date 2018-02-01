@@ -68,8 +68,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
 
     @Override
     public void onCancelClick() {
-        getMainActivity().resetAuthFlags();
-        openRootFragment(StartPageFragment.newInstance(false, getContext()));
+        getMainActivity().onBackPressed();
     }
 
     @Override
@@ -354,13 +353,6 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public void openTouchIDPreferenceFragment(boolean isImporting, String pin) {
         Fragment fragment = TouchIDPreferenceFragment.newInstance(getContext(), isImporting, pin);
-        openRootFragment(fragment);
-    }
-
-    @Override
-    public void openWalletMainFragment() {
-        Fragment fragment = WalletMainFragment.newInstance(getContext());
-        getMainActivity().setRootFragment(fragment);
         openRootFragment(fragment);
     }
 

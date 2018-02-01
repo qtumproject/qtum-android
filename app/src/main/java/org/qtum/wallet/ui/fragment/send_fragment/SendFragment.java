@@ -41,6 +41,7 @@ import org.qtum.wallet.model.gson.token_balance.Balance;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.base.base_nav_fragment.BaseNavFragment;
 import org.qtum.wallet.ui.fragment.currency_fragment.CurrencyFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinDialogFragment;
 import org.qtum.wallet.ui.fragment.qr_code_recognition_fragment.QrCodeRecognitionFragment;
@@ -63,7 +64,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public abstract class SendFragment extends BaseFragment implements SendView {
+public abstract class SendFragment extends BaseNavFragment implements SendView {
 
     private static final int REQUEST_CAMERA = 3;
     private boolean OPEN_QR_CODE_FRAGMENT_FLAG = false;
@@ -211,6 +212,21 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     };
 
     @Override
+    public int getRootView() {
+        return R.id.fragment_container;
+    }
+
+    @Override
+    public void activateTab() {
+        getMainActivity().setIconChecked(3);
+    }
+
+    @Override
+    public String getNavigationTag() {
+        return SendFragment.class.getCanonicalName();
+    }
+
+    @Override
     public void setUpSpinner(TokenBalance tokenBalance, Integer decimalUnits) {
         int i = 0;
         String currency = getArguments().getString(CURRENCY);
@@ -341,14 +357,14 @@ public abstract class SendFragment extends BaseFragment implements SendView {
 
     private void onCurrencyClick() {
         BaseFragment currencyFragment = CurrencyFragment.newInstance(getView().getContext());
-        openFragmentForResult(currencyFragment);
+        addChild(currencyFragment);
     }
 
     private void openQrCodeFragment() {
         OPEN_QR_CODE_FRAGMENT_FLAG = false;
         QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
         hideKeyBoard();
-        openInnerFragmentForResult(qrCodeRecognitionFragment);
+        addChild(qrCodeRecognitionFragment, R.id.fragment_container_send_base);
     }
 
     @OnClick(R.id.bt_send)
@@ -397,8 +413,8 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         return mCurrency;
     }
 
-    public static BaseFragment newInstance(boolean qrCodeRecognition, String address, String amount, String tokenAddress, Context context) {
-        BaseFragment sendFragment = Factory.instantiateFragment(context, SendFragment.class);
+    public static SendFragment newInstance(boolean qrCodeRecognition, String address, String amount, String tokenAddress, Context context) {
+        SendFragment sendFragment = (SendFragment) Factory.instantiateFragment(context, SendFragment.class);
         Bundle args = new Bundle();
         args.putBoolean(IS_QR_CODE_RECOGNITION, qrCodeRecognition);
         args.putString(ADDRESS, address);
@@ -408,8 +424,8 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         return sendFragment;
     }
 
-    public static BaseFragment newInstance(String addressFrom, String addressTo, String amount, String currency, Context context) {
-        BaseFragment sendFragment = Factory.instantiateFragment(context, SendFragment.class);
+    public static SendFragment newInstance(String addressFrom, String addressTo, String amount, String currency, Context context) {
+        SendFragment sendFragment = (SendFragment) Factory.instantiateFragment(context, SendFragment.class);
         Bundle args = new Bundle();
         args.putString(ADDRESS_FROM, addressFrom);
         args.putString(ADDRESS, addressTo);
@@ -455,7 +471,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(org.qtum.wallet.R.anim.enter_from_right, org.qtum.wallet.R.anim.exit_to_left, org.qtum.wallet.R.anim.enter_from_left, org.qtum.wallet.R.anim.exit_to_right)
-                .add(org.qtum.wallet.R.id.fragment_container_send_base, fragment, fragment.getClass().getCanonicalName())
+                .add(getRootView(), fragment, fragment.getClass().getCanonicalName())
                 .addToBackStack(null)
                 .commit();
     }

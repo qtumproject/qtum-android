@@ -3,6 +3,7 @@ package org.qtum.wallet.ui.activity.main_activity;
 import android.support.v4.app.Fragment;
 
 import org.qtum.wallet.ui.base.base_activity.BaseContextView;
+import org.qtum.wallet.ui.base.base_nav_fragment.BaseNavFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinAction;
 
 public interface MainActivityView extends BaseContextView {

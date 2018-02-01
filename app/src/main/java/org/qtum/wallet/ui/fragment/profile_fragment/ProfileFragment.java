@@ -11,12 +11,14 @@ import android.widget.TextView;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
+import org.qtum.wallet.ui.base.base_nav_fragment.BaseNavFragment;
 import org.qtum.wallet.ui.fragment.about_fragment.AboutFragment;
 import org.qtum.wallet.ui.fragment.language_fragment.LanguageFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
 import org.qtum.wallet.ui.fragment.smart_contracts_fragment.SmartContractsFragment;
 import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
 import org.qtum.wallet.ui.fragment.subscribe_tokens_fragment.SubscribeTokensFragment;
+import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.ThemeUtils;
@@ -26,7 +28,7 @@ import butterknife.BindView;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION_FOR_PASSPHRASE;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CHANGING;
 
-public abstract class ProfileFragment extends BaseFragment implements ProfileView, OnSettingClickListener {
+public abstract class ProfileFragment extends BaseNavFragment implements ProfileView, OnSettingClickListener {
 
     protected PrefAdapter adapter;
 
@@ -46,11 +48,21 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
         }
     };
 
-    public static BaseFragment newInstance(Context context) {
+    public static ProfileFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        BaseFragment fragment = Factory.instantiateFragment(context, ProfileFragment.class);
+        ProfileFragment fragment = (ProfileFragment) Factory.instantiateFragment(context, ProfileFragment.class);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void activateTab() {
+        getMainActivity().setIconChecked(1);
+    }
+
+    @Override
+    public String getNavigationTag() {
+        return ProfileFragment.class.getCanonicalName();
     }
 
     @Override
@@ -113,7 +125,7 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
         }
 
         if (fragment != null) {
-            openFragment(fragment);
+            addChild(fragment);
         }
     }
 
@@ -165,5 +177,10 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
     public void resetText() {
         adapter.notifyDataSetChanged();
         mTextViewToolBar.setText(R.string.profile);
+    }
+
+    @Override
+    public int getRootView() {
+        return R.id.fragment_container;
     }
 }
