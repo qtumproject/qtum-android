@@ -24,6 +24,7 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
@@ -37,8 +38,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.R;
@@ -57,6 +63,7 @@ import org.qtum.wallet.ui.base.base_nav_fragment.BaseNavFragment;
 import org.qtum.wallet.ui.fragment.news_fragment.NewsFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinAction;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
+import org.qtum.wallet.ui.fragment.qr_code_recognition_fragment.QrCodeRecognitionFragment;
 import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
@@ -66,6 +73,7 @@ import org.qtum.wallet.utils.FontManager;
 import org.qtum.wallet.ui.fragment.profile_fragment.ProfileFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.utils.QtumIntent;
+import org.qtum.wallet.utils.ResizeHeightAnimation;
 import org.qtum.wallet.utils.ThemeUtils;
 
 import java.lang.reflect.Field;
@@ -145,6 +153,21 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
             }
         };
+
+        KeyboardVisibilityEvent.setEventListener(
+                getActivity(),
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        if (getPresenter().getAuthenticationFlag() && !getPresenter().isCheckAuthenticationShowFlag()) {
+                            if (isOpen) {
+                                hideBottomNavigationView(false);
+                            } else {
+                                showBottomNavigationView(false);
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
@@ -292,8 +315,9 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     public void hideBottomNavigationView(boolean recolorStatusBar) {
-        if (mBottomNavigationView != null)
+        if (mBottomNavigationView != null) {
             mBottomNavigationView.setVisibility(View.GONE);
+        }
         if (recolorStatusBar) {
             recolorStatusBarBlack();
         }
@@ -428,18 +452,23 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     private boolean checkFragmentExistance(String tag, boolean addToBackStack) {
         Fragment fragmentByTag = getSupportFragmentManager().findFragmentByTag(tag);
         if (fragmentByTag != null && fragmentByTag instanceof BaseNavFragment) {
+
+            if (addToBackStack && tag.equals(navigationBackStack.get(navigationBackStack.size() - 1))) {
+                ((BaseNavFragment) fragmentByTag).clearChildBackStack();
+                return true;
+            }
+
             mRootFragment = fragmentByTag;
-            ((BaseNavFragment)mRootFragment).activateTab();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             for (Fragment fr : getSupportFragmentManager().getFragments()) {
                 transaction.hide(fr);
             }
             transaction.show(mRootFragment).commit();
-            if(addToBackStack) {
-                if(navigationBackStack.contains(((BaseNavFragment) mRootFragment).getNavigationTag())){
+            if (addToBackStack) {
+                if (navigationBackStack.contains(((BaseNavFragment) mRootFragment).getNavigationTag())) {
                     navigationBackStack.removeAll(Collections.singleton(((BaseNavFragment) mRootFragment).getNavigationTag()));
-                    if(((BaseNavFragment) mRootFragment).getNavigationTag().equals(WalletMainFragment.class.getCanonicalName())){
+                    if (((BaseNavFragment) mRootFragment).getNavigationTag().equals(WalletMainFragment.class.getCanonicalName())) {
                         navigationBackStack.add(0, ((BaseNavFragment) mRootFragment).getNavigationTag());
                     }
                 }
@@ -561,7 +590,14 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public void onBackPressed() {
-        if(getPresenter().getAuthenticationFlag()) {
+
+        if (getPresenter().shouldShowPin()) {
+            clearBackStack();
+            openRootFragment(StartPageFragment.newInstance(false, this));
+            return;
+        }
+
+        if (getPresenter().getAuthenticationFlag()) {
             if (navigationBackStack.size() > 0) {
                 String tag = navigationBackStack.get(navigationBackStack.size() - 1);
                 if (!onChildBackPressed(tag)) {
@@ -572,14 +608,11 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
                         checkFragmentExistance(navigationBackStack.get(navigationBackStack.size() - 1), false);
                     }
                 }
+            } else {
+                ActivityCompat.finishAffinity(this);
             }
-        }else {
-            if(getPresenter().shouldShowPin()){
-                clearBackStack();
-                openRootFragment(StartPageFragment.newInstance(false, this));
-                return;
-            }
-            if(getSupportFragmentManager().getBackStackEntryCount() > 1){
+        } else {
+            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
                 super.onBackPressed();
             } else {
                 ActivityCompat.finishAffinity(this);
@@ -593,6 +626,28 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             return false;
         }
         return ((BaseNavFragment) fragmentByTag).onBackPressed();
+    }
+
+    public boolean checkNavFragmentExistance(String tag){
+        return navigationBackStack.contains(tag);
+    }
+
+    public boolean checkSendQrCodeActive(){
+        if(!checkNavFragmentExistance(SendFragment.class.getCanonicalName())){
+            return false;
+        } else {
+            Fragment fragmentByTag = getSupportFragmentManager().findFragmentByTag(SendFragment.class.getCanonicalName());
+            if(fragmentByTag != null) {
+                if(fragmentByTag.getChildFragmentManager().findFragmentByTag(QrCodeRecognitionFragment.class.getCanonicalName()) != null){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void moveToQrCodeActiveSend(){
+        checkFragmentExistance(SendFragment.class.getCanonicalName(), true);
     }
 
     public void setCheckAuthenticationShowFlag(boolean flag) {
@@ -610,12 +665,10 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     private int[] blackThemeIcons = {R.drawable.ic_wallet, R.drawable.ic_profile, R.drawable.ic_news, R.drawable.ic_send};
     private int[] lightThemeIcons = {R.drawable.ic_wallet_light, R.drawable.ic_profile_light, R.drawable.ic_news_light, R.drawable.ic_send_light};
 
-    private void clearBackStack(){
+    private void clearBackStack() {
         FragmentManager fm = getSupportFragmentManager();
-        int count = fm.getBackStackEntryCount();
-        for(int i = 0; i < count; ++i) {
-            fm.popBackStack();
-        }
+        FragmentManager.BackStackEntry backStackEntryAt = fm.getBackStackEntryAt(0);
+        fm.popBackStack(backStackEntryAt.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
         navigationBackStack.clear();
     }
 
@@ -705,7 +758,6 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         clearBackStack();
         hideKeyBoard();
         openNavFragment(WalletMainFragment.newInstance(this));
-        setIconChecked(0);
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {

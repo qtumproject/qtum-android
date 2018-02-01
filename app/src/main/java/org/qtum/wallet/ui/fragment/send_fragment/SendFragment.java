@@ -316,7 +316,7 @@ public abstract class SendFragment extends BaseNavFragment implements SendView {
     private void isQrCodeRecognition(boolean isQrCodeRecognition) {
         if (isQrCodeRecognition) {
             QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
-            openInnerFragmentForResult(qrCodeRecognitionFragment);
+            addChild(qrCodeRecognitionFragment, R.id.fragment_container_send_base);
         }
     }
 
@@ -360,7 +360,7 @@ public abstract class SendFragment extends BaseNavFragment implements SendView {
         addChild(currencyFragment);
     }
 
-    private void openQrCodeFragment() {
+    public void openQrCodeFragment() {
         OPEN_QR_CODE_FRAGMENT_FLAG = false;
         QrCodeRecognitionFragment qrCodeRecognitionFragment = QrCodeRecognitionFragment.newInstance();
         hideKeyBoard();
@@ -845,6 +845,8 @@ public abstract class SendFragment extends BaseNavFragment implements SendView {
         mSeekBar.setProgress(10000000 - mMinFee);
     }
 
+
+
     public void onResponse(String pubAddress, Double amount, String tokenAddress) {
         getPresenter().onResponse(pubAddress, amount, tokenAddress);
     }
@@ -860,7 +862,7 @@ public abstract class SendFragment extends BaseNavFragment implements SendView {
     @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        //getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override

@@ -96,7 +96,6 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
             return;
         }
 
-        getMainActivity().setIconChecked(3);
         Fragment fragment = SendFragment.newInstance(keyWithBalanceFrom.getAddress(), keyWithBalanceTo.getAddress(), amountString, "", getContext());
         getMainActivity().setRootFragment(fragment);
         openRootFragment(fragment);
