@@ -89,6 +89,9 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
     @Override
     public void onResume() {
         super.onResume();
+        if (getArguments().getBoolean(IS_WALLET_CREATING)) {
+            hideBottomNavView(false);
+        }
     }
 
     @Override

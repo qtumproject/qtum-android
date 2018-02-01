@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:background="@drawable/background_main"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@drawable/background_main">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"

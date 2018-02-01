@@ -60,7 +60,7 @@ public abstract class NewsDetailFragment extends BaseFragment implements NewsDet
     public void onClick(View view) {
         switch (view.getId()) {
             case org.qtum.wallet.R.id.ibt_back:
-                getActivity().onBackPressed();
+                getMainActivity().onBackPressed();
                 break;
         }
     }

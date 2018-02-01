@@ -72,12 +72,9 @@ public class BackUpWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
 
                         @Override
                         public void onNext(String s) {
+                            QtumSharedPreference.getInstance().setKeyGeneratedInstance(getView().getContext(), true);
                             getView().dismissProgressDialog();
                             getView().onLogin();
-                            QtumSharedPreference.getInstance().setKeyGeneratedInstance(getView().getContext(), true);
-                            final WalletMainFragment walletFragment = WalletMainFragment.newInstance(getView().getContext());
-                            getView().getMainActivity().setRootFragment(walletFragment);
-                            getView().openRootFragment(walletFragment);
                         }
                     });
         } else {

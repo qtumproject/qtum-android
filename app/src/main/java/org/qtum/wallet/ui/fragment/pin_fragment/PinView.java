@@ -28,8 +28,6 @@ public interface PinView extends BaseFragmentView {
 
     void openTouchIDPreferenceFragment(boolean isImporting, String pin);
 
-    void openWalletMainFragment();
-
     void openBackUpWalletFragment(boolean isWalletCreating, String pin);
 
     void openSendFragment(boolean qrCodeRecognition, String address, String amount, String tokenAddress);

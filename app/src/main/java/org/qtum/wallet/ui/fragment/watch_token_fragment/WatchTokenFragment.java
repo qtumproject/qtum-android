@@ -101,14 +101,14 @@ public abstract class WatchTokenFragment extends BaseFragment implements WatchTo
 
     @Override
     public void onResume() {
-        hideBottomNavView(false);
+        //hideBottomNavView(false);
         super.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        showBottomNavView(false);
+        //showBottomNavView(false);
     }
 
     @OnClick({org.qtum.wallet.R.id.ibt_back, org.qtum.wallet.R.id.bt_ok, org.qtum.wallet.R.id.bt_cancel})

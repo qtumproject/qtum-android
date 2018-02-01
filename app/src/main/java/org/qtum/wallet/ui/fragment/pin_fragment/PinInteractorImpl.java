@@ -16,6 +16,8 @@ import javax.crypto.Cipher;
 
 import rx.Observable;
 
+import static org.qtum.wallet.utils.crypto.KeyStoreHelper.trimEndSpaces;
+
 class PinInteractorImpl implements PinInteractor {
 
     private Context mContext;
@@ -35,15 +37,6 @@ class PinInteractorImpl implements PinInteractor {
         }
         //delete 4 spaces because after API 18 android have bug
         //(https://stackoverflow.com/questions/34472004/android-preferences-adding-unwanted-chars)
-    }
-
-    private String trimEndSpaces(String value){
-        if(value.contains("\n")){
-            int indexOf = value.indexOf("\n");
-            return value.substring(0, indexOf+1);
-        } else {
-            return value;
-        }
     }
 
     @Override
