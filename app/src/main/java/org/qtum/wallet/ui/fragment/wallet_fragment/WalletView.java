@@ -5,10 +5,13 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
+import io.realm.OrderedCollectionChangeSet;
 import io.realm.RealmResults;
 
 public interface WalletView extends BaseFragmentView {
-    void updateHistory(RealmResults<History> historyList);
+    void updateHistory(RealmResults<History> histories, @Nullable OrderedCollectionChangeSet changeSet, int visibleItemCount);
 
     void setAdapterNull();
 

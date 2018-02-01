@@ -15,6 +15,7 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 import org.qtum.wallet.ui.wave_visualizer.WaveHelper;
 import org.qtum.wallet.ui.wave_visualizer.WaveView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -97,9 +98,16 @@ public class WalletFragmentLight extends WalletFragment {
         super.onPause();
     }
 
+//    @Override
+//    public void updateHistory(List<History> historyList) {
+//        super.updateHistory(new TransactionAdapterLight(historyList, getAdapterListener()));
+//    }
+
+
     @Override
-    public void updateHistory(RealmResults<History> historyList) {
-        super.updateHistory(new TransactionAdapterLight(historyList, true, getAdapterListener()));
+    protected void createAdapter() {
+        mTransactionAdapter = new TransactionAdapterLight(new ArrayList<History>(),getAdapterListener());
+        mRecyclerView.setAdapter(mTransactionAdapter);
     }
 
     @Override

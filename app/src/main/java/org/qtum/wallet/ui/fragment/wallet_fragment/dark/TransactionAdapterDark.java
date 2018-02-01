@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment.dark;
 
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,17 +12,11 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.TransactionClickListener;
 
 import java.util.List;
 
-import io.realm.OrderedRealmCollection;
-
 public class TransactionAdapterDark extends TransactionAdapter {
 
-    public TransactionAdapterDark(@Nullable OrderedRealmCollection<History> data, boolean autoUpdate, TransactionClickListener listener) {
-        super(data, autoUpdate, listener);
+    public TransactionAdapterDark(List<History> historyList, TransactionClickListener listener) {
+        super(historyList, listener);
     }
-
-//    public TransactionAdapterDark(List<History> historyList, TransactionClickListener listener) {
-//        super(historyList, listener);
-//    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,7 +36,7 @@ public class TransactionAdapterDark extends TransactionAdapter {
         if (holder instanceof ProgressBarHolder) {
             ((ProgressBarHolder) holder).bindProgressBar(mLoadingFlag);
         } else {
-            mHistory = getItem(position);
+            mHistory = mHistoryList.get(position);
             ((TransactionHolderDark) holder).bindTransactionData(mHistory);
         }
     }

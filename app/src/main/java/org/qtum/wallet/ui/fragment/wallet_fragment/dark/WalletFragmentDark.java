@@ -11,9 +11,13 @@ import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 import org.qtum.wallet.utils.ResizeWidthAnimation;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import butterknife.BindView;
+import io.realm.OrderedCollectionChangeSet;
 import io.realm.RealmResults;
 
 public class WalletFragmentDark extends WalletFragment {
@@ -140,10 +144,10 @@ public class WalletFragmentDark extends WalletFragment {
         }
     }
 
-    @Override
-    public void updateHistory(RealmResults<History> historyList) {
-        super.updateHistory(new TransactionAdapterDark(historyList, true,getAdapterListener()));
-    }
+//    @Override
+//    public void updateHistory(List<History> historyList) {
+//        super.updateHistory(new TransactionAdapterDark(historyList, getAdapterListener()));
+//    }
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
@@ -160,5 +164,11 @@ public class WalletFragmentDark extends WalletFragment {
         } catch (NullPointerException e) {
             Log.d("WalletFragmentDark", "updateBalance: " + e.getMessage());
         }
+    }
+
+    @Override
+    protected void createAdapter() {
+        mTransactionAdapter = new TransactionAdapterDark(new ArrayList<History>(),getAdapterListener());
+        mRecyclerView.setAdapter(mTransactionAdapter);
     }
 }

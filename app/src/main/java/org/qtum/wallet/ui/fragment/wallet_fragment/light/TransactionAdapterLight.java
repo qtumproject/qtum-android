@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment.light;
 
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +13,11 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.TransactionClickListener;
 
 import java.util.List;
 
-import io.realm.OrderedRealmCollection;
-
 public class TransactionAdapterLight extends TransactionAdapter {
 
-    public TransactionAdapterLight(@Nullable OrderedRealmCollection<History> data, boolean autoUpdate, TransactionClickListener listener) {
-        super(data, autoUpdate, listener);
+    public TransactionAdapterLight(List<History> historyList, TransactionClickListener listener) {
+        super(historyList, listener);
     }
-
-//    public TransactionAdapterLight(List<History> historyList, TransactionClickListener listener) {
-//        super(historyList, listener);
-//    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

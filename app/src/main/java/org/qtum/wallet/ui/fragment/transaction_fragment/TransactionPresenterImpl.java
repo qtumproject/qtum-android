@@ -1,7 +1,10 @@
 package org.qtum.wallet.ui.fragment.transaction_fragment;
 
 import org.qtum.wallet.model.gson.history.History;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+
+import io.realm.Realm;
 
 import static org.qtum.wallet.utils.StringUtils.convertBalanceToString;
 
@@ -25,15 +28,23 @@ public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implemen
     }
 
     @Override
-    public void openTransactionView(String txHash) {
-        String dateString;
-        History history = getInteractor().getHistory(txHash);
+    public void openTransactionView(final String txHash) {
+        final String dateString;
+        final History history = getInteractor().getHistory(txHash);
         if (history.getBlockTime() != null) {
             dateString = getInteractor().getFullDate(history.getBlockTime() * 1000L);
         } else {
             dateString = getInteractor().getUnconfirmedDate();
         }
-        getView().setUpTransactionData(history.getChangeInBalance(), history.getFee(), dateString,
-                history.getBlockHeight() > 0, history.getTransactionReceipt() != null && history.getTransactionReceipt().getLog() != null && !history.getTransactionReceipt().getLog().isEmpty());
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                TransactionReceipt transactionReceipt = realm.where(TransactionReceipt.class).equalTo("txHash",txHash).findFirst();
+                getView().setUpTransactionData(history.getChangeInBalance(), history.getFee(), dateString,
+                        history.getBlockHeight() > 0, transactionReceipt != null && transactionReceipt.getLog() != null && !transactionReceipt.getLog().isEmpty());
+            }
+        });
+
     }
 }

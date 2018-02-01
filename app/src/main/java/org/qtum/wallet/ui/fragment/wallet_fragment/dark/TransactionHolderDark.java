@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.ui.fragment.wallet_fragment.TransactionClickListener;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.DateCalculator;
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 import rx.Subscriber;
 import rx.Subscription;
 
@@ -108,26 +110,34 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
         progressIndicator.setVisibility(View.GONE);
         if (history.isReceiptUpdated()) {
             mImageViewIcon.setVisibility(View.VISIBLE);
-            if (history.getTransactionReceipt() != null) {
-                if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
-                    mTextViewOperationType.setText(R.string.received_contract);
-                    mImageViewIcon.setImageResource(R.drawable.ic_rec_cont_dark);
-                    contractIndicator.setBackgroundResource(R.color.colorPrimary);
-                } else {
-                    mTextViewOperationType.setText(R.string.sent_contract);
-                    mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_dark);
-                    contractIndicator.setBackgroundResource(R.color.colorAccent);
+            Realm realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    TransactionReceipt transactionReceipt = realm.where(TransactionReceipt.class).equalTo("txHash", history.getTxHash()).findFirst();
+                    if (transactionReceipt != null) {
+                        if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
+                            mTextViewOperationType.setText(R.string.received_contract);
+                            mImageViewIcon.setImageResource(R.drawable.ic_rec_cont_dark);
+                            contractIndicator.setBackgroundResource(R.color.colorPrimary);
+                        } else {
+                            mTextViewOperationType.setText(R.string.sent_contract);
+                            mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_dark);
+                            contractIndicator.setBackgroundResource(R.color.colorAccent);
+                        }
+                    } else {
+                        contractIndicator.setBackgroundColor(Color.TRANSPARENT);
+                        if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
+                            mTextViewOperationType.setText(R.string.received);
+                            mImageViewIcon.setImageResource(R.drawable.ic_received);
+                        } else {
+                            mTextViewOperationType.setText(R.string.sent);
+                            mImageViewIcon.setImageResource(R.drawable.ic_sent);
+                        }
+                    }
                 }
-            } else {
-                contractIndicator.setBackgroundColor(Color.TRANSPARENT);
-                if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
-                    mTextViewOperationType.setText(R.string.received);
-                    mImageViewIcon.setImageResource(R.drawable.ic_received);
-                } else {
-                    mTextViewOperationType.setText(R.string.sent);
-                    mImageViewIcon.setImageResource(R.drawable.ic_sent);
-                }
-            }
+            });
+
         } else {
             mTextViewOperationType.setText(R.string.getting_info);
             progressIndicator.setVisibility(View.VISIBLE);

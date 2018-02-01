@@ -2,7 +2,10 @@ package org.qtum.wallet.ui.fragment.event_log_fragment;
 
 
 import org.qtum.wallet.model.gson.history.History;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+
+import io.realm.Realm;
 
 public class EventLogPresenterImpl extends BaseFragmentPresenterImpl implements EventLogPresenter{
 
@@ -17,8 +20,15 @@ public class EventLogPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void initializeViews() {
         super.initializeViews();
-        History history = getInteractor().getHistory(getView().getTxHash());
-        getView().updateEventLog(history.getTransactionReceipt().getLog());
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                TransactionReceipt transactionReceipt = realm.where(TransactionReceipt.class).equalTo("txHash",getView().getTxHash()).findFirst();
+                getView().updateEventLog(transactionReceipt.getLog());
+            }
+        });
+
     }
 
     @Override

@@ -47,6 +47,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.RealmRecyclerViewAdapter;
+import io.realm.RealmResults;
 
 public abstract class WalletFragment extends BaseFragment implements WalletView, TransactionClickListener {
 
@@ -265,20 +268,17 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                         totalItemCount = mLinearLayoutManager.getItemCount();
                         pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
                         if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 1) {
+                            mLoadingFlag = true;
                             getPresenter().onLastItem(totalItemCount - 1);
                         }
                     }
                 }
             }
         });
-//        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
-//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                getPresenter().onRefresh();
-//            }
-//        });
+        createAdapter();
     }
+
+    protected abstract void createAdapter();
 
     @Override
     protected WalletPresenter getPresenter() {
@@ -313,6 +313,50 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @Override
     public void setAdapterNull() {
+    }
+
+    @Override
+    public void updateHistory(RealmResults<History> histories, @javax.annotation.Nullable OrderedCollectionChangeSet changeSet, int visibleItemCount) {
+        mLoadingFlag = false;
+        mTransactionAdapter.setHistoryList(histories.subList(0,visibleItemCount));
+        if (changeSet == null) {
+            mTransactionAdapter.notifyDataSetChanged();
+            return;
+        }
+        // For deletions, the adapter has to be notified in reverse order.
+        OrderedCollectionChangeSet.Range[] deletions = changeSet.getDeletionRanges();
+        for (int i = deletions.length - 1; i >= 0; i--) {
+            OrderedCollectionChangeSet.Range range = deletions[i];
+            if(range.startIndex<=visibleItemCount) {
+                int length = range.length;
+                if(range.startIndex+range.length>visibleItemCount){
+                    length = visibleItemCount - range.startIndex;
+                }
+                mTransactionAdapter.notifyItemRangeRemoved(range.startIndex, length);
+            }
+        }
+
+        OrderedCollectionChangeSet.Range[] insertions = changeSet.getInsertionRanges();
+        for (OrderedCollectionChangeSet.Range range : insertions) {
+            if(range.startIndex<=visibleItemCount) {
+                int length = range.length;
+                if (range.startIndex + range.length > visibleItemCount) {
+                    length = visibleItemCount - range.startIndex;
+                }
+                mTransactionAdapter.notifyItemRangeInserted(range.startIndex, length);
+            }
+        }
+
+        OrderedCollectionChangeSet.Range[] modifications = changeSet.getChangeRanges();
+        for (OrderedCollectionChangeSet.Range range : modifications) {
+            if(range.startIndex<=visibleItemCount) {
+                int length = range.length;
+                if (range.startIndex + range.length > visibleItemCount) {
+                    length = visibleItemCount - range.startIndex;
+                }
+                mTransactionAdapter.notifyItemRangeChanged(range.startIndex, length);
+            }
+        }
     }
 
     @Override

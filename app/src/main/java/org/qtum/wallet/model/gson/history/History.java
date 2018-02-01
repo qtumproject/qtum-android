@@ -40,11 +40,9 @@ public class History extends RealmObject{
     @Expose
     private RealmList<Vin> vin = null;
 
-    private TransactionReceipt mTransactionReceipt;
 
     private String changeInBalance;
     private String fee;
-    @Ignore
     private boolean isReceiptUpdated = false;
 
     /**
@@ -159,15 +157,6 @@ public class History extends RealmObject{
 
     public void setContractHasBeenCreated(Boolean contractHasBeenCreated) {
         this.contractHasBeenCreated = contractHasBeenCreated;
-    }
-
-    public TransactionReceipt getTransactionReceipt() {
-        return mTransactionReceipt;
-    }
-
-    public void setTransactionReceipt(TransactionReceipt transactionReceipt) {
-        mTransactionReceipt = transactionReceipt;
-        isReceiptUpdated = true;
     }
 
     public boolean isReceiptUpdated() {
