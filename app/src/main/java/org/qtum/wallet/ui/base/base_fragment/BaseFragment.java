@@ -73,10 +73,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         }
     }
 
-    public void onUserResume() {
-
-    }
-
     protected void showToast(String text) {
         Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
@@ -313,6 +309,11 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     }
 
     @Override
+    public void hideKeyBoard(View v) {
+
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createPresenter();
@@ -404,11 +405,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-    }
-
-    @Override
-    public void hideKeyBoard(View v) {
-
     }
 
     @Override

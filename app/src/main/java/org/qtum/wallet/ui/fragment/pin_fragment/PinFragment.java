@@ -40,6 +40,8 @@ public abstract class PinFragment extends BaseFragment implements PinView {
 
     private PinPresenter mPinFragmentPresenter;
 
+    protected int prevStatusBarColor;
+
     private final static String ACTION = "action";
     private final static String PASSPHRASE = "passphrase";
 
@@ -179,7 +181,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public void setSoftMode() {
         super.setSoftMode();
-        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        //getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     @Override
@@ -215,7 +217,21 @@ public abstract class PinFragment extends BaseFragment implements PinView {
                 getPresenter().confirm(str.toString());
             }
         });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            prevStatusBarColor = getMainActivity().getWindow().getStatusBarColor();
+        }
+        getMainActivity().hideBottomNavigationView(getThemedStatusBarColor());
     }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        String hexColor = String.format("#%06X", (0xFFFFFF & prevStatusBarColor));
+        getMainActivity().showBottomNavigationView(hexColor);
+    }
+
 
     @Override
     public void prepareSensor() {

@@ -38,8 +38,6 @@ public class RestoreContractsPresenterImpl extends BaseFragmentPresenterImpl imp
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        getView().hideBottomNavView(false);
-
     }
 
     @Override

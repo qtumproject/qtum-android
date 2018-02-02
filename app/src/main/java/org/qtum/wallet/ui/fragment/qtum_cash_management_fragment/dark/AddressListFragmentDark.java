@@ -72,7 +72,6 @@ public class AddressListFragmentDark extends AddressListFragment {
         view.findViewById(R.id.bt_transfer).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setProgressDialog();
                 transfer(keyWithBalanceTo, getPresenter().getKeyWithBalanceFrom(), mEditTextAmount.getText().toString());
             }
         });

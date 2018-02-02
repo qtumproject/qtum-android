@@ -215,10 +215,19 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     }
 
     private void openQrCodeFragment() {
-        OPEN_QR_CODE_FRAGMENT_FLAG = false;
-        SendFragment sendFragment = (SendFragment) SendFragment.newInstance(true, null, null, null, getContext());
-        openRootFragment(sendFragment);
-        getMainActivity().setRootFragment(sendFragment);
+        if(!getMainActivity().checkNavFragmentExistance(SendFragment.class.getCanonicalName())){
+            getMainActivity().openNavFragment(SendFragment.newInstance(true, null, null, null, getContext()));
+        } else {
+            if(!getMainActivity().checkSendQrCodeActive()) {
+                getMainActivity().moveToQrCodeActiveSend();
+                Fragment fragmentByTag = getMainActivity().getSupportFragmentManager().findFragmentByTag(SendFragment.class.getCanonicalName());
+                if(fragmentByTag != null){
+                    ((SendFragment)fragmentByTag).openQrCodeFragment();
+                }
+            } else {
+                getMainActivity().moveToQrCodeActiveSend();
+            }
+        }
     }
 
     @OnLongClick(R.id.tv_public_key)

@@ -51,4 +51,6 @@ public interface PinView extends BaseFragmentView {
     void setCheckAuthenticationShowFlag(boolean checkAuthenticationShowFlag);
 
     void clearPin();
+
+    int getThemedStatusBarColor();
 }

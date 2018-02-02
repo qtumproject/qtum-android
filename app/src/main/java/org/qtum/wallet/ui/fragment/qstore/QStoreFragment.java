@@ -147,18 +147,6 @@ public abstract class QStoreFragment extends BaseFragment implements QStoreView,
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        hideBottomNavView(false);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        showBottomNavView(false);
-    }
-
-    @Override
     public void OnItemClick(QstoreItem item) {
         openFragmentForResult(StoreContractFragment.newInstance(getContext(), item.id));
     }

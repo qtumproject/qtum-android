@@ -4,13 +4,15 @@ import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.ui.base.base_nav_fragment.BaseNavFragment;
+import org.qtum.wallet.ui.base.base_nav_fragment.HiddenChangeListener;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 
 import java.util.List;
 
 import butterknife.BindView;
 
-public class TransactionFragmentLight extends TransactionFragment {
+public class TransactionFragmentLight extends TransactionFragment implements HiddenChangeListener {
 
     @BindView(R.id.ic_confirm)
     ImageView confirmIcon;
@@ -53,18 +55,17 @@ public class TransactionFragmentLight extends TransactionFragment {
         colorHeader();
     }
 
-
     @Override
     public void onPause() {
         super.onPause();
         getMainActivity().recolorStatusBar(R.color.title_color_light);
+        ((BaseNavFragment)getParentFragment()).removeHiddenChangeListener();
     }
 
     @Override
-    public void onUserResume() {
-        super.onUserResume();
-        checkConfirmation(this.confirmed);
-        colorHeader();
+    public void onResume() {
+        super.onResume();
+        ((BaseNavFragment)getParentFragment()).setHiddenChangeListener(this);
     }
 
     void colorHeader() {
@@ -84,6 +85,16 @@ public class TransactionFragmentLight extends TransactionFragment {
         } else {
             confirmIcon.setImageResource(R.drawable.ic_confirmation_loader);
             notConfFlag.setText(R.string.not_confirmed_yet);
+        }
+    }
+
+    @Override
+    public void onParentHiddenChanged(boolean hidden) {
+        if(!hidden){
+            checkConfirmation(this.confirmed);
+            colorHeader();
+        } else {
+            getMainActivity().recolorStatusBar(R.color.title_color_light);
         }
     }
 }

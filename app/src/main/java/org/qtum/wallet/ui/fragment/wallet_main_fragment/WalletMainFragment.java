@@ -82,6 +82,10 @@ public abstract class WalletMainFragment extends BaseNavFragment implements Wall
     @Override
     public void onResume() {
         super.onResume();
+        checkOtherTokens();
+    }
+
+    private void checkOtherTokens(){
         getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
             @Override
             public void onServiceConnectionChange(boolean isConnecting) {
@@ -97,6 +101,14 @@ public abstract class WalletMainFragment extends BaseNavFragment implements Wall
             }
         });
         getPresenter().checkOtherTokens();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(hidden) {
+            checkOtherTokens();
+        }
     }
 
     @Override

@@ -13,9 +13,9 @@ public interface BaseContextView {
 
     void hideKeyBoard();
 
-    void hideKeyBoard(View v);
-
     void initializeViews();
+
+    void hideKeyBoard(View v);
 
     Context getContext();
 
