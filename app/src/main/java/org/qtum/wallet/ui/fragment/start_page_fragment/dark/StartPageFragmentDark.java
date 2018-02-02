@@ -14,7 +14,6 @@ public class StartPageFragmentDark extends StartPageFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        hideBottomNavView(org.qtum.wallet.R.color.background);
     }
 
     @Override

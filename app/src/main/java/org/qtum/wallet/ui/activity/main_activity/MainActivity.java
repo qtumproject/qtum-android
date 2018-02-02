@@ -42,11 +42,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+import net.yslibrary.android.keyboardvisibilityevent.Unregistrar;
 
 import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.R;
@@ -156,21 +158,22 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             }
         };
 
-        KeyboardVisibilityEvent.setEventListener(
-                getActivity(),
-                new KeyboardVisibilityEventListener() {
-                    @Override
-                    public void onVisibilityChanged(boolean isOpen) {
-                        if (getPresenter().getAuthenticationFlag() && !getPresenter().isCheckAuthenticationShowFlag()) {
-                            if (isOpen) {
-                                hideBottomNavigationView(false);
-                            } else {
-                                showBottomNavigationView(false);
-                            }
-                        }
-                    }
-                });
     }
+
+
+    Unregistrar unregistrar;
+    KeyboardVisibilityEventListener keyboardVisibilityEventListener = new KeyboardVisibilityEventListener() {
+        @Override
+        public void onVisibilityChanged(boolean isOpen) {
+            if (getPresenter().getAuthenticationFlag() && !getPresenter().isCheckAuthenticationShowFlag()) {
+                if (isOpen) {
+                    aCollapse(200);
+                } else {
+                    aExpand(200);
+                }
+            }
+        }
+    };
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -308,18 +311,55 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         }
     }
 
+    private void aCollapse(int duration) {
+        ResizeHeightAnimation resizeHeightAnimation = new ResizeHeightAnimation(mBottomNavigationView, pxFromDp(56), 0);
+        resizeHeightAnimation.setDuration(duration);
+        resizeHeightAnimation.setFillEnabled(true);
+        resizeHeightAnimation.setFillAfter(true);
+        mBottomNavigationView.startAnimation(resizeHeightAnimation);
+    }
+
+    private void aExpand(int duration) {
+        ResizeHeightAnimation resizeHeightAnimation = new ResizeHeightAnimation(mBottomNavigationView, 0, pxFromDp(56));
+        resizeHeightAnimation.setDuration(duration);
+        resizeHeightAnimation.setFillEnabled(true);
+        resizeHeightAnimation.setFillAfter(true);
+        mBottomNavigationView.startAnimation(resizeHeightAnimation);
+    }
+
+    private void collapseBar() {
+        if (mBottomNavigationView != null) {
+            //mBottomNavigationView.setVisibility(View.GONE);
+//            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mBottomNavigationView.getLayoutParams();
+//            layoutParams.height = 0;
+//            mBottomNavigationView.setLayoutParams(layoutParams);
+            aCollapse(0);
+        }
+    }
+
+    private void expandBar() {
+        if (mBottomNavigationView != null && getPresenter().getAuthenticationFlag()) {
+            //mBottomNavigationView.setVisibility(View.VISIBLE);
+//            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mBottomNavigationView.getLayoutParams();
+//            layoutParams.height = pxFromDp(56);
+//            mBottomNavigationView.setLayoutParams(layoutParams);
+            aExpand(0);
+        }
+    }
+
+    public int pxFromDp(final float dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density);
+    }
+
     public void showBottomNavigationView(boolean recolorStatusBar) {
-        if (mBottomNavigationView != null && getPresenter().getAuthenticationFlag())
-            mBottomNavigationView.setVisibility(View.VISIBLE);
+        expandBar();
         if (recolorStatusBar) {
             recolorStatusBarBlue();
         }
     }
 
     public void hideBottomNavigationView(boolean recolorStatusBar) {
-        if (mBottomNavigationView != null) {
-            mBottomNavigationView.setVisibility(View.GONE);
-        }
+        collapseBar();
         if (recolorStatusBar) {
             recolorStatusBarBlack();
         }
@@ -338,8 +378,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     public void showBottomNavigationView(int resColorId) {
-        if (mBottomNavigationView != null && getPresenter().getAuthenticationFlag())
-            mBottomNavigationView.setVisibility(View.VISIBLE);
+        expandBar();
         if (resColorId > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
@@ -348,8 +387,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     public void showBottomNavigationView(String hexColor) {
-        if (mBottomNavigationView != null && getPresenter().getAuthenticationFlag())
-            mBottomNavigationView.setVisibility(View.VISIBLE);
+        expandBar();
         if (!TextUtils.isEmpty(hexColor)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(Color.parseColor(hexColor));
@@ -358,8 +396,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     public void hideBottomNavigationView(int resColorId) {
-        if (mBottomNavigationView != null)
-            mBottomNavigationView.setVisibility(View.GONE);
+        collapseBar();
         if (resColorId > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
@@ -600,8 +637,9 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     public void onBackPressed() {
 
         if (getPresenter().shouldShowPin()) {
+            unregisterKeyboardListener();
             clearBackStack();
-            openRootFragment(StartPageFragment.newInstance(false, this));
+            openRootFragment(StartPageFragment.newInstance(this));
             return;
         }
 
@@ -636,17 +674,17 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         return ((BaseNavFragment) fragmentByTag).onBackPressed();
     }
 
-    public boolean checkNavFragmentExistance(String tag){
+    public boolean checkNavFragmentExistance(String tag) {
         return navigationBackStack.contains(tag);
     }
 
-    public boolean checkSendQrCodeActive(){
-        if(!checkNavFragmentExistance(SendFragment.class.getCanonicalName())){
+    public boolean checkSendQrCodeActive() {
+        if (!checkNavFragmentExistance(SendFragment.class.getCanonicalName())) {
             return false;
         } else {
             Fragment fragmentByTag = getSupportFragmentManager().findFragmentByTag(SendFragment.class.getCanonicalName());
-            if(fragmentByTag != null) {
-                if(fragmentByTag.getChildFragmentManager().findFragmentByTag(QrCodeRecognitionFragment.class.getCanonicalName()) != null){
+            if (fragmentByTag != null) {
+                if (fragmentByTag.getChildFragmentManager().findFragmentByTag(QrCodeRecognitionFragment.class.getCanonicalName()) != null) {
                     return true;
                 }
             }
@@ -654,7 +692,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         return false;
     }
 
-    public void moveToQrCodeActiveSend(){
+    public void moveToQrCodeActiveSend() {
         checkFragmentExistance(SendFragment.class.getCanonicalName(), true);
     }
 
@@ -758,9 +796,26 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
                 bindService(mIntent, mServiceConnection, 0);
             }
         }
-        showBottomNavigationView(false);
         openRootWallet();
+        registerKeyboardListener();
     }
+
+    public void onAuth(){
+        showBottomNavigationView(ThemeUtils.currentTheme.equals(ThemeUtils.THEME_DARK)? R.color.background : R.color.title_color_light);
+        registerKeyboardListener();
+    }
+
+    public void unregisterKeyboardListener(){
+        if(unregistrar != null) {
+            unregistrar.unregister();
+            unregistrar = null;
+        }
+    }
+
+    public void registerKeyboardListener(){
+        unregistrar = KeyboardVisibilityEvent.registerEventListener(this, keyboardVisibilityEventListener);
+    }
+
 
     public void openRootWallet() {
         clearBackStack();
@@ -780,6 +835,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     public void onLogout() {
+        unregisterKeyboardListener();
         clearBackStack();
         if (mUpdateService != null) {
             mUpdateService.stopMonitoring();
@@ -819,8 +875,12 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public void openStartPageFragment(boolean isLogin) {
-        Fragment fragment = StartPageFragment.newInstance(isLogin, getContext());
+        Fragment fragment = StartPageFragment.newInstance(getContext());
         openRootFragment(fragment);
+        if (isLogin) {
+            fragment = PinFragment.newInstance(PinAction.AUTHENTICATION, getContext());
+            openRootFragment(fragment);
+        }
     }
 
     @Override

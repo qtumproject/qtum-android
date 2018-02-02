@@ -15,6 +15,7 @@ import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
 import org.qtum.wallet.utils.FontButton;
+import org.qtum.wallet.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -25,8 +26,6 @@ import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CREATING;
 public abstract class StartPageFragment extends BaseFragment implements StartPageView {
 
     private StartPagePresenter mStartPageFragmentPresenter;
-
-    private static final String IS_LOGIN = "is_login";
 
     @BindView(R.id.bt_create_new)
     protected Button mButtonCreateNew;
@@ -48,12 +47,17 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     @BindView(R.id.root_layout)
     RelativeLayout rootLayout;
 
-    public static BaseFragment newInstance(boolean isLogin, Context context) {
+    public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
-        args.putBoolean(IS_LOGIN, isLogin);
         BaseFragment fragment = Factory.instantiateFragment(context, StartPageFragment.class);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getMainActivity().hideBottomNavigationView(ThemeUtils.currentTheme.equals(ThemeUtils.THEME_DARK)? R.color.background : R.color.title_color_light);
     }
 
     @OnClick({R.id.bt_import_wallet, R.id.bt_create_new, R.id.bt_login})
@@ -94,14 +98,6 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     @Override
     protected int getLayout() {
         return R.layout.fragment_start_page;
-    }
-
-    @Override
-    public void initializeViews() {
-        if (getArguments().getBoolean(IS_LOGIN, false)) {
-            BaseFragment fragment = PinFragment.newInstance(AUTHENTICATION, getContext());
-            openFragment(fragment);
-        }
     }
 
     private void clearWallet() {

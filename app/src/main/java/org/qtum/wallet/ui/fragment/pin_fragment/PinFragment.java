@@ -6,6 +6,7 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -13,7 +14,9 @@ import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -155,7 +158,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
 
     @Override
     public void clearError() {
-        if(!this.isDetached() && tooltip != null) {
+        if (!this.isDetached() && tooltip != null) {
             tooltip.setText("");
             tooltip.setVisibility(View.INVISIBLE);
         }
@@ -168,7 +171,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
 
     @Override
     public void setPin(String pin) {
-        if(!this.isDetached() && mWalletPin != null) {
+        if (!this.isDetached() && mWalletPin != null) {
             mWalletPin.setText(pin);
         }
     }
@@ -201,7 +204,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
         mWalletPin.setFocusableInTouchMode(true);
         mWalletPin.requestFocus();
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(imm != null) {
+        if (imm != null) {
             imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
 
@@ -217,7 +220,6 @@ public abstract class PinFragment extends BaseFragment implements PinView {
                 getPresenter().confirm(str.toString());
             }
         });
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             prevStatusBarColor = getMainActivity().getWindow().getStatusBarColor();
         }
@@ -408,6 +410,11 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public void onLogin() {
         getMainActivity().onLogin();
+    }
+
+    @Override
+    public void onAuth() {
+        getMainActivity().onAuth();
     }
 
     @Override

@@ -157,7 +157,7 @@ public abstract class ProfileFragment extends BaseNavFragment implements Profile
         getMainActivity().onLogout();
         mUpdateService = getMainActivity().getUpdateService();
         mUpdateService.stopMonitoring();
-        BaseFragment startPageFragment = StartPageFragment.newInstance(false, getContext());
+        BaseFragment startPageFragment = StartPageFragment.newInstance(getContext());
         getMainActivity().openRootFragment(startPageFragment);
     }
 

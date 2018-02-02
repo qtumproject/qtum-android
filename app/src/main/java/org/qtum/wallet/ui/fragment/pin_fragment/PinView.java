@@ -44,6 +44,8 @@ public interface PinView extends BaseFragmentView {
 
     void onLogin();
 
+    void onAuth();
+
     void onCancelClick();
 
     void onBackPressed();

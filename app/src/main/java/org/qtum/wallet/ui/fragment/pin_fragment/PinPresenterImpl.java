@@ -223,6 +223,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                     getView().hideKeyBoard();
                     getView().setCheckAuthenticationShowFlag(false);
                     getView().dismiss();
+                    getView().onAuth();
                 } else {
                     getView().confirmError(R.string.incorrect_pin);
                 }
