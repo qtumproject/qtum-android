@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 
 import android.content.res.Configuration;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -34,6 +35,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -307,7 +309,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     public void showBottomNavigationView(boolean recolorStatusBar) {
-        if (mBottomNavigationView != null)
+        if (mBottomNavigationView != null && getPresenter().getAuthenticationFlag())
             mBottomNavigationView.setVisibility(View.VISIBLE);
         if (recolorStatusBar) {
             recolorStatusBarBlue();
@@ -335,16 +337,22 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         }
     }
 
-    public boolean isBottomNavigationViewVisible() {
-        return mBottomNavigationView.getVisibility() == View.VISIBLE;
-    }
-
     public void showBottomNavigationView(int resColorId) {
-        if (mBottomNavigationView != null)
+        if (mBottomNavigationView != null && getPresenter().getAuthenticationFlag())
             mBottomNavigationView.setVisibility(View.VISIBLE);
         if (resColorId > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
+            }
+        }
+    }
+
+    public void showBottomNavigationView(String hexColor) {
+        if (mBottomNavigationView != null && getPresenter().getAuthenticationFlag())
+            mBottomNavigationView.setVisibility(View.VISIBLE);
+        if (!TextUtils.isEmpty(hexColor)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(Color.parseColor(hexColor));
             }
         }
     }

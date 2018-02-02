@@ -73,10 +73,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         }
     }
 
-    public void onUserResume() {
-
-    }
-
     protected void showToast(String text) {
         Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }

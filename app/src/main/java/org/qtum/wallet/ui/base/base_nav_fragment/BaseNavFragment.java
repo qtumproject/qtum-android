@@ -17,10 +17,29 @@ public abstract class BaseNavFragment extends BaseFragment{
 
     public abstract String getNavigationTag();
 
+    HiddenChangeListener hiddenChangeListener;
+
+    public void setHiddenChangeListener(HiddenChangeListener hiddenChangeListener) {
+        this.hiddenChangeListener = hiddenChangeListener;
+        this.hiddenChangeListener.onParentHiddenChanged(false);
+    }
+
+    public void removeHiddenChangeListener() {
+        this.hiddenChangeListener = null;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeHiddenChangeListener();
+    }
+
     public void clearChildBackStack(){
         FragmentManager fm = getChildFragmentManager();
-        FragmentManager.BackStackEntry backStackEntryAt = fm.getBackStackEntryAt(0);
-        fm.popBackStack(backStackEntryAt.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        if(fm.getBackStackEntryCount() > 0) {
+            FragmentManager.BackStackEntry backStackEntryAt = fm.getBackStackEntryAt(0);
+            fm.popBackStack(backStackEntryAt.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
     }
 
     public void addChild(Fragment fragment) {
@@ -43,6 +62,11 @@ public abstract class BaseNavFragment extends BaseFragment{
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+
+        if(hiddenChangeListener != null){
+            hiddenChangeListener.onParentHiddenChanged(hidden);
+        }
+
         if(!hidden){
             activateTab();
         }
