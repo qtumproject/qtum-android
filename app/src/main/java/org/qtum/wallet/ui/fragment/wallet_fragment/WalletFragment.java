@@ -316,9 +316,9 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     }
 
     @Override
-    public void updateHistory(RealmResults<History> histories, @javax.annotation.Nullable OrderedCollectionChangeSet changeSet, int visibleItemCount) {
+    public void updateHistory(List<History> histories, @javax.annotation.Nullable OrderedCollectionChangeSet changeSet, int visibleItemCount) {
         mLoadingFlag = false;
-        mTransactionAdapter.setHistoryList(histories.subList(0,visibleItemCount));
+        mTransactionAdapter.setHistoryList(histories);
         if (changeSet == null) {
             mTransactionAdapter.notifyDataSetChanged();
             return;
@@ -360,6 +360,13 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     }
 
     @Override
+    public void updateHistory(List<History> histories, int startIndex, int insertCount) {
+        mLoadingFlag = false;
+        mTransactionAdapter.setHistoryList(histories);
+        mTransactionAdapter.notifyItemRangeChanged(startIndex, insertCount);
+    }
+
+    @Override
     public void updatePubKey(String pubKey) {
         publicKeyValue.setText(pubKey);
     }
@@ -376,18 +383,18 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 //        }
     }
 
-    @Override
-    public void addHistory(int positionStart, int itemCount, List<History> historyList) {
-        mTransactionAdapter.setHistoryList(historyList);
-        mTransactionAdapter.setLoadingFlag(false);
-        if(mTransactionAdapter.getItemCount()==1){
-            mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
-        }else{
-            mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
-        }
-        mLoadingFlag = false;
-        mTransactionAdapter.notifyItemRangeChanged(positionStart, itemCount);
-    }
+//    @Override
+//    public void addHistory(int positionStart, int itemCount, List<History> historyList) {
+//        mTransactionAdapter.setHistoryList(historyList);
+//        mTransactionAdapter.setLoadingFlag(false);
+//        if(mTransactionAdapter.getItemCount()==1){
+//            mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
+//        }else{
+//            mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
+//        }
+//        mLoadingFlag = false;
+//        mTransactionAdapter.notifyItemRangeChanged(positionStart, itemCount);
+//    }
 
     @Override
     public void loadNewHistory() {
@@ -396,30 +403,30 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
     }
 
-    @Override
-    public void notifyNewHistory() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(mTransactionAdapter.getItemCount()==1){
-                    mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
-                }else{
-                    mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
-                }
-                mTransactionAdapter.notifyDataSetChanged();
-            }
-        });
-    }
+//    @Override
+//    public void notifyNewHistory() {
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if(mTransactionAdapter.getItemCount()==1){
+//                    mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
+//                }else{
+//                    mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
+//                }
+//                mTransactionAdapter.notifyDataSetChanged();
+//            }
+//        });
+//    }
 
-    @Override
-    public void notifyConfirmHistory(final int notifyPosition) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTransactionAdapter.notifyItemChanged(notifyPosition);
-            }
-        });
-    }
+//    @Override
+//    public void notifyConfirmHistory(final int notifyPosition) {
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                mTransactionAdapter.notifyItemChanged(notifyPosition);
+//            }
+//        });
+//    }
 
     BalanceChangeListener balanceListener = new BalanceChangeListener() {
         @Override

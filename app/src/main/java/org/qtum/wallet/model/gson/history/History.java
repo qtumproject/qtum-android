@@ -43,6 +43,7 @@ public class History extends RealmObject{
 
     private String changeInBalance;
     private String fee;
+    private boolean isContractType = false;
     private boolean isReceiptUpdated = false;
 
     /**
@@ -165,5 +166,13 @@ public class History extends RealmObject{
 
     public void setReceiptUpdated(boolean receiptUpdated) {
         isReceiptUpdated = receiptUpdated;
+    }
+
+    public boolean isContractType() {
+        return isContractType;
+    }
+
+    public void setContractType(boolean contractType) {
+        isContractType = contractType;
     }
 }

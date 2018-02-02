@@ -35,19 +35,20 @@ public class OverviewPresenterImpl extends BaseFragmentPresenterImpl implements 
         overview.add(new CopyableOverviewItem("TxHash", history.getTxHash(),true));
         overview.add(new CopyableOverviewItem("BlockHash", history.getBlockHash(),true));
         overview.add(new CopyableOverviewItem("Block Height", String.valueOf(history.getBlockHeight()),true));
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                TransactionReceipt transactionReceipt = realm.where(TransactionReceipt.class).equalTo("txHash",getView().getTxHash()).findFirst();
-                overview.add(new CopyableOverviewItem("Contract Address",transactionReceipt.getContractAddress(),true));
-                overview.add(new CopyableOverviewItem("From",transactionReceipt.getFrom(),false));
-                overview.add(new CopyableOverviewItem("To",transactionReceipt.getTo(),false));
-                overview.add(new CopyableOverviewItem("Cumulative Gas Used",String.valueOf(transactionReceipt.getCumulativeGasUsed()),false));
-                overview.add(new CopyableOverviewItem("Gas Used",String.valueOf(transactionReceipt.getGasUsed()),false));
-            }
-        });
-
+        if(history.isContractType()) {
+            Realm realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    TransactionReceipt transactionReceipt = realm.where(TransactionReceipt.class).equalTo("transactionHash", getView().getTxHash()).findFirst();
+                    overview.add(new CopyableOverviewItem("Contract Address", transactionReceipt.getContractAddress(), true));
+                    overview.add(new CopyableOverviewItem("From", transactionReceipt.getFrom(), false));
+                    overview.add(new CopyableOverviewItem("To", transactionReceipt.getTo(), false));
+                    overview.add(new CopyableOverviewItem("Cumulative Gas Used", String.valueOf(transactionReceipt.getCumulativeGasUsed()), false));
+                    overview.add(new CopyableOverviewItem("Gas Used", String.valueOf(transactionReceipt.getGasUsed()), false));
+                }
+            });
+        }
         getView().setUpOverview(overview);
     }
 

@@ -24,7 +24,7 @@ public class EventLogPresenterImpl extends BaseFragmentPresenterImpl implements 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                TransactionReceipt transactionReceipt = realm.where(TransactionReceipt.class).equalTo("txHash",getView().getTxHash()).findFirst();
+                TransactionReceipt transactionReceipt = realm.where(TransactionReceipt.class).equalTo("transactionHash",getView().getTxHash()).findFirst();
                 getView().updateEventLog(transactionReceipt.getLog());
             }
         });

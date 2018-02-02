@@ -21,11 +21,8 @@ import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
 import rx.Subscriber;
 import rx.Subscription;
-
-import static org.qtum.wallet.utils.StringUtils.convertBalanceToString;
 
 public class TransactionHolderLight extends RecyclerView.ViewHolder {
 
@@ -107,30 +104,24 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
                 mTextViewDate.setText(R.string.confirmation);
                 mLinearLayoutTransaction.setBackgroundResource(R.color.bottom_nav_bar_color_light);
             }
-            Realm realm = Realm.getDefaultInstance();
-            final boolean isHaveReceipt;
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    TransactionReceipt transactionReceipt = realm.where(TransactionReceipt.class).equalTo("txHash", history.getTxHash()).findFirst();
-                    if (transactionReceipt == null) {
-                        contractIndicator.setBackgroundColor(Color.TRANSPARENT);
-                        if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
-                            mImageViewIcon.setImageResource(R.drawable.ic_received_light);
-                        } else {
-                            mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
-                        }
-                    } else {
-                        if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
-                            mImageViewIcon.setImageResource(R.drawable.ic_rec_cont_light);
-                            contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_received_color);
-                        } else {
-                            mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_light);
-                            contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_sent_color);
-                        }
-                    }
+
+            if (history.isContractType()) {
+                contractIndicator.setBackgroundColor(Color.TRANSPARENT);
+                if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
+                    mImageViewIcon.setImageResource(R.drawable.ic_received_light);
+                } else {
+                    mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
                 }
-            });
+            } else {
+                if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
+                    mImageViewIcon.setImageResource(R.drawable.ic_rec_cont_light);
+                    contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_received_color);
+                } else {
+                    mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_light);
+                    contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_sent_color);
+                }
+            }
+
 
         } else {
             contractIndicator.setBackgroundColor(Color.TRANSPARENT);

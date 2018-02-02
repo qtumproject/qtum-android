@@ -40,7 +40,7 @@ public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implemen
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                TransactionReceipt transactionReceipt = realm.where(TransactionReceipt.class).equalTo("txHash",txHash).findFirst();
+                TransactionReceipt transactionReceipt = realm.where(TransactionReceipt.class).equalTo("transactionHash",txHash).findFirst();
                 getView().setUpTransactionData(history.getChangeInBalance(), history.getFee(), dateString,
                         history.getBlockHeight() > 0, transactionReceipt != null && transactionReceipt.getLog() != null && !transactionReceipt.getLog().isEmpty());
             }

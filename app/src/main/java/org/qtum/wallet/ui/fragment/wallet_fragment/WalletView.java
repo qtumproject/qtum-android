@@ -11,7 +11,9 @@ import io.realm.OrderedCollectionChangeSet;
 import io.realm.RealmResults;
 
 public interface WalletView extends BaseFragmentView {
-    void updateHistory(RealmResults<History> histories, @Nullable OrderedCollectionChangeSet changeSet, int visibleItemCount);
+    void updateHistory(List<History> histories, @Nullable OrderedCollectionChangeSet changeSet, int visibleItemCount);
+
+    void updateHistory(List<History> histories, int startIndex, int insertCount);
 
     void setAdapterNull();
 
@@ -23,13 +25,7 @@ public interface WalletView extends BaseFragmentView {
 
     void stopRefreshRecyclerAnimation();
 
-    void addHistory(int positionStart, int itemCount, List<History> historyList);
-
     void loadNewHistory();
-
-    void notifyNewHistory();
-
-    void notifyConfirmHistory(int notifyPosition);
 
     void openTransactionsFragment(String txHash);
 }
