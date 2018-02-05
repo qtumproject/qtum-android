@@ -1,11 +1,14 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment;
 
+import android.support.v4.app.Fragment;
+
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
 import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.history.Vin;
 import org.qtum.wallet.model.gson.history.Vout;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -55,14 +58,14 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         histories.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<History>>() {
             @Override
             public void onChange(RealmResults<History> histories, @Nullable OrderedCollectionChangeSet changeSet) {
-                getView().updateHistory(histories.subList(0,visibleItemCount), changeSet, visibleItemCount);
+                getView().updateHistory(histories.subList(0, visibleItemCount), changeSet, visibleItemCount);
             }
         });
 
     }
 
     private void getHistoriesFromApi(final int start) {
-        if(totalItem!=null && totalItem==start){
+        if (totalItem != null && totalItem == start) {
             getView().hideBottomLoader();
             return;
         }
@@ -99,14 +102,14 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                 });
     }
 
-    private void getHistoriesFromRealm(){
+    private void getHistoriesFromRealm() {
         int allCount = histories.size();
-        if(allCount-visibleItemCount>0) {
+        if (allCount - visibleItemCount > 0) {
             int toUpdate;
-            if(allCount-visibleItemCount>25){
+            if (allCount - visibleItemCount > 25) {
                 toUpdate = 25;
-            }else{
-                toUpdate = allCount-visibleItemCount;
+            } else {
+                toUpdate = allCount - visibleItemCount;
             }
             List<History> historiesFromRealm = histories.subList(0, visibleItemCount + toUpdate);
             visibleItemCount += toUpdate;
@@ -140,8 +143,9 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     }
 
     @Override
-    public void openTransactionFragment(String txHash) {
-        getView().openTransactionsFragment(txHash);
+    public void onTransactionClick(String txHash) {
+        Fragment fragment = TransactionFragment.newInstance(getView().getContext(), txHash);
+        getView().openFragment(fragment);
     }
 
     @Override
@@ -194,13 +198,15 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
     @Override
     public void onNetworkStateChanged(boolean networkConnectedFlag) {
-            if(networkConnectedFlag) {
-                visibleItemCount = 0;
-                    getView().clearAdapter();
-                getHistoriesFromApi(0);
-            } else {
-                getHistoriesFromRealm();
-            }
+        if (networkConnectedFlag) {
+            getView().onlineModeView();
+            visibleItemCount = 0;
+            getView().clearAdapter();
+            getHistoriesFromApi(0);
+        } else {
+            getView().offlineModeView();
+            getHistoriesFromRealm();
+        }
         mNetworkConnectedFlag = networkConnectedFlag;
     }
 

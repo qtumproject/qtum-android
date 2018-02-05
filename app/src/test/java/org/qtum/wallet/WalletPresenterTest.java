@@ -91,7 +91,7 @@ public class WalletPresenterTest {
 
     @Test
     public void openTransactionFragment() {
-        presenter.openTransactionFragment(0);
+        presenter.onTransactionClick(0);
 
         verify(view, times(1)).openTransactionsFragment(anyInt());
     }

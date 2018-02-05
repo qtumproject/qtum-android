@@ -4,7 +4,7 @@
              android:orientation="vertical"
              android:gravity="center"
              android:layout_width="match_parent"
-             android:layout_height="match_parent">
+             android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -60,5 +60,34 @@
         android:text="@string/not_confirmed_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ll_no_internet_connection"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <org.qtum.wallet.utils.FontTextView
+            android:gravity="center"
+            app:typefaceAsset="@string/simplonMonoMedium"
+            android:textColor="@color/background"
+            android:padding="4dp"
+            android:text="@string/no_internet_connection_found"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <org.qtum.wallet.utils.FontTextView
+            android:id="@+id/last_updated_placeholder"
+            android:gravity="center"
+            app:typefaceAsset="@string/simplonMonoRegular"
+            android:textColor="@color/background"
+            android:padding="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

@@ -45,6 +45,7 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
 
     Subscription mSubscription;
     String mSymbol;
+    TokenHistory mTokenHistory;
 
     int decimalUnits;
 
@@ -64,7 +65,7 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onTokenHistoryClick(getAdapterPosition());
+                listener.onTokenHistoryClick(mTokenHistory.getTxHash());
             }
         });
         ButterKnife.bind(this, itemView);
@@ -72,6 +73,7 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
     }
 
     void bindTransactionData(final TokenHistory history, String symbol) {
+        mTokenHistory = history;
         if (mSubscription != null) {
             mSubscription.unsubscribe();
         }

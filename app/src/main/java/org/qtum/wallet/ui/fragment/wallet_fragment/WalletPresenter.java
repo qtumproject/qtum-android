@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface WalletPresenter extends BaseFragmentPresenter {
 
-    void openTransactionFragment(String txHash);
+    void onTransactionClick(String txHash);
 
     void onLastItem(int currentItemCount);
 

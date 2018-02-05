@@ -182,7 +182,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
 
     BalanceChangeListener mBalanceChangeListener = new BalanceChangeListener() {
         @Override
-        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
+        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance, Long lastUpdatedBalanceTime) {
             getMainActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

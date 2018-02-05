@@ -29,7 +29,9 @@ public interface WalletView extends BaseFragmentView {
 
     void hideBottomLoader();
 
-    void openTransactionsFragment(String txHash);
-
     void clearAdapter();
+
+    void offlineModeView();
+
+    void onlineModeView();
 }

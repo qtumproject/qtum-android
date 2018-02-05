@@ -368,7 +368,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
     }
 
     @Override
-    public void onTokenHistoryClick(int adapterPosition) {
-
+    public void onTokenHistoryClick(String txHash) {
+        getPresenter().onTransactionClick(txHash);
     }
 }

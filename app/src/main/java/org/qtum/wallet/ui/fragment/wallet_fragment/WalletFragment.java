@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -36,6 +37,7 @@ import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.ClipboardUtils;
+import org.qtum.wallet.utils.DateCalculator;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.math.BigDecimal;
@@ -101,6 +103,12 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @BindView(R.id.histories_placeholder)
     TextView mTextViewHistoriesPlaceholder;
+
+    @BindView(R.id.ll_no_internet_connection)
+    LinearLayout mLinearLayoutNoInternetConnection;
+
+    @BindView(R.id.last_updated_placeholder)
+    TextView mTextViewLastUpdatedPlaceHolder;
 
     private NetworkStateReceiver mNetworkStateReceiver;
     private UpdateService mUpdateService;
@@ -296,7 +304,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @Override
     public void onTransactionClick(String txHash) {
-        getPresenter().openTransactionFragment(txHash);
+        getPresenter().onTransactionClick(txHash);
     }
 
 
@@ -397,13 +405,24 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
     }
 
+    @Override
+    public void offlineModeView() {
+        mLinearLayoutNoInternetConnection.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onlineModeView() {
+        mLinearLayoutNoInternetConnection.setVisibility(View.GONE);
+    }
+
     BalanceChangeListener balanceListener = new BalanceChangeListener() {
         @Override
-        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
+        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance, final Long lastUpdatedBalanceTime) {
             getMainActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     String balanceString = balance.toString();
+                    mTextViewLastUpdatedPlaceHolder.setText(String.format("%s %s", getString(R.string.your_balance_was_last_updated_at), DateCalculator.getFullDate(lastUpdatedBalanceTime)));
                     if (balanceString != null) {
                         String unconfirmedBalanceString = unconfirmedBalance.toString();
                         if (!TextUtils.isEmpty(unconfirmedBalanceString) && !unconfirmedBalanceString.equals("0")) {
@@ -421,9 +440,4 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         void onCountChange(int newCount);
     }
 
-    @Override
-    public void openTransactionsFragment(String txHash) {
-        Fragment fragment = TransactionFragment.newInstance(getContext(), txHash);
-        openFragment(fragment);
-    }
 }
