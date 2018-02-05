@@ -25,7 +25,11 @@ public interface WalletView extends BaseFragmentView {
 
     void stopRefreshRecyclerAnimation();
 
-    void loadNewHistory();
+    void showBottomLoader();
+
+    void hideBottomLoader();
 
     void openTransactionsFragment(String txHash);
+
+    void clearAdapter();
 }

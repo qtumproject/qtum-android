@@ -98,11 +98,6 @@ public class WalletFragmentLight extends WalletFragment {
         super.onPause();
     }
 
-//    @Override
-//    public void updateHistory(List<History> historyList) {
-//        super.updateHistory(new TransactionAdapterLight(historyList, getAdapterListener()));
-//    }
-
 
     @Override
     protected void createAdapter() {

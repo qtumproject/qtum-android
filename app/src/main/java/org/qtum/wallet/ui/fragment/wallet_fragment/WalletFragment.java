@@ -10,8 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -39,17 +37,15 @@ import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.FontTextView;
-import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import io.realm.OrderedCollectionChangeSet;
-import io.realm.RealmRecyclerViewAdapter;
-import io.realm.RealmResults;
 
 public abstract class WalletFragment extends BaseFragment implements WalletView, TransactionClickListener {
 
@@ -66,9 +62,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @BindView(R.id.recycler_view)
     protected RecyclerView mRecyclerView;
-
-//    @BindView(R.id.swipe_refresh)
-//    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     @BindView(R.id.app_bar)
     protected AppBarLayout mAppBarLayout;
@@ -175,6 +168,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @Override
     public void onPause() {
         super.onPause();
+        mTransactionAdapter.setHistoryCountChangeListener(null);
         getPresenter().updateVisibility(false);
     }
 
@@ -268,7 +262,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                         totalItemCount = mLinearLayoutManager.getItemCount();
                         pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
                         if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 1) {
-                            mLoadingFlag = true;
+                            showBottomLoader();
                             getPresenter().onLastItem(totalItemCount - 1);
                         }
                     }
@@ -276,6 +270,16 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
             }
         });
         createAdapter();
+        mTransactionAdapter.setHistoryCountChangeListener(new HistoryCountChangeListener() {
+            @Override
+            public void onCountChange(int newCount) {
+                if (newCount == 0) {
+                    mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
+                } else {
+                    mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     protected abstract void createAdapter();
@@ -295,17 +299,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         getPresenter().openTransactionFragment(txHash);
     }
 
-    public void updateHistory(TransactionAdapter adapter) {
-        mTransactionAdapter = adapter;
-        if(mTransactionAdapter.getItemCount()==1){
-            mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
-        }else{
-            mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
-        }
-        mRecyclerView.setAdapter(mTransactionAdapter);
-        //mSwipeRefreshLayout.setRefreshing(false);
-        mLoadingFlag = false;
-    }
 
     protected TransactionClickListener getAdapterListener() {
         return this;
@@ -316,6 +309,13 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     }
 
     @Override
+    public void clearAdapter() {
+        int length = mTransactionAdapter.getHistoryList().size();
+        mTransactionAdapter.setHistoryList(new ArrayList<History>());
+        mTransactionAdapter.notifyItemRangeRemoved(0, length);
+    }
+
+    @Override
     public void updateHistory(List<History> histories, @javax.annotation.Nullable OrderedCollectionChangeSet changeSet, int visibleItemCount) {
         mLoadingFlag = false;
         mTransactionAdapter.setHistoryList(histories);
@@ -323,13 +323,13 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
             mTransactionAdapter.notifyDataSetChanged();
             return;
         }
-        // For deletions, the adapter has to be notified in reverse order.
+
         OrderedCollectionChangeSet.Range[] deletions = changeSet.getDeletionRanges();
         for (int i = deletions.length - 1; i >= 0; i--) {
             OrderedCollectionChangeSet.Range range = deletions[i];
-            if(range.startIndex<=visibleItemCount) {
+            if (range.startIndex <= visibleItemCount) {
                 int length = range.length;
-                if(range.startIndex+range.length>visibleItemCount){
+                if (range.startIndex + range.length > visibleItemCount) {
                     length = visibleItemCount - range.startIndex;
                 }
                 mTransactionAdapter.notifyItemRangeRemoved(range.startIndex, length);
@@ -338,18 +338,18 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
         OrderedCollectionChangeSet.Range[] insertions = changeSet.getInsertionRanges();
         for (OrderedCollectionChangeSet.Range range : insertions) {
-            if(range.startIndex<=visibleItemCount) {
+            if (range.startIndex <= visibleItemCount) {
                 int length = range.length;
                 if (range.startIndex + range.length > visibleItemCount) {
                     length = visibleItemCount - range.startIndex;
                 }
-                mTransactionAdapter.notifyItemRangeInserted(range.startIndex, length);
+                mTransactionAdapter.notifyItemRangeInserted(range.startIndex + 1, length);
             }
         }
 
         OrderedCollectionChangeSet.Range[] modifications = changeSet.getChangeRanges();
         for (OrderedCollectionChangeSet.Range range : modifications) {
-            if(range.startIndex<=visibleItemCount) {
+            if (range.startIndex <= visibleItemCount) {
                 int length = range.length;
                 if (range.startIndex + range.length > visibleItemCount) {
                     length = visibleItemCount - range.startIndex;
@@ -383,50 +383,19 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 //        }
     }
 
-//    @Override
-//    public void addHistory(int positionStart, int itemCount, List<History> historyList) {
-//        mTransactionAdapter.setHistoryList(historyList);
-//        mTransactionAdapter.setLoadingFlag(false);
-//        if(mTransactionAdapter.getItemCount()==1){
-//            mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
-//        }else{
-//            mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
-//        }
-//        mLoadingFlag = false;
-//        mTransactionAdapter.notifyItemRangeChanged(positionStart, itemCount);
-//    }
-
     @Override
-    public void loadNewHistory() {
+    public void showBottomLoader() {
         mLoadingFlag = true;
         mTransactionAdapter.setLoadingFlag(true);
         mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
     }
 
-//    @Override
-//    public void notifyNewHistory() {
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                if(mTransactionAdapter.getItemCount()==1){
-//                    mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
-//                }else{
-//                    mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
-//                }
-//                mTransactionAdapter.notifyDataSetChanged();
-//            }
-//        });
-//    }
-
-//    @Override
-//    public void notifyConfirmHistory(final int notifyPosition) {
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                mTransactionAdapter.notifyItemChanged(notifyPosition);
-//            }
-//        });
-//    }
+    @Override
+    public void hideBottomLoader() {
+        mLoadingFlag = false;
+        mTransactionAdapter.setLoadingFlag(false);
+        mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
+    }
 
     BalanceChangeListener balanceListener = new BalanceChangeListener() {
         @Override
@@ -447,6 +416,10 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
             });
         }
     };
+
+    interface HistoryCountChangeListener {
+        void onCountChange(int newCount);
+    }
 
     @Override
     public void openTransactionsFragment(String txHash) {

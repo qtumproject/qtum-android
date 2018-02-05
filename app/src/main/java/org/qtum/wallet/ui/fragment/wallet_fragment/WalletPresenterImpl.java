@@ -32,6 +32,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     private SubscriptionList mSubscriptionList = new SubscriptionList();
     private int visibleItemCount = 0;
     RealmResults<History> histories;
+    private Integer totalItem;
 
     private final int ONE_PAGE_COUNT = 25;
 
@@ -61,6 +62,10 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     }
 
     private void getHistoriesFromApi(final int start) {
+        if(totalItem!=null && totalItem==start){
+            getView().hideBottomLoader();
+            return;
+        }
         getInteractor().getHistoryList(ONE_PAGE_COUNT, start)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<HistoryResponse>() {
@@ -76,6 +81,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
                     @Override
                     public void onNext(final HistoryResponse historyResponse) {
+                        totalItem = historyResponse.getTotalItems();
                         Realm realm = Realm.getDefaultInstance();
                         realm.executeTransaction(new Realm.Transaction() {
                             @Override
@@ -106,6 +112,8 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
             visibleItemCount += toUpdate;
             visibleItemCount = historiesFromRealm.size();
             getView().updateHistory(historiesFromRealm, 0, toUpdate);
+        } else {
+            getView().hideBottomLoader();
         }
     }
 
@@ -186,14 +194,13 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
     @Override
     public void onNetworkStateChanged(boolean networkConnectedFlag) {
-        if (!(networkConnectedFlag==mNetworkConnectedFlag)) {
             if(networkConnectedFlag) {
                 visibleItemCount = 0;
+                    getView().clearAdapter();
                 getHistoriesFromApi(0);
             } else {
                 getHistoriesFromRealm();
             }
-        }
         mNetworkConnectedFlag = networkConnectedFlag;
     }
 

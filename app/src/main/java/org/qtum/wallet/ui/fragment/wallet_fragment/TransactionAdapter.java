@@ -11,6 +11,7 @@ public abstract class TransactionAdapter extends RecyclerView.Adapter<RecyclerVi
     protected final int TYPE_PROGRESS_BAR = 0;
     protected final int TYPE_TRANSACTION = 1;
     protected boolean mLoadingFlag = false;
+    protected WalletFragment.HistoryCountChangeListener mHistoryCountChangeListener;
 
     public History getItem(int position){
         return mHistoryList.get(position);
@@ -38,6 +39,17 @@ public abstract class TransactionAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public void setHistoryList(List<History> historyList) {
         mHistoryList = historyList;
+        if(mHistoryCountChangeListener!=null){
+            mHistoryCountChangeListener.onCountChange(mHistoryList.size());
+        }
+    }
+
+    public List<History> getHistoryList() {
+        return mHistoryList;
+    }
+
+    public void setHistoryCountChangeListener(WalletFragment.HistoryCountChangeListener historyCountChangeListener) {
+        mHistoryCountChangeListener = historyCountChangeListener;
     }
 
     public void setLoadingFlag(boolean loadingFlag) {

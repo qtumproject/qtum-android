@@ -97,7 +97,7 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
     @Override
     public void onLastItem(final int currentItemCount) {
         if (getInteractor().getHistoryList().size() != getInteractor().getTotalHistoryItem()) {
-            //getView().loadNewHistory();
+            //getView().showBottomLoader();
             mSubscriptionList.add(getInteractor().getHistoryList(token.getContractAddress(), ONE_PAGE_COUNT, currentItemCount)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

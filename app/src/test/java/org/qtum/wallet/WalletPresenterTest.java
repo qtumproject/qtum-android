@@ -11,7 +11,6 @@ import org.qtum.wallet.model.gson.history.Vin;
 import org.qtum.wallet.model.gson.history.Vout;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletInteractor;
-import org.qtum.wallet.ui.fragment.wallet_fragment.WalletInteractorImpl;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletPresenterImpl;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletView;
 
@@ -29,7 +28,6 @@ import rx.schedulers.Schedulers;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -109,7 +107,7 @@ public class WalletPresenterTest {
 
         presenter.onLastItem(0);
 
-        verify(view, times(1)).loadNewHistory();
+        verify(view, times(1)).showBottomLoader();
         verify(interactor, times(1)).getHistoryList(anyInt(), anyInt());
     }
 
