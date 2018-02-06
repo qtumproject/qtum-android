@@ -221,13 +221,6 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
         });
     }
 
-    @Override
-    public void addHistory(int positionStart, int itemCount, List<TokenHistory> historyList) {
-        mAdapter.setHistoryList(historyList);
-        mAdapter.setLoadingFlag(false);
-        mLoadingFlag = false;
-        mAdapter.notifyItemRangeChanged(positionStart, itemCount);
-    }
 
     protected boolean expanded = false;
 

@@ -3,16 +3,13 @@ package org.qtum.wallet.ui.fragment.token_fragment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
-import org.qtum.wallet.datastorage.TokenHistoryList;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.token_history.HistoryType;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 
-import java.util.Iterator;
 import java.util.List;
 
 import rx.Subscriber;
@@ -98,31 +95,7 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
 
     @Override
     public void onLastItem(final int currentItemCount) {
-        if (getInteractor().getHistoryList().size() != getInteractor().getTotalHistoryItem()) {
-            //getView().showBottomLoader();
-            mSubscriptionList.add(getInteractor().getHistoryList(token.getContractAddress(), ONE_PAGE_COUNT, currentItemCount)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<TokenHistoryResponse>() {
-                        @Override
-                        public void onCompleted() {
-                        }
 
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onNext(TokenHistoryResponse historyResponse) {
-
-                            TokenHistoryList.newInstance().getTokenHistories().addAll(historyResponse.getItems());
-                            //getView().addHistory(currentItemCount, getInteractor().getHistoryList().size() - currentItemCount + 1,
-                            //        getInteractor().getHistoryList());
-                        }
-                    }));
-
-        }
     }
 
     private void loadAndUpdateData() {
@@ -146,8 +119,6 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
                     @Override
                     public void onNext(TokenHistoryResponse historyResponse) {
                         initTokenHistoryType(historyResponse.getItems());
-                        TokenHistoryList.newInstance().setTokenHistories(historyResponse.getItems());
-                        TokenHistoryList.newInstance().setTotalItems(historyResponse.getCount());
                         getView().updateHistory(getInteractor().getHistoryList());
                     }
                 }));

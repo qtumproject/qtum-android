@@ -33,5 +33,4 @@ public interface TokenView extends BaseFragmentView {
 
     void updateHistory(List<TokenHistory> tokenHistories);
 
-    void addHistory(int positionStart, int itemCount, List<TokenHistory> historyList);
 }
