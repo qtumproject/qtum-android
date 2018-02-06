@@ -95,9 +95,4 @@ public abstract class ContractFunctionConstantFragment extends BaseFragment impl
         return getArguments().getString(METHOD_NAME);
     }
 
-    @Override
-    public void setSoftMode() {
-        super.setSoftMode();
-        //getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-    }
 }

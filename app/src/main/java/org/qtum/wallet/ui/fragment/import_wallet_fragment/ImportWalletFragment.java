@@ -94,13 +94,6 @@ public abstract class ImportWalletFragment extends BaseFragment implements Impor
         return LAYOUT;
     }
 
-
-    @Override
-    public void setSoftMode() {
-        super.setSoftMode();
-        //getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-    }
-
     @Override
     public void enableImportButton() {
         mButtonImport.setEnabled(true);

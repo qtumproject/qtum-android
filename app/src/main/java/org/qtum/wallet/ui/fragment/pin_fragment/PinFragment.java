@@ -182,15 +182,8 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     }
 
     @Override
-    public void setSoftMode() {
-        super.setSoftMode();
-        //getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
-        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         hideKeyBoard();
         getMainActivity().resetAuthFlags();
     }
@@ -200,7 +193,6 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public void onResume() {
         super.onResume();
-        setSoftMode();
         mWalletPin.setFocusableInTouchMode(true);
         mWalletPin.requestFocus();
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);

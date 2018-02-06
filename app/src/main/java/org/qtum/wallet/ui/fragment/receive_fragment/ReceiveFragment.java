@@ -228,7 +228,6 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
                 onChooseAnotherAddressClick();
                 break;
             case R.id.ibt_back:
-                getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 getActivity().onBackPressed();
                 break;
         }
@@ -371,12 +370,6 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
     public Bitmap getQrCode() {
         rebuildDrawingCash();
         return mImageViewQrCode.getDrawingCache();
-    }
-
-    @Override
-    public void setSoftMode() {
-        super.setSoftMode();
-        //getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
     }
 
     @Override

@@ -35,7 +35,6 @@ public abstract class TouchIDPreferenceFragment extends BaseFragment implements 
     }
 
     public static BaseFragment newInstance(Context context, boolean isImporting, String pin) {
-
         Bundle args = new Bundle();
         args.putBoolean(IS_IMPORTING, isImporting);
         args.putString(PIN, pin);
@@ -54,8 +53,8 @@ public abstract class TouchIDPreferenceFragment extends BaseFragment implements 
 
     @Override
     public void onResume() {
-        hideBottomNavView(false);
         super.onResume();
+        hideBottomNavView(false);
     }
 
     @Override

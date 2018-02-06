@@ -160,21 +160,6 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     }
 
-
-    Unregistrar unregistrar;
-    KeyboardVisibilityEventListener keyboardVisibilityEventListener = new KeyboardVisibilityEventListener() {
-        @Override
-        public void onVisibilityChanged(boolean isOpen) {
-            if (getPresenter().getAuthenticationFlag() && !getPresenter().isCheckAuthenticationShowFlag()) {
-                if (isOpen) {
-                    aCollapse(200);
-                } else {
-                    aExpand(200);
-                }
-            }
-        }
-    };
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -637,7 +622,6 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     public void onBackPressed() {
 
         if (getPresenter().shouldShowPin()) {
-            unregisterKeyboardListener();
             clearBackStack();
             openRootFragment(StartPageFragment.newInstance(this));
             return;
@@ -797,25 +781,11 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             }
         }
         openRootWallet();
-        registerKeyboardListener();
     }
 
     public void onAuth(){
         showBottomNavigationView(ThemeUtils.currentTheme.equals(ThemeUtils.THEME_DARK)? R.color.background : R.color.title_color_light);
-        registerKeyboardListener();
     }
-
-    public void unregisterKeyboardListener(){
-        if(unregistrar != null) {
-            unregistrar.unregister();
-            unregistrar = null;
-        }
-    }
-
-    public void registerKeyboardListener(){
-        unregistrar = KeyboardVisibilityEvent.registerEventListener(this, keyboardVisibilityEventListener);
-    }
-
 
     public void openRootWallet() {
         clearBackStack();
@@ -835,7 +805,6 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     public void onLogout() {
-        unregisterKeyboardListener();
         clearBackStack();
         if (mUpdateService != null) {
             mUpdateService.stopMonitoring();

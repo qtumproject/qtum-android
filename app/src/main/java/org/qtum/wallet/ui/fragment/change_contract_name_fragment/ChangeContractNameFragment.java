@@ -98,9 +98,4 @@ public abstract  class ChangeContractNameFragment extends BaseFragment implement
         return mChangeContractNamePresenter;
     }
 
-    @Override
-    public void setSoftMode() {
-        super.setSoftMode();
-        //getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-    }
 }
