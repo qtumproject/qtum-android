@@ -27,7 +27,7 @@ public abstract class TouchIDPreferenceFragment extends BaseFragment implements 
                     BaseFragment backUpWalletFragment = BackUpWalletFragment.newInstance(getContext(), true, getPin());
                     openFragment(backUpWalletFragment);
                 } else {
-                    getMainActivity().openRootWallet();
+                    getMainActivity().onLogin();
                 }
 
                 break;

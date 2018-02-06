@@ -28,7 +28,7 @@ public class OtherTokensFragmentLight extends OtherTokensFragment {
                 BaseFragment tokenFragment = TokenFragment.newInstance(getContext(), token);
                 openFragment(tokenFragment);
             } else {
-                setAlertDialog(getString(R.string.token_unsupported),getString(R.string.ok),PopUpType.error);
+                setAlertDialog(getString(R.string.token_unsupported_reason),getString(R.string.ok),PopUpType.error);
             }
         }
     }

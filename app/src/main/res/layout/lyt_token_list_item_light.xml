@@ -8,18 +8,26 @@
     android:background="?attr/selectableItemBackground"
     android:layout_height="56dp">
 
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/unsupported_icon"
+        app:srcCompat="@drawable/ic_unsupported_light"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <org.qtum.wallet.utils.FontTextView
         android:id="@+id/token_name"
         android:textSize="16sp"
         android:textColor="@color/bottom_nav_bar_text_color_light"
         android:text="@string/token_name"
-        android:gravity="left"
+        android:gravity="center_vertical"
         android:maxLines="1"
         android:ellipsize="end"
-        android:padding="16dp"
+        android:padding="8dp"
         app:typefaceAsset="@string/proximaNovaRegular"
-        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_toEndOf="@+id/unsupported_icon"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
@@ -36,7 +44,7 @@
         android:visibility="gone"
         android:id="@+id/unsupported_view"
         android:gravity="end|center_vertical"
-        android:textColor="@color/accent_red_color"
+        android:textColor="@color/bottom_nav_bar_text_color_light"
         android:text="@string/token_unsupported"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

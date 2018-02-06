@@ -158,7 +158,6 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                                                 getInteractor().saveTouchIdPassword(s);
                                                 getInteractor().setKeyGeneratedInstance(true);
                                                 getView().dismissProgressDialog();
-                                                getView().onLogin();
                                                 getView().openTouchIDPreferenceFragment(true, pinRepeat);
                                             }
                                         });
@@ -364,6 +363,9 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
     @Override
     public void setAction(PinAction action) {
         mAction = action;
+        if(mAction == IMPORTING | mAction == CREATING | mAction == AUTHENTICATION | mAction == CHECK_AUTHENTICATION) {
+            getView().unregisterKeyboardListener();
+        }
     }
 
     @Override

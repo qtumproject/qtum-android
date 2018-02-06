@@ -58,6 +58,7 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     public void onResume() {
         super.onResume();
         getMainActivity().hideBottomNavigationView(ThemeUtils.currentTheme.equals(ThemeUtils.THEME_DARK)? R.color.background : R.color.title_color_light);
+        getMainActivity().unregisterKeyboardListener();
     }
 
     @OnClick({R.id.bt_import_wallet, R.id.bt_create_new, R.id.bt_login})

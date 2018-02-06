@@ -121,6 +121,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <RelativeLayout
+                android:id="@+id/qr_code_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/til_amount"

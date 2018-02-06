@@ -45,6 +45,7 @@ import com.google.zxing.common.BitMatrix;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
+import org.qtum.wallet.ui.activity.main_activity.FragmentKeyboardEventListener;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.addresses_fragment.AddressesFragment;
@@ -70,7 +71,7 @@ import rx.schedulers.Schedulers;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
-public abstract class ReceiveFragment extends BaseFragment implements ReceiveView {
+public abstract class ReceiveFragment extends BaseFragment implements ReceiveView, FragmentKeyboardEventListener {
 
     private ReceivePresenter mReceivePresenter;
 
@@ -99,6 +100,9 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
     @BindView(R.id.cl_receive)
     protected
     CoordinatorLayout mCoordinatorLayout;
+
+    @BindView(R.id.qr_code_boarder)
+    View qrCodeContainer;
 
     @BindView(R.id.qr_progress_bar)
     ProgressBar qrProgressBar;
@@ -130,6 +134,13 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
     public void onShareClick() {
         if (checkPermissionWriteExternalStorage()) {
             chooseShareMethod();
+        }
+    }
+
+    @Override
+    public void visibilityChange(boolean isOpen) {
+        if(qrCodeContainer != null) {
+            qrCodeContainer.setVisibility(isOpen ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -203,6 +214,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        getMainActivity().unsetFragmentKeyboardEventListener();
         hideKeyBoard();
         if (mUpdateService != null) {
             mUpdateService.removeBalanceChangeListener(mBalanceChangeListener);
@@ -346,6 +358,7 @@ public abstract class ReceiveFragment extends BaseFragment implements ReceiveVie
                 }
             }
         });
+        getMainActivity().setFragmentKeyboardEventListener(this);
     }
 
     protected void setQrColors(int crossColor, int qrColor) {
