@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.qtum.wallet.R;
@@ -43,6 +44,9 @@ public class WalletFragmentLight extends WalletFragment {
 
     @BindView(R.id.wave_view)
     WaveView waveView;
+
+    @BindView(R.id.ll_unconfirmed_balance)
+    LinearLayout mLinearLayoutUnconfirmedBalance;
 
     private WaveHelper mWaveHelper;
 
@@ -112,13 +116,13 @@ public class WalletFragmentLight extends WalletFragment {
             placeHolderBalance.setText(balance);
             if (unconfirmedBalance != null) {
                 notConfirmedBalancePlaceholder.setVisibility(View.VISIBLE);
-                uncomfirmedBalanceValue.setVisibility(View.VISIBLE);
+                mLinearLayoutUnconfirmedBalance.setVisibility(View.VISIBLE);
                 uncomfirmedBalanceTitle.setVisibility(View.VISIBLE);
                 uncomfirmedBalanceValue.setText(unconfirmedBalance);
                 placeHolderBalanceNotConfirmed.setText(unconfirmedBalance);
             } else {
                 notConfirmedBalancePlaceholder.setVisibility(View.GONE);
-                uncomfirmedBalanceValue.setVisibility(View.GONE);
+                mLinearLayoutUnconfirmedBalance.setVisibility(View.GONE);
                 uncomfirmedBalanceTitle.setVisibility(View.GONE);
             }
         } catch (NullPointerException e) {

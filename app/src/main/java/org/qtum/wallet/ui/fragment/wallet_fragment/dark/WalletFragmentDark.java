@@ -144,10 +144,6 @@ public class WalletFragmentDark extends WalletFragment {
         }
     }
 
-//    @Override
-//    public void updateHistory(List<History> historyList) {
-//        super.updateHistory(new TransactionAdapterDark(historyList, getAdapterListener()));
-//    }
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {

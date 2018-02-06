@@ -114,7 +114,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="272dp"
         android:background="@color/colorPrimary"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -140,6 +140,36 @@
                 <include layout="@layout/fragment_wallet_appbar"/>
 
                 <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:id="@+id/ll_no_internet_connection"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <org.qtum.wallet.utils.FontTextView
+                        android:gravity="center"
+                        app:typefaceAsset="@string/simplonMonoMedium"
+                        android:textColor="@color/background"
+                        android:padding="4dp"
+                        android:text="@string/no_internet_connection_found"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <org.qtum.wallet.utils.FontTextView
+                        android:id="@+id/last_updated_placeholder"
+                        android:gravity="center"
+                        android:text="151551"
+                        app:typefaceAsset="@string/simplonMonoRegular"
+                        android:textColor="@color/background"
+                        android:padding="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/page_indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -147,7 +177,7 @@
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="4dp"
-                    android:visibility="gone">
+                    >
 
                     <ImageView
                         android:layout_width="12dp"

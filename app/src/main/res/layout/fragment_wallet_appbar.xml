@@ -4,7 +4,7 @@
              android:orientation="vertical"
              android:gravity="center"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content">
+             android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -42,14 +42,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-        <org.qtum.wallet.utils.FontTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:typefaceAsset="@string/simplonMonoRegular"
-            android:text="0.0000000003 QTUM"
-            android:textSize="24sp"
-            android:textColor="@color/background"
-            android:id="@+id/tv_unconfirmed_balance"/>
+    <org.qtum.wallet.utils.FontTextView
+        android:id="@+id/tv_unconfirmed_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.0000000003 QTUM"
+        android:textColor="@color/background"
+        android:textSize="24sp"
+        app:typefaceAsset="@string/simplonMonoRegular"/>
 
     <org.qtum.wallet.utils.FontTextView
         android:id="@+id/unconfirmed_balance_title"
@@ -60,34 +60,5 @@
         android:text="@string/not_confirmed_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ll_no_internet_connection"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <org.qtum.wallet.utils.FontTextView
-            android:gravity="center"
-            app:typefaceAsset="@string/simplonMonoMedium"
-            android:textColor="@color/background"
-            android:padding="4dp"
-            android:text="@string/no_internet_connection_found"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <org.qtum.wallet.utils.FontTextView
-            android:id="@+id/last_updated_placeholder"
-            android:gravity="center"
-            app:typefaceAsset="@string/simplonMonoRegular"
-            android:textColor="@color/background"
-            android:padding="4dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-
 
 </LinearLayout>
