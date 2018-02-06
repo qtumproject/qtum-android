@@ -13,6 +13,7 @@ import rx.Observable;
 import rx.Subscriber;
 
 public interface TokenInteractor {
+
     String getCurrentAddress();
 
     String readAbiContract(String uiid);
@@ -29,13 +30,8 @@ public interface TokenInteractor {
 
     String handleTotalSupplyValue(Token token, String value);
 
-    List<TokenHistory> getHistoryList();
-
     Observable<TokenHistoryResponse> getHistoryList(String contractAddress, int limit, int offset);
-
-    int getTotalHistoryItem();
 
     List<String> getAddresses();
 
-    //void addToHistoryList(TokenHistory history);
 }

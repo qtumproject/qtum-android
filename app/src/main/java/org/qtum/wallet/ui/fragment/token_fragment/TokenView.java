@@ -1,11 +1,16 @@
 package org.qtum.wallet.ui.fragment.token_fragment;
 
+import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 import org.qtum.wallet.utils.ContractManagementHelper;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
+import io.realm.OrderedCollectionChangeSet;
 import rx.Subscriber;
 
 public interface TokenView extends BaseFragmentView {
@@ -31,6 +36,18 @@ public interface TokenView extends BaseFragmentView {
 
     Subscriber<String> getTotalSupplyValueCallback();
 
-    void updateHistory(List<TokenHistory> tokenHistories);
+    void updateHistory(List<TokenHistory> histories, @Nullable OrderedCollectionChangeSet changeSet, int visibleItemCount);
+
+    void updateHistory(List<TokenHistory> histories, int startIndex, int insertCount);
+
+    void showBottomLoader();
+
+    void hideBottomLoader();
+
+    void clearAdapter();
+
+    void offlineModeView();
+
+    void onlineModeView();
 
 }

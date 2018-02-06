@@ -35,8 +35,8 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     private boolean mNetworkConnectedFlag = false;
     private SubscriptionList mSubscriptionList = new SubscriptionList();
     private int visibleItemCount = 0;
-    RealmResults<History> histories;
     private Integer totalItem;
+    RealmResults<History> histories;
 
     private final int ONE_PAGE_COUNT = 25;
 

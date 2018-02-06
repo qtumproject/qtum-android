@@ -16,8 +16,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
+import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
+import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AddressesListFragmentToken;
@@ -30,9 +33,12 @@ import org.qtum.wallet.utils.FontTextView;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import io.realm.OrderedCollectionChangeSet;
 import rx.Subscriber;
 
 public abstract class TokenFragment extends BaseFragment implements TokenView, TokenHistoryClickListener {
@@ -122,6 +128,8 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
     protected int totalItemCount;
     protected int pastVisibleItems;
     protected boolean mLoadingFlag = false;
+    private NetworkStateReceiver mNetworkStateReceiver;
+    private NetworkStateListener mNetworkStateListener;
 
     @OnLongClick(R.id.tv_token_address)
     public boolean onAddressLongClick() {
@@ -183,6 +191,27 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
     protected float headerPAdding = 0;
     protected float percents = 1;
     protected float prevPercents = 1;
+
+    @Override
+    public void onActivityCreated(@android.support.annotation.Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mNetworkStateReceiver = getMainActivity().getNetworkReceiver();
+        mNetworkStateListener = new NetworkStateListener() {
+            @Override
+            public void onNetworkStateChanged(boolean networkConnectedFlag) {
+                getPresenter().onNetworkStateChanged(networkConnectedFlag);
+            }
+        };
+        mNetworkStateReceiver.addNetworkStateListener(mNetworkStateListener);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mNetworkStateListener != null) {
+            mNetworkStateReceiver.removeNetworkStateListener(mNetworkStateListener);
+        }
+    }
 
     @Override
     public void initializeViews() {
@@ -259,12 +288,15 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
     }
 
     @Override
-    public void updateHistory(List<TokenHistory> tokenHistories) {
-        if(tokenHistories.isEmpty()){
-            mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
-        } else {
-            mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
-        }
+    public void updateHistory(List<TokenHistory> histories, @Nullable OrderedCollectionChangeSet changeSet, int visibleItemCount) {
+
+    }
+
+    @Override
+    public void updateHistory(List<TokenHistory> histories, int startIndex, int insertCount) {
+        mLoadingFlag = false;
+        mAdapter.setHistoryList(histories);
+        mAdapter.notifyItemRangeChanged(startIndex, insertCount);
     }
 
     @Override
@@ -364,5 +396,28 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
     @Override
     public void onTokenHistoryClick(String txHash) {
         getPresenter().onTransactionClick(txHash);
+    }
+
+    @Override
+    public void showBottomLoader() {
+        mLoadingFlag = true;
+        mAdapter.setLoadingFlag(true);
+        mAdapter.notifyItemChanged(totalItemCount - 1);
+    }
+
+    @Override
+    public void hideBottomLoader() {
+        mLoadingFlag = false;
+        mAdapter.setLoadingFlag(false);
+        mAdapter.notifyItemChanged(totalItemCount - 1);
+    }
+
+    @Override
+
+    public void offlineModeView() {
+    }
+
+    @Override
+    public void onlineModeView() {
     }
 }
