@@ -12,12 +12,9 @@ import android.widget.Toast;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
-import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.ui.fragment.wallet_fragment.TransactionClickListener;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.DateCalculator;
-
-import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,20 +103,23 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
             }
 
             if (history.isContractType()) {
-                contractIndicator.setBackgroundColor(Color.TRANSPARENT);
-                if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
-                    mImageViewIcon.setImageResource(R.drawable.ic_received_light);
-                } else {
-                    mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
-                }
+                mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_light);
+                contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_sent_color);
+
             } else {
-                if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
-                    mImageViewIcon.setImageResource(R.drawable.ic_rec_cont_light);
-                    contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_received_color);
-                } else {
-                    mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_light);
-                    contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_sent_color);
+                contractIndicator.setBackgroundColor(Color.TRANSPARENT);
+                switch (history.getHistoryType()) {
+                    case Internal_Transaction:
+                        mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_light);
+                        break;
+                    case Sent:
+                        mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
+                        break;
+                    case Received:
+                        mImageViewIcon.setImageResource(R.drawable.ic_received_light);
+                        break;
                 }
+
             }
 
 
