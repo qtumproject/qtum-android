@@ -117,6 +117,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     compile 'com.google.android.gms:play-services-wearable:11.8.0'
+    compile 'io.realm:android-adapters:2.1.0'
 
     compile 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
 }

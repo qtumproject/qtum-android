@@ -12,16 +12,17 @@ import android.widget.Toast;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.ui.fragment.wallet_fragment.TransactionClickListener;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.DateCalculator;
+
+import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscriber;
 import rx.Subscription;
-
-import static org.qtum.wallet.utils.StringUtils.convertBalanceToString;
 
 public class TransactionHolderLight extends RecyclerView.ViewHolder {
 
@@ -50,7 +51,7 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 if (mHistory.isReceiptUpdated()) {
-                    listener.onTransactionClick(getAdapterPosition());
+                    listener.onTransactionClick(mHistory.getTxHash());
                 }
             }
         });
@@ -103,15 +104,16 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
                 mTextViewDate.setText(R.string.confirmation);
                 mLinearLayoutTransaction.setBackgroundResource(R.color.bottom_nav_bar_color_light);
             }
-            if (history.getTransactionReceipt() == null) {
+
+            if (history.isContractType()) {
                 contractIndicator.setBackgroundColor(Color.TRANSPARENT);
-                if (history.getChangeInBalance().doubleValue() > 0) {
+                if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
                     mImageViewIcon.setImageResource(R.drawable.ic_received_light);
                 } else {
                     mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
                 }
             } else {
-                if (history.getChangeInBalance().doubleValue() > 0) {
+                if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
                     mImageViewIcon.setImageResource(R.drawable.ic_rec_cont_light);
                     contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_received_color);
                 } else {
@@ -119,6 +121,8 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
                     contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_sent_color);
                 }
             }
+
+
         } else {
             contractIndicator.setBackgroundColor(Color.TRANSPARENT);
             mImageViewIcon.setVisibility(View.GONE);
@@ -128,7 +132,7 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
         }
 
         mTextViewID.setText(history.getTxHash());
-        mTextViewValue.setText(getSpannedBalance(convertBalanceToString(history.getChangeInBalance()) + " QTUM"));
+        mTextViewValue.setText(getSpannedBalance(history.getChangeInBalance() + " QTUM"));
     }
 
     private SpannableString getSpannedBalance(String balance) {

@@ -2,7 +2,6 @@ package org.qtum.wallet.ui.fragment.profile_fragment;
 
 import android.content.Context;
 
-import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
@@ -21,7 +20,7 @@ class ProfileInteractorImpl implements ProfileInteractor {
     public void clearWallet() {
         QtumSharedPreference.getInstance().clear(mContext);
         KeyStorage.getInstance().clearKeyStorage();
-        HistoryList.getInstance().clearHistoryList();
+        //TODO CLEAR REALM
         TinyDB db = new TinyDB(mContext);
         db.clearTokenList();
         db.clearContractList();

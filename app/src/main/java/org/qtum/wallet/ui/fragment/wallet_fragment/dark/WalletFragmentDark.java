@@ -5,26 +5,42 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
+import org.qtum.wallet.utils.ResizeHeightAnimation;
 import org.qtum.wallet.utils.ResizeWidthAnimation;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import butterknife.BindView;
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.RealmResults;
 
 public class WalletFragmentDark extends WalletFragment {
 
     float headerPAdding = 0;
     float prevPercents = 1;
 
+    float noInternetViewHeight;
+
     @BindView(R.id.fade_divider)
     View fadeDivider;
 
     @BindView(R.id.page_indicator)
     public View pagerIndicator;
+
+    @BindView(R.id.no_internet_title)
+    View mNoInternetTitleTextView;
+
+    @BindView(R.id.scroll_content)
+    View scrollContent;
 
     @Override
     protected int getLayout() {
@@ -75,25 +91,20 @@ public class WalletFragmentDark extends WalletFragment {
         uncomfirmedBalanceValue.setVisibility(View.GONE);
         uncomfirmedBalanceTitle.setVisibility(View.GONE);
 
+        mRecyclerView.setNestedScrollingEnabled(false);
+
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
 
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (mAppBarLayout != null) {
-                    if (mSwipeRefreshLayout != null) {
-                        if (!mSwipeRefreshLayout.isActivated()) {
-                            if (verticalOffset == 0) {
-                                mSwipeRefreshLayout.setEnabled(true);
-                            } else {
-                                mSwipeRefreshLayout.setEnabled(false);
-                            }
-                        }
-                    }
 
                     percents = (((getTotalRange() - Math.abs(verticalOffset)) * 1.0f) / getTotalRange());
 
                     balanceView.setAlpha((percents > 0.5f) ? percents : 1 - percents);
+
+                    scrollContent.setY(noInternetViewHeight * percents - pxFromDp(1));
 
                     if (percents == 0) {
                         doDividerExpand();
@@ -119,6 +130,7 @@ public class WalletFragmentDark extends WalletFragment {
                         animateText(percents, uncomfirmedBalanceTitle, .7f);
                         uncomfirmedBalanceTitle.setY(balanceView.getHeight() / 2 + uncomfirmedBalanceValue.getHeight() * percents - (uncomfirmedBalanceTitle.getHeight() * percents * (1 - percents)));
                         uncomfirmedBalanceTitle.setX(balanceView.getWidth() / 2 * percents - (uncomfirmedBalanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
+
                     } else {
                         animateText(percents, balanceTitle, .7f);
                         balanceTitle.setX(balanceView.getWidth() / 2 * percents - (balanceTitle.getWidth() * textPercent3f) / 2 + headerPAdding * (1 - percents));
@@ -148,10 +160,6 @@ public class WalletFragmentDark extends WalletFragment {
         }
     }
 
-    @Override
-    public void updateHistory(List<History> historyList) {
-        super.updateHistory(new TransactionAdapterDark(historyList, getAdapterListener()));
-    }
 
     @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
@@ -169,4 +177,37 @@ public class WalletFragmentDark extends WalletFragment {
             Log.d("WalletFragmentDark", "updateBalance: " + e.getMessage());
         }
     }
+
+    @Override
+    protected void createAdapter() {
+        mTransactionAdapter = new TransactionAdapterDark(new ArrayList<History>(), getAdapterListener());
+        mRecyclerView.setAdapter(mTransactionAdapter);
+    }
+
+
+    @Override
+    public void offlineModeView() {
+        noInternetViewHeight = pxFromDp(72);
+        mTextViewLastUpdatedPlaceHolder.setVisibility(View.VISIBLE);
+        mNoInternetTitleTextView.setVisibility(View.VISIBLE);
+        resizeNoInetConnection();
+    }
+
+    @Override
+    public void onlineModeView() {
+        noInternetViewHeight = pxFromDp(18);
+        mTextViewLastUpdatedPlaceHolder.setVisibility(View.GONE);
+        mNoInternetTitleTextView.setVisibility(View.GONE);
+        resizeNoInetConnection();
+    }
+
+    private void resizeNoInetConnection() {
+        mLinearLayoutNoInternetConnection.getLayoutParams().height = (int)(noInternetViewHeight * percents);
+        mLinearLayoutNoInternetConnection.requestLayout();
+    }
+
+    public int pxFromDp(final float dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density);
+    }
+
 }

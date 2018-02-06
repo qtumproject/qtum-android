@@ -30,16 +30,16 @@ import butterknife.ButterKnife;
 public abstract class OverviewFragment extends BaseFragment implements OverviewView{
 
     OverviewPresenter mOverviewPresenter;
-    public static String POSITION = "position";
+    public static String TX_HASH = "tx_hash";
 
     @BindView(R.id.recycler_view_overview)
     protected
     RecyclerView mRecyclerViewOverview;
     protected OverviewAdapter mOverviewAdapter;
 
-    public static Fragment newInstance(Context context, int position) {
+    public static Fragment newInstance(Context context, String txHash) {
         Bundle args = new Bundle();
-        args.putInt(POSITION, position);
+        args.putString(TX_HASH, txHash);
         Fragment fragment = Factory.instantiateDefaultFragment(context, OverviewFragment.class);
         fragment.setArguments(args);
         return fragment;
@@ -56,8 +56,8 @@ public abstract class OverviewFragment extends BaseFragment implements OverviewV
     }
 
     @Override
-    public int getPosition() {
-        return getArguments().getInt(POSITION);
+    public String getTxHash() {
+        return getArguments().getString(TX_HASH);
     }
 
     @Override

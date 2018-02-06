@@ -15,7 +15,7 @@ import butterknife.BindView;
 public abstract class AddressesDetailFragment extends BaseFragment implements AddressesDetailView {
 
 
-    public static String POSITION = "position";
+    public static String TX_HASH = "tx_hash";
     private AddressesDetailPresenter mAddressesDetailPresenter;
 
     protected AddressesDetailAdapter mAddressesDetailAdapterFrom;
@@ -28,9 +28,9 @@ public abstract class AddressesDetailFragment extends BaseFragment implements Ad
     protected
     RecyclerView mRecyclerViewTo;
 
-    public static Fragment newInstance(Context context, int position) {
+    public static Fragment newInstance(Context context, String txHash) {
         Bundle args = new Bundle();
-        args.putInt(POSITION, position);
+        args.putString(TX_HASH, txHash);
         Fragment fragment = Factory.instantiateDefaultFragment(context, AddressesDetailFragment.class);
         fragment.setArguments(args);
         return fragment;
@@ -54,7 +54,7 @@ public abstract class AddressesDetailFragment extends BaseFragment implements Ad
     }
 
     @Override
-    public int getPosition() {
-        return getArguments().getInt(AddressesDetailFragment.POSITION);
+    public String getTxHash() {
+        return getArguments().getString(TX_HASH);
     }
 }

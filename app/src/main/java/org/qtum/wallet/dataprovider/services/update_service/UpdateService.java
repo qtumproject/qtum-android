@@ -32,6 +32,7 @@ import org.qtum.wallet.dataprovider.firebase.listeners.FireBaseTokenRefreshListe
 import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
 import org.qtum.wallet.datastorage.QStoreStorage;
+import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
@@ -84,6 +85,7 @@ import static org.qtum.wallet.WearListCallListenerService.BALANCE;
 import static org.qtum.wallet.WearListCallListenerService.CURR_TIME_MILLS;
 import static org.qtum.wallet.WearListCallListenerService.ITEMS;
 import static org.qtum.wallet.WearListCallListenerService.UNC_BALANCE;
+import static org.qtum.wallet.utils.StringUtils.convertBalanceToString;
 
 public class UpdateService extends Service implements GoogleApiClient.ConnectionCallbacks {
 
@@ -103,6 +105,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
     private JSONArray mAddresses;
     private BigDecimal unconfirmedBalance;
     private BigDecimal balance;
+    private Long mLastUpdatedBalanceTime;
     private GoogleApiClient mApiClient;
     private List<String> addresses;
 
@@ -146,6 +149,21 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
         super.onCreate();
 
         initGoogleApiClient();
+
+        final QtumSharedPreference qtumSharedPreference = QtumSharedPreference.getInstance();
+
+        String balanceString = qtumSharedPreference.getBalanceString(getApplicationContext());
+        final String unconfirmedBalanceString = qtumSharedPreference.getUnconfirmedBalanceString(getApplicationContext());
+        Long lastUpdatedBalanceTime = qtumSharedPreference.getLastUpdatedBalanceTime(getApplicationContext());
+        if(!balanceString.isEmpty()) {
+            balance = new BigDecimal(balanceString);
+        }
+        if(!unconfirmedBalanceString.isEmpty()){
+            unconfirmedBalance = new BigDecimal(unconfirmedBalanceString);
+        }
+        if(lastUpdatedBalanceTime!=0){
+            mLastUpdatedBalanceTime = lastUpdatedBalanceTime;
+        }
 
         try {
             SSLContext mySSLContext = SSLContext.getInstance("TLS");
@@ -212,11 +230,15 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
                     try {
                         unconfirmedBalance = (new BigDecimal(data.getString("unconfirmedBalance"))).divide(new BigDecimal("100000000"), MathContext.DECIMAL128);
                         balance = (new BigDecimal(data.getString("balance"))).divide(new BigDecimal("100000000"), MathContext.DECIMAL128);
+                        mLastUpdatedBalanceTime = DateCalculator.getCurrentDate();
+                        qtumSharedPreference.setBalanceString(getApplicationContext(), balance.toString());
+                        qtumSharedPreference.setUnconfirmedBalanceString(getApplicationContext(), unconfirmedBalance.toString());
+                        qtumSharedPreference.setLastUpdatedBalanceTime(getApplicationContext(), mLastUpdatedBalanceTime);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     for (BalanceChangeListener balanceChangeListener : mBalanceChangeListeners) {
-                        balanceChangeListener.onChangeBalance(unconfirmedBalance, balance);
+                        balanceChangeListener.onChangeBalance(unconfirmedBalance, balance, mLastUpdatedBalanceTime);
                     }
                     onBalanceChange();
                 } catch (ClassCastException e) {
@@ -378,7 +400,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
 
     private void calculateChangeInBalance(History history, List<String> addresses) {
         BigDecimal changeInBalance = calculateVout(history, addresses).subtract(calculateVin(history, addresses));
-        history.setChangeInBalance(changeInBalance);
+        history.setChangeInBalance(convertBalanceToString(changeInBalance));
     }
 
     private BigDecimal calculateVin(History history, List<String> addresses) {
@@ -686,7 +708,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
     public void addBalanceChangeListener(BalanceChangeListener balanceChangeListener) {
         mBalanceChangeListeners.add(balanceChangeListener);
         if (balance != null) {
-            balanceChangeListener.onChangeBalance(unconfirmedBalance, balance);
+            balanceChangeListener.onChangeBalance(unconfirmedBalance, balance, mLastUpdatedBalanceTime);
         }
     }
 

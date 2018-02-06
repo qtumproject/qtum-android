@@ -11,7 +11,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -38,17 +37,22 @@ import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.ClipboardUtils;
+import org.qtum.wallet.utils.DateCalculator;
 import org.qtum.wallet.utils.FontTextView;
+
 import org.qtum.wallet.utils.OnDelayClick;
 import org.w3c.dom.Text;
 
+
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import io.realm.OrderedCollectionChangeSet;
 
 public abstract class WalletFragment extends BaseFragment implements WalletView, TransactionClickListener {
 
@@ -65,9 +69,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @BindView(R.id.recycler_view)
     protected RecyclerView mRecyclerView;
-
-    @BindView(R.id.swipe_refresh)
-    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     @BindView(R.id.app_bar)
     protected AppBarLayout mAppBarLayout;
@@ -107,6 +108,12 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @BindView(R.id.histories_placeholder)
     TextView mTextViewHistoriesPlaceholder;
+
+    @BindView(R.id.ll_no_internet_connection)
+    protected LinearLayout mLinearLayoutNoInternetConnection;
+
+    @BindView(R.id.last_updated_placeholder)
+    protected TextView mTextViewLastUpdatedPlaceHolder;
 
     private NetworkStateReceiver mNetworkStateReceiver;
     private UpdateService mUpdateService;
@@ -174,6 +181,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @Override
     public void onPause() {
         super.onPause();
+        mTransactionAdapter.setHistoryCountChangeListener(null);
         getPresenter().updateVisibility(false);
     }
 
@@ -270,26 +278,34 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                //TODO
                 if (dy > 0) {
                     if (!mLoadingFlag) {
                         visibleItemCount = mLinearLayoutManager.getChildCount();
                         totalItemCount = mLinearLayoutManager.getItemCount();
                         pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
                         if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 1) {
+                            showBottomLoader();
                             getPresenter().onLastItem(totalItemCount - 1);
                         }
                     }
                 }
             }
         });
-        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        createAdapter();
+        mTransactionAdapter.setHistoryCountChangeListener(new HistoryCountChangeListener() {
             @Override
-            public void onRefresh() {
-                getPresenter().onRefresh();
+            public void onCountChange(int newCount) {
+                if (newCount == 0) {
+                    mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
+                } else {
+                    mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
+                }
             }
         });
     }
+
+    protected abstract void createAdapter();
 
     @Override
     protected WalletPresenter getPresenter() {
@@ -302,20 +318,8 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     }
 
     @Override
-    public void onTransactionClick(int adapterPosition) {
-        getPresenter().openTransactionFragment(adapterPosition);
-    }
-
-    public void updateHistory(TransactionAdapter adapter) {
-        mTransactionAdapter = adapter;
-        if (mTransactionAdapter.getItemCount() == 1) {
-            mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
-        } else {
-            mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
-        }
-        mRecyclerView.setAdapter(mTransactionAdapter);
-        mSwipeRefreshLayout.setRefreshing(false);
-        mLoadingFlag = false;
+    public void onTransactionClick(String txHash) {
+        getPresenter().onTransactionClick(txHash);
     }
 
     protected TransactionClickListener getAdapterListener() {
@@ -327,74 +331,102 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     }
 
     @Override
+    public void clearAdapter() {
+        int length = mTransactionAdapter.getHistoryList().size();
+        mTransactionAdapter.setHistoryList(new ArrayList<History>());
+        mTransactionAdapter.notifyItemRangeRemoved(0, length);
+    }
+
+    @Override
+    public void updateHistory(List<History> histories, @javax.annotation.Nullable OrderedCollectionChangeSet changeSet, int visibleItemCount) {
+        mLoadingFlag = false;
+        mTransactionAdapter.setHistoryList(histories);
+        if (changeSet == null) {
+            mTransactionAdapter.notifyDataSetChanged();
+            return;
+        }
+
+        OrderedCollectionChangeSet.Range[] deletions = changeSet.getDeletionRanges();
+        for (int i = deletions.length - 1; i >= 0; i--) {
+            OrderedCollectionChangeSet.Range range = deletions[i];
+            if (range.startIndex <= visibleItemCount) {
+                int length = range.length;
+                if (range.startIndex + range.length > visibleItemCount) {
+                    length = visibleItemCount - range.startIndex;
+                }
+                mTransactionAdapter.notifyItemRangeRemoved(range.startIndex, length);
+            }
+        }
+
+        OrderedCollectionChangeSet.Range[] insertions = changeSet.getInsertionRanges();
+        for (OrderedCollectionChangeSet.Range range : insertions) {
+            if (range.startIndex <= visibleItemCount) {
+                int length = range.length;
+                if (range.startIndex + range.length > visibleItemCount) {
+                    length = visibleItemCount - range.startIndex;
+                }
+                mTransactionAdapter.notifyItemRangeInserted(range.startIndex + 1, length);
+            }
+        }
+
+        OrderedCollectionChangeSet.Range[] modifications = changeSet.getChangeRanges();
+        for (OrderedCollectionChangeSet.Range range : modifications) {
+            if (range.startIndex <= visibleItemCount) {
+                int length = range.length;
+                if (range.startIndex + range.length > visibleItemCount) {
+                    length = visibleItemCount - range.startIndex;
+                }
+                mTransactionAdapter.notifyItemRangeChanged(range.startIndex, length);
+            }
+        }
+    }
+
+    @Override
+    public void updateHistory(List<History> histories, int startIndex, int insertCount) {
+        mLoadingFlag = false;
+        mTransactionAdapter.setHistoryList(histories);
+        mTransactionAdapter.notifyItemRangeChanged(startIndex, insertCount);
+    }
+
+    @Override
     public void updatePubKey(String pubKey) {
         publicKeyValue.setText(pubKey);
     }
 
     @Override
     public void startRefreshAnimation() {
-        mSwipeRefreshLayout.setRefreshing(true);
+        //mSwipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     public void stopRefreshRecyclerAnimation() {
-        if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
+//        if (mSwipeRefreshLayout != null) {
+//            mSwipeRefreshLayout.setRefreshing(false);
+//        }
     }
 
     @Override
-    public void addHistory(int positionStart, int itemCount, List<History> historyList) {
-        mTransactionAdapter.setHistoryList(historyList);
-        mTransactionAdapter.setLoadingFlag(false);
-        if (mTransactionAdapter.getItemCount() == 1) {
-            mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
-        } else {
-            mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
-        }
-        mLoadingFlag = false;
-        mTransactionAdapter.notifyItemRangeChanged(positionStart, itemCount);
-    }
-
-    @Override
-    public void loadNewHistory() {
+    public void showBottomLoader() {
         mLoadingFlag = true;
         mTransactionAdapter.setLoadingFlag(true);
         mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
     }
 
     @Override
-    public void notifyNewHistory() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mTransactionAdapter.getItemCount() == 1) {
-                    mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
-                } else {
-                    mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
-                }
-                mTransactionAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
-    @Override
-    public void notifyConfirmHistory(final int notifyPosition) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTransactionAdapter.notifyItemChanged(notifyPosition);
-            }
-        });
+    public void hideBottomLoader() {
+        mLoadingFlag = false;
+        mTransactionAdapter.setLoadingFlag(false);
+        mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
     }
 
     BalanceChangeListener balanceListener = new BalanceChangeListener() {
         @Override
-        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
+        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance, final Long lastUpdatedBalanceTime) {
             getMainActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     String balanceString = balance.toString();
+                    mTextViewLastUpdatedPlaceHolder.setText(String.format("%s %s", getString(R.string.your_balance_was_last_updated_at), DateCalculator.getFullDate(lastUpdatedBalanceTime)));
                     if (balanceString != null) {
                         String unconfirmedBalanceString = unconfirmedBalance.toString();
                         if (!TextUtils.isEmpty(unconfirmedBalanceString) && !unconfirmedBalanceString.equals("0")) {
@@ -408,9 +440,8 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         }
     };
 
-    @Override
-    public void openTransactionsFragment(int position) {
-        Fragment fragment = TransactionFragment.newInstance(getContext(), position);
-        openFragment(fragment);
+    interface HistoryCountChangeListener {
+        void onCountChange(int newCount);
     }
+
 }

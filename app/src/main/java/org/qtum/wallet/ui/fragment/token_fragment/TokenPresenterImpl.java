@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.token_fragment;
 
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
 import org.qtum.wallet.datastorage.TokenHistoryList;
@@ -9,6 +10,7 @@ import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 
 import java.util.Iterator;
 import java.util.List;
@@ -97,7 +99,7 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
     @Override
     public void onLastItem(final int currentItemCount) {
         if (getInteractor().getHistoryList().size() != getInteractor().getTotalHistoryItem()) {
-            //getView().loadNewHistory();
+            //getView().showBottomLoader();
             mSubscriptionList.add(getInteractor().getHistoryList(token.getContractAddress(), ONE_PAGE_COUNT, currentItemCount)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -165,6 +167,12 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
             }
         }
 
+    }
+
+    @Override
+    public void onTransactionClick(String txHash) {
+        Fragment fragment = TransactionFragment.newInstance(getView().getContext(), txHash);
+        getView().openFragment(fragment);
     }
 
     @Override

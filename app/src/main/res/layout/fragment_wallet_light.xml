@@ -20,42 +20,35 @@
             android:background="@color/bottom_nav_bar_color_light"
             android:gravity="left|center_vertical"
             android:padding="8dp"
-            app:typefaceAsset="@string/proximaNovaSemibold"
             android:text="@string/org.qtum.wallet.activity"
-            android:textColor="@color/bottom_nav_bar_text_color_light" />
+            android:textColor="@color/bottom_nav_bar_text_color_light"
+            app:typefaceAsset="@string/proximaNovaSemibold"/>
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh"
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:splitMotionEvents="false"/>
 
-                <android.support.v7.widget.RecyclerView
-                    android:splitMotionEvents="false"
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+            <org.qtum.wallet.utils.FontTextView
+                android:id="@+id/histories_placeholder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/no_transaction_available_yet"
+                android:textColor="@color/grey70"
+                android:textSize="18sp"
+                app:typefaceAsset="@string/proximaNovaRegular"/>
 
-                <org.qtum.wallet.utils.FontTextView
-                    app:typefaceAsset="@string/proximaNovaRegular"
-                    android:id="@+id/histories_placeholder"
-                    android:textColor="@color/grey70"
-                    android:gravity="center"
-                    android:textSize="18sp"
-                    android:text="@string/no_transaction_available_yet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
 
-            </RelativeLayout>
-
-
-
-        </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 
@@ -79,9 +72,9 @@
 
             <ImageView
                 android:id="@+id/gradient_iv"
-                android:src="@drawable/background_main"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:src="@drawable/background_main"/>
 
             <FrameLayout
                 android:id="@+id/balance_view"
@@ -94,9 +87,9 @@
                 <org.qtum.wallet.ui.wave_visualizer.WaveView
                     android:id="@+id/wave_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"/>
 
-                <include layout="@layout/fragment_wallet_appbar_light" />
+                <include layout="@layout/fragment_wallet_appbar_light"/>
 
             </FrameLayout>
 
@@ -128,7 +121,7 @@
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:text="@string/my_wallet"
-                            app:typefaceAsset="@string/proximaNovaSemibold" />
+                            app:typefaceAsset="@string/proximaNovaSemibold"/>
 
                         <ImageButton
                             android:id="@+id/bt_qr_code"
@@ -140,23 +133,23 @@
                             android:padding="4dp"
                             android:scaleType="centerInside"
                             android:tint="@color/white"
-                            app:srcCompat="@drawable/ic_qrcode_light" />
+                            app:srcCompat="@drawable/ic_qrcode_light"/>
 
                         <ImageView
-                            android:layout_toStartOf="@+id/bt_qr_code"
-                            android:layout_centerVertical="true"
-                            android:layout_width="36dp"
-                            android:paddingTop="3dp"
-                            android:paddingBottom="5dp"
-                            android:layout_height="36dp"
                             android:id="@+id/iv_choose_address"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toStartOf="@+id/bt_qr_code"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="3dp"
                             android:tint="@color/white"
-                            app:srcCompat="@drawable/ic_address_book" />
+                            app:srcCompat="@drawable/ic_address_book"/>
 
                         <include
                             android:id="@+id/app_bar_placeholder"
                             layout="@layout/lyt_appbar_wallet_placeholder_light"
-                            android:visibility="invisible" />
+                            android:visibility="invisible"/>
                     </RelativeLayout>
 
                 </LinearLayout>

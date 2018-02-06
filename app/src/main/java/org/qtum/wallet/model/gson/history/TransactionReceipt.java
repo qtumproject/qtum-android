@@ -44,6 +44,14 @@ public class TransactionReceipt extends RealmObject {
     @Expose
     private RealmList<Log> log = null;
 
+    public TransactionReceipt(){
+
+    }
+
+    public TransactionReceipt(String txHash){
+        transactionHash = txHash;
+    }
+
     public String getBlockHash() {
         return blockHash;
     }

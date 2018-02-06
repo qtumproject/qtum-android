@@ -41,7 +41,7 @@ public class AddressesDetailHolder extends RecyclerView.ViewHolder {
 
     void bindTransactionDetail(TransactionInfo transactionInfo) {
         mTextViewAddress.setText(transactionInfo.getAddress());
-        mTextViewValue.setText(getSpannedBalance(String.format("%s QTUM", transactionInfo.getValue().toString())));
+        mTextViewValue.setText(getSpannedBalance(String.format("%s QTUM", transactionInfo.getValueString())));
     }
 
     private SpannableString getSpannedBalance(String balance) {

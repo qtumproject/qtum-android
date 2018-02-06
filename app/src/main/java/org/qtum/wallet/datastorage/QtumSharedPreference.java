@@ -25,6 +25,9 @@ public class QtumSharedPreference {
     private final String FAILED_ATTEMPTS_COUNT = "failed_attempts_count";
     private final String MIN_GAS_PRICE = "min_gas_price";
     private final String CURRENT_ADDRESS = "current_active_address";
+    private final String BALANCE_STRING = "balance_string";
+    private final String UNCONFIRMED_BALANCE_STRING = "unconfirmed_balance_string";
+    private final String LAST_UPDATED_BALANCE_TIME = "last_updated_balance_time";
 
     private static String passphrase_migration_state = "passphrase_migration_state";
 
@@ -170,8 +173,6 @@ public class QtumSharedPreference {
         mEditor.apply();
     }
 
-
-
     public void setMinGasPrice(Context context, Integer minGasLimit) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
@@ -183,5 +184,37 @@ public class QtumSharedPreference {
         return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getInt(MIN_GAS_PRICE, 40);
     }
 
+    public void setBalanceString(Context context, String balance){
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putString(BALANCE_STRING, balance);
+        mEditor.apply();
+    }
+
+    public String getBalanceString(Context context){
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(BALANCE_STRING,"");
+    }
+
+    public void setUnconfirmedBalanceString(Context context, String balance){
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putString(UNCONFIRMED_BALANCE_STRING, balance);
+        mEditor.apply();
+    }
+
+    public String getUnconfirmedBalanceString(Context context){
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(UNCONFIRMED_BALANCE_STRING,"");
+    }
+
+    public void setLastUpdatedBalanceTime(Context context, Long lastUpdatedBalanceTime) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+        mEditor.putLong(LAST_UPDATED_BALANCE_TIME, lastUpdatedBalanceTime);
+        mEditor.apply();
+    }
+
+    public Long getLastUpdatedBalanceTime(Context context) {
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getLong(LAST_UPDATED_BALANCE_TIME, 0);
+    }
 
 }
