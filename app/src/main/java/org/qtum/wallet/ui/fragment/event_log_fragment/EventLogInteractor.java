@@ -4,5 +4,5 @@ package org.qtum.wallet.ui.fragment.event_log_fragment;
 import org.qtum.wallet.model.gson.history.History;
 
 public interface EventLogInteractor {
-    History getHistory(int position);
+    History getHistory(String txHash);
 }

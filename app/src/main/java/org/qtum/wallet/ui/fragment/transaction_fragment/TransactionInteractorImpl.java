@@ -4,10 +4,11 @@ import android.content.Context;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
-import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.utils.DateCalculator;
 
 import java.lang.ref.WeakReference;
+
+import io.realm.Realm;
 
 class TransactionInteractorImpl implements TransactionInteractor {
 
@@ -18,8 +19,11 @@ class TransactionInteractorImpl implements TransactionInteractor {
     }
 
     @Override
-    public History getHistory(int position) {
-        return HistoryList.getInstance().getHistoryList().get(position);
+    public History getHistory(String txHash) {
+        Realm realm = Realm.getDefaultInstance();
+        return realm.where(History.class)
+                .equalTo("txHash", txHash)
+                .findFirst();
     }
 
     @Override

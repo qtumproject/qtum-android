@@ -31,10 +31,8 @@ class AddressesDetailPresenterImpl extends BaseFragmentPresenterImpl implements 
     @Override
     public void initializeViews() {
         super.initializeViews();
-        mHistory = getInteractor().getHistory(getView().getPosition());
+        mHistory = getInteractor().getHistory(getView().getTxHash());
         if (mHistory != null) {
-            List<TransactionInfo> transactionInfoList = new ArrayList<>();
-
             getView().setUpRecyclerView(mHistory.getVin(), mHistory.getVout());
         }
     }

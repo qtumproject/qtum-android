@@ -1,5 +1,5 @@
 package org.qtum.wallet.ui.fragment.token_fragment;
 
 public interface TokenHistoryClickListener {
-    void onTokenHistoryClick(int adapterPosition);
+    void onTokenHistoryClick(String txHash);
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:gravity="center_vertical"
-    android:padding="16dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_vertical"
+              android:orientation="vertical"
+              android:padding="16dp">
 
     <org.qtum.wallet.utils.FontTextView
         android:id="@+id/available_balance_title"
@@ -13,109 +13,136 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/available_balance"
-        app:typefaceAsset="@string/proximaNovaRegular" />
+        app:typefaceAsset="@string/proximaNovaRegular"/>
 
     <LinearLayout
+        android:id="@+id/ll_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ll_balance"
         android:orientation="horizontal">
 
         <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:typefaceAsset="@string/proximaNovaSemibold"
             android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            app:typefaceAsset="@string/proximaNovaSemibold"/>
 
         <org.qtum.wallet.utils.FontTextView
             android:id="@+id/tv_currency"
-            android:layout_marginLeft="8dp"
-            android:text="QTUM"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:typefaceAsset="@string/proximaNovaSemibold"
+            android:layout_marginLeft="8dp"
+            android:text="QTUM"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:typefaceAsset="@string/proximaNovaSemibold"/>
 
     </LinearLayout>
 
     <org.qtum.wallet.utils.FontTextView
-        android:layout_marginTop="8dp"
+        android:id="@+id/unconfirmed_balance_title"
+        style="@style/appbar_wallet_alpha_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/unconfirmed_balance_title"
-        app:typefaceAsset="@string/proximaNovaRegular"
+        android:layout_marginTop="8dp"
         android:text="@string/not_confirmed_balance"
-        style="@style/appbar_wallet_alpha_title"/>
+        app:typefaceAsset="@string/proximaNovaRegular"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/ll_unconfirmed_balance"
         android:orientation="horizontal">
 
-    <org.qtum.wallet.utils.FontTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        app:typefaceAsset="@string/proximaNovaSemibold"
-        android:id="@+id/tv_unconfirmed_balance"/>
+        <org.qtum.wallet.utils.FontTextView
+            android:id="@+id/tv_unconfirmed_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:typefaceAsset="@string/proximaNovaSemibold"/>
 
         <org.qtum.wallet.utils.FontTextView
-            android:text="QTUM"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            app:typefaceAsset="@string/proximaNovaSemibold"
+            android:text="QTUM"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:typefaceAsset="@string/proximaNovaSemibold"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="8dp"
+        android:id="@+id/ll_no_internet_connection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <org.qtum.wallet.utils.FontTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_internet_connection_found"
+            android:textColor="@color/white"
+            app:typefaceAsset="@string/proximaNovaSemibold"/>
+
+        <org.qtum.wallet.utils.FontTextView
+            android:id="@+id/last_updated_placeholder"
+            style="@style/appbar_wallet_alpha_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            app:typefaceAsset="@string/proximaNovaRegular"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="8dp"
         android:clickable="true"
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/iv_receive"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_gravity="center"
-            android:id="@+id/iv_receive"
             android:paddingEnd="6dp"
             android:tint="@color/white"
-            app:srcCompat="@drawable/ic_plus_light" />
+            app:srcCompat="@drawable/ic_plus_light"/>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:weightSum="2"
             android:id="@+id/ll_receive"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="2">
 
             <org.qtum.wallet.utils.FontTextView
+                style="@style/appbar_wallet_alpha_title"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:padding="2dp"
-                style="@style/appbar_wallet_alpha_title"
                 android:layout_weight="1"
                 android:gravity="bottom"
+                android:padding="2dp"
                 android:text="@string/qtum_address"
-                app:typefaceAsset="@string/proximaNovaRegular" />
+                app:typefaceAsset="@string/proximaNovaRegular"/>
 
             <org.qtum.wallet.utils.FontTextView
                 android:id="@+id/tv_public_key"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:padding="2dp"
                 android:layout_weight="1"
-                android:maxLines="1"
                 android:ellipsize="end"
                 android:gravity="top"
+                android:maxLines="1"
+                android:padding="2dp"
                 android:paddingEnd="16dp"
                 android:textColor="@color/white"
                 app:typefaceAsset="@string/proximaNovaSemibold"/>

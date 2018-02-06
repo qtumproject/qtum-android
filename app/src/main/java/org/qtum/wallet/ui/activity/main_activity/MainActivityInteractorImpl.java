@@ -3,7 +3,6 @@ package org.qtum.wallet.ui.activity.main_activity;
 import android.content.Context;
 
 import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
-import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
@@ -34,7 +33,6 @@ class MainActivityInteractorImpl implements MainActivityInteractor {
     @Override
     public void clearStatic() {
         KeyStorage.getInstance().clearKeyStorage();
-        HistoryList.getInstance().clearHistoryList();
     }
 
     @Override

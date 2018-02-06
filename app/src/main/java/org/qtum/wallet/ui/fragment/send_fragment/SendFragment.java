@@ -194,7 +194,7 @@ public abstract class SendFragment extends BaseNavFragment implements SendView {
 
     BalanceChangeListener mBalanceChangeListener = new BalanceChangeListener() {
         @Override
-        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance) {
+        public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance, Long lastUpdatedBalanceTime) {
             getPresenter().handleBalanceChanges(unconfirmedBalance, balance);
         }
     };

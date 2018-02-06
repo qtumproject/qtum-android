@@ -7,5 +7,7 @@ public interface TransactionInfo {
 
     BigDecimal getValue();
 
+    String getValueString();
+
     boolean isOwnAddress();
 }

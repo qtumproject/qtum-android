@@ -62,6 +62,7 @@ import static org.qtum.wallet.WearListCallListenerService.BALANCE;
 import static org.qtum.wallet.WearListCallListenerService.CURR_TIME_MILLS;
 import static org.qtum.wallet.WearListCallListenerService.ITEMS;
 import static org.qtum.wallet.WearListCallListenerService.UNC_BALANCE;
+import static org.qtum.wallet.utils.StringUtils.convertBalanceToString;
 
 /**
  * Created by kirillvolkov on 23.11.2017.
@@ -319,7 +320,7 @@ public class WatchUpdateService extends Service implements GoogleApiClient.Conne
 
     private void calculateChangeInBalance(History history, List<String> addresses) {
         BigDecimal changeInBalance = calculateVout(history, addresses).subtract(calculateVin(history, addresses));
-        history.setChangeInBalance(changeInBalance);
+        history.setChangeInBalance(convertBalanceToString(changeInBalance));
     }
 
     private BigDecimal calculateVin(History history, List<String> addresses) {

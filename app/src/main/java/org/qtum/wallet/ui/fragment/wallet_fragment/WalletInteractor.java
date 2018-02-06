@@ -9,7 +9,7 @@ import java.util.List;
 import rx.Observable;
 
 public interface WalletInteractor {
-    List<History> getHistoryList();
+    //List<History> getHistoryList();
 
     Observable<HistoryResponse> getHistoryList(int limit, int offset);
 
@@ -17,11 +17,11 @@ public interface WalletInteractor {
 
     String getAddress();
 
-    int getTotalHistoryItem();
+    //int getTotalHistoryItem();
 
-    void addToHistoryList(History history);
+   // void addToHistoryList(History history);
 
-    Integer setHistory(History history);
+    //Integer setHistory(History history);
 
     List<String> getAddresses();
 }

@@ -7,6 +7,6 @@ import java.util.List;
 
 
 public interface EventLogView extends BaseFragmentView {
-    int getPosition();
+    String getTxHash();
     void updateEventLog(List<Log> logs);
 }

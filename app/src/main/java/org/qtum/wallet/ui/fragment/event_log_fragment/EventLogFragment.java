@@ -29,15 +29,15 @@ import butterknife.ButterKnife;
 
 public abstract class EventLogFragment extends BaseFragment implements EventLogView {
 
-    public static String POSITION = "position";
+    public static String TX_HASH = "tx_hash";
     private EventLogPresenter mEventLogPresenter;
     protected EventLogAdapter mEventLogAdapter;
 
     DataTypeChangeListener mDataTypeChangeListener;
 
-    public static Fragment newInstance(Context context, int position) {
+    public static Fragment newInstance(Context context, String txHash) {
         Bundle args = new Bundle();
-        args.putInt(POSITION, position);
+        args.putString(TX_HASH, txHash);
         Fragment fragment = Factory.instantiateDefaultFragment(context, EventLogFragment.class);
         fragment.setArguments(args);
         return fragment;
@@ -63,8 +63,8 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
     }
 
     @Override
-    public int getPosition() {
-        return getArguments().getInt(POSITION);
+    public String getTxHash() {
+        return getArguments().getString(TX_HASH);
     }
 
     @Override

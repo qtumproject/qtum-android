@@ -9,5 +9,5 @@ import java.util.List;
 
 interface AddressesDetailView extends BaseFragmentView{
     void setUpRecyclerView(List<Vin> transactionFrom, List<Vout> transactionTo);
-    int getPosition();
+    String getTxHash();
 }

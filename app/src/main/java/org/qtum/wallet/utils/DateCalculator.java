@@ -107,7 +107,7 @@ public class DateCalculator {
         Date dateTransaction = new Date(timeInMills);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateTransaction);
-        SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.US);
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm:ss a", Locale.US);
         dateString = String.format(Locale.US, "%s, %d %s", calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US), calendar.get(Calendar.DAY_OF_MONTH), timeFormatter.format(dateTransaction));
         return dateString;
     }

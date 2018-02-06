@@ -17,8 +17,8 @@ public class Vout extends RealmObject implements TransactionInfo {
     private BigDecimal value;
     @SerializedName("address")
     @Expose
-    @PrimaryKey
     private String address;
+    private String valueString;
     private boolean isOwnAddress = false;
 
     /**
@@ -56,5 +56,13 @@ public class Vout extends RealmObject implements TransactionInfo {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getValueString() {
+        return valueString;
+    }
+
+    public void setValueString(String valueString) {
+        this.valueString = valueString;
     }
 }
