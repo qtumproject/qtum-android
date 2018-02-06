@@ -71,7 +71,7 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
 
     private void onBack() {
         if (getArguments().getBoolean(IS_WALLET_CREATING)) {
-            openRootFragment(StartPageFragment.newInstance(false, getContext()));
+            openRootFragment(StartPageFragment.newInstance(getContext()));
         } else {
             getActivity().onBackPressed();
         }
@@ -89,6 +89,9 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
     @Override
     public void onResume() {
         super.onResume();
+        if (getArguments().getBoolean(IS_WALLET_CREATING)) {
+            hideBottomNavView(false);
+        }
     }
 
     @Override

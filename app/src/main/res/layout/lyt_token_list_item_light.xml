@@ -31,7 +31,15 @@
         android:alpha=".1"
         android:background="@color/bottom_nav_bar_text_color_light"/>
 
-
+    <org.qtum.wallet.utils.FontTextView
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        android:id="@+id/unsupported_view"
+        android:gravity="end|center_vertical"
+        android:textColor="@color/accent_red_color"
+        android:text="@string/token_unsupported"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:layout_toEndOf="@+id/token_name"

@@ -67,14 +67,14 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
     @Override
     public void onResume() {
         super.onResume();
-        ((SendFragment) getTargetFragment()).qrCodeRecognitionToolBar();
+        ((SendFragment) getParentFragment()).qrCodeRecognitionToolBar();
         mZXingScannerView.startCamera();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        ((SendFragment) getTargetFragment()).sendToolBar();
+        ((SendFragment) getParentFragment()).sendToolBar();
         mZXingScannerView.stopCamera();
     }
 
@@ -116,9 +116,9 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
             } catch(Exception e) {
                 amount = "0.0";
             }
-            ((SendFragment) getTargetFragment()).onResponse(receiveAddr, Double.valueOf(amount), tokenAddr);
+            ((SendFragment) getParentFragment()).onResponse(receiveAddr, Double.valueOf(amount), tokenAddr);
         } else {
-            ((SendFragment) getTargetFragment()).onResponseError();
+            ((SendFragment) getParentFragment()).onResponseError();
         }
         dismiss();
     }

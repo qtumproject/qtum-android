@@ -40,11 +40,16 @@ import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.DateCalculator;
 import org.qtum.wallet.utils.FontTextView;
 
+import org.qtum.wallet.utils.OnDelayClick;
+import org.w3c.dom.Text;
+
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import io.realm.OrderedCollectionChangeSet;
@@ -56,7 +61,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     private NetworkStateListener mNetworkStateListener;
     protected WalletPresenter mWalletFragmentPresenter;
     protected TransactionAdapter mTransactionAdapter;
-    protected LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+    protected LinearLayoutManager mLinearLayoutManager;
     protected int visibleItemCount;
     protected int totalItemCount;
     protected int pastVisibleItems;
@@ -218,10 +223,19 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     }
 
     private void openQrCodeFragment() {
-        OPEN_QR_CODE_FRAGMENT_FLAG = false;
-        SendFragment sendFragment = (SendFragment) SendFragment.newInstance(true, null, null, null, getContext());
-        openRootFragment(sendFragment);
-        getMainActivity().setRootFragment(sendFragment);
+        if(!getMainActivity().checkNavFragmentExistance(SendFragment.class.getCanonicalName())){
+            getMainActivity().openNavFragment(SendFragment.newInstance(true, null, null, null, getContext()));
+        } else {
+            if(!getMainActivity().checkSendQrCodeActive()) {
+                getMainActivity().moveToQrCodeActiveSend();
+                Fragment fragmentByTag = getMainActivity().getSupportFragmentManager().findFragmentByTag(SendFragment.class.getCanonicalName());
+                if(fragmentByTag != null){
+                    ((SendFragment)fragmentByTag).openQrCodeFragment();
+                }
+            } else {
+                getMainActivity().moveToQrCodeActiveSend();
+            }
+        }
     }
 
     @OnLongClick(R.id.tv_public_key)
@@ -258,6 +272,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @Override
     public void initializeViews() {
         super.initializeViews();
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -306,7 +321,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     public void onTransactionClick(String txHash) {
         getPresenter().onTransactionClick(txHash);
     }
-
 
     protected TransactionClickListener getAdapterListener() {
         return this;
@@ -406,6 +420,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     }
 
     @Override
+
     public void offlineModeView() {
         mLinearLayoutNoInternetConnection.setVisibility(View.VISIBLE);
     }

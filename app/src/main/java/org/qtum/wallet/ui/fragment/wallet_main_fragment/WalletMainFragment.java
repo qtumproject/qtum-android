@@ -10,9 +10,11 @@ import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenListener;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
+import org.qtum.wallet.ui.base.base_nav_fragment.BaseNavFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.other_tokens.OtherTokensFragment;
@@ -20,7 +22,7 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 
 import butterknife.BindView;
 
-public abstract class WalletMainFragment extends BaseFragment implements WalletMainView {
+public abstract class WalletMainFragment extends BaseNavFragment implements WalletMainView {
 
     private WalletFragment mWalletFragment;
     private OtherTokensFragment mOtherTokensFragment;
@@ -33,11 +35,26 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
         return fragment;
     }
 
+    @Override
+    public void activateTab() {
+        getMainActivity().setIconChecked(0);
+    }
+
+    @Override
+    public String getNavigationTag() {
+        return WalletMainFragment.class.getCanonicalName();
+    }
+
     private WalletMainPresenter mWalletMainPresenter;
 
     @BindView(org.qtum.wallet.R.id.view_pager)
     protected
     ViewPager pager;
+
+    @Override
+    public int getRootView() {
+        return R.id.fragment_container;
+    }
 
     @Override
     protected void createPresenter() {
@@ -52,7 +69,7 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
     @Override
     public void initializeViews() {
         super.initializeViews();
-        pager.setAdapter(new FragmentAdapter(getFragmentManager()));
+        pager.setAdapter(new FragmentAdapter(getChildFragmentManager()));
         showBottomNavView(false);
     }
 
@@ -65,6 +82,10 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
     @Override
     public void onResume() {
         super.onResume();
+        checkOtherTokens();
+    }
+
+    private void checkOtherTokens(){
         getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
             @Override
             public void onServiceConnectionChange(boolean isConnecting) {
@@ -80,6 +101,14 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
             }
         });
         getPresenter().checkOtherTokens();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(hidden) {
+            checkOtherTokens();
+        }
     }
 
     @Override

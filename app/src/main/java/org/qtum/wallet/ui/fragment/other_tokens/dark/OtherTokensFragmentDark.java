@@ -1,6 +1,7 @@
 package org.qtum.wallet.ui.fragment.other_tokens.dark;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.other_tokens.OtherTokensFragment;
@@ -23,8 +24,13 @@ public class OtherTokensFragmentDark extends OtherTokensFragment {
     @Override
     public void onTokenClick(int adapterPosition) {
         if (tokensList.getAdapter() != null) {
-            BaseFragment tokenFragment = TokenFragment.newInstance(getContext(), ((TokensAdapterDark) tokensList.getAdapter()).get(adapterPosition));
-            openFragment(tokenFragment);
+            Token token = (Token)((TokensAdapterDark) tokensList.getAdapter()).get(adapterPosition);
+            if(token.getSupportFlag()) {
+                BaseFragment tokenFragment = TokenFragment.newInstance(getContext(), token);
+                openFragment(tokenFragment);
+            } else {
+                setAlertDialog(getString(R.string.token_unsupported),getString(R.string.ok),PopUpType.error);
+            }
         }
     }
 }

@@ -86,7 +86,6 @@ public class ConfirmPassphrasePresenterImpl extends BaseFragmentPresenterImpl im
                         isDataLoaded = true;
                         getView().onLogin();
                         getView().dismissProgressDialog();
-                        getView().confirmSeed();
                     }
                 });
 
@@ -97,7 +96,7 @@ public class ConfirmPassphrasePresenterImpl extends BaseFragmentPresenterImpl im
         super.onResume();
         if(isDataLoaded){
             getView().dismissProgressDialog();
-            getView().confirmSeed();
+            getView().onLogin();
         }
     }
 }

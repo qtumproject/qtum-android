@@ -23,7 +23,6 @@ public class StartPageFragmentLight extends StartPageFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        hideBottomNavView(R.color.title_color_light);
         waveView.setShapeType(WaveView.ShapeType.SQUARE);
         mWaveHelper = new WaveHelper(waveView);
     }

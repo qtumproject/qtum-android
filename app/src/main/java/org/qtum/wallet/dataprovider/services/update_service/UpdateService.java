@@ -12,7 +12,7 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -109,12 +109,12 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
     private GoogleApiClient mApiClient;
     private List<String> addresses;
 
-    public String getBalance(){
-        return balance != null? balance.toString() : null;
+    public String getBalance() {
+        return balance != null ? balance.toString() : null;
     }
 
-    public String getUnconfirmedBalance(){
-        return unconfirmedBalance != null? unconfirmedBalance.toString() : null;
+    public String getUnconfirmedBalance() {
+        return unconfirmedBalance != null ? unconfirmedBalance.toString() : null;
     }
 
     private String mFirebasePrevToken;
@@ -125,7 +125,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
 
     private static UpdateService instance;
 
-    public UpdateService getInstance(){
+    public UpdateService getInstance() {
         return instance;
     }
 
@@ -135,7 +135,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
     }
 
     public void initGoogleApiClient() {
-        if(mApiClient == null) {
+        if (mApiClient == null) {
             mApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Wearable.API)
                     .addConnectionCallbacks(this)
@@ -255,7 +255,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
                 if (history.getBlockTime() != null) {
 
                     ContractCreationStatus contractCreationStatus;
-                    if(history.getContractHasBeenCreated() != null && history.getContractHasBeenCreated()){
+                    if (history.getContractHasBeenCreated() != null && history.getContractHasBeenCreated()) {
                         contractCreationStatus = ContractCreationStatus.Created;
                     } else {
                         contractCreationStatus = ContractCreationStatus.Failed;
@@ -366,9 +366,13 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
                 .observeOn(Schedulers.io())
                 .subscribe(new Subscriber<HistoryResponse>() {
                     @Override
-                    public void onCompleted() {}
+                    public void onCompleted() {
+                    }
+
                     @Override
-                    public void onError(Throwable e) {}
+                    public void onError(Throwable e) {
+                    }
+
                     @Override
                     public void onNext(HistoryResponse historyResponse) {
                         Gson gson = new Gson();
@@ -435,9 +439,9 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
     private void updateTokenBalance(TokenBalance tokenBalance) {
         TokenBalance tokenBalanceFromList = mAllTokenBalanceList.get(tokenBalance.getContractAddress());
         if (tokenBalanceFromList != null) {
-            for(Balance balance : tokenBalance.getBalances()) {
+            for (Balance balance : tokenBalance.getBalances()) {
                 for (Balance balanceFromList : tokenBalanceFromList.getBalances()) {
-                    if(balance.getAddress().equals(balanceFromList.getAddress())){
+                    if (balance.getAddress().equals(balanceFromList.getAddress())) {
                         balanceFromList.setBalance(balance.getBalance());
                     }
                 }
@@ -447,7 +451,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
         }
 
         List<TokenBalanceChangeListener> tokenBalanceChangeListeners = mStringTokenBalanceChangeListenerHashMap.get(tokenBalance.getContractAddress());
-        if(tokenBalanceChangeListeners!=null) {
+        if (tokenBalanceChangeListeners != null) {
             for (TokenBalanceChangeListener tokenBalanceChangeListener : tokenBalanceChangeListeners) {
                 tokenBalanceChangeListener.onBalanceChange(mAllTokenBalanceList.get(tokenBalance.getContractAddress()));
             }
@@ -514,7 +518,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
                                 String contractAddress = ContractBuilder.generateContractAddress(unconfirmedContractTxHash);
 
                                 ContractCreationStatus contractCreationStatus;
-                                if(history.getContractHasBeenCreated() != null && history.getContractHasBeenCreated()){
+                                if (history.getContractHasBeenCreated() != null && history.getContractHasBeenCreated()) {
                                     contractCreationStatus = ContractCreationStatus.Created;
                                 } else {
                                     contractCreationStatus = ContractCreationStatus.Failed;
@@ -623,10 +627,10 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
         }
     }
 
-    private List<String> getPublicAddresses(){
+    private List<String> getPublicAddresses() {
         List<String> addresses = KeyStorage.getInstance().getAddresses();
         TinyDB tinyDB = new TinyDB(getApplicationContext());
-        if(addresses == null){
+        if (addresses == null) {
             addresses = tinyDB.getPublicAddresses();
         } else {
             tinyDB.savePublicAddresses(addresses);
@@ -725,7 +729,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
     }
 
     public void addTokenBalanceChangeListener(String address, TokenBalanceChangeListener tokenBalanceChangeListener) {
-        if(mStringTokenBalanceChangeListenerHashMap.get(address)==null){
+        if (mStringTokenBalanceChangeListenerHashMap.get(address) == null) {
             mStringTokenBalanceChangeListenerHashMap.put(address, new ArrayList<TokenBalanceChangeListener>());
         }
         mStringTokenBalanceChangeListenerHashMap.get(address).add(tokenBalanceChangeListener);

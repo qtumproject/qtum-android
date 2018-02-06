@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.base.base_nav_fragment.HiddenChangeListener;
 import org.qtum.wallet.ui.fragment.addresses_detail_fragment.AddressesDetailFragment;
 import org.qtum.wallet.ui.fragment.event_log_fragment.EventLogFragment;
 import org.qtum.wallet.ui.fragment.overview_fragment.OverviewFragment;
