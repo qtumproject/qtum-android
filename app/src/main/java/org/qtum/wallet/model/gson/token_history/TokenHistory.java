@@ -87,6 +87,10 @@ public class TokenHistory extends RealmObject{
         return HistoryType.valueOf(historyType);
     }
 
+    public TokenHistory(){
+
+    }
+
     //for unit_test
     public TokenHistory(String contractAddress, String from, String to, String amount, String txHash, Integer txTime) {
         this.contractAddress = contractAddress;

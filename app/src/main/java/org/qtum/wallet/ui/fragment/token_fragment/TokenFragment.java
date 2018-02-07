@@ -420,4 +420,9 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
     @Override
     public void onlineModeView() {
     }
+
+    @Override
+    public void clearAdapter() {
+
+    }
 }
