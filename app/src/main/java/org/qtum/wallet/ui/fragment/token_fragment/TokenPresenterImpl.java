@@ -50,8 +50,8 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
         getInteractor().setupPropertySymbolValue(token, getView().getSymbolValueCallback());
         getInteractor().setupPropertyNameValue(token, getView().getNameValueCallback());
 
-        Realm realm = Realm.getDefaultInstance();
-        tokenHistories = realm.where(TokenHistory.class).equalTo("contractAddress", token.getContractAddress()).findAllAsync();
+        Realm realm = getView().getRealm();
+        tokenHistories = realm.where(TokenHistory.class).equalTo("contractAddress", token.getContractAddress()).findAll();
 
         tokenHistories.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<TokenHistory>>() {
             @Override

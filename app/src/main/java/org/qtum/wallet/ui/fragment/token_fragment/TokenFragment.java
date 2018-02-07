@@ -39,6 +39,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import io.realm.OrderedCollectionChangeSet;
+import io.realm.Realm;
 import rx.Subscriber;
 
 public abstract class TokenFragment extends BaseFragment implements TokenView, TokenHistoryClickListener {
@@ -466,5 +467,10 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
     @Override
     public void clearAdapter() {
 
+    }
+
+    @Override
+    public Realm getRealm() {
+        return getMainActivity().getRealm();
     }
 }

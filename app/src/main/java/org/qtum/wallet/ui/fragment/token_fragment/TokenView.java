@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import io.realm.OrderedCollectionChangeSet;
+import io.realm.Realm;
 import rx.Subscriber;
 
 public interface TokenView extends BaseFragmentView {
@@ -50,4 +51,5 @@ public interface TokenView extends BaseFragmentView {
 
     void onlineModeView();
 
+    Realm getRealm();
 }

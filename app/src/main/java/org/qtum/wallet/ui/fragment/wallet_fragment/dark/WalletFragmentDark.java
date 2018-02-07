@@ -5,23 +5,13 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
+import android.view.ViewTreeObserver;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
-import org.qtum.wallet.utils.ResizeHeightAnimation;
 import org.qtum.wallet.utils.ResizeWidthAnimation;
-
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import butterknife.BindView;
-import io.realm.OrderedCollectionChangeSet;
-import io.realm.RealmResults;
 
 public class WalletFragmentDark extends WalletFragment {
 
@@ -41,6 +31,9 @@ public class WalletFragmentDark extends WalletFragment {
 
     @BindView(R.id.scroll_content)
     View scrollContent;
+
+    @BindView(R.id.recycler_content)
+    View recyclerContent;
 
     @Override
     protected int getLayout() {
@@ -76,11 +69,6 @@ public class WalletFragmentDark extends WalletFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void initializeViews() {
         super.initializeViews();
 
@@ -90,8 +78,6 @@ public class WalletFragmentDark extends WalletFragment {
 
         uncomfirmedBalanceValue.setVisibility(View.GONE);
         uncomfirmedBalanceTitle.setVisibility(View.GONE);
-
-        mRecyclerView.setNestedScrollingEnabled(false);
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
 
@@ -182,6 +168,13 @@ public class WalletFragmentDark extends WalletFragment {
     protected void createAdapter() {
         mTransactionAdapter = new TransactionAdapterDark(new ArrayList<History>(), getAdapterListener());
         mRecyclerView.setAdapter(mTransactionAdapter);
+//
+//        ViewGroup.LayoutParams layoutParams = recyclerContent.getLayoutParams();
+//        layoutParams.height = layoutParams.height + pxFromDp(72);
+//        recyclerContent.setLayoutParams(layoutParams);
+//        recyclerContent.requestLayout();
+//
+//        mRecyclerView.requestLayout();
     }
 
 
@@ -202,7 +195,7 @@ public class WalletFragmentDark extends WalletFragment {
     }
 
     private void resizeNoInetConnection() {
-        mLinearLayoutNoInternetConnection.getLayoutParams().height = (int)(noInternetViewHeight * percents);
+        mLinearLayoutNoInternetConnection.getLayoutParams().height = (int) (noInternetViewHeight * percents);
         mLinearLayoutNoInternetConnection.requestLayout();
     }
 

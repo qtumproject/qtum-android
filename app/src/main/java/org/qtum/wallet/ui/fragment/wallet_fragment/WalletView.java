@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import io.realm.OrderedCollectionChangeSet;
+import io.realm.Realm;
 import io.realm.RealmResults;
 
 public interface WalletView extends BaseFragmentView {
@@ -34,4 +35,6 @@ public interface WalletView extends BaseFragmentView {
     void offlineModeView();
 
     void onlineModeView();
+
+    Realm getRealm();
 }
