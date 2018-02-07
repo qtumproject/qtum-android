@@ -552,6 +552,10 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         return false;
     }
 
+    public boolean isCurrentNavFragment(String tag){
+        return navigationBackStack.get(navigationBackStack.size() -1).equals(tag);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
