@@ -46,6 +46,9 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
     @BindView(R.id.ll_balance)
     View balanceRootView;
 
+    @BindView(R.id.unsupported_icon)
+    View unsupportedIcon;
+
     private Token token;
     private Context mContext;
 
@@ -67,6 +70,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
     }
 
     public void bind(Token token) {
+        unsupportedIcon.setVisibility(View.GONE);
         unsupportedView.setVisibility(View.GONE);
         balanceRootView.setVisibility(View.VISIBLE);
         tokenName.setText("");
@@ -127,6 +131,8 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
 
                         @Override
                         public void onError(Throwable e) {
+                            token = new TinyDB(itemView.getContext()).setTokenDecimals(token, 129);
+                           updateBalance();
                         }
 
                         @Override
@@ -142,12 +148,14 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
         rootLayout.post(new Runnable() {
             @Override
             public void run() {
+
                 spinner.setVisibility(View.GONE);
                 String s = token.getTokenBalanceWithDecimalUnits().toString();
                 tokenBalanceView.setLongNumberText(s, itemView.getContext().getResources().getDisplayMetrics().widthPixels / 2);
                 tokenBalanceView.setVisibility(View.VISIBLE);
 
                 if(!token.getSupportFlag()){
+                    unsupportedIcon.setVisibility(View.VISIBLE);
                     unsupportedView.setVisibility(View.VISIBLE);
                     balanceRootView.setVisibility(View.INVISIBLE);
                 }

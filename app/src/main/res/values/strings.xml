@@ -244,10 +244,8 @@
     <string name="contract_was_deleted_by_its_author_and_is_no_longer_available_you_can_unsubscribe_to_remove_it_from_your_wallet">Contract was deleted by its author and is no longer available. You can Unsubscribe to remove it from your wallet.</string>
     <string name="unsubscribe">Unsubscribe</string>
     <string name="valid_contract_name_symbol" translatable="false">0123456789qwertzuiopasdfghjklyxcvbnmабвгдеёжзийклмнопрстуфхцчшщъыьэюяQWERTZUIOPASDFGHJKLYXCVBNMАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ</string>
-
+    <string name="token_unsupported">Unsupported</string>
+    <string name="token_unsupported_reason">Sorry, this token exceeds the limit of 128 decimals. So it can not be supported in QTUM app</string>
     <string name="no_internet_connection_found">No Internet connection found</string>
     <string name="your_balance_was_last_updated_at">Your balance was last updated at</string>
-
-    <string name="token_unsupported">Unsupported Token</string>
-
 </resources>

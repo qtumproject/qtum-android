@@ -110,10 +110,10 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     TextView mTextViewHistoriesPlaceholder;
 
     @BindView(R.id.ll_no_internet_connection)
-    LinearLayout mLinearLayoutNoInternetConnection;
+    protected LinearLayout mLinearLayoutNoInternetConnection;
 
     @BindView(R.id.last_updated_placeholder)
-    TextView mTextViewLastUpdatedPlaceHolder;
+    protected TextView mTextViewLastUpdatedPlaceHolder;
 
     private NetworkStateReceiver mNetworkStateReceiver;
     private UpdateService mUpdateService;
@@ -417,17 +417,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         mLoadingFlag = false;
         mTransactionAdapter.setLoadingFlag(false);
         mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
-    }
-
-    @Override
-
-    public void offlineModeView() {
-        mLinearLayoutNoInternetConnection.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onlineModeView() {
-        mLinearLayoutNoInternetConnection.setVisibility(View.GONE);
     }
 
     BalanceChangeListener balanceListener = new BalanceChangeListener() {

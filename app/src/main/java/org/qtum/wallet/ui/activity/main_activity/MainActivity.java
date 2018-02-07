@@ -112,6 +112,41 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     List<String> navigationBackStack = new ArrayList<>();
 
+    FragmentKeyboardEventListener fragmentKeyboardEventListener;
+
+    public void setFragmentKeyboardEventListener(FragmentKeyboardEventListener fragmentKeyboardEventListener) {
+        this.fragmentKeyboardEventListener = fragmentKeyboardEventListener;
+    }
+
+    public void unsetFragmentKeyboardEventListener(){
+        this.fragmentKeyboardEventListener = null;
+    }
+
+    boolean allowChangeKeyboardState = false;
+
+    KeyboardVisibilityEventListener keyboardVisibilityEventListener = new KeyboardVisibilityEventListener() {
+        @Override
+        public void onVisibilityChanged(boolean isOpen) {
+
+            if(allowChangeKeyboardState) {
+
+                if (fragmentKeyboardEventListener != null) {
+                    fragmentKeyboardEventListener.visibilityChange(isOpen);
+                }
+
+                if (isOpen) {
+                    aCollapse(200);
+                } else {
+                    if (getPresenter().getAuthenticationFlag() && !getPresenter().isCheckAuthenticationShowFlag()) {
+                        aExpand(200);
+                    } else {
+                        collapseBar();
+                    }
+                }
+            }
+        }
+    };
+
     @Override
     protected void createPresenter() {
         mMainActivityPresenterImpl = new MainActivityPresenterImpl(this, new MainActivityInteractorImpl(getContext()));
@@ -158,22 +193,18 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             }
         };
 
+
+        registerKeyboardListener();
     }
 
+    private void registerKeyboardListener(){
+        allowChangeKeyboardState = true;
+       KeyboardVisibilityEvent.setEventListener(this, keyboardVisibilityEventListener);
+    }
 
-    Unregistrar unregistrar;
-    KeyboardVisibilityEventListener keyboardVisibilityEventListener = new KeyboardVisibilityEventListener() {
-        @Override
-        public void onVisibilityChanged(boolean isOpen) {
-            if (getPresenter().getAuthenticationFlag() && !getPresenter().isCheckAuthenticationShowFlag()) {
-                if (isOpen) {
-                    aCollapse(200);
-                } else {
-                    aExpand(200);
-                }
-            }
-        }
-    };
+    public void unregisterKeyboardListener(){
+        allowChangeKeyboardState = false;
+    }
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -312,37 +343,33 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     private void aCollapse(int duration) {
-        ResizeHeightAnimation resizeHeightAnimation = new ResizeHeightAnimation(mBottomNavigationView, pxFromDp(56), 0);
-        resizeHeightAnimation.setDuration(duration);
-        resizeHeightAnimation.setFillEnabled(true);
-        resizeHeightAnimation.setFillAfter(true);
-        mBottomNavigationView.startAnimation(resizeHeightAnimation);
+        if(mBottomNavigationView.getHeight() > 0) {
+            ResizeHeightAnimation resizeHeightAnimation = new ResizeHeightAnimation(mBottomNavigationView, pxFromDp(56), 0);
+            resizeHeightAnimation.setDuration(duration);
+            resizeHeightAnimation.setFillEnabled(true);
+            resizeHeightAnimation.setFillAfter(true);
+            mBottomNavigationView.startAnimation(resizeHeightAnimation);
+        }
     }
 
     private void aExpand(int duration) {
-        ResizeHeightAnimation resizeHeightAnimation = new ResizeHeightAnimation(mBottomNavigationView, 0, pxFromDp(56));
-        resizeHeightAnimation.setDuration(duration);
-        resizeHeightAnimation.setFillEnabled(true);
-        resizeHeightAnimation.setFillAfter(true);
-        mBottomNavigationView.startAnimation(resizeHeightAnimation);
+        if(mBottomNavigationView.getHeight() == 0) {
+            ResizeHeightAnimation resizeHeightAnimation = new ResizeHeightAnimation(mBottomNavigationView, 0, pxFromDp(56));
+            resizeHeightAnimation.setDuration(duration);
+            resizeHeightAnimation.setFillEnabled(true);
+            resizeHeightAnimation.setFillAfter(true);
+            mBottomNavigationView.startAnimation(resizeHeightAnimation);
+        }
     }
 
     private void collapseBar() {
         if (mBottomNavigationView != null) {
-            //mBottomNavigationView.setVisibility(View.GONE);
-//            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mBottomNavigationView.getLayoutParams();
-//            layoutParams.height = 0;
-//            mBottomNavigationView.setLayoutParams(layoutParams);
             aCollapse(0);
         }
     }
 
     private void expandBar() {
         if (mBottomNavigationView != null && getPresenter().getAuthenticationFlag()) {
-            //mBottomNavigationView.setVisibility(View.VISIBLE);
-//            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mBottomNavigationView.getLayoutParams();
-//            layoutParams.height = pxFromDp(56);
-//            mBottomNavigationView.setLayoutParams(layoutParams);
             aExpand(0);
         }
     }
@@ -382,15 +409,6 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         if (resColorId > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
-            }
-        }
-    }
-
-    public void showBottomNavigationView(String hexColor) {
-        expandBar();
-        if (!TextUtils.isEmpty(hexColor)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().setStatusBarColor(Color.parseColor(hexColor));
             }
         }
     }
@@ -637,7 +655,6 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     public void onBackPressed() {
 
         if (getPresenter().shouldShowPin()) {
-            unregisterKeyboardListener();
             clearBackStack();
             openRootFragment(StartPageFragment.newInstance(this));
             return;
@@ -756,6 +773,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             resetNavBarIconsWithTheme(lightThemeIcons);
         }
         initBottomNavViewWithFont((ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK) ? R.string.simplonMonoRegular : R.string.proximaNovaRegular));
+        registerKeyboardListener();
     }
 
     public void resetNavBarIconsWithTheme(int[] icons) {
@@ -769,6 +787,12 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     public void recolorStatusBar(int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), color));
+        }
+    }
+
+    public void recolorStatusBar(String color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.parseColor(color));
         }
     }
 
@@ -801,21 +825,9 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     public void onAuth(){
-        showBottomNavigationView(ThemeUtils.currentTheme.equals(ThemeUtils.THEME_DARK)? R.color.background : R.color.title_color_light);
         registerKeyboardListener();
+        showBottomNavigationView(ThemeUtils.currentTheme.equals(ThemeUtils.THEME_DARK)? R.color.background : R.color.title_color_light);
     }
-
-    public void unregisterKeyboardListener(){
-        if(unregistrar != null) {
-            unregistrar.unregister();
-            unregistrar = null;
-        }
-    }
-
-    public void registerKeyboardListener(){
-        unregistrar = KeyboardVisibilityEvent.registerEventListener(this, keyboardVisibilityEventListener);
-    }
-
 
     public void openRootWallet() {
         clearBackStack();
@@ -835,7 +847,6 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     public void onLogout() {
-        unregisterKeyboardListener();
         clearBackStack();
         if (mUpdateService != null) {
             mUpdateService.stopMonitoring();
