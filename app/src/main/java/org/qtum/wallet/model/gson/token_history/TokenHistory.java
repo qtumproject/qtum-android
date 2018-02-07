@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import org.qtum.wallet.model.gson.history.HistoryType;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class TokenHistory extends RealmObject{
 
@@ -22,6 +23,7 @@ public class TokenHistory extends RealmObject{
     @SerializedName("amount")
     @Expose
     private String amount;
+    @PrimaryKey
     @SerializedName("tx_hash")
     @Expose
     private String txHash;

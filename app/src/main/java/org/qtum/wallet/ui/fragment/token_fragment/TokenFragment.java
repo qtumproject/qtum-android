@@ -248,7 +248,10 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
                 }
             }
         });
+        createAdapter();
     }
+
+    protected abstract void createAdapter();
 
 
     protected boolean expanded = false;
@@ -289,7 +292,46 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
 
     @Override
     public void updateHistory(List<TokenHistory> histories, @Nullable OrderedCollectionChangeSet changeSet, int visibleItemCount) {
+        mLoadingFlag = false;
+        mAdapter.setHistoryList(histories);
+        if (changeSet == null) {
+            mAdapter.notifyDataSetChanged();
+            return;
+        }
 
+        OrderedCollectionChangeSet.Range[] deletions = changeSet.getDeletionRanges();
+        for (int i = deletions.length - 1; i >= 0; i--) {
+            OrderedCollectionChangeSet.Range range = deletions[i];
+            if (range.startIndex <= visibleItemCount) {
+                int length = range.length;
+                if (range.startIndex + range.length > visibleItemCount) {
+                    length = visibleItemCount - range.startIndex;
+                }
+                mAdapter.notifyItemRangeRemoved(range.startIndex, length);
+            }
+        }
+
+        OrderedCollectionChangeSet.Range[] insertions = changeSet.getInsertionRanges();
+        for (OrderedCollectionChangeSet.Range range : insertions) {
+            if (range.startIndex <= visibleItemCount) {
+                int length = range.length;
+                if (range.startIndex + range.length > visibleItemCount) {
+                    length = visibleItemCount - range.startIndex;
+                }
+                mAdapter.notifyItemRangeInserted(range.startIndex + 1, length);
+            }
+        }
+
+        OrderedCollectionChangeSet.Range[] modifications = changeSet.getChangeRanges();
+        for (OrderedCollectionChangeSet.Range range : modifications) {
+            if (range.startIndex <= visibleItemCount) {
+                int length = range.length;
+                if (range.startIndex + range.length > visibleItemCount) {
+                    length = visibleItemCount - range.startIndex;
+                }
+                mAdapter.notifyItemRangeChanged(range.startIndex, length);
+            }
+        }
     }
 
     @Override

@@ -76,7 +76,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="72dp"
-                android:background="@color/colorPrimary"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -190,8 +189,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:layout_height="180dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -213,7 +211,7 @@
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax">
 
-                <include layout="@layout/fragment_wallet_appbar_dark_no_connection" />
+                <include layout="@layout/fragment_wallet_appbar" />
 
             </FrameLayout>
 
