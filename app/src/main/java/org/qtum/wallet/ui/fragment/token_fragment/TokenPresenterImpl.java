@@ -18,6 +18,7 @@ import io.realm.OrderedCollectionChangeSet;
 import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 import rx.Subscriber;
 import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;
@@ -51,7 +52,7 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
         getInteractor().setupPropertyNameValue(token, getView().getNameValueCallback());
 
         Realm realm = getView().getRealm();
-        tokenHistories = realm.where(TokenHistory.class).equalTo("contractAddress", token.getContractAddress()).findAll();
+        tokenHistories = realm.where(TokenHistory.class).equalTo("contractAddress", token.getContractAddress()).sort("txTime", Sort.DESCENDING).findAll();
 
         tokenHistories.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<TokenHistory>>() {
             @Override
