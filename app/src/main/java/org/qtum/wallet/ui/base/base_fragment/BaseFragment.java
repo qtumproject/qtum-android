@@ -303,7 +303,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         super.onPause();
         hideKeyBoard();
         getPresenter().onPause();
-
         dismissProgressDialog();
         dismissAlertDialog();
     }
@@ -324,7 +323,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getPresenter().initializeViews();
-        getPresenter().getView().setSoftMode();
         getPresenter().onViewCreated();
     }
 
@@ -491,11 +489,6 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
 
     protected void unBindView() {
         mUnbinder.unbind();
-    }
-
-    @Override
-    public void setSoftMode() {
-
     }
 
     @Override

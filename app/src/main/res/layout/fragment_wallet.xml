@@ -1,120 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/background"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/colorPrimary"
-            android:clickable="true"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/iv_receive"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                android:paddingEnd="6dp"
-                android:tint="@color/background"
-                app:srcCompat="@drawable/ic_createnew"/>
-
-            <LinearLayout
-                android:id="@+id/ll_receive"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:weightSum="2">
-
-                <org.qtum.wallet.utils.FontTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="bottom"
-                    android:text="@string/qtum_address"
-                    android:textColor="@color/background"
-                    app:typefaceAsset="@string/simplonMonoRegular"/>
-
-                <org.qtum.wallet.utils.FontTextView
-
-                    android:id="@+id/tv_public_key"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:paddingEnd="16dp"
-                    android:textColor="@color/background"
-                    app:typefaceAsset="@string/simplonMonoMedium"/>
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/iv_choose_address"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:tint="@color/background"
-                app:srcCompat="@drawable/ic_addressbook"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/bottom_vav_view_tab_selected_drawable"
-            android:gravity="left|center_vertical"
-            android:padding="8dp"
-            android:text="@string/org.qtum.wallet.activity"
-            android:textColor="@color/colorPrimary"/>
-
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
+            <LinearLayout
+                android:background="@color/colorPrimary"
+                android:id="@+id/ll_no_internet_connection"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:splitMotionEvents="false"/>
+                android:layout_height="72dp"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <org.qtum.wallet.utils.FontTextView
-                android:id="@+id/histories_placeholder"
-                android:layout_width="wrap_content"
+                <org.qtum.wallet.utils.FontTextView
+                    android:id="@+id/no_internet_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="@string/no_internet_connection_found"
+                    android:textColor="@color/background"
+                    app:typefaceAsset="@string/simplonMonoMedium" />
+
+                <org.qtum.wallet.utils.FontTextView
+                    android:id="@+id/last_updated_placeholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:padding="4dp"
+                    android:text="151551"
+                    android:textColor="@color/background"
+                    app:autoSizeMaxTextSize="14sp"
+                    app:autoSizeMinTextSize="10sp"
+                    app:autoSizeTextType="uniform"
+                    app:typefaceAsset="@string/simplonMonoRegular" />
+
+                <LinearLayout
+                    android:id="@+id/page_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/tab_indicator_selected_inverse" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@drawable/tab_indicator_default_inverse" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/scroll_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="100dp"
-                android:text="@string/no_transaction_available_yet"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp"
-                app:typefaceAsset="@string/simplonMonoRegular"/>
+                android:layout_marginTop="72dp"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
 
-        </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/background" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/colorPrimary"
+                        android:clickable="true"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_receive"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="8dp"
+                            android:paddingEnd="6dp"
+                            android:tint="@color/background"
+                            app:srcCompat="@drawable/ic_createnew" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_receive"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:weightSum="2">
+
+                            <org.qtum.wallet.utils.FontTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:gravity="bottom"
+                                android:text="@string/qtum_address"
+                                android:textColor="@color/background"
+                                app:typefaceAsset="@string/simplonMonoRegular" />
+
+                            <org.qtum.wallet.utils.FontTextView
+
+                                android:id="@+id/tv_public_key"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:paddingEnd="16dp"
+                                android:textColor="@color/background"
+                                app:typefaceAsset="@string/simplonMonoMedium" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_choose_address"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:tint="@color/background"
+                            app:srcCompat="@drawable/ic_addressbook" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bottom_vav_view_tab_selected_drawable"
+                    android:gravity="left|center_vertical"
+                    android:padding="8dp"
+                    android:text="@string/org.qtum.wallet.activity"
+                    android:textColor="@color/colorPrimary" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/background">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:splitMotionEvents="false" />
+
+                    <org.qtum.wallet.utils.FontTextView
+                        android:id="@+id/histories_placeholder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="100dp"
+                        android:text="@string/no_transaction_available_yet"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        app:typefaceAsset="@string/simplonMonoRegular" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </FrameLayout>
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="272dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -137,59 +213,7 @@
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax">
 
-                <include layout="@layout/fragment_wallet_appbar"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:id="@+id/ll_no_internet_connection"
-                    android:layout_marginBottom="16dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <org.qtum.wallet.utils.FontTextView
-                        android:gravity="center"
-                        app:typefaceAsset="@string/simplonMonoMedium"
-                        android:textColor="@color/background"
-                        android:padding="4dp"
-                        android:text="@string/no_internet_connection_found"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <org.qtum.wallet.utils.FontTextView
-                        android:id="@+id/last_updated_placeholder"
-                        android:gravity="center"
-                        android:text="151551"
-                        app:typefaceAsset="@string/simplonMonoRegular"
-                        android:textColor="@color/background"
-                        android:padding="4dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/page_indicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="4dp"
-                    >
-
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:src="@drawable/tab_indicator_selected_inverse"/>
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:src="@drawable/tab_indicator_default_inverse"/>
-
-                </LinearLayout>
+                <include layout="@layout/fragment_wallet_appbar_dark_no_connection" />
 
             </FrameLayout>
 
@@ -223,7 +247,7 @@
                             android:text="@string/my_wallet"
                             android:textColor="@color/background"
                             android:textSize="@dimen/toolbar_text_size"
-                            app:typefaceAsset="@string/euclidFlexMedium"/>
+                            app:typefaceAsset="@string/euclidFlexMedium" />
 
                         <ImageButton
                             android:id="@+id/bt_qr_code"
@@ -235,7 +259,7 @@
                             android:padding="8dp"
                             android:scaleType="centerInside"
                             android:tint="@color/background"
-                            app:srcCompat="@drawable/ic_qrcode"/>
+                            app:srcCompat="@drawable/ic_qrcode" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -247,7 +271,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:background="@color/background"
-                                android:visibility="invisible"/>
+                                android:visibility="invisible" />
 
                         </FrameLayout>
 

@@ -55,4 +55,6 @@ public interface PinView extends BaseFragmentView {
     void clearPin();
 
     int getThemedStatusBarColor();
+
+    void unregisterKeyboardListener();
 }

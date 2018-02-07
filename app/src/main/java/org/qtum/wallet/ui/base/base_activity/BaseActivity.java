@@ -130,10 +130,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
         super.onBackPressed();
     }
 
-    @Override
-    public void setSoftMode() {
-    }
-
     protected abstract void updateTheme();
 
     public void reloadActivity() {

@@ -72,6 +72,11 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     }
 
     @Override
+    public void unregisterKeyboardListener() {
+        getMainActivity().unregisterKeyboardListener();
+    }
+
+    @Override
     public void onCancelClick() {
         getMainActivity().onBackPressed();
     }
@@ -182,17 +187,17 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     }
 
     @Override
-    public void setSoftMode() {
-        super.setSoftMode();
-        //getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    public void onPause() {
+        super.onPause();
+        hideKeyBoard();
+        getMainActivity().resetAuthFlags();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        hideKeyBoard();
-        getMainActivity().resetAuthFlags();
+    public void onDestroyView() {
+        super.onDestroyView();
+        String hexColor = String.format("#%06X", (0xFFFFFF & prevStatusBarColor));
+        getMainActivity().recolorStatusBar(hexColor);
     }
 
     Handler softHandler;
@@ -200,14 +205,12 @@ public abstract class PinFragment extends BaseFragment implements PinView {
     @Override
     public void onResume() {
         super.onResume();
-        setSoftMode();
         mWalletPin.setFocusableInTouchMode(true);
         mWalletPin.requestFocus();
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
-
     }
 
     @Override
@@ -223,17 +226,8 @@ public abstract class PinFragment extends BaseFragment implements PinView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             prevStatusBarColor = getMainActivity().getWindow().getStatusBarColor();
         }
-        getMainActivity().hideBottomNavigationView(getThemedStatusBarColor());
+        getMainActivity().hideBottomNavigationView(getThemedStatusBarColor());;
     }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        String hexColor = String.format("#%06X", (0xFFFFFF & prevStatusBarColor));
-        getMainActivity().showBottomNavigationView(hexColor);
-    }
-
 
     @Override
     public void prepareSensor() {

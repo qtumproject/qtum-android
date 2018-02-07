@@ -860,12 +860,6 @@ public abstract class SendFragment extends BaseNavFragment implements SendView {
     }
 
     @Override
-    public void setSoftMode() {
-        super.setSoftMode();
-        //getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-    }
-
-    @Override
     public void updateBalance(String balance, String unconfirmedBalance) {
         placeHolderBalance.setText(balance);
         if (!TextUtils.isEmpty(unconfirmedBalance)) {

@@ -3,6 +3,7 @@ package org.qtum.wallet.ui.fragment.receive_fragment.light;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
@@ -30,4 +31,5 @@ public class ReceiveFragmentLight extends ReceiveFragment {
         mTilAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaRegular)));
         mEtAmount.setTypeface(FontManager.getInstance().getFont(getString(R.string.proximaNovaSemibold)));
     }
+
 }

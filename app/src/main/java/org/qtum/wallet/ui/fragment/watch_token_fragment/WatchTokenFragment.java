@@ -160,12 +160,6 @@ public abstract class WatchTokenFragment extends BaseFragment implements WatchTo
     }
 
     @Override
-    public void setSoftMode() {
-        super.setSoftMode();
-        //getMainActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-    }
-
-    @Override
     public void setContractName(String contractName) {
         if(mEditTextContractName.getText().toString().isEmpty()){
             mEditTextContractName.setText(contractName);
