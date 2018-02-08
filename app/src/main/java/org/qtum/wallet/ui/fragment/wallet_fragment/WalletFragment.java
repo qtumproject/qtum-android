@@ -441,9 +441,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         }
     };
 
-    interface HistoryCountChangeListener {
-        void onCountChange(int newCount);
-    }
+
 
     @Override
     public Realm getRealm() {

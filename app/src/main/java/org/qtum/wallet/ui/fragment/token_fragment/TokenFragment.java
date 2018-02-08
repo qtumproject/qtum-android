@@ -24,6 +24,7 @@ import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AddressesListFragmentToken;
+import org.qtum.wallet.ui.fragment.wallet_fragment.HistoryCountChangeListener;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.token_fragment.dialogs.ShareDialogFragment;
@@ -212,6 +213,9 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
         if (mNetworkStateListener != null) {
             mNetworkStateReceiver.removeNetworkStateListener(mNetworkStateListener);
         }
+        if(mAdapter!=null){
+            mAdapter.setHistoryCountChangeListener(null);
+        }
     }
 
     @Override
@@ -250,6 +254,16 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
             }
         });
         createAdapter();
+        mAdapter.setHistoryCountChangeListener(new HistoryCountChangeListener() {
+            @Override
+            public void onCountChange(int newCount) {
+                if (newCount == 0) {
+                    mTextViewHistoriesPlaceholder.setVisibility(View.VISIBLE);
+                } else {
+                    mTextViewHistoriesPlaceholder.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     protected abstract void createAdapter();

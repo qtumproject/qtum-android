@@ -11,7 +11,7 @@ public abstract class TransactionAdapter extends RecyclerView.Adapter<RecyclerVi
     protected final int TYPE_PROGRESS_BAR = 0;
     protected final int TYPE_TRANSACTION = 1;
     protected boolean mLoadingFlag = false;
-    protected WalletFragment.HistoryCountChangeListener mHistoryCountChangeListener;
+    protected HistoryCountChangeListener mHistoryCountChangeListener;
 
     public History getItem(int position){
         return mHistoryList.get(position);
@@ -48,7 +48,7 @@ public abstract class TransactionAdapter extends RecyclerView.Adapter<RecyclerVi
         return mHistoryList;
     }
 
-    public void setHistoryCountChangeListener(WalletFragment.HistoryCountChangeListener historyCountChangeListener) {
+    public void setHistoryCountChangeListener(HistoryCountChangeListener historyCountChangeListener) {
         mHistoryCountChangeListener = historyCountChangeListener;
     }
 

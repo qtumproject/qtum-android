@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
+import org.qtum.wallet.ui.fragment.wallet_fragment.HistoryCountChangeListener;
 import org.qtum.wallet.ui.fragment.wallet_fragment.TransactionClickListener;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public abstract class TokenHistoryAdapter extends RecyclerView.Adapter<RecyclerV
     protected final int TYPE_TRANSACTION = 1;
     protected boolean mLoadingFlag = false;
     protected String mSymbol = "";
+    protected HistoryCountChangeListener mHistoryCountChangeListener;
 
     public TokenHistory getItem(int position){
         return mHistoryList.get(position);
@@ -45,6 +47,9 @@ public abstract class TokenHistoryAdapter extends RecyclerView.Adapter<RecyclerV
 
     public void setHistoryList(List<TokenHistory> historyList) {
         mHistoryList = historyList;
+        if(mHistoryCountChangeListener!=null){
+            mHistoryCountChangeListener.onCountChange(mHistoryList.size());
+        }
     }
 
     public void setLoadingFlag(boolean loadingFlag) {
@@ -53,5 +58,9 @@ public abstract class TokenHistoryAdapter extends RecyclerView.Adapter<RecyclerV
 
     public void setSymbol(String symbol) {
         mSymbol = symbol;
+    }
+
+    public void setHistoryCountChangeListener(HistoryCountChangeListener historyCountChangeListener) {
+        mHistoryCountChangeListener = historyCountChangeListener;
     }
 }
