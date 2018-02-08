@@ -19,7 +19,7 @@ import io.realm.RealmConfiguration;
 public class QtumApplication extends MultiDexApplication{
 
     public static QtumApplication instance;
-    private final String REALM_NAME = "org.qtum.realm";
+    public static final String REALM_NAME = "org.qtum.realm";
     private Realm realm;
 
     private WearableMessagingProvider wearableMessagingProvider;

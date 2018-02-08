@@ -3,9 +3,12 @@ package org.qtum.wallet;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataApi;
@@ -16,11 +19,20 @@ import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 import com.google.gson.Gson;
+
+import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.gson.history.History;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
+import io.realm.Sort;
+
+import static org.qtum.wallet.QtumApplication.REALM_NAME;
 
 /**
  * Created by kirillvolkov on 21.11.2017.
@@ -122,16 +134,41 @@ public class WearListCallListenerService extends WearableListenerService impleme
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<History> histories = new ArrayList<>();
-                histories = QtumApplication.instance.getWearableMessagingProvider().getOperations();
-                String balance = QtumApplication.instance.getWearableMessagingProvider().getBalance();
-                String uncBalance = QtumApplication.instance.getWearableMessagingProvider().getUnconfirmedBalance();
-                String address = QtumApplication.instance.getWearableMessagingProvider().getAddress();
-                Gson gson = new Gson();
-                String s = gson.toJson(histories);
-                sendData(s, balance, uncBalance, address);
+                try {
+                    List<History> histories = getHistory();
+                    final String balance = QtumSharedPreference.getInstance().getBalanceString(WearListCallListenerService.this);
+                    final String uncBalance = QtumSharedPreference.getInstance().getUnconfirmedBalanceString(WearListCallListenerService.this);
+                    final String address = QtumSharedPreference.getInstance().getCurrentAddress(WearListCallListenerService.this);
+                    Gson gson = new Gson();
+                    String s = gson.toJson(histories);
+                    sendData(s, balance, uncBalance, address);
+                } catch (final Exception e){
+                    Log.d(TAG, "run: " + e.getMessage());
+                }
             }
 
         }).start();
+    }
+
+    List<History> getHistory(){
+
+        Realm.init(this);
+
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .name(REALM_NAME)
+                .schemaVersion(1)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+
+        Realm.setDefaultConfiguration(config);
+
+        RealmResults<History> result = Realm.getDefaultInstance().where(History.class).findAll().sort("blockTime", Sort.DESCENDING);
+        List<History> histories = Realm.getDefaultInstance().copyFromRealm(result);
+        result = null;
+        if(histories.size() > 25){
+            return histories.subList(0, 25);
+        } else {
+            return histories;
+        }
     }
 }

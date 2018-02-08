@@ -103,7 +103,7 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        if (mApiClient != null && !(mApiClient.isConnected() || mApiClient.isConnecting())) {
+        if (!(mApiClient.isConnected() || mApiClient.isConnecting())) {
             mApiClient.connect();
         }
     }
