@@ -6,8 +6,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
 import io.realm.Realm;
 
-import static org.qtum.wallet.utils.StringUtils.convertBalanceToString;
-
 public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implements TransactionPresenter {
 
     private TransactionView mTransactionView;
@@ -36,15 +34,10 @@ public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implemen
         } else {
             dateString = getInteractor().getUnconfirmedDate();
         }
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                TransactionReceipt transactionReceipt = realm.where(TransactionReceipt.class).equalTo("transactionHash",txHash).findFirst();
-                getView().setUpTransactionData(history.getChangeInBalance(), history.getFee(), dateString,
-                        history.getBlockHeight() > 0, transactionReceipt != null && transactionReceipt.getLog() != null && !transactionReceipt.getLog().isEmpty());
-            }
-        });
+        TransactionReceipt transactionReceipt = getInteractor().getHistoryReceipt(getView().getRealm(), history.getTxHash());
+        getView().setUpTransactionData(history.getChangeInBalance(), history.getFee(), dateString,
+                history.getBlockHeight() > 0, transactionReceipt != null && transactionReceipt.getLog() != null && !transactionReceipt.getLog().isEmpty());
+
 
     }
 }

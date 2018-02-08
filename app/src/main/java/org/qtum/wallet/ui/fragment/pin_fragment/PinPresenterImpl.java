@@ -396,7 +396,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 } else {
                     titleID = R.string.enter_pin;
                 }
-                if (TextUtils.isEmpty(getInteractor().getSixDigitPassword())) {
+                if (getInteractor().getSixDigitPassword()!=null && getInteractor().getSixDigitPassword().isEmpty()) {
                     getView().setDigitPin(4);
                 } else {
                     getView().setDigitPin(6);
@@ -404,7 +404,7 @@ public class PinPresenterImpl extends BaseFragmentPresenterImpl implements PinPr
                 break;
             case CHANGING:
                 titleID = R.string.change_pin;
-                if (TextUtils.isEmpty(getInteractor().getSixDigitPassword())) {
+                if (getInteractor().getSixDigitPassword()!=null && getInteractor().getSixDigitPassword().isEmpty()) {
                     getView().setDigitPin(4);
                 } else {
                     getView().setDigitPin(6);

@@ -38,26 +38,22 @@ public class ReceivePresenterTest {
     public void onBalanceChanged_InvalidUnconfirmedBalance() {
         when(view.isUnconfirmedBalanceValid(anyString()))
                 .thenReturn(false);
-        when(interactor.formatBalance(anyString()))
-                .thenReturn("Formatted Balance");
 
         presenter.onBalanceChanged(TEST_UNCONFIRMED_BALANCE, TEST_BALANCE);
 
-        verify(view, times(1)).updateBalance(anyString());
-        verify(view, never()).updateBalance(anyString(), anyString());
+        verify(view, times(1)).updateBalance(anyString(),anyString(),anyString());
+        verify(view, never()).updateBalance(anyString(), anyString(),anyString());
     }
 
     @Test
     public void onBalanceChanged_ValidUnconfirmedBalance() {
         when(view.isUnconfirmedBalanceValid(anyString()))
                 .thenReturn(true);
-        when(interactor.formatBalance(anyString()))
-                .thenReturn("Formatted Balance");
 
         presenter.onBalanceChanged(TEST_UNCONFIRMED_BALANCE, TEST_BALANCE);
 
-        verify(view, times(1)).updateBalance(anyString(), anyString());
-        verify(view, never()).updateBalance(anyString());
+        verify(view, times(1)).updateBalance(anyString(), anyString(), anyString());
+        verify(view, never()).updateBalance(anyString(),anyString(), anyString());
     }
 
     @Test
