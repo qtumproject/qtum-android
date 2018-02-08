@@ -20,6 +20,7 @@ public class QtumApplication extends MultiDexApplication{
 
     public static QtumApplication instance;
     private final String REALM_NAME = "org.qtum.realm";
+    private Realm realm;
 
     private WearableMessagingProvider wearableMessagingProvider;
 
@@ -51,6 +52,7 @@ public class QtumApplication extends MultiDexApplication{
                 .build();
 
         Realm.setDefaultConfiguration(config);
+        realm = Realm.getDefaultInstance();
         try {
             int currentVersion = getCodeVersion();
             QtumSettingSharedPreference qtumSettingSharedPreference = QtumSettingSharedPreference.getInstance();
@@ -68,5 +70,9 @@ public class QtumApplication extends MultiDexApplication{
     private int getCodeVersion() throws PackageManager.NameNotFoundException {
         PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
         return pInfo.versionCode;
+    }
+
+    public Realm getRealm() {
+        return realm;
     }
 }

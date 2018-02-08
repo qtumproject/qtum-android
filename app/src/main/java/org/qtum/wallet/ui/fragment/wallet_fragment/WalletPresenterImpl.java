@@ -35,8 +35,8 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     private boolean mNetworkConnectedFlag = false;
     private SubscriptionList mSubscriptionList = new SubscriptionList();
     private int visibleItemCount = 0;
-    RealmResults<History> histories;
     private Integer totalItem;
+    RealmResults<History> histories;
 
     private final int ONE_PAGE_COUNT = 25;
 
@@ -53,13 +53,15 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
         //List<History> histories = getInteractor().getHistoriesFromDb(0,ONE_PAGE_COUNT);
 
-        Realm realm = Realm.getDefaultInstance();
-        histories = realm.where(History.class).findAllAsync().sort("blockTime", Sort.DESCENDING);
+        Realm realm = getView().getRealm();
+        histories = realm.where(History.class).findAll().sort("blockTime", Sort.DESCENDING);
 
         histories.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<History>>() {
             @Override
             public void onChange(RealmResults<History> histories, @Nullable OrderedCollectionChangeSet changeSet) {
-                getView().updateHistory(histories.subList(0, visibleItemCount), changeSet, visibleItemCount);
+                if(visibleItemCount<=histories.size()) {
+                    getView().updateHistory(histories.subList(0, visibleItemCount), changeSet, visibleItemCount);
+                }
             }
         });
 
@@ -290,6 +292,9 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         super.onDestroyView();
         if (mSubscriptionList != null) {
             mSubscriptionList.clear();
+        }
+        if(histories!=null){
+            histories.removeAllChangeListeners();
         }
     }
 

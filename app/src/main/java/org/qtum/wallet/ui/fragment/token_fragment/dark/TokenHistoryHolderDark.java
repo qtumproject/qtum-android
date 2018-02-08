@@ -105,8 +105,10 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
             case Received:
                 mImageViewIcon.setImageResource(R.drawable.ic_received);
                 break;
+            case Internal_Transaction:
+                mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_dark);
         }
-        mTextViewOperationType.setText(history.getHistoryType().name());
+        mTextViewOperationType.setText(history.getHistoryType().toString());
         mTextViewID.setText(history.getTxHash());
 
         String resultamount = history.getAmount();

@@ -6,6 +6,8 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+
 public class ProfilePresenterImpl extends BaseFragmentPresenterImpl implements ProfilePresenter {
 
     private ProfileView mProfileView;
@@ -52,6 +54,13 @@ public class ProfilePresenterImpl extends BaseFragmentPresenterImpl implements P
     @Override
     public void clearWallet() {
         getInteractor().clearWallet();
+        getView().getRealm().removeAllChangeListeners();
+        getView().getRealm().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.deleteAll();
+            }
+        });
     }
 
     @Override

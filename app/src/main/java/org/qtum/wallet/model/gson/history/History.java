@@ -40,7 +40,7 @@ public class History extends RealmObject{
     @Expose
     private RealmList<Vin> vin = null;
 
-    public String historyType;
+    private String historyType;
     private String changeInBalance;
     private String fee;
     private boolean isContractType = false;

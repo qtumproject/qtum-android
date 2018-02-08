@@ -102,6 +102,9 @@ public class TokenHistoryHolderLight extends RecyclerView.ViewHolder {
             case Received:
                 mImageViewIcon.setImageResource(R.drawable.ic_received_light);
                 break;
+            case Internal_Transaction:
+                mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_light);
+                break;
         }
         mTextViewID.setText(history.getTxHash());
 

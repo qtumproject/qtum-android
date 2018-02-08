@@ -4,7 +4,12 @@ package org.qtum.wallet.model.gson.token_history;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TokenHistory {
+import org.qtum.wallet.model.gson.history.HistoryType;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class TokenHistory extends RealmObject{
 
     @SerializedName("contract_address")
     @Expose
@@ -18,6 +23,7 @@ public class TokenHistory {
     @SerializedName("amount")
     @Expose
     private String amount;
+    @PrimaryKey
     @SerializedName("tx_hash")
     @Expose
     private String txHash;
@@ -25,7 +31,7 @@ public class TokenHistory {
     @Expose
     private Integer txTime;
 
-    private HistoryType mHistoryType;
+    private String historyType;
 
     public String getContractAddress() {
         return contractAddress;
@@ -76,11 +82,15 @@ public class TokenHistory {
     }
 
     public void setHistoryType(HistoryType historyType) {
-        mHistoryType = historyType;
+        this.historyType = historyType.name();
     }
 
     public HistoryType getHistoryType() {
-        return mHistoryType;
+        return HistoryType.valueOf(historyType);
+    }
+
+    public TokenHistory(){
+
     }
 
     //for unit_test

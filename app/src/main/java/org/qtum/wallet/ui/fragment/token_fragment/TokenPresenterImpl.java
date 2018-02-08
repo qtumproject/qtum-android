@@ -3,20 +3,23 @@ package org.qtum.wallet.ui.fragment.token_fragment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
-import org.qtum.wallet.datastorage.TokenHistoryList;
 import org.qtum.wallet.model.contract.Token;
-import org.qtum.wallet.model.gson.token_history.HistoryType;
+import org.qtum.wallet.model.gson.history.HistoryType;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 
-import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.OrderedRealmCollectionChangeListener;
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;
 
@@ -27,6 +30,10 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
     private Token token;
     private String abi;
     private SubscriptionList mSubscriptionList = new SubscriptionList();
+    RealmResults<TokenHistory> tokenHistories;
+    private boolean mNetworkConnectedFlag = false;
+    private int visibleItemCount = 0;
+    private Integer totalItem;
 
     private final int ONE_PAGE_COUNT = 25;
 
@@ -43,8 +50,16 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
         getInteractor().setupPropertyDecimalsValue(token, getView().getDecimalsValueCallback());
         getInteractor().setupPropertySymbolValue(token, getView().getSymbolValueCallback());
         getInteractor().setupPropertyNameValue(token, getView().getNameValueCallback());
-        loadAndUpdateData();
-        getView().updateHistory(getInteractor().getHistoryList());
+
+        Realm realm = getView().getRealm();
+        tokenHistories = realm.where(TokenHistory.class).equalTo("contractAddress", token.getContractAddress()).sort("txTime", Sort.DESCENDING).findAll();
+
+        tokenHistories.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<TokenHistory>>() {
+            @Override
+            public void onChange(RealmResults<TokenHistory> tokenHistories, @Nullable OrderedCollectionChangeSet changeSet) {
+                getView().updateHistory(tokenHistories.subList(0, visibleItemCount), changeSet, visibleItemCount);
+            }
+        });
     }
 
     @Override
@@ -79,7 +94,7 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
     public void onDecimalsPropertySuccess(String value) {
 
         if(!TextUtils.isEmpty(value) && !token.getDecimalUnits().equals(Integer.valueOf(value))) {
-            getView().updateHistory(getInteractor().getHistoryList());
+            //getView().updateHistory(getInteractor().getHistoryList());
         }
 
         token = getInteractor().setTokenDecimals(token, value);
@@ -98,71 +113,89 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
 
     @Override
     public void onLastItem(final int currentItemCount) {
-        if (getInteractor().getHistoryList().size() != getInteractor().getTotalHistoryItem()) {
-            //getView().showBottomLoader();
-            mSubscriptionList.add(getInteractor().getHistoryList(token.getContractAddress(), ONE_PAGE_COUNT, currentItemCount)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<TokenHistoryResponse>() {
-                        @Override
-                        public void onCompleted() {
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onNext(TokenHistoryResponse historyResponse) {
-
-                            TokenHistoryList.newInstance().getTokenHistories().addAll(historyResponse.getItems());
-                            //getView().addHistory(currentItemCount, getInteractor().getHistoryList().size() - currentItemCount + 1,
-                            //        getInteractor().getHistoryList());
-                        }
-                    }));
-
+        if (mNetworkConnectedFlag) {
+            getHistoriesFromApi(currentItemCount);
+        } else {
+            getHistoriesFromRealm();
         }
     }
 
-    private void loadAndUpdateData() {
-        //getView().startRefreshAnimation();
-        mSubscriptionList.add(getInteractor().getHistoryList(token.getContractAddress(), ONE_PAGE_COUNT, 0).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+    private void getHistoriesFromApi(final int start) {
+        if (totalItem != null && totalItem == start) {
+            getView().hideBottomLoader();
+            return;
+        }
+        getInteractor().getHistoryList(token.getContractAddress(), ONE_PAGE_COUNT, 0).subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<TokenHistoryResponse>() {
                     @Override
                     public void onCompleted() {
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-//                        getView().setAlertDialog(org.qtum.wallet.R.string.no_internet_connection,
-//                                org.qtum.wallet.R.string.please_check_your_network_settings,
-//                                org.qtum.wallet.R.string.ok,
-//                                BaseFragment.PopUpType.error);
-                        //getView().stopRefreshRecyclerAnimation();
+
                     }
 
                     @Override
-                    public void onNext(TokenHistoryResponse historyResponse) {
-                        initTokenHistoryType(historyResponse.getItems());
-                        TokenHistoryList.newInstance().setTokenHistories(historyResponse.getItems());
-                        TokenHistoryList.newInstance().setTotalItems(historyResponse.getCount());
-                        getView().updateHistory(getInteractor().getHistoryList());
+                    public void onNext(final TokenHistoryResponse historyResponse) {
+                        totalItem = historyResponse.getCount();
+                        Realm realm = Realm.getDefaultInstance();
+                        realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+
+                                for (TokenHistory history : historyResponse.getItems()) {
+                                    prepareHistory(history);
+                                }
+                                visibleItemCount += historyResponse.getItems().size();
+                                realm.insertOrUpdate(historyResponse.getItems());
+
+                            }
+                        });
                     }
-                }));
+                });
     }
 
-    private void initTokenHistoryType(List<TokenHistory> tokenHistories) {
-        List<String> ownAddresses = getInteractor().getAddresses();
-        for(TokenHistory tokenHistory : tokenHistories){
-            for (String address : ownAddresses) {
-                if (tokenHistory.getFrom().equals(address)){
-                    tokenHistory.setHistoryType(HistoryType.Sent);
-                    break;
-                }
+    private void getHistoriesFromRealm() {
+        int allCount = tokenHistories.size();
+        if (allCount - visibleItemCount > 0) {
+            int toUpdate;
+            if (allCount - visibleItemCount > 25) {
+                toUpdate = 25;
+            } else {
+                toUpdate = allCount - visibleItemCount;
             }
-            if(tokenHistory.getHistoryType()==null){
+            List<TokenHistory> historiesFromRealm = tokenHistories.subList(0, visibleItemCount + toUpdate);
+            visibleItemCount += toUpdate;
+            visibleItemCount = historiesFromRealm.size();
+            getView().updateHistory(historiesFromRealm, 0, toUpdate);
+        } else {
+            getView().hideBottomLoader();
+        }
+    }
+
+    private void prepareHistory(TokenHistory tokenHistory) {
+
+        List<String> ownAddresses = getInteractor().getAddresses();
+        boolean isOwnFrom = false;
+        boolean isOwnTo = false;
+        for (String address : ownAddresses) {
+            if (tokenHistory.getFrom().equals(address)){
+                isOwnFrom = true;
+            }
+            if (tokenHistory.getTo().equals(address)){
+                isOwnTo = true;
+            }
+        }
+
+        if(isOwnFrom && isOwnTo){
+            tokenHistory.setHistoryType(HistoryType.Internal_Transaction);
+        } else {
+            if(isOwnFrom){
+                tokenHistory.setHistoryType(HistoryType.Sent);
+            }else{
                 tokenHistory.setHistoryType(HistoryType.Received);
             }
         }
@@ -173,6 +206,20 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
     public void onTransactionClick(String txHash) {
         Fragment fragment = TransactionFragment.newInstance(getView().getContext(), txHash);
         getView().openFragment(fragment);
+    }
+
+    @Override
+    public void onNetworkStateChanged(boolean networkConnectedFlag) {
+        if (networkConnectedFlag) {
+            getView().onlineModeView();
+            visibleItemCount = 0;
+            getView().clearAdapter();
+            getHistoriesFromApi(0);
+        } else {
+            getView().offlineModeView();
+            getHistoriesFromRealm();
+        }
+        mNetworkConnectedFlag = networkConnectedFlag;
     }
 
     @Override
