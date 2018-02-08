@@ -155,7 +155,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="left"
                             android:hint="@string/receiver_s_address"
-                            android:inputType="textPersonName" />
+                            android:inputType="textFilter" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout

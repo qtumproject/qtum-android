@@ -161,9 +161,12 @@
                             android:id="@+id/et_receivers_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="left"
+                            android:gravity="start"
+                            android:maxLines="1"
+                            android:lines="1"
                             android:hint="@string/receiver_s_address"
-                            android:inputType="textPersonName"
+                            android:privateImeOptions="nm"
+                            android:inputType="textFilter"
                             android:textColor="@color/colorPrimary" />
                     </android.support.design.widget.TextInputLayout>
 
