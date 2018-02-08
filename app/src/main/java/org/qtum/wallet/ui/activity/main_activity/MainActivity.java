@@ -25,7 +25,6 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
@@ -35,24 +34,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
-import net.yslibrary.android.keyboardvisibilityevent.Unregistrar;
 
 import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.R;
-import org.qtum.wallet.WearableMessagingProvider;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
@@ -87,12 +79,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import io.realm.Realm;
-import io.realm.RealmResults;
-import io.realm.Sort;
 
 import static org.qtum.wallet.ui.base.base_fragment.BaseFragment.BACK_STACK_ROOT_TAG;
 
-public class MainActivity extends BaseActivity implements MainActivityView, WearableMessagingProvider {
+public class MainActivity extends BaseActivity implements MainActivityView {
     private static final int LAYOUT = R.layout.activity_main;
     private static final int LAYOUT_LIGHT = R.layout.activity_main_light;
     private MainActivityPresenter mMainActivityPresenterImpl;
@@ -180,7 +170,6 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 if (iBinder instanceof UpdateService.UpdateBinder) {
-                    QtumApplication.instance.setWearableMessagingProvider(MainActivity.this);
                     mUpdateService = ((UpdateService.UpdateBinder) iBinder).getService();
                     mUpdateService.clearNotification();
                     mUpdateService.startMonitoring();
@@ -960,27 +949,6 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         NOT_BLOCKED,
         NO_FINGERPRINTS,
         READY
-    }
-
-
-    @Override
-    public List<History> getOperations() {
-return null;
-    }
-
-    @Override
-    public String getBalance() {
-        return mUpdateService != null ? mUpdateService.getBalance() : null;
-    }
-
-    @Override
-    public String getUnconfirmedBalance() {
-        return mUpdateService != null ? mUpdateService.getUnconfirmedBalance() : null;
-    }
-
-    @Override
-    public String getAddress() {
-        return KeyStorage.getInstance().getCurrentAddress();
     }
 
     public Realm getRealm(){

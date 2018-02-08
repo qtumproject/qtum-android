@@ -382,7 +382,6 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
                         }
                         String s = gson.toJson(items);
                         Log.d(TAG, "onNext: HISTORY ITEMS = " + s);
-                        sendData(s, balance.toString(), unconfirmedBalance.toString(), QtumApplication.instance.getWearableMessagingProvider().getAddress());
                     }
                 });
     }

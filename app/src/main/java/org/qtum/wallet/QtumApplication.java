@@ -22,16 +22,6 @@ public class QtumApplication extends MultiDexApplication{
     public static final String REALM_NAME = "org.qtum.realm";
     private Realm realm;
 
-    private WearableMessagingProvider wearableMessagingProvider;
-
-    public WearableMessagingProvider getWearableMessagingProvider() {
-        return wearableMessagingProvider;
-    }
-
-    public void setWearableMessagingProvider(WearableMessagingProvider provider){
-        this.wearableMessagingProvider = provider;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
