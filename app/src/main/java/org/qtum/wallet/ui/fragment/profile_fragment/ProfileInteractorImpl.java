@@ -19,10 +19,17 @@ class ProfileInteractorImpl implements ProfileInteractor {
     }
 
     @Override
-    public void clearWallet() {
+    public void clearWallet(Realm realm) {
         QtumSharedPreference.getInstance().clear(mContext);
         KeyStorage.getInstance().clearKeyStorage();
         //TODO CLEAR REALM
+        realm.removeAllChangeListeners();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.deleteAll();
+            }
+        });
         TinyDB db = new TinyDB(mContext);
         db.clearTokenList();
         db.clearContractList();

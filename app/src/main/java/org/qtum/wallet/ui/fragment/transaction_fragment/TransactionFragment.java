@@ -22,6 +22,7 @@ import org.qtum.wallet.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.realm.Realm;
 
 public abstract class TransactionFragment extends BaseFragment implements TransactionView {
 
@@ -209,4 +210,8 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         }
     }
 
+    @Override
+    public Realm getRealm() {
+        return getMainActivity().getRealm();
+    }
 }

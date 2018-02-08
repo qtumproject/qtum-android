@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.utils.DateCalculator;
 
 import java.lang.ref.WeakReference;
@@ -34,5 +35,10 @@ class TransactionInteractorImpl implements TransactionInteractor {
     @Override
     public String getUnconfirmedDate() {
         return mContext.get().getString(R.string.unconfirmed);
+    }
+
+    @Override
+    public TransactionReceipt getHistoryReceipt(Realm realm, String txHash) {
+        return realm.where(TransactionReceipt.class).equalTo("transactionHash", txHash).findFirst();
     }
 }

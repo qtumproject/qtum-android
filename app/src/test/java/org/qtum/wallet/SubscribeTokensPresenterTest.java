@@ -62,17 +62,4 @@ public class SubscribeTokensPresenterTest {
         verify(view, never()).setPlaceHolder();
     }
 
-    @Test
-    public void saveTokens_Success() {
-        presenter.saveTokens(TEST_TOKENS);
-
-        verify(interactor, times(1)).saveTokenList(anyList());
-    }
-
-    @Test
-    public void saveTokens_NoTokens() {
-        presenter.saveTokens(null);
-
-        verify(interactor, never()).saveTokenList(anyList());
-    }
 }
