@@ -40,7 +40,7 @@ public class History extends RealmObject{
     @Expose
     private RealmList<Vin> vin = null;
 
-
+    public String historyType;
     private String changeInBalance;
     private String fee;
     private boolean isContractType = false;
@@ -174,5 +174,13 @@ public class History extends RealmObject{
 
     public void setContractType(boolean contractType) {
         isContractType = contractType;
+    }
+
+    public void setHistoryType(HistoryType historyType) {
+        this.historyType = historyType.name();
+    }
+
+    public HistoryType getHistoryType() {
+        return HistoryType.valueOf(historyType);
     }
 }

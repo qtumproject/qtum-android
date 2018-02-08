@@ -8,6 +8,8 @@ import org.qtum.wallet.datastorage.TinyDB;
 
 import java.lang.ref.WeakReference;
 
+import io.realm.Realm;
+
 public class StartPageInteractorImpl implements StartPageInteractor {
 
     private WeakReference<Context> mContext;
