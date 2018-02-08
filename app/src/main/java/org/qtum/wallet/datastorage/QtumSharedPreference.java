@@ -192,7 +192,7 @@ public class QtumSharedPreference {
     }
 
     public String getBalanceString(Context context){
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(BALANCE_STRING,"");
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(BALANCE_STRING,"0");
     }
 
     public void setUnconfirmedBalanceString(Context context, String balance){
@@ -203,7 +203,7 @@ public class QtumSharedPreference {
     }
 
     public String getUnconfirmedBalanceString(Context context){
-        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(UNCONFIRMED_BALANCE_STRING,"");
+        return context.getSharedPreferences(QTUM_DATA_STORAGE, Context.MODE_PRIVATE).getString(UNCONFIRMED_BALANCE_STRING,"0");
     }
 
     public void setLastUpdatedBalanceTime(Context context, Long lastUpdatedBalanceTime) {

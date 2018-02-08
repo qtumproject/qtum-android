@@ -87,6 +87,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 import static org.qtum.wallet.ui.base.base_fragment.BaseFragment.BACK_STACK_ROOT_TAG;
 
@@ -963,9 +965,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public List<History> getOperations() {
-        return null;
-        //TODO CRITICAL
-        //return HistoryList.getInstance().getHistoryList();
+return null;
     }
 
     @Override
