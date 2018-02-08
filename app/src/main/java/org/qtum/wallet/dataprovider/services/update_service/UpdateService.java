@@ -105,7 +105,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
     private JSONArray mAddresses;
     private BigDecimal unconfirmedBalance;
     private BigDecimal balance;
-    private Long mLastUpdatedBalanceTime;
+    private Long mLastUpdatedBalanceTime = System.currentTimeMillis();
     private GoogleApiClient mApiClient;
     private List<String> addresses;
 
