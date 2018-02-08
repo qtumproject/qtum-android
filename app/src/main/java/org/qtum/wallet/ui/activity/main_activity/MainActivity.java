@@ -86,6 +86,7 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import io.realm.Realm;
 
 import static org.qtum.wallet.ui.base.base_fragment.BaseFragment.BACK_STACK_ROOT_TAG;
 
@@ -980,5 +981,9 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     @Override
     public String getAddress() {
         return KeyStorage.getInstance().getCurrentAddress();
+    }
+
+    public Realm getRealm(){
+        return ((QtumApplication)getApplication()).getRealm();
     }
 }

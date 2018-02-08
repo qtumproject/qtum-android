@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
+import org.qtum.wallet.model.gson.history.HistoryType;
 import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.history.Vin;
 import org.qtum.wallet.model.gson.history.Vout;
@@ -34,8 +35,8 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     private boolean mNetworkConnectedFlag = false;
     private SubscriptionList mSubscriptionList = new SubscriptionList();
     private int visibleItemCount = 0;
-    RealmResults<History> histories;
     private Integer totalItem;
+    RealmResults<History> histories;
 
     private final int ONE_PAGE_COUNT = 25;
 
@@ -52,13 +53,15 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
         //List<History> histories = getInteractor().getHistoriesFromDb(0,ONE_PAGE_COUNT);
 
-        Realm realm = Realm.getDefaultInstance();
-        histories = realm.where(History.class).findAllAsync().sort("blockTime", Sort.DESCENDING);
+        Realm realm = getView().getRealm();
+        histories = realm.where(History.class).findAll().sort("blockTime", Sort.DESCENDING);
 
         histories.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<History>>() {
             @Override
             public void onChange(RealmResults<History> histories, @Nullable OrderedCollectionChangeSet changeSet) {
-                getView().updateHistory(histories.subList(0, visibleItemCount), changeSet, visibleItemCount);
+                if(visibleItemCount<=histories.size()) {
+                    getView().updateHistory(histories.subList(0, visibleItemCount), changeSet, visibleItemCount);
+                }
             }
         });
 
@@ -164,6 +167,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         BigDecimal totalOwnVout = new BigDecimal("0.0");
 
         boolean isOwnVin = false;
+        boolean isOwnVout = false;
 
         for (Vin vin : history.getVin()) {
             vin.setValueString(convertBalanceToString(vin.getValue()));
@@ -181,6 +185,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
             vout.setValueString(convertBalanceToString(vout.getValue()));
             for (String address : addresses) {
                 if (vout.getAddress().equals(address)) {
+                    isOwnVout = true;
                     vout.setOwnAddress(true);
                     totalOwnVout = totalOwnVout.add(vout.getValue());
                 }
@@ -189,10 +194,21 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         }
 
         history.setFee(convertBalanceToString(totalVin.subtract(totalVout)));
+        BigDecimal changeInBalance;
         if (isOwnVin) {
-            history.setChangeInBalance(convertBalanceToString(totalOwnVout.subtract(totalOwnVin).add(totalVin.subtract(totalVout))));
+            changeInBalance = totalOwnVout.subtract(totalOwnVin).add(totalVin.subtract(totalVout));
         } else {
-            history.setChangeInBalance(convertBalanceToString(totalOwnVout.subtract(totalOwnVin)));
+            changeInBalance = totalOwnVout.subtract(totalOwnVin);
+        }
+        history.setChangeInBalance(convertBalanceToString(changeInBalance));
+        if(isOwnVout && isOwnVin){
+            history.setHistoryType(HistoryType.Internal_Transaction);
+        } else {
+            if(changeInBalance.doubleValue()>0){
+                history.setHistoryType(HistoryType.Received);
+            } else{
+                history.setHistoryType(HistoryType.Sent);
+            }
         }
     }
 
@@ -276,6 +292,9 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         super.onDestroyView();
         if (mSubscriptionList != null) {
             mSubscriptionList.clear();
+        }
+        if(histories!=null){
+            histories.removeAllChangeListeners();
         }
     }
 

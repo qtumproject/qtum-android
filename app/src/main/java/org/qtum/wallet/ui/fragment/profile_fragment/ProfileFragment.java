@@ -24,6 +24,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.ThemeUtils;
 
 import butterknife.BindView;
+import io.realm.Realm;
 
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION_FOR_PASSPHRASE;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CHANGING;
@@ -153,8 +154,8 @@ public abstract class ProfileFragment extends BaseNavFragment implements Profile
     }
 
     public void onLogout() {
-        getPresenter().clearWallet();
         getMainActivity().onLogout();
+        getPresenter().clearWallet();
         mUpdateService = getMainActivity().getUpdateService();
         mUpdateService.stopMonitoring();
         BaseFragment startPageFragment = StartPageFragment.newInstance(getContext());
@@ -182,5 +183,10 @@ public abstract class ProfileFragment extends BaseNavFragment implements Profile
     @Override
     public int getRootView() {
         return R.id.fragment_container;
+    }
+
+    @Override
+    public Realm getRealm() {
+        return getMainActivity().getRealm();
     }
 }

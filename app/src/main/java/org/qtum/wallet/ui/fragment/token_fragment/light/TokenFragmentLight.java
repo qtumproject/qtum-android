@@ -15,6 +15,7 @@ import org.qtum.wallet.ui.wave_visualizer.WaveHelper;
 import org.qtum.wallet.ui.wave_visualizer.WaveView;
 import org.qtum.wallet.utils.ContractBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -105,10 +106,16 @@ public class TokenFragmentLight extends TokenFragment {
     }
 
     @Override
-    public void updateHistory(List<TokenHistory> tokenHistories) {
-        super.updateHistory(tokenHistories);
-        mAdapter = new TokenHistoryAdapterLight(tokenHistories,this, getPresenter().getToken().getDecimalUnits());
+    protected void createAdapter() {
+        mAdapter = new TokenHistoryAdapterLight(new ArrayList<TokenHistory>(),this,0);
         mRecyclerView.setAdapter(mAdapter);
     }
+
+    //    @Override
+//    public void updateHistory(List<TokenHistory> tokenHistories) {
+//        super.updateHistory(tokenHistories);
+//        mAdapter = new TokenHistoryAdapterLight(tokenHistories,this, getPresenter().getToken().getDecimalUnits());
+//        mRecyclerView.setAdapter(mAdapter);
+//    }
 
 }

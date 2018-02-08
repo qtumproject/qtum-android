@@ -10,12 +10,9 @@ import android.widget.Toast;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
-import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.ui.fragment.wallet_fragment.TransactionClickListener;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.DateCalculator;
-
-import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,39 +104,32 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
         progressIndicator.setVisibility(View.GONE);
         if (history.isReceiptUpdated()) {
             mImageViewIcon.setVisibility(View.VISIBLE);
-
             if (history.isContractType()) {
-                if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
-                    mTextViewOperationType.setText(R.string.received_contract);
-                    mImageViewIcon.setImageResource(R.drawable.ic_rec_cont_dark);
-                    contractIndicator.setBackgroundResource(R.color.colorPrimary);
-                } else {
-                    mTextViewOperationType.setText(R.string.sent_contract);
-                    mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_dark);
-                    contractIndicator.setBackgroundResource(R.color.colorAccent);
-                }
+                mTextViewOperationType.setText(R.string.sent_contract);
+                mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_dark);
+                contractIndicator.setBackgroundResource(R.color.colorAccent);
             } else {
                 contractIndicator.setBackgroundColor(Color.TRANSPARENT);
-                if ((new BigDecimal(history.getChangeInBalance())).doubleValue() > 0) {
-                    mTextViewOperationType.setText(R.string.received);
-                    mImageViewIcon.setImageResource(R.drawable.ic_received);
-                } else {
-                    mTextViewOperationType.setText(R.string.sent);
-                    mImageViewIcon.setImageResource(R.drawable.ic_sent);
+                switch (history.getHistoryType()) {
+                    case Received:
+                        mImageViewIcon.setImageResource(R.drawable.ic_received);
+                        break;
+                    case Sent:
+                        mImageViewIcon.setImageResource(R.drawable.ic_sent);
+                        break;
+                    case Internal_Transaction:
+                        mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_dark);
+                        break;
                 }
+                mTextViewOperationType.setText(history.getHistoryType().toString());
             }
-
-
         } else {
             mTextViewOperationType.setText(R.string.getting_info);
             progressIndicator.setVisibility(View.VISIBLE);
             mImageViewIcon.setVisibility(View.GONE);
             contractIndicator.setBackgroundColor(Color.TRANSPARENT);
         }
-
         mTextViewID.setText(history.getTxHash());
-
-
         mTextViewValue.setText(history.getChangeInBalance());
     }
 }

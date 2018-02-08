@@ -17,4 +17,6 @@ public interface TokenPresenter extends BaseFragmentPresenter {
     void onLastItem(int currentItemCount);
 
     void onTransactionClick(String txHash);
+
+    void onNetworkStateChanged(boolean networkConnectedFlag);
 }

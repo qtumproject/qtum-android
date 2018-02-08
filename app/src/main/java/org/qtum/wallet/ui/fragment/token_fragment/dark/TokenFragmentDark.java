@@ -12,6 +12,7 @@ import org.qtum.wallet.ui.fragment.token_fragment.TokenFragment;
 import org.qtum.wallet.utils.ResizeWidthAnimation;
 import org.qtum.wallet.utils.StackCollapseLinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -101,12 +102,12 @@ public class TokenFragmentDark extends TokenFragment {
         }
     }
 
-    @Override
-    public void updateHistory(List<TokenHistory> tokenHistories) {
-        super.updateHistory(tokenHistories);
-        mAdapter = new TokenHistoryAdapterDark(tokenHistories, this, getPresenter().getToken().getDecimalUnits());
-        mRecyclerView.setAdapter(mAdapter);
-    }
+//    @Override
+//    public void updateHistory(List<TokenHistory> tokenHistories) {
+//        super.updateHistory(tokenHistories);
+//        mAdapter = new TokenHistoryAdapterDark(tokenHistories, this, getPresenter().getToken().getDecimalUnits());
+//        mRecyclerView.setAdapter(mAdapter);
+//    }
 
     AppBarLayout.OnOffsetChangedListener appBarLayoutListener = new AppBarLayout.OnOffsetChangedListener() {
         @Override
@@ -151,4 +152,10 @@ public class TokenFragmentDark extends TokenFragment {
         }
 
     };
+
+    @Override
+    protected void createAdapter() {
+        mAdapter = new TokenHistoryAdapterDark(new ArrayList<TokenHistory>(),this,0);
+        mRecyclerView.setAdapter(mAdapter);
+    }
 }

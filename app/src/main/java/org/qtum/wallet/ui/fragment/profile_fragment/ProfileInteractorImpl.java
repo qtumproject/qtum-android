@@ -8,6 +8,8 @@ import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 
+import io.realm.Realm;
+
 class ProfileInteractorImpl implements ProfileInteractor {
 
     private Context mContext;

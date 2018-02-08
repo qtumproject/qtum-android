@@ -6,7 +6,6 @@ import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.datastorage.FileStorageManager;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.TinyDB;
-import org.qtum.wallet.datastorage.TokenHistoryList;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
@@ -87,20 +86,12 @@ public class TokenInteractorImpl implements TokenInteractor {
         return value;
     }
 
-    @Override
-    public List<TokenHistory> getHistoryList() {
-        return TokenHistoryList.newInstance().getTokenHistories();
-    }
 
     @Override
     public Observable<TokenHistoryResponse> getHistoryList(String contractAddress, int limit, int offset) {
         return QtumService.newInstance().getTokenHistoryList(contractAddress,limit,offset,getAddresses());
     }
 
-    @Override
-    public int getTotalHistoryItem() {
-        return TokenHistoryList.newInstance().getTotalItems();
-    }
 
 //    @Override
 //    public void addToHistoryList(TokenHistory history) {
