@@ -26,19 +26,19 @@ public class CurrencyPresenterTest {
     CurrencyPresenterImpl presenter;
 
     @Before
-    public void setup(){
+    public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        presenter = new CurrencyPresenterImpl(view,interactor);
+        presenter = new CurrencyPresenterImpl(view, interactor);
     }
 
     private final List<Currency> TEST_CURRENCIES = Arrays.asList(new Currency("some name1"), new Currency("some name2"));
 
     @Test
-    public void initialize_Test(){
+    public void initialize_Test() {
         when(interactor.getCurrencies()).thenReturn(TEST_CURRENCIES);
         presenter.initializeViews();
-        verify(view,times(1)).setCurrencyList(TEST_CURRENCIES);
+        verify(view, times(1)).setCurrencyList(TEST_CURRENCIES);
     }
 
 }

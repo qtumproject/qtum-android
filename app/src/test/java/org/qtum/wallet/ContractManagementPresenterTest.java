@@ -32,10 +32,10 @@ public class ContractManagementPresenterTest {
     ContractManagementPresenterImpl presenter;
 
     @Before
-    public void setup(){
+    public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        presenter = new ContractManagementPresenterImpl(view,interactor);
+        presenter = new ContractManagementPresenterImpl(view, interactor);
     }
 
     private final String TEST_UIID = "test_uiid";
@@ -44,23 +44,23 @@ public class ContractManagementPresenterTest {
     private final String TEST_NOT_EMPTY_STRING = "test_not_empty_string";
 
     @Test
-    public void initialize_contractAddressNotEmpty_contractListNotEmpty(){
+    public void initialize_contractAddressNotEmpty_contractListNotEmpty() {
         when(view.getContractAddress()).thenReturn(TEST_NOT_EMPTY_STRING);
         when(view.getContractTemplateUiid()).thenReturn(TEST_UIID);
         when(interactor.getContractListByUiid(TEST_UIID)).thenReturn(TEST_METHODS);
         presenter.initializeViews();
-        verify(view,times(1)).setRecyclerView(TEST_METHODS,true);
+        verify(view, times(1)).setRecyclerView(TEST_METHODS, true);
 
     }
 
     @Test
-    public void initialize_contractAddressNotEmpty_contractListNull(){
+    public void initialize_contractAddressNotEmpty_contractListNull() {
         when(view.getContractAddress()).thenReturn(TEST_NOT_EMPTY_STRING);
         when(view.getContractTemplateUiid()).thenReturn(TEST_UIID);
         when(interactor.getContractListByUiid(TEST_UIID)).thenReturn(null);
         presenter.initializeViews();
-        verify(view,never()).setRecyclerView(anyList(),anyBoolean());
-        verify(view,times(1)).setAlertDialog(anyInt(),anyInt(), eq(BaseFragment.PopUpType.error));
+        verify(view, never()).setRecyclerView(anyList(), anyBoolean());
+        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), eq(BaseFragment.PopUpType.error));
 
     }
 
@@ -68,28 +68,28 @@ public class ContractManagementPresenterTest {
     private final String TEST_ABI = "test_abi";
 
     @Test
-    public void initialize_contractAddressEmpty_contractListNotEmpty(){
+    public void initialize_contractAddressEmpty_contractListNotEmpty() {
         when(view.getContractAddress()).thenReturn(TEST_EMPTY_STRING);
         when(view.getContractABI()).thenReturn(TEST_ABI);
         when(interactor.getContractListByAbi(TEST_ABI)).thenReturn(TEST_METHODS);
         presenter.initializeViews();
-        verify(view,times(1)).setRecyclerView(TEST_METHODS,false);
+        verify(view, times(1)).setRecyclerView(TEST_METHODS, false);
 
     }
 
     @Test
-    public void initialize_contractAddressEmpty_contractListNull(){
+    public void initialize_contractAddressEmpty_contractListNull() {
         when(view.getContractAddress()).thenReturn(TEST_EMPTY_STRING);
         when(view.getContractABI()).thenReturn(TEST_ABI);
         when(interactor.getContractListByAbi(TEST_ABI)).thenReturn(null);
         presenter.initializeViews();
-        verify(view,never()).setRecyclerView(anyList(),anyBoolean());
-        verify(view,times(1)).setAlertDialog(anyInt(),anyInt(), eq(BaseFragment.PopUpType.error));
+        verify(view, never()).setRecyclerView(anyList(), anyBoolean());
+        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), eq(BaseFragment.PopUpType.error));
 
     }
 
     @Test
-    public void initialize_contractAddressEmpty(){
+    public void initialize_contractAddressEmpty() {
         when(view.getContractAddress()).thenReturn("");
 
     }

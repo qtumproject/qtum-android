@@ -12,14 +12,19 @@ import org.qtum.wallet.model.gson.history.TransactionReceipt;
 
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
 import rx.Observable;
 
 public class WalletInteractorImpl implements WalletInteractor {
 
     private Context context;
+    private Realm realm;
 
-    public WalletInteractorImpl(Context context) {
+    public WalletInteractorImpl(Context context, Realm realm) {
         this.context = context;
+        this.realm = realm;
     }
 
 //    @Override
@@ -72,5 +77,63 @@ public class WalletInteractorImpl implements WalletInteractor {
     @Override
     public Observable<List<TransactionReceipt>> getTransactionReceipt(String txHash) {
         return QtumService.newInstance().getTransactionReceipt(txHash);
+    }
+
+    @Override
+    public RealmResults<History> getHistoriesFromRealm() {
+        return realm.where(History.class).findAll().sort("blockTime", Sort.DESCENDING);
+    }
+
+    @Override
+    public void updateHistoryInRealm(final List<History> histories) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.insertOrUpdate(histories);
+            }
+        });
+
+    }
+
+    @Override
+    public void updateHistoryInRealm(final History histories) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.insertOrUpdate(histories);
+            }
+        });
+
+    }
+
+    @Override
+    public void updateReceiptInRealm(final TransactionReceipt transactionReceipt) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.insertOrUpdate(transactionReceipt);
+            }
+        });
+
+    }
+
+    @Override
+    public TransactionReceipt getReceiptByRxhHashFromRealm(String txHash) {
+        return realm.where(TransactionReceipt.class).equalTo("transactionHash", txHash).findFirst();
+    }
+
+    @Override
+    public void setUpHistoryReceipt(final String txHash, final boolean isContract) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                History history = realm.where(History.class).equalTo("txHash", txHash).findFirst();
+                history.setReceiptUpdated(true);
+                history.setContractType(isContract);
+                realm.insertOrUpdate(history);
+            }
+        });
+
+
     }
 }

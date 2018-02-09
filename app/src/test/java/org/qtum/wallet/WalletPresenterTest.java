@@ -14,7 +14,6 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.WalletInteractor;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletPresenterImpl;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletView;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,7 +60,7 @@ public class WalletPresenterTest {
         presenter = new WalletPresenterImpl(view, interactor);
     }
 
-    private static final History TEST_HISTORY= new History();
+    private static final History TEST_HISTORY = new History();
     private static final List<History> TEST_HISTORY_LIST = Arrays.asList(TEST_HISTORY);
     private static final HistoryResponse TEST_HISTORY_RESPONSE = new HistoryResponse(10, Arrays.asList(TEST_HISTORY));
 
@@ -69,7 +68,7 @@ public class WalletPresenterTest {
     @Test
     public void onRefresh_NetworkConnected() {
 
-        when(interactor.getHistoryList(anyInt(),anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
+        when(interactor.getHistoryList(anyInt(), anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
 
         presenter.setNetworkConnectedFlag(true);
 
@@ -91,7 +90,7 @@ public class WalletPresenterTest {
     @Test
     public void onLastItem() {
 
-        when(interactor.getHistoryList(anyInt(),anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
+        when(interactor.getHistoryList(anyInt(), anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
 
         presenter.onLastItem(0);
 
@@ -101,7 +100,7 @@ public class WalletPresenterTest {
 
     @Test
     public void networkStateChanged_Connected() {
-        when(interactor.getHistoryList(anyInt(),anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
+        when(interactor.getHistoryList(anyInt(), anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
         presenter.onNetworkStateChanged(true);
 
         verify(view, times(1)).startRefreshAnimation();
@@ -116,8 +115,8 @@ public class WalletPresenterTest {
     }
 
 
-    private static final History TEST_HISTORY_WITH_BLOCK_TIME = new History(Long.valueOf("12"), new RealmList<Vout>(), new RealmList<Vin>(),"12",12);
-    private static final History TEST_HISTORY_WITHOUT_BLOCK_TIME = new History(null, new RealmList<Vout>(), new RealmList<Vin>(),"12",12);
+    private static final History TEST_HISTORY_WITH_BLOCK_TIME = new History(Long.valueOf("12"), new RealmList<Vout>(), new RealmList<Vin>(), "12", 12);
+    private static final History TEST_HISTORY_WITHOUT_BLOCK_TIME = new History(null, new RealmList<Vout>(), new RealmList<Vin>(), "12", 12);
 //    @Test
 //    public void onNewHistory_BlockTime_NewHistory() {
 //        when(interactor.setHistory((History) any()))

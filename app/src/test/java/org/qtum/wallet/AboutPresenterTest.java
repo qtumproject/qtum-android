@@ -11,7 +11,6 @@ import org.qtum.wallet.ui.fragment.about_fragment.AboutInteractor;
 import org.qtum.wallet.ui.fragment.about_fragment.AboutPresenterImpl;
 import org.qtum.wallet.ui.fragment.about_fragment.AboutView;
 
-
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
@@ -51,7 +50,7 @@ public class AboutPresenterTest {
         when(interactor.getCodeVersion()).thenReturn(TEST_CODE_VERSION);
         when(interactor.getVersion()).thenThrow(new Exception());
         presenter.initializeViews();
-        verify(view, times(1)).setAlertDialog(anyInt(),anyInt(),(BaseFragment.PopUpType) any());
+        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
     }
 
     @Test
@@ -59,7 +58,7 @@ public class AboutPresenterTest {
         when(interactor.getCodeVersion()).thenThrow(new Exception());
         when(interactor.getVersion()).thenReturn(TEST_VERSION);
         presenter.initializeViews();
-        verify(view, times(1)).setAlertDialog(anyInt(),anyInt(),(BaseFragment.PopUpType) any());
+        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
     }
 
 

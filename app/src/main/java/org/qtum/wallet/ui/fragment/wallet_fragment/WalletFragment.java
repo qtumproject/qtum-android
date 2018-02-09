@@ -315,7 +315,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @Override
     protected void createPresenter() {
-        mWalletFragmentPresenter = new WalletPresenterImpl(this, new WalletInteractorImpl(getContext()));
+        mWalletFragmentPresenter = new WalletPresenterImpl(this, new WalletInteractorImpl(getContext(), getMainActivity().getRealm()));
     }
 
     @Override
@@ -441,10 +441,4 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         }
     };
 
-
-
-    @Override
-    public Realm getRealm() {
-        return getMainActivity().getRealm();
-    }
 }

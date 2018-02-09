@@ -18,9 +18,7 @@ import javax.annotation.Nullable;
 
 import io.realm.OrderedCollectionChangeSet;
 import io.realm.OrderedRealmCollectionChangeListener;
-import io.realm.Realm;
 import io.realm.RealmResults;
-import io.realm.Sort;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.internal.util.SubscriptionList;
@@ -53,13 +51,12 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
         //List<History> histories = getInteractor().getHistoriesFromDb(0,ONE_PAGE_COUNT);
 
-        Realm realm = getView().getRealm();
-        histories = realm.where(History.class).findAll().sort("blockTime", Sort.DESCENDING);
+        histories = getInteractor().getHistoriesFromRealm();
 
         histories.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<History>>() {
             @Override
             public void onChange(RealmResults<History> histories, @Nullable OrderedCollectionChangeSet changeSet) {
-                if(visibleItemCount<=histories.size()) {
+                if (visibleItemCount <= histories.size()) {
                     getView().updateHistory(histories.subList(0, visibleItemCount), changeSet, visibleItemCount);
                 }
             }
@@ -74,6 +71,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         }
         getInteractor().getHistoryList(ONE_PAGE_COUNT, start)
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<HistoryResponse>() {
                     @Override
                     public void onCompleted() {
@@ -88,19 +86,15 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                     @Override
                     public void onNext(final HistoryResponse historyResponse) {
                         totalItem = historyResponse.getTotalItems();
-                        Realm realm = Realm.getDefaultInstance();
-                        realm.executeTransaction(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
 
-                                for (History history : historyResponse.getItems()) {
-                                    prepareHistory(history, realm);
-                                }
-                                visibleItemCount += historyResponse.getItems().size();
-                                realm.insertOrUpdate(historyResponse.getItems());
 
-                            }
-                        });
+                        for (History history : historyResponse.getItems()) {
+                            prepareHistory(history);
+                        }
+                        visibleItemCount += historyResponse.getItems().size();
+                        getInteractor().updateHistoryInRealm(historyResponse.getItems());
+
+
                     }
                 });
     }
@@ -123,10 +117,10 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         }
     }
 
-    private void prepareHistory(History history, Realm realm) {
+    private void prepareHistory(History history) {
         calculateChangeInBalance(history, getInteractor().getAddresses());
         if (history.getBlockTime() != null) {
-            TransactionReceipt transactionReceipt = realm.where(TransactionReceipt.class).equalTo("transactionHash", history.getTxHash()).findFirst();
+            TransactionReceipt transactionReceipt = getInteractor().getReceiptByRxhHashFromRealm(history.getTxHash());
             if (transactionReceipt == null) {
                 initTransactionReceipt(history.getTxHash());
             } else {
@@ -201,12 +195,12 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
             changeInBalance = totalOwnVout.subtract(totalOwnVin);
         }
         history.setChangeInBalance(convertBalanceToString(changeInBalance));
-        if(isOwnVout && isOwnVin){
+        if (isOwnVout && isOwnVin) {
             history.setHistoryType(HistoryType.Internal_Transaction);
         } else {
-            if(changeInBalance.doubleValue()>0){
+            if (changeInBalance.doubleValue() > 0) {
                 history.setHistoryType(HistoryType.Received);
-            } else{
+            } else {
                 history.setHistoryType(HistoryType.Sent);
             }
         }
@@ -228,14 +222,9 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
     @Override
     public void onNewHistory(final History history) {
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                prepareHistory(history, realm);
-                realm.insertOrUpdate(history);
-            }
-        });
+        prepareHistory(history);
+        getInteractor().updateHistoryInRealm(history);
+
     }
 
     private void initTransactionReceipt(final String txHash) {
@@ -256,22 +245,15 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
                     @Override
                     public void onNext(final List<TransactionReceipt> transactionReceipt) {
-                        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
-                                TransactionReceipt transactionReceiptRealm = new TransactionReceipt(txHash);
-                                History history = realm.where(History.class).equalTo("txHash", txHash).findFirst();
-                                history.setReceiptUpdated(true);
-                                if (transactionReceipt.size() > 0) {
-                                    transactionReceiptRealm = transactionReceipt.get(0);
-                                    history.setContractType(true);
-                                } else {
-                                    history.setContractType(false);
-                                }
-                                realm.insertOrUpdate(history);
-                                realm.insertOrUpdate(transactionReceiptRealm);
-                            }
-                        });
+
+                        TransactionReceipt transactionReceiptRealm = new TransactionReceipt(txHash);
+                        getInteractor().setUpHistoryReceipt(txHash, transactionReceipt.size()>0);
+
+                        if (transactionReceipt.size() > 0) {
+                            transactionReceiptRealm = transactionReceipt.get(0);
+                        }
+                        getInteractor().updateReceiptInRealm(transactionReceiptRealm);
+
                     }
                 });
 
@@ -293,7 +275,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         if (mSubscriptionList != null) {
             mSubscriptionList.clear();
         }
-        if(histories!=null){
+        if (histories != null) {
             histories.removeAllChangeListeners();
         }
     }
