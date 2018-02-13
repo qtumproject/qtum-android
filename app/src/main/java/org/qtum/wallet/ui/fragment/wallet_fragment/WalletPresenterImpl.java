@@ -4,11 +4,12 @@ import android.support.v4.app.Fragment;
 
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
-import org.qtum.wallet.model.gson.history.HistoryType;
+import org.qtum.wallet.model.gson.history.HistoryPayType;
 import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.history.Vin;
 import org.qtum.wallet.model.gson.history.Vout;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+import org.qtum.wallet.ui.fragment.transaction_fragment.HistoryType;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 
 import java.math.BigDecimal;
@@ -137,7 +138,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
     @Override
     public void onTransactionClick(String txHash) {
-        Fragment fragment = TransactionFragment.newInstance(getView().getContext(), txHash);
+        Fragment fragment = TransactionFragment.newInstance(getView().getContext(), txHash, HistoryType.History);
         getView().openFragment(fragment);
     }
 
@@ -193,12 +194,12 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         }
         history.setChangeInBalance(convertBalanceToString(changeInBalance));
         if (isOwnVout && isOwnVin) {
-            history.setHistoryType(HistoryType.Internal_Transaction);
+            history.setHistoryType(HistoryPayType.Internal_Transaction);
         } else {
             if (changeInBalance.doubleValue() > 0) {
-                history.setHistoryType(HistoryType.Received);
+                history.setHistoryType(HistoryPayType.Received);
             } else {
-                history.setHistoryType(HistoryType.Sent);
+                history.setHistoryType(HistoryPayType.Sent);
             }
         }
     }

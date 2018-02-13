@@ -3,6 +3,7 @@ package org.qtum.wallet.ui.fragment.token_fragment;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 import org.qtum.wallet.ui.fragment.wallet_fragment.HistoryInDbChangeListener;
@@ -42,5 +43,13 @@ public interface TokenInteractor {
     void updateHistoryInRealm(final List<TokenHistory> histories);
 
     void addHistoryInDbChangeListener(HistoryInDbChangeListener listener);
+
+    TransactionReceipt getReceiptByRxhHashFromRealm(String txHash);
+
+    Observable<List<TransactionReceipt>> getTransactionReceipt(String txHash);
+
+    void setUpHistoryReceipt(String txHash);
+
+    void updateReceiptInRealm(TransactionReceipt transactionReceipt);
 
 }

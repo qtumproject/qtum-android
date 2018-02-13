@@ -176,11 +176,11 @@ public class History extends RealmObject{
         isContractType = contractType;
     }
 
-    public void setHistoryType(HistoryType historyType) {
+    public void setHistoryType(HistoryPayType historyType) {
         this.historyType = historyType.name();
     }
 
-    public HistoryType getHistoryType() {
-        return HistoryType.valueOf(historyType);
+    public HistoryPayType getHistoryType() {
+        return HistoryPayType.valueOf(historyType);
     }
 }

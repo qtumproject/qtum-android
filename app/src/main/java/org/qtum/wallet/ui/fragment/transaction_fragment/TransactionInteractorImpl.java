@@ -5,6 +5,7 @@ import android.content.Context;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.TransactionReceipt;
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.utils.DateCalculator;
 
 import java.lang.ref.WeakReference;
@@ -23,6 +24,14 @@ class TransactionInteractorImpl implements TransactionInteractor {
     public History getHistory(String txHash) {
         Realm realm = Realm.getDefaultInstance();
         return realm.where(History.class)
+                .equalTo("txHash", txHash)
+                .findFirst();
+    }
+
+    @Override
+    public TokenHistory getTokenHistory(String txHash) {
+        Realm realm = Realm.getDefaultInstance();
+        return realm.where(TokenHistory.class)
                 .equalTo("txHash", txHash)
                 .findFirst();
     }

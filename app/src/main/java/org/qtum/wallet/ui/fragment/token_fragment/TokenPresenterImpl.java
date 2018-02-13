@@ -4,10 +4,12 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
 import org.qtum.wallet.model.contract.Token;
-import org.qtum.wallet.model.gson.history.HistoryType;
+import org.qtum.wallet.model.gson.history.HistoryPayType;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+import org.qtum.wallet.ui.fragment.transaction_fragment.HistoryType;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 import org.qtum.wallet.ui.fragment.wallet_fragment.HistoryInDbChangeListener;
 
@@ -16,7 +18,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import io.realm.OrderedCollectionChangeSet;
-import io.realm.OrderedRealmCollectionChangeListener;
 
 import io.realm.RealmResults;
 import rx.Subscriber;
@@ -183,20 +184,59 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
         }
 
         if (isOwnFrom && isOwnTo) {
-            tokenHistory.setHistoryType(HistoryType.Internal_Transaction);
+            tokenHistory.setHistoryType(HistoryPayType.Internal_Transaction);
         } else {
             if (isOwnFrom) {
-                tokenHistory.setHistoryType(HistoryType.Sent);
+                tokenHistory.setHistoryType(HistoryPayType.Sent);
             } else {
-                tokenHistory.setHistoryType(HistoryType.Received);
+                tokenHistory.setHistoryType(HistoryPayType.Received);
             }
         }
+
+        TransactionReceipt transactionReceipt = getInteractor().getReceiptByRxhHashFromRealm(tokenHistory.getTxHash());
+        if (transactionReceipt == null) {
+            initTransactionReceipt(tokenHistory.getTxHash());
+        } else {
+            tokenHistory.setReceiptUpdated(true);
+        }
+
+    }
+
+    private void initTransactionReceipt(final String txHash) {
+
+        getInteractor().getTransactionReceipt(txHash)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<TransactionReceipt>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(final List<TransactionReceipt> transactionReceipt) {
+
+                        TransactionReceipt transactionReceiptRealm = new TransactionReceipt(txHash);
+                        getInteractor().setUpHistoryReceipt(txHash);
+
+                        if (transactionReceipt.size() > 0) {
+                            transactionReceiptRealm = transactionReceipt.get(0);
+                        }
+                        getInteractor().updateReceiptInRealm(transactionReceiptRealm);
+
+                    }
+                });
 
     }
 
     @Override
     public void onTransactionClick(String txHash) {
-        Fragment fragment = TransactionFragment.newInstance(getView().getContext(), txHash);
+        Fragment fragment = TransactionFragment.newInstance(getView().getContext(), txHash, HistoryType.Token_History);
         getView().openFragment(fragment);
     }
 

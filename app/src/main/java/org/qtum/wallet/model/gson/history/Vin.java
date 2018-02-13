@@ -34,6 +34,11 @@ public class Vin extends RealmObject implements TransactionInfo {
         this.address = address;
     }
 
+    public Vin(String address, String valueString) {
+        this.address = address;
+        this.valueString = valueString;
+    }
+
     public boolean isOwnAddress() {
         return isOwnAddress;
     }

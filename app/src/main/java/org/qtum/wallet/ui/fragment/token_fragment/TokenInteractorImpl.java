@@ -8,6 +8,7 @@ import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.history.History;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 import org.qtum.wallet.ui.fragment.wallet_fragment.HistoryInDbChangeListener;
@@ -142,5 +143,38 @@ public class TokenInteractorImpl implements TokenInteractor {
     @Override
     public void addHistoryInDbChangeListener(HistoryInDbChangeListener listener) {
         mHistoryInDbChangeListener = listener;
+    }
+
+    @Override
+    public TransactionReceipt getReceiptByRxhHashFromRealm(String txHash) {
+        return mRealm.where(TransactionReceipt.class).equalTo("transactionHash", txHash).findFirst();
+    }
+
+    @Override
+    public Observable<List<TransactionReceipt>> getTransactionReceipt(String txHash) {
+        return QtumService.newInstance().getTransactionReceipt(txHash);
+    }
+
+    @Override
+    public void setUpHistoryReceipt(final String txHash) {
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                TokenHistory history = realm.where(TokenHistory.class).equalTo("txHash", txHash).findFirst();
+                history.setReceiptUpdated(true);
+                realm.insertOrUpdate(history);
+            }
+        });
+    }
+
+    @Override
+    public void updateReceiptInRealm(final TransactionReceipt transactionReceipt) {
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.insertOrUpdate(transactionReceipt);
+            }
+        });
+
     }
 }
