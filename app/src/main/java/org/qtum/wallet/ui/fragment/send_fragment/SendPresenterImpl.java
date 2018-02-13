@@ -182,7 +182,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
             if (isAmountValid(amount)) {
                 getInteractor().sendTx(from, address, amount, fee, getView().getSendTransactionCallback());
             } else {
-                getView().setAlertDialog(getView().getContext().getString(R.string.amount_too_big), getView().getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
+                getView().setAlertDialog(getView().getContext().getString(R.string.you_have_insufficient_funds_for_this_transaction), getView().getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
             }
         } else {
             for (final Token token : mTokenList) {
@@ -192,18 +192,11 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                     if (token.getDecimalUnits() != null) {
 
                         BigDecimal multiplyPow = new BigDecimal("10").pow(token.getDecimalUnits());
-
-                        if(!validateDecimalUnits(resultAmount, token.getDecimalUnits())){
-                            getView().dismissProgressDialog();
-                            getView().setAlertDialog(org.qtum.wallet.R.string.error, getView().getContext().getString(R.string.amount_too_big), "Ok", BaseFragment.PopUpType.error);
-                            return;
-                        }
-
                         resultAmount = new BigDecimal(amount).multiply(multiplyPow).toBigInteger().toString();
                     }
 
                     if (!isAmountValid(resultAmount)) {
-                        getView().setAlertDialog(getView().getContext().getString(R.string.amount_too_big), getView().getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
+                        getView().setAlertDialog(getView().getContext().getString(R.string.you_have_insufficient_funds_for_this_transaction), getView().getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
                     }
                     TokenBalance tokenBalance = getView().getTokenBalance(contractAddress);
                     availableAddress = null;
@@ -234,11 +227,6 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                 }
             }
         }
-    }
-
-    boolean validateDecimalUnits(String amount, int decimalUnits) {
-        int commaPosition = amount.indexOf(".");
-        return commaPosition < 0 || amount.substring(commaPosition + 1).length() <= decimalUnits;
     }
 
     private void createAbiMethodParams(String address, String resultAmount, final Token token, final String fee, final int gasPrice, final int gasLimit) {
