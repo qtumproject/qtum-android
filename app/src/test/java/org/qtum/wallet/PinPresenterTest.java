@@ -108,7 +108,7 @@ public class PinPresenterTest {
         presenter.setAction(CREATING);
         presenter.cancel();
 
-        verify(view, times(1)).onCancelClick();
+        verify(view, times(1)).onBackPressed();
     }
 
     @Test

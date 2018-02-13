@@ -2,8 +2,10 @@ package org.qtum.wallet.ui.fragment.profile_fragment;
 
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 
+import io.realm.Realm;
+
 public interface ProfileInteractor {
-    void clearWallet();
+    void clearWallet(Realm realm);
 
     void setupLanguageChangeListener(LanguageChangeListener listener);
 

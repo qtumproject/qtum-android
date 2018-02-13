@@ -115,7 +115,7 @@ public class AddressListTokenPresenterTest {
         presenter.setToken(new Token(true, "contract address"));
         when(interactor.isValidForAddress((TokenBalance) any(), (DeterministicKeyWithTokenBalance) any()))
                 .thenReturn(true);
-        when(interactor.isValidBalance((TokenBalance) any(), (DeterministicKeyWithTokenBalance) any(), anyString()))
+        when(interactor.isValidBalance((TokenBalance) any(), (DeterministicKeyWithTokenBalance) any(), anyString(), anyInt()))
                 .thenReturn(true);
 
 
