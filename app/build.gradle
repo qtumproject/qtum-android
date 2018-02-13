@@ -50,7 +50,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-        buildProps = getBuildProperties('default')
+        buildProps = getBuildProperties('local')
         applicationId buildProps['APPLICATION_ID']
         buildConfigField 'String', 'API_URL', buildProps['API_URL'].toString()
         buildConfigField 'Boolean', 'USE_MAIN_NET', buildProps['USE_MAIN_NET']
