@@ -111,11 +111,4 @@ public class TokenFragmentLight extends TokenFragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    //    @Override
-//    public void updateHistory(List<TokenHistory> tokenHistories) {
-//        super.updateHistory(tokenHistories);
-//        mAdapter = new TokenHistoryAdapterLight(tokenHistories,this, getPresenter().getToken().getDecimalUnits());
-//        mRecyclerView.setAdapter(mAdapter);
-//    }
-
 }
