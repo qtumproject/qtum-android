@@ -12,6 +12,10 @@ import org.qtum.wallet.model.gson.history.TransactionReceipt;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -21,16 +25,22 @@ public class WalletInteractorImpl implements WalletInteractor {
 
     private Context context;
     private Realm realm;
+    private RealmResults<History> mHistories;
+    private HistoryInDbChangeListener<History> mHistoryInDbChangeListener;
 
     public WalletInteractorImpl(Context context, Realm realm) {
         this.context = context;
         this.realm = realm;
+        mHistories = realm.where(History.class).findAll().sort("blockTime", Sort.DESCENDING);
+        mHistories.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<History>>() {
+            @Override
+            public void onChange(RealmResults<History> histories, @Nullable OrderedCollectionChangeSet changeSet) {
+                if(mHistoryInDbChangeListener!=null){
+                    mHistoryInDbChangeListener.onHistoryChange(histories, changeSet);
+                }
+            }
+        });
     }
-
-//    @Override
-//    public List<History> getHistoryList() {
-//        return HistoryList.getInstance().getHistoryList();
-//    }
 
     @Override
     public Observable<HistoryResponse> getHistoryList(int limit, int offest) {
@@ -41,29 +51,6 @@ public class WalletInteractorImpl implements WalletInteractor {
     public List<String> getAddresses() {
         return KeyStorage.getInstance().getAddresses();
     }
-
-//    @Override
-//    public int getTotalHistoryItem() {
-//        return HistoryList.getInstance().getTotalItem();
-//    }
-//
-//    @Override
-//    public void addToHistoryList(History history) {
-//        HistoryList.getInstance().getHistoryList().add(0, history);
-//    }
-//
-//    @Override
-//    public Integer setHistory(History history) {
-//        for (History historyReplacing : getHistoryList()) {
-//            if (historyReplacing.getTxHash().equals(history.getTxHash())) {
-//                int position = getHistoryList().indexOf(historyReplacing);
-//                getHistoryList().set(position, history);
-//                return position;
-//            }
-//        }
-//        getHistoryList().add(0, history);
-//        return null;
-//    }
 
     @Override
     public String getAddress() {
@@ -77,11 +64,6 @@ public class WalletInteractorImpl implements WalletInteractor {
     @Override
     public Observable<List<TransactionReceipt>> getTransactionReceipt(String txHash) {
         return QtumService.newInstance().getTransactionReceipt(txHash);
-    }
-
-    @Override
-    public RealmResults<History> getHistoriesFromRealm() {
-        return realm.where(History.class).findAll().sort("blockTime", Sort.DESCENDING);
     }
 
     @Override
@@ -133,7 +115,20 @@ public class WalletInteractorImpl implements WalletInteractor {
                 realm.insertOrUpdate(history);
             }
         });
+    }
 
+    @Override
+    public void addHistoryInDbChangeListener(HistoryInDbChangeListener listener) {
+        mHistoryInDbChangeListener = listener;
+    }
 
+    @Override
+    public int getHistoryDbCount() {
+        return mHistories.size();
+    }
+
+    @Override
+    public List<History> getHistorySubList(int startIndex, int length) {
+        return mHistories.subList(startIndex, length);
     }
 }

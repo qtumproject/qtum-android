@@ -5,9 +5,13 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
+import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.fragment.profile_fragment.ProfileInteractor;
 import org.qtum.wallet.ui.fragment.profile_fragment.ProfilePresenterImpl;
 import org.qtum.wallet.ui.fragment.profile_fragment.ProfileView;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -54,7 +58,7 @@ public class ProfilePresenterTest {
 
         presenter.clearWallet();
 
-        verify(interactor, times(1)).clearWallet(view.getRealm());
+        verify(interactor, times(1)).clearWallet();
     }
 
     @Test

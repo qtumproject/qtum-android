@@ -66,33 +66,13 @@ public class WalletPresenterTest {
 
 
     @Test
-    public void onRefresh_NetworkConnected() {
+    public void onLastItemWithNetwork() {
 
         when(interactor.getHistoryList(anyInt(), anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
-
         presenter.setNetworkConnectedFlag(true);
-
-        verify(view, times(1)).startRefreshAnimation();
-        verify(interactor, times(1)).getHistoryList(anyInt(), anyInt());
-        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), anyInt(), (BaseFragment.PopUpType) any());
-    }
-
-    @Test
-    public void onRefresh_NoNetworkConnection() {
-        presenter.setNetworkConnectedFlag(false);
-
-        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), anyInt(), (BaseFragment.PopUpType) any());
-        verify(view, times(1)).stopRefreshRecyclerAnimation();
-        verify(view, never()).startRefreshAnimation();
-        verify(interactor, never()).getHistoryList(anyInt(), anyInt());
-    }
-
-    @Test
-    public void onLastItem() {
-
-        when(interactor.getHistoryList(anyInt(), anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
-
+        presenter.setTotalItem(50);
         presenter.onLastItem(0);
+
 
         verify(view, times(1)).showBottomLoader();
         verify(interactor, times(1)).getHistoryList(anyInt(), anyInt());
@@ -103,7 +83,8 @@ public class WalletPresenterTest {
         when(interactor.getHistoryList(anyInt(), anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
         presenter.onNetworkStateChanged(true);
 
-        verify(view, times(1)).startRefreshAnimation();
+        verify(view, times(1)).onlineModeView();
+        verify(view, times(1)).clearAdapter();
         verify(interactor, times(1)).getHistoryList(anyInt(), anyInt());
     }
 
@@ -111,7 +92,7 @@ public class WalletPresenterTest {
     public void networkStateChanged_Disconnected() {
         presenter.onNetworkStateChanged(false);
 
-        verify(view, never()).startRefreshAnimation();
+        verify(view, times(1)).offlineModeView();
     }
 
 

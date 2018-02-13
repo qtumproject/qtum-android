@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
-import org.qtum.wallet.ui.fragment.import_wallet_fragment.ImportWalletFragment;
-import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment.import_wallet_fragment.ImportWalletFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
+import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.ThemeUtils;
 
@@ -57,7 +57,7 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
     @Override
     public void onResume() {
         super.onResume();
-        getMainActivity().hideBottomNavigationView(ThemeUtils.currentTheme.equals(ThemeUtils.THEME_DARK)? R.color.background : R.color.title_color_light);
+        getMainActivity().hideBottomNavigationView(ThemeUtils.currentTheme.equals(ThemeUtils.THEME_DARK) ? R.color.background : R.color.title_color_light);
         getMainActivity().unregisterKeyboardListener();
     }
 
@@ -88,7 +88,7 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
 
     @Override
     protected void createPresenter() {
-        mStartPageFragmentPresenter = new StartPagePresenterImpl(this, new StartPageInteractorImpl(getContext()));
+        mStartPageFragmentPresenter = new StartPagePresenterImpl(this, new StartPageInteractorImpl(getContext(), getMainActivity().getRealm()));
     }
 
     @Override

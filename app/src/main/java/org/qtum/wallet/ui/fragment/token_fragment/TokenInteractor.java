@@ -5,6 +5,7 @@ import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
+import org.qtum.wallet.ui.fragment.wallet_fragment.HistoryInDbChangeListener;
 import org.qtum.wallet.utils.ContractManagementHelper;
 
 import java.util.List;
@@ -33,5 +34,13 @@ public interface TokenInteractor {
     Observable<TokenHistoryResponse> getHistoryList(String contractAddress, int limit, int offset);
 
     List<String> getAddresses();
+
+    int getTokenHistoryDbCount();
+
+    List<TokenHistory> getTokenHistoryDb(int startIndex, int length);
+
+    void updateHistoryInRealm(final List<TokenHistory> histories);
+
+    void addHistoryInDbChangeListener(HistoryInDbChangeListener listener);
 
 }

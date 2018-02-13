@@ -24,6 +24,8 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import io.realm.Realm;
+
 import static org.qtum.wallet.utils.crypto.KeyStoreHelper.QTUM_PIN_ALIAS;
 
 public class MigrationManager {
@@ -42,11 +44,11 @@ public class MigrationManager {
         migrations.add(migrateVersion_106);
     }
 
-    public int makeMigration(int currentVersion, int migrationVersion, Context context) {
+    public int makeMigration(int currentVersion, int migrationVersion, Context context, Realm realm) {
         int newMigrationVersion = migrationVersion;
         for (Integer version : migrations) {
             if (version > migrationVersion) {
-                if (!migrate(version, context)) {
+                if (!migrate(version, context, realm)) {
                     return newMigrationVersion;
                 }
                 newMigrationVersion = version;
@@ -55,7 +57,7 @@ public class MigrationManager {
         return currentVersion;
     }
 
-    private boolean migrate(int version, Context context) {
+    private boolean migrate(int version, Context context, Realm realm) {
         switch (version) {
             case migrateVersion_93:
                 renameSenderAddress(context);
@@ -68,7 +70,7 @@ public class MigrationManager {
                 resetContractAndTemplateTime(context);
                 if(MigrationManager.migrateFromKeystore(context)
                         .equalsName(KeystoreMigrationResult.ERROR.name())) {
-                    clearWallet(context);
+                    clearWallet(context, realm);
                 }
                 return true;
             default:
@@ -221,10 +223,16 @@ public class MigrationManager {
         QtumSharedPreference.getInstance().saveSeed(context, base64);
     }
 
-    private void clearWallet(Context context) {
+    private void clearWallet(Context context, Realm realm) {
         QtumSharedPreference.getInstance().forceClear(context);
         KeyStorage.getInstance().clearKeyStorage();
-        //TODO CLEAR REALM
+        realm.removeAllChangeListeners();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.deleteAll();
+            }
+        });
         TinyDB db = new TinyDB(context);
         db.clearTokenList();
         db.clearContractList();

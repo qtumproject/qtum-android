@@ -52,6 +52,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
     public static final String decimals = "decimals";
     public static final String symbol = "symbol";
     public static final String name = "name";
+    Token token;
 
     public static BaseFragment newInstance(Context context, Contract token) {
         Bundle args = new Bundle();
@@ -182,7 +183,8 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
 
     @Override
     protected void createPresenter() {
-        presenter = new TokenPresenterImpl(this, new TokenInteractorImpl(getContext()));
+        token = (Token) getArguments().getSerializable(tokenKey);
+        presenter = new TokenPresenterImpl(this, new TokenInteractorImpl(getContext(),getMainActivity().getRealm(),token.getContractAddress()));
     }
 
     @Override
@@ -225,7 +227,6 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
         uncomfirmedBalanceValue.setVisibility(View.GONE);
         uncomfirmedBalanceTitle.setVisibility(View.GONE);
 
-        Token token = (Token) getArguments().getSerializable(tokenKey);
         presenter.setToken(token);
         if (token.getLastBalance() != null) {
             setBalance(token.getLastBalance().toPlainString());

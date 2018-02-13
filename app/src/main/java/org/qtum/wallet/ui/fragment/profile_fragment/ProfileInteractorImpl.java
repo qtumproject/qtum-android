@@ -13,18 +13,20 @@ import io.realm.Realm;
 class ProfileInteractorImpl implements ProfileInteractor {
 
     private Context mContext;
+    private Realm mRealm;
 
-    ProfileInteractorImpl(Context context) {
+    ProfileInteractorImpl(Context context, Realm realm) {
         mContext = context;
+        mRealm = realm;
     }
 
     @Override
-    public void clearWallet(Realm realm) {
+    public void clearWallet() {
         QtumSharedPreference.getInstance().clear(mContext);
         KeyStorage.getInstance().clearKeyStorage();
-        //TODO CLEAR REALM
-        realm.removeAllChangeListeners();
-        realm.executeTransaction(new Realm.Transaction() {
+
+        mRealm.removeAllChangeListeners();
+        mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 realm.deleteAll();

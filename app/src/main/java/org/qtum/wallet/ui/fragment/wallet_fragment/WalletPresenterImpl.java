@@ -17,7 +17,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import io.realm.OrderedCollectionChangeSet;
-import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.RealmResults;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -34,7 +33,6 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     private SubscriptionList mSubscriptionList = new SubscriptionList();
     private int visibleItemCount = 0;
     private Integer totalItem;
-    RealmResults<History> histories;
 
     private final int ONE_PAGE_COUNT = 25;
 
@@ -51,11 +49,9 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
         //List<History> histories = getInteractor().getHistoriesFromDb(0,ONE_PAGE_COUNT);
 
-        histories = getInteractor().getHistoriesFromRealm();
-
-        histories.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<History>>() {
+        getInteractor().addHistoryInDbChangeListener(new HistoryInDbChangeListener<History>() {
             @Override
-            public void onChange(RealmResults<History> histories, @Nullable OrderedCollectionChangeSet changeSet) {
+            public void onHistoryChange(RealmResults<History> histories, @Nullable OrderedCollectionChangeSet changeSet) {
                 if (visibleItemCount <= histories.size()) {
                     getView().updateHistory(histories.subList(0, visibleItemCount), changeSet, visibleItemCount);
                 }
@@ -85,7 +81,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
                     @Override
                     public void onNext(final HistoryResponse historyResponse) {
-                        totalItem = historyResponse.getTotalItems();
+                        setTotalItem(historyResponse.getTotalItems());
 
 
                         for (History history : historyResponse.getItems()) {
@@ -100,7 +96,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     }
 
     private void getHistoriesFromRealm() {
-        int allCount = histories.size();
+        int allCount = getInteractor().getHistoryDbCount();
         if (allCount - visibleItemCount > 0) {
             int toUpdate;
             if (allCount - visibleItemCount > 25) {
@@ -108,7 +104,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
             } else {
                 toUpdate = allCount - visibleItemCount;
             }
-            List<History> historiesFromRealm = histories.subList(0, visibleItemCount + toUpdate);
+            List<History> historiesFromRealm = getInteractor().getHistorySubList(0, visibleItemCount + toUpdate);
             visibleItemCount += toUpdate;
             visibleItemCount = historiesFromRealm.size();
             getView().updateHistory(historiesFromRealm, 0, toUpdate);
@@ -147,6 +143,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
 
     @Override
     public void onLastItem(final int currentItemCount) {
+        getView().showBottomLoader();
         if (mNetworkConnectedFlag) {
             getHistoriesFromApi(currentItemCount);
         } else {
@@ -275,12 +272,15 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         if (mSubscriptionList != null) {
             mSubscriptionList.clear();
         }
-        if (histories != null) {
-            histories.removeAllChangeListeners();
-        }
     }
 
     public void setNetworkConnectedFlag(boolean mNetworkConnectedFlag) {
         this.mNetworkConnectedFlag = mNetworkConnectedFlag;
+    }
+
+
+
+    public void setTotalItem(Integer totalItem) {
+        this.totalItem = totalItem;
     }
 }
