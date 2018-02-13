@@ -52,7 +52,7 @@ public abstract class TokenFragment extends BaseFragment implements TokenView, T
     public static final String decimals = "decimals";
     public static final String symbol = "symbol";
     public static final String name = "name";
-    Token token;
+    protected Token token;
 
     public static BaseFragment newInstance(Context context, Contract token) {
         Bundle args = new Bundle();

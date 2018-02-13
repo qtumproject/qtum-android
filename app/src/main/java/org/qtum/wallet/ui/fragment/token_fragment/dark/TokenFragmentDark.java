@@ -155,7 +155,7 @@ public class TokenFragmentDark extends TokenFragment {
 
     @Override
     protected void createAdapter() {
-        mAdapter = new TokenHistoryAdapterDark(new ArrayList<TokenHistory>(),this,0);
+        mAdapter = new TokenHistoryAdapterDark(new ArrayList<TokenHistory>(),this,token.getDecimalUnits());
         mRecyclerView.setAdapter(mAdapter);
     }
 }

@@ -107,7 +107,7 @@ public class TokenFragmentLight extends TokenFragment {
 
     @Override
     protected void createAdapter() {
-        mAdapter = new TokenHistoryAdapterLight(new ArrayList<TokenHistory>(),this,0);
+        mAdapter = new TokenHistoryAdapterLight(new ArrayList<TokenHistory>(),this,token.getDecimalUnits());
         mRecyclerView.setAdapter(mAdapter);
     }
 
