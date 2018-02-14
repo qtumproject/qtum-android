@@ -159,7 +159,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
         BigDecimal totalOwnVout = new BigDecimal("0.0");
 
         boolean isOwnVin = false;
-        boolean isOwnVout = false;
+        boolean isEnemyVout = false;
 
         for (Vin vin : history.getVin()) {
             vin.setValueString(convertBalanceToString(vin.getValue()));
@@ -177,10 +177,12 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
             vout.setValueString(convertBalanceToString(vout.getValue()));
             for (String address : addresses) {
                 if (vout.getAddress().equals(address)) {
-                    isOwnVout = true;
                     vout.setOwnAddress(true);
                     totalOwnVout = totalOwnVout.add(vout.getValue());
                 }
+            }
+            if(!vout.isOwnAddress()){
+                isEnemyVout = true;
             }
             totalVout = totalVout.add(vout.getValue());
         }
@@ -193,7 +195,7 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
             changeInBalance = totalOwnVout.subtract(totalOwnVin);
         }
         history.setChangeInBalance(convertBalanceToString(changeInBalance));
-        if (isOwnVout && isOwnVin) {
+        if (!isEnemyVout && isOwnVin) {
             history.setHistoryType(HistoryPayType.Internal_Transaction);
         } else {
             if (changeInBalance.doubleValue() > 0) {
