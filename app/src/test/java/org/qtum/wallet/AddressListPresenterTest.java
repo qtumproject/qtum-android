@@ -8,35 +8,26 @@ import org.mockito.MockitoAnnotations;
 import org.qtum.wallet.model.AddressWithBalance;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListInteractor;
-import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListInteractorImpl;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListPresenterImpl;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import rx.Observable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
-import rx.functions.Action1;
 import rx.plugins.RxJavaPlugins;
 import rx.plugins.RxJavaSchedulersHook;
 import rx.schedulers.Schedulers;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by drevnitskaya on 05.10.17.
- */
 
 public class AddressListPresenterTest {
 
@@ -64,10 +55,12 @@ public class AddressListPresenterTest {
 
         presenter = new AddressListPresenterImpl(view, interactor);
     }
+
     List<UnspentOutput> UNSPENT_OUTPUTS = new ArrayList<>();
+
     @Test
     public void initialize_Success() {
-        UNSPENT_OUTPUTS.add(new UnspentOutput(12,true,new BigDecimal(123)));
+        UNSPENT_OUTPUTS.add(new UnspentOutput(12, true, new BigDecimal(123)));
         when(interactor.getUnspentOutputs((List<String>) any()))
                 .thenReturn(Observable.just(UNSPENT_OUTPUTS));
 

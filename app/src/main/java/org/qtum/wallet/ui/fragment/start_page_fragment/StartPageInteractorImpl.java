@@ -13,9 +13,11 @@ import io.realm.Realm;
 public class StartPageInteractorImpl implements StartPageInteractor {
 
     private WeakReference<Context> mContext;
+    private Realm mRealm;
 
-    public StartPageInteractorImpl(Context context) {
+    public StartPageInteractorImpl(Context context, Realm realm) {
         mContext = new WeakReference<>(context);
+        mRealm = realm;
     }
 
     @Override
@@ -27,7 +29,13 @@ public class StartPageInteractorImpl implements StartPageInteractor {
     public void clearWallet() {
         QtumSharedPreference.getInstance().clear(mContext.get());
         KeyStorage.getInstance().clearKeyStorage();
-        //TODO CLEAR REALM
+        mRealm.removeAllChangeListeners();
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.deleteAll();
+            }
+        });
         TinyDB db = new TinyDB(mContext.get());
         db.clearTokenList();
         db.clearContractList();

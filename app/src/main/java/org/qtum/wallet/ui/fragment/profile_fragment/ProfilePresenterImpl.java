@@ -53,7 +53,7 @@ public class ProfilePresenterImpl extends BaseFragmentPresenterImpl implements P
 
     @Override
     public void clearWallet() {
-        getInteractor().clearWallet(getView().getRealm());
+        getInteractor().clearWallet();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.token_fragment.light;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -37,6 +38,10 @@ public class TokenHistoryHolderLight extends RecyclerView.ViewHolder {
     ImageView mImageViewIcon;
     @BindView(R.id.ll_transaction)
     LinearLayout mLinearLayoutTransaction;
+    @BindView(R.id.progress_indicator)
+    View progressIndicator;
+    @BindView(R.id.tv_getting_info)
+    TextView mTextViewGettingInfo;
     Subscription mSubscription;
     String mSymbol;
     TokenHistory mTokenHistory;
@@ -72,39 +77,49 @@ public class TokenHistoryHolderLight extends RecyclerView.ViewHolder {
             mSubscription.unsubscribe();
         }
         mSymbol = symbol;
+        mImageViewIcon.setVisibility(View.VISIBLE);
+        mTextViewDate.setVisibility(View.VISIBLE);
+        progressIndicator.setVisibility(View.GONE);
+        mTextViewGettingInfo.setVisibility(View.GONE);
         mLinearLayoutTransaction.setBackgroundResource(android.R.color.transparent);
+        if (history.isReceiptUpdated()) {
+            if (history.getTxTime() != null) {
+                mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
-        if (history.getTxTime() != null) {
-            mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {
-                @Override
-                public void onCompleted() {
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                    }
 
-                @Override
-                public void onError(Throwable e) {
-                }
-
-                @Override
-                public void onNext(Object o) {
-                    mTextViewDate.setText(DateCalculator.getShortDate(history.getTxTime() * 1000L));
-                }
-            });
-            mTextViewDate.setText(DateCalculator.getShortDate(history.getTxTime() * 1000L));
-        } else {
-            mImageViewIcon.setImageResource(R.drawable.ic_confirmation_loader);
-            mTextViewDate.setText(R.string.confirmation);
-            mLinearLayoutTransaction.setBackgroundResource(R.color.bottom_nav_bar_color_light);
-        }
-        switch (history.getHistoryType()){
-            case Sent:
-                mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
-                break;
-            case Received:
-                mImageViewIcon.setImageResource(R.drawable.ic_received_light);
-                break;
-            case Internal_Transaction:
-                mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_light);
-                break;
+                    @Override
+                    public void onNext(Object o) {
+                        mTextViewDate.setText(DateCalculator.getShortDate(history.getTxTime() * 1000L));
+                    }
+                });
+                mTextViewDate.setText(DateCalculator.getShortDate(history.getTxTime() * 1000L));
+            } else {
+                mImageViewIcon.setImageResource(R.drawable.ic_confirmation_loader);
+                mTextViewDate.setText(R.string.confirmation);
+                mLinearLayoutTransaction.setBackgroundResource(R.color.bottom_nav_bar_color_light);
+            }
+            switch (history.getHistoryType()) {
+                case Sent:
+                    mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
+                    break;
+                case Received:
+                    mImageViewIcon.setImageResource(R.drawable.ic_received_light);
+                    break;
+                case Internal_Transaction:
+                    mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_light);
+                    break;
+            }
+        }else {
+            mImageViewIcon.setVisibility(View.GONE);
+            mTextViewDate.setVisibility(View.GONE);
+            progressIndicator.setVisibility(View.VISIBLE);
+            mTextViewGettingInfo.setVisibility(View.VISIBLE);
         }
         mTextViewID.setText(history.getTxHash());
 

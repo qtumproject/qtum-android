@@ -4,7 +4,7 @@ package org.qtum.wallet.model.gson.token_history;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.qtum.wallet.model.gson.history.HistoryType;
+import org.qtum.wallet.model.gson.history.HistoryPayType;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -29,9 +29,10 @@ public class TokenHistory extends RealmObject{
     private String txHash;
     @SerializedName("tx_time")
     @Expose
-    private Integer txTime;
+    private Long txTime;
 
     private String historyType;
+    private boolean isReceiptUpdated = false;
 
     public String getContractAddress() {
         return contractAddress;
@@ -73,28 +74,36 @@ public class TokenHistory extends RealmObject{
         this.txHash = txHash;
     }
 
-    public Integer getTxTime() {
+    public Long getTxTime() {
         return txTime;
     }
 
-    public void setTxTime(Integer txTime) {
+    public void setTxTime(Long txTime) {
         this.txTime = txTime;
     }
 
-    public void setHistoryType(HistoryType historyType) {
+    public void setHistoryType(HistoryPayType historyType) {
         this.historyType = historyType.name();
     }
 
-    public HistoryType getHistoryType() {
-        return HistoryType.valueOf(historyType);
+    public HistoryPayType getHistoryType() {
+        return HistoryPayType.valueOf(historyType);
     }
 
     public TokenHistory(){
 
     }
 
+    public void setReceiptUpdated(boolean receiptUpdated) {
+        isReceiptUpdated = receiptUpdated;
+    }
+
+    public boolean isReceiptUpdated() {
+        return isReceiptUpdated;
+    }
+
     //for unit_test
-    public TokenHistory(String contractAddress, String from, String to, String amount, String txHash, Integer txTime) {
+    public TokenHistory(String contractAddress, String from, String to, String amount, String txHash, Long txTime) {
         this.contractAddress = contractAddress;
         this.from = from;
         this.to = to;

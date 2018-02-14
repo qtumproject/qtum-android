@@ -75,7 +75,7 @@ public abstract class ProfileFragment extends BaseNavFragment implements Profile
 
     @Override
     protected void createPresenter() {
-        mProfileFragmentPresenter = new ProfilePresenterImpl(this, new ProfileInteractorImpl(getContext()));
+        mProfileFragmentPresenter = new ProfilePresenterImpl(this, new ProfileInteractorImpl(getContext(),getMainActivity().getRealm()));
     }
 
     @Override

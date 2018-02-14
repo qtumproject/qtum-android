@@ -14,7 +14,6 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.WalletInteractor;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletPresenterImpl;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletView;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,39 +60,19 @@ public class WalletPresenterTest {
         presenter = new WalletPresenterImpl(view, interactor);
     }
 
-    private static final History TEST_HISTORY= new History();
+    private static final History TEST_HISTORY = new History();
     private static final List<History> TEST_HISTORY_LIST = Arrays.asList(TEST_HISTORY);
     private static final HistoryResponse TEST_HISTORY_RESPONSE = new HistoryResponse(10, Arrays.asList(TEST_HISTORY));
 
 
     @Test
-    public void onRefresh_NetworkConnected() {
+    public void onLastItemWithNetwork() {
 
-        when(interactor.getHistoryList(anyInt(),anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
-
+        when(interactor.getHistoryList(anyInt(), anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
         presenter.setNetworkConnectedFlag(true);
-
-        verify(view, times(1)).startRefreshAnimation();
-        verify(interactor, times(1)).getHistoryList(anyInt(), anyInt());
-        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), anyInt(), (BaseFragment.PopUpType) any());
-    }
-
-    @Test
-    public void onRefresh_NoNetworkConnection() {
-        presenter.setNetworkConnectedFlag(false);
-
-        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), anyInt(), (BaseFragment.PopUpType) any());
-        verify(view, times(1)).stopRefreshRecyclerAnimation();
-        verify(view, never()).startRefreshAnimation();
-        verify(interactor, never()).getHistoryList(anyInt(), anyInt());
-    }
-
-    @Test
-    public void onLastItem() {
-
-        when(interactor.getHistoryList(anyInt(),anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
-
+        presenter.setTotalItem(50);
         presenter.onLastItem(0);
+
 
         verify(view, times(1)).showBottomLoader();
         verify(interactor, times(1)).getHistoryList(anyInt(), anyInt());
@@ -101,10 +80,11 @@ public class WalletPresenterTest {
 
     @Test
     public void networkStateChanged_Connected() {
-        when(interactor.getHistoryList(anyInt(),anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
+        when(interactor.getHistoryList(anyInt(), anyInt())).thenReturn(Observable.just(TEST_HISTORY_RESPONSE));
         presenter.onNetworkStateChanged(true);
 
-        verify(view, times(1)).startRefreshAnimation();
+        verify(view, times(1)).onlineModeView();
+        verify(view, times(1)).clearAdapter();
         verify(interactor, times(1)).getHistoryList(anyInt(), anyInt());
     }
 
@@ -112,12 +92,12 @@ public class WalletPresenterTest {
     public void networkStateChanged_Disconnected() {
         presenter.onNetworkStateChanged(false);
 
-        verify(view, never()).startRefreshAnimation();
+        verify(view, times(1)).offlineModeView();
     }
 
 
-    private static final History TEST_HISTORY_WITH_BLOCK_TIME = new History(Long.valueOf("12"), new RealmList<Vout>(), new RealmList<Vin>(),"12",12);
-    private static final History TEST_HISTORY_WITHOUT_BLOCK_TIME = new History(null, new RealmList<Vout>(), new RealmList<Vin>(),"12",12);
+    private static final History TEST_HISTORY_WITH_BLOCK_TIME = new History(Long.valueOf("12"), new RealmList<Vout>(), new RealmList<Vin>(), "12", 12);
+    private static final History TEST_HISTORY_WITHOUT_BLOCK_TIME = new History(null, new RealmList<Vout>(), new RealmList<Vin>(), "12", 12);
 //    @Test
 //    public void onNewHistory_BlockTime_NewHistory() {
 //        when(interactor.setHistory((History) any()))

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_nav_fragment.HiddenChangeListener;
 import org.qtum.wallet.ui.fragment.addresses_detail_fragment.AddressesDetailFragment;
@@ -70,13 +71,15 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
     }
 
     private final static String TX_HASH = "tx_hash";
+    private final static String HISTORY_TYPE = "history_type";
 
     private TransactionPresenter mTransactionPresenter;
 
-    public static BaseFragment newInstance(Context context, String txHash) {
+    public static BaseFragment newInstance(Context context, String txHash, HistoryType historyType) {
         BaseFragment transactionFragment = Factory.instantiateFragment(context, TransactionFragment.class);
         Bundle args = new Bundle();
         args.putString(TX_HASH, txHash);
+        args.putSerializable(HISTORY_TYPE, historyType);
         transactionFragment.setArguments(args);
         return transactionFragment;
     }
@@ -94,7 +97,7 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
     @Override
     public void onResume() {
         super.onResume();
-        getPresenter().openTransactionView(getArguments().getString(TX_HASH));
+        getPresenter().openTransactionView(getArguments().getString(TX_HASH), (HistoryType) getArguments().getSerializable(HISTORY_TYPE));
     }
 
     @Override
@@ -164,10 +167,10 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: {
-                    return AddressesDetailFragment.newInstance(getContext(), getArguments().getString(TX_HASH));
+                    return AddressesDetailFragment.newInstance(getContext(), getArguments().getString(TX_HASH), (HistoryType) getArguments().getSerializable(HISTORY_TYPE));
                 }
                 case 1: {
-                    return OverviewFragment.newInstance(getContext(), getArguments().getString(TX_HASH));
+                    return OverviewFragment.newInstance(getContext(), getArguments().getString(TX_HASH), (HistoryType) getArguments().getSerializable(HISTORY_TYPE));
                 }
                 default:
                     return null;
@@ -191,10 +194,10 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: {
-                    return AddressesDetailFragment.newInstance(getContext(), getArguments().getString(TX_HASH));
+                    return AddressesDetailFragment.newInstance(getContext(), getArguments().getString(TX_HASH),(HistoryType) getArguments().getSerializable(HISTORY_TYPE));
                 }
                 case 1: {
-                    return OverviewFragment.newInstance(getContext(), getArguments().getString(TX_HASH));
+                    return OverviewFragment.newInstance(getContext(), getArguments().getString(TX_HASH), (HistoryType) getArguments().getSerializable(HISTORY_TYPE));
                 }
                 case 2: {
                     return EventLogFragment.newInstance(getContext(), getArguments().getString(TX_HASH));

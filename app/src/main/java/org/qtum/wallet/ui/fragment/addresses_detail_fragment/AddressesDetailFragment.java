@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment.transaction_fragment.HistoryType;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 
 import butterknife.BindView;
@@ -16,6 +17,7 @@ public abstract class AddressesDetailFragment extends BaseFragment implements Ad
 
 
     public static String TX_HASH = "tx_hash";
+    public static String HISTORY_TYPE = "history_type";
     private AddressesDetailPresenter mAddressesDetailPresenter;
 
     protected AddressesDetailAdapter mAddressesDetailAdapterFrom;
@@ -28,9 +30,10 @@ public abstract class AddressesDetailFragment extends BaseFragment implements Ad
     protected
     RecyclerView mRecyclerViewTo;
 
-    public static Fragment newInstance(Context context, String txHash) {
+    public static Fragment newInstance(Context context, String txHash, HistoryType historyType) {
         Bundle args = new Bundle();
         args.putString(TX_HASH, txHash);
+        args.putSerializable(HISTORY_TYPE, historyType);
         Fragment fragment = Factory.instantiateDefaultFragment(context, AddressesDetailFragment.class);
         fragment.setArguments(args);
         return fragment;
@@ -56,5 +59,9 @@ public abstract class AddressesDetailFragment extends BaseFragment implements Ad
     @Override
     public String getTxHash() {
         return getArguments().getString(TX_HASH);
+    }
+
+    public HistoryType getHistoryType(){
+        return (HistoryType) getArguments().getSerializable(HISTORY_TYPE);
     }
 }

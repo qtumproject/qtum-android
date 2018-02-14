@@ -116,7 +116,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
         }
     }
 
-    @SuppressLint("DefaultLocale")
+
     @Override
     public void onBalanceChange(final TokenBalance tokenBalance) {
         if (token.getContractAddress().equals(tokenBalance.getContractAddress())) {

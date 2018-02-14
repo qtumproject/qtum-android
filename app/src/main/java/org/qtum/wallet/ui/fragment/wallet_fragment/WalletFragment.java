@@ -129,8 +129,13 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                     mUpdateService = getMainActivity().getUpdateService();
                     mUpdateService.addTransactionListener(new TransactionListener() {
                         @Override
-                        public void onNewHistory(History history) {
-                            getPresenter().onNewHistory(history);
+                        public void onNewHistory(final History history) {
+                            getMainActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getPresenter().onNewHistory(history);
+                                }
+                            });
                         }
 
                         @Override
@@ -286,7 +291,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                         totalItemCount = mLinearLayoutManager.getItemCount();
                         pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
                         if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 1) {
-                            showBottomLoader();
                             getPresenter().onLastItem(totalItemCount - 1);
                         }
                     }
@@ -315,7 +319,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @Override
     protected void createPresenter() {
-        mWalletFragmentPresenter = new WalletPresenterImpl(this, new WalletInteractorImpl(getContext()));
+        mWalletFragmentPresenter = new WalletPresenterImpl(this, new WalletInteractorImpl(getContext(), getMainActivity().getRealm()));
     }
 
     @Override
@@ -441,10 +445,4 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         }
     };
 
-
-
-    @Override
-    public Realm getRealm() {
-        return getMainActivity().getRealm();
-    }
 }
