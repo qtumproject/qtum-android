@@ -322,7 +322,7 @@ public class FileStorageManager {
                     return false;
                 }
 
-                contractTemplateList.add(new ContractTemplate(contractName, (new Date()).getTime(), (contractName.equals(CROWDSALE) ? "crowdsale" : "token"),tinyDB.addTemplate(contractName, uuid).getUuid()));
+                contractTemplateList.add(new ContractTemplate(contractName, (new Date()).getTime(), "token",tinyDB.addTemplate(contractName, uuid).getUuid()));
             }
 
             tinyDB.putContractTemplate(contractTemplateList);

@@ -36,12 +36,15 @@ public class MigrationManager {
 
     private final int migrateVersion_106 = 106;
 
+    private final int migrateVersion_109 = 109;
+
     List<Integer> migrations = new ArrayList<>();
 
     public MigrationManager() {
         migrations.add(migrateVersion_93);
         migrations.add(migrateVersion_100);
         migrations.add(migrateVersion_106);
+        migrations.add(migrateVersion_109);
     }
 
     public int makeMigration(int currentVersion, int migrationVersion, Context context, Realm realm) {
@@ -72,6 +75,10 @@ public class MigrationManager {
                         .equalsName(KeystoreMigrationResult.ERROR.name())) {
                     clearWallet(context, realm);
                 }
+                return true;
+            case migrateVersion_109:
+                renameCrowdsaleToToken(context);
+                clearRealm(realm);
                 return true;
             default:
                 return false;
@@ -238,4 +245,26 @@ public class MigrationManager {
         db.clearContractList();
         db.clearTemplateList();
     }
+
+    private void clearRealm(Realm realm){
+        realm.removeAllChangeListeners();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.deleteAll();
+            }
+        });
+    }
+
+    private void renameCrowdsaleToToken(Context context){
+        TinyDB tinyDB = new TinyDB(context);
+        List<ContractTemplate> contractTemplates = tinyDB.getContractTemplateList();
+        for(ContractTemplate contractTemplate : contractTemplates){
+            if(contractTemplate.getContractType().equals("crowdsale")){
+                contractTemplate.setContractType("token");
+            }
+        }
+        tinyDB.putContractTemplate(contractTemplates);
+    }
+
 }

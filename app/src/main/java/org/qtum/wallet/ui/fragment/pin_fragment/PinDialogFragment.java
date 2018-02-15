@@ -198,7 +198,7 @@ public class PinDialogFragment extends DialogFragment {
         @Override
         public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
             Cipher cipher = result.getCryptoObject().getCipher();
-            String encoded = QtumSharedPreference.getInstance().getTouchIdPassword(getContext()); 2160002552702
+            String encoded = QtumSharedPreference.getInstance().getTouchIdPassword(getContext());
             String decoded = CryptoUtils.decode(encoded, cipher);
             setPin(decoded);
         }

@@ -223,6 +223,10 @@
     <string name="no_tokens_found">未找到Token</string>
     <string name="invalid_fee">不正确的手续费</string>
     <string name="_fee">手续费</string>
+    <string name="token_unsupported">-</string>
+    <string name="token_unsupported_reason">-</string>
+    <string name="your_balance_was_last_updated_at">-</string>
+    <string name="internal_transaction">-</string>
 
 
 </resources>
