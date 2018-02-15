@@ -9,12 +9,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.model.gson.token_history.TokenHistory;
+import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.base.base_nav_fragment.HiddenChangeListener;
 import org.qtum.wallet.ui.fragment.addresses_detail_fragment.AddressesDetailFragment;
 import org.qtum.wallet.ui.fragment.event_log_fragment.EventLogFragment;
 import org.qtum.wallet.ui.fragment.overview_fragment.OverviewFragment;
@@ -61,6 +61,12 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
     @BindView(R.id.tv_fee)
     TextView mTextViewFee;
 
+    @BindView(R.id.tv_symbol)
+    TextView mTextViewSymbol;
+
+    @BindView(R.id.ll_fee)
+    LinearLayout mLinearLayoutFee;
+
     @OnClick({R.id.ibt_back})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -72,14 +78,29 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
 
     private final static String TX_HASH = "tx_hash";
     private final static String HISTORY_TYPE = "history_type";
+    private final static String TOKEN_DECIMAL_UNITS = "token_decimal_units";
+    private final static String TOKEN_SYMBOL = "token_symbol";
 
     private TransactionPresenter mTransactionPresenter;
+
+    public static BaseFragment newInstance(Context context, String txHash, HistoryType historyType, Integer tokenDecimals, String tokenSymbol) {
+        BaseFragment transactionFragment = Factory.instantiateFragment(context, TransactionFragment.class);
+        Bundle args = new Bundle();
+        args.putString(TX_HASH, txHash);
+        args.putSerializable(HISTORY_TYPE, historyType);
+        args.putInt(TOKEN_DECIMAL_UNITS, tokenDecimals);
+        args.putString(TOKEN_SYMBOL, tokenSymbol);
+
+        transactionFragment.setArguments(args);
+        return transactionFragment;
+    }
 
     public static BaseFragment newInstance(Context context, String txHash, HistoryType historyType) {
         BaseFragment transactionFragment = Factory.instantiateFragment(context, TransactionFragment.class);
         Bundle args = new Bundle();
         args.putString(TX_HASH, txHash);
         args.putSerializable(HISTORY_TYPE, historyType);
+
         transactionFragment.setArguments(args);
         return transactionFragment;
     }
@@ -121,14 +142,23 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
                 mViewPager.setCurrentItem(2, true);
             }
         });
+        switch ((HistoryType)getArguments().getSerializable(HISTORY_TYPE)){
+            case History:
+                mLinearLayoutFee.setVisibility(View.VISIBLE);
+                break;
+            case Token_History:
+                mLinearLayoutFee.setVisibility(View.GONE);
+                break;
+        }
     }
 
     public abstract void recolorTab(int position);
 
     @Override
-    public void setUpTransactionData(String value, String fee, String receivedTime, boolean confirmed, boolean isContractCall) {
+    public void setUpTransactionData(String value, String symbol,String fee, String receivedTime, boolean confirmed, boolean isContractCall) {
         if (mViewPager.getAdapter() == null) {
             mTextViewValue.setText(value);
+            mTextViewSymbol.setText(symbol);
             mTextViewFee.setText(fee);
             mTextViewReceivedTime.setText(receivedTime);
             FragmentPagerAdapter transactionPagerAdapter;
@@ -194,7 +224,7 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: {
-                    return AddressesDetailFragment.newInstance(getContext(), getArguments().getString(TX_HASH),(HistoryType) getArguments().getSerializable(HISTORY_TYPE));
+                    return AddressesDetailFragment.newInstance(getContext(), getArguments().getString(TX_HASH),(HistoryType) getArguments().getSerializable(HISTORY_TYPE),getDecimalUnits(),getSymbol());
                 }
                 case 1: {
                     return OverviewFragment.newInstance(getContext(), getArguments().getString(TX_HASH), (HistoryType) getArguments().getSerializable(HISTORY_TYPE));
@@ -216,5 +246,15 @@ public abstract class TransactionFragment extends BaseFragment implements Transa
     @Override
     public Realm getRealm() {
         return getMainActivity().getRealm();
+    }
+
+    @Override
+    public int getDecimalUnits() {
+        return getArguments().getInt(TOKEN_DECIMAL_UNITS);
+    }
+
+    @Override
+    public String getSymbol() {
+        return getArguments().getString(TOKEN_SYMBOL);
     }
 }

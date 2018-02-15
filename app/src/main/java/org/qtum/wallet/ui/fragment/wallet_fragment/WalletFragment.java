@@ -113,6 +113,9 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @BindView(R.id.ll_no_internet_connection)
     protected LinearLayout mLinearLayoutNoInternetConnection;
 
+    @BindView(R.id.no_internet_title)
+    View mNoInternetTitleTextView;
+
     @BindView(R.id.last_updated_placeholder)
     protected TextView mTextViewLastUpdatedPlaceHolder;
 
@@ -431,6 +434,9 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                 @Override
                 public void run() {
                     String balanceString = balance.toString();
+                    if(lastUpdatedBalanceTime==0 && mNoInternetTitleTextView.getVisibility()==View.VISIBLE){
+                        mTextViewLastUpdatedPlaceHolder.setVisibility(View.INVISIBLE);
+                    }
                     mTextViewLastUpdatedPlaceHolder.setText(String.format("%s %s", getString(R.string.your_balance_was_last_updated_at), DateCalculator.getFullDate(lastUpdatedBalanceTime)));
                     if (balanceString != null) {
                         String unconfirmedBalanceString = unconfirmedBalance.toString();

@@ -16,9 +16,9 @@ public class AddressesDetailFragmentLight extends AddressesDetailFragment {
     }
 
     @Override
-    public void setUpRecyclerView(List<Vin> transactionFrom, List<Vout> transactionTo) {
-        mAddressesDetailAdapterTo = new AddressesDetailAdapterLight<>(transactionTo);
-        mAddressesDetailAdapterFrom = new AddressesDetailAdapterLight<>(transactionFrom);
+    public void setUpRecyclerView(List<Vin> transactionFrom, List<Vout> transactionTo, String symbol) {
+        mAddressesDetailAdapterTo = new AddressesDetailAdapterLight<>(transactionTo,symbol);
+        mAddressesDetailAdapterFrom = new AddressesDetailAdapterLight<>(transactionFrom,symbol);
         mRecyclerViewFrom.setAdapter(mAddressesDetailAdapterFrom);
         mRecyclerViewTo.setAdapter(mAddressesDetailAdapterTo);
     }

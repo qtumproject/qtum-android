@@ -39,15 +39,15 @@ public class AddressesDetailHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    void bindTransactionDetail(TransactionInfo transactionInfo) {
+    void bindTransactionDetail(TransactionInfo transactionInfo, String symbol) {
         mTextViewAddress.setText(transactionInfo.getAddress());
-        mTextViewValue.setText(getSpannedBalance(String.format("%s QTUM", transactionInfo.getValueString())));
+        mTextViewValue.setText(getSpannedBalance(String.format("%s %s", transactionInfo.getValueString(), symbol), symbol.length()));
     }
 
-    private SpannableString getSpannedBalance(String balance) {
+    private SpannableString getSpannedBalance(String balance, int symbolLength) {
         SpannableString span = new SpannableString(balance);
         if (balance.length() > 4) {
-            span.setSpan(new RelativeSizeSpan(.6f), balance.length() - 4, balance.length(), 0);
+            span.setSpan(new RelativeSizeSpan(.6f), balance.length() - symbolLength, balance.length(), 0);
         }
         return span;
     }

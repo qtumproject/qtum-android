@@ -23,8 +23,8 @@ public class TransactionFragmentDark extends TransactionFragment {
     }
 
     @Override
-    public void setUpTransactionData(String value, String fee,String receivedTime, boolean confirmed, boolean isContractCall) {
-        super.setUpTransactionData(value, fee, receivedTime,confirmed, isContractCall);
+    public void setUpTransactionData(String value, String symbol,String fee,String receivedTime, boolean confirmed, boolean isContractCall) {
+        super.setUpTransactionData(value, symbol,fee, receivedTime,confirmed, isContractCall);
         notConfFlag.setVisibility((!confirmed) ? View.VISIBLE : View.INVISIBLE);
 
         if (Double.valueOf(value) > 0) {

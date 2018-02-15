@@ -18,6 +18,8 @@ public abstract class AddressesDetailFragment extends BaseFragment implements Ad
 
     public static String TX_HASH = "tx_hash";
     public static String HISTORY_TYPE = "history_type";
+    private final static String TOKEN_DECIMAL_UNITS = "token_decimal_units";
+    private final static String TOKEN_SYMBOL = "token_symbol";
     private AddressesDetailPresenter mAddressesDetailPresenter;
 
     protected AddressesDetailAdapter mAddressesDetailAdapterFrom;
@@ -34,6 +36,17 @@ public abstract class AddressesDetailFragment extends BaseFragment implements Ad
         Bundle args = new Bundle();
         args.putString(TX_HASH, txHash);
         args.putSerializable(HISTORY_TYPE, historyType);
+        Fragment fragment = Factory.instantiateDefaultFragment(context, AddressesDetailFragment.class);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static Fragment newInstance(Context context, String txHash, HistoryType historyType, Integer tokenDecimals, String tokenSymbol) {
+        Bundle args = new Bundle();
+        args.putString(TX_HASH, txHash);
+        args.putSerializable(HISTORY_TYPE, historyType);
+        args.putInt(TOKEN_DECIMAL_UNITS, tokenDecimals);
+        args.putString(TOKEN_SYMBOL, tokenSymbol);
         Fragment fragment = Factory.instantiateDefaultFragment(context, AddressesDetailFragment.class);
         fragment.setArguments(args);
         return fragment;
@@ -63,5 +76,15 @@ public abstract class AddressesDetailFragment extends BaseFragment implements Ad
 
     public HistoryType getHistoryType(){
         return (HistoryType) getArguments().getSerializable(HISTORY_TYPE);
+    }
+
+    @Override
+    public int getDecimalUnits() {
+        return getArguments().getInt(TOKEN_DECIMAL_UNITS);
+    }
+
+    @Override
+    public String getSymbol() {
+        return getArguments().getString(TOKEN_SYMBOL);
     }
 }
