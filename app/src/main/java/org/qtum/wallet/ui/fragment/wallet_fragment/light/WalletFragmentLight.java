@@ -138,14 +138,4 @@ public class WalletFragmentLight extends WalletFragment {
         return span;
     }
 
-    @Override
-    public void offlineModeView() {
-        mLinearLayoutNoInternetConnection.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onlineModeView() {
-        mLinearLayoutNoInternetConnection.setVisibility(View.GONE);
-    }
-
 }

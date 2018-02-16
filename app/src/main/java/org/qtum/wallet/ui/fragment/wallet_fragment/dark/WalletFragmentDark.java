@@ -181,16 +181,14 @@ public class WalletFragmentDark extends WalletFragment {
     @Override
     public void offlineModeView() {
         noInternetViewHeight = pxFromDp(72);
-        mTextViewLastUpdatedPlaceHolder.setVisibility(View.VISIBLE);
-        mNoInternetTitleTextView.setVisibility(View.VISIBLE);
+        super.offlineModeView();
         resizeNoInetConnection();
     }
 
     @Override
     public void onlineModeView() {
         noInternetViewHeight = pxFromDp(18);
-        mTextViewLastUpdatedPlaceHolder.setVisibility(View.GONE);
-        mNoInternetTitleTextView.setVisibility(View.GONE);
+        super.onlineModeView();
         resizeNoInetConnection();
     }
 
