@@ -8,6 +8,7 @@ import org.qtum.wallet.model.gson.history.Vout;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ class AddressesDetailPresenterImpl extends BaseFragmentPresenterImpl implements 
             case History:
                 History history = getInteractor().getHistory(getView().getTxHash());
                 if (history != null) {
-                    getView().setUpRecyclerView(history.getVin(), history.getVout());
+                    getView().setUpRecyclerView(history.getVin(), history.getVout(), "QTUM");
                 }
                 break;
             case Token_History:
@@ -45,9 +46,9 @@ class AddressesDetailPresenterImpl extends BaseFragmentPresenterImpl implements 
                 if(tokenHistory!=null){
                     List<Vin> vinList = new ArrayList<>();
                     List<Vout> voutList = new ArrayList<>();
-                    vinList.add(new Vin(tokenHistory.getFrom(), tokenHistory.getAmount()));
-                    voutList.add(new Vout(tokenHistory.getTo(), tokenHistory.getAmount()));
-                    getView().setUpRecyclerView(vinList, voutList);
+                    vinList.add(new Vin(tokenHistory.getFrom(), new BigDecimal(tokenHistory.getAmount()).divide(new BigDecimal("10").pow(getView().getDecimalUnits())).toString()));
+                    voutList.add(new Vout(tokenHistory.getTo(), new BigDecimal(tokenHistory.getAmount()).divide(new BigDecimal("10").pow(getView().getDecimalUnits())).toString()));
+                    getView().setUpRecyclerView(vinList, voutList, getView().getSymbol());
                 }
                 break;
         }

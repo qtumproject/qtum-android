@@ -5,6 +5,8 @@ import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
+import java.math.BigDecimal;
+
 import io.realm.Realm;
 
 public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implements TransactionPresenter {
@@ -32,17 +34,20 @@ public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implemen
         Long dateLong = 0L;
         String fee = "";
         String changeInBalance = "";
+        String symbol = "";
         switch (historyType){
             case History:
                 final History history = getInteractor().getHistory(txHash);
                 dateLong = history.getBlockTime();
                 fee = history.getFee();
                 changeInBalance = history.getChangeInBalance();
+                symbol = "QTUM";
                 break;
             case Token_History:
                 final TokenHistory tokenHistory = getInteractor().getTokenHistory(txHash);
                 dateLong = tokenHistory.getTxTime();
-                changeInBalance = tokenHistory.getAmount();
+                changeInBalance = new BigDecimal(tokenHistory.getAmount()).divide(new BigDecimal("10").pow(getView().getDecimalUnits())).toString();
+                symbol = getView().getSymbol();
                 break;
         }
 
@@ -52,7 +57,7 @@ public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implemen
             dateString = getInteractor().getUnconfirmedDate();
         }
         TransactionReceipt transactionReceipt = getInteractor().getHistoryReceipt(getView().getRealm(), txHash);
-        getView().setUpTransactionData(changeInBalance, fee, dateString,
+        getView().setUpTransactionData(changeInBalance, symbol,fee, dateString,
                 dateLong > 0, transactionReceipt != null && transactionReceipt.getLog() != null && !transactionReceipt.getLog().isEmpty());
 
 

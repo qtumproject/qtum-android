@@ -47,8 +47,8 @@ public class TransactionFragmentLight extends TransactionFragment implements Hid
     }
 
     @Override
-    public void setUpTransactionData(String value, String fee, String receivedTime, boolean confirmed, boolean isContractCall) {
-        super.setUpTransactionData(value, fee, receivedTime, confirmed, isContractCall);
+    public void setUpTransactionData(String value, String symbol,String fee, String receivedTime, boolean confirmed, boolean isContractCall) {
+        super.setUpTransactionData(value, symbol,fee, receivedTime, confirmed, isContractCall);
         this.confirmed = confirmed;
         this.isSend = Double.valueOf(value) > 0;
         checkConfirmation(confirmed);

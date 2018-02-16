@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="4dp"
-                android:text="@string/no_internet_connection_found"
+                android:text="@string/no_internet_connection"
                 android:textColor="@color/background"
 
                 app:typefaceAsset="@string/simplonMonoMedium" />
@@ -39,7 +39,6 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:padding="4dp"
-                android:text="151551"
                 android:textColor="@color/background"
                 app:autoSizeMaxTextSize="14sp"
                 app:autoSizeMinTextSize="10sp"

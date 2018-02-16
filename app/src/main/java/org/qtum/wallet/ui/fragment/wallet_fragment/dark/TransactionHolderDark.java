@@ -113,15 +113,17 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
                 switch (history.getHistoryType()) {
                     case Received:
                         mImageViewIcon.setImageResource(R.drawable.ic_received);
+                        mTextViewOperationType.setText(R.string.received);
                         break;
                     case Sent:
                         mImageViewIcon.setImageResource(R.drawable.ic_sent);
+                        mTextViewOperationType.setText(R.string.sent);
                         break;
                     case Internal_Transaction:
                         mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_dark);
+                        mTextViewOperationType.setText(R.string.internal_transaction);
                         break;
                 }
-                mTextViewOperationType.setText(history.getHistoryType().toString());
             }
         } else {
             mTextViewOperationType.setText(R.string.getting_info);

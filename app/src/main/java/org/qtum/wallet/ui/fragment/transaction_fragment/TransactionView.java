@@ -7,6 +7,8 @@ import java.util.List;
 import io.realm.Realm;
 
 public interface TransactionView extends BaseFragmentView {
-    void setUpTransactionData(String value, String fee,String receivedTime, boolean confirmed, boolean isContractCall);
+    void setUpTransactionData(String value, String symbol,String fee,String receivedTime, boolean confirmed, boolean isContractCall);
     Realm getRealm();
+    int getDecimalUnits();
+    String getSymbol();
 }

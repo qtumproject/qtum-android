@@ -236,7 +236,7 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
 
     @Override
     public void onTransactionClick(String txHash) {
-        Fragment fragment = TransactionFragment.newInstance(getView().getContext(), txHash, HistoryType.Token_History);
+        Fragment fragment = TransactionFragment.newInstance(getView().getContext(), txHash, HistoryType.Token_History, token.getDecimalUnits(), token.getSymbol());
         getView().openFragment(fragment);
     }
 

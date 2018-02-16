@@ -13,8 +13,8 @@ import java.util.List;
 
 public class AddressesDetailAdapterDark<T extends TransactionInfo> extends AddressesDetailAdapter {
 
-    AddressesDetailAdapterDark(List<T> transactionInfoList) {
-        super(transactionInfoList);
+    AddressesDetailAdapterDark(List<T> transactionInfoList, String symbol) {
+        super(transactionInfoList, symbol);
     }
 
     @Override

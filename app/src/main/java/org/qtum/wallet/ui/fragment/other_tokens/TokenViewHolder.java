@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.other_tokens;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -49,7 +48,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
     @BindView(R.id.unsupported_icon)
     View unsupportedIcon;
 
-    private Token token;
+    private Token mToken;
     private Context mContext;
 
     private UpdateSocketInstance socketInstance;
@@ -69,7 +68,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
         });
     }
 
-    public void bind(Token token) {
+    public void bind(final Token token) {
         unsupportedIcon.setVisibility(View.GONE);
         unsupportedView.setVisibility(View.GONE);
         balanceRootView.setVisibility(View.VISIBLE);
@@ -77,11 +76,11 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
         tokenBalanceView.setText("0.0");
         mTextViewSymbol.setText("");
 
-        if (this.token != null) {
+        if (this.mToken != null) {
             socketInstance.getSocketInstance().removeTokenBalanceChangeListener(token.getContractAddress(), this);
         }
 
-        this.token = token;
+        this.mToken = token;
 
         ContractManagementHelper.getPropertyValue(TokenFragment.symbol, token, mContext)
                 .subscribeOn(Schedulers.io())
@@ -102,6 +101,7 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
                             tokenBalanceView.setVisibility(View.VISIBLE);
                             tokenBalanceView.setText("0.0");
                         }
+                        mToken = new TinyDB(itemView.getContext()).setTokenSymbol(token, string);
                         mTextViewSymbol.setVisibility(View.VISIBLE);
                         mTextViewSymbol.setText(String.format(" %s", string));
                     }
@@ -119,9 +119,9 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
 
     @Override
     public void onBalanceChange(final TokenBalance tokenBalance) {
-        if (token.getContractAddress().equals(tokenBalance.getContractAddress())) {
-            token.setLastBalance(tokenBalance.getTotalBalance());
-            ContractManagementHelper.getPropertyValue(TokenFragment.decimals, token, itemView.getContext())
+        if (mToken.getContractAddress().equals(tokenBalance.getContractAddress())) {
+            mToken.setLastBalance(tokenBalance.getTotalBalance());
+            ContractManagementHelper.getPropertyValue(TokenFragment.decimals, mToken, itemView.getContext())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<String>() {
@@ -131,13 +131,13 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
 
                         @Override
                         public void onError(Throwable e) {
-                            token = new TinyDB(itemView.getContext()).setTokenDecimals(token, 129);
+                            mToken = new TinyDB(itemView.getContext()).setTokenDecimals(mToken, 129);
                            updateBalance();
                         }
 
                         @Override
                         public void onNext(String string) {
-                            token = new TinyDB(itemView.getContext()).setTokenDecimals(token, Integer.valueOf(string));
+                            mToken = new TinyDB(itemView.getContext()).setTokenDecimals(mToken, Integer.valueOf(string));
                             updateBalance();
                         }
                     });
@@ -150,11 +150,11 @@ public class TokenViewHolder extends RecyclerView.ViewHolder implements TokenBal
             public void run() {
 
                 spinner.setVisibility(View.GONE);
-                String s = token.getTokenBalanceWithDecimalUnits().toString();
+                String s = mToken.getTokenBalanceWithDecimalUnits().toString();
                 tokenBalanceView.setLongNumberText(s, itemView.getContext().getResources().getDisplayMetrics().widthPixels / 2);
                 tokenBalanceView.setVisibility(View.VISIBLE);
 
-                if(!token.getSupportFlag()){
+                if(!mToken.getSupportFlag()){
                     unsupportedIcon.setVisibility(View.VISIBLE);
                     unsupportedView.setVisibility(View.VISIBLE);
                     balanceRootView.setVisibility(View.INVISIBLE);
