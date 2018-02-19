@@ -38,7 +38,7 @@ public class ImportWalletInteractorTest {
     ImportWalletPresenterImpl presenter;
 
     @Before
-    public void setup(){
+    public void setup() {
         MockitoAnnotations.initMocks(this);
 
         RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
@@ -54,7 +54,7 @@ public class ImportWalletInteractorTest {
             }
         });
 
-        presenter = new ImportWalletPresenterImpl(view,interactor);
+        presenter = new ImportWalletPresenterImpl(view, interactor);
     }
 
     private String VALID_PASSPHRASE1 = "a b c d e f g h i j k l";
@@ -64,70 +64,70 @@ public class ImportWalletInteractorTest {
     private String INVALID_NUMBER_IN_PASSPHRASE = "a b c d e 9 g h i j k l m";
 
     @Test
-    public void onPassphraseChange_validString1_test(){
+    public void onPassphraseChange_validString1_test() {
         presenter.onPassphraseChange(VALID_PASSPHRASE1);
-        verify(view,never()).disableImportButton();
-        verify(view,times(1)).enableImportButton();
+        verify(view, never()).disableImportButton();
+        verify(view, times(1)).enableImportButton();
     }
 
     @Test
-    public void onPassphraseChange_validString2_test(){
+    public void onPassphraseChange_validString2_test() {
         presenter.onPassphraseChange(VALID_PASSPHRASE2);
-        verify(view,never()).disableImportButton();
-        verify(view,times(1)).enableImportButton();
+        verify(view, never()).disableImportButton();
+        verify(view, times(1)).enableImportButton();
     }
 
     @Test
-    public void onPassphraseChange_invalidWordCount11_test(){
+    public void onPassphraseChange_invalidWordCount11_test() {
         presenter.onPassphraseChange(INVALID_PASSPHRASE_WORD_COUNT_11);
-        verify(view,times(1)).disableImportButton();
-        verify(view,never()).enableImportButton();
+        verify(view, times(1)).disableImportButton();
+        verify(view, never()).enableImportButton();
     }
 
     @Test
-    public void onPassphraseChange_invalidWordCount13_test(){
+    public void onPassphraseChange_invalidWordCount13_test() {
         presenter.onPassphraseChange(INVALID_PASSPHRASE_WORD_COUNT_13);
-        verify(view,times(1)).disableImportButton();
-        verify(view,never()).enableImportButton();
+        verify(view, times(1)).disableImportButton();
+        verify(view, never()).enableImportButton();
     }
 
     @Test
-    public void onPassphraseChange_invalidNumberInString_test(){
+    public void onPassphraseChange_invalidNumberInString_test() {
         presenter.onPassphraseChange(INVALID_NUMBER_IN_PASSPHRASE);
-        verify(view,times(1)).disableImportButton();
-        verify(view,never()).enableImportButton();
+        verify(view, times(1)).disableImportButton();
+        verify(view, never()).enableImportButton();
     }
 
     @Test
-    public void onResume_dataLoadedTrue_test(){
+    public void onResume_dataLoadedTrue_test() {
         presenter.setDataLoaded(true);
         presenter.onResume();
-        verify(view,times(1)).dismissProgressDialog();
-        verify(view,times(1)).openPinFragment(anyString(),(PinAction)any());
+        verify(view, times(1)).dismissProgressDialog();
+        verify(view, times(1)).openPinFragment(anyString(), (PinAction) any());
     }
 
     @Test
-    public void onResume_dataLoadedFalse_test(){
+    public void onResume_dataLoadedFalse_test() {
         presenter.setDataLoaded(false);
         presenter.onResume();
-        verify(view,never()).dismissProgressDialog();
-        verify(view,never()).openPinFragment(anyString(),(PinAction)any());
+        verify(view, never()).dismissProgressDialog();
+        verify(view, never()).openPinFragment(anyString(), (PinAction) any());
     }
 
     @Test
-    public void onImportClick_Success(){
+    public void onImportClick_Success() {
         when(interactor.importWallet(VALID_PASSPHRASE1)).thenReturn(Observable.just(VALID_PASSPHRASE1));
         presenter.onImportClick(VALID_PASSPHRASE1);
-        verify(view,times(1)).dismissProgressDialog();
-        verify(view,times(1)).openPinFragment(eq(VALID_PASSPHRASE1),(PinAction)any());
+        verify(view, times(1)).dismissProgressDialog();
+        verify(view, times(1)).openPinFragment(eq(VALID_PASSPHRASE1), (PinAction) any());
     }
 
     @Test
-    public void onImportClick_Error(){
+    public void onImportClick_Error() {
         when(interactor.importWallet(VALID_PASSPHRASE1)).thenReturn(Observable.<String>error(new Throwable()));
         presenter.onImportClick(VALID_PASSPHRASE1);
-        verify(view,never()).openPinFragment(eq(VALID_PASSPHRASE1),(PinAction)any());
-        verify(view,times(1)).setAlertDialog(anyInt(),anyInt(), eq(BaseFragment.PopUpType.error));
+        verify(view, never()).openPinFragment(eq(VALID_PASSPHRASE1), (PinAction) any());
+        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), eq(BaseFragment.PopUpType.error));
     }
 
     @After

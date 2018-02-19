@@ -2,7 +2,10 @@ package org.qtum.wallet.ui.fragment.transaction_fragment;
 
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.TransactionReceipt;
+import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+
+import java.math.BigDecimal;
 
 import io.realm.Realm;
 
@@ -26,17 +29,36 @@ public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implemen
     }
 
     @Override
-    public void openTransactionView(final String txHash) {
-        final String dateString;
-        final History history = getInteractor().getHistory(txHash);
-        if (history.getBlockTime() != null) {
-            dateString = getInteractor().getFullDate(history.getBlockTime() * 1000L);
+    public void openTransactionView(final String txHash, HistoryType historyType) {
+        String dateString;
+        Long dateLong = 0L;
+        String fee = "";
+        String changeInBalance = "";
+        String symbol = "";
+        switch (historyType){
+            case History:
+                final History history = getInteractor().getHistory(txHash);
+                dateLong = history.getBlockTime();
+                fee = history.getFee();
+                changeInBalance = history.getChangeInBalance();
+                symbol = "QTUM";
+                break;
+            case Token_History:
+                final TokenHistory tokenHistory = getInteractor().getTokenHistory(txHash);
+                dateLong = tokenHistory.getTxTime();
+                changeInBalance = new BigDecimal(tokenHistory.getAmount()).divide(new BigDecimal("10").pow(getView().getDecimalUnits())).toString();
+                symbol = getView().getSymbol();
+                break;
+        }
+
+        if (dateLong != null) {
+            dateString = getInteractor().getFullDate(dateLong * 1000L);
         } else {
             dateString = getInteractor().getUnconfirmedDate();
         }
-        TransactionReceipt transactionReceipt = getInteractor().getHistoryReceipt(getView().getRealm(), history.getTxHash());
-        getView().setUpTransactionData(history.getChangeInBalance(), history.getFee(), dateString,
-                history.getBlockHeight() > 0, transactionReceipt != null && transactionReceipt.getLog() != null && !transactionReceipt.getLog().isEmpty());
+        TransactionReceipt transactionReceipt = getInteractor().getHistoryReceipt(getView().getRealm(), txHash);
+        getView().setUpTransactionData(changeInBalance, symbol,fee, dateString,
+                dateLong > 0, transactionReceipt != null && transactionReceipt.getLog() != null && !transactionReceipt.getLog().isEmpty());
 
 
     }

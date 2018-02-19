@@ -49,7 +49,7 @@ public class QtumApplication extends MultiDexApplication{
             int migrationVersion = qtumSettingSharedPreference.getCodeVersion(getApplicationContext());
             if (currentVersion > migrationVersion) {
                 MigrationManager migrationManager = new MigrationManager();
-                int newMigrationVersion = migrationManager.makeMigration(currentVersion, migrationVersion, getApplicationContext());
+                int newMigrationVersion = migrationManager.makeMigration(currentVersion, migrationVersion, getApplicationContext(), realm);
                 qtumSettingSharedPreference.setMigrationCodeVersionString(getApplicationContext(), newMigrationVersion);
             }
         } catch (PackageManager.NameNotFoundException e) {

@@ -35,6 +35,4 @@ public interface WalletView extends BaseFragmentView {
     void offlineModeView();
 
     void onlineModeView();
-
-    Realm getRealm();
 }

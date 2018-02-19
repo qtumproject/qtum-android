@@ -24,6 +24,8 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import io.realm.Realm;
+
 import static org.qtum.wallet.utils.crypto.KeyStoreHelper.QTUM_PIN_ALIAS;
 
 public class MigrationManager {
@@ -34,19 +36,22 @@ public class MigrationManager {
 
     private final int migrateVersion_106 = 106;
 
+    private final int migrateVersion_109 = 109;
+
     List<Integer> migrations = new ArrayList<>();
 
     public MigrationManager() {
         migrations.add(migrateVersion_93);
         migrations.add(migrateVersion_100);
         migrations.add(migrateVersion_106);
+        migrations.add(migrateVersion_109);
     }
 
-    public int makeMigration(int currentVersion, int migrationVersion, Context context) {
+    public int makeMigration(int currentVersion, int migrationVersion, Context context, Realm realm) {
         int newMigrationVersion = migrationVersion;
         for (Integer version : migrations) {
             if (version > migrationVersion) {
-                if (!migrate(version, context)) {
+                if (!migrate(version, context, realm)) {
                     return newMigrationVersion;
                 }
                 newMigrationVersion = version;
@@ -55,7 +60,7 @@ public class MigrationManager {
         return currentVersion;
     }
 
-    private boolean migrate(int version, Context context) {
+    private boolean migrate(int version, Context context, Realm realm) {
         switch (version) {
             case migrateVersion_93:
                 renameSenderAddress(context);
@@ -68,8 +73,12 @@ public class MigrationManager {
                 resetContractAndTemplateTime(context);
                 if(MigrationManager.migrateFromKeystore(context)
                         .equalsName(KeystoreMigrationResult.ERROR.name())) {
-                    clearWallet(context);
+                    clearWallet(context, realm);
                 }
+                return true;
+            case migrateVersion_109:
+                renameCrowdsaleToToken(context);
+                clearRealm(realm);
                 return true;
             default:
                 return false;
@@ -221,13 +230,41 @@ public class MigrationManager {
         QtumSharedPreference.getInstance().saveSeed(context, base64);
     }
 
-    private void clearWallet(Context context) {
+    private void clearWallet(Context context, Realm realm) {
         QtumSharedPreference.getInstance().forceClear(context);
         KeyStorage.getInstance().clearKeyStorage();
-        //TODO CLEAR REALM
+        realm.removeAllChangeListeners();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.deleteAll();
+            }
+        });
         TinyDB db = new TinyDB(context);
         db.clearTokenList();
         db.clearContractList();
         db.clearTemplateList();
     }
+
+    private void clearRealm(Realm realm){
+        realm.removeAllChangeListeners();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.deleteAll();
+            }
+        });
+    }
+
+    private void renameCrowdsaleToToken(Context context){
+        TinyDB tinyDB = new TinyDB(context);
+        List<ContractTemplate> contractTemplates = tinyDB.getContractTemplateList();
+        for(ContractTemplate contractTemplate : contractTemplates){
+            if(contractTemplate.getContractType().equals("crowdsale")){
+                contractTemplate.setContractType("token");
+            }
+        }
+        tinyDB.putContractTemplate(contractTemplates);
+    }
+
 }

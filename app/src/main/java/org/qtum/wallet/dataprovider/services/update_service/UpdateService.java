@@ -161,9 +161,9 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
         if(!unconfirmedBalanceString.isEmpty()){
             unconfirmedBalance = new BigDecimal(unconfirmedBalanceString);
         }
-        if(lastUpdatedBalanceTime!=0){
+
             mLastUpdatedBalanceTime = lastUpdatedBalanceTime;
-        }
+
 
         try {
             SSLContext mySSLContext = SSLContext.getInstance("TLS");

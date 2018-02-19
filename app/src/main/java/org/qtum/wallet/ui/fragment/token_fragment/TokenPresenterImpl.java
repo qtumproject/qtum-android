@@ -4,22 +4,24 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
 import org.qtum.wallet.model.contract.Token;
-import org.qtum.wallet.model.gson.history.HistoryType;
+import org.qtum.wallet.model.gson.history.HistoryPayType;
+import org.qtum.wallet.model.gson.history.TransactionReceipt;
 import org.qtum.wallet.model.gson.token_history.TokenHistory;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
+import org.qtum.wallet.ui.fragment.transaction_fragment.HistoryType;
 import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
+import org.qtum.wallet.ui.fragment.wallet_fragment.HistoryInDbChangeListener;
 
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import io.realm.OrderedCollectionChangeSet;
-import io.realm.OrderedRealmCollectionChangeListener;
-import io.realm.Realm;
+
 import io.realm.RealmResults;
-import io.realm.Sort;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;
 
@@ -30,7 +32,6 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
     private Token token;
     private String abi;
     private SubscriptionList mSubscriptionList = new SubscriptionList();
-    RealmResults<TokenHistory> tokenHistories;
     private boolean mNetworkConnectedFlag = false;
     private int visibleItemCount = 0;
     private Integer totalItem;
@@ -51,13 +52,10 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
         getInteractor().setupPropertySymbolValue(token, getView().getSymbolValueCallback());
         getInteractor().setupPropertyNameValue(token, getView().getNameValueCallback());
 
-        Realm realm = getView().getRealm();
-        tokenHistories = realm.where(TokenHistory.class).equalTo("contractAddress", token.getContractAddress()).sort("txTime", Sort.DESCENDING).findAll();
-
-        tokenHistories.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<TokenHistory>>() {
+        getInteractor().addHistoryInDbChangeListener(new HistoryInDbChangeListener<TokenHistory>() {
             @Override
-            public void onChange(RealmResults<TokenHistory> tokenHistories, @Nullable OrderedCollectionChangeSet changeSet) {
-                getView().updateHistory(tokenHistories.subList(0, visibleItemCount), changeSet, visibleItemCount);
+            public void onHistoryChange(RealmResults<TokenHistory> histories, @Nullable OrderedCollectionChangeSet changeSet) {
+                getView().updateHistory(histories.subList(0, visibleItemCount), changeSet, visibleItemCount);
             }
         });
     }
@@ -93,7 +91,7 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
     @Override
     public void onDecimalsPropertySuccess(String value) {
 
-        if(!TextUtils.isEmpty(value) && !token.getDecimalUnits().equals(Integer.valueOf(value))) {
+        if (!TextUtils.isEmpty(value) && !token.getDecimalUnits().equals(Integer.valueOf(value))) {
             //getView().updateHistory(getInteractor().getHistoryList());
         }
 
@@ -125,7 +123,8 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
             getView().hideBottomLoader();
             return;
         }
-        getInteractor().getHistoryList(token.getContractAddress(), ONE_PAGE_COUNT, 0).subscribeOn(Schedulers.io())
+        getInteractor().getHistoryList(token.getContractAddress(), ONE_PAGE_COUNT, 0)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<TokenHistoryResponse>() {
                     @Override
@@ -141,25 +140,19 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
                     @Override
                     public void onNext(final TokenHistoryResponse historyResponse) {
                         totalItem = historyResponse.getCount();
-                        Realm realm = Realm.getDefaultInstance();
-                        realm.executeTransaction(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
+
 
                                 for (TokenHistory history : historyResponse.getItems()) {
                                     prepareHistory(history);
                                 }
                                 visibleItemCount += historyResponse.getItems().size();
-                                realm.insertOrUpdate(historyResponse.getItems());
-
-                            }
-                        });
+                                getInteractor().updateHistoryInRealm(historyResponse.getItems());
                     }
                 });
     }
 
     private void getHistoriesFromRealm() {
-        int allCount = tokenHistories.size();
+        int allCount = getInteractor().getTokenHistoryDbCount();
         if (allCount - visibleItemCount > 0) {
             int toUpdate;
             if (allCount - visibleItemCount > 25) {
@@ -167,7 +160,7 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
             } else {
                 toUpdate = allCount - visibleItemCount;
             }
-            List<TokenHistory> historiesFromRealm = tokenHistories.subList(0, visibleItemCount + toUpdate);
+            List<TokenHistory> historiesFromRealm = getInteractor().getTokenHistoryDb(0, visibleItemCount + toUpdate);
             visibleItemCount += toUpdate;
             visibleItemCount = historiesFromRealm.size();
             getView().updateHistory(historiesFromRealm, 0, toUpdate);
@@ -182,29 +175,68 @@ public class TokenPresenterImpl extends BaseFragmentPresenterImpl implements Tok
         boolean isOwnFrom = false;
         boolean isOwnTo = false;
         for (String address : ownAddresses) {
-            if (tokenHistory.getFrom().equals(address)){
+            if (tokenHistory.getFrom().equals(address)) {
                 isOwnFrom = true;
             }
-            if (tokenHistory.getTo().equals(address)){
+            if (tokenHistory.getTo().equals(address)) {
                 isOwnTo = true;
             }
         }
 
-        if(isOwnFrom && isOwnTo){
-            tokenHistory.setHistoryType(HistoryType.Internal_Transaction);
+        if (isOwnFrom && isOwnTo) {
+            tokenHistory.setHistoryType(HistoryPayType.Internal_Transaction);
         } else {
-            if(isOwnFrom){
-                tokenHistory.setHistoryType(HistoryType.Sent);
-            }else{
-                tokenHistory.setHistoryType(HistoryType.Received);
+            if (isOwnFrom) {
+                tokenHistory.setHistoryType(HistoryPayType.Sent);
+            } else {
+                tokenHistory.setHistoryType(HistoryPayType.Received);
             }
         }
+
+        TransactionReceipt transactionReceipt = getInteractor().getReceiptByRxhHashFromRealm(tokenHistory.getTxHash());
+        if (transactionReceipt == null) {
+            initTransactionReceipt(tokenHistory.getTxHash());
+        } else {
+            tokenHistory.setReceiptUpdated(true);
+        }
+
+    }
+
+    private void initTransactionReceipt(final String txHash) {
+
+        getInteractor().getTransactionReceipt(txHash)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<TransactionReceipt>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(final List<TransactionReceipt> transactionReceipt) {
+
+                        TransactionReceipt transactionReceiptRealm = new TransactionReceipt(txHash);
+                        getInteractor().setUpHistoryReceipt(txHash);
+
+                        if (transactionReceipt.size() > 0) {
+                            transactionReceiptRealm = transactionReceipt.get(0);
+                        }
+                        getInteractor().updateReceiptInRealm(transactionReceiptRealm);
+
+                    }
+                });
 
     }
 
     @Override
     public void onTransactionClick(String txHash) {
-        Fragment fragment = TransactionFragment.newInstance(getView().getContext(), txHash);
+        Fragment fragment = TransactionFragment.newInstance(getView().getContext(), txHash, HistoryType.Token_History, token.getDecimalUnits(), token.getSymbol());
         getView().openFragment(fragment);
     }
 

@@ -6,10 +6,11 @@ import org.qtum.wallet.model.gson.history.TransactionReceipt;
 
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Observable;
 
 public interface WalletInteractor {
-    //List<History> getHistoryList();
 
     Observable<HistoryResponse> getHistoryList(int limit, int offset);
 
@@ -17,11 +18,21 @@ public interface WalletInteractor {
 
     String getAddress();
 
-    //int getTotalHistoryItem();
-
-   // void addToHistoryList(History history);
-
-    //Integer setHistory(History history);
-
     List<String> getAddresses();
+
+    void updateHistoryInRealm(List<History> histories);
+
+    void updateHistoryInRealm(History histories);
+
+    void updateReceiptInRealm(TransactionReceipt transactionReceipt);
+
+    TransactionReceipt getReceiptByRxhHashFromRealm(String txHash);
+
+    void setUpHistoryReceipt(String txHash, boolean isContract);
+
+    void addHistoryInDbChangeListener(HistoryInDbChangeListener listener);
+
+    int getHistoryDbCount();
+
+    List<History> getHistorySubList(int startIndex, int length);
 }

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.addresses_detail_fragment.AddressesDetailFragment;
+import org.qtum.wallet.ui.fragment.transaction_fragment.HistoryType;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.ClipboardUtils;
 
@@ -31,15 +32,17 @@ public abstract class OverviewFragment extends BaseFragment implements OverviewV
 
     OverviewPresenter mOverviewPresenter;
     public static String TX_HASH = "tx_hash";
+    public static String HISTORY_TYPE = "history_type";
 
     @BindView(R.id.recycler_view_overview)
     protected
     RecyclerView mRecyclerViewOverview;
     protected OverviewAdapter mOverviewAdapter;
 
-    public static Fragment newInstance(Context context, String txHash) {
+    public static Fragment newInstance(Context context, String txHash, HistoryType historyType) {
         Bundle args = new Bundle();
         args.putString(TX_HASH, txHash);
+        args.putSerializable(HISTORY_TYPE, historyType);
         Fragment fragment = Factory.instantiateDefaultFragment(context, OverviewFragment.class);
         fragment.setArguments(args);
         return fragment;
@@ -47,7 +50,7 @@ public abstract class OverviewFragment extends BaseFragment implements OverviewV
 
     @Override
     protected void createPresenter() {
-        mOverviewPresenter = new OverviewPresenterImpl(this, new OverviewIteractorImpl(getContext()));
+        mOverviewPresenter = new OverviewPresenterImpl(this, new OverviewIteractorImpl(getContext(),getMainActivity().getRealm()));
     }
 
     @Override
@@ -59,6 +62,8 @@ public abstract class OverviewFragment extends BaseFragment implements OverviewV
     public String getTxHash() {
         return getArguments().getString(TX_HASH);
     }
+
+
 
     @Override
     public void initializeViews() {
@@ -127,5 +132,9 @@ public abstract class OverviewFragment extends BaseFragment implements OverviewV
         public int getItemCount() {
             return mOverview.size();
         }
+    }
+
+    public HistoryType getHistoryType(){
+        return (HistoryType) getArguments().getSerializable(HISTORY_TYPE);
     }
 }

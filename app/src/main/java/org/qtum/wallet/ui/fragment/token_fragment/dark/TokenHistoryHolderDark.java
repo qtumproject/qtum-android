@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.token_fragment.dark;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,6 +43,9 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
 
     @BindView(R.id.ll_transaction)
     LinearLayout mLinearLayoutTransaction;
+
+    @BindView(R.id.progress_indicator)
+    View progressIndicator;
 
     Subscription mSubscription;
     String mSymbol;
@@ -98,15 +102,22 @@ public class TokenHistoryHolderDark extends RecyclerView.ViewHolder {
         } else {
             mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.unconfirmed));
         }
-        switch (history.getHistoryType()){
-            case Sent:
-                mImageViewIcon.setImageResource(R.drawable.ic_sent);
-                break;
-            case Received:
-                mImageViewIcon.setImageResource(R.drawable.ic_received);
-                break;
-            case Internal_Transaction:
-                mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_dark);
+        progressIndicator.setVisibility(View.GONE);
+        if (history.isReceiptUpdated()) {
+            switch (history.getHistoryType()) {
+                case Sent:
+                    mImageViewIcon.setImageResource(R.drawable.ic_sent);
+                    break;
+                case Received:
+                    mImageViewIcon.setImageResource(R.drawable.ic_received);
+                    break;
+                case Internal_Transaction:
+                    mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_dark);
+            }
+        } else {
+            mTextViewOperationType.setText(R.string.getting_info);
+            progressIndicator.setVisibility(View.VISIBLE);
+            mImageViewIcon.setVisibility(View.GONE);
         }
         mTextViewOperationType.setText(history.getHistoryType().toString());
         mTextViewID.setText(history.getTxHash());

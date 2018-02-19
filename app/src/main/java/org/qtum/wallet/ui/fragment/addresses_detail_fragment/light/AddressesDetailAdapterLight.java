@@ -12,8 +12,8 @@ import java.util.List;
 
 class AddressesDetailAdapterLight<T extends TransactionInfo> extends AddressesDetailAdapter {
 
-    protected AddressesDetailAdapterLight(List<T> transactionInfoList) {
-        super(transactionInfoList);
+    protected AddressesDetailAdapterLight(List<T> transactionInfoList, String symbol) {
+        super(transactionInfoList, symbol);
     }
 
     @Override

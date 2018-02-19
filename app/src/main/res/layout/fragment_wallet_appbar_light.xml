@@ -85,8 +85,9 @@
         <org.qtum.wallet.utils.FontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/no_internet_title"
             android:gravity="center"
-            android:text="@string/no_internet_connection_found"
+            android:text="@string/no_internet_connection"
             android:textColor="@color/white"
             app:typefaceAsset="@string/proximaNovaSemibold"/>
 

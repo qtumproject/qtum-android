@@ -71,13 +71,13 @@ public class ContractConfirmPresenterTest {
     }
 
     @Test
-    public void initializeView_test(){
+    public void initializeView_test() {
         when(interactor.getFeePerKb()).thenReturn(minFee);
         when(interactor.getMinGasPrice()).thenReturn(minGasPrice);
         presenter.initializeViews();
-        verify(view,times(1)).updateGasPrice(eq(minGasPrice),anyInt());
-        verify(view,times(1)).updateFee(eq(minFee.doubleValue()), anyDouble());
-        verify(view,times(1)).updateGasLimit(anyInt(),anyInt());
+        verify(view, times(1)).updateGasPrice(eq(minGasPrice), anyInt());
+        verify(view, times(1)).updateFee(eq(minFee.doubleValue()), anyDouble());
+        verify(view, times(1)).updateGasLimit(anyInt(), anyInt());
     }
 
     private final static String uiid = "uiid";
@@ -88,21 +88,21 @@ public class ContractConfirmPresenterTest {
     private final List<ContractMethodParameter> TEST_PARAMETRS = Arrays.asList(new ContractMethodParameter("name", "type", "value"));
 
     @Test
-    public void onConfirm_createAbiConstructParams_Error(){
-        when(interactor.createAbiConstructParams(TEST_PARAMETRS,uiid)).thenReturn(Observable.<String>error(new Throwable()));
+    public void onConfirm_createAbiConstructParams_Error() {
+        when(interactor.createAbiConstructParams(TEST_PARAMETRS, uiid)).thenReturn(Observable.<String>error(new Throwable()));
         presenter.setContractMethodParameterList(TEST_PARAMETRS);
-        presenter.onConfirmContract(uiid,gas_limit,gas_price,fee);
-        verify(view, times(1)).setAlertDialog(anyInt(),anyString(),anyString(),(BaseFragment.PopUpType) any());
+        presenter.onConfirmContract(uiid, gas_limit, gas_price, fee);
+        verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any());
 
     }
 
     @Test
-    public void onConfirm_getUnspentOutputsForSeveralAddresses_Error(){
-        when(interactor.createAbiConstructParams(TEST_PARAMETRS,uiid)).thenReturn(Observable.just(abi));
+    public void onConfirm_getUnspentOutputsForSeveralAddresses_Error() {
+        when(interactor.createAbiConstructParams(TEST_PARAMETRS, uiid)).thenReturn(Observable.just(abi));
         when(interactor.getUnspentOutputsForSeveralAddresses()).thenReturn(Observable.<List<UnspentOutput>>error(new Throwable()));
         presenter.setContractMethodParameterList(TEST_PARAMETRS);
-        presenter.onConfirmContract(uiid,gas_limit,gas_price,fee);
-        verify(view, times(1)).setAlertDialog(anyInt(),anyString(),anyString(),(BaseFragment.PopUpType) any());
+        presenter.onConfirmContract(uiid, gas_limit, gas_price, fee);
+        verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any());
 
     }
 
@@ -113,30 +113,30 @@ public class ContractConfirmPresenterTest {
     private static final String TEST_SENDER_ADDRESS = "test_address";
 
     @Test
-    public void onConfirm_sendRawTransaction_Error(){
-        when(interactor.createAbiConstructParams(TEST_PARAMETRS,uiid)).thenReturn(Observable.just(ABI_PARAMS));
+    public void onConfirm_sendRawTransaction_Error() {
+        when(interactor.createAbiConstructParams(TEST_PARAMETRS, uiid)).thenReturn(Observable.just(ABI_PARAMS));
         when(interactor.getUnspentOutputsForSeveralAddresses()).thenReturn(Observable.just(TEST_OUTPUTS));
-        when(interactor.createTransactionHash(ABI_PARAMS, TEST_OUTPUTS, gas_limit, gas_price, fee)).thenReturn(new TransactionHashWithSender(TEST_HASH,TEST_SENDER_ADDRESS));
-        when(interactor.sendRawTransaction((SendRawTransactionRequest)any())).thenReturn(Observable.<SendRawTransactionResponse>error(new Throwable()));
+        when(interactor.createTransactionHash(ABI_PARAMS, TEST_OUTPUTS, gas_limit, gas_price, fee)).thenReturn(new TransactionHashWithSender(TEST_HASH, TEST_SENDER_ADDRESS));
+        when(interactor.sendRawTransaction((SendRawTransactionRequest) any())).thenReturn(Observable.<SendRawTransactionResponse>error(new Throwable()));
         presenter.setContractMethodParameterList(TEST_PARAMETRS);
-        presenter.onConfirmContract(uiid,gas_limit,gas_price,fee);
-        verify(view, times(1)).setAlertDialog(anyInt(),anyString(),anyString(),(BaseFragment.PopUpType) any());
+        presenter.onConfirmContract(uiid, gas_limit, gas_price, fee);
+        verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any());
 
     }
 
     private final static String TX_HASH_TEST = "test_hash";
 
     @Test
-    public void onConfirm_Success(){
+    public void onConfirm_Success() {
         SendRawTransactionResponse sendrawTransactionResponse = mock(SendRawTransactionResponse.class);
         when(sendrawTransactionResponse.getTxid()).thenReturn(TX_HASH_TEST);
-        when(interactor.createAbiConstructParams(TEST_PARAMETRS,uiid)).thenReturn(Observable.just(ABI_PARAMS));
+        when(interactor.createAbiConstructParams(TEST_PARAMETRS, uiid)).thenReturn(Observable.just(ABI_PARAMS));
         when(interactor.getUnspentOutputsForSeveralAddresses()).thenReturn(Observable.just(TEST_OUTPUTS));
-        when(interactor.createTransactionHash(ABI_PARAMS, TEST_OUTPUTS, gas_limit, gas_price, fee)).thenReturn(new TransactionHashWithSender(TEST_HASH,TEST_SENDER_ADDRESS));
-        when(interactor.sendRawTransaction((SendRawTransactionRequest)any())).thenReturn(Observable.just(sendrawTransactionResponse));
+        when(interactor.createTransactionHash(ABI_PARAMS, TEST_OUTPUTS, gas_limit, gas_price, fee)).thenReturn(new TransactionHashWithSender(TEST_HASH, TEST_SENDER_ADDRESS));
+        when(interactor.sendRawTransaction((SendRawTransactionRequest) any())).thenReturn(Observable.just(sendrawTransactionResponse));
         presenter.setContractMethodParameterList(TEST_PARAMETRS);
-        presenter.onConfirmContract(uiid,gas_limit,gas_price,fee);
-        verify(view, times(1)).setAlertDialog(anyInt(),anyString(),anyString(),(BaseFragment.PopUpType) any(), (BaseFragment.AlertDialogCallBack)any());
+        presenter.onConfirmContract(uiid, gas_limit, gas_price, fee);
+        verify(view, times(1)).setAlertDialog(anyInt(), anyString(), anyString(), (BaseFragment.PopUpType) any(), (BaseFragment.AlertDialogCallBack) any());
 
     }
 

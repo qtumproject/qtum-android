@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -34,26 +33,19 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFragment;
 import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
-import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.ClipboardUtils;
 import org.qtum.wallet.utils.DateCalculator;
 import org.qtum.wallet.utils.FontTextView;
-
-import org.qtum.wallet.utils.OnDelayClick;
-import org.w3c.dom.Text;
-
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import io.realm.OrderedCollectionChangeSet;
-import io.realm.Realm;
 
 public abstract class WalletFragment extends BaseFragment implements WalletView, TransactionClickListener {
 
@@ -67,6 +59,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     protected int totalItemCount;
     protected int pastVisibleItems;
     protected boolean mLoadingFlag = false;
+    protected long lastUpdatedTime;
 
     @BindView(R.id.recycler_view)
     protected RecyclerView mRecyclerView;
@@ -113,6 +106,9 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @BindView(R.id.ll_no_internet_connection)
     protected LinearLayout mLinearLayoutNoInternetConnection;
 
+    @BindView(R.id.no_internet_title)
+    View mNoInternetTitleTextView;
+
     @BindView(R.id.last_updated_placeholder)
     protected TextView mTextViewLastUpdatedPlaceHolder;
 
@@ -129,8 +125,13 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                     mUpdateService = getMainActivity().getUpdateService();
                     mUpdateService.addTransactionListener(new TransactionListener() {
                         @Override
-                        public void onNewHistory(History history) {
-                            getPresenter().onNewHistory(history);
+                        public void onNewHistory(final History history) {
+                            getMainActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getPresenter().onNewHistory(history);
+                                }
+                            });
                         }
 
                         @Override
@@ -224,14 +225,14 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     }
 
     private void openQrCodeFragment() {
-        if(!getMainActivity().checkNavFragmentExistance(SendFragment.class.getCanonicalName())){
+        if (!getMainActivity().checkNavFragmentExistance(SendFragment.class.getCanonicalName())) {
             getMainActivity().openNavFragment(SendFragment.newInstance(true, null, null, null, getContext()));
         } else {
-            if(!getMainActivity().checkSendQrCodeActive()) {
+            if (!getMainActivity().checkSendQrCodeActive()) {
                 getMainActivity().moveToQrCodeActiveSend();
                 Fragment fragmentByTag = getMainActivity().getSupportFragmentManager().findFragmentByTag(SendFragment.class.getCanonicalName());
-                if(fragmentByTag != null){
-                    ((SendFragment)fragmentByTag).openQrCodeFragment();
+                if (fragmentByTag != null) {
+                    ((SendFragment) fragmentByTag).openQrCodeFragment();
                 }
             } else {
                 getMainActivity().moveToQrCodeActiveSend();
@@ -286,7 +287,6 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                         totalItemCount = mLinearLayoutManager.getItemCount();
                         pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
                         if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 1) {
-                            showBottomLoader();
                             getPresenter().onLastItem(totalItemCount - 1);
                         }
                     }
@@ -315,7 +315,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @Override
     protected void createPresenter() {
-        mWalletFragmentPresenter = new WalletPresenterImpl(this, new WalletInteractorImpl(getContext()));
+        mWalletFragmentPresenter = new WalletPresenterImpl(this, new WalletInteractorImpl(getContext(), getMainActivity().getRealm()));
     }
 
     @Override
@@ -420,6 +420,21 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
     }
 
+    @Override
+    public void offlineModeView() {
+        if (lastUpdatedTime != 0) {
+            mTextViewLastUpdatedPlaceHolder.setVisibility(View.VISIBLE);
+        }
+        mNoInternetTitleTextView.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void onlineModeView() {
+        mTextViewLastUpdatedPlaceHolder.setVisibility(View.GONE);
+        mNoInternetTitleTextView.setVisibility(View.GONE);
+    }
+
     BalanceChangeListener balanceListener = new BalanceChangeListener() {
         @Override
         public void onChangeBalance(final BigDecimal unconfirmedBalance, final BigDecimal balance, final Long lastUpdatedBalanceTime) {
@@ -427,6 +442,10 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                 @Override
                 public void run() {
                     String balanceString = balance.toString();
+                    lastUpdatedTime = lastUpdatedBalanceTime;
+                    if (lastUpdatedBalanceTime == 0 && mNoInternetTitleTextView.getVisibility() == View.VISIBLE) {
+                        mTextViewLastUpdatedPlaceHolder.setVisibility(View.INVISIBLE);
+                    }
                     mTextViewLastUpdatedPlaceHolder.setText(String.format("%s %s", getString(R.string.your_balance_was_last_updated_at), DateCalculator.getFullDate(lastUpdatedBalanceTime)));
                     if (balanceString != null) {
                         String unconfirmedBalanceString = unconfirmedBalance.toString();
@@ -441,10 +460,4 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
         }
     };
 
-
-
-    @Override
-    public Realm getRealm() {
-        return getMainActivity().getRealm();
-    }
 }

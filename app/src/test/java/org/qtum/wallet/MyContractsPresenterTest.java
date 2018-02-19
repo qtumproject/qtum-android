@@ -58,7 +58,7 @@ public class MyContractsPresenterTest {
 
         verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
 
-        verify(view, never()).setUpRecyclerView(anyList(),(ContractItemListener)any());
+        verify(view, never()).setUpRecyclerView(anyList(), (ContractItemListener) any());
         verify(view, never()).setPlaceHolder();
     }
 
@@ -69,7 +69,7 @@ public class MyContractsPresenterTest {
 
         presenter.initializeViews();
 
-        verify(view, times(1)).setUpRecyclerView(anyList(), (ContractItemListener)any());
+        verify(view, times(1)).setUpRecyclerView(anyList(), (ContractItemListener) any());
 
         verify(view, never()).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
         verify(view, never()).setPlaceHolder();

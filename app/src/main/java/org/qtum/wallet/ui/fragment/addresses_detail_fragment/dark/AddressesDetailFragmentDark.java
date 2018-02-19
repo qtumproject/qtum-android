@@ -18,9 +18,9 @@ public class AddressesDetailFragmentDark extends AddressesDetailFragment {
 
 
     @Override
-    public void setUpRecyclerView(List<Vin> transactionFrom, List<Vout> transactionTo) {
-        mAddressesDetailAdapterTo = new AddressesDetailAdapterDark<>(transactionTo);
-        mAddressesDetailAdapterFrom = new AddressesDetailAdapterDark<>(transactionFrom);
+    public void setUpRecyclerView(List<Vin> transactionFrom, List<Vout> transactionTo, String symbol) {
+        mAddressesDetailAdapterTo = new AddressesDetailAdapterDark<>(transactionTo,symbol);
+        mAddressesDetailAdapterFrom = new AddressesDetailAdapterDark<>(transactionFrom,symbol);
         mRecyclerViewFrom.setAdapter(mAddressesDetailAdapterFrom);
         mRecyclerViewTo.setAdapter(mAddressesDetailAdapterTo);
     }

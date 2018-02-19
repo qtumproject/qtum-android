@@ -58,65 +58,65 @@ public class BackUpContractsPresenterTest {
     }
 
     @Test
-    public void permissionGrantedForCreateBackUpFile_Success(){
+    public void permissionGrantedForCreateBackUpFile_Success() {
         File file = mock(File.class);
         when(interactor.createBackUpFile()).thenReturn(Observable.just((file)));
         presenter.permissionGrantedForCreateBackUpFile();
-        verify(view,times(1)).setProgressDialog();
-        verify(view,times(1)).dismissProgressDialog();
-        verify(view,times(1)).setUpFile(anyString());
+        verify(view, times(1)).setProgressDialog();
+        verify(view, times(1)).dismissProgressDialog();
+        verify(view, times(1)).setUpFile(anyString());
     }
 
     @Test
-    public void permissionGrantedForCreateBackUpFile_Error(){
+    public void permissionGrantedForCreateBackUpFile_Error() {
         when(interactor.createBackUpFile()).thenReturn(Observable.<File>error(new Throwable()));
         presenter.permissionGrantedForCreateBackUpFile();
-        verify(view,times(1)).setProgressDialog();
-        verify(view,times(1)).setAlertDialog(anyInt(),anyInt(),(BaseFragment.PopUpType)any());
+        verify(view, times(1)).setProgressDialog();
+        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
     }
 
     @Test
-    public void permissionGrantedForCreateAndBackUpFile_Success(){
+    public void permissionGrantedForCreateAndBackUpFile_Success() {
         File file = mock(File.class);
         when(interactor.createBackUpFile()).thenReturn(Observable.just((file)));
         presenter.permissionGrantedForCreateAndBackUpFile();
-        verify(view,times(1)).setProgressDialog();
-        verify(view,times(1)).dismissProgressDialog();
-        verify(view,times(1)).setUpFile(anyString());
-        verify(view,times(1)).checkPermissionForBackupFile();
+        verify(view, times(1)).setProgressDialog();
+        verify(view, times(1)).dismissProgressDialog();
+        verify(view, times(1)).setUpFile(anyString());
+        verify(view, times(1)).checkPermissionForBackupFile();
     }
 
     @Test
-    public void permissionGrantedForCreateAndBackUpFile_Error(){
+    public void permissionGrantedForCreateAndBackUpFile_Error() {
         when(interactor.createBackUpFile()).thenReturn(Observable.<File>error(new Throwable()));
         presenter.permissionGrantedForCreateAndBackUpFile();
-        verify(view,times(1)).setProgressDialog();
-        verify(view,times(1)).setAlertDialog(anyInt(),anyInt(),(BaseFragment.PopUpType)any());
+        verify(view, times(1)).setProgressDialog();
+        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
     }
 
     @Test
-    public void permissionGrantedForChooseShareMethod_Success(){
+    public void permissionGrantedForChooseShareMethod_Success() {
         File file = mock(File.class);
         when(file.exists()).thenReturn(true);
         presenter.setBackUpFile(file);
         presenter.permissionGrantedForChooseShareMethod();
-        verify(view,times(1)).chooseShareMethod(anyString(), (File) any());
+        verify(view, times(1)).chooseShareMethod(anyString(), (File) any());
     }
 
     @Test
-    public void permissionGrantedForChooseShareMethod_Error(){
+    public void permissionGrantedForChooseShareMethod_Error() {
         File file = mock(File.class);
         when(file.exists()).thenReturn(false);
         presenter.setBackUpFile(file);
         presenter.permissionGrantedForChooseShareMethod();
-        verify(view,times(1)).setAlertDialog(anyInt(),anyInt(),(BaseFragment.PopUpType)any());
-        verify(view,never()).chooseShareMethod(anyString(), (File) any());
+        verify(view, times(1)).setAlertDialog(anyInt(), anyInt(), (BaseFragment.PopUpType) any());
+        verify(view, never()).chooseShareMethod(anyString(), (File) any());
     }
 
     @Test
-    public void onBackUpClick_test(){
+    public void onBackUpClick_test() {
         presenter.onBackUpClick();
-        verify(view,times(1)).checkPermissionForBackupFile();
+        verify(view, times(1)).checkPermissionForBackupFile();
     }
 
     @After

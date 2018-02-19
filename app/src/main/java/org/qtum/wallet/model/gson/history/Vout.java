@@ -34,6 +34,11 @@ public class Vout extends RealmObject implements TransactionInfo {
         this.address = address;
     }
 
+    public Vout(String address, String valueString) {
+        this.address = address;
+        this.valueString = valueString;
+    }
+
     public boolean isOwnAddress() {
         return isOwnAddress;
     }
