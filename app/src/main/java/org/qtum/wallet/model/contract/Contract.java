@@ -32,7 +32,8 @@ public class Contract implements Serializable {
         this.mIsSubscribe = false;
     }
 
-    public Contract(String contractAddress, String uiid, String contractName, ContractCreationStatus creationStatus, Long date, String senderAddress, boolean isSubscribe) {
+    public Contract(String contractAddress, String uiid, String contractName,
+                    ContractCreationStatus creationStatus, Long date, String senderAddress, boolean isSubscribe) {
         mContractAddress = contractAddress;
         mUiid = uiid;
         mContractName = contractName;

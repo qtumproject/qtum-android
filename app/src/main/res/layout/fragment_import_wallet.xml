@@ -49,6 +49,7 @@
             android:background="@drawable/background_et_import_wallet"
             android:gravity="left|top"
             android:hint="@string/your_brain_code"
+            android:inputType="textNoSuggestions|textVisiblePassword"
             android:padding="6dp"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"/>
