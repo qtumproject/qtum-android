@@ -50,6 +50,7 @@
             android:gravity="left|top"
             android:hint="@string/your_brain_code"
             android:textSize="16sp"
+            android:inputType="textNoSuggestions|textVisiblePassword"
             android:padding="16dp"
             android:textColor="@color/bottom_nav_bar_text_color_light"
             android:textColorHint="@color/bottom_nav_bar_text_color_light"/>
