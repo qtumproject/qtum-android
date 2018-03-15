@@ -347,17 +347,17 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
             return;
         }
 
-//        OrderedCollectionChangeSet.Range[] deletions = changeSet.getDeletionRanges();
-//        for (int i = deletions.length - 1; i >= 0; i--) {
-//            OrderedCollectionChangeSet.Range range = deletions[i];
-//            if (range.startIndex <= visibleItemCount) {
-//                int length = range.length;
-//                if (range.startIndex + range.length > visibleItemCount) {
-//                    length = visibleItemCount - range.startIndex;
-//                }
-//                mTransactionAdapter.notifyItemRangeRemoved(range.startIndex, length);
-//            }
-//        }
+        OrderedCollectionChangeSet.Range[] deletions = changeSet.getDeletionRanges();
+        for (int i = deletions.length - 1; i >= 0; i--) {
+            OrderedCollectionChangeSet.Range range = deletions[i];
+            if (range.startIndex <= visibleItemCount) {
+                int length = range.length;
+                if (range.startIndex + range.length > visibleItemCount) {
+                    length = visibleItemCount - range.startIndex;
+                }
+                mTransactionAdapter.notifyItemRangeRemoved(range.startIndex, length);
+            }
+        }
 
         OrderedCollectionChangeSet.Range[] insertions = changeSet.getInsertionRanges();
         for (OrderedCollectionChangeSet.Range range : insertions) {
@@ -366,7 +366,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                 if (range.startIndex + range.length > visibleItemCount) {
                     length = visibleItemCount - range.startIndex;
                 }
-                mTransactionAdapter.notifyItemRangeInserted(range.startIndex + 1, length);
+                mTransactionAdapter.notifyItemRangeInserted(range.startIndex, length);
             }
         }
 

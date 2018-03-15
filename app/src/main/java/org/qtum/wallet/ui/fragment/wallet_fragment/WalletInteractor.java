@@ -35,4 +35,6 @@ public interface WalletInteractor {
     int getHistoryDbCount();
 
     List<History> getHistorySubList(int startIndex, int length);
+
+    History getHistory(String txHash);
 }
