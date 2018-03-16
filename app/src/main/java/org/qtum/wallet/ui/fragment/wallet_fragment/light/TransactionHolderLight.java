@@ -74,13 +74,19 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
             mSubscription.unsubscribe();
         }
         mLinearLayoutTransaction.setBackgroundResource(android.R.color.transparent);
-
-        if (history.isReceiptUpdated()) {
-            mImageViewIcon.setVisibility(View.VISIBLE);
-            mTextViewDate.setVisibility(View.VISIBLE);
-            progressIndicator.setVisibility(View.GONE);
-            mTextViewGettingInfo.setVisibility(View.GONE);
             if (history.getBlockTime() != null) {
+                if (history.isReceiptUpdated()) {
+                    mImageViewIcon.setVisibility(View.VISIBLE);
+                    mTextViewDate.setVisibility(View.VISIBLE);
+                    progressIndicator.setVisibility(View.GONE);
+                    mTextViewGettingInfo.setVisibility(View.GONE);
+                }else {
+                    contractIndicator.setBackgroundColor(Color.TRANSPARENT);
+                    mImageViewIcon.setVisibility(View.GONE);
+                    mTextViewDate.setVisibility(View.GONE);
+                    progressIndicator.setVisibility(View.VISIBLE);
+                    mTextViewGettingInfo.setVisibility(View.VISIBLE);
+                }
                 mSubscription = DateCalculator.getUpdater().subscribe(new Subscriber() {
                     @Override
                     public void onCompleted() {
@@ -95,41 +101,35 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
                         mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
                     }
                 });
+                if (history.isContractType()) {
+                    mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_light);
+                    contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_sent_color);
+
+                } else {
+                    contractIndicator.setBackgroundColor(Color.TRANSPARENT);
+                    switch (history.getHistoryType()) {
+                        case Internal_Transaction:
+                            mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_light);
+                            break;
+                        case Sent:
+                            mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
+                            break;
+                        case Received:
+                            mImageViewIcon.setImageResource(R.drawable.ic_received_light);
+                            break;
+                    }
+
+                }
                 mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
             } else {
+                progressIndicator.setVisibility(View.GONE);
+                mTextViewGettingInfo.setVisibility(View.GONE);
                 mImageViewIcon.setImageResource(R.drawable.ic_confirmation_loader);
                 mTextViewDate.setText(R.string.confirmation);
                 mLinearLayoutTransaction.setBackgroundResource(R.color.bottom_nav_bar_color_light);
             }
 
-            if (history.isContractType()) {
-                mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_light);
-                contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_sent_color);
 
-            } else {
-                contractIndicator.setBackgroundColor(Color.TRANSPARENT);
-                switch (history.getHistoryType()) {
-                    case Internal_Transaction:
-                        mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_light);
-                        break;
-                    case Sent:
-                        mImageViewIcon.setImageResource(R.drawable.ic_sended_light);
-                        break;
-                    case Received:
-                        mImageViewIcon.setImageResource(R.drawable.ic_received_light);
-                        break;
-                }
-
-            }
-
-
-        } else {
-            contractIndicator.setBackgroundColor(Color.TRANSPARENT);
-            mImageViewIcon.setVisibility(View.GONE);
-            mTextViewDate.setVisibility(View.GONE);
-            progressIndicator.setVisibility(View.VISIBLE);
-            mTextViewGettingInfo.setVisibility(View.VISIBLE);
-        }
 
         mTextViewID.setText(history.getTxHash());
         mTextViewValue.setText(getSpannedBalance(history.getChangeInBalance() + " QTUM"));
