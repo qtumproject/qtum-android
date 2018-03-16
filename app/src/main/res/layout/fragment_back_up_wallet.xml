@@ -6,7 +6,8 @@
                                                  android:background="@color/background"
                                                  android:clickable="true"
                                                  android:id="@+id/cl_back_up_wallet"
-                                                 android:fitsSystemWindows="true">
+                                                 android:fitsSystemWindows="true"
+    android:focusable="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"

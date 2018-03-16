@@ -21,6 +21,7 @@ public class CustomProgressBarView extends android.support.v7.widget.AppCompatIm
     Bitmap bitmap;
     int backgroundColor;
     int progressSrc;
+    Drawable vectorDrawable;
 
     public CustomProgressBarView(Context context) {
         super(context);
@@ -38,26 +39,14 @@ public class CustomProgressBarView extends android.support.v7.widget.AppCompatIm
         } finally {
             a.recycle();
         }
-    }
 
-    public CustomProgressBarView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
+        vectorDrawable = ContextCompat.getDrawable(getContext(), progressSrc);
 
-    @Override
-    public void setLayoutParams(ViewGroup.LayoutParams params) {
-        super.setLayoutParams(params);
-
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        Drawable vectorDrawable =  ContextCompat.getDrawable(getContext(), progressSrc);
-        i = count = -vectorDrawable.getIntrinsicWidth();
-        Bitmap bitmap = Bitmap.createBitmap(getWidth() + vectorDrawable.getIntrinsicWidth()*2,
+        bitmap = Bitmap.createBitmap(getResources().getDisplayMetrics().widthPixels + vectorDrawable.getIntrinsicWidth() * 2,
                 vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        int count = getWidth() / vectorDrawable.getIntrinsicWidth() + 2;
+
+        i = count = -vectorDrawable.getIntrinsicWidth();
+        int count = getResources().getDisplayMetrics().widthPixels / vectorDrawable.getIntrinsicWidth() + 2;
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
         vectorDrawable.draw(canvas);
@@ -65,8 +54,11 @@ public class CustomProgressBarView extends android.support.v7.widget.AppCompatIm
             canvas.translate(vectorDrawable.getIntrinsicWidth(), 0);
             vectorDrawable.draw(canvas);
         }
-        this.bitmap = bitmap;
         backgroundColor = ((ColorDrawable) getBackground()).getColor();
+    }
+
+    public CustomProgressBarView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 
     @Override
@@ -75,7 +67,7 @@ public class CustomProgressBarView extends android.support.v7.widget.AppCompatIm
             count = i;
         }
         canvas.drawColor(backgroundColor);
-        canvas.drawBitmap(bitmap, count++, 0, new Paint());
-        invalidate();
+        canvas.drawBitmap(bitmap, count++, 0, null);
+        postInvalidate();
     }
 }

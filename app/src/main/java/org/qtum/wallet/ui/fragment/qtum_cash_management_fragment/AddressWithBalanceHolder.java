@@ -11,10 +11,6 @@ import org.qtum.wallet.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnLongClick;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
 
@@ -60,11 +56,8 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
 
         String balance = deterministicKeyWithBalance.getBalance().toString();
 
-        if (mTextViewAddressBalance.getLayoutParams().width == WRAP_CONTENT) {
-            mTextViewAddressBalance.setLongNumberText(balance, itemView.getContext().getResources().getDisplayMetrics().widthPixels / 2);
-        } else {
-            mTextViewAddressBalance.setLongNumberText(balance);
-        }
+        mTextViewAddressBalance.setText(balance);
+
         mTextViewSymbol.setText(" QTUM");
     }
 

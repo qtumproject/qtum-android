@@ -146,7 +146,7 @@ public class DateCalculator {
     }
 
     public static Observable getUpdater() {
-        return Observable.interval(1000L, TimeUnit.MILLISECONDS)
+        return Observable.interval(59L, TimeUnit.SECONDS)
                 .timeInterval()
                 .observeOn(AndroidSchedulers.mainThread());
     }

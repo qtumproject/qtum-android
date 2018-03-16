@@ -5,12 +5,14 @@
                                                  android:layout_height="match_parent"
                                                  android:background="@color/white"
                                                  android:clickable="true"
-                                                 android:fitsSystemWindows="true">
+                                                 android:fitsSystemWindows="true"
+    android:focusable="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:stateListAnimator="@null"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
 
