@@ -145,7 +145,7 @@
             android:background="@drawable/background_et_import_wallet"
             android:focusableInTouchMode="true"
             android:imeOptions="actionDone"
-            android:inputType="text"
+            android:inputType="textFilter|textNoSuggestions"
             android:padding="6dp"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"
@@ -154,14 +154,12 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_templates"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
             android:layout_below="@id/et_abi_interface"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:layoutDirection="ltr">
-
-        </android.support.v7.widget.RecyclerView>
+            android:layoutDirection="ltr"/>
 
         <LinearLayout
             android:id="@+id/buttons"

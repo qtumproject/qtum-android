@@ -10,8 +10,9 @@
         android:id="@+id/icon"
         app:srcCompat="@drawable/ic_about"
         android:layout_centerVertical="true"
-        android:tint="@color/colorPrimary"
+        android:tint="@color/pref_text_color_selector"
         android:layout_width="30dp"
+        android:padding="4dp"
         android:layout_marginStart="16dp"
         android:layout_height="30dp" />
 
@@ -27,11 +28,11 @@
         android:text="@string/about"
         android:gravity="start|center_vertical"
         android:layout_marginStart="8dp"
-        android:textSize="18sp"
+        android:textSize="17sp"
         app:typefaceAsset="@string/simplonMonoRegular"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/pref_text_color_selector"
         android:ellipsize="end"
-        android:minHeight="60dp"
+        android:minHeight="56dp"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/icon"/>
 
@@ -41,8 +42,8 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:scaleType="center"
-        android:layout_marginEnd="16dp"
-        android:tint="@color/colorPrimary"
+        android:layout_marginEnd="14dp"
+        android:tint="@color/pref_text_color_selector"
         android:layout_width="16dp"
         android:layout_height="16dp" />
 

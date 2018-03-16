@@ -39,13 +39,6 @@ public class PrefViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.listener = listener;
-
-        rootLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onSettingClick(setting.getTitleRes());
-            }
-        });
     }
 
     public void bind(final SettingObject setting) {
@@ -60,9 +53,22 @@ public class PrefViewHolder extends RecyclerView.ViewHolder {
                 }
             });
             mSwitch.setChecked(QtumSharedPreference.getInstance().isTouchIdEnable(title.getContext()));
+            rootLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSwitch.setChecked(!mSwitch.isChecked());
+                }
+            });
         } else {
+            rootLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onSettingClick(setting.getTitleRes());
+                }
+            });
             mSwitch.setVisibility(View.INVISIBLE);
             arrow.setVisibility(View.VISIBLE);
+
         }
         title.setText(setting.getTitleRes());
 

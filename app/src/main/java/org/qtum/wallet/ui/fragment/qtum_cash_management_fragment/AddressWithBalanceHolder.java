@@ -36,7 +36,7 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClick(mDeterministicKeyWithBalance);
+                onItemClick();
             }
         });
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -66,5 +66,17 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
             mTextViewAddressBalance.setLongNumberText(balance);
         }
         mTextViewSymbol.setText(" QTUM");
+    }
+
+    private long mLastClickTime = System.currentTimeMillis();
+    private static final long CLICK_TIME_INTERVAL = 1000;
+
+    private void onItemClick(){
+        long now = System.currentTimeMillis();
+        if (now - mLastClickTime < CLICK_TIME_INTERVAL) {
+            return;
+        }
+        mLastClickTime = now;
+        listener.onItemClick(mDeterministicKeyWithBalance);
     }
 }

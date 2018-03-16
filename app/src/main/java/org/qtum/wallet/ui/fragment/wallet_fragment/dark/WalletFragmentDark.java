@@ -1,6 +1,7 @@
 package org.qtum.wallet.ui.fragment.wallet_fragment.dark;
 
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.view.ViewCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -130,6 +131,8 @@ public class WalletFragmentDark extends WalletFragment {
                 }
             }
         });
+
+        ViewCompat.setNestedScrollingEnabled(mRecyclerView, false);
     }
 
     public int getTotalRange() {

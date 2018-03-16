@@ -53,33 +53,33 @@ public class BackUpWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
 
     @Override
     public void onContinueClick() {
-        if(BuildConfig.DEBUG) {
-
-            getView().setProgressDialog();
-            KeyStorage.getInstance().createWallet(passphrase)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<String>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onNext(String s) {
-                            QtumSharedPreference.getInstance().setKeyGeneratedInstance(getView().getContext(), true);
-                            getView().dismissProgressDialog();
-                            getView().onLogin();
-                        }
-                    });
-        } else {
+//        if(BuildConfig.DEBUG) {
+//
+//            getView().setProgressDialog();
+//            KeyStorage.getInstance().createWallet(passphrase)
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new Subscriber<String>() {
+//                        @Override
+//                        public void onCompleted() {
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable e) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onNext(String s) {
+//                            QtumSharedPreference.getInstance().setKeyGeneratedInstance(getView().getContext(), true);
+//                            getView().dismissProgressDialog();
+//                            getView().onLogin();
+//                        }
+//                    });
+//        } else {
             BaseFragment fragment = ConfirmPassphraseFragment.newInstance(getView().getContext(), passphrase);
             getView().openFragment(fragment);
-        }
+//        }
    }
 }

@@ -12,6 +12,6 @@ public class BackUpWalletFragmentDark extends BackUpWalletFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
-        getMainActivity().recolorStatusBar(R.color.colorPrimary);
+        getMainActivity().recolorStatusBar(R.color.background);
     }
 }
