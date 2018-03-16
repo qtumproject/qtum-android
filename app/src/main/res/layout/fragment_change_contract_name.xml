@@ -55,18 +55,12 @@
         android:background="@color/select_file_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:orientation="vertical">
-
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_contract_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/contract_name_"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
@@ -86,24 +80,24 @@
 
             <org.qtum.wallet.utils.FontButton
                 android:id="@+id/bt_change"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
+                android:paddingStart="48dp"
+                android:paddingEnd="48dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:background="@color/accent_red_color"
                 android:gravity="center"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:text="@string/change"
                 android:textAllCaps="true"
                 android:textColor="@color/background"
                 android:textSize="@dimen/button_text"
                 app:typeface="@string/simplonMonoRegular"/>
-
-        </LinearLayout>
-
 
 
     </RelativeLayout>

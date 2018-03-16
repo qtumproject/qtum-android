@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:id="@+id/ll_footer">
 
             <org.qtum.wallet.utils.FontTextView

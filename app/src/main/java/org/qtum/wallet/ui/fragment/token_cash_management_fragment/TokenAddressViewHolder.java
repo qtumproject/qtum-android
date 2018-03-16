@@ -48,7 +48,7 @@ public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
 
     @OnClick(R.id.address_name)
     public void onAddressClick() {
-        listener.onItemClick(item);
+        onItemClick();
     }
 
     String currency;
@@ -72,7 +72,7 @@ public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
     public void bind(DeterministicKeyWithTokenBalance item) {
         this.item = item;
         mTextViewAddress.setText(item.getAddress());
-        String balance = "0";
+        String balance;
         try {
             balance = (item.getBalance() != null && !item.getBalance().toString().equals("0")) ? String.valueOf(item.getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128)) : "0";
         } catch (Exception e){
@@ -84,5 +84,17 @@ public class TokenAddressViewHolder extends RecyclerView.ViewHolder {
             mTextViewAddressBalance.setLongNumberText(balance);
         }
         mTextViewSymbol.setText(String.format(" %s", currency));
+    }
+
+    private long mLastClickTime = System.currentTimeMillis();
+    private static final long CLICK_TIME_INTERVAL = 1000;
+
+    private void onItemClick(){
+        long now = System.currentTimeMillis();
+        if (now - mLastClickTime < CLICK_TIME_INTERVAL) {
+            return;
+        }
+        mLastClickTime = now;
+        listener.onItemClick(item);
     }
 }

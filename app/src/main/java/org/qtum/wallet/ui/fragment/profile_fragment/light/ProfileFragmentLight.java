@@ -20,9 +20,6 @@ public class ProfileFragmentLight extends ProfileFragment {
         dividerItemDecoration = new DividerItemDecoration(getContext(), R.drawable.color_primary_divider_light, R.drawable.section_setting_divider_light, getPresenter().getSettingsData());
         prefList.addItemDecoration(dividerItemDecoration);
         prefList.setAdapter(adapter);
-
-        int backStackEntryCount = getChildFragmentManager().getBackStackEntryCount();
-        backStackEntryCount = backStackEntryCount;
     }
 
 }

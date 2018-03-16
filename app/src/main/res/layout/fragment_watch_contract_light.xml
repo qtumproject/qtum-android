@@ -143,7 +143,7 @@
             android:layout_marginTop="8dp"
             android:layout_height="128dp"
             android:focusableInTouchMode="true"
-            android:inputType="text"
+            android:inputType="textFilter|textNoSuggestions"
             android:maxLines="1"
             android:imeOptions="actionDone"
             android:background="@drawable/background_et_import_wallet_light"
@@ -154,7 +154,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
             android:id="@+id/rv_templates"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"

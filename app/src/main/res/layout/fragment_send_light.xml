@@ -275,8 +275,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/ll_fee"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
                         android:progressDrawable="@drawable/seekbar_progress_light"
                         android:thumb="@drawable/seekbar_thumb_light" />
 

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@drawable/background_progress_bar"
     android:padding="16dp"
@@ -59,13 +60,13 @@
             app:typefaceAsset="@string/proximaNovaSemibold"
             android:id="@+id/tv_address_to"
             android:layout_width="0dp"
-            android:maxLines="1"
             android:ellipsize="middle"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:gravity="left"
             android:layout_weight="1"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:singleLine="true" />
     </LinearLayout>
 
     <View
@@ -86,6 +87,7 @@
 
     <android.support.v7.widget.AppCompatSpinner
         android:layout_width="match_parent"
+        android:layout_marginEnd="-16dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/bottom_nav_bar_text_color_light_alpha_50"
         android:theme="@style/LightSpinner"
@@ -97,6 +99,19 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/bottom_nav_bar_text_color_light_alpha_50"/>
+
+    <org.qtum.wallet.utils.FontTextView
+        android:id="@+id/balance_from_tv"
+        android:textSize="12sp"
+        app:typefaceAsset="@string/proximaNovaRegular"
+        android:textColor="@color/bottom_nav_bar_text_color_light_alpha_50"
+        android:textAllCaps="true"
+        android:gravity="end"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        tools:text = "0 qtum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"

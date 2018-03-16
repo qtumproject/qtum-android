@@ -16,6 +16,8 @@ import org.qtum.wallet.ui.fragment.token_cash_management_fragment.TokenAddresses
 import org.qtum.wallet.utils.CurrentNetParams;
 import org.qtum.wallet.utils.FontTextView;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,18 +42,26 @@ public class AddressesListFragmentTokenLight extends AddressesListFragmentToken 
         showTransferDialogFragment(item, deterministicKeyWithBalances, getPresenter().getDecimalUnits());
     }
 
-    protected void showTransferDialogFragment(final DeterministicKeyWithTokenBalance keyWithBalanceTo, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, int decimalUnits) {
+    protected void showTransferDialogFragment(final DeterministicKeyWithTokenBalance keyWithBalanceTo, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, final int decimalUnits) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_transfer_balance_fragment_light, null);
         final TextInputEditText mEditTextAmount = (TextInputEditText) view.findViewById(R.id.et_amount);
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner_transfer);
         FontTextView mEditTextAddressTo = (FontTextView) view.findViewById(R.id.tv_address_to);
+        final FontTextView tvBalanceFrom = (FontTextView) view.findViewById(R.id.balance_from_tv);
         mEditTextAddressTo.setText(keyWithBalanceTo.getKey().toAddress(CurrentNetParams.getNetParams()).toString());
         AddressesWithTokenBalanceSpinnerAdapterLight spinnerAdapter = new AddressesWithTokenBalanceSpinnerAdapterLight(getContext(), keyWithBalanceList, getPresenter().getCurrency(), decimalUnits);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                getPresenter().setKeyWithTokenBalanceFrom((DeterministicKeyWithTokenBalance) spinner.getItemAtPosition(i));
+                DeterministicKeyWithTokenBalance item = (DeterministicKeyWithTokenBalance) spinner.getItemAtPosition(i);
+                getPresenter().setKeyWithTokenBalanceFrom(item);
+
+                String balance = (item.getBalance() != null
+                        && !item.getBalance().toString().equals("0"))
+                        ? String.valueOf(item.getBalance().divide(new BigDecimal(Math.pow(10, decimalUnits)), MathContext.DECIMAL128))
+                        : "0";
+                tvBalanceFrom.setText(String.format("%s %s", balance, getPresenter().getCurrency()));
             }
 
             @Override

@@ -12,11 +12,13 @@ import android.widget.Spinner;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.AddressWithBalance;
+import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFragment;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceAdapter;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressesWithBalanceSpinnerAdapter;
 import org.qtum.wallet.utils.FontTextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +48,7 @@ public class AddressListFragmentDark extends AddressListFragment {
         final TextInputEditText mEditTextAmount = (TextInputEditText) view.findViewById(R.id.et_amount);
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner_transfer);
         FontTextView mEditTextAddressTo = (FontTextView) view.findViewById(R.id.tv_address_to);
+        final FontTextView tvBalanceFrom = (FontTextView) view.findViewById(R.id.balance_from_tv);
 
         mEditTextAddressTo.setText(keyWithBalanceTo.getAddress());
 
@@ -54,7 +57,17 @@ public class AddressListFragmentDark extends AddressListFragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                getPresenter().setKeyWithBalanceFrom((AddressWithBalance) spinner.getItemAtPosition(i));
+                AddressWithBalance item = (AddressWithBalance) spinner.getItemAtPosition(i);
+                getPresenter().setKeyWithBalanceFrom(item);
+
+                BigDecimal balance = new BigDecimal("0");
+                BigDecimal amount;
+                for (UnspentOutput unspentOutput : item.getUnspentOutputList()) {
+                    amount = new BigDecimal(String.valueOf(unspentOutput.getAmount()));
+                    balance = balance.add(amount);
+                }
+
+                tvBalanceFrom.setText(String.format("%s QTUM", balance.toString()));
             }
 
             @Override

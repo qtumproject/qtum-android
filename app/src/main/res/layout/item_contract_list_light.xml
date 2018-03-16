@@ -2,7 +2,7 @@
 <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                 xmlns:app="http://schemas.android.com/apk/res-auto"
                                 android:layout_width="match_parent"
-                                android:layout_height="72dp">
+                                android:layout_height="56dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
                 android:textAllCaps="true"
                 android:text="@string/unsubscribe"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 app:typefaceAsset="@string/proximaNovaRegular"/>
 
         </LinearLayout>
@@ -57,37 +57,28 @@
             android:maxLines="1"
             android:text="@string/about"
             android:textColor="@color/bottom_nav_view_item_color"
-            android:textSize="18sp"
+            android:textSize="14sp"
             app:typefaceAsset="@string/proximaNovaRegular"/>
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/arrow"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:scaleType="center"
-            android:tint="@color/grey"
-            app:srcCompat="@drawable/ic_setting_arrow"/>
 
         <org.qtum.wallet.utils.FontTextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/arrow"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="14dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
             android:text="@string/about"
             android:textColor="@color/bottom_nav_view_item_color"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:typefaceAsset="@string/proximaNovaLight"/>
 
         <LinearLayout
+            android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="18dp"
             android:layout_toEndOf="@+id/title"
             android:orientation="horizontal">
 
@@ -105,7 +96,7 @@
                 android:paddingTop="2dp"
                 android:text="@string/about"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 app:typefaceAsset="@string/proximaNovaRegular"/>
 
             <ImageView

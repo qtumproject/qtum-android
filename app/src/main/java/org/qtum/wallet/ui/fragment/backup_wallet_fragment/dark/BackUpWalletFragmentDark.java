@@ -29,6 +29,7 @@ public class BackUpWalletFragmentDark extends BackUpWalletFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
+<<<<<<< HEAD
         getMainActivity().recolorStatusBar(R.color.colorPrimary);
         if (getArguments().getBoolean(IS_WALLET_CREATING)) {
             toolbar.setBackgroundColor(getResources().getColor(R.color.background));
@@ -36,6 +37,9 @@ public class BackUpWalletFragmentDark extends BackUpWalletFragment {
             btnShare.setColorFilter(getResources().getColor(R.color.colorPrimary));
             toolbarTitle.setTextColor(getResources().getColor(R.color.colorPrimary));
         }
+=======
+        getMainActivity().recolorStatusBar(R.color.background);
+>>>>>>> 03084bb7b9fe66f279a7535ddad03a794f3eae86
     }
 
 }
