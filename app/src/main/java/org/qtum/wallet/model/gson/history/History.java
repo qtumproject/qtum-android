@@ -16,6 +16,9 @@ public class History extends RealmObject{
     @SerializedName("block_time")
     @Expose
     private Long blockTime;
+    @SerializedName("tx_time")
+    @Expose
+    private Long txTime;
     @SerializedName("block_height")
     @Expose
     private Integer blockHeight;
@@ -182,5 +185,13 @@ public class History extends RealmObject{
 
     public HistoryPayType getHistoryType() {
         return HistoryPayType.valueOf(historyType);
+    }
+
+    public Long getTxTime() {
+        return txTime;
+    }
+
+    public void setTxTime(Long txTime) {
+        this.txTime = txTime;
     }
 }

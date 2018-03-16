@@ -221,6 +221,9 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
     @Override
     public void onNewHistory(final History history) {
         prepareHistory(history);
+        if(getInteractor().getHistory(history.getTxHash())==null) {
+            visibleItemCount++;
+        }
         getInteractor().updateHistoryInRealm(history);
 
     }

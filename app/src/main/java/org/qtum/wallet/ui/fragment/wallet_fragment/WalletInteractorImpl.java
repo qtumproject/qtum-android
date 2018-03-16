@@ -132,4 +132,9 @@ public class WalletInteractorImpl implements WalletInteractor {
     public List<History> getHistorySubList(int startIndex, int length) {
         return mHistories.subList(startIndex, length);
     }
+
+    @Override
+    public History getHistory(String txHash) {
+        return realm.where(History.class).equalTo("txHash", txHash).findFirst();
+    }
 }

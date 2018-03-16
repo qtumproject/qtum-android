@@ -18,7 +18,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="@color/background"
             app:contentInsetStart="0dp"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -31,6 +31,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="10dp"
+                android:tint="@color/colorPrimary"
                 app:srcCompat="@drawable/ic_back_indicator"/>
 
             <org.qtum.wallet.utils.FontTextView
@@ -39,8 +40,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="48dp"
                 android:gravity="center"
-                android:text="@string/repeat_passphrase"
-                android:textColor="@color/background"
+                android:text="@string/confirm_passphrase"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/toolbar_text_size"
                 app:typefaceAsset="@string/euclidFlexMedium"/>
         </android.support.v7.widget.Toolbar>
