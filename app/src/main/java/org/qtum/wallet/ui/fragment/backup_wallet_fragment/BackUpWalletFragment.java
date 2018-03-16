@@ -25,7 +25,7 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
 
     private BackUpWalletPresenter mBackUpWalletFragmentPresenter;
 
-    private static final String IS_WALLET_CREATING = "is_wallet_creating";
+    protected static final String IS_WALLET_CREATING = "is_wallet_creating";
     private static final String PIN = "pin";
 
     @BindView(R.id.bt_copy)
@@ -90,7 +90,7 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
     public void onResume() {
         super.onResume();
         if (getArguments().getBoolean(IS_WALLET_CREATING)) {
-            hideBottomNavView(false);
+            hideBottomNavView(true);
         }
     }
 
