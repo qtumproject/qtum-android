@@ -83,8 +83,6 @@ public class WalletPresenterImpl extends BaseFragmentPresenterImpl implements Wa
                     @Override
                     public void onNext(final HistoryResponse historyResponse) {
                         setTotalItem(historyResponse.getTotalItems());
-
-
                         for (History history : historyResponse.getItems()) {
                             prepareHistory(history);
                         }

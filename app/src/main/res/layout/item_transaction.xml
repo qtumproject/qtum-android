@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:id="@+id/ll_transaction"
-              android:background="@color/background"
+              android:background="@drawable/list_item_background_selector"
               android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:alpha=".6"
                 android:textSize="12sp"
                 android:padding="2sp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/pref_text_color_selector"
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="Nov 28" />
@@ -49,7 +49,7 @@
                     android:layout_height="16dp"
                     android:layout_marginEnd="8dp"
                     android:layout_gravity="center"
-                    android:tint="@color/colorPrimary"
+                    android:tint="@color/pref_text_color_selector"
                     app:srcCompat="@drawable/ic_sent"/>
 
                 <RelativeLayout
@@ -59,7 +59,7 @@
                 <org.qtum.wallet.utils.FontTextView
                     android:id="@+id/tv_operation_type"
                     app:typefaceAsset="@string/simplonMonoRegular"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/pref_text_color_selector"
                     android:layout_alignParentLeft="true"
                     android:ellipsize="end"
                     android:textSize="12sp"
@@ -77,7 +77,7 @@
                     app:typefaceAsset="@string/simplonMonoMedium"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@id/symbol"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/pref_text_color_selector"
                     android:text="-7,450"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
@@ -87,7 +87,7 @@
                     android:id="@+id/symbol"
                     app:typefaceAsset="@string/simplonMonoMedium"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/pref_text_color_selector"
                     android:layout_alignParentRight="true"
                     android:text=" QTUM"
                     android:textSize="16sp"
@@ -108,7 +108,7 @@
                 android:ellipsize="end"
                 android:alpha=".7"
                 android:text="1mase88dascasd12312nfsa33"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/pref_text_color_selector"/>
 
         </LinearLayout>
 

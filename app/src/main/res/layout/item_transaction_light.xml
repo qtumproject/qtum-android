@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:id="@+id/ll_transaction"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_transaction"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:background="@drawable/list_item_background_selector_light"
+    android:orientation="vertical"
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp">
 
         <View
             android:id="@+id/view_contract_indicator"
             android:layout_width="2dp"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:background="@color/contract_transaction_indicator_sent_color"
+            android:visibility="invisible" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,8 +29,8 @@
             android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp"
             android:orientation="vertical"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,7 +45,7 @@
                     android:layout_height="22dp"
                     android:gravity="start"
                     android:scaleType="fitStart"
-                    app:srcCompat="@drawable/ic_received_light"/>
+                    app:srcCompat="@drawable/ic_received_light" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -48,28 +55,28 @@
                         android:id="@+id/tv_date"
                         android:layout_width="wrap_content"
                         android:layout_height="22dp"
-                        android:gravity="center_vertical"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@id/tv_value"
                         android:alpha=".5"
-                        android:textSize="12sp"
                         android:ellipsize="end"
+                        android:gravity="center_vertical"
                         android:maxLines="1"
                         android:text="@string/send"
                         android:textColor="@color/bottom_nav_bar_text_color_light"
-                        app:typefaceAsset="@string/proximaNovaRegular"/>
+                        android:textSize="12sp"
+                        app:typefaceAsset="@string/proximaNovaRegular" />
 
                     <org.qtum.wallet.utils.FontTextView
                         android:id="@+id/tv_getting_info"
                         android:layout_width="wrap_content"
                         android:layout_height="22dp"
-                        android:gravity="center_vertical"
                         android:layout_alignParentStart="true"
-                        android:textSize="12sp"
                         android:layout_toStartOf="@id/tv_value"
+                        android:gravity="center_vertical"
                         android:text="@string/getting_info"
                         android:textColor="@color/grey"
-                        app:typefaceAsset="@string/proximaNovaRegular"/>
+                        android:textSize="12sp"
+                        app:typefaceAsset="@string/proximaNovaRegular" />
 
                     <org.qtum.wallet.utils.FontTextView
                         android:id="@+id/tv_value"
@@ -81,7 +88,7 @@
                         android:text="-7,450 QTUM"
                         android:textColor="@color/bottom_nav_bar_text_color_light"
                         android:textSize="16sp"
-                        app:typefaceAsset="@string/proximaNovaSemibold"/>
+                        app:typefaceAsset="@string/proximaNovaSemibold" />
 
                 </RelativeLayout>
 
@@ -94,11 +101,12 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:alpha=".7"
+
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="1mase88dascasd12312nfsa33"
                 android:textColor="@color/bottom_nav_bar_text_color_light"
-                app:typefaceAsset="@string/proximaNovaRegular"/>
+                app:typefaceAsset="@string/proximaNovaRegular" />
 
         </LinearLayout>
 
@@ -108,16 +116,15 @@
         android:id="@+id/progress_indicator"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:background="@color/qr_code_background"
-        app:progressSrc="@drawable/ic_progress_light_1"/>
+        app:progressSrc="@drawable/ic_progress_light_1" />
 
     <View
-
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
         android:alpha=".5"
-        android:background="@color/qr_code_background"/>
+        android:background="@color/qr_code_background" />
 
 </LinearLayout>

@@ -104,10 +104,10 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
 
             if (history.isContractType()) {
                 mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_light);
-                contractIndicator.setBackgroundResource(R.color.contract_transaction_indicator_sent_color);
+                contractIndicator.setVisibility(View.VISIBLE);
 
             } else {
-                contractIndicator.setBackgroundColor(Color.TRANSPARENT);
+                contractIndicator.setVisibility(View.INVISIBLE);
                 switch (history.getHistoryType()) {
                     case Internal_Transaction:
                         mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_light);
@@ -124,7 +124,7 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
 
 
         } else {
-            contractIndicator.setBackgroundColor(Color.TRANSPARENT);
+            contractIndicator.setVisibility(View.INVISIBLE);
             mImageViewIcon.setVisibility(View.GONE);
             mTextViewDate.setVisibility(View.GONE);
             progressIndicator.setVisibility(View.VISIBLE);
@@ -132,14 +132,6 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
         }
 
         mTextViewID.setText(history.getTxHash());
-        mTextViewValue.setText(getSpannedBalance(history.getChangeInBalance() + " QTUM"));
-    }
-
-    private SpannableString getSpannedBalance(String balance) {
-        SpannableString span = new SpannableString(balance);
-        if (balance.length() > 4) {
-            span.setSpan(new RelativeSizeSpan(.6f), balance.length() - 4, balance.length(), 0);
-        }
-        return span;
+        mTextViewValue.setText(String.format("%s QTUM", history.getChangeInBalance()));
     }
 }

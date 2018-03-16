@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -275,6 +276,9 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @Override
     public void initializeViews() {
         super.initializeViews();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mAppBarLayout.setStateListAnimator(null);
+        }
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -349,17 +353,17 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
             return;
         }
 
-//        OrderedCollectionChangeSet.Range[] deletions = changeSet.getDeletionRanges();
-//        for (int i = deletions.length - 1; i >= 0; i--) {
-//            OrderedCollectionChangeSet.Range range = deletions[i];
-//            if (range.startIndex <= visibleItemCount) {
-//                int length = range.length;
-//                if (range.startIndex + range.length > visibleItemCount) {
-//                    length = visibleItemCount - range.startIndex;
-//                }
-//                mTransactionAdapter.notifyItemRangeRemoved(range.startIndex, length);
-//            }
-//        }
+        OrderedCollectionChangeSet.Range[] deletions = changeSet.getDeletionRanges();
+        for (int i = deletions.length - 1; i >= 0; i--) {
+            OrderedCollectionChangeSet.Range range = deletions[i];
+            if (range.startIndex <= visibleItemCount) {
+                int length = range.length;
+                if (range.startIndex + range.length > visibleItemCount) {
+                    length = visibleItemCount - range.startIndex;
+                }
+                mTransactionAdapter.notifyItemRangeRemoved(range.startIndex, length);
+            }
+        }
 
         OrderedCollectionChangeSet.Range[] insertions = changeSet.getInsertionRanges();
         for (OrderedCollectionChangeSet.Range range : insertions) {
@@ -368,7 +372,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                 if (range.startIndex + range.length > visibleItemCount) {
                     length = visibleItemCount - range.startIndex;
                 }
-                mTransactionAdapter.notifyItemRangeInserted(range.startIndex + 1, length);
+                mTransactionAdapter.notifyItemRangeInserted(range.startIndex, length);
             }
         }
 
@@ -412,14 +416,24 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     public void showBottomLoader() {
         mLoadingFlag = true;
         mTransactionAdapter.setLoadingFlag(true);
-        mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
+        mRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
+            }
+        });
     }
 
     @Override
     public void hideBottomLoader() {
         mLoadingFlag = false;
         mTransactionAdapter.setLoadingFlag(false);
-        mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
+        mRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
+            }
+        });
     }
 
     @Override

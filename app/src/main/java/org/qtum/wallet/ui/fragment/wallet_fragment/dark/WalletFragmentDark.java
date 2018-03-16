@@ -131,8 +131,6 @@ public class WalletFragmentDark extends WalletFragment {
                 }
             }
         });
-
-        ViewCompat.setNestedScrollingEnabled(mRecyclerView, false);
     }
 
     public int getTotalRange() {

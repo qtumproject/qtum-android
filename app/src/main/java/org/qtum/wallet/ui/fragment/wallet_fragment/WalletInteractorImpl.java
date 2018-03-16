@@ -32,6 +32,7 @@ public class WalletInteractorImpl implements WalletInteractor {
         this.context = context;
         this.realm = realm;
         mHistories = realm.where(History.class).findAll().sort("blockTime", Sort.DESCENDING);
+        mHistories.removeAllChangeListeners();
         mHistories.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<History>>() {
             @Override
             public void onChange(RealmResults<History> histories, @Nullable OrderedCollectionChangeSet changeSet) {
