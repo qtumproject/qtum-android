@@ -24,6 +24,7 @@
 
         <ImageView
             android:id="@+id/iv_icon"
+            android:layout_gravity="top"
             android:layout_marginEnd="8dp"
             app:srcCompat="@drawable/ic_error"
             android:layout_width="20dp"
@@ -31,6 +32,7 @@
 
         <org.qtum.wallet.utils.FontTextView
             android:text="Title"
+            android:gravity="center"
             android:textSize="18sp"
             app:typefaceAsset="@string/proximaNovaSemibold"
             android:id="@+id/tv_pop_up_title"
