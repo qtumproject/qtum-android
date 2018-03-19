@@ -55,16 +55,11 @@
         android:background="@color/select_file_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
-
             <android.support.design.widget.TextInputLayout
+                android:theme="@style/InputTextLight"
                 android:id="@+id/til_contract_name"
                 android:layout_width="match_parent"
+                android:layout_margin="16dp"
                 android:hint="@string/contract_name_"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
@@ -74,7 +69,7 @@
                     android:id="@+id/et_contract_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:inputType="text"
                     android:digits="@string/valid_contract_name_symbol"/>
             </android.support.design.widget.TextInputLayout>
@@ -87,16 +82,16 @@
                 android:layout_marginTop="36dp"
                 android:background="@drawable/btn_sea_corner_background_light"
                 android:gravity="center"
-                android:padding="16dp"
+                android:padding="8dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:stateListAnimator="@null"
+                android:layout_marginBottom="16dp"
                 android:text="@string/change"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/button_text"
                 app:typeface="@string/proximaNovaSemibold"/>
-        </LinearLayout>
-
-
 
     </RelativeLayout>
 

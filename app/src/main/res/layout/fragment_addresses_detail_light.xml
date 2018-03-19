@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -17,7 +18,7 @@
             android:padding="8dp"
             android:textColor="@color/transaction_detail_unselected"
             android:text="@string/from"
-            app:typefaceAsset="@string/proximaNovaRegular" />
+            app:typefaceAsset="@string/proximaNovaSemibold" />
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
@@ -33,7 +34,7 @@
             android:padding="8dp"
             android:text="@string/to"
             android:textColor="@color/transaction_detail_unselected"
-            app:typefaceAsset="@string/proximaNovaRegular" />
+            app:typefaceAsset="@string/proximaNovaSemibold" />
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"

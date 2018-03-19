@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:orientation="vertical"
-              android:background="@color/colorPrimary"
-              android:padding="16dp"
-              android:clickable="true"
-              android:focusableInTouchMode="true"
-              android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    android:padding="16dp"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="match_parent">
 
     <org.qtum.wallet.utils.FontTextView
         android:layout_width="wrap_content"
@@ -18,7 +19,7 @@
         android:text="@string/transfer_balance"
         android:textColor="@color/background"
         android:textSize="18sp"
-        app:editTextTypeface="@string/simplonMonoMedium"/>
+        app:typefaceAsset="@string/simplonMonoMedium"/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/til_amount"
@@ -60,13 +61,13 @@
             app:typefaceAsset="@string/simplonMonoRegular"
             android:id="@+id/tv_address_to"
             android:layout_width="0dp"
-            android:maxLines="1"
             android:ellipsize="middle"
             android:layout_height="wrap_content"
             android:textColor="@color/background"
             android:gravity="left"
             android:layout_weight="1"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:singleLine="true" />
     </LinearLayout>
 
     <View
@@ -85,17 +86,28 @@
         android:text="@string/from"/>
 
     <android.support.v7.widget.AppCompatSpinner
+        android:layout_marginEnd="-16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/background"
-        android:id="@+id/spinner_transfer">
-
-    </android.support.v7.widget.AppCompatSpinner>
+        android:id="@+id/spinner_transfer"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/background"/>
+
+    <org.qtum.wallet.utils.FontTextView
+        android:id="@+id/balance_from_tv"
+        android:textSize="12sp"
+        app:typefaceAsset="@string/simplonMonoRegular"
+        android:textAllCaps="true"
+        android:gravity="end"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        tools:text = "0 qtum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"

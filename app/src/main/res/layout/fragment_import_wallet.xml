@@ -3,6 +3,7 @@
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
+    android:clickable="true"
                                                  android:background="@color/background"
                                                  android:fitsSystemWindows="true">
 
@@ -47,9 +48,9 @@
             app:editTextTypeface="@string/simplonMonoMedium"
             android:layout_height="128dp"
             android:background="@drawable/background_et_import_wallet"
-            android:gravity="left|top"
+            android:gravity="start|top"
             android:hint="@string/your_brain_code"
-            android:inputType="textNoSuggestions|textVisiblePassword"
+            android:inputType="textMultiLine|textFilter|textNoSuggestions"
             android:padding="6dp"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"/>

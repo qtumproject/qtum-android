@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.pin_fragment;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.qtum.wallet.R;

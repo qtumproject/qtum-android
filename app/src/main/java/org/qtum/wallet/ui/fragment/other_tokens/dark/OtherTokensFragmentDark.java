@@ -23,14 +23,13 @@ public class OtherTokensFragmentDark extends OtherTokensFragment {
 
     @Override
     public void onTokenClick(int adapterPosition) {
-        if (tokensList.getAdapter() != null) {
-            Token token = (Token)((TokensAdapterDark) tokensList.getAdapter()).get(adapterPosition);
-            if(token.getSupportFlag()) {
-                BaseFragment tokenFragment = TokenFragment.newInstance(getContext(), token);
-                openFragment(tokenFragment);
-            } else {
-                setAlertDialog(getString(R.string.token_unsupported_reason),getString(R.string.ok),PopUpType.error);
-            }
+        Token token = (Token) ((TokensAdapterDark) tokensList.getAdapter()).get(adapterPosition);
+        if (token.getSupportFlag()) {
+            BaseFragment tokenFragment = TokenFragment.newInstance(getContext(), token);
+            openFragment(tokenFragment);
+        } else {
+            setAlertDialog(getString(R.string.token_unsupported_reason), getString(R.string.ok), PopUpType.error);
         }
+
     }
 }

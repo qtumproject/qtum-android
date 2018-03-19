@@ -2,7 +2,7 @@
 <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                 xmlns:app="http://schemas.android.com/apk/res-auto"
                                 android:layout_width="match_parent"
-                                android:layout_height="72dp">
+                                android:layout_height="56dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
                 android:textAllCaps="true"
                 android:text="@string/unsubscribe"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 app:typefaceAsset="@string/simplonMonoRegular"/>
 
         </LinearLayout>
@@ -68,17 +68,16 @@
                     android:paddingRight="60dp"
                     android:text="@string/about"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     app:typefaceAsset="@string/simplonMonoRegular"/>
             </FrameLayout>
 
-            
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginLeft="-60dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="-60dp"
                 android:layout_marginTop="4dp"
-                android:layout_toRightOf="@+id/title_container"
+                android:layout_toEndOf="@+id/title_container"
                 android:orientation="horizontal">
                 
                 <org.qtum.wallet.utils.FontTextView
@@ -92,7 +91,7 @@
                     android:padding="2dp"
                     android:text="@string/about"
                     android:textColor="@color/background"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     app:typefaceAsset="@string/simplonMonoRegular"/>
                 
                 <ImageView
@@ -111,34 +110,25 @@
             
         </RelativeLayout>
 
-
-        <ImageView
-            android:id="@+id/arrow"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:scaleType="center"
-            android:tint="@color/colorPrimary"
-            app:srcCompat="@drawable/ic_setting_arrow"/>
-
         <org.qtum.wallet.utils.FontTextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/arrow"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="14dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
             android:text="@string/about"
+            android:alpha=".5"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:typefaceAsset="@string/simplonMonoRegular"/>
 
 
         <View
+            android:alpha=".7"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"

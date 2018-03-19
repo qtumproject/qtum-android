@@ -97,40 +97,40 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
                 }
             });
             mTextViewDate.setText(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
-
+            if (history.isReceiptUpdated()) {
+                mImageViewIcon.setVisibility(View.VISIBLE);
+                if (history.isContractType()) {
+                    mTextViewOperationType.setText(R.string.sent_contract);
+                    mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_dark);
+                    contractIndicator.setBackgroundResource(R.color.colorAccent);
+                } else {
+                    contractIndicator.setBackgroundColor(Color.TRANSPARENT);
+                    switch (history.getHistoryType()) {
+                        case Received:
+                            mImageViewIcon.setImageResource(R.drawable.ic_received);
+                            mTextViewOperationType.setText(R.string.received);
+                            break;
+                        case Sent:
+                            mImageViewIcon.setImageResource(R.drawable.ic_sent);
+                            mTextViewOperationType.setText(R.string.sent);
+                            break;
+                        case Internal_Transaction:
+                            mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_dark);
+                            mTextViewOperationType.setText(R.string.internal_transaction);
+                            break;
+                    }
+                }
+            } else {
+                mTextViewOperationType.setText(R.string.getting_info);
+                progressIndicator.setVisibility(View.VISIBLE);
+                mImageViewIcon.setVisibility(View.GONE);
+                contractIndicator.setBackgroundColor(Color.TRANSPARENT);
+            }
         } else {
             mTextViewDate.setText(mTextViewDate.getContext().getString(R.string.unconfirmed));
         }
         progressIndicator.setVisibility(View.GONE);
-        if (history.isReceiptUpdated()) {
-            mImageViewIcon.setVisibility(View.VISIBLE);
-            if (history.isContractType()) {
-                mTextViewOperationType.setText(R.string.sent_contract);
-                mImageViewIcon.setImageResource(R.drawable.ic_sent_cont_dark);
-                contractIndicator.setBackgroundResource(R.color.colorAccent);
-            } else {
-                contractIndicator.setBackgroundColor(Color.TRANSPARENT);
-                switch (history.getHistoryType()) {
-                    case Received:
-                        mImageViewIcon.setImageResource(R.drawable.ic_received);
-                        mTextViewOperationType.setText(R.string.received);
-                        break;
-                    case Sent:
-                        mImageViewIcon.setImageResource(R.drawable.ic_sent);
-                        mTextViewOperationType.setText(R.string.sent);
-                        break;
-                    case Internal_Transaction:
-                        mImageViewIcon.setImageResource(R.drawable.ic_sent_to_myself_dark);
-                        mTextViewOperationType.setText(R.string.internal_transaction);
-                        break;
-                }
-            }
-        } else {
-            mTextViewOperationType.setText(R.string.getting_info);
-            progressIndicator.setVisibility(View.VISIBLE);
-            mImageViewIcon.setVisibility(View.GONE);
-            contractIndicator.setBackgroundColor(Color.TRANSPARENT);
-        }
+
         mTextViewID.setText(history.getTxHash());
         mTextViewValue.setText(history.getChangeInBalance());
     }

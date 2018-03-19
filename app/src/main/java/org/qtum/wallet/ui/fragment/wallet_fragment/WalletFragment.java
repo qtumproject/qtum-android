@@ -4,12 +4,14 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -274,6 +276,9 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     @Override
     public void initializeViews() {
         super.initializeViews();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mAppBarLayout.setStateListAnimator(null);
+        }
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -304,6 +309,7 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
                 }
             }
         });
+
     }
 
     protected abstract void createAdapter();
@@ -410,14 +416,24 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
     public void showBottomLoader() {
         mLoadingFlag = true;
         mTransactionAdapter.setLoadingFlag(true);
-        mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
+        mRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
+            }
+        });
     }
 
     @Override
     public void hideBottomLoader() {
         mLoadingFlag = false;
         mTransactionAdapter.setLoadingFlag(false);
-        mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
+        mRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                mTransactionAdapter.notifyItemChanged(totalItemCount - 1);
+            }
+        });
     }
 
     @Override

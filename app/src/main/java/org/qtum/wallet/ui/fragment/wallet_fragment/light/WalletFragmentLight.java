@@ -102,7 +102,6 @@ public class WalletFragmentLight extends WalletFragment {
         super.onPause();
     }
 
-
     @Override
     protected void createAdapter() {
         mTransactionAdapter = new TransactionAdapterLight(new ArrayList<History>(),getAdapterListener());
@@ -128,14 +127,6 @@ public class WalletFragmentLight extends WalletFragment {
         } catch (NullPointerException e) {
             Log.d("WalletFragmentLight", "updateBalance: " + e.getMessage());
         }
-    }
-
-    private SpannableString getSpannedBalance(String balance) {
-        SpannableString span = new SpannableString(balance);
-        if (balance.length() > 4) {
-            span.setSpan(new RelativeSizeSpan(.6f), balance.length() - 4, balance.length(), 0);
-        }
-        return span;
     }
 
 }

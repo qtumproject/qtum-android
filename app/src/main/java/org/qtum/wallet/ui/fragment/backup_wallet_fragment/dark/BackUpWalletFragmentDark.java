@@ -29,6 +29,7 @@ public class BackUpWalletFragmentDark extends BackUpWalletFragment {
     @Override
     public void initializeViews() {
         super.initializeViews();
+        getMainActivity().recolorStatusBar(R.color.background);
         getMainActivity().recolorStatusBar(R.color.colorPrimary);
         if (getArguments().getBoolean(IS_WALLET_CREATING)) {
             toolbar.setBackgroundColor(getResources().getColor(R.color.background));

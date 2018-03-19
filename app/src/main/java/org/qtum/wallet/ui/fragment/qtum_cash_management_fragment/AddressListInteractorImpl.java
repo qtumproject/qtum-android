@@ -14,10 +14,7 @@ import rx.Observable;
 
 public class AddressListInteractorImpl implements AddressListInteractor {
 
-    private WeakReference<Context> mContext;
-
-    AddressListInteractorImpl(Context context) {
-        mContext = new WeakReference<Context>(context);
+    AddressListInteractorImpl() {
     }
 
     @Override

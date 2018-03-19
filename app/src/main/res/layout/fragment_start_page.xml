@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     android:fitsSystemWindows="true">
 
     <RelativeLayout
@@ -53,7 +54,7 @@
                 android:layout_marginTop="8dp"
                 android:background="?attr/selectableItemBackground"
                 android:gravity="center"
-                android:padding="10dp"
+                android:padding="8dp"
                 app:typeface="@string/simplonMonoRegular"
                 android:text="@string/import_wallet"
                 android:textAllCaps="true"
@@ -71,7 +72,7 @@
                 android:textColor="@color/background"
                 android:background="@color/accent_red_color"
                 android:gravity="center"
-                android:padding="10dp"
+                android:padding="8dp"
                 app:typeface="@string/simplonMonoRegular"
                 android:text="@string/login"
                 android:textAllCaps="true"
@@ -79,6 +80,7 @@
         </RelativeLayout>
 
         <ImageView
+            android:layout_marginTop="24dp"
             android:id="@+id/logo_view"
             android:layout_width="140dp"
             android:layout_height="140dp"
@@ -102,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/you_don_t_have_a_wallet_yet"
                 android:textColor="@color/colorPrimary"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 app:typefaceAsset="@string/euclidFlexMedium" />
 
             <org.qtum.wallet.utils.FontTextView
@@ -113,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/create_the_first_one_or_restore_n_the_previous_wallet_key"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:typefaceAsset="@string/simplonMonoRegular" />
 
         </LinearLayout>

@@ -50,7 +50,7 @@ public abstract class AddressListFragment extends BaseFragment implements Addres
 
     @Override
     protected void createPresenter() {
-        mAddressListPresenter = new AddressListPresenterImpl(this, new AddressListInteractorImpl(getContext()));
+        mAddressListPresenter = new AddressListPresenterImpl(this, new AddressListInteractorImpl());
     }
 
     @Override

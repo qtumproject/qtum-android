@@ -11,10 +11,6 @@ import org.qtum.wallet.utils.FontTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnLongClick;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
 
@@ -36,7 +32,7 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClick(mDeterministicKeyWithBalance);
+                onItemClick();
             }
         });
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -60,11 +56,20 @@ public class AddressWithBalanceHolder extends RecyclerView.ViewHolder {
 
         String balance = deterministicKeyWithBalance.getBalance().toString();
 
-        if (mTextViewAddressBalance.getLayoutParams().width == WRAP_CONTENT) {
-            mTextViewAddressBalance.setLongNumberText(balance, itemView.getContext().getResources().getDisplayMetrics().widthPixels / 2);
-        } else {
-            mTextViewAddressBalance.setLongNumberText(balance);
-        }
+        mTextViewAddressBalance.setText(balance);
+
         mTextViewSymbol.setText(" QTUM");
+    }
+
+    private long mLastClickTime = System.currentTimeMillis();
+    private static final long CLICK_TIME_INTERVAL = 1000;
+
+    private void onItemClick(){
+        long now = System.currentTimeMillis();
+        if (now - mLastClickTime < CLICK_TIME_INTERVAL) {
+            return;
+        }
+        mLastClickTime = now;
+        listener.onItemClick(mDeterministicKeyWithBalance);
     }
 }

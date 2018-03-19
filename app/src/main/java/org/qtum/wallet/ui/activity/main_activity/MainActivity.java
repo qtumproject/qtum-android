@@ -650,7 +650,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     @Override
     public void onBackPressed() {
 
-        if (getPresenter().shouldShowPin()) {
+        if (getPresenter().shouldShowPin() || !getPresenter().getAuthenticationFlag()) {
             clearBackStack();
             openRootFragment(StartPageFragment.newInstance(this));
             return;
