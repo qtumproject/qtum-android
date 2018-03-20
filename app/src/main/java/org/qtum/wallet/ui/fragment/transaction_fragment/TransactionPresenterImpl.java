@@ -58,7 +58,7 @@ public class TransactionPresenterImpl extends BaseFragmentPresenterImpl implemen
         }
         TransactionReceipt transactionReceipt = getInteractor().getHistoryReceipt(getView().getRealm(), txHash);
         getView().setUpTransactionData(changeInBalance, symbol,fee, dateString,
-                dateLong > 0, transactionReceipt != null && transactionReceipt.getLog() != null && !transactionReceipt.getLog().isEmpty());
+                dateLong!=null && dateLong > 0, transactionReceipt != null && transactionReceipt.getLog() != null && !transactionReceipt.getLog().isEmpty());
 
 
     }
