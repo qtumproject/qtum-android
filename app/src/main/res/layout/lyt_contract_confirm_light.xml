@@ -155,6 +155,7 @@
                 android:id="@+id/et_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="0.1"
                 android:gravity="left"
                 android:hint="@string/_fee"
                 android:inputType="numberDecimal"/>

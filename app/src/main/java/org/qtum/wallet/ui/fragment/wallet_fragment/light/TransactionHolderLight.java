@@ -47,9 +47,9 @@ public class TransactionHolderLight extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mHistory.isReceiptUpdated()) {
+                //if (mHistory.isReceiptUpdated()) {
                     listener.onTransactionClick(mHistory.getTxHash());
-                }
+                //}
             }
         });
         ButterKnife.bind(this, itemView);

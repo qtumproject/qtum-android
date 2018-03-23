@@ -141,6 +141,37 @@ public abstract class ContractConfirmFragment extends BaseFragment implements Co
     public void initializeViews() {
         super.initializeViews();
 
+        mTextInputEditTextFee.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (seekBarChangeValue) {
+                    seekBarChangeValue = false;
+                    return;
+                }
+                if (!s.toString().isEmpty()) {
+                    Double fee = Double.valueOf(s.toString()) * 100000000;
+                    textViewChangeValue = true;
+                    int progress;
+                    if (fee < mMinFee) {
+                        progress = 0;
+                    } else if (fee > mMaxFee) {
+                        progress = (mMaxFee - mMinFee) / stepFee;
+                    } else {
+                        progress = (fee.intValue() - mMinFee) / stepFee;
+                    }
+                    mSeekBarFee.setProgress(progress);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         mSeekBarFee.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -149,6 +180,7 @@ public abstract class ContractConfirmFragment extends BaseFragment implements Co
                     return;
                 }
                 double value = (mMinFee + (progress * stepFee)) / 100000000.;
+                seekBarChangeValue = true;
                 mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
             }
 
@@ -211,36 +243,6 @@ public abstract class ContractConfirmFragment extends BaseFragment implements Co
             mLinearLayoutSeekBarContainer.requestLayout();
         }
 
-        mTextInputEditTextFee.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (seekBarChangeValue) {
-                    seekBarChangeValue = false;
-                    return;
-                }
-                if (!s.toString().isEmpty()) {
-                    Double fee = Double.valueOf(s.toString()) * 100000000;
-                    textViewChangeValue = true;
-                    int progress;
-                    if (fee < mMinFee) {
-                        progress = 0;
-                    } else if (fee > mMaxFee) {
-                        progress = (mMaxFee - mMinFee) / stepFee;
-                    } else {
-                        progress = (fee.intValue() - mMinFee) / stepFee;
-                    }
-                    mSeekBarFee.setProgress(progress);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
 
         mTextInputEditTextFee.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
