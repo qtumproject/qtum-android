@@ -99,8 +99,13 @@ public abstract class EventLogFragment extends BaseFragment implements EventLogV
 
         public void bind(Log log) {
             mTextViewAddress.setText(log.getAddress());
-
-            mRecyclerViewTopics.setLayoutManager(new LinearLayoutManager(mRecyclerViewTopics.getContext()));
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mRecyclerViewTopics.getContext()){
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            };
+            mRecyclerViewTopics.setLayoutManager(layoutManager);
             EventLogDataAdapter eventLogTopicsAdapter = new EventLogDataAdapter(log.getDisplayedTopics(), mResId);
             mRecyclerViewTopics.setAdapter(eventLogTopicsAdapter);
 
