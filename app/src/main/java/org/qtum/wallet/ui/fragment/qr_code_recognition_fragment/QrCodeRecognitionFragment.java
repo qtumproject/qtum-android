@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 
 import com.google.zxing.Result;
 
+import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 
 import java.util.regex.Matcher;
@@ -120,6 +121,6 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
         } else {
             ((SendFragment) getParentFragment()).onResponseError();
         }
-        dismiss();
+        ((MainActivity)getActivity()).onBackPressed();
     }
 }
