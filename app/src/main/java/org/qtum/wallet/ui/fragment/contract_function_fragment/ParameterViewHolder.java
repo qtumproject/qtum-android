@@ -54,7 +54,7 @@ public class ParameterViewHolder extends RecyclerView.ViewHolder {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             String content = etParam.getText().toString() + source;
-            parameter.setValue(content);
+            //parameter.setValue(content);
             if (!TextUtils.isEmpty(content)) {
                 switch (parameter.getType()) {
                     case TYPE_INT:
@@ -164,6 +164,7 @@ public class ParameterViewHolder extends RecyclerView.ViewHolder {
         if (!matcher.matches()) {
             return "";
         }
+        parameter.setValue(content);
         return null;
     }
 
