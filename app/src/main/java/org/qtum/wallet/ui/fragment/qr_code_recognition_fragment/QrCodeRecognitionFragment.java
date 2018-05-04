@@ -117,9 +117,16 @@ public class QrCodeRecognitionFragment extends Fragment implements ZXingScannerV
             } catch(Exception e) {
                 amount = "0.0";
             }
+            receiveAddr = receiveAddr.trim();
             ((SendFragment) getParentFragment()).onResponse(receiveAddr, Double.valueOf(amount), tokenAddr);
         } else {
-            ((SendFragment) getParentFragment()).onResponseError();
+            pattern = Pattern.compile("^$|^[qQ][a-km-zA-HJ-NP-Z1-9]{0,33}$");
+            matcher = pattern.matcher(result.getText());
+            if (matcher.matches()) {
+                ((SendFragment) getParentFragment()).onResponse(result.getText(), Double.valueOf(0.0), "");
+            } else {
+                ((SendFragment) getParentFragment()).onResponseError();
+            }
         }
         ((MainActivity)getActivity()).onBackPressed();
     }

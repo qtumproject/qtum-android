@@ -116,7 +116,7 @@ public class ContractFunctionDefaultPresenterImpl extends BaseFragmentPresenterI
     public void onCallClick(List<ContractMethodParameter> contractMethodParameterList, final String contractAddress, final String fee, final int gasLimit, final int gasPrice, String methodName, final String addressFrom, final String sendToAddress) {
         getView().setProgressDialog();
         for(ContractMethodParameter contract: contractMethodParameterList){
-            if(contract.getValue().isEmpty()){
+            if(contract.getValue()==null || contract.getValue().isEmpty()){
                 getView().setAlertDialog("Invalid parameter", "Empty value","Cancel", BaseFragment.PopUpType.error);
                 return;
             }
