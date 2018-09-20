@@ -28,6 +28,7 @@ import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.ResizeHeightAnimation;
+import org.qtum.wallet.utils.crypto.KeyStoreHelper;
 
 import java.text.DecimalFormat;
 
@@ -187,9 +188,9 @@ public abstract class ContractFunctionDefaultFragment extends BaseFragment imple
 
     PinDialogFragment.PinCallBack callback = new PinDialogFragment.PinCallBack() {
         @Override
-        public void onSuccess() {
+        public void onSuccess(String pin) {
             getPresenter().onCallClick(mParameterAdapter.getParams(), getArguments().getString(CONTRACT_ADDRESS), mTextInputEditTextFee.getText().toString(),
-                    Integer.valueOf(mFontTextViewGasLimit.getText().toString()), Integer.valueOf(mFontTextViewGasPrice.getText().toString()), getArguments().getString(METHOD_NAME), mTextViewAddress.getText().toString(), mEtSendToContract.getText().toString());
+                    Integer.valueOf(mFontTextViewGasLimit.getText().toString()), Integer.valueOf(mFontTextViewGasPrice.getText().toString()), getArguments().getString(METHOD_NAME), mTextViewAddress.getText().toString(), mEtSendToContract.getText().toString(), KeyStoreHelper.getSeed(getContext(), pin));
         }
 
         @Override

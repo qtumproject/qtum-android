@@ -12,6 +12,8 @@ import org.qtum.wallet.utils.crypto.KeyStoreHelper;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 
+import java.util.concurrent.Callable;
+
 import javax.crypto.Cipher;
 
 import rx.Observable;
@@ -140,8 +142,13 @@ class PinInteractorImpl implements PinInteractor {
     }
 
     @Override
-    public Observable<String> loadWallet(String code) {
-        return KeyStorage.getInstance().createWallet(KeyStoreHelper.getSeed(mContext, code));
+    public Observable<String> loadWallet(final String code) {
+        return Observable.fromCallable(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                return KeyStorage.getInstance().loadWallet(KeyStoreHelper.getSeed(mContext, code));
+            }
+        });
     }
 
 }

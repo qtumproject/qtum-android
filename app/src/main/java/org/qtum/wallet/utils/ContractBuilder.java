@@ -372,7 +372,7 @@ public class ContractBuilder {
         return new Script(program);
     }
 
-    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String feeString, String sendToContractString,Context context) {
+    public String createTransactionHash(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String feeString, String sendToContractString,Context context, String passphrase) {
         Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
 
         BigDecimal fee = new BigDecimal(feeString);
@@ -410,8 +410,9 @@ public class ContractBuilder {
         if (delivery.doubleValue() != 0.0) {
             transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), myAddress);
         }
+        List<DeterministicKey> myKeys = KeyStorage.getInstance().getKeyList(passphrase);
         for (UnspentOutput unspentOutput : unspentOutputs) {
-            for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
+            for (DeterministicKey deterministicKey : myKeys) {
                 if (deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString().equals(unspentOutput.getAddress())) {
                     Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
                     TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
@@ -425,7 +426,7 @@ public class ContractBuilder {
                 break;
             }
         }
-        transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
+        //transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
         transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
         byte[] bytes = transaction.unsafeBitcoinSerialize();
         int txSizeInkB = (int) Math.ceil(bytes.length / 1024.);
@@ -436,7 +437,7 @@ public class ContractBuilder {
         return Hex.toHexString(bytes);
     }
 
-    public TransactionHashWithSender createTransactionHashForCreateContract(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String feeString, Context context) {
+    public TransactionHashWithSender createTransactionHashForCreateContract(Script script, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String feeString, Context context, String passphrase) {
         Transaction transaction = new Transaction(CurrentNetParams.getNetParams());
         transaction.addOutput(Coin.ZERO, script);
         BigDecimal fee = new BigDecimal(feeString);
@@ -464,9 +465,10 @@ public class ContractBuilder {
         if (delivery.doubleValue() != 0.0) {
             transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), myAddress);
         }
+        List<DeterministicKey> myKeys = KeyStorage.getInstance().getKeyList(passphrase);
         for (UnspentOutput unspentOutput : unspentOutputs) {
 
-            for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
+            for (DeterministicKey deterministicKey : myKeys) {
                 if (deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString().equals(unspentOutput.getAddress())) {
                     Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
                     TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
@@ -480,7 +482,7 @@ public class ContractBuilder {
                 break;
             }
         }
-        transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
+        //transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
         transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
         byte[] bytes = transaction.unsafeBitcoinSerialize();
         int txSizeInkB = (int) Math.ceil(bytes.length / 1024.);

@@ -19,10 +19,12 @@ import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.contract.ContractMethodParameter;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment.pin_fragment.PinDialogFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.ResizeHeightAnimation;
+import org.qtum.wallet.utils.crypto.KeyStoreHelper;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -309,11 +311,31 @@ public abstract class ContractConfirmFragment extends BaseFragment implements Co
 
     @OnClick(R.id.confirm)
     public void onConfirmClick() {
-        int gasLimit = Integer.valueOf(mFontTextViewGasLimit.getText().toString());
-        int gasPrice = Integer.valueOf(mFontTextViewGasPrice.getText().toString());
-        String fee = mTextInputEditTextFee.getText().toString();
-        getPresenter().onConfirmContract(getArguments().getString(CONTRACT_TEMPLATE_UIID), gasLimit, gasPrice, fee);
+        showPinDialog();
     }
+
+    private void showPinDialog() {
+        PinDialogFragment pinDialogFragment = new PinDialogFragment();
+        pinDialogFragment.setTouchIdFlag(getMainActivity().checkTouchIdEnable());
+        pinDialogFragment.addPinCallBack(callback);
+        pinDialogFragment.show(getFragmentManager(), pinDialogFragment.getClass().getCanonicalName());
+    }
+
+    PinDialogFragment.PinCallBack callback = new PinDialogFragment.PinCallBack() {
+        @Override
+        public void onSuccess(String pin) {
+            int gasLimit = Integer.valueOf(mFontTextViewGasLimit.getText().toString());
+            int gasPrice = Integer.valueOf(mFontTextViewGasPrice.getText().toString());
+            String fee = mTextInputEditTextFee.getText().toString();
+            getPresenter().onConfirmContract(getArguments().getString(CONTRACT_TEMPLATE_UIID), gasLimit, gasPrice, fee,KeyStoreHelper.getSeed(getContext(), pin));
+        }
+
+        @Override
+        public void onError(String error) {
+            hideKeyBoard();
+            setAlertDialog(R.string.warning, error, R.string.cancel, PopUpType.error);
+        }
+    };
 
     @Override
     public void closeFragments() {

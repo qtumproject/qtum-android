@@ -311,7 +311,8 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
                     callBack.onError(getView().getContext().getString(R.string.invalid_qtum_address));
                     return;
                 }
-                ECKey myKey = KeyStorage.getInstance().getCurrentKey();
+                //TODO STUB!
+                ECKey myKey = KeyStorage.getInstance().getCurrentKey("STUB!");
                 BigDecimal amount = new BigDecimal(amountString);
                 BigDecimal fee = new BigDecimal("0.1");
                 BigDecimal amountFromOutput = new BigDecimal("0.0");
@@ -334,7 +335,8 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
                 }
                 for (UnspentOutput unspentOutput : unspentOutputs) {
                     if (unspentOutput.getAmount().doubleValue() != 0.0)
-                        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
+                        //TODO STUB!
+                        for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList("STUB!")) {
                             if (Hex.toHexString(deterministicKey.getPubKeyHash()).equals(unspentOutput.getPubkeyHash())) {
                                 Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
                                 TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
@@ -348,7 +350,7 @@ public class StoreContractPresenter extends BaseFragmentPresenterImpl implements
                         break;
                     }
                 }
-                transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
+                //transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
                 transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
                 byte[] bytes = transaction.unsafeBitcoinSerialize();
                 String transactionHex = Hex.toHexString(bytes);

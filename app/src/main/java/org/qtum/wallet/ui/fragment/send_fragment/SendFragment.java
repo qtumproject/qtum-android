@@ -50,6 +50,7 @@ import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.ResizeHeightAnimation;
+import org.qtum.wallet.utils.crypto.KeyStoreHelper;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -932,9 +933,9 @@ public abstract class SendFragment extends BaseNavFragment implements SendView {
 
     PinDialogFragment.PinCallBack callback = new PinDialogFragment.PinCallBack() {
         @Override
-        public void onSuccess() {
+        public void onSuccess(String pin) {
             setProgressDialog();
-            getPresenter().onPinSuccess();
+            getPresenter().onPinSuccess(KeyStoreHelper.getSeed(getContext(), pin));
         }
 
         @Override

@@ -7,14 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
+import org.qtum.wallet.model.AddressWithTokenBalance;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AddressesWithTokenBalanceSpinnerAdapter;
 
 import java.util.List;
 
 public class AddressesWithTokenBalanceSpinnerAdapterLight extends AddressesWithTokenBalanceSpinnerAdapter {
 
-    public AddressesWithTokenBalanceSpinnerAdapterLight(@NonNull Context context, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, String currency, int decimalUnits) {
+    public AddressesWithTokenBalanceSpinnerAdapterLight(@NonNull Context context, List<AddressWithTokenBalance> keyWithBalanceList, String currency, int decimalUnits) {
         super(context, keyWithBalanceList, currency, decimalUnits);
     }
 

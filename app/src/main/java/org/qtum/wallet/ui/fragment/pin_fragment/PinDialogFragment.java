@@ -226,7 +226,7 @@ public class PinDialogFragment extends DialogFragment {
         changeBanState(isCorrect);
         if (isCorrect) {
             clearError();
-            mPinCallBack.onSuccess();
+            mPinCallBack.onSuccess(pin);
             dismiss();
         } else {
             confirmError(getContext().getString(org.qtum.wallet.R.string.incorrect_pin));
@@ -273,7 +273,7 @@ public class PinDialogFragment extends DialogFragment {
     }
 
     public interface PinCallBack {
-        void onSuccess();
+        void onSuccess(String pin);
 
         void onError(String error);
     }

@@ -6,19 +6,13 @@ import org.bitcoinj.crypto.DeterministicKey;
 
 import java.math.BigDecimal;
 
-public class DeterministicKeyWithTokenBalance {
-    private DeterministicKey mKey;
+public class AddressWithTokenBalance {
     private String mAddress;
 
     private BigDecimal mBalance;
 
-    public DeterministicKeyWithTokenBalance(DeterministicKey key) {
-        mKey = key;
-        mAddress = key.toAddress(CurrentNetParams.getNetParams()).toString();
-    }
-
-    public DeterministicKey getKey() {
-        return mKey;
+    public AddressWithTokenBalance(String address) {
+        mAddress = address;
     }
 
     public String getAddress() {

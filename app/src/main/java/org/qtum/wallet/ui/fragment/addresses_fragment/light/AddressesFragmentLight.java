@@ -13,7 +13,7 @@ public class AddressesFragmentLight extends AddressesFragment {
     }
 
     @Override
-    public void updateAddressList(List<DeterministicKey> deterministicKeys) {
+    public void updateAddressList(List<String> deterministicKeys) {
         mAddressAdapter = new AddressesAdapterLight(deterministicKeys, this);
         mRecyclerView.setAdapter(mAddressAdapter);
     }

@@ -13,7 +13,7 @@ public class AddressesFragmentDark extends AddressesFragment {
     }
 
     @Override
-    public void updateAddressList(List<DeterministicKey> deterministicKeys) {
+    public void updateAddressList(List<String> deterministicKeys) {
         mAddressAdapter = new AddressesAdapterDark(deterministicKeys, this);
         mRecyclerView.setAdapter(mAddressAdapter);
     }

@@ -113,7 +113,7 @@ public class ContractFunctionDefaultPresenterImpl extends BaseFragmentPresenterI
     }
 
     @Override
-    public void onCallClick(List<ContractMethodParameter> contractMethodParameterList, final String contractAddress, final String fee, final int gasLimit, final int gasPrice, String methodName, final String addressFrom, final String sendToAddress) {
+    public void onCallClick(List<ContractMethodParameter> contractMethodParameterList, final String contractAddress, final String fee, final int gasLimit, final int gasPrice, String methodName, final String addressFrom, final String sendToAddress, final String passphrase) {
         getView().setProgressDialog();
         for(ContractMethodParameter contract: contractMethodParameterList){
             if(contract.getValue()==null || contract.getValue().isEmpty()){
@@ -157,13 +157,13 @@ public class ContractFunctionDefaultPresenterImpl extends BaseFragmentPresenterI
                             return;
                         }
                         createTx(respWrapper.getAbiParams(), gasLimit, gasPrice, fee.replace(',', '.'),
-                                getInteractor().getFeePerKb(), contract, addressFrom,sendToAddress);
+                                getInteractor().getFeePerKb(), contract, addressFrom,sendToAddress, passphrase);
                     }
                 });
     }
 
 
-    private void createTx(final String abiParams, final int gasLimit, final int gasPrice, final String fee, final BigDecimal feePerKb, final Contract contract, String addressFrom,final String sendToContract) {
+    private void createTx(final String abiParams, final int gasLimit, final int gasPrice, final String fee, final BigDecimal feePerKb, final Contract contract, String addressFrom,final String sendToContract, final String passphrase) {
         getInteractor().unspentOutputsForAddressObservable(addressFrom)
                 .flatMap(new Func1<List<UnspentOutput>, Observable<SendRawTransactionResponse>>() {
                     @Override
@@ -180,7 +180,7 @@ public class ContractFunctionDefaultPresenterImpl extends BaseFragmentPresenterI
                                 return unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? -1 : 0;
                             }
                         });
-                        return sendTx(getInteractor().createTransactionHash(abiParams, unspentOutputs, gasLimit, gasPrice, feePerKb, fee, contract.getContractAddress(),sendToContract));
+                        return sendTx(getInteractor().createTransactionHash(abiParams, unspentOutputs, gasLimit, gasPrice, feePerKb, fee, contract.getContractAddress(),sendToContract, passphrase));
                     }
                 })
                 .subscribeOn(Schedulers.io())

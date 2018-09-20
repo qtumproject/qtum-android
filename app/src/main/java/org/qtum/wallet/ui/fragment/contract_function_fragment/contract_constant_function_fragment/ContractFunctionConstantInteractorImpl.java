@@ -75,14 +75,6 @@ public class ContractFunctionConstantInteractorImpl implements ContractFunctionC
     }
 
     @Override
-    public String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String fee, final String contractAddress, String sendToContract) {
-        ContractBuilder contractBuilder = new ContractBuilder();
-        Script script = contractBuilder.createMethodScript(abiParams, gasLimit, gasPrice, contractAddress);
-
-        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, feePerKb, fee, sendToContract,mContext.get());
-    }
-
-    @Override
     public Contract getContractByAddress(String address) {
         TinyDB tinyDB = new TinyDB(mContext.get());
         for (Contract contract : tinyDB.getContractList()) {

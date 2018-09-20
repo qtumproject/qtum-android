@@ -63,7 +63,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
     }
 
     @Override
-    public void onConfirmContract(final String uiid, final int gasLimit, final int gasPrice, final String fee) {
+    public void onConfirmContract(final String uiid, final int gasLimit, final int gasPrice, final String fee, final String passphrase) {
         getView().setProgressDialog();
         mContractTemplateUiid = uiid;
         getInteractor().createAbiConstructParams(mContractMethodParameterList, uiid)
@@ -81,13 +81,13 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
 
                     @Override
                     public void onNext(String s) {
-                        createTx(s, gasLimit, gasPrice, fee.replace(',', '.'));
+                        createTx(s, gasLimit, gasPrice, fee.replace(',', '.'), passphrase);
                     }
                 });
     }
 
 
-    private void createTx(final String abiParams, final int gasLimit, final int gasPrice, final String fee) {
+    private void createTx(final String abiParams, final int gasLimit, final int gasPrice, final String fee, final String passphrase) {
         getInteractor().getUnspentOutputsForSeveralAddresses()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -115,7 +115,7 @@ public class ContractConfirmPresenterImpl extends BaseFragmentPresenterImpl impl
                                 return unspentOutput.getAmount().doubleValue() < t1.getAmount().doubleValue() ? 1 : unspentOutput.getAmount().doubleValue() > t1.getAmount().doubleValue() ? -1 : 0;
                             }
                         });
-                        TransactionHashWithSender transactionHash = getInteractor().createTransactionHash(abiParams, unspentOutputs, gasLimit, gasPrice, fee);
+                        TransactionHashWithSender transactionHash = getInteractor().createTransactionHash(abiParams, unspentOutputs, gasLimit, gasPrice, fee, passphrase);
                         sendTx(transactionHash.getTransactionHash(), transactionHash.getSender());
                     }
                 });

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class AddressesAdapterLight extends AddressesAdapter {
 
-    public AddressesAdapterLight(List<DeterministicKey> deterministicKeys, OnAddressClickListener listener) {
+    public AddressesAdapterLight(List<String> deterministicKeys, OnAddressClickListener listener) {
         super(deterministicKeys, listener);
     }
 
@@ -28,7 +28,7 @@ public class AddressesAdapterLight extends AddressesAdapter {
 
     @Override
     public void onBindViewHolder(AddressHolder holder, int position) {
-        mAddress = mDeterministicKeys.get(position).toAddress(CurrentNetParams.getNetParams()).toString();
+        mAddress = mAddresses.get(position);
         ((AddressHolderLight) holder).bindAddress(mAddress, position);
     }
 }

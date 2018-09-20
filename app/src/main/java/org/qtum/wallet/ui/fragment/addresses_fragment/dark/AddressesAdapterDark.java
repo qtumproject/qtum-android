@@ -14,7 +14,7 @@ import java.util.List;
 
 public class AddressesAdapterDark extends AddressesAdapter {
 
-    public AddressesAdapterDark(List<DeterministicKey> deterministicKeys, OnAddressClickListener listener) {
+    public AddressesAdapterDark(List<String> deterministicKeys, OnAddressClickListener listener) {
         super(deterministicKeys, listener);
     }
 
@@ -27,7 +27,7 @@ public class AddressesAdapterDark extends AddressesAdapter {
 
     @Override
     public void onBindViewHolder(AddressHolder holder, int position) {
-        mAddress = mDeterministicKeys.get(position).toAddress(CurrentNetParams.getNetParams()).toString();
+        mAddress = mAddresses.get(position);
         ((AddressHolderDark) holder).bindAddress(mAddress, position);
     }
 }

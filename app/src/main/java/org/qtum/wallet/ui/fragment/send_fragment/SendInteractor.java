@@ -14,11 +14,11 @@ public interface SendInteractor {
 
     void getUnspentOutputs(String address, final SendInteractorImpl.GetUnspentListCallBack callBack);
 
-    void sendTx(String from, String address, String amount, String fee, SendInteractorImpl.SendTxCallBack callBack);
+    void sendTx(String from, String address, String amount, String fee, SendInteractorImpl.SendTxCallBack callBack, String passphrase);
 
     void sendTx(String txHex, SendInteractorImpl.SendTxCallBack callBack);
 
-    void createTx(String from, String address, String amount, String fee, BigDecimal estimateFeePerKb, SendInteractorImpl.CreateTxCallBack callBack);
+    void createTx(String from, String address, String amount, String fee, BigDecimal estimateFeePerKb, SendInteractorImpl.CreateTxCallBack callBack, String passphrase);
 
     List<String> getAddresses();
 
@@ -28,7 +28,7 @@ public interface SendInteractor {
 
     String getValidatedFee(Double fee);
 
-    String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee);
+    String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee, String passphrase);
 
     Observable<String> createAbiMethodParamsObservable(String address, String resultAmount, String transfer);
 

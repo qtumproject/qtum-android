@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
+import org.qtum.wallet.model.AddressWithTokenBalance;
 import org.qtum.wallet.utils.FontTextView;
 
 import java.math.BigDecimal;
@@ -20,11 +20,11 @@ import java.util.List;
 public abstract class AddressesWithTokenBalanceSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
     private Context mContext;
-    private List<DeterministicKeyWithTokenBalance> mKeyWithBalanceList;
+    private List<AddressWithTokenBalance> mKeyWithBalanceList;
     String currency;
     int decimalUnits;
 
-    public AddressesWithTokenBalanceSpinnerAdapter(@NonNull Context context, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, String currency, int decimalUnits) {
+    public AddressesWithTokenBalanceSpinnerAdapter(@NonNull Context context, List<AddressWithTokenBalance> keyWithBalanceList, String currency, int decimalUnits) {
         mContext = context;
         mKeyWithBalanceList = keyWithBalanceList;
         this.currency = currency;

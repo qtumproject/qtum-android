@@ -22,7 +22,5 @@ public interface ContractFunctionConstantInteractor {
                                                                                                         List<ContractMethodParameter> contractMethodParameterList,
                                                                                                         Contract contract);
 
-    String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String fee, final String contractAddress, String sendToContract);
-
     Contract getContractByAddress(String address);
 }

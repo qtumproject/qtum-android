@@ -169,7 +169,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
     }
 
     @Override
-    public void onPinSuccess() {
+    public void onPinSuccess(String passphrase) {
         Currency currency = getView().getCurrency();
         String from = getView().getFromAddress();
         String address = getView().getAddressInput();
@@ -180,7 +180,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
         int gasPrice = getView().getGasPriceInput();
         if (currency.getName().equals("Qtum " + getView().getStringValue(org.qtum.wallet.R.string.default_currency))) {
             if (isAmountValid(amount)) {
-                getInteractor().sendTx(from, address, amount, fee, getView().getSendTransactionCallback());
+                getInteractor().sendTx(from, address, amount, fee, getView().getSendTransactionCallback(), passphrase);
             } else {
                 getView().setAlertDialog(getView().getContext().getString(R.string.you_have_insufficient_funds_for_this_transaction), getView().getContext().getString(R.string.ok), BaseFragment.PopUpType.error);
             }
@@ -222,14 +222,14 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                     if (!getView().isValidAvailableAddress(availableAddress)) {
                         return;
                     }
-                    createAbiMethodParams(address, resultAmount, token, fee, gasPrice, gasLimit);
+                    createAbiMethodParams(address, resultAmount, token, fee, gasPrice, gasLimit, passphrase);
                     break;
                 }
             }
         }
     }
 
-    private void createAbiMethodParams(String address, String resultAmount, final Token token, final String fee, final int gasPrice, final int gasLimit) {
+    private void createAbiMethodParams(String address, String resultAmount, final Token token, final String fee, final int gasPrice, final int gasLimit, final String passphrase) {
         getInteractor().createAbiMethodParamsObservable(address, resultAmount, "transfer")
                 .flatMap(new Func1<String, Observable<CallSmartContractResponse>>() {
                     @Override
@@ -259,7 +259,7 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
                                     response.getItems().get(0).getExcepted(), "Ok", BaseFragment.PopUpType.error);
                             return;
                         }
-                        createTx(params, token.getContractAddress(), availableAddress, gasLimit, gasPrice, fee);
+                        createTx(params, token.getContractAddress(), availableAddress, gasLimit, gasPrice, fee, passphrase);
                     }
                 });
 
@@ -269,11 +269,11 @@ public class SendPresenterImpl extends BaseFragmentPresenterImpl implements Send
         return getInteractor().getValidatedFee(fee);
     }
 
-    private void createTx(final String abiParams, final String contractAddress, String senderAddress, final int gasLimit, final int gasPrice, final String fee) {
+    private void createTx(final String abiParams, final String contractAddress, String senderAddress, final int gasLimit, final int gasPrice, final String fee, final String passphrase) {
         getInteractor().getUnspentOutputs(senderAddress, new SendInteractorImpl.GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
-                String txHex = getInteractor().createTransactionHash(abiParams, contractAddress, unspentOutputs, gasLimit, gasPrice, fee);
+                String txHex = getInteractor().createTransactionHash(abiParams, contractAddress, unspentOutputs, gasLimit, gasPrice, fee, passphrase);
                 getInteractor().sendTx(txHex, getView().getSendTransactionCallback());
             }
 
