@@ -81,10 +81,10 @@ class ContractConfirmInteractorImpl implements ContractConfirmInteractor {
     }
 
     @Override
-    public TransactionHashWithSender createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee) {
+    public TransactionHashWithSender createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee, String passphrase) {
         ContractBuilder contractBuilder = new ContractBuilder();
         Script script = contractBuilder.createConstructScript(abiParams, gasLimit, gasPrice);
-        return contractBuilder.createTransactionHashForCreateContract(script, unspentOutputs, gasLimit, gasPrice, getFeePerKb(), fee, mContext);
+        return contractBuilder.createTransactionHashForCreateContract(script, unspentOutputs, gasLimit, gasPrice, getFeePerKb(), fee, mContext, passphrase);
     }
 
     @Override

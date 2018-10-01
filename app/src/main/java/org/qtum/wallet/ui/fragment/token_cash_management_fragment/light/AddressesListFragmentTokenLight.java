@@ -10,7 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
+import org.qtum.wallet.model.AddressWithTokenBalance;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.AddressesListFragmentToken;
 import org.qtum.wallet.ui.fragment.token_cash_management_fragment.TokenAddressesAdapter;
 import org.qtum.wallet.utils.CurrentNetParams;
@@ -28,7 +28,7 @@ public class AddressesListFragmentTokenLight extends AddressesListFragmentToken 
     }
 
     @Override
-    public void updateAddressList(List<DeterministicKeyWithTokenBalance> deterministicKeyWithBalance, String currency) {
+    public void updateAddressList(List<AddressWithTokenBalance> deterministicKeyWithBalance, String currency) {
         if (mRecyclerView != null) {
             adapter = new TokenAddressesAdapter(deterministicKeyWithBalance, R.layout.item_address_light, this, currency, getPresenter().getDecimalUnits());
             mRecyclerView.setAdapter(adapter);
@@ -36,25 +36,25 @@ public class AddressesListFragmentTokenLight extends AddressesListFragmentToken 
     }
 
     @Override
-    public void onItemClick(DeterministicKeyWithTokenBalance item) {
-        List<DeterministicKeyWithTokenBalance> deterministicKeyWithBalances = new ArrayList<>(getPresenter().getKeysWithTokenBalance());
+    public void onItemClick(AddressWithTokenBalance item) {
+        List<AddressWithTokenBalance> deterministicKeyWithBalances = new ArrayList<>(getPresenter().getKeysWithTokenBalance());
         deterministicKeyWithBalances.remove(item);
         showTransferDialogFragment(item, deterministicKeyWithBalances, getPresenter().getDecimalUnits());
     }
 
-    protected void showTransferDialogFragment(final DeterministicKeyWithTokenBalance keyWithBalanceTo, List<DeterministicKeyWithTokenBalance> keyWithBalanceList, final int decimalUnits) {
+    protected void showTransferDialogFragment(final AddressWithTokenBalance keyWithBalanceTo, List<AddressWithTokenBalance> keyWithBalanceList, final int decimalUnits) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_transfer_balance_fragment_light, null);
         final TextInputEditText mEditTextAmount = (TextInputEditText) view.findViewById(R.id.et_amount);
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner_transfer);
         FontTextView mEditTextAddressTo = (FontTextView) view.findViewById(R.id.tv_address_to);
         final FontTextView tvBalanceFrom = (FontTextView) view.findViewById(R.id.balance_from_tv);
-        mEditTextAddressTo.setText(keyWithBalanceTo.getKey().toAddress(CurrentNetParams.getNetParams()).toString());
+        mEditTextAddressTo.setText(keyWithBalanceTo.getAddress());
         AddressesWithTokenBalanceSpinnerAdapterLight spinnerAdapter = new AddressesWithTokenBalanceSpinnerAdapterLight(getContext(), keyWithBalanceList, getPresenter().getCurrency(), decimalUnits);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                DeterministicKeyWithTokenBalance item = (DeterministicKeyWithTokenBalance) spinner.getItemAtPosition(i);
+                AddressWithTokenBalance item = (AddressWithTokenBalance) spinner.getItemAtPosition(i);
                 getPresenter().setKeyWithTokenBalanceFrom(item);
 
                 String balance = (item.getBalance() != null

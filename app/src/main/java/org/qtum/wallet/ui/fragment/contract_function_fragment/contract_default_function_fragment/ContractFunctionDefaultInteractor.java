@@ -25,7 +25,7 @@ public interface ContractFunctionDefaultInteractor {
 
     Observable<List<UnspentOutput>> unspentOutputsForAddressObservable(String address);
 
-    String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String fee, final String contractAddress, String sendToContract);
+    String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String fee, final String contractAddress, String sendToContract, String passphrase);
 
     Observable<SendRawTransactionResponse> sendRawTransactionObservable(String code);
 

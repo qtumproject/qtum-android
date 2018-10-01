@@ -1,6 +1,6 @@
 package org.qtum.wallet.ui.fragment.token_cash_management_fragment;
 
-import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
+import org.qtum.wallet.model.AddressWithTokenBalance;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
@@ -20,13 +20,13 @@ public interface AddressesListTokenPresenter extends BaseFragmentPresenter {
 
     int getDecimalUnits();
 
-    List<DeterministicKeyWithTokenBalance> getKeysWithTokenBalance();
+    List<AddressWithTokenBalance> getKeysWithTokenBalance();
 
     String getCurrency();
 
-    void setKeyWithTokenBalanceFrom(DeterministicKeyWithTokenBalance itemAtPosition);
+    void setKeyWithTokenBalanceFrom(AddressWithTokenBalance itemAtPosition);
 
-    DeterministicKeyWithTokenBalance getKeyWithTokenBalanceFrom();
+    AddressWithTokenBalance getKeyWithTokenBalanceFrom();
 
-    void transfer(DeterministicKeyWithTokenBalance keyWithBalanceTo, DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String s);
+    void transfer(AddressWithTokenBalance keyWithBalanceTo, AddressWithTokenBalance keyWithTokenBalanceFrom, String s);
 }

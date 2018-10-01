@@ -42,6 +42,7 @@ public class ImportWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
         getView().setProgressDialog();
         getView().hideKeyBoard();
         isDataLoaded = true;
+        mPassphrase = brainCode;
         mSubscription = getInteractor().importWallet(brainCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -57,7 +58,6 @@ public class ImportWalletPresenterImpl extends BaseFragmentPresenterImpl impleme
 
                     @Override
                     public void onNext(String passphrase) {
-                        mPassphrase = passphrase;
                         getView().dismissProgressDialog();
                         isDataLoaded = false;
                         getView().openPinFragment(mPassphrase, IMPORTING);

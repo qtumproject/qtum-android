@@ -5,19 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
+import org.qtum.wallet.model.AddressWithTokenBalance;
 
 import java.util.List;
 
 public class TokenAddressesAdapter extends RecyclerView.Adapter<TokenAddressViewHolder> {
 
-    List<DeterministicKeyWithTokenBalance> items;
+    List<AddressWithTokenBalance> items;
     int resId;
     String currency;
     OnAddressTokenClickListener listener;
     int decimalUnits;
 
-    public TokenAddressesAdapter(List<DeterministicKeyWithTokenBalance> items, int resId, OnAddressTokenClickListener listener, String currency, int decimalUnits) {
+    public TokenAddressesAdapter(List<AddressWithTokenBalance> items, int resId, OnAddressTokenClickListener listener, String currency, int decimalUnits) {
         this.items = items;
         this.resId = resId;
         this.listener = listener;

@@ -5,6 +5,7 @@ import android.content.Context;
 import org.qtum.wallet.datastorage.KeyStorage;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.Callable;
 
 import rx.Observable;
 
@@ -17,7 +18,12 @@ class ImportWalletInteractorImpl implements ImportWalletInteractor {
     }
 
     @Override
-    public Observable<String> importWallet(String seed) {
-        return KeyStorage.getInstance().createWallet(seed);
+    public Observable<String> importWallet(final String seed) {
+        return Observable.fromCallable(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                return KeyStorage.getInstance().loadWallet(seed);
+            }
+        });
     }
 }

@@ -20,7 +20,7 @@ public interface ContractConfirmInteractor {
 
     void saveContract(String txid, String contractTemplateUiid, String contractName, String senderAddress);
 
-    TransactionHashWithSender createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee);
+    TransactionHashWithSender createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee, String passphrase);
 
     BigDecimal getFeePerKb();
 

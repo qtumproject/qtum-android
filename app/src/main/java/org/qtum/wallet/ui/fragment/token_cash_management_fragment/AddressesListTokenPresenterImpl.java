@@ -1,7 +1,7 @@
 package org.qtum.wallet.ui.fragment.token_cash_management_fragment;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.model.DeterministicKeyWithTokenBalance;
+import org.qtum.wallet.model.AddressWithTokenBalance;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.model.gson.token_balance.Balance;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
@@ -16,11 +16,11 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
 
     private AddressesListTokenView view;
     private AddressesListTokenInteractor interactor;
-    public List<DeterministicKeyWithTokenBalance> items = new ArrayList<>();
+    public List<AddressWithTokenBalance> items = new ArrayList<>();
     private Token token;
     private String currency;
-    private List<DeterministicKey> addrs;
-    private DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom;
+    private List<String> addrs;
+    private AddressWithTokenBalance keyWithTokenBalanceFrom;
 
     private TokenBalance tokenBalance;
 
@@ -34,23 +34,23 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
         return view;
     }
 
-    private List<DeterministicKey> getAddresses() {
+    private List<String> getAddresses() {
         if (addrs == null) {
-            addrs = getInteractor().getKeys(10);
+            addrs = getInteractor().getAddresses();
         }
         return addrs;
     }
 
     @Override
     public void processTokenBalances(TokenBalance balance) {
-        for (DeterministicKey item : getAddresses()) {
-            DeterministicKeyWithTokenBalance deterministicKeyWithTokenBalance = new DeterministicKeyWithTokenBalance(item);
+        for (String item : getAddresses()) {
+            AddressWithTokenBalance deterministicKeyWithTokenBalance = new AddressWithTokenBalance(item);
             items.add(deterministicKeyWithTokenBalance);
             processTokenBalance(deterministicKeyWithTokenBalance, balance);
         }
     }
 
-    private void processTokenBalance(DeterministicKeyWithTokenBalance deterministicKeyWithTokenBalance, TokenBalance balance) {
+    private void processTokenBalance(AddressWithTokenBalance deterministicKeyWithTokenBalance, TokenBalance balance) {
         for (Balance bal : balance.getBalances()) {
             if (deterministicKeyWithTokenBalance.getAddress().equals(bal.getAddress())) {
                 deterministicKeyWithTokenBalance.addBalance(bal.getBalance());
@@ -82,8 +82,8 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
     }
 
     @Override
-    public void transfer(DeterministicKeyWithTokenBalance keyWithBalanceTo,
-                         final DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom, String amountString) {
+    public void transfer(AddressWithTokenBalance keyWithBalanceTo,
+                         final AddressWithTokenBalance keyWithTokenBalanceFrom, String amountString) {
         if (!getInteractor().isAmountValid(amountString)) {
             getView().setAlertDialog(R.string.error,
                     R.string.enter_valid_amount_value,
@@ -128,21 +128,21 @@ public class AddressesListTokenPresenterImpl extends BaseFragmentPresenterImpl i
     }
 
     @Override
-    public List<DeterministicKeyWithTokenBalance> getKeysWithTokenBalance() {
+    public List<AddressWithTokenBalance> getKeysWithTokenBalance() {
         return items;
     }
 
     @Override
-    public void setKeyWithTokenBalanceFrom(DeterministicKeyWithTokenBalance keyWithTokenBalanceFrom) {
+    public void setKeyWithTokenBalanceFrom(AddressWithTokenBalance keyWithTokenBalanceFrom) {
         this.keyWithTokenBalanceFrom = keyWithTokenBalanceFrom;
     }
 
     @Override
-    public DeterministicKeyWithTokenBalance getKeyWithTokenBalanceFrom() {
+    public AddressWithTokenBalance getKeyWithTokenBalanceFrom() {
         return keyWithTokenBalanceFrom;
     }
 
-    public void setKeysWithTokenBalance(List<DeterministicKeyWithTokenBalance> list) {
+    public void setKeysWithTokenBalance(List<AddressWithTokenBalance> list) {
         items = list;
     }
 }

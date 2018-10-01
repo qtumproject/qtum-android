@@ -131,7 +131,7 @@ public class SendInteractorImpl implements SendInteractor {
     }
 
     @Override
-    public void createTx(final String from, final String address, final String amountString, final String feeString, final BigDecimal estimateFeePerKb, final CreateTxCallBack callBack) {
+    public void createTx(final String from, final String address, final String amountString, final String feeString, final BigDecimal estimateFeePerKb, final CreateTxCallBack callBack, final String passphrase) {
         getUnspentOutputs(from, new GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
@@ -144,7 +144,6 @@ public class SendInteractorImpl implements SendInteractor {
                     callBack.onError(mContext.getString(org.qtum.wallet.R.string.invalid_qtum_address));
                     return;
                 }
-                ECKey myKey = KeyStorage.getInstance().getCurrentKey();
                 BigDecimal amount = new BigDecimal(amountString);
                 BigDecimal fee = new BigDecimal(feeString);
                 BigDecimal amountFromOutput = new BigDecimal("0.0");
@@ -164,10 +163,11 @@ public class SendInteractorImpl implements SendInteractor {
                 }
                 BigDecimal delivery = overFlow.subtract(amount);
                 if (delivery.doubleValue() != 0.0) {
-                    transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), from.isEmpty() ? myKey.toAddress(CurrentNetParams.getNetParams()) : new Address(CurrentNetParams.getNetParams(), from));
+                    transaction.addOutput(Coin.valueOf((long) (delivery.multiply(bitcoin).doubleValue())), from.isEmpty() ? new Address(CurrentNetParams.getNetParams(),KeyStorage.getInstance().getCurrentAddress()) : new Address(CurrentNetParams.getNetParams(), from));
                 }
+                List<DeterministicKey> myKeys = KeyStorage.getInstance().getKeyList(passphrase);
                 for (UnspentOutput unspentOutput : unspentOutputs) {
-                    for (DeterministicKey deterministicKey : KeyStorage.getInstance().getKeyList()) {
+                    for (DeterministicKey deterministicKey : myKeys) {
                         if (deterministicKey.toAddress(CurrentNetParams.getNetParams()).toString().equals(unspentOutput.getAddress())) {
                             Sha256Hash sha256Hash = new Sha256Hash(Utils.parseAsHexOrBase58(unspentOutput.getTxHash()));
                             TransactionOutPoint outPoint = new TransactionOutPoint(CurrentNetParams.getNetParams(), unspentOutput.getVout(), sha256Hash);
@@ -181,7 +181,7 @@ public class SendInteractorImpl implements SendInteractor {
                         break;
                     }
                 }
-                transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
+                //transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
                 transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
                 byte[] bytes = transaction.unsafeBitcoinSerialize();
                 int txSizeInkB = (int) Math.ceil(bytes.length / 1024.);
@@ -202,7 +202,7 @@ public class SendInteractorImpl implements SendInteractor {
     }
 
     @Override
-    public void sendTx(final String from, final String address, final String amount, final String fee, final SendTxCallBack callBack) {
+    public void sendTx(final String from, final String address, final String amount, final String fee, final SendTxCallBack callBack, final String passphrase) {
         createTx(from, address, amount, fee, getFeePerKb(), new CreateTxCallBack() {
             @Override
             public void onSuccess(String txHex) {
@@ -213,7 +213,7 @@ public class SendInteractorImpl implements SendInteractor {
             public void onError(String error) {
                 callBack.onError(error);
             }
-        });
+        }, passphrase);
     }
 
     @Override
@@ -286,10 +286,10 @@ public class SendInteractorImpl implements SendInteractor {
     }
 
     @Override
-    public String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee) {
+    public String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee, String passphrase) {
         ContractBuilder contractBuilder = new ContractBuilder();
         Script script = contractBuilder.createMethodScript(abiParams, gasLimit, gasPrice, contractAddress);
-        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, getFeePerKb(), fee, "",mContext);
+        return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, getFeePerKb(), fee, "",mContext, passphrase);
     }
 
     @Override

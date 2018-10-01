@@ -7,6 +7,7 @@ import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.Callable;
 
 import rx.Observable;
 
@@ -19,8 +20,13 @@ public class ConfirmPassphraseInteractorImpl implements ConfirmPassphraseInterac
     }
 
     @Override
-    public Observable<String> createWallet(String passphrase) {
-        return KeyStorage.getInstance().createWallet(passphrase);
+    public Observable<String> createWallet(final String passphrase) {
+        return Observable.fromCallable(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                return KeyStorage.getInstance().loadWallet(passphrase);
+            }
+        });
     }
 
     @Override
