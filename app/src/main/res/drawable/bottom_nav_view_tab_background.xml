@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked = "true" android:drawable="@drawable/bottom_vav_view_tab_selected_drawable" />
-    <item android:drawable="@drawable/bottom_nav_view_tab_normal_background"  />
-</selector>
